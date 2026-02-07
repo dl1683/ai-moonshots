@@ -651,6 +651,90 @@ class TRECHierarchical(HierarchicalDataset):
         AGNewsHierarchical._create_mock_data(self)
 
 
+class NewsgroupsHierarchical(HierarchicalDataset):
+    """
+    20 Newsgroups with natural 2-level hierarchy.
+
+    L0 = 6 super-categories (comp, rec, sci, misc, talk, soc)
+    L1 = 20 sub-categories
+    HF ID: SetFit/20_newsgroups
+    """
+
+    HIERARCHY = {
+        "comp": ["comp.graphics", "comp.os.ms-windows.misc", "comp.sys.ibm.pc.hardware",
+                 "comp.sys.mac.hardware", "comp.windows.x"],
+        "rec": ["rec.autos", "rec.motorcycles", "rec.sport.baseball", "rec.sport.hockey"],
+        "sci": ["sci.crypt", "sci.electronics", "sci.med", "sci.space"],
+        "misc": ["misc.forsale"],
+        "talk": ["talk.politics.misc", "talk.politics.guns", "talk.politics.mideast", "talk.religion.misc"],
+        "soc": ["alt.atheism", "soc.religion.christian"],
+    }
+
+    def __init__(self, split: str = "train", max_samples: int = None):
+        super().__init__()
+
+        if not DATASETS_AVAILABLE:
+            print("datasets library not available")
+            self._create_mock_data()
+            return
+
+        print("Loading 20 Newsgroups...")
+        try:
+            dataset = load_dataset("SetFit/20_newsgroups", split=split)
+        except Exception as e:
+            print(f"Could not load 20 Newsgroups: {e}")
+            self._create_mock_data()
+            return
+
+        # Build mappings
+        super_names = list(self.HIERARCHY.keys())
+        sub_names = []
+        sub_to_super = {}
+        for sc, subs in self.HIERARCHY.items():
+            for sub in subs:
+                sub_to_super[sub] = sc
+                sub_names.append(sub)
+
+        self.level0_names = super_names
+        self.level1_names = sub_names
+        self.level2_names = []
+
+        super_to_idx = {s: i for i, s in enumerate(super_names)}
+        sub_to_idx = {s: i for i, s in enumerate(sub_names)}
+
+        items = list(dataset)
+        if max_samples is not None:
+            items = items[:max_samples]
+
+        for i, item in enumerate(items):
+            text = item.get("text", "")[:512]  # Truncate long posts
+            label_text = item.get("label_text", "")
+
+            if label_text not in sub_to_super:
+                continue
+
+            super_cat = sub_to_super[label_text]
+            level0 = super_to_idx[super_cat]
+            level1 = sub_to_idx[label_text]
+
+            self.samples.append(HierarchicalSample(
+                text=text,
+                level0_label=level0,
+                level1_label=level1,
+                level2_label=i,
+                level0_name=super_cat,
+                level1_name=label_text,
+                level2_name=f"sample_{i}",
+            ))
+            self.level2_names.append(f"sample_{i}")
+
+        print(f"Loaded {len(self.samples)} samples")
+        print(f"Hierarchy: {len(self.level0_names)} L0 -> {len(self.level1_names)} L1")
+
+    def _create_mock_data(self):
+        AGNewsHierarchical._create_mock_data(self)
+
+
 def load_hierarchical_dataset(name: str, split: str = "train", max_samples: int = None) -> HierarchicalDataset:
     """Load a hierarchical dataset by name."""
     datasets_map = {
@@ -660,6 +744,8 @@ def load_hierarchical_dataset(name: str, split: str = "train", max_samples: int 
         "amazon": AmazonHierarchical,
         "clinc": CLINCHierarchical,
         "trec": TRECHierarchical,
+        "newsgroups": NewsgroupsHierarchical,
+        "20newsgroups": NewsgroupsHierarchical,
     }
 
     if name.lower() not in datasets_map:
