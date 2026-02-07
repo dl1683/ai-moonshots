@@ -498,9 +498,8 @@ class CLINCHierarchical(HierarchicalDataset):
     """
     CLINC150 intent detection dataset with natural two-level hierarchy.
 
-    L0 = domain (10 domains), L1 = intent (150 intents).
-    Labels are in 'domain:intent' format. Out-of-scope (oos) samples are dropped.
-    HF ID: contemmcm/clinc150
+    L0 = domain (10 domains, excluding oos), L1 = intent (150 intents).
+    HF ID: contemmcm/clinc150  (single 'complete' split with a 'split' column)
     """
 
     def __init__(self, split: str = "train", max_samples: int = None):
@@ -513,152 +512,60 @@ class CLINCHierarchical(HierarchicalDataset):
 
         print("Loading CLINC150...")
         try:
-            dataset = load_dataset("contemmcm/clinc150", split=split)
+            # Dataset has a single 'complete' split; filter by the 'split' column
+            dataset = load_dataset("contemmcm/clinc150", split="complete")
         except Exception as e:
             print(f"Could not load CLINC150: {e}")
             self._create_mock_data()
             return
 
-        # Parse domain:intent labels, drop out-of-scope samples
-        domains_set = set()
-        intents_set = set()
-        parsed_items = []
+        # Map split names: "train" -> "train", "test" -> "test", "val" -> "val"
+        split_name = "val" if split == "validation" else split
+        dataset = dataset.filter(lambda x: x["split"] == split_name)
 
-        for item in dataset:
-            label_str = item.get("label") or item.get("intent") or ""
-            if not isinstance(label_str, str):
-                # If label is an int, try to get the string from features
-                try:
-                    label_str = dataset.features["intent"].int2str(label_str) if "intent" in dataset.features else str(label_str)
-                except Exception:
-                    label_str = str(label_str)
+        # Get ClassLabel features for domain and intent
+        domain_feature = dataset.features["domain"]
+        intent_feature = dataset.features["intent"]
+        domain_names = domain_feature.names  # includes 'oos' at index 0
+        intent_names = intent_feature.names  # includes 'oos:oos' at index 0
 
-            # Skip out-of-scope samples
-            if label_str.lower().startswith("oos") or label_str.lower() == "oos":
+        # Filter out oos domain (index 0)
+        dataset = dataset.filter(lambda x: x["domain"] != 0)
+
+        # Build non-oos domain/intent name lists (contiguous re-indexing)
+        non_oos_domains = [d for d in domain_names if d != "oos"]
+        non_oos_intents = [i for i in intent_names if not i.startswith("oos")]
+        self.level0_names = non_oos_domains
+        self.level1_names = non_oos_intents
+        self.level2_names = []
+
+        # Map original ClassLabel int -> new contiguous index
+        domain_remap = {}
+        for orig_idx, name in enumerate(domain_names):
+            if name in non_oos_domains:
+                domain_remap[orig_idx] = non_oos_domains.index(name)
+        intent_remap = {}
+        for orig_idx, name in enumerate(intent_names):
+            if name in non_oos_intents:
+                intent_remap[orig_idx] = non_oos_intents.index(name)
+
+        # Process samples
+        items = list(dataset)
+        if max_samples is not None:
+            items = items[:max_samples]
+
+        for i, item in enumerate(items):
+            text = item["text"]
+            level0 = domain_remap.get(item["domain"])
+            level1 = intent_remap.get(item["intent"])
+            if level0 is None or level1 is None:
                 continue
 
-            # Parse domain:intent format
-            if ":" in label_str:
-                domain, intent = label_str.split(":", 1)
-            elif "/" in label_str:
-                domain, intent = label_str.split("/", 1)
-            elif "_" in label_str:
-                # Some versions use flat intent names; group by prefix
-                parts = label_str.split("_")
-                domain = parts[0]
-                intent = label_str
-            else:
-                domain = label_str
-                intent = label_str
-
-            domain = domain.strip()
-            intent = intent.strip()
-            text = item.get("text") or item.get("sentence") or ""
-
-            domains_set.add(domain)
-            intents_set.add(intent)
-            parsed_items.append((text, domain, intent))
-
-        # Build name lists
-        self.level0_names = sorted(domains_set)
-        self.level1_names = sorted(intents_set)
-        self.level2_names = []
-
-        domain_to_idx = {d: i for i, d in enumerate(self.level0_names)}
-        intent_to_idx = {t: i for i, t in enumerate(self.level1_names)}
-
-        # Process samples
-        items_to_process = parsed_items if max_samples is None else parsed_items[:max_samples]
-
-        for i, (text, domain, intent) in enumerate(items_to_process):
-            level0 = domain_to_idx[domain]
-            level1 = intent_to_idx[intent]
-            level2 = i
-
             self.samples.append(HierarchicalSample(
                 text=text,
                 level0_label=level0,
                 level1_label=level1,
-                level2_label=level2,
-                level0_name=domain,
-                level1_name=intent,
-                level2_name=f"sample_{i}",
-            ))
-            self.level2_names.append(f"sample_{i}")
-
-        print(f"Loaded {len(self.samples)} samples")
-        print(f"Hierarchy: {len(self.level0_names)} L0 -> {len(self.level1_names)} L1")
-
-    def _create_mock_data(self):
-        AGNewsHierarchical._create_mock_data(self)
-
-
-class WOSHierarchical(HierarchicalDataset):
-    """
-    Web of Science dataset with native two-level category hierarchy.
-
-    L0 = 7 super-categories (label_level_1), L1 = 134 sub-categories (label_level_2).
-    HF ID: web_of_science, config: WOS46985
-    """
-
-    def __init__(self, split: str = "train", max_samples: int = None):
-        super().__init__()
-
-        if not DATASETS_AVAILABLE:
-            print("datasets library not available")
-            self._create_mock_data()
-            return
-
-        print("Loading Web of Science (WOS46985)...")
-        try:
-            dataset = load_dataset("web_of_science", "WOS46985", split=split)
-        except Exception as e:
-            print(f"Could not load Web of Science: {e}")
-            self._create_mock_data()
-            return
-
-        # Build L0 and L1 name mappings from the data
-        # WOS has label_level_1 (coarse) and label_level_2 (fine) as integer columns
-        # Collect unique labels and build ordered name lists
-        l0_labels_set = set()
-        l1_labels_set = set()
-        l1_to_l0 = {}
-
-        for item in dataset:
-            l0 = item["label_level_1"]
-            l1 = item["label_level_2"]
-            l0_labels_set.add(l0)
-            l1_labels_set.add(l1)
-            l1_to_l0[l1] = l0
-
-        l0_sorted = sorted(l0_labels_set)
-        l1_sorted = sorted(l1_labels_set)
-
-        # Map original label ints to contiguous indices
-        l0_to_idx = {lbl: i for i, lbl in enumerate(l0_sorted)}
-        l1_to_idx = {lbl: i for i, lbl in enumerate(l1_sorted)}
-
-        self.level0_names = [f"category_{lbl}" for lbl in l0_sorted]
-        self.level1_names = [f"subcategory_{lbl}" for lbl in l1_sorted]
-        self.level2_names = []
-
-        # Process samples
-        samples_to_process = dataset if max_samples is None else dataset.select(range(min(max_samples, len(dataset))))
-
-        for i, item in enumerate(samples_to_process):
-            text = item["input"]
-            l0_orig = item["label_level_1"]
-            l1_orig = item["label_level_2"]
-
-            level0 = l0_to_idx[l0_orig]
-            level1 = l1_to_idx[l1_orig]
-            level2 = i
-
-            self.samples.append(HierarchicalSample(
-                text=text,
-                level0_label=level0,
-                level1_label=level1,
-                level2_label=level2,
+                level2_label=i,
                 level0_name=self.level0_names[level0],
                 level1_name=self.level1_names[level1],
                 level2_name=f"sample_{i}",
@@ -677,7 +584,7 @@ class TRECHierarchical(HierarchicalDataset):
     TREC question classification with native coarse/fine hierarchy.
 
     L0 = 6 coarse question types, L1 = 50 fine question types.
-    HF ID: CogComp/trec
+    HF ID: SetFit/TREC-QC  (has label_coarse and label columns with text names)
     """
 
     def __init__(self, split: str = "train", max_samples: int = None):
@@ -690,58 +597,49 @@ class TRECHierarchical(HierarchicalDataset):
 
         print("Loading TREC...")
         try:
-            dataset = load_dataset("CogComp/trec", split=split)
+            dataset = load_dataset("SetFit/TREC-QC", split=split)
         except Exception as e:
             print(f"Could not load TREC: {e}")
             self._create_mock_data()
             return
 
-        # TREC has coarse_label (6 types) and fine_label (50 types)
-        # Try to get string names from dataset features, fall back to int labels
+        # Columns: text, label (fine int), label_text, label_coarse (coarse int),
+        #          label_coarse_text, label_original (e.g. "DESC:manner")
+        # Build name lists from BOTH train and test to ensure complete coverage
+        coarse_set = {}
+        fine_set = {}
         try:
-            coarse_feature = dataset.features["coarse_label"]
-            coarse_names = coarse_feature.names if hasattr(coarse_feature, "names") else None
+            full_ds = load_dataset("SetFit/TREC-QC")
+            for s in full_ds.values():
+                for item in s:
+                    coarse_set[item["label_coarse"]] = item["label_coarse_text"]
+                    fine_set[item["label"]] = item["label_text"]
         except Exception:
-            coarse_names = None
+            for item in dataset:
+                coarse_set[item["label_coarse"]] = item["label_coarse_text"]
+                fine_set[item["label"]] = item["label_text"]
 
-        try:
-            fine_feature = dataset.features["fine_label"]
-            fine_names = fine_feature.names if hasattr(fine_feature, "names") else None
-        except Exception:
-            fine_names = None
-
-        if coarse_names is None:
-            # Fall back: collect unique values
-            coarse_labels = sorted(set(item["coarse_label"] for item in dataset))
-            coarse_names = [f"coarse_{lbl}" for lbl in coarse_labels]
-
-        if fine_names is None:
-            fine_labels = sorted(set(item["fine_label"] for item in dataset))
-            fine_names = [f"fine_{lbl}" for lbl in fine_labels]
-
-        self.level0_names = list(coarse_names)
-        self.level1_names = list(fine_names)
+        self.level0_names = [coarse_set[k] for k in sorted(coarse_set.keys())]
+        self.level1_names = [fine_set[k] for k in sorted(fine_set.keys())]
         self.level2_names = []
 
         # Process samples
-        samples_to_process = dataset if max_samples is None else dataset.select(range(min(max_samples, len(dataset))))
+        items = list(dataset)
+        if max_samples is not None:
+            items = items[:max_samples]
 
-        for i, item in enumerate(samples_to_process):
+        for i, item in enumerate(items):
             text = item["text"]
-            level0 = item["coarse_label"]
-            level1 = item["fine_label"]
-            level2 = i
-
-            level0_name = self.level0_names[level0] if level0 < len(self.level0_names) else f"coarse_{level0}"
-            level1_name = self.level1_names[level1] if level1 < len(self.level1_names) else f"fine_{level1}"
+            level0 = item["label_coarse"]
+            level1 = item["label"]
 
             self.samples.append(HierarchicalSample(
                 text=text,
                 level0_label=level0,
                 level1_label=level1,
-                level2_label=level2,
-                level0_name=level0_name,
-                level1_name=level1_name,
+                level2_label=i,
+                level0_name=self.level0_names[level0],
+                level1_name=self.level1_names[level1],
                 level2_name=f"sample_{i}",
             ))
             self.level2_names.append(f"sample_{i}")
@@ -761,7 +659,6 @@ def load_hierarchical_dataset(name: str, split: str = "train", max_samples: int 
         "yahoo": YahooAnswersHierarchical,
         "amazon": AmazonHierarchical,
         "clinc": CLINCHierarchical,
-        "wos": WOSHierarchical,
         "trec": TRECHierarchical,
     }
 
