@@ -37,7 +37,7 @@ from hierarchical_datasets import load_hierarchical_dataset
 from multi_model_pipeline import MODELS, load_model
 from fractal_v5 import (
     FractalModelV5, V5Trainer, ContrastiveDatasetV5,
-    split_train_val, knn_accuracy
+    split_train_val,
 )
 
 
