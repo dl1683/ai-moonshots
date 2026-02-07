@@ -353,22 +353,44 @@ def run_all_ablations(
         ss = np.mean([r['steerability_score'] for r in results])
         print(f"{name:<15} {sc:>12.4f} {ff:>10.4f} {sg:>10.4f} {ss:>13.4f}")
 
+    # Codex-recommended pass/fail criteria
     print()
-    print("INTERPRETATION:")
+    print("CODEX PASS/FAIL CRITERIA:")
     v5_ss = np.mean([r['steerability_score'] for r in all_results.get('v5', [])])
     inv_ss = np.mean([r['steerability_score'] for r in all_results.get('inverted', [])])
     nop_ss = np.mean([r['steerability_score'] for r in all_results.get('no_prefix', [])])
 
-    if inv_ss < 0 and v5_ss > 0:
-        print("  INVERTED shows REVERSED steerability => CAUSAL PROOF!")
-        print("  Supervision direction determines specialization, not label complexity.")
-    elif abs(inv_ss) < abs(v5_ss) * 0.5:
-        print("  INVERTED shows reduced steerability => partial causality.")
+    # Inverted: should have steerability < -0.05 (sign flip)
+    inv_pass = inv_ss < -0.05
+    print(f"  INVERTED: Steerability={inv_ss:+.4f}  Criterion: < -0.05  => {'PASS' if inv_pass else 'FAIL'}")
+    if inv_pass:
+        print("    -> Sign flip confirmed! Supervision direction CAUSES specialization.")
+    elif inv_ss < 0:
+        print("    -> Negative but weak. Partial evidence for causality.")
     else:
-        print("  INVERTED shows similar steerability => specialization may be trivial.")
+        print("    -> Still positive. Specialization may not be purely from supervision.")
 
-    if abs(nop_ss) < abs(v5_ss) * 0.3:
-        print("  NO_PREFIX shows low steerability => prefix supervision is essential.")
+    # No-prefix: should have |steerability| <= 0.02 (collapse to flat)
+    nop_pass = abs(nop_ss) <= 0.02
+    print(f"  NO_PREFIX: Steerability={nop_ss:+.4f}  Criterion: |x| <= 0.02  => {'PASS' if nop_pass else 'FAIL'}")
+    if nop_pass:
+        print("    -> Collapsed to near-zero. Prefix supervision IS the mechanism.")
+    elif abs(nop_ss) < abs(v5_ss) * 0.3:
+        print("    -> Reduced but not collapsed. Prefix supervision is important but not sole factor.")
+    else:
+        print("    -> Still significant steerability. Other factors contribute.")
+
+    # Overall verdict
+    print()
+    if inv_pass and nop_pass:
+        print("  *** CAUSAL MECHANISM CONFIRMED ***")
+        print("  Hierarchy-aligned prefix supervision is NECESSARY and SUFFICIENT for steerability.")
+    elif inv_pass or nop_pass:
+        print("  ** PARTIAL CAUSAL EVIDENCE **")
+        print("  One criterion met. Strong evidence but not conclusive alone.")
+    else:
+        print("  * INCONCLUSIVE *")
+        print("  Neither criterion met. Need to investigate further.")
 
     # Save
     results_dir = Path(__file__).parent.parent / "results"
@@ -409,7 +431,7 @@ if __name__ == "__main__":
     parser.add_argument("--seeds", type=int, default=3)
     args = parser.parse_args()
 
-    seeds = [42, 123, 456][:args.seeds]
+    seeds = [42, 123, 456, 789, 1024][:args.seeds]
     run_all_ablations(
         model_key=args.model,
         dataset_name=args.dataset,
