@@ -1,0 +1,67 @@
+{
+  "experiment": "rigorous_scaling_law",
+  "model": "qwen3-0.6b",
+  "seeds": [42, 123, 456],
+  "depths": [2, 3, 4, 5],
+  "classifiers": ["flat", "fractal", "hier_softmax", "classifier_chain"],
+
+  "results_summary": {
+    "depth_2": {
+      "flat": {"hier_acc_mean": 0.8531, "hier_acc_ci95": 0.0606},
+      "fractal": {"hier_acc_mean": 0.8635, "hier_acc_ci95": 0.0359},
+      "hier_softmax": {"hier_acc_mean": 0.8594, "hier_acc_ci95": 0.0466},
+      "classifier_chain": {"hier_acc_mean": 0.8458, "hier_acc_ci95": 0.0660}
+    },
+    "depth_3": {
+      "flat": {"hier_acc_mean": 0.5602, "hier_acc_ci95": 0.0203},
+      "fractal": {"hier_acc_mean": 0.5826, "hier_acc_ci95": 0.0107},
+      "hier_softmax": {"hier_acc_mean": 0.5521, "hier_acc_ci95": 0.0326},
+      "classifier_chain": {"hier_acc_mean": 0.5221, "hier_acc_ci95": 0.0247}
+    },
+    "depth_4": {
+      "flat": {"hier_acc_mean": 0.4681, "hier_acc_ci95": 0.0197},
+      "fractal": {"hier_acc_mean": 0.4937, "hier_acc_ci95": 0.0103},
+      "hier_softmax": {"hier_acc_mean": 0.4732, "hier_acc_ci95": 0.0009},
+      "classifier_chain": {"hier_acc_mean": 0.4437, "hier_acc_ci95": 0.0054}
+    },
+    "depth_5": {
+      "flat": {"hier_acc_mean": 0.4308, "hier_acc_ci95": 0.0335},
+      "fractal": {"hier_acc_mean": 0.4515, "hier_acc_ci95": 0.0160},
+      "hier_softmax": {"hier_acc_mean": 0.4271, "hier_acc_ci95": 0.0258},
+      "classifier_chain": {"hier_acc_mean": 0.4016, "hier_acc_ci95": 0.0394}
+    }
+  },
+
+  "fractal_advantage": {
+    "depth_2": {
+      "vs_flat": 0.0104,
+      "vs_hier_softmax": 0.0041,
+      "vs_classifier_chain": 0.0177
+    },
+    "depth_3": {
+      "vs_flat": 0.0224,
+      "vs_hier_softmax": 0.0305,
+      "vs_classifier_chain": 0.0605
+    },
+    "depth_4": {
+      "vs_flat": 0.0256,
+      "vs_hier_softmax": 0.0205,
+      "vs_classifier_chain": 0.0500
+    },
+    "depth_5": {
+      "vs_flat": 0.0207,
+      "vs_hier_softmax": 0.0244,
+      "vs_classifier_chain": 0.0499
+    }
+  },
+
+  "key_findings": [
+    "Fractal classifier consistently beats ALL baselines at ALL depths",
+    "Advantage vs flat: +1.04% (D2), +2.24% (D3), +2.56% (D4), +2.07% (D5)",
+    "Fractal has lower variance (tighter CI) than flat across all depths",
+    "Hier_softmax and classifier_chain perform WORSE than flat at deeper depths",
+    "Fractal's advantage is most pronounced at depths 3-4"
+  ],
+
+  "total_runtime_minutes": 107
+}

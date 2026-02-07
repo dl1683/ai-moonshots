@@ -1,0 +1,26 @@
+{
+  "model": "qwen3-0.6b",
+  "config": {
+    "epochs": 10,
+    "batch_size": 24,
+    "lr": 0.0005
+  },
+  "results": {
+    "42": {
+      "baseline": {
+        "l0_acc": 0.729,
+        "l1_acc": 0.6675,
+        "hier_acc": 0.6325,
+        "epoch": 1
+      },
+      "fractal": {
+        "l0_acc": 0.7245,
+        "l1_acc": 0.6615,
+        "hier_acc": 0.623,
+        "epoch": 3,
+        "swap_l0_acc": 0.1915,
+        "swap_l1_acc": 0.077
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "model": "qwen3-0.6b",
+  "config": {
+    "backbone_lr": 5e-06,
+    "head_lr": 0.0005,
+    "contrast_weight": 0.0,
+    "unfreeze_layers": 0,
+    "epochs": 15
+  },
+  "baseline": {
+    "l0": 0.6025,
+    "l1": 0.505
+  },
+  "best": {
+    "l0": 0.3375,
+    "l1": 0.0665,
+    "epoch": 1
+  }
+}

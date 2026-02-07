@@ -1,0 +1,19 @@
+{
+  "model": "qwen3-0.6b",
+  "config": {
+    "batch_size": 48,
+    "lr": 0.0005,
+    "contrastive_weight": 0.5,
+    "proj_dim": 256
+  },
+  "frozen_baseline": {
+    "l0_acc": 0.729,
+    "l1_acc": 0.6675
+  },
+  "trained": {
+    "l0_acc": 0.7405,
+    "l1_acc": 0.667,
+    "hier_acc": 0.6445,
+    "epoch": 5
+  }
+}

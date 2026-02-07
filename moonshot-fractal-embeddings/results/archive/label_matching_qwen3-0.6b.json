@@ -1,0 +1,17 @@
+{
+  "model": "qwen3-0.6b",
+  "zero_shot": {
+    "l0_acc": 0.434,
+    "l1_acc": 0.505
+  },
+  "trained": {
+    "l0_acc": 0.7395,
+    "l1_acc": 0.678,
+    "hier_acc": 0.6355,
+    "epoch": 1
+  },
+  "frozen_head_baseline": {
+    "l0_acc": 0.729,
+    "l1_acc": 0.6675
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "dataset": "dbpedia_14",
+  "hierarchy": "5 super-categories, 14 sub-categories",
+  "model": "qwen3-0.6b",
+  "seeds": [
+    42,
+    123,
+    456
+  ],
+  "statistics": {
+    "flat": {
+      "hier_acc": {
+        "mean": 1.0,
+        "ci_95": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "l0_acc": {
+        "mean": 1.0,
+        "ci_95": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "l1_acc": {
+        "mean": 1.0,
+        "ci_95": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    "fractal": {
+      "hier_acc": {
+        "mean": 1.0,
+        "ci_95": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "l0_acc": {
+        "mean": 1.0,
+        "ci_95": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "l1_acc": {
+        "mean": 1.0,
+        "ci_95": 0.0,
+        "values": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    }
+  },
+  "raw_results": [
+    {
+      "seed": 42,
+      "flat": {
+        "l0_acc": 1.0,
+        "l1_acc": 1.0,
+        "hier_acc": 1.0,
+        "epoch": 1
+      },
+      "fractal": {
+        "l0_acc": 1.0,
+        "l1_acc": 1.0,
+        "hier_acc": 1.0,
+        "epoch": 1
+      }
+    },
+    {
+      "seed": 123,
+      "flat": {
+        "l0_acc": 1.0,
+        "l1_acc": 1.0,
+        "hier_acc": 1.0,
+        "epoch": 1
+      },
+      "fractal": {
+        "l0_acc": 1.0,
+        "l1_acc": 1.0,
+        "hier_acc": 1.0,
+        "epoch": 1
+      }
+    },
+    {
+      "seed": 456,
+      "flat": {
+        "l0_acc": 1.0,
+        "l1_acc": 1.0,
+        "hier_acc": 1.0,
+        "epoch": 1
+      },
+      "fractal": {
+        "l0_acc": 1.0,
+        "l1_acc": 1.0,
+        "hier_acc": 1.0,
+        "epoch": 1
+      }
+    }
+  ]
+}

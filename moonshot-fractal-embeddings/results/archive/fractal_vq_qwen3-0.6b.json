@@ -1,0 +1,37 @@
+{
+  "model": "qwen3-0.6b",
+  "config": {
+    "epochs": 10,
+    "batch_size": 24,
+    "lr": 0.0005,
+    "vq_weight": 0.1
+  },
+  "results": {
+    "42": {
+      "baseline": {
+        "l0_acc": 0.729,
+        "l1_acc": 0.6675,
+        "hier_acc": 0.6325,
+        "epoch": 1
+      },
+      "vq": {
+        "l0_acc": 0.716,
+        "l1_acc": 0.6375,
+        "hier_acc": 0.6135,
+        "epoch": 9,
+        "unique_coarse_codes": 12,
+        "total_coarse_codes": 16,
+        "codebook_utilization": 0.75
+      },
+      "vq_large": {
+        "l0_acc": 0.701,
+        "l1_acc": 0.633,
+        "hier_acc": 0.591,
+        "epoch": 8,
+        "unique_coarse_codes": 12,
+        "total_coarse_codes": 32,
+        "codebook_utilization": 0.375
+      }
+    }
+  }
+}

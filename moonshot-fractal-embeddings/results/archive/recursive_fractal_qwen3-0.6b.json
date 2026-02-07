@@ -1,0 +1,33 @@
+{
+  "model": "qwen3-0.6b",
+  "config": {
+    "epochs": 10,
+    "batch_size": 24,
+    "lr": 0.0005,
+    "leakage_weight": 0.1
+  },
+  "results": {
+    "42": {
+      "baseline": {
+        "l0_acc": 0.729,
+        "l1_acc": 0.6675,
+        "hier_acc": 0.6325,
+        "epoch": 1
+      },
+      "fractal": {
+        "l0_acc": 0.7275,
+        "l1_acc": 0.6655,
+        "hier_acc": 0.619,
+        "epoch": 3,
+        "leakage_acc": 0.273
+      },
+      "fractal_reg": {
+        "l0_acc": 0.728,
+        "l1_acc": 0.662,
+        "hier_acc": 0.619,
+        "epoch": 3,
+        "leakage_acc": 0.3125
+      }
+    }
+  }
+}

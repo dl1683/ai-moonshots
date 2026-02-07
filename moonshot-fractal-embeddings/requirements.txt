@@ -1,0 +1,20 @@
+# Core dependencies
+torch>=2.0.0
+transformers>=4.35.0
+sentence-transformers>=2.2.0
+datasets>=2.14.0
+
+# Scientific computing
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Visualization
+matplotlib>=3.7.0
+pillow>=9.4.0
+
+# Utilities
+tqdm>=4.65.0
+scikit-learn>=1.2.0
+
+# Optional: for specific models
+# einops>=0.6.0  # for some model architectures

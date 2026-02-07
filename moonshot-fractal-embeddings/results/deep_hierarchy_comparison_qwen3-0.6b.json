@@ -1,0 +1,56 @@
+{
+  "yahoo": {
+    "flat": {
+      "level0_acc": 0.7395,
+      "level1_acc": 0.672,
+      "hier_acc": 0.6405,
+      "epoch": 4
+    },
+    "fractal": {
+      "level0_acc": 0.7375,
+      "level1_acc": 0.683,
+      "hier_acc": 0.6545,
+      "epoch": 4
+    },
+    "delta": {
+      "l0": -0.0020000000000000018,
+      "l1": 0.01100000000000001
+    }
+  },
+  "dbpedia": {
+    "flat": {
+      "level0_acc": 1.0,
+      "level1_acc": 1.0,
+      "hier_acc": 1.0,
+      "epoch": 1
+    },
+    "fractal": {
+      "level0_acc": 1.0,
+      "level1_acc": 1.0,
+      "hier_acc": 1.0,
+      "epoch": 1
+    },
+    "delta": {
+      "l0": 0.0,
+      "l1": 0.0
+    }
+  },
+  "agnews": {
+    "flat": {
+      "level0_acc": 0.9035,
+      "level1_acc": 0.698,
+      "hier_acc": 0.6865,
+      "epoch": 7
+    },
+    "fractal": {
+      "level0_acc": 0.897,
+      "level1_acc": 0.688,
+      "hier_acc": 0.681,
+      "epoch": 7
+    },
+    "delta": {
+      "l0": -0.00649999999999995,
+      "l1": -0.010000000000000009
+    }
+  }
+}

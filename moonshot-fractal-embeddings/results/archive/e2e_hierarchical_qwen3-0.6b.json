@@ -1,0 +1,27 @@
+{
+  "model": "qwen3-0.6b",
+  "config": {
+    "backbone_lr": 2e-07,
+    "head_lr": 0.0001,
+    "unfreeze_layers": 2,
+    "consistency_weight": 0.3,
+    "frozen_epochs": 6,
+    "e2e_epochs": 3
+  },
+  "frozen_baseline": {
+    "l0_acc": 0.735,
+    "l1_acc": 0.6865,
+    "hier_acc": 0.647,
+    "epoch": 2
+  },
+  "e2e_finetuned": {
+    "l0_acc": 0.7175,
+    "l1_acc": 0.659,
+    "hier_acc": 0.6245,
+    "epoch": 1
+  },
+  "improvement_pct": {
+    "l0": -2.3809523809523756,
+    "l1": -4.005826656955567
+  }
+}

@@ -1,0 +1,38 @@
+# Project memory files (private)
+CLAUDE.md
+ROUNDTABLE_STATE.md
+*_HANDOFF.md
+
+# Moonshots not yet ready for public release
+moonshot-fractal-mind/
+moonshot-j-self-construction/
+moonshot-complex-fractal-adapters/
+moonshot-tokenization-limit/
+models/
+research/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv/
+venv/
+
+# Model weights & large files
+*.bin
+*.safetensors
+*.gguf
+*.ggml
+*.pt
+*.pth
+*.onnx
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
