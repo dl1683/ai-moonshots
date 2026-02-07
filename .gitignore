@@ -8,8 +8,8 @@ moonshot-fractal-mind/
 moonshot-j-self-construction/
 moonshot-complex-fractal-adapters/
 moonshot-tokenization-limit/
-models/
-research/
+/models/
+/research/
 
 # Python
 __pycache__/
