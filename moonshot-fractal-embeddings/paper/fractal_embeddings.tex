@@ -266,7 +266,7 @@ The correlation between hierarchy alignment and steerability in Section~\ref{sec
 We perform three causal ablations on CLINC-150 to isolate the effect of alignment.
 
 \paragraph{Ablation conditions.}
-All three conditions use identical architecture, optimizer, and hyperparameters.
+All three conditions use identical architecture, optimizer, hyperparameters, and data split (held fixed across seeds).
 Only the prefix-to-hierarchy mapping changes:
 \begin{itemize}
     \item \textbf{Aligned (V5)}: $j=1 \rightarrow L_0$, $j=4 \rightarrow L_1$ (correct alignment).
@@ -285,7 +285,7 @@ Only the prefix-to-hierarchy mapping changes:
 The ablation results (Table~\ref{tab:ablation}, Figure~\ref{fig:ablation}) provide definitive causal evidence:
 
 \begin{table}[t]
-\caption{Causal ablation on CLINC-150 (5 seeds, BGE-small). Inverting alignment reverses the steerability sign; removing prefix-specific alignment collapses it. All differences are significant at $p < 10^{-6}$.}
+\caption{Causal ablation on CLINC-150 (5 seeds, BGE-small). All conditions share a fixed train/val split to eliminate data-split variance (reducing absolute $\steer$ vs.\ Table~\ref{tab:steerability} but tightening within-condition variance). Inverting alignment reverses the sign; removing prefix-specific alignment collapses it. All differences significant at $p < 10^{-6}$.}
 \label{tab:ablation}
 \centering
 \small
