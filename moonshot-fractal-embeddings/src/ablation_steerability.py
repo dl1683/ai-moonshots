@@ -120,7 +120,7 @@ class InvertedV5Trainer(V5Trainer):
 
         avg_loss = total_loss / max(num_batches, 1)
         # Evaluate
-        val_metrics = self._evaluate(self.val_dataset.samples)
+        val_metrics = self._evaluate()
         return avg_loss, val_metrics
 
 
@@ -173,7 +173,7 @@ class NoPrefixV5Trainer(V5Trainer):
             num_batches += 1
 
         avg_loss = total_loss / max(num_batches, 1)
-        val_metrics = self._evaluate(self.val_dataset.samples)
+        val_metrics = self._evaluate()
         return avg_loss, val_metrics
 
 
@@ -276,6 +276,7 @@ def run_single_ablation(
         val_dataset=val_data,
         device=device,
         stage1_epochs=stage1_epochs,
+        stage2_epochs=0,  # Head-only, matching benchmark config
     )
     trainer.train(batch_size=batch_size, patience=5)
 
