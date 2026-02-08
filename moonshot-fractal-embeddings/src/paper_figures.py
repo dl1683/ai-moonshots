@@ -552,6 +552,62 @@ def fig7_entropy_allocation():
 
 
 # ============================================================================
+# Figure 8: Prefix Surgery — Causal prefix swap
+# ============================================================================
+def fig8_prefix_surgery():
+    """Prefix surgery results: bar chart comparing V5 vs MRL
+    on coarse transfer and fine preservation rates."""
+    import glob
+    surgery_files = sorted(Path(RESULTS_DIR).glob("prefix_surgery_*.json"))
+    if not surgery_files:
+        print("  Fig 8: No prefix surgery results yet. Skipping.")
+        return
+
+    data = json.load(open(surgery_files[0]))
+    v5 = data.get("v5", {})
+    mrl = data.get("mrl", {})
+
+    if not v5 or not mrl:
+        print("  Fig 8: Incomplete surgery data. Skipping.")
+        return
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.5))
+
+    # Left: Coarse transfer rate
+    methods = ['V5', 'MRL']
+    coarse_vals = [v5["coarse_transfer_rate"], mrl["coarse_transfer_rate"]]
+    colors_bar = [V5_COLOR, MRL_COLOR]
+
+    bars1 = ax1.bar(methods, coarse_vals, color=colors_bar, edgecolor='black', linewidth=0.5)
+    ax1.set_ylabel('Rate')
+    ax1.set_title('Coarse Transfer Rate\n(prefix swap changes L0 class to donor)',
+                  fontweight='bold')
+    ax1.set_ylim(0, 1)
+    for bar, val in zip(bars1, coarse_vals):
+        ax1.text(bar.get_x() + bar.get_width()/2, val + 0.02,
+                f'{val:.3f}', ha='center', fontweight='bold')
+
+    # Right: Fine preservation rate
+    fine_vals = [v5["fine_preservation_rate"], mrl["fine_preservation_rate"]]
+    bars2 = ax2.bar(methods, fine_vals, color=colors_bar, edgecolor='black', linewidth=0.5)
+    ax2.set_ylabel('Rate')
+    ax2.set_title('Fine Preservation Rate\n(recipient L1 class survives prefix swap)',
+                  fontweight='bold')
+    ax2.set_ylim(0, 1)
+    for bar, val in zip(bars2, fine_vals):
+        ax2.text(bar.get_x() + bar.get_width()/2, val + 0.02,
+                f'{val:.3f}', ha='center', fontweight='bold')
+
+    fig.suptitle('Causal Prefix Surgery: Semantic Levels Are Separable in V5',
+                fontsize=13, fontweight='bold', y=1.02)
+    fig.tight_layout()
+    fig.savefig(FIGURES_DIR / "fig8_prefix_surgery.png")
+    fig.savefig(FIGURES_DIR / "fig8_prefix_surgery.pdf")
+    plt.close(fig)
+    print(f"  Fig 8 saved: {FIGURES_DIR / 'fig8_prefix_surgery.png'}")
+
+
+# ============================================================================
 # Main
 # ============================================================================
 if __name__ == "__main__":
@@ -564,5 +620,6 @@ if __name__ == "__main__":
     fig5_scaling_law()
     fig6_synthetic()
     fig7_entropy_allocation()
+    fig8_prefix_surgery()
 
     print("\nDone!")
