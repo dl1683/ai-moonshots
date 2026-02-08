@@ -1,0 +1,270 @@
+{
+  "model": "bge-small",
+  "dataset": "trec",
+  "seeds": [
+    42,
+    123,
+    456
+  ],
+  "timestamp": "2026-02-08T17:00:44.799974",
+  "results": {
+    "v5": [
+      {
+        "ablation": "v5",
+        "seed": 42,
+        "prefix_results": {
+          "j1": {
+            "l0": 0.928,
+            "l1": 0.75
+          },
+          "j2": {
+            "l0": 0.934,
+            "l1": 0.78
+          },
+          "j3": {
+            "l0": 0.936,
+            "l1": 0.786
+          },
+          "j4": {
+            "l0": 0.936,
+            "l1": 0.776
+          }
+        },
+        "short_coarse": 0.928,
+        "full_fine": 0.776,
+        "specialization_gap": 0.17800000000000005,
+        "coarse_gain": -0.008000000000000007,
+        "fine_gain": 0.026000000000000023,
+        "steerability_score": 0.018000000000000016
+      },
+      {
+        "ablation": "v5",
+        "seed": 123,
+        "prefix_results": {
+          "j1": {
+            "l0": 0.948,
+            "l1": 0.752
+          },
+          "j2": {
+            "l0": 0.938,
+            "l1": 0.79
+          },
+          "j3": {
+            "l0": 0.932,
+            "l1": 0.798
+          },
+          "j4": {
+            "l0": 0.934,
+            "l1": 0.8
+          }
+        },
+        "short_coarse": 0.948,
+        "full_fine": 0.8,
+        "specialization_gap": 0.19599999999999995,
+        "coarse_gain": 0.013999999999999901,
+        "fine_gain": 0.04800000000000004,
+        "steerability_score": 0.061999999999999944
+      },
+      {
+        "ablation": "v5",
+        "seed": 456,
+        "prefix_results": {
+          "j1": {
+            "l0": 0.944,
+            "l1": 0.754
+          },
+          "j2": {
+            "l0": 0.942,
+            "l1": 0.786
+          },
+          "j3": {
+            "l0": 0.94,
+            "l1": 0.792
+          },
+          "j4": {
+            "l0": 0.932,
+            "l1": 0.796
+          }
+        },
+        "short_coarse": 0.944,
+        "full_fine": 0.796,
+        "specialization_gap": 0.18999999999999995,
+        "coarse_gain": 0.0119999999999999,
+        "fine_gain": 0.04200000000000004,
+        "steerability_score": 0.05399999999999994
+      }
+    ],
+    "inverted": [
+      {
+        "ablation": "inverted",
+        "seed": 42,
+        "prefix_results": {
+          "j1": {
+            "l0": 0.934,
+            "l1": 0.786
+          },
+          "j2": {
+            "l0": 0.938,
+            "l1": 0.778
+          },
+          "j3": {
+            "l0": 0.94,
+            "l1": 0.774
+          },
+          "j4": {
+            "l0": 0.938,
+            "l1": 0.766
+          }
+        },
+        "short_coarse": 0.934,
+        "full_fine": 0.766,
+        "specialization_gap": 0.14800000000000002,
+        "coarse_gain": -0.0039999999999998925,
+        "fine_gain": -0.020000000000000018,
+        "steerability_score": -0.02399999999999991
+      },
+      {
+        "ablation": "inverted",
+        "seed": 123,
+        "prefix_results": {
+          "j1": {
+            "l0": 0.94,
+            "l1": 0.782
+          },
+          "j2": {
+            "l0": 0.95,
+            "l1": 0.78
+          },
+          "j3": {
+            "l0": 0.958,
+            "l1": 0.768
+          },
+          "j4": {
+            "l0": 0.946,
+            "l1": 0.754
+          }
+        },
+        "short_coarse": 0.94,
+        "full_fine": 0.754,
+        "specialization_gap": 0.15799999999999992,
+        "coarse_gain": -0.006000000000000005,
+        "fine_gain": -0.028000000000000025,
+        "steerability_score": -0.03400000000000003
+      },
+      {
+        "ablation": "inverted",
+        "seed": 456,
+        "prefix_results": {
+          "j1": {
+            "l0": 0.942,
+            "l1": 0.776
+          },
+          "j2": {
+            "l0": 0.942,
+            "l1": 0.776
+          },
+          "j3": {
+            "l0": 0.946,
+            "l1": 0.76
+          },
+          "j4": {
+            "l0": 0.952,
+            "l1": 0.768
+          }
+        },
+        "short_coarse": 0.942,
+        "full_fine": 0.768,
+        "specialization_gap": 0.16599999999999993,
+        "coarse_gain": -0.010000000000000009,
+        "fine_gain": -0.008000000000000007,
+        "steerability_score": -0.018000000000000016
+      }
+    ],
+    "no_prefix": [
+      {
+        "ablation": "no_prefix",
+        "seed": 42,
+        "prefix_results": {
+          "j1": {
+            "l0": 0.918,
+            "l1": 0.784
+          },
+          "j2": {
+            "l0": 0.922,
+            "l1": 0.806
+          },
+          "j3": {
+            "l0": 0.926,
+            "l1": 0.796
+          },
+          "j4": {
+            "l0": 0.926,
+            "l1": 0.798
+          }
+        },
+        "short_coarse": 0.918,
+        "full_fine": 0.798,
+        "specialization_gap": 0.134,
+        "coarse_gain": -0.008000000000000007,
+        "fine_gain": 0.014000000000000012,
+        "steerability_score": 0.006000000000000005
+      },
+      {
+        "ablation": "no_prefix",
+        "seed": 123,
+        "prefix_results": {
+          "j1": {
+            "l0": 0.922,
+            "l1": 0.796
+          },
+          "j2": {
+            "l0": 0.932,
+            "l1": 0.812
+          },
+          "j3": {
+            "l0": 0.926,
+            "l1": 0.798
+          },
+          "j4": {
+            "l0": 0.93,
+            "l1": 0.8
+          }
+        },
+        "short_coarse": 0.922,
+        "full_fine": 0.8,
+        "specialization_gap": 0.126,
+        "coarse_gain": -0.008000000000000007,
+        "fine_gain": 0.0040000000000000036,
+        "steerability_score": -0.0040000000000000036
+      },
+      {
+        "ablation": "no_prefix",
+        "seed": 456,
+        "prefix_results": {
+          "j1": {
+            "l0": 0.928,
+            "l1": 0.784
+          },
+          "j2": {
+            "l0": 0.93,
+            "l1": 0.792
+          },
+          "j3": {
+            "l0": 0.936,
+            "l1": 0.796
+          },
+          "j4": {
+            "l0": 0.942,
+            "l1": 0.788
+          }
+        },
+        "short_coarse": 0.928,
+        "full_fine": 0.788,
+        "specialization_gap": 0.14400000000000002,
+        "coarse_gain": -0.013999999999999901,
+        "fine_gain": 0.0040000000000000036,
+        "steerability_score": -0.009999999999999898
+      }
+    ]
+  }
+}
