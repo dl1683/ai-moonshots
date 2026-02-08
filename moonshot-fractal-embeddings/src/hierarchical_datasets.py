@@ -753,11 +753,21 @@ class WOSHierarchical(HierarchicalDataset):
 
         print("Loading WOS-46985...")
         try:
-            dataset = load_dataset("HDLTex/web_of_science", "WOS-46985", split="train")
-        except Exception as e:
-            print(f"Could not load WOS: {e}")
-            self._create_mock_data()
-            return
+            # marcelsun version (multi-label hierarchy with token/label columns)
+            dataset = load_dataset(
+                "marcelsun/wos_hierarchical_multi_label_text_classification",
+                split="train",
+            )
+        except Exception as e1:
+            try:
+                # Fallback: HDLTex
+                dataset = load_dataset(
+                    "HDLTex/web_of_science", "WOS-46985", split="train",
+                )
+            except Exception as e2:
+                print(f"Could not load WOS: {e1} / {e2}")
+                self._create_mock_data()
+                return
 
         # WOS only has train split; we manually split
         items = list(dataset)
@@ -774,12 +784,21 @@ class WOSHierarchical(HierarchicalDataset):
         if max_samples is not None:
             items = items[:max_samples]
 
+        # Detect column format
+        sample_keys = set(items[0].keys()) if items else set()
+
         # Build label name mappings from data
         l0_names_set = {}
         l1_names_set = {}
         for item in items:
-            l0 = item.get("label_level_1", item.get("Y1", 0))
-            l1 = item.get("label_level_2", item.get("Y2", 0))
+            if "label" in sample_keys and isinstance(item.get("label"), list):
+                # marcelsun format: label is a list of ints [L0, L1, ...]
+                labels = item["label"]
+                l0 = labels[0] if len(labels) > 0 else 0
+                l1 = labels[1] if len(labels) > 1 else labels[0]
+            else:
+                l0 = item.get("label_level_1", item.get("Y1", 0))
+                l1 = item.get("label_level_2", item.get("Y2", 0))
             if l0 not in l0_names_set:
                 l0_names_set[l0] = f"Area_{l0}"
             if l1 not in l1_names_set:
@@ -795,10 +814,22 @@ class WOSHierarchical(HierarchicalDataset):
         self.level2_names = []
 
         for i, item in enumerate(items):
-            text_col = "input_data" if "input_data" in item else "token" if "token" in item else "Abstract"
-            text = item.get(text_col, str(item))[:512]
-            l0_orig = item.get("label_level_1", item.get("Y1", 0))
-            l1_orig = item.get("label_level_2", item.get("Y2", 0))
+            # Get text
+            if "token" in sample_keys:
+                text = item["token"][:512]
+            elif "input_data" in sample_keys:
+                text = item["input_data"][:512]
+            else:
+                text = str(item.get("Abstract", item.get("text", "")))[:512]
+
+            # Get labels
+            if "label" in sample_keys and isinstance(item.get("label"), list):
+                labels = item["label"]
+                l0_orig = labels[0] if len(labels) > 0 else 0
+                l1_orig = labels[1] if len(labels) > 1 else labels[0]
+            else:
+                l0_orig = item.get("label_level_1", item.get("Y1", 0))
+                l1_orig = item.get("label_level_2", item.get("Y2", 0))
 
             level0 = l0_remap[l0_orig]
             level1 = l1_remap[l1_orig]

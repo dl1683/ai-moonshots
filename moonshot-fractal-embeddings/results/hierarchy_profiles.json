@@ -66,5 +66,52 @@
     "coarse_separability": 0.9404265705999569,
     "fine_granularity": 1.0837839051009166,
     "avg_samples_per_l1": 500.0
+  },
+  "wos": {
+    "dataset": "wos",
+    "n_samples": 10000,
+    "n_l0": 10,
+    "n_l1": 336,
+    "branching_factor": 33.6,
+    "h_l1_given_l0": 5.054453444463944
+  },
+  "goemotions": {
+    "dataset": "goemotions",
+    "n_samples": 8329,
+    "n_l0": 4,
+    "n_l1": 28,
+    "branching_factor": 7.0,
+    "h_l0": 1.8345639976754917,
+    "h_l1": 3.716060521874359,
+    "h_l1_given_l0": 1.881496524223212,
+    "mi_levels": 1.834563997651147,
+    "depth_ratio": 1.0255823872087246,
+    "avg_samples_per_l1": 297.4642857142857
+  },
+  "arxiv": {
+    "dataset": "arxiv",
+    "n_samples": 10000,
+    "n_l0": 20,
+    "n_l1": 123,
+    "branching_factor": 6.15,
+    "h_l0": 3.400539934198181,
+    "h_l1": 6.015689725725851,
+    "h_l1_given_l0": 2.615149791653019,
+    "mi_levels": 3.400539934072832,
+    "depth_ratio": 0.7690395767311139,
+    "avg_samples_per_l1": 81.30081300813008
+  },
+  "dbpedia_classes": {
+    "dataset": "dbpedia_classes",
+    "n_samples": 10000,
+    "n_l0": 9,
+    "n_l1": 70,
+    "branching_factor": 7.777777777777778,
+    "h_l0": 2.086740975107298,
+    "h_l1": 5.261097511495928,
+    "h_l1_given_l0": 3.174356536447603,
+    "mi_levels": 2.0867409750483246,
+    "depth_ratio": 1.5212029544224488,
+    "avg_samples_per_l1": 142.85714285714286
   }
 }
