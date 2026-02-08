@@ -53,10 +53,6 @@ Both V5 and MRL make **exactly 4 model.forward() calls per batch**:
 Both methods are completely dominated by the 4 frozen backbone forward passes.
 The extra loss computation in MRL is vanishingly small compared to backbone cost.
 
-### Honest Assessment
-
-The training cost difference between V5 and MRL is **NOT a meaningful talking point**.
-Any claim of "30% cheaper" was incorrect. The real number is <0.1% difference.
 
 ---
 
