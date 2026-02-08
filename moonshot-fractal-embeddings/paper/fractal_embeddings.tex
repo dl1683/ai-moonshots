@@ -109,7 +109,7 @@ Positive $\steer$ means short prefixes specialize for coarse semantics while ful
 A perfectly steerable embedding has high $\steer$; MRL, which trains all lengths on $L_1$, should have $\steer \approx 0$.
 
 \paragraph{Datasets.}
-Table~\ref{tab:datasets} summarizes our evaluation datasets, spanning conditional entropies from 1.23 (Yahoo) to 3.90 bits (CLINC-150).
+Table~\ref{tab:datasets} summarizes our evaluation datasets, spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 3.90 bits (CLINC-150~\citep{larson2019clinc}), also including TREC~\citep{voorhees2000trec} and 20 Newsgroups.
 
 \begin{table}[t]
 \caption{Dataset statistics and hierarchy profiles. $K_0$, $K_1$: number of coarse and fine classes. Branch: $K_1/K_0$. $\hlz$, $\hlo$: coarse entropy and conditional entropy in bits.}
@@ -136,7 +136,7 @@ CLINC-150 & 10 & 150 & 15.0 & 3.32 & 3.90 & 10{,}000 & 2{,}000 \\
 Our method modifies MRL training in one key way: we align the \emph{supervision signal} with the \emph{prefix length}, so that shorter prefixes are trained to capture coarse structure while longer prefixes capture fine structure.
 
 \paragraph{Architecture.}
-We use a frozen pretrained embedding backbone (BGE-small-en-v1.5 or Qwen3-Embedding-0.6B) with a learned linear projection head $W \in \mathbb{R}^{h \times d}$ mapping from hidden dimension $h$ to output dimension $d = 256$.
+We use a frozen pretrained embedding backbone (BGE-small-en-v1.5~\citep{xiao2023bge} or Qwen3-Embedding-0.6B) with a learned linear projection head $W \in \mathbb{R}^{h \times d}$ mapping from hidden dimension $h$ to output dimension $d = 256$.
 Two classification heads operate on the output: $\text{head}_\text{top}$ (coarse, $K_0$ classes) and $\text{head}_\text{bot}$ (fine, $K_1$ classes).
 
 \paragraph{Progressive prefix supervision.}
