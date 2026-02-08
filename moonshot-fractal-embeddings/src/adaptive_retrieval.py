@@ -25,6 +25,7 @@ This shows practical utility and changes the paradigm from
 import sys
 import os
 import json
+import gc
 import numpy as np
 import torch
 from pathlib import Path
@@ -35,9 +36,9 @@ from collections import defaultdict
 sys.path.insert(0, os.path.dirname(__file__))
 
 from hierarchical_datasets import load_hierarchical_dataset
-from multi_model_pipeline import MODELS, load_model
-from fractal_v5 import FractalModelV5, V5Trainer, ContrastiveDatasetV5, split_train_val
-from mrl_v5_baseline import MRLBaselineModel, MRLTrainer
+from multi_model_pipeline import MODELS
+from fractal_v5 import FractalModelV5, V5Trainer, split_train_val
+from mrl_v5_baseline import MRLTrainerV5
 
 
 def compute_embeddings(model, texts, batch_size=32):
@@ -243,52 +244,55 @@ def run_adaptive_retrieval(
 
         # Load data
         print("[1] Loading data...")
-        train_samples = load_hierarchical_dataset(dataset_name, split='train')
-        test_samples = load_hierarchical_dataset(dataset_name, split='test')
-        train_samples, val_samples = split_train_val(train_samples, val_frac=0.15, seed=seed)
+        train_data = load_hierarchical_dataset(dataset_name, split='train', max_samples=10000)
+        test_data = load_hierarchical_dataset(dataset_name, split='test', max_samples=2000)
 
-        # Load model and train V5
+        train_samples, val_samples = split_train_val(train_data.samples, val_ratio=0.15)
+
+        class TempDataset:
+            def __init__(self, samples, l0_names, l1_names):
+                self.samples = samples
+                self.level0_names = l0_names
+                self.level1_names = l1_names
+
+        val_data = TempDataset(val_samples, train_data.level0_names, train_data.level1_names)
+        train_data.samples = train_samples
+
+        num_l0 = len(train_data.level0_names)
+        num_l1 = len(train_data.level1_names)
+        config = MODELS[model_key]
+
+        # Train V5
         print("[2] Training V5...")
-        model_config = MODELS[model_key]
-        tokenizer, backbone = load_model(model_key)
-        hidden_dim = model_config['hidden_dim']
-
         v5_model = FractalModelV5(
-            backbone=backbone, tokenizer=tokenizer,
-            hidden_dim=hidden_dim, output_dim=256,
-            num_l0_classes=len(set(s.level0_label for s in train_samples)),
-            num_l1_classes=len(set(s.level1_label for s in train_samples)),
-            num_scales=4, device=device,
-        )
+            config=config, num_l0_classes=num_l0, num_l1_classes=num_l1,
+            num_scales=4, scale_dim=64, device=device,
+        ).to(device)
 
         v5_trainer = V5Trainer(
-            model=v5_model, train_samples=train_samples, val_samples=val_samples,
-            device=device, batch_size=16, lr=1e-4,
+            model=v5_model, train_dataset=train_data, val_dataset=val_data,
+            device=device, stage1_epochs=5,
         )
-        v5_trainer.train(stage1_epochs=5, stage2_epochs=0)
+        v5_trainer.train(batch_size=16, patience=5)
 
         # Train MRL
         print("[3] Training MRL...")
-        tokenizer2, backbone2 = load_model(model_key)
-        mrl_model = MRLBaselineModel(
-            backbone=backbone2, tokenizer=tokenizer2,
-            hidden_dim=hidden_dim, output_dim=256,
-            num_l0_classes=len(set(s.level0_label for s in train_samples)),
-            num_l1_classes=len(set(s.level1_label for s in train_samples)),
-            num_scales=4, device=device,
-        )
+        mrl_model = FractalModelV5(
+            config=config, num_l0_classes=num_l1, num_l1_classes=num_l1,
+            num_scales=4, scale_dim=64, device=device,
+        ).to(device)
 
-        mrl_trainer = MRLTrainer(
-            model=mrl_model, train_samples=train_samples, val_samples=val_samples,
-            device=device, batch_size=16, lr=1e-4,
+        mrl_trainer = MRLTrainerV5(
+            model=mrl_model, train_dataset=train_data, val_dataset=val_data,
+            device=device, stage1_epochs=5,
         )
-        mrl_trainer.train(stage1_epochs=5, stage2_epochs=0)
+        mrl_trainer.train(batch_size=16, patience=5)
 
         # Compute embeddings at all prefix lengths
         print("[4] Computing embeddings...")
-        test_texts = [s.text for s in test_samples]
-        test_l0 = np.array([s.level0_label for s in test_samples])
-        test_l1 = np.array([s.level1_label for s in test_samples])
+        test_texts = [s.text for s in test_data.samples]
+        test_l0 = np.array([s.level0_label for s in test_data.samples])
+        test_l1 = np.array([s.level1_label for s in test_data.samples])
 
         v5_embs = compute_embeddings(v5_model, test_texts)
         mrl_embs = compute_embeddings(mrl_model, test_texts)
@@ -366,7 +370,7 @@ def run_adaptive_retrieval(
         # Clean up GPU
         del v5_model, mrl_model, v5_trainer, mrl_trainer
         torch.cuda.empty_cache()
-        import gc; gc.collect()
+        gc.collect()
 
     # Summary
     print("\n" + "=" * 70)
