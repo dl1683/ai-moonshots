@@ -258,18 +258,21 @@ def main():
     # =====================================================================
     # 6. SYNTHETIC HIERARCHY (if available)
     # =====================================================================
-    synth_file = RESULTS_DIR / "synthetic_hierarchy_results.json"
+    synth_file = RESULTS_DIR / "synthetic_hierarchy_experiment.json"
     if synth_file.exists():
         print_section("6. SYNTHETIC HIERARCHY EXPERIMENT (causal intervention)")
         sd = json.load(open(synth_file))
-        results = sd.get('results', [])
+        results = [r for r in sd.get('results', []) if 'v5_steerability' in r]
         print(f"\n  {'K0':<6} {'H(L1|L0)':<10} {'V5 Steer':<12} {'MRL Steer':<12} {'Gap'}")
         print(f"  {'-'*50}")
-        for r in sorted(results, key=lambda x: x['h_l1_given_l0']):
-            print(f"  {r['k0']:<6} {r['h_l1_given_l0']:<10.3f} {r['v5_steer']:+.4f}       {r.get('mrl_steer',0):+.4f}       {r['v5_steer']-r.get('mrl_steer',0):+.4f}")
+        for r in sorted(results, key=lambda x: x['hierarchy_stats']['h_l1_given_l0']):
+            h = r['hierarchy_stats']['h_l1_given_l0']
+            v5s = r['v5_steerability']
+            mrls = r.get('mrl_steerability', 0)
+            print(f"  {r['k0']:<6} {h:<10.3f} {v5s:+.4f}       {mrls:+.4f}       {v5s-mrls:+.4f}")
 
-        h_syn = [r['h_l1_given_l0'] for r in results]
-        s_syn = [r['v5_steer'] for r in results]
+        h_syn = [r['hierarchy_stats']['h_l1_given_l0'] for r in results]
+        s_syn = [r['v5_steerability'] for r in results]
         if len(h_syn) >= 3:
             rho, p = stats.spearmanr(h_syn, s_syn)
             sl, ic, r, _, _ = stats.linregress(h_syn, s_syn)
