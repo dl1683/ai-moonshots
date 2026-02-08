@@ -39,10 +39,15 @@ RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def run_flat_eval(model_key, dataset_name, device="cuda"):
-    """Evaluate unfinetuned baseline."""
+    """Evaluate unfinetuned baseline using raw backbone embeddings."""
+    from transformers import AutoModel, AutoTokenizer
+
     test_data = load_hierarchical_dataset(dataset_name, split="test", max_samples=2000)
     config = MODELS[model_key]
-    backbone, tokenizer = load_model(config)
+
+    # Load backbone directly (no fractal head)
+    backbone = AutoModel.from_pretrained(config.hf_path, trust_remote_code=config.trust_remote_code)
+    tokenizer = AutoTokenizer.from_pretrained(config.hf_path, trust_remote_code=config.trust_remote_code)
     backbone.eval().to(device)
 
     texts = [s.text for s in test_data.samples]

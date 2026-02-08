@@ -826,11 +826,19 @@ def run_v5_experiment(
     model_key: str = "bge-small",
     dataset_name: str = "yahoo",
     stage1_epochs: int = 5,
-    stage2_epochs: int = 0,  # Skip Stage 2 (causes overfitting causes overfitting)
+    stage2_epochs: int = 0,  # Skip Stage 2 (causes overfitting)
     batch_size: int = 32,
     device: str = "cuda",
+    seed: int = 42,
 ):
     """Run V5 experiment with hierarchy-aligned prefix supervision."""
+    import random
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
     from hierarchical_datasets import load_hierarchical_dataset
 
     print("=" * 70)

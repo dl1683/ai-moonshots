@@ -443,6 +443,7 @@ def run_mrl_experiment(
     stage2_epochs: int = 0,
     batch_size: int = 32,
     device: str = "cuda",
+    seed: int = 42,
 ):
     """
     Run MRL baseline experiment.
@@ -450,6 +451,15 @@ def run_mrl_experiment(
     Mirrors run_v5_experiment() from fractal_v5.py for fair comparison.
     The ONLY difference: num_l0_classes=num_l1_classes and MRL training loop.
     """
+    import random
+    import torch
+    import numpy as np
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
     from hierarchical_datasets import load_hierarchical_dataset
 
     print("=" * 70)
