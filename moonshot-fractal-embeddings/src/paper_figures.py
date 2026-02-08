@@ -369,20 +369,20 @@ def fig5_scaling_law():
 # ============================================================================
 def fig6_synthetic():
     """Synthetic hierarchy experiment results — if available."""
-    synth_file = RESULTS_DIR / "synthetic_hierarchy_results.json"
+    synth_file = RESULTS_DIR / "synthetic_hierarchy_experiment.json"
     if not synth_file.exists():
         print("  Fig 6: Synthetic results not yet available. Skipping.")
         return
 
     data = json.load(open(synth_file))
-    results = data.get('results', [])
+    results = [r for r in data.get('results', []) if 'v5_steerability' in r]
     if not results:
         print("  Fig 6: No results in synthetic file. Skipping.")
         return
 
-    h_vals = [r['h_l1_given_l0'] for r in results]
-    v5_steers = [r['v5_steer'] for r in results]
-    mrl_steers = [r.get('mrl_steer', 0) for r in results]
+    h_vals = [r['hierarchy_stats']['h_l1_given_l0'] for r in results]
+    v5_steers = [r['v5_steerability'] for r in results]
+    mrl_steers = [r.get('mrl_steerability', 0) for r in results]
     k0_vals = [r['k0'] for r in results]
 
     fig, ax = plt.subplots(figsize=(8, 5.5))
@@ -422,6 +422,121 @@ def fig6_synthetic():
 
 
 # ============================================================================
+# Figure 7: Entropy allocation — S vs H(L0) across real + synthetic
+# ============================================================================
+def fig7_entropy_allocation():
+    """Codex-recommended: S vs H(L0) with real and synthetic datasets.
+
+    Shows the true mechanistic driver: prefix task demand H(L0),
+    not H(L1|L0) which was a confounded proxy in observational data.
+    """
+    profiles = json.load(open(RESULTS_DIR / "hierarchy_profiles.json"))
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+
+    # --- Left panel: S vs H(L0) ---
+    # Real datasets
+    real_data = []
+    for ds_name in ['yahoo', 'newsgroups', 'trec', 'clinc']:
+        if ds_name == 'clinc':
+            v5_s, _ = load_clinc_steers()
+        else:
+            v5_s, _ = load_benchmark_steers(ds_name)
+        if v5_s and 'h_l0' in profiles.get(ds_name, {}):
+            real_data.append({
+                'name': ds_name.upper(),
+                'h_l0': profiles[ds_name]['h_l0'],
+                'h_l1_l0': profiles[ds_name]['h_l1_given_l0'],
+                'steer': np.mean(v5_s),
+                'std': np.std(v5_s) if len(v5_s) > 1 else 0,
+                'n': len(v5_s),
+            })
+
+    # Synthetic datasets
+    synth_data = []
+    synth_file = RESULTS_DIR / "synthetic_hierarchy_experiment.json"
+    if synth_file.exists():
+        sd = json.load(open(synth_file))
+        for r in sd.get('results', []):
+            if 'v5_steerability' in r:
+                hs = r['hierarchy_stats']
+                synth_data.append({
+                    'k0': r['k0'],
+                    'h_l0': np.log2(r['k0']),  # H(L0) = log2(K0) for uniform
+                    'h_l1_l0': hs['h_l1_given_l0'],
+                    'steer': r['v5_steerability'],
+                    'mrl': r.get('mrl_steerability', 0),
+                })
+
+    # Plot real
+    for d in real_data:
+        ci = 1.96 * d['std'] / np.sqrt(d['n']) if d['n'] > 1 else d['std']
+        ax1.errorbar(d['h_l0'], d['steer'], yerr=ci,
+                    fmt='o', markersize=10, color=V5_COLOR,
+                    capsize=5, markeredgecolor='black', markeredgewidth=0.5)
+        ax1.annotate(d['name'], (d['h_l0'], d['steer']),
+                    textcoords="offset points", xytext=(8, 5),
+                    fontsize=9, fontweight='bold', color=V5_COLOR)
+
+    # Plot synthetic
+    if synth_data:
+        sh = [d['h_l0'] for d in synth_data]
+        ss = [d['steer'] for d in synth_data]
+        ax1.plot(sh, ss, 'D-', color='#4CAF50', markersize=7,
+                linewidth=1.5, markeredgecolor='black', markeredgewidth=0.5,
+                label='Synthetic (varied K₀)', alpha=0.8)
+        for d in synth_data:
+            ax1.annotate(f'K₀={d["k0"]}', (d['h_l0'], d['steer']),
+                        textcoords="offset points", xytext=(5, -12),
+                        fontsize=7, color='#4CAF50')
+
+    ax1.set_xlabel('H(L0) — Coarse Task Entropy (bits)')
+    ax1.set_ylabel('V5 Steerability Score')
+    ax1.set_title('Mechanism: S ~ H(L0)\n(prefix task demand drives steerability)',
+                  fontweight='bold')
+    ax1.legend(loc='upper left')
+    ax1.grid(alpha=0.3)
+    ax1.axhline(y=0, color='black', linewidth=0.5)
+
+    # --- Right panel: S vs H(L1|L0) — shows confound ---
+    for d in real_data:
+        ci = 1.96 * d['std'] / np.sqrt(d['n']) if d['n'] > 1 else d['std']
+        ax2.errorbar(d['h_l1_l0'], d['steer'], yerr=ci,
+                    fmt='o', markersize=10, color=V5_COLOR,
+                    capsize=5, markeredgecolor='black', markeredgewidth=0.5)
+        ax2.annotate(d['name'], (d['h_l1_l0'], d['steer']),
+                    textcoords="offset points", xytext=(8, 5),
+                    fontsize=9, fontweight='bold', color=V5_COLOR)
+
+    if synth_data:
+        sh = [d['h_l1_l0'] for d in synth_data]
+        ss = [d['steer'] for d in synth_data]
+        ax2.plot(sh, ss, 'D-', color='#4CAF50', markersize=7,
+                linewidth=1.5, markeredgecolor='black', markeredgewidth=0.5,
+                label='Synthetic (varied K₀)', alpha=0.8)
+        for d in synth_data:
+            ax2.annotate(f'K₀={d["k0"]}', (d['h_l1_l0'], d['steer']),
+                        textcoords="offset points", xytext=(5, -12),
+                        fontsize=7, color='#4CAF50')
+
+    ax2.set_xlabel('H(L1|L0) — Refinement Entropy (bits)')
+    ax2.set_ylabel('V5 Steerability Score')
+    ax2.set_title('Observational Confound: S vs H(L1|L0)\n(positive for real, NEGATIVE for synthetic)',
+                  fontweight='bold')
+    ax2.legend(loc='upper left')
+    ax2.grid(alpha=0.3)
+    ax2.axhline(y=0, color='black', linewidth=0.5)
+
+    fig.suptitle('Disentangling the Scaling Law: H(L0) is the True Driver',
+                fontsize=14, fontweight='bold', y=1.02)
+    fig.tight_layout()
+    fig.savefig(FIGURES_DIR / "fig7_entropy_allocation.png")
+    fig.savefig(FIGURES_DIR / "fig7_entropy_allocation.pdf")
+    plt.close(fig)
+    print(f"  Fig 7 saved: {FIGURES_DIR / 'fig7_entropy_allocation.png'}")
+
+
+# ============================================================================
 # Main
 # ============================================================================
 if __name__ == "__main__":
@@ -433,5 +548,6 @@ if __name__ == "__main__":
     fig4_ablation()
     fig5_scaling_law()
     fig6_synthetic()
+    fig7_entropy_allocation()
 
     print("\nDone!")

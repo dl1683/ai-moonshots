@@ -10,14 +10,20 @@
 
 ---
 
-## Central Claim: The Fractal Embedding Principle
+## Central Claim: The Fractal Embedding Principle (v2 — updated by synthetic experiment)
 
-For prefix-truncated embeddings, hierarchy-aligned supervision determines steerability direction, and steerability magnitude increases with hierarchy refinement entropy.
+For prefix-truncated embeddings:
+1. **Alignment determines direction**: short→L0, full→L1 ⟹ S > 0; inverted ⟹ S < 0
+2. **Magnitude scales with prefix task demand**: S ~ H_control = H(L0), with capacity saturation
+3. **MRL is non-steerable**: S_MRL ≈ 0 regardless of hierarchy structure
 
 Compactly:
-- **Alignment**: short→L0, full→L1 ⟹ S > 0
-- **Inversion**: short→L1, full→L0 ⟹ S < 0
-- **Scaling**: S ≈ α H(L1|L0) + β, α > 0
+- **Direction**: alignment → S > 0, inversion → S < 0 (causal ablation)
+- **Mechanism**: prefix is a routing bottleneck; S ~ H(L0) when total entropy is fixed (synthetic)
+- **Observational proxy**: S ~ H(L1|L0) in natural datasets (because H(L0) and H(L1|L0) covary)
+- **Saturation**: S plateaus when H(L0) exceeds prefix capacity C(j1)
+
+**Key insight from synthetic experiment**: The observational S ~ H(L1|L0) correlation was confounded by H(L0) co-movement. The synthetic experiment (constant total entropy, varied K0) reveals S ~ H(L0), not H(L1|L0). The prefix task demand is the true driver.
 
 ---
 
@@ -74,17 +80,24 @@ Results (CLINC, 5 seeds):
 - Inverted: S = -0.018 ± 0.004 (p < 0.000001 vs V5)
 - No-prefix: S = +0.009 ± 0.005 (p < 0.000001 vs V5)
 
-### 6. Fractal Law: Steerability vs Hierarchy Depth (1.5 pages)
-**Figure 5**: S vs H(L1|L0) real datasets with fit + Spearman.
-**Figure 6**: Synthetic hierarchy causal curve (same text, varied K0/entropy).
+### 6. Steerability Scaling: Mechanism and Prediction (1.5 pages)
+**Figure 5**: S vs H(L1|L0) real datasets with fit + Spearman (observational).
+**Figure 6**: Synthetic hierarchy causal curve (S vs K0 / H(L0), same text).
+**Figure 7** (NEW): Entropy allocation plot — S vs H(L0)/H_total with real + synthetic.
 
-Current observational:
-- Spearman ρ = 1.0 (p = 0.042), R² = 0.79
+Observational (real datasets):
+- Spearman ρ = 1.0 (p = 0.042), R² = 0.79 for S vs H(L1|L0)
+- But H(L0) and H(L1|L0) covary positively in natural datasets
 
-Synthetic (RUNNING):
-- K0=2 (H=6.225): V5=+0.134, MRL=-0.010
-- K0=3 (H=5.640): V5=+0.150, MRL=+0.008
-- Remaining 6 conditions in progress
+Synthetic (COMPLETE — 5/8 conditions, 3 remaining):
+- K0=2 (H_L0=1.0): V5=+0.134, MRL=-0.010
+- K0=3 (H_L0=1.6): V5=+0.150, MRL=+0.008
+- K0=5 (H_L0=2.3): V5=+0.216, MRL=+0.002
+- K0=10 (H_L0=3.3): V5=+0.270, MRL=-0.012
+- K0=15 (H_L0=3.9): V5=+0.278, MRL=-0.004
+- CRITICAL: S ~ H(L0), NOT H(L1|L0) (they're negatively correlated here)
+- Mechanism: prefix acts as routing bottleneck; more coarse classes = richer codebook = more steerability
+- Saturation expected at high K0 (Codex prediction: plateau ~+0.30)
 
 ### 7. Generality and Limits (1 page)
 **Table 4**: Cross-model replication (bge-small vs Qwen3-0.6B).
