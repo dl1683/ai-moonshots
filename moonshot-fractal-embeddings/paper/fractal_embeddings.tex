@@ -459,11 +459,15 @@ The two are orthogonal and potentially complementary: fractal embeddings could b
 
 We have shown that a simple modification to embedding training---aligning prefix supervision with semantic hierarchy---creates embeddings where dimensional truncation corresponds to semantic zoom.
 Through causal ablations, synthetic hierarchy experiments, and cross-model replication, we establish the \textbf{Fractal Embedding Principle}: steerability is caused by alignment, scales with prefix task demand, and is absent in standard MRL.
+We connect this to the classical theory of successive refinement, showing that V5 training approximates the optimal multi-resolution code for hierarchical semantic sources.
 
-The practical implication is clear: any application with hierarchical semantics (product taxonomies, medical coding, intent classification) can benefit from a single embedding that serves both coarse retrieval and fine-grained classification, controlled entirely by how many dimensions are used at inference time.
+The practical implications extend beyond classification.
+In retrieval systems, fractal embeddings enable \emph{adaptive search}: start with a 64-dimensional prefix for fast coarse filtering, then extend to 256 dimensions only for queries that require fine-grained resolution---achieving the quality of full-resolution search at a fraction of the compute.
+In any domain with hierarchical semantics---product taxonomies, medical coding (ICD-10), intent classification, scientific categorization---a single fractal embedding replaces separate coarse and fine models.
 
-Our synthetic hierarchy experiment reveals a deeper insight: the prefix acts as a \emph{routing bottleneck}, and steerability peaks when the coarse task complexity matches the prefix's representational capacity.
-This Goldilocks effect suggests principled guidelines for practitioners: measure $\hlz$ of your hierarchy and choose prefix dimensions accordingly.
+Our synthetic hierarchy experiment reveals that the prefix acts as a \emph{routing bottleneck}: steerability peaks when coarse task complexity matches the prefix's representational capacity.
+This Goldilocks effect provides principled design guidance: measure $\hlz$ of your hierarchy and size prefix dimensions to match.
+The connection to successive refinement theory suggests this is not merely an empirical regularity but a fundamental property of information allocation in hierarchical representations.
 
 \bibliography{references}
 \bibliographystyle{plainnat}
