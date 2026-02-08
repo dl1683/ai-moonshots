@@ -413,6 +413,7 @@ Figure~\ref{fig:entropy_alloc} in the appendix visualizes both relationships sid
 To verify architecture invariance, we replicate the CLINC and TREC experiments using Qwen3-Embedding-0.6B ($h = 1024$, 10$\times$ larger than BGE-small) with 3 seeds each.
 Table~\ref{tab:crossmodel} shows that Qwen3 produces 2--3$\times$ higher steerability than BGE-small while preserving the rank ordering (CLINC $>$ TREC) and the V5 $\gg$ MRL gap.
 On CLINC, Qwen3 V5 achieves $\steer = +0.153 \pm 0.013$ vs.\ MRL $+0.008 \pm 0.006$ ($p < 0.001$, Cohen's $d = 14.2$).
+On TREC, V5 achieves $\steer = +0.081 \pm 0.012$ vs.\ MRL $+0.011 \pm 0.002$ ($p < 0.001$).
 The larger backbone provides a richer feature space for hierarchy-aligned supervision to exploit.
 
 \begin{table}[t]
@@ -427,7 +428,7 @@ The larger backbone provides a richer feature space for hierarchy-aligned superv
 Dataset & BGE-small & Qwen3-0.6B & BGE-small & Qwen3-0.6B \\
 \midrule
 CLINC ($\hlo = 3.90$) & $+0.053$ & $+0.153 \pm 0.013$ & $-0.010$ & $+0.008 \pm 0.006$ \\
-TREC ($\hlo = 2.21$) & $+0.045$ & $+0.086$ & $+0.003$ & $+0.012$ \\
+TREC ($\hlo = 2.21$) & $+0.045$ & $+0.081 \pm 0.012$ & $+0.003$ & $+0.011 \pm 0.002$ \\
 \bottomrule
 \end{tabular}
 \end{table}
