@@ -41,7 +41,7 @@
 Modern embedding models support dimensional truncation, but truncation typically changes fidelity rather than semantic level, leaving no mechanism to \emph{steer} between coarse and fine meaning at inference time.
 We introduce \textbf{Fractal Embeddings}, a hierarchy-aligned prefix supervision scheme that trains short prefixes (64d) on coarse labels ($L_0$) and full embeddings (256d) on fine labels ($L_1$), using a frozen backbone with learned heads only.
 Against a matched Matryoshka Representation Learning (MRL) baseline trained on $L_1$ at all prefix lengths, our method preserves full-resolution performance while inducing robust \emph{steerability}: truncated prefixes encode coarse semantics, whereas full vectors recover fine semantics.
-On CLINC-150, V5 achieves $\steer = +0.144 \pm 0.031$ while MRL produces $\steer = +0.015 \pm 0.011$ ($p < 0.01$).
+On CLINC-150, V5 achieves $\steer = +0.144 \pm 0.037$ while MRL produces $\steer = +0.015 \pm 0.011$ ($p < 0.01$, 3~seeds).
 Causal ablations identify alignment as the driver: within a matched protocol, aligned supervision yields positive steerability, inverted alignment reverses direction ($\steer = -0.018$), and removing prefix-specific supervision collapses the signal ($\steer = +0.009$); $p < 10^{-6}$ across 5~seeds.
 In a synthetic hierarchy experiment with fixed text and varied coarse partitions, steerability scales with coarse entropy $\hlz$ and exhibits a Goldilocks optimum at ${\sim}12$--$16$ coarse classes (quadratic $R^2 = 0.964$).
 Across four real datasets, steerability is perfectly rank-ordered by conditional entropy $\hlo$ (Spearman $\rho = 1.0$, $p = 0.042$).
@@ -63,7 +63,7 @@ These results establish hierarchy alignment as a principled control knob for sem
 \label{sec:intro}
 %=======================================================================
 
-Dense text embeddings are the backbone of modern retrieval systems, mapping sentences to fixed-dimensional vectors where similarity in vector space approximates semantic similarity.
+Dense text embeddings~\citep{reimers2019sentence} are the backbone of modern retrieval systems, mapping sentences to fixed-dimensional vectors where similarity in vector space approximates semantic similarity.
 Recent work on \emph{Matryoshka Representation Learning} (MRL)~\citep{kusupati2022matryoshka} has shown that embeddings can be trained to support dimensional truncation: a 256-dimensional embedding can be truncated to 64 dimensions with graceful accuracy degradation, enabling efficient storage and retrieval.
 
 However, dimensional truncation in MRL changes \emph{fidelity}---the amount of information preserved---not \emph{semantic granularity}.
@@ -120,8 +120,8 @@ Table~\ref{tab:datasets} summarizes our evaluation datasets, spanning conditiona
 \toprule
 Dataset & $K_0$ & $K_1$ & Branch & $\hlz$ & $\hlo$ & Train & Test \\
 \midrule
-Yahoo Answers & 4 & 10 & 2.5 & 1.91 & 1.23 & 5{,}000 & 5{,}000 \\
-20 Newsgroups & 6 & 20 & 3.3 & 2.43 & 1.88 & 15{,}076 & 3{,}770 \\
+Yahoo Answers & 4 & 10 & 2.5 & 1.91 & 1.23 & 10{,}000 & 2{,}000 \\
+20 Newsgroups & 6 & 20 & 3.3 & 2.43 & 1.88 & 10{,}000 & 2{,}000 \\
 TREC & 6 & 50 & 8.3 & 2.38 & 2.21 & 5{,}452 & 500 \\
 CLINC-150 & 10 & 150 & 15.0 & 3.32 & 3.90 & 10{,}000 & 2{,}000 \\
 \bottomrule
@@ -220,10 +220,10 @@ Both methods substantially outperform the unfinetuned baseline across all datase
 \cmidrule(lr){2-4} \cmidrule(lr){5-7}
 Dataset & Baseline & V5 & MRL & Baseline & V5 & MRL \\
 \midrule
-Yahoo & 0.663 & 0.705 & 0.699 & 0.577 & 0.637 & 0.637 \\
-Newsgroups & 0.808 & 0.808 & 0.797 & 0.641 & 0.641 & 0.649 \\
-TREC & 0.834 & 0.934 & 0.931 & 0.698 & 0.791 & 0.786 \\
-CLINC & 0.961 & 0.955 & 0.913 & 0.889 & 0.681 & 0.713 \\
+Yahoo & 0.688 & 0.699 & 0.698 & 0.603 & 0.629 & 0.635 \\
+Newsgroups & 0.815 & 0.808 & 0.797 & 0.658 & 0.641 & 0.649 \\
+TREC & 0.854 & 0.934 & 0.931 & 0.718 & 0.791 & 0.786 \\
+CLINC & 0.961 & 0.955 & 0.913 & 0.887 & 0.681 & 0.713 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -237,7 +237,7 @@ CLINC & 0.961 & 0.955 & 0.913 & 0.889 & 0.681 & 0.713 \\
 
 \paragraph{Steerability.}
 Despite classification parity, V5 produces dramatically higher steerability than MRL across all datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
-Steerability increases monotonically with hierarchy complexity ($\hlo$): from $\steer = +0.011$ on Yahoo ($\hlo = 1.23$) to $\steer = +0.144$ on CLINC ($\hlo = 3.90$).
+Steerability increases monotonically with hierarchy complexity ($\hlo$): from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) to $\steer = +0.144$ on CLINC ($\hlo = 3.90$).
 MRL steerability is consistently near zero ($\steer_\text{MRL} < 0.02$), confirming that steerability requires explicit hierarchy alignment.
 
 \begin{table}[t]
@@ -249,10 +249,10 @@ MRL steerability is consistently near zero ($\steer_\text{MRL} < 0.02$), confirm
 \toprule
 Dataset & $\hlo$ & V5 $\steer$ & MRL $\steer$ & Gap & Seeds \\
 \midrule
-Yahoo & 1.23 & $+0.011 \pm 0.010$ & $+0.004$ & $+0.007$ & 3 \\
-Newsgroups & 1.88 & $+0.022 \pm 0.024$ & $+0.009$ & $+0.013$ & 3 \\
-TREC & 2.21 & $+0.045 \pm 0.019$ & $+0.003$ & $+0.041$ & 3 \\
-CLINC & 3.90 & $+0.144 \pm 0.031$ & $+0.015 \pm 0.011$ & $+0.129$ & 3 \\
+Yahoo & 1.23 & $+0.015 \pm 0.019$ & $+0.005 \pm 0.011$ & $+0.010$ & 5 \\
+Newsgroups & 1.88 & $+0.022 \pm 0.029$ & $+0.009 \pm 0.012$ & $+0.013$ & 3 \\
+TREC & 2.21 & $+0.045 \pm 0.023$ & $+0.003 \pm 0.019$ & $+0.041$ & 3 \\
+CLINC & 3.90 & $+0.144 \pm 0.037$ & $+0.015 \pm 0.011$ & $+0.129$ & 3 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -310,24 +310,14 @@ No-prefix & $+0.009 \pm 0.005$ & 15.8 & $< 10^{-6}$ & 10.8 \\
 
 These results establish the \textbf{Fractal Embedding Principle}: steerability is \emph{caused} by the alignment between prefix supervision and hierarchy structure, not by any other aspect of training.
 
-\subsection{Prefix Surgery: Embedding Dimensions Carry Distinct Semantic Levels}
+\subsection{Information Localization}
 
-The ablations above modify \emph{training}; we now test whether the trained embedding itself has semantically separated structure via direct manipulation.
-For each pair of test samples from different $L_0$ classes, we create a \emph{chimeric} embedding by replacing the recipient's first 64 dimensions (coarse prefix) with the donor's, while preserving the recipient's remaining 192 dimensions (fine suffix).
+The ablations above modify \emph{training}; we additionally measure whether V5 concentrates different semantic levels in different embedding blocks.
+For each test sample, we independently classify $L_0$ and $L_1$ from (a)~the prefix only (first 64d) and (b)~the suffix only (dims~65--256), using $k$-NN against references at the same granularity.
 
-\paragraph{Predictions.}
-If V5 embeddings truly separate coarse and fine information across prefix blocks:
-\begin{itemize}
-    \item \textbf{Coarse transfer}: The chimera's $L_0$ classification should change to the \emph{donor's} class (the swapped prefix carries coarse identity).
-    \item \textbf{Fine preservation}: The chimera's $L_1$ classification should remain the \emph{recipient's} class (the preserved suffix carries fine identity).
-\end{itemize}
-MRL, which does not separate semantic levels across blocks, should show lower rates on both metrics.
-
-\paragraph{Results.}
-We evaluate on 500 cross-$L_0$ pairs from CLINC-150.
-If V5 truly separates semantic levels, we expect the chimera's $L_0$ prediction to follow the donor (high coarse transfer rate) while its $L_1$ prediction follows the recipient (high fine preservation rate).
-MRL chimeras, lacking semantic separation, should show lower rates on both metrics.
-This ``prefix surgery'' is the strongest form of causal test: it manipulates the \emph{representation}, not the training signal.
+On CLINC-150, V5 shows 1.8\% less $L_1$ information in the prefix (94.7\% vs.\ 96.5\% for MRL prefix-only $L_1$ accuracy), consistent with the training objective concentrating coarse information in early dimensions.
+The effect is modest because 64 dimensions provide sufficient capacity for both $L_0$ (10~classes) and $L_1$ (150~classes) on this dataset.
+The stronger evidence for semantic separation comes from the steerability metric itself (\S\ref{sec:main}), which measures the \emph{behavioral} consequence of prefix truncation rather than the raw information content.
 
 %=======================================================================
 \section{Steerability Scaling Law}
@@ -347,7 +337,7 @@ We present two complementary analyses: an observational study across real datase
 \end{figure}
 
 Across our four real datasets, steerability is perfectly rank-ordered by conditional entropy $\hlo$ (Spearman $\rho = 1.0$, $p = 0.042$; Figure~\ref{fig:scaling}).
-A linear fit yields $\steer \approx 0.015 \cdot \hlo - 0.003$ ($R^2 = 0.79$).
+A linear fit yields $\steer \approx 0.051 \cdot \hlo - 0.062$ ($R^2 = 0.96$).
 
 However, in natural datasets, $\hlz$ and $\hlo$ are positively correlated (more coarse classes $\Rightarrow$ more fine classes per coarse class).
 This confound prevents us from determining whether the mechanism operates through $\hlz$ (prefix task demand) or $\hlo$ (refinement complexity).
@@ -428,7 +418,7 @@ The larger backbone provides a richer feature space for hierarchy-aligned superv
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
 Dataset & BGE-small & Qwen3-0.6B & BGE-small & Qwen3-0.6B \\
 \midrule
-CLINC ($\hlo = 3.90$) & $+0.144 \pm 0.031$ & $+0.153 \pm 0.013$ & $+0.015 \pm 0.011$ & $+0.008 \pm 0.006$ \\
+CLINC ($\hlo = 3.90$) & $+0.144 \pm 0.037$ & $+0.153 \pm 0.013$ & $+0.015 \pm 0.011$ & $+0.008 \pm 0.006$ \\
 TREC ($\hlo = 2.21$) & $+0.045 \pm 0.019$ & $+0.081 \pm 0.012$ & $+0.003$ & $+0.011 \pm 0.002$ \\
 \bottomrule
 \end{tabular}
@@ -446,7 +436,7 @@ These metrics measure embedding \emph{behavior}, not training loss, addressing p
 
 \paragraph{Limitations.}
 \begin{itemize}
-    \item \textbf{Shallow hierarchies}: On Yahoo Answers ($K_0 = 4$, $\hlo = 1.23$), steerability is small and noisy ($\steer = 0.011 \pm 0.010$). The method is most valuable for deep hierarchies.
+    \item \textbf{Shallow hierarchies}: On Yahoo Answers ($K_0 = 4$, $\hlo = 1.23$), steerability is small and noisy ($\steer = 0.015 \pm 0.019$, 5~seeds). The method is most valuable for deep hierarchies.
     \item \textbf{Ceiling effects}: On datasets where the unfinetuned baseline already achieves high $L_0$ accuracy (e.g., DBPedia at $L_0 = 1.0$), there is no room for steerability improvement.
     \item \textbf{Two-level hierarchies}: Our current formulation handles two-level hierarchies ($L_0$, $L_1$). Extension to deeper hierarchies is straightforward in principle but untested.
 \end{itemize}
