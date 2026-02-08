@@ -197,15 +197,16 @@ def fig3_forest_plot():
 
     datasets = []
     # Load all available datasets
-    for ds_name in ['yahoo', 'newsgroups', 'trec', 'clinc']:
+    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'clinc']:
         if ds_name == 'clinc':
             v5_s, mrl_s = load_clinc_steers()
         else:
             v5_s, mrl_s = load_benchmark_steers(ds_name)
         if v5_s:
             h = profiles.get(ds_name, {}).get('h_l1_given_l0', 0)
+            display_name = 'GoEmo' if ds_name == 'goemotions' else ds_name.upper()
             datasets.append({
-                'name': ds_name.upper(),
+                'name': display_name,
                 'h': h,
                 'v5_mean': np.mean(v5_s),
                 'v5_std': np.std(v5_s) if len(v5_s) > 1 else 0,
@@ -313,15 +314,16 @@ def fig5_scaling_law():
     profiles = json.load(open(RESULTS_DIR / "hierarchy_profiles.json"))
 
     datasets_data = []
-    for ds_name in ['yahoo', 'newsgroups', 'trec', 'clinc']:
+    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'clinc']:
         if ds_name == 'clinc':
             v5_s, _ = load_clinc_steers()
         else:
             v5_s, _ = load_benchmark_steers(ds_name)
         if v5_s:
             h = profiles[ds_name]['h_l1_given_l0']
+            display_name = 'GoEmo' if ds_name == 'goemotions' else ds_name.upper()
             datasets_data.append({
-                'name': ds_name.upper(),
+                'name': display_name,
                 'h': h,
                 'steer_mean': np.mean(v5_s),
                 'steer_std': np.std(v5_s) if len(v5_s) > 1 else 0,
@@ -354,15 +356,17 @@ def fig5_scaling_law():
     ax.plot(h_fit, s_fit, '-', color='gray', linewidth=1.5, alpha=0.7,
            label=f'Linear fit (R²={r**2:.3f})')
 
-    # Data points with error bars
+    # Data points with error bars — custom offsets for overlapping labels
+    label_offsets = {'GoEmo': (8, -16), 'NEWSGROUPS': (8, 8)}
     for d in datasets_data:
         ci = 1.96 * d['steer_std'] / np.sqrt(d['n']) if d['n'] > 1 else d['steer_std']
         ax.errorbar(d['h'], d['steer_mean'], yerr=ci,
                    fmt='o', markersize=10, color=V5_COLOR,
                    capsize=5, linewidth=1.5, markeredgecolor='black',
                    markeredgewidth=0.5)
+        offset = label_offsets.get(d['name'], (8, 8))
         ax.annotate(d['name'], (d['h'], d['steer_mean']),
-                   textcoords="offset points", xytext=(8, 8),
+                   textcoords="offset points", xytext=offset,
                    fontsize=10, fontweight='bold')
 
     ax.set_xlabel('H(L1|L0) — Hierarchy Refinement Entropy (bits)')
@@ -470,14 +474,15 @@ def fig7_entropy_allocation():
     # --- Left panel: S vs H(L0) ---
     # Real datasets
     real_data = []
-    for ds_name in ['yahoo', 'newsgroups', 'trec', 'clinc']:
+    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'clinc']:
         if ds_name == 'clinc':
             v5_s, _ = load_clinc_steers()
         else:
             v5_s, _ = load_benchmark_steers(ds_name)
         if v5_s and 'h_l0' in profiles.get(ds_name, {}):
+            display_name = 'GoEmo' if ds_name == 'goemotions' else ds_name.upper()
             real_data.append({
-                'name': ds_name.upper(),
+                'name': display_name,
                 'h_l0': profiles[ds_name]['h_l0'],
                 'h_l1_l0': profiles[ds_name]['h_l1_given_l0'],
                 'steer': np.mean(v5_s),

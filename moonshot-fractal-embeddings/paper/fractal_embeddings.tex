@@ -44,7 +44,7 @@ Against a matched Matryoshka Representation Learning (MRL) baseline trained on $
 On CLINC-150, V5 achieves $\steer = +0.144 \pm 0.037$ while MRL produces $\steer = +0.015 \pm 0.011$ ($p < 0.01$, 3~seeds).
 Causal ablations on two datasets identify alignment as the driver: inverting alignment reverses the steerability sign (CLINC: $-0.018$, TREC: $-0.025$), and removing prefix-specific supervision collapses it to near-zero; all comparisons significant ($p \leq 0.03$, Cohen's $d \geq 2.7$).
 In a synthetic hierarchy experiment with fixed text and varied coarse partitions, steerability scales with coarse entropy $\hlz$ and exhibits a Goldilocks optimum at ${\sim}12$--$16$ coarse classes (quadratic $R^2 = 0.964$).
-Across four real datasets, steerability is perfectly rank-ordered by conditional entropy $\hlo$ (Spearman $\rho = 1.0$, $p = 0.042$).
+Across five real datasets, steerability is perfectly rank-ordered by conditional entropy $\hlo$ (Spearman $\rho = 1.0$, $p < 0.001$).
 MRL produces near-zero steerability in all conditions.
 Cross-model replication on Qwen3-0.6B confirms architecture invariance.
 These results establish hierarchy alignment as a principled control knob for semantic granularity.
@@ -109,7 +109,7 @@ Positive $\steer$ means short prefixes specialize for coarse semantics while ful
 A perfectly steerable embedding has high $\steer$; MRL, which trains all lengths on $L_1$, should have $\steer \approx 0$.
 
 \paragraph{Datasets.}
-Table~\ref{tab:datasets} summarizes our evaluation datasets, spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 3.90 bits (CLINC-150~\citep{larson2019clinc}), also including TREC~\citep{voorhees2000trec} and 20 Newsgroups.
+Table~\ref{tab:datasets} summarizes our five evaluation datasets, spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 3.90 bits (CLINC-150~\citep{larson2019clinc}), also including GoEmotions~\citep{demszky2020goemotions}, TREC~\citep{voorhees2000trec}, and 20 Newsgroups.
 
 \begin{table}[t]
 \caption{Dataset statistics and hierarchy profiles. $K_0$, $K_1$: number of coarse and fine classes. Branch: $K_1/K_0$. $\hlz$, $\hlo$: coarse entropy and conditional entropy in bits.}
@@ -121,6 +121,7 @@ Table~\ref{tab:datasets} summarizes our evaluation datasets, spanning conditiona
 Dataset & $K_0$ & $K_1$ & Branch & $\hlz$ & $\hlo$ & Train & Test \\
 \midrule
 Yahoo Answers & 4 & 10 & 2.5 & 1.91 & 1.23 & 10{,}000 & 2{,}000 \\
+GoEmotions & 4 & 28 & 7.0 & 1.64 & 1.88 & 7{,}092 & 1{,}700 \\
 20 Newsgroups & 6 & 20 & 3.3 & 2.43 & 1.88 & 10{,}000 & 2{,}000 \\
 TREC & 6 & 50 & 8.3 & 2.38 & 2.21 & 5{,}452 & 500 \\
 CLINC-150 & 10 & 150 & 15.0 & 3.32 & 3.90 & 10{,}000 & 2{,}000 \\
@@ -205,7 +206,7 @@ Algorithm~\ref{alg:v5} summarizes the procedure.
 %=======================================================================
 
 \paragraph{Classification performance.}
-At full embedding length ($j=4$, 256d), V5 and MRL achieve comparable classification accuracy on Yahoo, Newsgroups, and TREC (Table~\ref{tab:accuracy}).
+At full embedding length ($j=4$, 256d), V5 and MRL achieve comparable classification accuracy on Yahoo, GoEmotions, Newsgroups, and TREC (Table~\ref{tab:accuracy}).
 On CLINC, V5 retains higher $L_0$ accuracy at $j=4$ while MRL retains higher $L_1$---a natural consequence of V5's coarse-to-fine information allocation, which persists even at full length.
 Both methods substantially outperform the unfinetuned baseline across all datasets.
 
@@ -221,6 +222,7 @@ Both methods substantially outperform the unfinetuned baseline across all datase
 Dataset & Baseline & V5 & MRL & Baseline & V5 & MRL \\
 \midrule
 Yahoo & 0.688 & 0.699 & 0.698 & 0.603 & 0.629 & 0.635 \\
+GoEmotions & 0.502 & 0.600 & 0.578 & 0.343 & 0.429 & 0.411 \\
 Newsgroups & 0.815 & 0.808 & 0.797 & 0.658 & 0.641 & 0.649 \\
 TREC & 0.854 & 0.934 & 0.931 & 0.718 & 0.791 & 0.786 \\
 CLINC & 0.961 & 0.955 & 0.913 & 0.887 & 0.681 & 0.713 \\
@@ -236,8 +238,8 @@ CLINC & 0.961 & 0.955 & 0.913 & 0.887 & 0.681 & 0.713 \\
 \end{figure}
 
 \paragraph{Steerability.}
-Despite classification parity, V5 produces dramatically higher steerability than MRL across all datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
-Steerability increases monotonically with hierarchy complexity ($\hlo$): from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) to $\steer = +0.144$ on CLINC ($\hlo = 3.90$).
+Despite classification parity, V5 produces dramatically higher steerability than MRL across all five datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
+Steerability increases monotonically with hierarchy complexity ($\hlo$): from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) through GoEmotions ($+0.020$, $\hlo = 1.88$) and TREC ($+0.045$, $\hlo = 2.21$) to $\steer = +0.144$ on CLINC ($\hlo = 3.90$).
 MRL steerability is consistently near zero ($\steer_\text{MRL} < 0.02$), confirming that steerability requires explicit hierarchy alignment.
 
 \begin{table}[t]
@@ -250,6 +252,7 @@ MRL steerability is consistently near zero ($\steer_\text{MRL} < 0.02$), confirm
 Dataset & $\hlo$ & V5 $\steer$ & MRL $\steer$ & Gap & Seeds \\
 \midrule
 Yahoo & 1.23 & $+0.015 \pm 0.019$ & $+0.005 \pm 0.011$ & $+0.010$ & 5 \\
+GoEmotions & 1.88 & $+0.020 \pm 0.018$ & $+0.006 \pm 0.016$ & $+0.014$ & 5 \\
 Newsgroups & 1.88 & $+0.022 \pm 0.029$ & $+0.009 \pm 0.012$ & $+0.013$ & 3 \\
 TREC & 2.21 & $+0.045 \pm 0.023$ & $+0.003 \pm 0.019$ & $+0.041$ & 3 \\
 CLINC & 3.90 & $+0.144 \pm 0.037$ & $+0.015 \pm 0.011$ & $+0.129$ & 3 \\
@@ -336,12 +339,12 @@ We present two complementary analyses: an observational study across real datase
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig5_scaling_law.pdf}
-    \caption{Steerability scales with hierarchy refinement entropy $\hlo$ across real datasets (Spearman $\rho = 1.0$, $p = 0.042$).}
+    \caption{Steerability scales with hierarchy refinement entropy $\hlo$ across five real datasets (Spearman $\rho = 1.0$, $p < 0.001$).}
     \label{fig:scaling}
 \end{figure}
 
-Across our four real datasets, steerability is perfectly rank-ordered by conditional entropy $\hlo$ (Spearman $\rho = 1.0$, $p = 0.042$; Figure~\ref{fig:scaling}).
-A linear fit yields $\steer \approx 0.051 \cdot \hlo - 0.062$ ($R^2 = 0.96$).
+Across five real datasets, steerability is perfectly rank-ordered by conditional entropy $\hlo$ (Spearman $\rho = 1.0$, $p < 0.001$; Figure~\ref{fig:scaling}).
+A linear fit yields $\steer \approx 0.053 \cdot \hlo - 0.068$ ($R^2 = 0.95$).
 
 However, in natural datasets, $\hlz$ and $\hlo$ are positively correlated (more coarse classes $\Rightarrow$ more fine classes per coarse class).
 This confound prevents us from determining whether the mechanism operates through $\hlz$ (prefix task demand) or $\hlo$ (refinement complexity).
