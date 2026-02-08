@@ -368,7 +368,7 @@ def fig5_scaling_law():
 # Figure 6: Synthetic hierarchy causal curve
 # ============================================================================
 def fig6_synthetic():
-    """Synthetic hierarchy experiment results — if available."""
+    """Synthetic hierarchy experiment: S vs H(L0) showing Goldilocks effect."""
     synth_file = RESULTS_DIR / "synthetic_hierarchy_experiment.json"
     if not synth_file.exists():
         print("  Fig 6: Synthetic results not yet available. Skipping.")
@@ -380,38 +380,53 @@ def fig6_synthetic():
         print("  Fig 6: No results in synthetic file. Skipping.")
         return
 
-    h_vals = [r['hierarchy_stats']['h_l1_given_l0'] for r in results]
+    # Sort by K0
+    results.sort(key=lambda r: r['k0'])
+    h_l0 = [np.log2(r['k0']) for r in results]
     v5_steers = [r['v5_steerability'] for r in results]
     mrl_steers = [r.get('mrl_steerability', 0) for r in results]
     k0_vals = [r['k0'] for r in results]
 
     fig, ax = plt.subplots(figsize=(8, 5.5))
 
-    ax.plot(h_vals, v5_steers, 'o-', color=V5_COLOR, linewidth=2,
-           markersize=8, label='V5', markeredgecolor='black', markeredgewidth=0.5)
-    ax.plot(h_vals, mrl_steers, 's--', color=MRL_COLOR, linewidth=2,
+    ax.plot(h_l0, v5_steers, 'o-', color=V5_COLOR, linewidth=2,
+           markersize=9, label='V5', markeredgecolor='black', markeredgewidth=0.5)
+    ax.plot(h_l0, mrl_steers, 's--', color=MRL_COLOR, linewidth=2,
            markersize=8, label='MRL', markeredgecolor='black', markeredgewidth=0.5)
 
     # Label K0 values
-    for h, s, k in zip(h_vals, v5_steers, k0_vals):
+    for h, s, k in zip(h_l0, v5_steers, k0_vals):
+        offset_y = 8 if k != 15 else -15  # peak label below
         ax.annotate(f'K₀={k}', (h, s),
-                   textcoords="offset points", xytext=(5, 8),
+                   textcoords="offset points", xytext=(5, offset_y),
                    fontsize=8, color=V5_COLOR)
 
-    # Linear fit to V5
-    if len(h_vals) >= 3:
-        slope, intercept, r, p, se = stats.linregress(h_vals, v5_steers)
-        h_fit = np.linspace(min(h_vals) - 0.2, max(h_vals) + 0.2, 100)
-        ax.plot(h_fit, slope * h_fit + intercept, '-', color=V5_COLOR,
-               alpha=0.3, linewidth=3, label=f'V5 fit (R²={r**2:.3f})')
+    # Quadratic fit to V5 (captures inverted-U)
+    if len(h_l0) >= 4:
+        coeffs = np.polyfit(h_l0, v5_steers, 2)
+        h_fit = np.linspace(min(h_l0) - 0.1, max(h_l0) + 0.1, 100)
+        s_fit = np.polyval(coeffs, h_fit)
+        r2 = 1 - np.sum((np.array(v5_steers) - np.polyval(coeffs, np.array(h_l0)))**2) / \
+                  np.sum((np.array(v5_steers) - np.mean(v5_steers))**2)
+        ax.plot(h_fit, s_fit, '-', color=V5_COLOR,
+               alpha=0.3, linewidth=3, label=f'Quadratic fit (R²={r2:.3f})')
+
+        # Mark the peak
+        peak_h = -coeffs[1] / (2 * coeffs[0])
+        peak_s = np.polyval(coeffs, peak_h)
+        ax.axvline(x=peak_h, color='gray', linewidth=1, linestyle=':', alpha=0.5)
+        ax.annotate(f'Peak: H(L0)={peak_h:.1f} bits\n(~{2**peak_h:.0f} classes)',
+                   xy=(peak_h, peak_s), xytext=(peak_h + 0.8, peak_s - 0.04),
+                   fontsize=9, color='gray', fontweight='bold',
+                   arrowprops=dict(arrowstyle='->', color='gray'))
 
     ax.axhline(y=0, color='black', linewidth=0.5, linestyle='-')
-    ax.set_xlabel('H(L1|L0) — Manipulated Hierarchy Entropy (bits)')
+    ax.set_xlabel('H(L0) — Coarse Task Entropy (bits)')
     ax.set_ylabel('Steerability Score')
-    ax.set_title('Synthetic Hierarchy Experiment: Causal Intervention\n'
-                '(Same CLINC text, different coarse groupings)',
+    ax.set_title('Synthetic Hierarchy: "Goldilocks" Effect\n'
+                '(Same CLINC text, varied K₀ coarse groupings)',
                 fontweight='bold')
-    ax.legend()
+    ax.legend(loc='lower right')
     ax.grid(alpha=0.3)
 
     fig.tight_layout()
