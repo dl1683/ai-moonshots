@@ -70,14 +70,18 @@ def load_benchmark_steers(ds_name):
 
 
 def load_clinc_steers():
-    """Load CLINC V5 steerability from ablation file (5 seeds)."""
+    """Load CLINC V5/MRL steerability. Prefer benchmark file (standard protocol)."""
+    # Prefer benchmark file (standard protocol, consistent with other datasets)
+    bench_file = RESULTS_DIR / "benchmark_bge-small_clinc.json"
+    if bench_file.exists():
+        return load_benchmark_steers('clinc')
+    # Fallback: ablation file (different protocol — contrastive+margin+CE)
     abl_file = RESULTS_DIR / "ablation_steerability_bge-small_clinc.json"
     if not abl_file.exists():
         return [], []
     d = json.load(open(abl_file))
     v5_steers = [compute_steer_from_ablation(r['prefix_results'])
                  for r in d['results']['v5']]
-    # MRL from individual file (single seed)
     mrl_steers = []
     mrl_file = RESULTS_DIR / "mrl_baseline_bge-small_clinc.json"
     if mrl_file.exists():
@@ -100,21 +104,41 @@ def load_clinc_mrl_prefix():
 # ============================================================================
 def fig1_teaser():
     """V5 vs MRL on CLINC: same j=4 accuracy, very different prefix behavior."""
-    abl = json.load(open(RESULTS_DIR / "ablation_steerability_bge-small_clinc.json"))
-
-    # Average V5 prefix curves across 5 seeds
-    v5_l0 = np.mean([[r['prefix_results'][f'j{j}']['l0'] for j in range(1, 5)]
-                      for r in abl['results']['v5']], axis=0)
-    v5_l1 = np.mean([[r['prefix_results'][f'j{j}']['l1'] for j in range(1, 5)]
-                      for r in abl['results']['v5']], axis=0)
-
-    # MRL from individual file (single seed)
-    mrl_pa = load_clinc_mrl_prefix()
-    if mrl_pa is None:
-        print("  Fig 1: No CLINC MRL prefix data. Skipping.")
-        return
-    mrl_l0 = np.array([mrl_pa[f'j{j}_l0'] for j in range(1, 5)])
-    mrl_l1 = np.array([mrl_pa[f'j{j}_l1'] for j in range(1, 5)])
+    # Prefer benchmark file (standard protocol)
+    bench_file = RESULTS_DIR / "benchmark_bge-small_clinc.json"
+    if bench_file.exists():
+        d = json.load(open(bench_file))
+        # Average V5 prefix curves across seeds
+        v5_curves_l0, v5_curves_l1 = [], []
+        for sv in d['v5'].values():
+            if isinstance(sv, dict) and 'prefix_accuracy' in sv:
+                pa = sv['prefix_accuracy']
+                v5_curves_l0.append([pa[f'j{j}_l0'] for j in range(1, 5)])
+                v5_curves_l1.append([pa[f'j{j}_l1'] for j in range(1, 5)])
+        v5_l0 = np.mean(v5_curves_l0, axis=0)
+        v5_l1 = np.mean(v5_curves_l1, axis=0)
+        # Average MRL prefix curves across seeds
+        mrl_curves_l0, mrl_curves_l1 = [], []
+        for sv in d['mrl'].values():
+            if isinstance(sv, dict) and 'prefix_accuracy' in sv:
+                pa = sv['prefix_accuracy']
+                mrl_curves_l0.append([pa[f'j{j}_l0'] for j in range(1, 5)])
+                mrl_curves_l1.append([pa[f'j{j}_l1'] for j in range(1, 5)])
+        mrl_l0 = np.mean(mrl_curves_l0, axis=0)
+        mrl_l1 = np.mean(mrl_curves_l1, axis=0)
+    else:
+        # Fallback: ablation file
+        abl = json.load(open(RESULTS_DIR / "ablation_steerability_bge-small_clinc.json"))
+        v5_l0 = np.mean([[r['prefix_results'][f'j{j}']['l0'] for j in range(1, 5)]
+                          for r in abl['results']['v5']], axis=0)
+        v5_l1 = np.mean([[r['prefix_results'][f'j{j}']['l1'] for j in range(1, 5)]
+                          for r in abl['results']['v5']], axis=0)
+        mrl_pa = load_clinc_mrl_prefix()
+        if mrl_pa is None:
+            print("  Fig 1: No CLINC MRL prefix data. Skipping.")
+            return
+        mrl_l0 = np.array([mrl_pa[f'j{j}_l0'] for j in range(1, 5)])
+        mrl_l1 = np.array([mrl_pa[f'j{j}_l1'] for j in range(1, 5)])
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.5))
     js = [1, 2, 3, 4]

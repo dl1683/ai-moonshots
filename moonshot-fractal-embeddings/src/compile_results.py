@@ -66,27 +66,25 @@ def load_all_data():
             'v5_acc': v5_acc, 'mrl_acc': mrl_acc,
         }
 
-    # CLINC (from ablation file for V5, individual file for MRL)
-    abl = RESULTS_DIR / "ablation_steerability_bge-small_clinc.json"
-    if abl.exists():
-        ad = json.load(open(abl))
-        v5_steers = [compute_steer_ablation(r['prefix_results'])
-                     for r in ad['results']['v5']]
-        v5_prefix_data = []
-        v5_acc = []
-        for r in ad['results']['v5']:
-            pr = r['prefix_results']
-            pa = {f'j{j}_{t}': pr[f'j{j}'][t]
-                  for j in range(1, 5) for t in ['l0', 'l1']}
-            v5_prefix_data.append(pa)
-            v5_acc.append({'l0': pr['j4']['l0'], 'l1': pr['j4']['l1']})
+    # CLINC: prefer benchmark file (standard protocol) over ablation file
+    clinc_bench = RESULTS_DIR / "benchmark_bge-small_clinc.json"
+    if clinc_bench.exists():
+        # Use standard-protocol benchmark data (consistent with other datasets)
+        d = json.load(open(clinc_bench))
+        v5_steers, mrl_steers = [], []
+        v5_prefix_data, mrl_prefix_data = [], []
+        v5_acc, mrl_acc = [], []
 
-        mrl_steers, mrl_prefix_data, mrl_acc = [], [], []
-        mrl_file = RESULTS_DIR / "mrl_baseline_bge-small_clinc.json"
-        if mrl_file.exists():
-            md = json.load(open(mrl_file))
-            if 'prefix_accuracy' in md:
-                pa = md['prefix_accuracy']
+        for sv in d.get('v5', {}).values():
+            if isinstance(sv, dict) and 'prefix_accuracy' in sv:
+                pa = sv['prefix_accuracy']
+                v5_steers.append(compute_steer(pa))
+                v5_prefix_data.append(pa)
+                v5_acc.append({'l0': pa.get('j4_l0', 0), 'l1': pa.get('j4_l1', 0)})
+
+        for sv in d.get('mrl', {}).values():
+            if isinstance(sv, dict) and 'prefix_accuracy' in sv:
+                pa = sv['prefix_accuracy']
                 mrl_steers.append(compute_steer(pa))
                 mrl_prefix_data.append(pa)
                 mrl_acc.append({'l0': pa.get('j4_l0', 0), 'l1': pa.get('j4_l1', 0)})
@@ -99,6 +97,40 @@ def load_all_data():
             'v5_prefix': v5_prefix_data, 'mrl_prefix': mrl_prefix_data,
             'v5_acc': v5_acc, 'mrl_acc': mrl_acc,
         }
+    else:
+        # Fallback to ablation file (legacy)
+        abl = RESULTS_DIR / "ablation_steerability_bge-small_clinc.json"
+        if abl.exists():
+            ad = json.load(open(abl))
+            v5_steers = [compute_steer_ablation(r['prefix_results'])
+                         for r in ad['results']['v5']]
+            v5_prefix_data = []
+            v5_acc = []
+            for r in ad['results']['v5']:
+                pr = r['prefix_results']
+                pa = {f'j{j}_{t}': pr[f'j{j}'][t]
+                      for j in range(1, 5) for t in ['l0', 'l1']}
+                v5_prefix_data.append(pa)
+                v5_acc.append({'l0': pr['j4']['l0'], 'l1': pr['j4']['l1']})
+
+            mrl_steers, mrl_prefix_data, mrl_acc = [], [], []
+            mrl_file = RESULTS_DIR / "mrl_baseline_bge-small_clinc.json"
+            if mrl_file.exists():
+                md = json.load(open(mrl_file))
+                if 'prefix_accuracy' in md:
+                    pa = md['prefix_accuracy']
+                    mrl_steers.append(compute_steer(pa))
+                    mrl_prefix_data.append(pa)
+                    mrl_acc.append({'l0': pa.get('j4_l0', 0), 'l1': pa.get('j4_l1', 0)})
+
+            h = profiles.get('clinc', {}).get('h_l1_given_l0', 0)
+            datasets['clinc'] = {
+                'h': h, 'model': 'bge-small',
+                'flat': {'l0_accuracy': 0.961, 'l1_accuracy': 0.888},
+                'v5_steers': v5_steers, 'mrl_steers': mrl_steers,
+                'v5_prefix': v5_prefix_data, 'mrl_prefix': mrl_prefix_data,
+                'v5_acc': v5_acc, 'mrl_acc': mrl_acc,
+            }
 
     # New datasets (if available)
     for ds in ['goemotions', 'arxiv', 'dbpedia_classes', 'wos']:
