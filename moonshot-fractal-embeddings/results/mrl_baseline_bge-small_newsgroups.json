@@ -1,0 +1,99 @@
+{
+  "method": "mrl_baseline",
+  "model": "bge-small",
+  "dataset": "newsgroups",
+  "baseline": {
+    "l0_accuracy": 0.815,
+    "l1_accuracy": 0.658
+  },
+  "mrl": {
+    "l0_accuracy": 0.799,
+    "l1_accuracy": 0.6605
+  },
+  "delta": {
+    "l0": -0.015999999999999903,
+    "l1": 0.0024999999999999467
+  },
+  "prefix_accuracy": {
+    "j1_l0": 0.8,
+    "j1_l1": 0.648,
+    "j2_l0": 0.8,
+    "j2_l1": 0.652,
+    "j3_l0": 0.792,
+    "j3_l1": 0.644,
+    "j4_l0": 0.79,
+    "j4_l1": 0.646
+  },
+  "history": [
+    {
+      "stage": 1,
+      "epoch": 1,
+      "loss": 7.153483894534577,
+      "loss_full": 4.3969330357429675,
+      "loss_mrl": 4.594251236521211,
+      "l0_accuracy": 0.771,
+      "l1_accuracy": 0.615
+    },
+    {
+      "stage": 1,
+      "epoch": 2,
+      "loss": 5.6355667956789635,
+      "loss_full": 3.492790292080184,
+      "loss_mrl": 3.571294009237361,
+      "l0_accuracy": 0.792,
+      "l1_accuracy": 0.636
+    },
+    {
+      "stage": 1,
+      "epoch": 3,
+      "loss": 5.174610205162737,
+      "loss_full": 3.220222666747588,
+      "loss_mrl": 3.2573124313713016,
+      "l0_accuracy": 0.803,
+      "l1_accuracy": 0.68
+    },
+    {
+      "stage": 1,
+      "epoch": 4,
+      "loss": 4.944579209600176,
+      "loss_full": 3.0903799695179877,
+      "loss_mrl": 3.0903319205556596,
+      "l0_accuracy": 0.805,
+      "l1_accuracy": 0.68
+    },
+    {
+      "stage": 1,
+      "epoch": 5,
+      "loss": 4.684413043179906,
+      "loss_full": 2.921136496658612,
+      "loss_mrl": 2.938794137839984,
+      "l0_accuracy": 0.817,
+      "l1_accuracy": 0.693
+    }
+  ],
+  "training_config": {
+    "prefix_probs": [
+      0.4,
+      0.3,
+      0.2,
+      0.1
+    ],
+    "block_keep_probs": [
+      0.95,
+      0.9,
+      0.8,
+      0.7
+    ],
+    "mrl_weight": 0.6,
+    "margin_weight": 0.5,
+    "class_weight": 1.0,
+    "stage1_epochs": 5,
+    "stage2_epochs": 0,
+    "batch_size": 32,
+    "lr": 0.0001,
+    "weight_decay": 0.01,
+    "temperature": 0.07,
+    "grad_clip": 1.0,
+    "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+  }
+}
