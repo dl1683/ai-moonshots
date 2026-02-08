@@ -1,0 +1,88 @@
+{
+  "model": "bge-small",
+  "dataset": "dbpedia",
+  "baseline": {
+    "l0_accuracy": 1.0,
+    "l1_accuracy": 1.0
+  },
+  "v5": {
+    "l0_accuracy": 1.0,
+    "l1_accuracy": 1.0
+  },
+  "delta": {
+    "l0": 0.0,
+    "l1": 0.0
+  },
+  "prefix_accuracy": {
+    "j1_l0": 1.0,
+    "j1_l1": 1.0,
+    "j2_l0": 1.0,
+    "j2_l1": 1.0,
+    "j3_l0": 1.0,
+    "j3_l1": 1.0,
+    "j4_l0": 1.0,
+    "j4_l1": 1.0
+  },
+  "history": [
+    {
+      "stage": 1,
+      "epoch": 1,
+      "loss": 5.606714129897783,
+      "loss_full": 3.501000278400925,
+      "loss_prefix": 3.5095229238834023,
+      "l0_accuracy": 1.0,
+      "l1_accuracy": 1.0
+    },
+    {
+      "stage": 1,
+      "epoch": 2,
+      "loss": 5.54807982714671,
+      "loss_full": 3.467289223760929,
+      "loss_prefix": 3.4679841500408246,
+      "l0_accuracy": 1.0,
+      "l1_accuracy": 1.0
+    },
+    {
+      "stage": 1,
+      "epoch": 3,
+      "loss": 5.54620544145692,
+      "loss_full": 3.4660583523084534,
+      "loss_prefix": 3.4669116533027506,
+      "l0_accuracy": 1.0,
+      "l1_accuracy": 1.0
+    },
+    {
+      "stage": 1,
+      "epoch": 4,
+      "loss": 5.5461223350380955,
+      "loss_full": 3.4662925828177973,
+      "loss_prefix": 3.466382741028408,
+      "l0_accuracy": 1.0,
+      "l1_accuracy": 1.0
+    },
+    {
+      "stage": 1,
+      "epoch": 5,
+      "loss": 5.545846789737918,
+      "loss_full": 3.4660357619231603,
+      "loss_prefix": 3.466351559477032,
+      "l0_accuracy": 1.0,
+      "l1_accuracy": 1.0
+    }
+  ],
+  "training_config": {
+    "prefix_probs": [
+      0.4,
+      0.3,
+      0.2,
+      0.1
+    ],
+    "block_keep_probs": [
+      0.95,
+      0.9,
+      0.8,
+      0.7
+    ],
+    "prefix_weight": 0.6
+  }
+}

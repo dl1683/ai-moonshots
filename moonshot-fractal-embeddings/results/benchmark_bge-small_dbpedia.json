@@ -12,24 +12,567 @@
   },
   "mrl": {
     "42": {
-      "error": "run_mrl_experiment() got an unexpected keyword argument 'seed'"
+      "method": "mrl_baseline",
+      "model": "bge-small",
+      "dataset": "dbpedia",
+      "baseline": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "mrl": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "delta": {
+        "l0": 0.0,
+        "l1": 0.0
+      },
+      "prefix_accuracy": {
+        "j1_l0": 1.0,
+        "j1_l1": 1.0,
+        "j2_l0": 1.0,
+        "j2_l1": 1.0,
+        "j3_l0": 1.0,
+        "j3_l1": 1.0,
+        "j4_l0": 1.0,
+        "j4_l1": 1.0
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 5.641558074951172,
+          "loss_full": 3.508597831906013,
+          "loss_mrl": 3.554933593857963,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 5.547784907862825,
+          "loss_full": 3.4663633544490025,
+          "loss_mrl": 3.4690357703082966,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 5.5468455782476465,
+          "loss_full": 3.466342281845381,
+          "loss_mrl": 3.467505338956725,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.545975019346993,
+          "loss_full": 3.4659485313127627,
+          "loss_mrl": 3.466710687133501,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.546121032282991,
+          "loss_full": 3.4662040017685802,
+          "loss_mrl": 3.466528244738309,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "mrl_weight": 0.6,
+        "margin_weight": 0.5,
+        "class_weight": 1.0,
+        "stage1_epochs": 5,
+        "stage2_epochs": 0,
+        "batch_size": 32,
+        "lr": 0.0001,
+        "weight_decay": 0.01,
+        "temperature": 0.07,
+        "grad_clip": 1.0,
+        "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+      }
     },
     "123": {
-      "error": "run_mrl_experiment() got an unexpected keyword argument 'seed'"
+      "method": "mrl_baseline",
+      "model": "bge-small",
+      "dataset": "dbpedia",
+      "baseline": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "mrl": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "delta": {
+        "l0": 0.0,
+        "l1": 0.0
+      },
+      "prefix_accuracy": {
+        "j1_l0": 1.0,
+        "j1_l1": 1.0,
+        "j2_l0": 1.0,
+        "j2_l1": 1.0,
+        "j3_l0": 1.0,
+        "j3_l1": 1.0,
+        "j4_l0": 1.0,
+        "j4_l1": 1.0
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 5.6439480169764105,
+          "loss_full": 3.5151046114147833,
+          "loss_mrl": 3.5480721851564803,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 5.54808213575831,
+          "loss_full": 3.4670055713293686,
+          "loss_mrl": 3.468460800962628,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 5.546526034373158,
+          "loss_full": 3.4664207665425426,
+          "loss_mrl": 3.466841944208685,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.546046217432562,
+          "loss_full": 3.466153548798471,
+          "loss_mrl": 3.466487626309665,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.545551683317941,
+          "loss_full": 3.4657607582380185,
+          "loss_mrl": 3.4663179919404805,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "mrl_weight": 0.6,
+        "margin_weight": 0.5,
+        "class_weight": 1.0,
+        "stage1_epochs": 5,
+        "stage2_epochs": 0,
+        "batch_size": 32,
+        "lr": 0.0001,
+        "weight_decay": 0.01,
+        "temperature": 0.07,
+        "grad_clip": 1.0,
+        "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+      }
     },
     "456": {
-      "error": "run_mrl_experiment() got an unexpected keyword argument 'seed'"
+      "method": "mrl_baseline",
+      "model": "bge-small",
+      "dataset": "dbpedia",
+      "baseline": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "mrl": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "delta": {
+        "l0": 0.0,
+        "l1": 0.0
+      },
+      "prefix_accuracy": {
+        "j1_l0": 1.0,
+        "j1_l1": 1.0,
+        "j2_l0": 1.0,
+        "j2_l1": 1.0,
+        "j3_l0": 1.0,
+        "j3_l1": 1.0,
+        "j4_l0": 1.0,
+        "j4_l1": 1.0
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 5.63002825683018,
+          "loss_full": 3.503887274580182,
+          "loss_mrl": 3.5435681505023306,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 5.548379032566863,
+          "loss_full": 3.466993645002257,
+          "loss_mrl": 3.468975497191807,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 5.546838805360614,
+          "loss_full": 3.4665464329269695,
+          "loss_mrl": 3.467153773217831,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.546229574815282,
+          "loss_full": 3.466311212755599,
+          "loss_mrl": 3.4665304678790974,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.545608855193516,
+          "loss_full": 3.465788209663247,
+          "loss_mrl": 3.4663675731083132,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "mrl_weight": 0.6,
+        "margin_weight": 0.5,
+        "class_weight": 1.0,
+        "stage1_epochs": 5,
+        "stage2_epochs": 0,
+        "batch_size": 32,
+        "lr": 0.0001,
+        "weight_decay": 0.01,
+        "temperature": 0.07,
+        "grad_clip": 1.0,
+        "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+      }
     }
   },
   "v5": {
     "42": {
-      "error": "run_v5_experiment() got an unexpected keyword argument 'seed'"
+      "model": "bge-small",
+      "dataset": "dbpedia",
+      "baseline": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "v5": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "delta": {
+        "l0": 0.0,
+        "l1": 0.0
+      },
+      "prefix_accuracy": {
+        "j1_l0": 1.0,
+        "j1_l1": 1.0,
+        "j2_l0": 1.0,
+        "j2_l1": 1.0,
+        "j3_l0": 1.0,
+        "j3_l1": 1.0,
+        "j4_l0": 1.0,
+        "j4_l1": 1.0
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 5.624187755584717,
+          "loss_full": 3.5059847975676917,
+          "loss_prefix": 3.5303380948192666,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 5.547856690748683,
+          "loss_full": 3.4666625778630094,
+          "loss_prefix": 3.4686567090592293,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 5.546545908586034,
+          "loss_full": 3.4662151543599253,
+          "loss_prefix": 3.4672177611656907,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.546362074366155,
+          "loss_full": 3.4664304778261004,
+          "loss_prefix": 3.466552495956421,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.545924337854925,
+          "loss_full": 3.466137869852894,
+          "loss_prefix": 3.46631062435654,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
     },
     "123": {
-      "error": "run_v5_experiment() got an unexpected keyword argument 'seed'"
+      "model": "bge-small",
+      "dataset": "dbpedia",
+      "baseline": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "v5": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "delta": {
+        "l0": 0.0,
+        "l1": 0.0
+      },
+      "prefix_accuracy": {
+        "j1_l0": 1.0,
+        "j1_l1": 1.0,
+        "j2_l0": 1.0,
+        "j2_l1": 1.0,
+        "j3_l0": 1.0,
+        "j3_l1": 1.0,
+        "j4_l0": 1.0,
+        "j4_l1": 1.0
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 5.614412775579488,
+          "loss_full": 3.501920654188912,
+          "loss_prefix": 3.520820039173342,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 5.547623126911668,
+          "loss_full": 3.4666713687608826,
+          "loss_prefix": 3.4682527973966777,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 5.546724618156001,
+          "loss_full": 3.4667136669158936,
+          "loss_prefix": 3.4666847184019267,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.5462379347603274,
+          "loss_full": 3.4663029265853593,
+          "loss_prefix": 3.4665581928109224,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.54579931295143,
+          "loss_full": 3.4659698018487894,
+          "loss_prefix": 3.466382356859603,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
     },
     "456": {
-      "error": "run_v5_experiment() got an unexpected keyword argument 'seed'"
+      "model": "bge-small",
+      "dataset": "dbpedia",
+      "baseline": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "v5": {
+        "l0_accuracy": 1.0,
+        "l1_accuracy": 1.0
+      },
+      "delta": {
+        "l0": 0.0,
+        "l1": 0.0
+      },
+      "prefix_accuracy": {
+        "j1_l0": 1.0,
+        "j1_l1": 1.0,
+        "j2_l0": 1.0,
+        "j2_l1": 1.0,
+        "j3_l0": 1.0,
+        "j3_l1": 1.0,
+        "j4_l0": 1.0,
+        "j4_l1": 1.0
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 5.606714129897783,
+          "loss_full": 3.501000278400925,
+          "loss_prefix": 3.5095229238834023,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 5.54807982714671,
+          "loss_full": 3.467289223760929,
+          "loss_prefix": 3.4679841500408246,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 5.54620544145692,
+          "loss_full": 3.4660583523084534,
+          "loss_prefix": 3.4669116533027506,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.5461223350380955,
+          "loss_full": 3.4662925828177973,
+          "loss_prefix": 3.466382741028408,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.545846789737918,
+          "loss_full": 3.4660357619231603,
+          "loss_prefix": 3.466351559477032,
+          "l0_accuracy": 1.0,
+          "l1_accuracy": 1.0
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
     }
   }
 }

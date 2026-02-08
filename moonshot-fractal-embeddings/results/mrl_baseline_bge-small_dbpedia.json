@@ -1,0 +1,99 @@
+{
+  "method": "mrl_baseline",
+  "model": "bge-small",
+  "dataset": "dbpedia",
+  "baseline": {
+    "l0_accuracy": 1.0,
+    "l1_accuracy": 1.0
+  },
+  "mrl": {
+    "l0_accuracy": 1.0,
+    "l1_accuracy": 1.0
+  },
+  "delta": {
+    "l0": 0.0,
+    "l1": 0.0
+  },
+  "prefix_accuracy": {
+    "j1_l0": 1.0,
+    "j1_l1": 1.0,
+    "j2_l0": 1.0,
+    "j2_l1": 1.0,
+    "j3_l0": 1.0,
+    "j3_l1": 1.0,
+    "j4_l0": 1.0,
+    "j4_l1": 1.0
+  },
+  "history": [
+    {
+      "stage": 1,
+      "epoch": 1,
+      "loss": 5.63002825683018,
+      "loss_full": 3.503887274580182,
+      "loss_mrl": 3.5435681505023306,
+      "l0_accuracy": 1.0,
+      "l1_accuracy": 1.0
+    },
+    {
+      "stage": 1,
+      "epoch": 2,
+      "loss": 5.548379032566863,
+      "loss_full": 3.466993645002257,
+      "loss_mrl": 3.468975497191807,
+      "l0_accuracy": 1.0,
+      "l1_accuracy": 1.0
+    },
+    {
+      "stage": 1,
+      "epoch": 3,
+      "loss": 5.546838805360614,
+      "loss_full": 3.4665464329269695,
+      "loss_mrl": 3.467153773217831,
+      "l0_accuracy": 1.0,
+      "l1_accuracy": 1.0
+    },
+    {
+      "stage": 1,
+      "epoch": 4,
+      "loss": 5.546229574815282,
+      "loss_full": 3.466311212755599,
+      "loss_mrl": 3.4665304678790974,
+      "l0_accuracy": 1.0,
+      "l1_accuracy": 1.0
+    },
+    {
+      "stage": 1,
+      "epoch": 5,
+      "loss": 5.545608855193516,
+      "loss_full": 3.465788209663247,
+      "loss_mrl": 3.4663675731083132,
+      "l0_accuracy": 1.0,
+      "l1_accuracy": 1.0
+    }
+  ],
+  "training_config": {
+    "prefix_probs": [
+      0.4,
+      0.3,
+      0.2,
+      0.1
+    ],
+    "block_keep_probs": [
+      0.95,
+      0.9,
+      0.8,
+      0.7
+    ],
+    "mrl_weight": 0.6,
+    "margin_weight": 0.5,
+    "class_weight": 1.0,
+    "stage1_epochs": 5,
+    "stage2_epochs": 0,
+    "batch_size": 32,
+    "lr": 0.0001,
+    "weight_decay": 0.01,
+    "temperature": 0.07,
+    "grad_clip": 1.0,
+    "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+  }
+}
