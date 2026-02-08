@@ -1,14 +1,276 @@
 {
-  "dataset": "newsgroups",
   "model": "bge-small",
+  "dataset": "newsgroups",
   "seeds": [
     42,
     123,
     456
   ],
-  "flat": {
-    "l0_accuracy": 0.808,
-    "l1_accuracy": 0.66
+  "v5": {
+    "42": {
+      "model": "bge-small",
+      "dataset": "newsgroups",
+      "baseline": {
+        "l0_accuracy": 0.815,
+        "l1_accuracy": 0.658
+      },
+      "v5": {
+        "l0_accuracy": 0.807,
+        "l1_accuracy": 0.661
+      },
+      "delta": {
+        "l0": -0.007999999999999896,
+        "l1": 0.0030000000000000027
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.788,
+        "j1_l1": 0.574,
+        "j2_l0": 0.792,
+        "j2_l1": 0.632,
+        "j3_l0": 0.798,
+        "j3_l1": 0.628,
+        "j4_l0": 0.802,
+        "j4_l1": 0.628
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 6.643464283835619,
+          "loss_full": 4.313211098649448,
+          "loss_prefix": 3.8837551425274155,
+          "l0_accuracy": 0.773,
+          "l1_accuracy": 0.607
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 5.560022275250657,
+          "loss_full": 3.5045364539426074,
+          "loss_prefix": 3.4258095823732533,
+          "l0_accuracy": 0.795,
+          "l1_accuracy": 0.638
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 5.200132281260383,
+          "loss_full": 3.2342785740257205,
+          "loss_prefix": 3.2764227085543753,
+          "l0_accuracy": 0.816,
+          "l1_accuracy": 0.676
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.009947197777884,
+          "loss_full": 3.1088035043917204,
+          "loss_prefix": 3.1685727135579387,
+          "l0_accuracy": 0.802,
+          "l1_accuracy": 0.677
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 4.816188030673149,
+          "loss_full": 2.9631245566490003,
+          "loss_prefix": 3.088439018206489,
+          "l0_accuracy": 0.803,
+          "l1_accuracy": 0.683
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
+    },
+    "123": {
+      "model": "bge-small",
+      "dataset": "newsgroups",
+      "baseline": {
+        "l0_accuracy": 0.815,
+        "l1_accuracy": 0.658
+      },
+      "v5": {
+        "l0_accuracy": 0.798,
+        "l1_accuracy": 0.65
+      },
+      "delta": {
+        "l0": -0.016999999999999904,
+        "l1": -0.008000000000000007
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.784,
+        "j1_l1": 0.62,
+        "j2_l0": 0.808,
+        "j2_l1": 0.656,
+        "j3_l0": 0.804,
+        "j3_l1": 0.646,
+        "j4_l0": 0.808,
+        "j4_l1": 0.632
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 6.649696394913178,
+          "loss_full": 4.3570682751505,
+          "loss_prefix": 3.821046715392206,
+          "l0_accuracy": 0.769,
+          "l1_accuracy": 0.605
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 5.558180920163491,
+          "loss_full": 3.513648503705075,
+          "loss_prefix": 3.4075538681862048,
+          "l0_accuracy": 0.795,
+          "l1_accuracy": 0.642
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 5.213347542554812,
+          "loss_full": 3.2625705604266404,
+          "loss_prefix": 3.2512948369621335,
+          "l0_accuracy": 0.801,
+          "l1_accuracy": 0.674
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.016157478318179,
+          "loss_full": 3.113126712634151,
+          "loss_prefix": 3.1717178391334704,
+          "l0_accuracy": 0.812,
+          "l1_accuracy": 0.686
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 4.839221430900402,
+          "loss_full": 2.975807213245478,
+          "loss_prefix": 3.1056902292079496,
+          "l0_accuracy": 0.802,
+          "l1_accuracy": 0.683
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
+    },
+    "456": {
+      "model": "bge-small",
+      "dataset": "newsgroups",
+      "baseline": {
+        "l0_accuracy": 0.815,
+        "l1_accuracy": 0.658
+      },
+      "v5": {
+        "l0_accuracy": 0.799,
+        "l1_accuracy": 0.6595
+      },
+      "delta": {
+        "l0": -0.015999999999999903,
+        "l1": 0.0014999999999999458
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.794,
+        "j1_l1": 0.606,
+        "j2_l0": 0.798,
+        "j2_l1": 0.656,
+        "j3_l0": 0.81,
+        "j3_l1": 0.662,
+        "j4_l0": 0.814,
+        "j4_l1": 0.664
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 6.641364336013794,
+          "loss_full": 4.343463042624911,
+          "loss_prefix": 3.8298353144997046,
+          "l0_accuracy": 0.782,
+          "l1_accuracy": 0.624
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 5.559061880398514,
+          "loss_full": 3.5124128196472513,
+          "loss_prefix": 3.41108164661809,
+          "l0_accuracy": 0.789,
+          "l1_accuracy": 0.647
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 5.204119166037194,
+          "loss_full": 3.2342184253205035,
+          "loss_prefix": 3.2831677897532185,
+          "l0_accuracy": 0.795,
+          "l1_accuracy": 0.652
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 4.996023558136216,
+          "loss_full": 3.103930952853726,
+          "loss_prefix": 3.1534875353476157,
+          "l0_accuracy": 0.804,
+          "l1_accuracy": 0.681
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 4.8339079985941265,
+          "loss_full": 2.9757898427490006,
+          "loss_prefix": 3.096863466097896,
+          "l0_accuracy": 0.816,
+          "l1_accuracy": 0.693
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
+    }
   },
   "mrl": {
     "42": {
@@ -306,272 +568,6 @@
         "temperature": 0.07,
         "grad_clip": 1.0,
         "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
-      }
-    }
-  },
-  "v5": {
-    "42": {
-      "model": "bge-small",
-      "dataset": "newsgroups",
-      "baseline": {
-        "l0_accuracy": 0.815,
-        "l1_accuracy": 0.658
-      },
-      "v5": {
-        "l0_accuracy": 0.807,
-        "l1_accuracy": 0.661
-      },
-      "delta": {
-        "l0": -0.007999999999999896,
-        "l1": 0.0030000000000000027
-      },
-      "prefix_accuracy": {
-        "j1_l0": 0.788,
-        "j1_l1": 0.574,
-        "j2_l0": 0.792,
-        "j2_l1": 0.632,
-        "j3_l0": 0.798,
-        "j3_l1": 0.628,
-        "j4_l0": 0.802,
-        "j4_l1": 0.628
-      },
-      "history": [
-        {
-          "stage": 1,
-          "epoch": 1,
-          "loss": 6.643464283835619,
-          "loss_full": 4.313211098649448,
-          "loss_prefix": 3.8837551425274155,
-          "l0_accuracy": 0.773,
-          "l1_accuracy": 0.607
-        },
-        {
-          "stage": 1,
-          "epoch": 2,
-          "loss": 5.560022275250657,
-          "loss_full": 3.5045364539426074,
-          "loss_prefix": 3.4258095823732533,
-          "l0_accuracy": 0.795,
-          "l1_accuracy": 0.638
-        },
-        {
-          "stage": 1,
-          "epoch": 3,
-          "loss": 5.200132281260383,
-          "loss_full": 3.2342785740257205,
-          "loss_prefix": 3.2764227085543753,
-          "l0_accuracy": 0.816,
-          "l1_accuracy": 0.676
-        },
-        {
-          "stage": 1,
-          "epoch": 4,
-          "loss": 5.009947197777884,
-          "loss_full": 3.1088035043917204,
-          "loss_prefix": 3.1685727135579387,
-          "l0_accuracy": 0.802,
-          "l1_accuracy": 0.677
-        },
-        {
-          "stage": 1,
-          "epoch": 5,
-          "loss": 4.816188030673149,
-          "loss_full": 2.9631245566490003,
-          "loss_prefix": 3.088439018206489,
-          "l0_accuracy": 0.803,
-          "l1_accuracy": 0.683
-        }
-      ],
-      "training_config": {
-        "prefix_probs": [
-          0.4,
-          0.3,
-          0.2,
-          0.1
-        ],
-        "block_keep_probs": [
-          0.95,
-          0.9,
-          0.8,
-          0.7
-        ],
-        "prefix_weight": 0.6
-      }
-    },
-    "123": {
-      "model": "bge-small",
-      "dataset": "newsgroups",
-      "baseline": {
-        "l0_accuracy": 0.815,
-        "l1_accuracy": 0.658
-      },
-      "v5": {
-        "l0_accuracy": 0.798,
-        "l1_accuracy": 0.65
-      },
-      "delta": {
-        "l0": -0.016999999999999904,
-        "l1": -0.008000000000000007
-      },
-      "prefix_accuracy": {
-        "j1_l0": 0.784,
-        "j1_l1": 0.62,
-        "j2_l0": 0.808,
-        "j2_l1": 0.656,
-        "j3_l0": 0.804,
-        "j3_l1": 0.646,
-        "j4_l0": 0.808,
-        "j4_l1": 0.632
-      },
-      "history": [
-        {
-          "stage": 1,
-          "epoch": 1,
-          "loss": 6.649696394913178,
-          "loss_full": 4.3570682751505,
-          "loss_prefix": 3.821046715392206,
-          "l0_accuracy": 0.769,
-          "l1_accuracy": 0.605
-        },
-        {
-          "stage": 1,
-          "epoch": 2,
-          "loss": 5.558180920163491,
-          "loss_full": 3.513648503705075,
-          "loss_prefix": 3.4075538681862048,
-          "l0_accuracy": 0.795,
-          "l1_accuracy": 0.642
-        },
-        {
-          "stage": 1,
-          "epoch": 3,
-          "loss": 5.213347542554812,
-          "loss_full": 3.2625705604266404,
-          "loss_prefix": 3.2512948369621335,
-          "l0_accuracy": 0.801,
-          "l1_accuracy": 0.674
-        },
-        {
-          "stage": 1,
-          "epoch": 4,
-          "loss": 5.016157478318179,
-          "loss_full": 3.113126712634151,
-          "loss_prefix": 3.1717178391334704,
-          "l0_accuracy": 0.812,
-          "l1_accuracy": 0.686
-        },
-        {
-          "stage": 1,
-          "epoch": 5,
-          "loss": 4.839221430900402,
-          "loss_full": 2.975807213245478,
-          "loss_prefix": 3.1056902292079496,
-          "l0_accuracy": 0.802,
-          "l1_accuracy": 0.683
-        }
-      ],
-      "training_config": {
-        "prefix_probs": [
-          0.4,
-          0.3,
-          0.2,
-          0.1
-        ],
-        "block_keep_probs": [
-          0.95,
-          0.9,
-          0.8,
-          0.7
-        ],
-        "prefix_weight": 0.6
-      }
-    },
-    "456": {
-      "model": "bge-small",
-      "dataset": "newsgroups",
-      "baseline": {
-        "l0_accuracy": 0.815,
-        "l1_accuracy": 0.658
-      },
-      "v5": {
-        "l0_accuracy": 0.799,
-        "l1_accuracy": 0.6595
-      },
-      "delta": {
-        "l0": -0.015999999999999903,
-        "l1": 0.0014999999999999458
-      },
-      "prefix_accuracy": {
-        "j1_l0": 0.794,
-        "j1_l1": 0.606,
-        "j2_l0": 0.798,
-        "j2_l1": 0.656,
-        "j3_l0": 0.81,
-        "j3_l1": 0.662,
-        "j4_l0": 0.814,
-        "j4_l1": 0.664
-      },
-      "history": [
-        {
-          "stage": 1,
-          "epoch": 1,
-          "loss": 6.641364336013794,
-          "loss_full": 4.343463042624911,
-          "loss_prefix": 3.8298353144997046,
-          "l0_accuracy": 0.782,
-          "l1_accuracy": 0.624
-        },
-        {
-          "stage": 1,
-          "epoch": 2,
-          "loss": 5.559061880398514,
-          "loss_full": 3.5124128196472513,
-          "loss_prefix": 3.41108164661809,
-          "l0_accuracy": 0.789,
-          "l1_accuracy": 0.647
-        },
-        {
-          "stage": 1,
-          "epoch": 3,
-          "loss": 5.204119166037194,
-          "loss_full": 3.2342184253205035,
-          "loss_prefix": 3.2831677897532185,
-          "l0_accuracy": 0.795,
-          "l1_accuracy": 0.652
-        },
-        {
-          "stage": 1,
-          "epoch": 4,
-          "loss": 4.996023558136216,
-          "loss_full": 3.103930952853726,
-          "loss_prefix": 3.1534875353476157,
-          "l0_accuracy": 0.804,
-          "l1_accuracy": 0.681
-        },
-        {
-          "stage": 1,
-          "epoch": 5,
-          "loss": 4.8339079985941265,
-          "loss_full": 2.9757898427490006,
-          "loss_prefix": 3.096863466097896,
-          "l0_accuracy": 0.816,
-          "l1_accuracy": 0.693
-        }
-      ],
-      "training_config": {
-        "prefix_probs": [
-          0.4,
-          0.3,
-          0.2,
-          0.1
-        ],
-        "block_keep_probs": [
-          0.95,
-          0.9,
-          0.8,
-          0.7
-        ],
-        "prefix_weight": 0.6
       }
     }
   }
