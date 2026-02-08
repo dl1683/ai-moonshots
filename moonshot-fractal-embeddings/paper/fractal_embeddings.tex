@@ -349,13 +349,55 @@ TREC ($\hlo = 2.21$) & $+0.045$ & $+0.086$ & $+0.003$ & $+0.012$ \\
 \end{tabular}
 \end{table}
 
+\paragraph{Downstream utility: Hierarchical retrieval.}
+Beyond classification, we evaluate whether steerability translates to practical retrieval advantages.
+We use test samples as both queries and documents, computing Recall@10 for $L_0$ and $L_1$ matches at each prefix length.
+Additionally, we measure two non-circular metrics:
+\begin{itemize}
+    \item \textbf{Tree-distance profile}: Average hierarchy distance (0=same $L_1$, 1=same $L_0$ only, 2=different $L_0$) between a query and its $k$-NN at each prefix length. For V5, this should decrease with $j$ (neighbors become more specific). For MRL, it should be flat.
+    \item \textbf{MI profile}: $k$-NN classification accuracy as a proxy for $I(\mathbf{z}_j; L_k)$ at each prefix length. This directly measures how much coarse vs.\ fine information each prefix carries, independent of training objective.
+\end{itemize}
+These metrics measure embedding \emph{behavior}, not training loss, addressing potential circularity concerns.
+
 \paragraph{Limitations.}
 \begin{itemize}
-    \item \textbf{Shallow hierarchies}: On Yahoo Answers ($K_0 = 4$, $\hlo = 1.23$), steerability is small and noisy ($\steer = 0.011 \pm 0.010$). The method is most valuable for deep hierarchies with many coarse classes.
+    \item \textbf{Shallow hierarchies}: On Yahoo Answers ($K_0 = 4$, $\hlo = 1.23$), steerability is small and noisy ($\steer = 0.011 \pm 0.010$). The method is most valuable for deep hierarchies.
     \item \textbf{Ceiling effects}: On datasets where the unfinetuned baseline already achieves high $L_0$ accuracy (e.g., DBPedia at $L_0 = 1.0$), there is no room for steerability improvement.
-    \item \textbf{Two-level hierarchies}: Our current formulation handles two-level hierarchies ($L_0$, $L_1$). Extension to deeper hierarchies (3+ levels) is straightforward in principle but untested.
-    \item \textbf{Single-seed cross-model}: Qwen3 results are currently from a single seed; multi-seed replication is in progress.
+    \item \textbf{Two-level hierarchies}: Our current formulation handles two-level hierarchies ($L_0$, $L_1$). Extension to deeper hierarchies is straightforward in principle but untested.
 \end{itemize}
+
+%=======================================================================
+\section{Theoretical Analysis}
+\label{sec:theory}
+%=======================================================================
+
+We provide an information-theoretic analysis of why hierarchy-aligned supervision induces steerability while uniform supervision (MRL) does not.
+
+\paragraph{Setup.}
+Let $\mathbf{z} = [\mathbf{z}_1; \ldots; \mathbf{z}_J] \in \mathbb{R}^d$ be a prefix-truncatable embedding with $J$ blocks.
+Let $L_0$ (coarse) and $L_1$ (fine) be hierarchical labels with $H(L_0) + H(L_1|L_0) = H(L_1)$.
+The steerability metric $\steer$ captures the extent to which $\mathbf{z}_1$ specializes for $L_0$ and $\mathbf{z}$ specializes for $L_1$.
+
+\paragraph{Proposition (Informal).}
+Consider an embedding trained to minimize expected classification loss across randomly sampled prefix lengths.
+If the supervision at prefix $j=1$ targets $L_0$ (coarse) and at $j=J$ targets $L_1$ (fine), then an optimal embedding satisfies:
+\begin{equation}
+    I(\mathbf{z}_1; L_0) \geq I(\mathbf{z}_1; L_1 | L_0)
+\end{equation}
+That is, the first block allocates more capacity to coarse information than to refinement information.
+Conversely, if all prefix lengths target $L_1$, then $I(\mathbf{z}_1; L_0) \approx I(\mathbf{z}_J; L_0)$ (no specialization).
+
+\paragraph{Intuition.}
+The short prefix faces a capacity bottleneck: with only $d/J$ dimensions, it cannot encode all of $H(L_1)$ bits.
+Under V5 supervision, the gradient pushes $\mathbf{z}_1$ to encode $L_0$, which requires only $H(L_0)$ bits---a compressible target.
+The remaining $H(L_1|L_0)$ bits are allocated to later blocks.
+Under MRL, $\mathbf{z}_1$ must encode $L_1$ in $d/J$ dimensions, so it allocates capacity uniformly---no specialization emerges.
+
+\paragraph{Capacity-demand matching.}
+The Goldilocks effect (Section~\ref{sec:scaling}) follows from this analysis: steerability peaks when $H(L_0) \approx C(\mathbf{z}_1)$, where $C(\mathbf{z}_1)$ is the effective capacity of the first block.
+When $H(L_0) \ll C(\mathbf{z}_1)$, the prefix has spare capacity that leaks fine information.
+When $H(L_0) \gg C(\mathbf{z}_1)$, the prefix cannot reliably encode even the coarse labels, and steerability degrades.
+This predicts the quadratic relationship $\steer \approx \alpha H(L_0) - \beta H(L_0)^2$ observed empirically ($R^2 = 0.964$).
 
 %=======================================================================
 \section{Related Work}
