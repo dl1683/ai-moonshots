@@ -210,7 +210,7 @@ def main():
         t_vn, p_vn = stats.ttest_ind(v5_s, np_s)
         print(f"\n  V5 vs Inverted: t={t_vi:.3f}, p={p_vi:.6f}")
         print(f"  V5 vs No-prefix: t={t_vn:.3f}, p={p_vn:.6f}")
-        print(f"\n  KEY: Inverted REVERSES sign → steerability is CAUSED by alignment")
+        print(f"\n  KEY: Inverted REVERSES sign -> steerability is CAUSED by alignment")
 
     # =====================================================================
     # 4. CLASSIFICATION ACCURACY (j=4)
