@@ -579,9 +579,8 @@ def fig7_entropy_allocation():
 # Figure 8: Prefix Surgery — Causal prefix swap
 # ============================================================================
 def fig8_prefix_surgery():
-    """Prefix surgery results: bar chart comparing V5 vs MRL
-    on coarse transfer and fine preservation rates."""
-    import glob
+    """Information localization: grouped bar chart showing L0/L1 accuracy
+    in prefix vs suffix for V5 and MRL."""
     surgery_files = sorted(Path(RESULTS_DIR).glob("prefix_surgery_*.json"))
     if not surgery_files:
         print("  Fig 8: No prefix surgery results yet. Skipping.")
@@ -591,41 +590,44 @@ def fig8_prefix_surgery():
     v5 = data.get("v5", {})
     mrl = data.get("mrl", {})
 
-    if not v5 or not mrl:
-        print("  Fig 8: Incomplete surgery data. Skipping.")
+    if not v5 or not mrl or "localization" not in v5:
+        print("  Fig 8: Incomplete localization data. Skipping.")
         return
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.5))
+    v5_loc = v5["localization"]
+    mrl_loc = mrl["localization"]
 
-    # Left: Coarse transfer rate
-    methods = ['V5', 'MRL']
-    coarse_vals = [v5["coarse_transfer_rate"], mrl["coarse_transfer_rate"]]
-    colors_bar = [V5_COLOR, MRL_COLOR]
+    fig, ax = plt.subplots(1, 1, figsize=(8, 5))
 
-    bars1 = ax1.bar(methods, coarse_vals, color=colors_bar, edgecolor='black', linewidth=0.5)
-    ax1.set_ylabel('Rate')
-    ax1.set_title('Coarse Transfer Rate\n(prefix swap changes L0 class to donor)',
-                  fontweight='bold')
-    ax1.set_ylim(0, 1)
-    for bar, val in zip(bars1, coarse_vals):
-        ax1.text(bar.get_x() + bar.get_width()/2, val + 0.02,
-                f'{val:.3f}', ha='center', fontweight='bold')
+    metrics = ['prefix_l0', 'prefix_l1', 'suffix_l0', 'suffix_l1']
+    labels = ['Prefix L0', 'Prefix L1', 'Suffix L0', 'Suffix L1']
+    v5_vals = [v5_loc[m] for m in metrics]
+    mrl_vals = [mrl_loc[m] for m in metrics]
 
-    # Right: Fine preservation rate
-    fine_vals = [v5["fine_preservation_rate"], mrl["fine_preservation_rate"]]
-    bars2 = ax2.bar(methods, fine_vals, color=colors_bar, edgecolor='black', linewidth=0.5)
-    ax2.set_ylabel('Rate')
-    ax2.set_title('Fine Preservation Rate\n(recipient L1 class survives prefix swap)',
-                  fontweight='bold')
-    ax2.set_ylim(0, 1)
-    for bar, val in zip(bars2, fine_vals):
-        ax2.text(bar.get_x() + bar.get_width()/2, val + 0.02,
-                f'{val:.3f}', ha='center', fontweight='bold')
+    x = np.arange(len(metrics))
+    width = 0.35
+    bars1 = ax.bar(x - width/2, v5_vals, width, label='V5', color=V5_COLOR,
+                   edgecolor='black', linewidth=0.5)
+    bars2 = ax.bar(x + width/2, mrl_vals, width, label='MRL', color=MRL_COLOR,
+                   edgecolor='black', linewidth=0.5)
 
-    fig.suptitle('Causal Prefix Surgery: Semantic Levels Are Separable in V5',
-                fontsize=13, fontweight='bold', y=1.02)
+    ax.set_ylabel('kNN Accuracy', fontsize=12)
+    ax.set_title('Information Localization: Where Does Each Level Live?',
+                fontweight='bold', fontsize=13)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, fontsize=11)
+    ax.legend(fontsize=11)
+    ax.set_ylim(0.9, 1.0)
+
+    for bar, val in zip(bars1, v5_vals):
+        ax.text(bar.get_x() + bar.get_width()/2, val + 0.001,
+               f'{val:.3f}', ha='center', fontsize=9)
+    for bar, val in zip(bars2, mrl_vals):
+        ax.text(bar.get_x() + bar.get_width()/2, val + 0.001,
+               f'{val:.3f}', ha='center', fontsize=9)
+
     fig.tight_layout()
-    fig.savefig(FIGURES_DIR / "fig8_prefix_surgery.png")
+    fig.savefig(FIGURES_DIR / "fig8_prefix_surgery.png", dpi=150)
     fig.savefig(FIGURES_DIR / "fig8_prefix_surgery.pdf")
     plt.close(fig)
     print(f"  Fig 8 saved: {FIGURES_DIR / 'fig8_prefix_surgery.png'}")
