@@ -131,10 +131,38 @@ def run_prefix_surgery(
         full_embs = model.encode(test_texts, batch_size=batch_size).numpy()
         full_embs = full_embs / np.linalg.norm(full_embs, axis=1, keepdims=True)
 
-        # Reference embeddings for kNN classification
-        ref_embs = full_embs.copy()
+        # Reference embeddings at DIFFERENT granularities
+        ref_full = full_embs.copy()
+        ref_prefix = full_embs[:, :64].copy()  # j=1: first 64d
+        ref_prefix = ref_prefix / np.linalg.norm(ref_prefix, axis=1, keepdims=True)
+        ref_suffix = full_embs[:, 64:].copy()  # dims 64-256
+        ref_suffix = ref_suffix / np.linalg.norm(ref_suffix, axis=1, keepdims=True)
         ref_l0 = test_l0.copy()
         ref_l1 = test_l1.copy()
+
+        # Information localization analysis (key differentiator!)
+        # Measure: where is L0 info? where is L1 info?
+        n_test = len(test_l0)
+        loc_counters = {"prefix_l0": 0, "prefix_l1": 0, "suffix_l0": 0, "suffix_l1": 0}
+        for i in range(n_test):
+            p = ref_prefix[i]
+            s = ref_suffix[i]
+            if knn_classify(p, ref_prefix, ref_l0, k=5) == int(test_l0[i]):
+                loc_counters["prefix_l0"] += 1
+            if knn_classify(p, ref_prefix, ref_l1, k=5) == int(test_l1[i]):
+                loc_counters["prefix_l1"] += 1
+            if knn_classify(s, ref_suffix, ref_l0, k=5) == int(test_l0[i]):
+                loc_counters["suffix_l0"] += 1
+            if knn_classify(s, ref_suffix, ref_l1, k=5) == int(test_l1[i]):
+                loc_counters["suffix_l1"] += 1
+        localization = {k: v / n_test for k, v in loc_counters.items()}
+
+        print(f"\n  INFORMATION LOCALIZATION ({method_name.upper()}):")
+        print(f"    Prefix (64d) L0 acc: {localization['prefix_l0']:.4f}")
+        print(f"    Prefix (64d) L1 acc: {localization['prefix_l1']:.4f}  <- KEY: V5 should be LOW")
+        print(f"    Suffix (192d) L0 acc: {localization['suffix_l0']:.4f}")
+        print(f"    Suffix (192d) L1 acc: {localization['suffix_l1']:.4f}")
+        print(f"    L1 leakage into prefix: {localization['prefix_l1']:.4f}")
 
         # Generate pairs from DIFFERENT L0 classes
         l0_groups = {}
@@ -155,79 +183,106 @@ def run_prefix_surgery(
         print(f"  Generated {len(pairs)} cross-L0 pairs")
 
         # Surgery: for each pair, swap the first 64d block
-        coarse_transfer_count = 0
-        fine_preserved_count = 0
+        # Measure at the RIGHT granularity:
+        #   L0 classification: use ONLY prefix (64d) — where coarse info lives
+        #   L1 classification: use ONLY suffix (192d) — where fine info lives
+        #   Also measure on full 256d for comparison
+        counters = {
+            "prefix_l0_transfer": 0,  # chimera prefix -> donor L0?
+            "suffix_l1_preserved": 0,  # chimera suffix -> recipient L1?
+            "full_l0_transfer": 0,    # full 256d -> donor L0?
+            "full_l1_preserved": 0,   # full 256d -> recipient L1?
+            "orig_prefix_l0_correct": 0,
+            "orig_suffix_l1_correct": 0,
+            "orig_full_l0_correct": 0,
+        }
         total_pairs = len(pairs)
-
-        # Also track: original classification accuracy
-        orig_l0_correct = 0
-        chimera_l0_to_donor = 0
-        chimera_l1_preserved = 0
-
         surgery_details = []
 
         for idx_a, idx_b in pairs:
-            emb_a = full_embs[idx_a].copy()  # "recipient" — gets donor's coarse prefix
-            emb_b = full_embs[idx_b].copy()  # "donor" — provides coarse prefix
+            emb_a = full_embs[idx_a].copy()  # "recipient"
+            emb_b = full_embs[idx_b].copy()  # "donor"
 
-            # Original classifications (kNN)
-            orig_l0_a = knn_classify(emb_a, ref_embs, ref_l0, k=5)
-            orig_l1_a = knn_classify(emb_a, ref_embs, ref_l1, k=5)
-
-            # Create chimera: recipient's fine suffix + donor's coarse prefix
-            chimera = emb_a.copy()
-            chimera[:64] = emb_b[:64]  # Swap first 64 dims (coarse block)
-            chimera = chimera / np.linalg.norm(chimera)  # Re-normalize
-
-            # Chimera classifications
-            chimera_l0 = knn_classify(chimera, ref_embs, ref_l0, k=5)
-            chimera_l1 = knn_classify(chimera, ref_embs, ref_l1, k=5)
-
-            # Did coarse classification change to donor's class?
             donor_l0 = int(test_l0[idx_b])
             recipient_l0 = int(test_l0[idx_a])
             recipient_l1 = int(test_l1[idx_a])
 
-            coarse_transferred = (chimera_l0 == donor_l0)
-            fine_preserved = (chimera_l1 == recipient_l1)
+            # Original prefix-only L0 accuracy
+            a_prefix = emb_a[:64] / np.linalg.norm(emb_a[:64])
+            orig_prefix_l0 = knn_classify(a_prefix, ref_prefix, ref_l0, k=5)
+            if orig_prefix_l0 == recipient_l0:
+                counters["orig_prefix_l0_correct"] += 1
 
-            if coarse_transferred:
-                coarse_transfer_count += 1
-            if fine_preserved:
-                fine_preserved_count += 1
-            if orig_l0_a == recipient_l0:
-                orig_l0_correct += 1
+            # Original suffix-only L1 accuracy
+            a_suffix = emb_a[64:] / np.linalg.norm(emb_a[64:])
+            orig_suffix_l1 = knn_classify(a_suffix, ref_suffix, ref_l1, k=5)
+            if orig_suffix_l1 == recipient_l1:
+                counters["orig_suffix_l1_correct"] += 1
+
+            # Original full L0 accuracy
+            orig_full_l0 = knn_classify(emb_a, ref_full, ref_l0, k=5)
+            if orig_full_l0 == recipient_l0:
+                counters["orig_full_l0_correct"] += 1
+
+            # Create chimera: donor's prefix + recipient's suffix
+            chimera = emb_a.copy()
+            chimera[:64] = emb_b[:64]
+
+            # Chimera prefix -> classify L0 with prefix-only kNN
+            chi_prefix = chimera[:64] / np.linalg.norm(chimera[:64])
+            chi_prefix_l0 = knn_classify(chi_prefix, ref_prefix, ref_l0, k=5)
+            if chi_prefix_l0 == donor_l0:
+                counters["prefix_l0_transfer"] += 1
+
+            # Chimera suffix -> classify L1 with suffix-only kNN (unchanged!)
+            chi_suffix = chimera[64:] / np.linalg.norm(chimera[64:])
+            chi_suffix_l1 = knn_classify(chi_suffix, ref_suffix, ref_l1, k=5)
+            if chi_suffix_l1 == recipient_l1:
+                counters["suffix_l1_preserved"] += 1
+
+            # Also full-embedding classification for comparison
+            chimera_norm = chimera / np.linalg.norm(chimera)
+            chi_full_l0 = knn_classify(chimera_norm, ref_full, ref_l0, k=5)
+            chi_full_l1 = knn_classify(chimera_norm, ref_full, ref_l1, k=5)
+            if chi_full_l0 == donor_l0:
+                counters["full_l0_transfer"] += 1
+            if chi_full_l1 == recipient_l1:
+                counters["full_l1_preserved"] += 1
 
             surgery_details.append({
                 "recipient_l0": recipient_l0,
                 "donor_l0": donor_l0,
                 "recipient_l1": recipient_l1,
-                "orig_l0_pred": int(orig_l0_a),
-                "chimera_l0_pred": int(chimera_l0),
-                "chimera_l1_pred": int(chimera_l1),
-                "coarse_transferred": bool(coarse_transferred),
-                "fine_preserved": bool(fine_preserved),
+                "chi_prefix_l0": int(chi_prefix_l0),
+                "chi_suffix_l1": int(chi_suffix_l1),
+                "chi_full_l0": int(chi_full_l0),
+                "prefix_transferred": bool(chi_prefix_l0 == donor_l0),
+                "suffix_preserved": bool(chi_suffix_l1 == recipient_l1),
             })
 
-        coarse_transfer_rate = coarse_transfer_count / total_pairs
-        fine_preservation_rate = fine_preserved_count / total_pairs
-        orig_l0_acc = orig_l0_correct / total_pairs
+        rates = {k: v / total_pairs for k, v in counters.items()}
 
-        # Surgery score: high coarse transfer + high fine preservation = good separation
-        surgery_score = coarse_transfer_rate + fine_preservation_rate
+        # Surgery score: prefix L0 transfer + suffix L1 preservation
+        surgery_score = rates["prefix_l0_transfer"] + rates["suffix_l1_preserved"]
 
         print(f"\n  SURGERY RESULTS ({method_name.upper()}):")
-        print(f"    Original L0 accuracy:     {orig_l0_acc:.4f}")
-        print(f"    Coarse transfer rate:     {coarse_transfer_rate:.4f}")
-        print(f"    Fine preservation rate:   {fine_preservation_rate:.4f}")
-        print(f"    Surgery score (sum):      {surgery_score:.4f}")
-        print(f"    Ideal: coarse_transfer HIGH + fine_preserved HIGH")
+        print(f"    --- Prefix-only (64d) L0 classification ---")
+        print(f"    Original L0 acc (prefix):   {rates['orig_prefix_l0_correct']:.4f}")
+        print(f"    Chimera L0 -> donor (prefix): {rates['prefix_l0_transfer']:.4f}")
+        print(f"    --- Suffix-only (192d) L1 classification ---")
+        print(f"    Original L1 acc (suffix):   {rates['orig_suffix_l1_correct']:.4f}")
+        print(f"    Chimera L1 preserved (suffix): {rates['suffix_l1_preserved']:.4f}")
+        print(f"    --- Full embedding (256d) for comparison ---")
+        print(f"    Original L0 acc (full):     {rates['orig_full_l0_correct']:.4f}")
+        print(f"    Chimera L0 -> donor (full): {rates['full_l0_transfer']:.4f}")
+        print(f"    Chimera L1 preserved (full): {rates['full_l1_preserved']:.4f}")
+        print(f"    --- Surgery score (prefix_transfer + suffix_preserved) ---")
+        print(f"    Surgery score:              {surgery_score:.4f}")
 
         results[method_name] = {
-            "coarse_transfer_rate": coarse_transfer_rate,
-            "fine_preservation_rate": fine_preservation_rate,
+            **rates,
             "surgery_score": surgery_score,
-            "orig_l0_accuracy": orig_l0_acc,
+            "localization": localization,
             "n_pairs": total_pairs,
         }
 
@@ -242,10 +297,21 @@ def run_prefix_surgery(
     print(f"  {'Metric':<30} {'V5':>10} {'MRL':>10} {'Delta':>10}")
     print(f"  {'-'*60}")
 
-    for metric in ["coarse_transfer_rate", "fine_preservation_rate", "surgery_score"]:
+    for metric in ["prefix_l0_transfer", "suffix_l1_preserved", "surgery_score"]:
         v5_val = results["v5"][metric]
         mrl_val = results["mrl"][metric]
         print(f"  {metric:<30} {v5_val:>10.4f} {mrl_val:>10.4f} {v5_val-mrl_val:>+10.4f}")
+
+    print(f"\n  {'='*70}")
+    print("  INFORMATION LOCALIZATION COMPARISON (key result)")
+    print(f"  {'='*70}")
+    print(f"  {'Metric':<30} {'V5':>10} {'MRL':>10} {'Delta':>10}")
+    print(f"  {'-'*60}")
+    for metric in ["prefix_l0", "prefix_l1", "suffix_l0", "suffix_l1"]:
+        v5_val = results["v5"]["localization"][metric]
+        mrl_val = results["mrl"]["localization"][metric]
+        marker = " <- KEY" if metric == "prefix_l1" else ""
+        print(f"  {metric:<30} {v5_val:>10.4f} {mrl_val:>10.4f} {v5_val-mrl_val:>+10.4f}{marker}")
 
     # Save
     out_path = RESULTS_DIR / f"prefix_surgery_{model_key}_{dataset_name}_seed{seed}.json"

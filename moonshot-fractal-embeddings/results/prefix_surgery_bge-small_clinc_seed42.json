@@ -1,0 +1,40 @@
+{
+  "model": "bge-small",
+  "dataset": "clinc",
+  "seed": 42,
+  "timestamp": "2026-02-08T15:27:14.316396",
+  "v5": {
+    "prefix_l0_transfer": 0.984,
+    "suffix_l1_preserved": 0.96,
+    "full_l0_transfer": 0.016,
+    "full_l1_preserved": 0.952,
+    "orig_prefix_l0_correct": 0.97,
+    "orig_suffix_l1_correct": 0.96,
+    "orig_full_l0_correct": 0.976,
+    "surgery_score": 1.944,
+    "localization": {
+      "prefix_l0": 0.981,
+      "prefix_l1": 0.947,
+      "suffix_l0": 0.989,
+      "suffix_l1": 0.969
+    },
+    "n_pairs": 500
+  },
+  "mrl": {
+    "prefix_l0_transfer": 0.988,
+    "suffix_l1_preserved": 0.962,
+    "full_l0_transfer": 0.008,
+    "full_l1_preserved": 0.958,
+    "orig_prefix_l0_correct": 0.986,
+    "orig_suffix_l1_correct": 0.962,
+    "orig_full_l0_correct": 0.984,
+    "surgery_score": 1.95,
+    "localization": {
+      "prefix_l0": 0.988,
+      "prefix_l1": 0.965,
+      "suffix_l0": 0.987,
+      "suffix_l1": 0.966
+    },
+    "n_pairs": 500
+  }
+}
