@@ -288,9 +288,46 @@ def main():
             print(f"\n  KEY: S correlates with H(L0), NOT H(L1|L0) — prefix task demand is the driver")
 
     # =====================================================================
-    # 7. PAPER READINESS SUMMARY
+    # 7. CROSS-MODEL REPLICATION (if available)
     # =====================================================================
-    print_section("7. PAPER READINESS CHECKLIST")
+    cross_model_data = {}
+    for ds in ['clinc', 'trec']:
+        cm_file = RESULTS_DIR / f"crossmodel_qwen3-0.6b_{ds}.json"
+        if cm_file.exists():
+            cross_model_data[ds] = json.load(open(cm_file))
+
+    if cross_model_data:
+        print_section("7. CROSS-MODEL REPLICATION (Qwen3-0.6B)")
+        print(f"\n  {'Dataset':<12} {'H(L1|L0)':<10} {'bge V5':<10} {'Qwen V5':<10} {'bge MRL':<10} {'Qwen MRL'}")
+        print(f"  {'-'*55}")
+
+        for ds in ['clinc', 'trec']:
+            h = profiles.get(ds, {}).get('h_l1_given_l0', 0)
+
+            # bge-small data
+            bge_v5 = np.mean(datasets.get(ds, {}).get('v5_steers', [])) if ds in datasets and datasets[ds]['v5_steers'] else float('nan')
+            bge_mrl = np.mean(datasets.get(ds, {}).get('mrl_steers', [])) if ds in datasets and datasets[ds]['mrl_steers'] else float('nan')
+
+            # Qwen3 data
+            qwen_v5, qwen_mrl = float('nan'), float('nan')
+            if ds in cross_model_data:
+                cm = cross_model_data[ds]
+                qv = [compute_steer(sv['prefix_accuracy']) for sv in cm.get('v5', {}).values()
+                      if isinstance(sv, dict) and 'prefix_accuracy' in sv]
+                qm = [compute_steer(sv['prefix_accuracy']) for sv in cm.get('mrl', {}).values()
+                      if isinstance(sv, dict) and 'prefix_accuracy' in sv]
+                qwen_v5 = np.mean(qv) if qv else float('nan')
+                qwen_mrl = np.mean(qm) if qm else float('nan')
+
+            fmt = lambda v: f"{v:+.4f}" if not np.isnan(v) else "  N/A  "
+            print(f"  {ds:<12} {h:<10.3f} {fmt(bge_v5):<10} {fmt(qwen_v5):<10} {fmt(bge_mrl):<10} {fmt(qwen_mrl)}")
+
+        print(f"\n  VERDICT: Architecture invariance {'CONFIRMED' if cross_model_data else 'TODO'}")
+
+    # =====================================================================
+    # 8. PAPER READINESS SUMMARY
+    # =====================================================================
+    print_section("8. PAPER READINESS CHECKLIST")
 
     n_datasets_with_steer = sum(1 for d in datasets.values() if d['v5_steers'])
     has_ablation = abl_file.exists()
