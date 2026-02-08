@@ -431,18 +431,26 @@ Doubling the prefix dimension from 64 to 128 should shift the Goldilocks peak ri
 
 \paragraph{Multi-resolution embeddings.}
 Matryoshka Representation Learning (MRL)~\citep{kusupati2022matryoshka} trains embeddings that support prefix truncation, but all prefix lengths are supervised on the same task, producing no semantic specialization.
-Sequential MRL (SMRL)~\citep{li2025smrl} extends MRL with sequential training but also lacks hierarchy awareness.
-Our work shows that the \emph{alignment} between prefix supervision and semantic hierarchy is the critical missing ingredient.
+SMRL~\citep{li2025smrl} extends MRL with sequential training to reduce gradient variance; Matryoshka Multimodal Models~\citep{cai2024m3} apply the nesting principle to visual tokens in vision-language models.
+None of these approaches introduce hierarchy-awareness: truncation changes \emph{fidelity}, not \emph{semantic level}.
+Our work shows that aligning prefix supervision with hierarchy is the missing ingredient that converts fidelity truncation into semantic zoom.
+
+\paragraph{Dimensional redundancy.}
+\citet{dufter2025random} show that randomly removing 50\% of embedding dimensions causes $<$10\% performance degradation, revealing massive redundancy in standard embeddings.
+We exploit this redundancy differently: rather than discarding dimensions for compression, we \emph{structure} them to carry semantically distinct information at each prefix length.
+Random removal preserves flat performance but destroys hierarchical steerability---precisely the property we engineer.
+\citet{luan2025limits} prove that the expressiveness of single-vector embeddings for top-$k$ retrieval is bounded by dimensionality, motivating multi-resolution access patterns that our method enables.
 
 \paragraph{Hierarchical embeddings.}
-Hyperbolic embeddings~\citep{nickel2017poincare} represent hierarchies through the geometry of the embedding space itself.
-HEAL~\citep{zhang2025heal} aligns embeddings with external label hierarchies using contrastive objectives.
-Unlike these approaches, fractal embeddings work in Euclidean space and achieve hierarchy-aware behavior through supervision structure rather than geometric constraints.
+Hyperbolic embeddings~\citep{nickel2017poincare} represent hierarchies through non-Euclidean geometry.
+HEAL~\citep{zhang2025heal} (ICLR 2025) aligns LLM embeddings with domain hierarchies via hierarchical contrastive losses and matrix factorization.
+Unlike HEAL, which requires external hierarchical labels and preprocessing, our method derives hierarchy from the embedding's own prefix structure, making it intrinsic and architecture-agnostic.
+HEAL does not offer steerability via dimensional truncation.
 
 \paragraph{Sparse and compressed embeddings.}
-CSR~\citep{chen2025csr} (ICML 2025 oral) learns sparse codes for efficient retrieval but does not target semantic steerability.
-MetaEmbed~\citep{meta2025metaembed} uses multiple embedding vectors per query.
-Our approach is complementary: fractal embeddings could be combined with compression or sparsification.
+CSR~\citep{chen2025csr} (ICML 2025) and CSRv2~\citep{chen2026csrv2} (ICLR 2026) learn sparse codes as alternatives to MRL, achieving superior efficiency through selective activation.
+These address adaptive dimensionality via sparsity; our approach addresses it via hierarchical prefix structure.
+The two are orthogonal and potentially complementary: fractal embeddings could be sparsified for further efficiency.
 
 %=======================================================================
 \section{Conclusion}
