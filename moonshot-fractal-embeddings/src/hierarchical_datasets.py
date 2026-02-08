@@ -735,6 +735,339 @@ class NewsgroupsHierarchical(HierarchicalDataset):
         AGNewsHierarchical._create_mock_data(self)
 
 
+class WOSHierarchical(HierarchicalDataset):
+    """
+    Web of Science (WOS-46985) with natural 2-level hierarchy.
+
+    L0 = 7 research areas, L1 = 134 domains.
+    HF ID: HDLTex/web_of_science  config: WOS-46985
+    """
+
+    def __init__(self, split: str = "train", max_samples: int = None):
+        super().__init__()
+
+        if not DATASETS_AVAILABLE:
+            print("datasets library not available")
+            self._create_mock_data()
+            return
+
+        print("Loading WOS-46985...")
+        try:
+            dataset = load_dataset("HDLTex/web_of_science", "WOS-46985", split="train")
+        except Exception as e:
+            print(f"Could not load WOS: {e}")
+            self._create_mock_data()
+            return
+
+        # WOS only has train split; we manually split
+        items = list(dataset)
+        random.seed(42)
+        random.shuffle(items)
+        n = len(items)
+        if split == "train":
+            items = items[:int(0.7 * n)]
+        elif split == "test":
+            items = items[int(0.7 * n):int(0.85 * n)]
+        else:  # validation
+            items = items[int(0.85 * n):]
+
+        if max_samples is not None:
+            items = items[:max_samples]
+
+        # Build label name mappings from data
+        l0_names_set = {}
+        l1_names_set = {}
+        for item in items:
+            l0 = item.get("label_level_1", item.get("Y1", 0))
+            l1 = item.get("label_level_2", item.get("Y2", 0))
+            if l0 not in l0_names_set:
+                l0_names_set[l0] = f"Area_{l0}"
+            if l1 not in l1_names_set:
+                l1_names_set[l1] = f"Domain_{l1}"
+
+        # Contiguous re-indexing
+        l0_sorted = sorted(l0_names_set.keys())
+        l1_sorted = sorted(l1_names_set.keys())
+        l0_remap = {orig: i for i, orig in enumerate(l0_sorted)}
+        l1_remap = {orig: i for i, orig in enumerate(l1_sorted)}
+        self.level0_names = [l0_names_set[k] for k in l0_sorted]
+        self.level1_names = [l1_names_set[k] for k in l1_sorted]
+        self.level2_names = []
+
+        for i, item in enumerate(items):
+            text_col = "input_data" if "input_data" in item else "token" if "token" in item else "Abstract"
+            text = item.get(text_col, str(item))[:512]
+            l0_orig = item.get("label_level_1", item.get("Y1", 0))
+            l1_orig = item.get("label_level_2", item.get("Y2", 0))
+
+            level0 = l0_remap[l0_orig]
+            level1 = l1_remap[l1_orig]
+
+            self.samples.append(HierarchicalSample(
+                text=text,
+                level0_label=level0,
+                level1_label=level1,
+                level2_label=i,
+                level0_name=self.level0_names[level0],
+                level1_name=self.level1_names[level1],
+                level2_name=f"sample_{i}",
+            ))
+            self.level2_names.append(f"sample_{i}")
+
+        print(f"Loaded {len(self.samples)} samples")
+        print(f"Hierarchy: {len(self.level0_names)} L0 -> {len(self.level1_names)} L1")
+
+    def _create_mock_data(self):
+        AGNewsHierarchical._create_mock_data(self)
+
+
+class GoEmotionsHierarchical(HierarchicalDataset):
+    """
+    GoEmotions with emotion hierarchy.
+
+    L0 = 4 coarse emotion groups (positive, negative, ambiguous, neutral)
+    L1 = 28 fine emotions
+    HF ID: google-research-datasets/go_emotions (simplified config)
+    Multi-label: we filter to single-label examples for clean hierarchy.
+    """
+
+    COARSE_MAP = {
+        "positive": ["admiration", "amusement", "approval", "caring", "desire",
+                      "excitement", "gratitude", "joy", "love", "optimism",
+                      "pride", "relief"],
+        "negative": ["anger", "annoyance", "disappointment", "disapproval",
+                      "disgust", "embarrassment", "fear", "grief",
+                      "nervousness", "remorse", "sadness"],
+        "ambiguous": ["confusion", "curiosity", "realization", "surprise"],
+        "neutral": ["neutral"],
+    }
+
+    LABEL_NAMES = [
+        "admiration", "amusement", "anger", "annoyance", "approval",
+        "caring", "confusion", "curiosity", "desire", "disappointment",
+        "disapproval", "disgust", "embarrassment", "excitement",
+        "fear", "gratitude", "grief", "joy", "love",
+        "nervousness", "optimism", "pride", "realization",
+        "relief", "remorse", "sadness", "surprise", "neutral"
+    ]
+
+    def __init__(self, split: str = "train", max_samples: int = None):
+        super().__init__()
+
+        if not DATASETS_AVAILABLE:
+            print("datasets library not available")
+            self._create_mock_data()
+            return
+
+        print("Loading GoEmotions...")
+        try:
+            hf_split = "validation" if split == "val" else split
+            dataset = load_dataset("google-research-datasets/go_emotions", "simplified", split=hf_split)
+        except Exception as e:
+            print(f"Could not load GoEmotions: {e}")
+            self._create_mock_data()
+            return
+
+        # Build fine-to-coarse mapping
+        fine_to_coarse = {}
+        for coarse_name, fine_list in self.COARSE_MAP.items():
+            for fine_name in fine_list:
+                if fine_name in self.LABEL_NAMES:
+                    fine_to_coarse[self.LABEL_NAMES.index(fine_name)] = coarse_name
+
+        self.level0_names = list(self.COARSE_MAP.keys())
+        self.level1_names = self.LABEL_NAMES[:]
+        self.level2_names = []
+
+        l0_name_to_idx = {n: i for i, n in enumerate(self.level0_names)}
+
+        items = list(dataset)
+        if max_samples is not None:
+            items = items[:max_samples]
+
+        for i, item in enumerate(items):
+            labels = item["labels"]
+            # Use single-label examples only for clean hierarchy
+            if len(labels) != 1:
+                continue
+
+            fine_id = labels[0]
+            if fine_id >= len(self.LABEL_NAMES):
+                continue
+
+            coarse_name = fine_to_coarse.get(fine_id)
+            if coarse_name is None:
+                continue
+
+            level0 = l0_name_to_idx[coarse_name]
+            level1 = fine_id
+
+            self.samples.append(HierarchicalSample(
+                text=item["text"],
+                level0_label=level0,
+                level1_label=level1,
+                level2_label=len(self.samples),
+                level0_name=coarse_name,
+                level1_name=self.LABEL_NAMES[fine_id],
+                level2_name=f"sample_{len(self.samples)}",
+            ))
+            self.level2_names.append(f"sample_{len(self.samples) - 1}")
+
+        print(f"Loaded {len(self.samples)} samples (single-label only)")
+        print(f"Hierarchy: {len(self.level0_names)} L0 -> {len(set(s.level1_label for s in self.samples))} L1 (active)")
+
+    def _create_mock_data(self):
+        AGNewsHierarchical._create_mock_data(self)
+
+
+class ArxivHierarchical(HierarchicalDataset):
+    """
+    arXiv paper classification with natural archive/subcategory hierarchy.
+
+    L0 = archives (cs, math, physics, stat, eess, etc.)
+    L1 = subcategories (cs.AI, cs.CL, math.PR, etc.)
+    HF ID: TimSchopf/arxiv_categories
+    Multi-label: we use the PRIMARY (first) category.
+    """
+
+    def __init__(self, split: str = "train", max_samples: int = None):
+        super().__init__()
+
+        if not DATASETS_AVAILABLE:
+            print("datasets library not available")
+            self._create_mock_data()
+            return
+
+        print("Loading arXiv categories...")
+        try:
+            hf_split = "validation" if split == "val" else split
+            dataset = load_dataset("TimSchopf/arxiv_categories", "default", split=hf_split)
+        except Exception as e:
+            print(f"Could not load arXiv: {e}")
+            self._create_mock_data()
+            return
+
+        items = list(dataset)
+        if max_samples is not None:
+            items = items[:max_samples]
+
+        # First pass: discover all archives and subcategories
+        archive_set = set()
+        subcat_set = set()
+        for item in items:
+            cats = item["categories"]
+            if not cats:
+                continue
+            primary = cats[0]
+            parts = primary.split(".")
+            archive = parts[0] if len(parts) >= 2 else primary
+            archive_set.add(archive)
+            subcat_set.add(primary)
+
+        archive_sorted = sorted(archive_set)
+        subcat_sorted = sorted(subcat_set)
+        self.level0_names = archive_sorted
+        self.level1_names = subcat_sorted
+        self.level2_names = []
+
+        l0_map = {a: i for i, a in enumerate(archive_sorted)}
+        l1_map = {s: i for i, s in enumerate(subcat_sorted)}
+
+        for i, item in enumerate(items):
+            cats = item["categories"]
+            if not cats:
+                continue
+            primary = cats[0]
+            parts = primary.split(".")
+            archive = parts[0] if len(parts) >= 2 else primary
+
+            if archive not in l0_map or primary not in l1_map:
+                continue
+
+            text = f"{item.get('title', '')} {item.get('abstract', '')}"[:512]
+            level0 = l0_map[archive]
+            level1 = l1_map[primary]
+
+            self.samples.append(HierarchicalSample(
+                text=text,
+                level0_label=level0,
+                level1_label=level1,
+                level2_label=len(self.samples),
+                level0_name=archive,
+                level1_name=primary,
+                level2_name=f"sample_{len(self.samples)}",
+            ))
+            self.level2_names.append(f"sample_{len(self.samples) - 1}")
+
+        print(f"Loaded {len(self.samples)} samples")
+        print(f"Hierarchy: {len(self.level0_names)} L0 -> {len(self.level1_names)} L1")
+
+    def _create_mock_data(self):
+        AGNewsHierarchical._create_mock_data(self)
+
+
+class DBPediaClassesHierarchical(HierarchicalDataset):
+    """
+    DBPedia Classes with rich 3-level hierarchy (we use L1 -> L2).
+
+    L1 = 9 coarse categories, L2 = 70 fine categories (L3 = 219 finest).
+    HF ID: DeveloperOats/DBPedia_Classes
+    """
+
+    def __init__(self, split: str = "train", max_samples: int = None):
+        super().__init__()
+
+        if not DATASETS_AVAILABLE:
+            print("datasets library not available")
+            self._create_mock_data()
+            return
+
+        print("Loading DBPedia Classes...")
+        try:
+            dataset = load_dataset("DeveloperOats/DBPedia_Classes", split=split)
+        except Exception as e:
+            print(f"Could not load DBPedia Classes: {e}")
+            self._create_mock_data()
+            return
+
+        items = list(dataset)
+        if max_samples is not None:
+            items = items[:max_samples]
+
+        # Discover unique L1 and L2 values
+        l1_set = sorted(set(item["l1"] for item in items))
+        l2_set = sorted(set(item["l2"] for item in items))
+
+        l1_remap = {orig: i for i, orig in enumerate(l1_set)}
+        l2_remap = {orig: i for i, orig in enumerate(l2_set)}
+
+        self.level0_names = [f"Class_{v}" for v in l1_set]
+        self.level1_names = [f"SubClass_{v}" for v in l2_set]
+        self.level2_names = []
+
+        for i, item in enumerate(items):
+            text = item["text"][:512]
+            level0 = l1_remap[item["l1"]]
+            level1 = l2_remap[item["l2"]]
+
+            self.samples.append(HierarchicalSample(
+                text=text,
+                level0_label=level0,
+                level1_label=level1,
+                level2_label=i,
+                level0_name=self.level0_names[level0],
+                level1_name=self.level1_names[level1],
+                level2_name=f"sample_{i}",
+            ))
+            self.level2_names.append(f"sample_{i}")
+
+        print(f"Loaded {len(self.samples)} samples")
+        print(f"Hierarchy: {len(self.level0_names)} L0 -> {len(self.level1_names)} L1")
+
+    def _create_mock_data(self):
+        AGNewsHierarchical._create_mock_data(self)
+
+
 def load_hierarchical_dataset(name: str, split: str = "train", max_samples: int = None) -> HierarchicalDataset:
     """Load a hierarchical dataset by name."""
     datasets_map = {
@@ -746,6 +1079,10 @@ def load_hierarchical_dataset(name: str, split: str = "train", max_samples: int 
         "trec": TRECHierarchical,
         "newsgroups": NewsgroupsHierarchical,
         "20newsgroups": NewsgroupsHierarchical,
+        "wos": WOSHierarchical,
+        "goemotions": GoEmotionsHierarchical,
+        "arxiv": ArxivHierarchical,
+        "dbpedia_classes": DBPediaClassesHierarchical,
     }
 
     if name.lower() not in datasets_map:
