@@ -10,6 +10,12 @@
 
 ---
 
+## Abstract (Codex-drafted, 240 words)
+
+Modern embedding models support dimensional truncation, but truncation typically changes fidelity rather than semantic level, leaving no mechanism to *steer* between coarse and fine meaning at inference time. We introduce **Fractal Embeddings**, a hierarchy-aligned prefix supervision scheme that trains short prefixes (64d) on coarse labels (L0) and full embeddings (256d) on fine labels (L1), using a frozen backbone with learned heads only. Against a matched Matryoshka Representation Learning (MRL; NeurIPS 2022) baseline trained on L1 at all prefix lengths, our V5 method preserves full-resolution performance (no loss at j=4) while inducing robust steerability: truncated prefixes encode coarse semantics, whereas full vectors recover fine semantics. Causal ablations identify alignment as the driver of this effect: aligned supervision yields S=+0.053, inverted alignment flips direction (S=-0.018), and removing prefix-specific supervision collapses the signal (S=+0.009); p<10^-6 across 5 seeds, 3 conditions, and CLINC. In a synthetic hierarchy with fixed text and varied coarse partitions, steerability scales with H(L0) and exhibits a Goldilocks optimum at ~12-16 coarse classes (quadratic R²=0.964). Across four real datasets, steerability is perfectly rank-ordered by H(L1|L0) (Spearman rho=1.0, p=0.042); MRL remains near zero in all synthetic, real, and ablation settings. These results establish hierarchy alignment as a principled control knob for semantic granularity, enabling a single embedding to support coarse-to-fine behavior without sacrificing fine-grained accuracy.
+
+---
+
 ## Central Claim: The Fractal Embedding Principle (v2 — updated by synthetic experiment)
 
 For prefix-truncated embeddings:
