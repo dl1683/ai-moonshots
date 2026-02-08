@@ -49,6 +49,14 @@ Cross-model replication on Qwen3-0.6B confirms architecture invariance.
 These results establish hierarchy alignment as a principled control knob for semantic granularity.
 \end{abstract}
 
+% Hero figure
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{../results/figures/paper/fig1_teaser.pdf}
+    \caption{CLINC-150: V5 and MRL achieve comparable accuracy at full embedding length (256d), but V5's short prefixes (64d) specialize for coarse semantics while MRL's do not. This prefix specialization enables \emph{semantic steering} via dimensional truncation.}
+    \label{fig:teaser}
+\end{figure}
+
 %=======================================================================
 \section{Introduction}
 \label{sec:intro}
@@ -65,7 +73,7 @@ An ideal embedding should allow a user to \emph{steer} between these levels by c
 
 We introduce \textbf{Fractal Embeddings}, a simple modification to MRL training that aligns prefix supervision with semantic hierarchy.
 Instead of training all prefix lengths on the finest-grained labels (as in MRL), we train short prefixes on coarse labels ($L_0$) and full embeddings on fine labels ($L_1$).
-This creates embeddings where dimensional truncation corresponds to semantic zoom: fewer dimensions $\rightarrow$ coarser meaning, more dimensions $\rightarrow$ finer meaning.
+This creates embeddings where dimensional truncation corresponds to semantic zoom: fewer dimensions $\rightarrow$ coarser meaning, more dimensions $\rightarrow$ finer meaning (Figure~\ref{fig:teaser}).
 
 Our key contributions are:
 \begin{enumerate}
@@ -163,6 +171,32 @@ This isolates the effect of hierarchy alignment from all other training choices 
 Head-only training for 5 epochs, batch size 16, learning rate $10^{-4}$ with AdamW and cosine decay.
 Mixed-precision (FP16) training with gradient clipping at 1.0.
 Best model selected by validation score $\text{L0} + \text{L1}$.
+Algorithm~\ref{alg:v5} summarizes the procedure.
+
+\begin{algorithm}[t]
+\caption{V5 Progressive Prefix Supervision}
+\label{alg:v5}
+\begin{algorithmic}[1]
+\REQUIRE Backbone $f_\theta$ (frozen), head $W$, dataset $\mathcal{D}$ with $(x, y^{(0)}, y^{(1)})$
+\REQUIRE Prefix probs $\mathbf{p} = [0.4, 0.3, 0.2, 0.1]$, block keep $\mathbf{k} = [0.95, 0.9, 0.8, 0.7]$
+\FOR{each batch $\{(x_i, y_i^{(0)}, y_i^{(1)})\}$}
+    \STATE $\mathbf{h} \leftarrow f_\theta(x_i)$ \hfill \COMMENT{frozen backbone}
+    \STATE $\mathbf{e} \leftarrow W \cdot \mathbf{h}$ \hfill \COMMENT{learned projection to $\mathbb{R}^d$}
+    \STATE Apply block dropout with keep probs $\mathbf{k}$
+    \STATE Sample $j \sim \text{Categorical}(\mathbf{p})$
+    \STATE $\mathcal{L}_\text{full} \leftarrow \text{CE}(\text{head}_\text{bot}(\mathbf{e}), y^{(1)})$
+    \IF{$j = 1$}
+        \STATE $\mathcal{L}_\text{prefix} \leftarrow \text{CE}(\text{head}_\text{top}(\mathbf{e}_{1:d/4}), y^{(0)})$
+    \ELSIF{$j = 4$}
+        \STATE $\mathcal{L}_\text{prefix} \leftarrow \text{CE}(\text{head}_\text{bot}(\mathbf{e}), y^{(1)})$
+    \ELSE
+        \STATE $\mathcal{L}_\text{prefix} \leftarrow \alpha_j \cdot \text{CE}(\text{head}_\text{top}, y^{(0)}) + (1-\alpha_j) \cdot \text{CE}(\text{head}_\text{bot}, y^{(1)})$
+    \ENDIF
+    \STATE $\mathcal{L} \leftarrow \mathcal{L}_\text{full} + 0.6 \cdot \mathcal{L}_\text{prefix}$
+    \STATE Update $W$, $\text{head}_\text{top}$, $\text{head}_\text{bot}$ via $\nabla_W \mathcal{L}$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
 %=======================================================================
 \section{Main Results: Accuracy Parity with Steerability Gains}
@@ -192,6 +226,13 @@ CLINC & 0.961 & 0.983 & 0.920 & 0.890 & 0.946 & 0.684 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig3_forest_plot.pdf}
+    \caption{Cross-dataset steerability: V5 (blue) produces positive steerability that scales with hierarchy depth, while MRL (orange) remains near zero across all datasets. Error bars show 95\% CIs.}
+    \label{fig:forest}
+\end{figure}
 
 \paragraph{Steerability.}
 Despite classification parity, V5 produces dramatically higher steerability than MRL across all datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
@@ -231,6 +272,13 @@ Only the prefix-to-hierarchy mapping changes:
     \item \textbf{Inverted}: $j=1 \rightarrow L_1$, $j=4 \rightarrow L_0$ (reversed alignment).
     \item \textbf{No-prefix}: All prefix lengths trained on $L_1$ with additional $L_0$ regularization (no alignment).
 \end{itemize}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig4_ablation.pdf}
+    \caption{Causal ablation on CLINC-150 (5 seeds). Aligned supervision (V5) produces positive steerability; inverting alignment reverses the sign; removing prefix-specific alignment collapses it. Individual seed values shown as dots.}
+    \label{fig:ablation}
+\end{figure}
 
 \paragraph{Results.}
 The ablation results (Table~\ref{tab:ablation}, Figure~\ref{fig:ablation}) provide definitive causal evidence:
@@ -275,8 +323,10 @@ If V5 embeddings truly separate coarse and fine information across prefix blocks
 MRL, which does not separate semantic levels across blocks, should show lower rates on both metrics.
 
 \paragraph{Results.}
-We evaluate on 500 cross-$L_0$ pairs from CLINC-150 (results reported after experiments complete; placeholder for final numbers).
-V5 shows significantly higher coarse transfer and fine preservation rates than MRL, confirming that individual prefix blocks carry causally distinct semantic information---a property unique to hierarchy-aligned supervision.
+We evaluate on 500 cross-$L_0$ pairs from CLINC-150.
+If V5 truly separates semantic levels, we expect the chimera's $L_0$ prediction to follow the donor (high coarse transfer rate) while its $L_1$ prediction follows the recipient (high fine preservation rate).
+MRL chimeras, lacking semantic separation, should show lower rates on both metrics.
+This ``prefix surgery'' is the strongest form of causal test: it manipulates the \emph{representation}, not the training signal.
 
 %=======================================================================
 \section{Steerability Scaling Law}
@@ -287,6 +337,13 @@ Having established that alignment causes steerability, we investigate what deter
 We present two complementary analyses: an observational study across real datasets and a causal intervention using synthetic hierarchies.
 
 \subsection{Observational: Steerability Scales with Hierarchy Complexity}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig5_scaling_law.pdf}
+    \caption{Steerability scales with hierarchy refinement entropy $\hlo$ across real datasets (Spearman $\rho = 1.0$, $p = 0.042$).}
+    \label{fig:scaling}
+\end{figure}
 
 Across our four real datasets, steerability is perfectly rank-ordered by conditional entropy $\hlo$ (Spearman $\rho = 1.0$, $p = 0.042$; Figure~\ref{fig:scaling}).
 A linear fit yields $\steer \approx 0.015 \cdot \hlo - 0.003$ ($R^2 = 0.79$).
@@ -299,6 +356,13 @@ This confound prevents us from determining whether the mechanism operates throug
 To break this confound, we construct synthetic hierarchies with \emph{fixed text and fixed total entropy} $H(L_1) = \log_2 150$ but varying coarse partitions $K_0 \in \{2, 3, 5, 10, 15, 25, 50, 75\}$.
 As $K_0$ increases, $\hlz = \log_2 K_0$ increases while $\hlo = \log_2(150/K_0)$ decreases.
 We train V5 and MRL on each synthetic hierarchy using CLINC-150 text and evaluate steerability.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig6_synthetic.pdf}
+    \caption{Synthetic hierarchy experiment: steerability shows a ``Goldilocks'' effect, peaking when coarse task entropy $\hlz$ matches prefix capacity ($K_0 \approx 12$--16). MRL remains near zero throughout. Quadratic fit $R^2 = 0.964$.}
+    \label{fig:synthetic}
+\end{figure}
 
 \paragraph{Results.}
 Figure~\ref{fig:synthetic} reveals the mechanism:
@@ -338,6 +402,7 @@ $K_0$ & $\hlz$ & $\hlo$ & Branch & V5 $\steer$ & MRL $\steer$ & Gap \\
 The synthetic experiment reveals that $\steer \sim \hlz$ (prefix task demand), not $\steer \sim \hlo$.
 In natural datasets, the observational correlation with $\hlo$ arises because $\hlz$ and $\hlo$ covary positively.
 The synthetic experiment breaks this confound by holding total entropy fixed while varying $K_0$.
+Figure~\ref{fig:entropy_alloc} in the appendix visualizes both relationships side by side.
 
 %=======================================================================
 \section{Generality and Limitations}
@@ -476,6 +541,16 @@ The connection to successive refinement theory suggests this is not merely an em
 % APPENDIX
 %=======================================================================
 \appendix
+
+\section{Entropy Allocation Analysis}
+\label{app:entropy}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{../results/figures/paper/fig7_entropy_allocation.pdf}
+    \caption{Disentangling the scaling law. \textbf{Left:} Steerability vs.\ $\hlz$ (prefix task demand) --- the true driver, confirmed by the synthetic experiment. \textbf{Right:} Steerability vs.\ $\hlo$ --- a confounded proxy in observational data. Synthetic data (green diamonds) breaks the confound: $\hlo$ anti-correlates with steerability when $\hlz$ is varied independently.}
+    \label{fig:entropy_alloc}
+\end{figure}
 
 \section{Full Synthetic Hierarchy Results}
 \label{app:synthetic}
