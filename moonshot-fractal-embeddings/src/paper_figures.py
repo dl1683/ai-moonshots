@@ -254,55 +254,49 @@ def fig3_forest_plot():
 # Figure 4: Causal ablation bar plot with sign reversal
 # ============================================================================
 def fig4_ablation():
-    """Bar plot showing V5/inverted/no-prefix steerability on CLINC (5 seeds)."""
-    abl = json.load(open(RESULTS_DIR / "ablation_steerability_bge-small_clinc.json"))
-
+    """Grouped bar plot showing V5/inverted/no-prefix steerability on CLINC + TREC."""
+    datasets_info = [
+        ('clinc', 'CLINC (H=3.90, 5s)'),
+        ('trec', 'TREC (H=2.21, 3s)'),
+    ]
     conditions = ['v5', 'inverted', 'no_prefix']
-    labels = ['V5\n(Aligned)', 'Inverted\n(Reversed)', 'No-Prefix\n(Control)']
+    cond_labels = ['Aligned (V5)', 'Inverted', 'No-Prefix']
     colors = [V5_COLOR, INV_COLOR, NP_COLOR]
 
-    means = []
-    stds = []
-    all_points = []
-    for cond in conditions:
-        steers = [r['steerability_score'] for r in abl['results'][cond]]
-        means.append(np.mean(steers))
-        stds.append(np.std(steers))
-        all_points.append(steers)
+    n_datasets = len(datasets_info)
+    n_conds = len(conditions)
+    bar_width = 0.22
+    fig, ax = plt.subplots(figsize=(8, 5))
 
-    fig, ax = plt.subplots(figsize=(7, 5))
-    x = np.arange(len(conditions))
+    for di, (ds_name, ds_label) in enumerate(datasets_info):
+        abl_path = RESULTS_DIR / f"ablation_steerability_bge-small_{ds_name}.json"
+        if not abl_path.exists():
+            continue
+        abl = json.load(open(abl_path))
 
-    bars = ax.bar(x, means, 0.6, color=colors, alpha=0.8,
-                  edgecolor='black', linewidth=0.5)
+        for ci, cond in enumerate(conditions):
+            steers = [r['steerability_score'] for r in abl['results'][cond]]
+            m = np.mean(steers)
+            s = np.std(steers, ddof=1) if len(steers) > 1 else 0
+            xpos = di + (ci - 1) * bar_width
 
-    # Error bars
-    ax.errorbar(x, means, yerr=stds, fmt='none', color='black',
-               capsize=5, linewidth=1.5)
-
-    # Individual seed points
-    for i, points in enumerate(all_points):
-        ax.scatter([x[i]] * len(points), points, color='black',
-                  s=30, zorder=5, alpha=0.6)
+            ax.bar(xpos, m, bar_width * 0.9, color=colors[ci], alpha=0.8,
+                   edgecolor='black', linewidth=0.5,
+                   label=cond_labels[ci] if di == 0 else None)
+            ax.errorbar(xpos, m, yerr=s, fmt='none', color='black',
+                       capsize=3, linewidth=1.2)
+            # Individual seeds
+            for pt in steers:
+                ax.scatter(xpos, pt, color='black', s=20, zorder=5, alpha=0.5)
 
     ax.axhline(y=0, color='black', linewidth=1, linestyle='-')
-    ax.set_xticks(x)
-    ax.set_xticklabels(labels)
+    ax.set_xticks(range(n_datasets))
+    ax.set_xticklabels([d[1] for d in datasets_info])
     ax.set_ylabel('Steerability Score')
-    ax.set_title('Causal Ablation: Hierarchy Alignment Determines Steerability\n(CLINC, bge-small, 5 seeds)',
+    ax.set_title('Causal Ablation: Sign Flip Replicates Across Datasets',
                 fontweight='bold')
+    ax.legend(loc='upper right', framealpha=0.9)
     ax.grid(axis='y', alpha=0.3)
-
-    # Annotations — positioned to avoid overlap
-    ax.annotate(f'+{means[0]:.3f}', xy=(0, means[0]),
-               xytext=(0.35, means[0]-0.008), fontsize=10, color=V5_COLOR,
-               ha='center', fontweight='bold')
-    ax.annotate(f'{means[1]:.3f}', xy=(1, means[1]),
-               xytext=(1.35, means[1]+0.005), fontsize=10, color=INV_COLOR,
-               ha='center', fontweight='bold')
-    ax.annotate(f'+{means[2]:.3f}', xy=(2, means[2]),
-               xytext=(2.35, means[2]-0.008), fontsize=10, color='gray',
-               ha='center', fontweight='bold')
 
     fig.tight_layout()
     fig.savefig(FIGURES_DIR / "fig4_ablation.png")
