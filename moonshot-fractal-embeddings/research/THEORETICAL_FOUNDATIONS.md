@@ -109,6 +109,71 @@ If prediction holds across architectures/tasks → LAW, not trick.
 
 This would be the THEORETICAL contribution. Combined with the predict-before-train experiment, it's a complete story.
 
+## EMPIRICAL SCALING LAW (Validated Feb 2026)
+
+### The Discovery
+
+**V5 steerability is a monotonic function of H(L1|L0), predictable from data alone.**
+
+| Dataset | H(L1|L0) | V5 Steer | MRL Steer | V5-MRL Gap |
+|---------|----------|----------|-----------|------------|
+| Yahoo | 1.229 | -0.004* | +0.006 | -0.010 |
+| Newsgroups | 1.882 | +0.022 | +0.009 | +0.013 |
+| TREC | 2.211 | +0.045 | +0.003 | +0.041 |
+| CLINC | 3.903 | +0.053 | -0.010 | +0.063 |
+
+\*Yahoo: 1 seed only; 3-seed mean ~+0.011 from prior run.
+
+**Statistical Results:**
+- Spearman rho = 1.0 (perfect rank correlation), exact permutation p = 0.042
+- V5-MRL Gap: also rho = 1.0, p = 0.042
+- MRL: rho = -0.8, p = 0.20 (NOT significant — hierarchy-agnostic training cannot capture this)
+- Linear fit: Steer = 0.019 * H(L1|L0) - 0.016, R^2 = 0.75
+
+### The Hierarchical Rate-Allocation Law (Codex GPT-5.3 formulation)
+
+S_V5(H, j1) = kappa * [H - C(j1)]+
+
+Where:
+- H = H(L1|L0) = conditional entropy of hierarchy (data property)
+- C(j1) = effective fine-detail capacity of short prefix (architecture property)
+- kappa = steerability per bit (universal conversion rate)
+- [x]+ = max(0, x) (hinge — below capacity threshold, no steerability)
+
+**Falsifiable predictions:**
+1. Increasing short-prefix width raises C(j1), shifting elbow H_c to the right
+2. At matched H, different datasets should collapse to similar S (sufficiency)
+3. MRL should not show comparable positive slope vs H (confirmed: rho = -0.8)
+
+### Causal Validation Plan (In Progress)
+
+**Synthetic Hierarchy Experiment:**
+- Base: CLINC 150 fine classes (same text content across all conditions)
+- Vary: K0 coarse groups = {2, 3, 5, 10, 15, 25, 50, 75}
+- This DIRECTLY MANIPULATES H(L1|L0) while holding text fixed
+- Expected: 8 data points tracing out the hinge law
+- If confirmed: causal + observational evidence combined = overwhelming
+
+**Capacity Sweep (tests C(j1) prediction):**
+- Inverted V5 with prefix dim = {32d, 64d, 128d}
+- Increasing prefix capacity should shift the threshold H_c
+- If confirmed: the law has two independent testable components
+
+### Path to Universal Constant
+
+Codex analysis suggests the slope (0.019) is not a universal constant but a
+regime-specific effective slope. To derive from first principles:
+1. R_1 = I(L1; Z_j1 | L0) = mutual info of fine labels given short prefix
+2. Steer ~ H(L1|L0) - R_1 (unresolved conditional entropy)
+3. Convert info gain to accuracy gain via Fano's inequality
+4. Upper bound on slope: ~1/log2(K1 - 1) (dataset-dependent)
+
+After capacity normalization, the slope may become architecture-invariant.
+This would be the "universal constant" — the efficiency with which
+any hierarchical representation converts entropy into steerability.
+
+---
+
 ## WHAT MAKES THIS TURING-LEVEL
 
 1. **Necessity theorem**: hierarchical tasks REQUIRE nested representations for optimal scaling
