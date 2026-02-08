@@ -22,7 +22,7 @@ RESULTS_DIR = Path(__file__).parent.parent / "results"
 
 # Datasets with highest expected contrast in steerability
 DATASETS = ["clinc", "trec"]
-SEEDS = [42]  # Start with 1 seed, expand to 3 if results are clear
+SEEDS = [42, 123, 456]  # 3 seeds for publication-grade CIs
 
 
 def compute_steerability(prefix_accuracy):
@@ -43,11 +43,23 @@ def main():
         print(f"  CROSS-MODEL: {model_key} on {ds_name}")
         print(f"{'='*70}")
 
-        ds_results = {"dataset": ds_name, "model": model_key, "seeds": SEEDS}
+        # Load existing results to skip completed seeds
+        out_path = RESULTS_DIR / f"crossmodel_{model_key}_{ds_name}.json"
+        if out_path.exists():
+            existing = json.load(open(out_path))
+            ds_results = existing
+            ds_results["seeds"] = SEEDS
+        else:
+            ds_results = {"dataset": ds_name, "model": model_key, "seeds": SEEDS}
 
         # V5
-        v5_results = {}
+        v5_results = ds_results.get('v5', {})
         for seed in SEEDS:
+            if str(seed) in v5_results:
+                pa = v5_results[str(seed)].get('prefix_accuracy', {})
+                steer = compute_steerability(pa)
+                print(f"\n  V5 {ds_name} seed={seed} — CACHED, steer={steer:+.4f}")
+                continue
             print(f"\n  V5 {ds_name} seed={seed}")
             torch.cuda.empty_cache()
             gc.collect()
@@ -73,8 +85,13 @@ def main():
         ds_results['v5'] = v5_results
 
         # MRL
-        mrl_results = {}
+        mrl_results = ds_results.get('mrl', {})
         for seed in SEEDS:
+            if str(seed) in mrl_results:
+                pa = mrl_results[str(seed)].get('prefix_accuracy', {})
+                steer = compute_steerability(pa)
+                print(f"\n  MRL {ds_name} seed={seed} — CACHED, steer={steer:+.4f}")
+                continue
             print(f"\n  MRL {ds_name} seed={seed}")
             torch.cuda.empty_cache()
             gc.collect()
@@ -100,8 +117,7 @@ def main():
         ds_results['mrl'] = mrl_results
         all_results[ds_name] = ds_results
 
-        # Save per-dataset
-        out_path = RESULTS_DIR / f"crossmodel_{model_key}_{ds_name}.json"
+        # Save per-dataset (out_path already set above)
         with open(out_path, 'w') as f:
             json.dump(ds_results, f, indent=2,
                      default=lambda x: float(x) if hasattr(x, 'item') else x)
