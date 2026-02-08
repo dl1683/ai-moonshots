@@ -89,15 +89,19 @@ Observational (real datasets):
 - Spearman ρ = 1.0 (p = 0.042), R² = 0.79 for S vs H(L1|L0)
 - But H(L0) and H(L1|L0) covary positively in natural datasets
 
-Synthetic (COMPLETE — 5/8 conditions, 3 remaining):
-- K0=2 (H_L0=1.0): V5=+0.134, MRL=-0.010
-- K0=3 (H_L0=1.6): V5=+0.150, MRL=+0.008
-- K0=5 (H_L0=2.3): V5=+0.216, MRL=+0.002
-- K0=10 (H_L0=3.3): V5=+0.270, MRL=-0.012
-- K0=15 (H_L0=3.9): V5=+0.278, MRL=-0.004
-- CRITICAL: S ~ H(L0), NOT H(L1|L0) (they're negatively correlated here)
-- Mechanism: prefix acts as routing bottleneck; more coarse classes = richer codebook = more steerability
-- Saturation expected at high K0 (Codex prediction: plateau ~+0.30)
+Synthetic (ALL 8 CONDITIONS COMPLETE):
+- Inverted-U shape: S rises K0=2→15, peaks at K0=10-15, then declines K0=25→75
+- Peak: K0=15, V5=+0.278 (H_L0=3.91 bits)
+- S vs H(L0): rho=+0.55 (non-monotonic due to inverted-U, but rising half perfect)
+- S vs H(L1|L0): rho=-0.55 (NEGATIVE — breaks observational confound)
+- MRL consistently near zero across all 8 conditions
+
+**"Goldilocks Hierarchy" framing (Codex):**
+- Rising side: more coarse classes → richer prefix codebook → more steerability
+- Falling side: coarse routing exceeds effective prefix capacity → errors hurt
+- Peak at H*(L0) ≈ 3.6-4.0 bits ≈ K0=12-16 effective coarse states (matches 64d prefix)
+- Fit: hinge model (primary, mechanistic) + quadratic (robustness check)
+- Natural datasets operate near the optimum (CLINC H(L0)=3.32)
 
 ### 7. Generality and Limits (1 page)
 **Table 4**: Cross-model replication (bge-small vs Qwen3-0.6B).
