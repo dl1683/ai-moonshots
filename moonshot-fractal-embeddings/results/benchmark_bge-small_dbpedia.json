@@ -1,0 +1,35 @@
+{
+  "dataset": "dbpedia",
+  "model": "bge-small",
+  "seeds": [
+    42,
+    123,
+    456
+  ],
+  "flat": {
+    "l0_accuracy": 1.0,
+    "l1_accuracy": 1.0
+  },
+  "mrl": {
+    "42": {
+      "error": "run_mrl_experiment() got an unexpected keyword argument 'seed'"
+    },
+    "123": {
+      "error": "run_mrl_experiment() got an unexpected keyword argument 'seed'"
+    },
+    "456": {
+      "error": "run_mrl_experiment() got an unexpected keyword argument 'seed'"
+    }
+  },
+  "v5": {
+    "42": {
+      "error": "run_v5_experiment() got an unexpected keyword argument 'seed'"
+    },
+    "123": {
+      "error": "run_v5_experiment() got an unexpected keyword argument 'seed'"
+    },
+    "456": {
+      "error": "run_v5_experiment() got an unexpected keyword argument 'seed'"
+    }
+  }
+}

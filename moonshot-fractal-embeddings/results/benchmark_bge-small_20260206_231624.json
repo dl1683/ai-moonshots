@@ -1,0 +1,77 @@
+{
+  "model": "bge-small",
+  "datasets": [
+    "trec"
+  ],
+  "methods": [
+    "flat",
+    "mrl",
+    "v5"
+  ],
+  "seeds": [
+    42
+  ],
+  "stage1_epochs": 1,
+  "elapsed_seconds": 92.6456983089447,
+  "timestamp": "2026-02-06T23:16:24.688923",
+  "results": {
+    "trec": {
+      "flat": {
+        "seeds": {
+          "42": {
+            "l0_accuracy": 0.854,
+            "l1_accuracy": 0.718
+          }
+        },
+        "l0_mean": 0.854,
+        "l0_std": 0.0,
+        "l1_mean": 0.718,
+        "l1_std": 0.0
+      },
+      "mrl": {
+        "seeds": {
+          "42": {
+            "l0_accuracy": 0.914,
+            "l1_accuracy": 0.746,
+            "prefix_accuracy": {
+              "j1_l0": 0.912,
+              "j1_l1": 0.74,
+              "j2_l0": 0.91,
+              "j2_l1": 0.734,
+              "j3_l0": 0.908,
+              "j3_l1": 0.748,
+              "j4_l0": 0.914,
+              "j4_l1": 0.746
+            }
+          }
+        },
+        "l0_mean": 0.914,
+        "l0_std": 0.0,
+        "l1_mean": 0.746,
+        "l1_std": 0.0
+      },
+      "v5": {
+        "seeds": {
+          "42": {
+            "l0_accuracy": 0.922,
+            "l1_accuracy": 0.714,
+            "prefix_accuracy": {
+              "j1_l0": 0.922,
+              "j1_l1": 0.714,
+              "j2_l0": 0.926,
+              "j2_l1": 0.744,
+              "j3_l0": 0.922,
+              "j3_l1": 0.72,
+              "j4_l0": 0.922,
+              "j4_l1": 0.714
+            }
+          }
+        },
+        "l0_mean": 0.922,
+        "l0_std": 0.0,
+        "l1_mean": 0.714,
+        "l1_std": 0.0
+      }
+    }
+  }
+}
