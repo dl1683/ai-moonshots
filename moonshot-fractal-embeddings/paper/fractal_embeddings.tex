@@ -345,12 +345,13 @@ The synthetic experiment breaks this confound by holding total entropy fixed whi
 %=======================================================================
 
 \paragraph{Cross-model replication.}
-To verify architecture invariance, we replicate the CLINC and TREC experiments using Qwen3-Embedding-0.6B ($h = 1024$, 10$\times$ larger than BGE-small).
+To verify architecture invariance, we replicate the CLINC and TREC experiments using Qwen3-Embedding-0.6B ($h = 1024$, 10$\times$ larger than BGE-small) with 3 seeds each.
 Table~\ref{tab:crossmodel} shows that Qwen3 produces 2--3$\times$ higher steerability than BGE-small while preserving the rank ordering (CLINC $>$ TREC) and the V5 $\gg$ MRL gap.
-The larger backbone provides a richer feature space for hierarchy-aligned supervision to act on.
+On CLINC, Qwen3 V5 achieves $\steer = +0.153 \pm 0.013$ vs.\ MRL $+0.008 \pm 0.006$ ($p < 0.001$, Cohen's $d = 14.2$).
+The larger backbone provides a richer feature space for hierarchy-aligned supervision to exploit.
 
 \begin{table}[t]
-\caption{Cross-model replication. Steerability is architecture-invariant: the V5 $\gg$ MRL pattern and rank ordering by $\hlo$ hold across both backbone sizes.}
+\caption{Cross-model replication (3 seeds). Steerability is architecture-invariant: the V5 $\gg$ MRL pattern and rank ordering by $\hlo$ hold across both backbone sizes. Qwen3 shows 2--3$\times$ higher steerability, suggesting the effect scales with model capacity.}
 \label{tab:crossmodel}
 \centering
 \small
@@ -360,7 +361,7 @@ The larger backbone provides a richer feature space for hierarchy-aligned superv
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
 Dataset & BGE-small & Qwen3-0.6B & BGE-small & Qwen3-0.6B \\
 \midrule
-CLINC ($\hlo = 3.90$) & $+0.053$ & $+0.138$ & $-0.010$ & $+0.014$ \\
+CLINC ($\hlo = 3.90$) & $+0.053$ & $+0.153 \pm 0.013$ & $-0.010$ & $+0.008 \pm 0.006$ \\
 TREC ($\hlo = 2.21$) & $+0.045$ & $+0.086$ & $+0.003$ & $+0.012$ \\
 \bottomrule
 \end{tabular}
@@ -384,37 +385,44 @@ These metrics measure embedding \emph{behavior}, not training loss, addressing p
 \end{itemize}
 
 %=======================================================================
-\section{Theoretical Analysis}
+\section{Theoretical Analysis: Successive Refinement}
 \label{sec:theory}
 %=======================================================================
 
-We provide an information-theoretic analysis of why hierarchy-aligned supervision induces steerability while uniform supervision (MRL) does not.
+We provide a formal information-theoretic analysis connecting fractal embeddings to the classical theory of \emph{successive refinement}~\citep{equitz1991successive,rimoldi1994successive}.
 
 \paragraph{Setup.}
-Let $\mathbf{z} = [\mathbf{z}_1; \ldots; \mathbf{z}_J] \in \mathbb{R}^d$ be a prefix-truncatable embedding with $J$ blocks.
-Let $L_0$ (coarse) and $L_1$ (fine) be hierarchical labels with $H(L_0) + H(L_1|L_0) = H(L_1)$.
-The steerability metric $\steer$ captures the extent to which $\mathbf{z}_1$ specializes for $L_0$ and $\mathbf{z}$ specializes for $L_1$.
+Let $(X, Y_0, Y_1)$ be a hierarchical source with $Y_0 = g(Y_1)$ (coarse is a deterministic function of fine).
+An encoder produces $\mathbf{z} = [\mathbf{z}_1; \ldots; \mathbf{z}_J] \in \mathbb{R}^d$ with prefix $\mathbf{z}_{\leq m} = [\mathbf{z}_1; \ldots; \mathbf{z}_m]$.
+Let $C(d')$ denote the effective capacity (in bits) of a $d'$-dimensional embedding under the encoder family.
 
-\paragraph{Proposition (Informal).}
-Consider an embedding trained to minimize expected classification loss across randomly sampled prefix lengths.
-If the supervision at prefix $j=1$ targets $L_0$ (coarse) and at $j=J$ targets $L_1$ (fine), then an optimal embedding satisfies:
+\paragraph{Theorem 1 (Hierarchy-Successive-Refinement, informal).}
+\emph{Assume $C(d/J) \geq H(L_0)$ and $C(d/J) < H(L_1)$.
+Under V5 supervision ($\mathbf{z}_{\leq 1} \rightarrow L_0$, $\mathbf{z} \rightarrow L_1$):}
 \begin{equation}
-    I(\mathbf{z}_1; L_0) \geq I(\mathbf{z}_1; L_1 | L_0)
+    I(\mathbf{z}_{\leq 1}; L_0) > I(\mathbf{z}_{\leq 1}; L_1 | L_0) \quad \text{(coarse-prioritized prefix)}
 \end{equation}
-That is, the first block allocates more capacity to coarse information than to refinement information.
-Conversely, if all prefix lengths target $L_1$, then $I(\mathbf{z}_1; L_0) \approx I(\mathbf{z}_J; L_0)$ (no specialization).
+\emph{Under MRL ($\mathbf{z}_{\leq 1} \rightarrow L_1$, $\mathbf{z} \rightarrow L_1$): no specialization, $I(\mathbf{z}_{\leq 1}; L_0) \approx I(\mathbf{z}; L_0)$.}
 
-\paragraph{Intuition.}
-The short prefix faces a capacity bottleneck: with only $d/J$ dimensions, it cannot encode all of $H(L_1)$ bits.
-Under V5 supervision, the gradient pushes $\mathbf{z}_1$ to encode $L_0$, which requires only $H(L_0)$ bits---a compressible target.
-The remaining $H(L_1|L_0)$ bits are allocated to later blocks.
-Under MRL, $\mathbf{z}_1$ must encode $L_1$ in $d/J$ dimensions, so it allocates capacity uniformly---no specialization emerges.
+The proof follows from the capacity bottleneck: V5's prefix loss depends only on $L_0$, so the optimal prefix maximizes $I(\mathbf{z}_{\leq 1}; L_0)$. Since $C(d/J) < H(L_1)$ but $C(d/J) \geq H(L_0)$, the prefix allocates capacity preferentially to the coarse task.
+MRL's prefix loss targets $L_1$, distributing capacity across both $L_0$ and $L_1|L_0$ components without specialization.
 
-\paragraph{Capacity-demand matching.}
-The Goldilocks effect (Section~\ref{sec:scaling}) follows from this analysis: steerability peaks when $H(L_0) \approx C(\mathbf{z}_1)$, where $C(\mathbf{z}_1)$ is the effective capacity of the first block.
-When $H(L_0) \ll C(\mathbf{z}_1)$, the prefix has spare capacity that leaks fine information.
-When $H(L_0) \gg C(\mathbf{z}_1)$, the prefix cannot reliably encode even the coarse labels, and steerability degrades.
-This predicts the quadratic relationship $\steer \approx \alpha H(L_0) - \beta H(L_0)^2$ observed empirically ($R^2 = 0.964$).
+\paragraph{Connection to successive refinement.}
+Hierarchical sources are naturally \emph{successively refinable}~\citep{rimoldi1994successive}: the optimal multi-resolution code first encodes $Y_0$ at rate $R_1 \geq H(Y_0)$, then encodes the residual $Y_1|Y_0$ at rate $R_2 \geq H(Y_1|Y_0)$.
+V5 training approximates this: block 1 encodes $Y_0$, blocks 2--$J$ encode the refinement.
+MRL instead performs single-resolution coding at each rate, losing the nested structure.
+This explains why V5 achieves accuracy parity at full resolution while gaining steerability at short prefixes: it matches the rate-distortion bound for the multi-resolution problem.
+
+\paragraph{Theorem 2 (Goldilocks capacity-demand matching, informal).}
+\emph{With fixed $H(Y_1)$ and varying $K_0$, steerability $\steer(K_0)$ peaks at $H^*(L_0) \approx C(d/J)$:}
+\begin{itemize}
+    \item \emph{When $H(L_0) < C(d/J)$}: spare prefix capacity leaks $L_1|L_0$ information, reducing $\steer$.
+    \item \emph{When $H(L_0) > C(d/J)$}: by Fano's inequality, prefix errors degrade coarse classification, reducing $\steer$.
+    \item \emph{Taylor expansion around $H^*$}: $\steer \approx \steer^* - \alpha(H(L_0) - H^*)^2$, matching the empirical quadratic fit ($R^2 = 0.964$).
+\end{itemize}
+
+\paragraph{Testable prediction.}
+Doubling the prefix dimension from 64 to 128 should shift the Goldilocks peak rightward (to higher $K_0$), as $C(d/J)$ increases. This is verifiable via a capacity sweep ablation.
 
 %=======================================================================
 \section{Related Work}
