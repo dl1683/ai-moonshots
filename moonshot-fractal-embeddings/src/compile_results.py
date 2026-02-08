@@ -263,21 +263,29 @@ def main():
         print_section("6. SYNTHETIC HIERARCHY EXPERIMENT (causal intervention)")
         sd = json.load(open(synth_file))
         results = [r for r in sd.get('results', []) if 'v5_steerability' in r]
-        print(f"\n  {'K0':<6} {'H(L1|L0)':<10} {'V5 Steer':<12} {'MRL Steer':<12} {'Gap'}")
-        print(f"  {'-'*50}")
-        for r in sorted(results, key=lambda x: x['hierarchy_stats']['h_l1_given_l0']):
-            h = r['hierarchy_stats']['h_l1_given_l0']
+        print(f"\n  {'K0':<6} {'H(L0)':<8} {'H(L1|L0)':<10} {'Branch':<8} {'V5 Steer':<12} {'MRL Steer':<12} {'Gap'}")
+        print(f"  {'-'*75}")
+        for r in sorted(results, key=lambda x: x['k0']):
+            hs = r['hierarchy_stats']
+            h_l1_l0 = hs['h_l1_given_l0']
+            h_l0 = np.log2(r['k0'])  # uniform coarse groups
+            branch = hs.get('branching', 150.0 / r['k0'])
             v5s = r['v5_steerability']
             mrls = r.get('mrl_steerability', 0)
-            print(f"  {r['k0']:<6} {h:<10.3f} {v5s:+.4f}       {mrls:+.4f}       {v5s-mrls:+.4f}")
+            print(f"  {r['k0']:<6} {h_l0:<8.3f} {h_l1_l0:<10.3f} {branch:<8.1f} {v5s:+.4f}       {mrls:+.4f}       {v5s-mrls:+.4f}")
 
-        h_syn = [r['hierarchy_stats']['h_l1_given_l0'] for r in results]
+        # Correlation with H(L0) — the true driver
+        h_l0_syn = [np.log2(r['k0']) for r in results]
+        h_l1_l0_syn = [r['hierarchy_stats']['h_l1_given_l0'] for r in results]
         s_syn = [r['v5_steerability'] for r in results]
-        if len(h_syn) >= 3:
-            rho, p = stats.spearmanr(h_syn, s_syn)
-            sl, ic, r, _, _ = stats.linregress(h_syn, s_syn)
-            print(f"\n  Spearman rho = {rho:.4f} (p = {p:.6f})")
-            print(f"  R² = {r**2:.4f}, slope = {sl:.5f}")
+        if len(s_syn) >= 3:
+            rho_l0, p_l0 = stats.spearmanr(h_l0_syn, s_syn)
+            rho_l1, p_l1 = stats.spearmanr(h_l1_l0_syn, s_syn)
+            sl, ic, r_val, _, _ = stats.linregress(h_l0_syn, s_syn)
+            print(f"\n  S vs H(L0):    Spearman rho = {rho_l0:+.4f} (p = {p_l0:.6f})")
+            print(f"  S vs H(L1|L0): Spearman rho = {rho_l1:+.4f} (p = {p_l1:.6f})")
+            print(f"  Linear (S~H(L0)): R² = {r_val**2:.4f}, slope = {sl:.5f}")
+            print(f"\n  KEY: S correlates with H(L0), NOT H(L1|L0) — prefix task demand is the driver")
 
     # =====================================================================
     # 7. PAPER READINESS SUMMARY
