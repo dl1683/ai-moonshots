@@ -44,7 +44,7 @@ Against a matched Matryoshka Representation Learning (MRL) baseline trained on $
 On CLINC-150, V5 achieves $\steer = +0.150 \pm 0.028$ while MRL produces $\steer = +0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, Cohen's $d = 4.3$, 5~seeds).
 Causal ablations on two datasets identify alignment as the driver: inverting alignment reverses the steerability sign (CLINC: $-0.018$, TREC: $-0.025$), and removing prefix-specific supervision collapses it to near-zero; all comparisons significant ($p \leq 0.03$, Cohen's $d \geq 2.7$).
 In a synthetic hierarchy experiment with fixed text and varied coarse partitions, steerability scales with coarse entropy $\hlz$ and exhibits a Goldilocks optimum at ${\sim}12$--$16$ coarse classes (quadratic $R^2 = 0.964$).
-Across six real datasets spanning four domains, steerability is strongly rank-correlated with conditional entropy $\hlo$ (Spearman $\rho = 0.94$, $p = 0.005$).
+Across six real datasets spanning four domains, steerability is strongly correlated with conditional entropy $\hlo$ (Spearman $\rho = 0.83$, $p = 0.042$; Pearson $r = 0.90$, $R^2 = 0.82$).
 MRL produces near-zero steerability in all conditions.
 Cross-model replication on three model families (BGE-small, E5-small, Qwen3-0.6B) confirms architecture invariance.
 These results establish hierarchy alignment as a principled control knob for semantic granularity.
@@ -354,15 +354,15 @@ We present two complementary analyses: an observational study across real datase
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig5_scaling_law.pdf}
-    \caption{Steerability scales with hierarchy refinement entropy $\hlo$ across six real datasets (Spearman $\rho = 0.94$, $p = 0.005$). arXiv falls slightly below the linear trend, likely due to cross-listed papers creating fuzzy category boundaries.}
+    \caption{Steerability scales with hierarchy refinement entropy $\hlo$ across six real datasets (Spearman $\rho = 0.83$, $p = 0.042$; Pearson $r = 0.90$). arXiv falls slightly below the linear trend, likely due to cross-listed papers creating fuzzy category boundaries.}
     \label{fig:scaling}
 \end{figure}
 
-Across six real datasets, steerability is strongly rank-correlated with conditional entropy $\hlo$ (Spearman $\rho = 0.94$, $p = 0.005$; Figure~\ref{fig:scaling}).
-A linear fit yields $\steer \approx 0.049 \cdot \hlo - 0.067$ ($R^2 = 0.83$).
-One mild outlier is arXiv ($\hlo = 2.62$, $\steer = +0.027$), which falls below TREC ($\hlo = 2.21$, $\steer = +0.045$) despite higher conditional entropy.
+Across six real datasets, steerability is strongly correlated with conditional entropy $\hlo$ (Spearman $\rho = 0.83$, $p = 0.042$; Pearson $r = 0.90$, $R^2 = 0.82$; Figure~\ref{fig:scaling}).
+A linear fit yields $\steer \approx 0.050 \cdot \hlo - 0.045$ ($R^2 = 0.82$, $p = 0.014$).
+One mild outlier is arXiv ($\hlo = 2.62$, $\steer = +0.027$), which falls below both TREC ($\hlo = 2.21$, $\steer = +0.044$) and Newsgroups ($\hlo = 1.88$, $\steer = +0.035$) despite higher conditional entropy.
 We attribute this to arXiv's pervasive cross-listing: many papers belong to multiple categories (e.g., cs.LG and stat.ML), creating fuzzy boundaries that reduce the \emph{effective} hierarchy depth below the nominal entropy.
-The remaining five datasets follow a monotonic trend ($\rho = 1.0$), and the six-dataset correlation remains highly significant.
+Excluding arXiv, the remaining five datasets follow a monotonic trend ($\rho = 1.0$).
 
 In natural datasets, $\hlz$ and $\hlo$ are positively correlated (more coarse classes $\Rightarrow$ more fine classes per coarse class).
 This confound prevents us from determining whether the mechanism operates through $\hlz$ (prefix task demand) or $\hlo$ (refinement complexity).
