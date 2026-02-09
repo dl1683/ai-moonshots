@@ -1,0 +1,99 @@
+{
+  "method": "mrl_baseline",
+  "model": "e5-small",
+  "dataset": "clinc",
+  "baseline": {
+    "l0_accuracy": 0.944,
+    "l1_accuracy": 0.845
+  },
+  "mrl": {
+    "l0_accuracy": 0.979,
+    "l1_accuracy": 0.9505
+  },
+  "delta": {
+    "l0": 0.03500000000000003,
+    "l1": 0.10550000000000004
+  },
+  "prefix_accuracy": {
+    "j1_l0": 0.91,
+    "j1_l1": 0.684,
+    "j2_l0": 0.914,
+    "j2_l1": 0.696,
+    "j3_l0": 0.91,
+    "j3_l1": 0.696,
+    "j4_l0": 0.902,
+    "j4_l1": 0.7
+  },
+  "history": [
+    {
+      "stage": 1,
+      "epoch": 1,
+      "loss": 6.315313535394953,
+      "loss_full": 3.626082487070738,
+      "loss_mrl": 4.48205157358255,
+      "l0_accuracy": 0.972,
+      "l1_accuracy": 0.92
+    },
+    {
+      "stage": 1,
+      "epoch": 2,
+      "loss": 2.727371355490898,
+      "loss_full": 1.3673236047598853,
+      "loss_mrl": 2.266746158697712,
+      "l0_accuracy": 0.988,
+      "l1_accuracy": 0.947
+    },
+    {
+      "stage": 1,
+      "epoch": 3,
+      "loss": 1.3772115854185019,
+      "loss_full": 0.6825357712805271,
+      "loss_mrl": 1.1577929744302338,
+      "l0_accuracy": 0.985,
+      "l1_accuracy": 0.957
+    },
+    {
+      "stage": 1,
+      "epoch": 4,
+      "loss": 0.8218159189642366,
+      "loss_full": 0.4268640421414331,
+      "loss_mrl": 0.6582530992133404,
+      "l0_accuracy": 0.988,
+      "l1_accuracy": 0.963
+    },
+    {
+      "stage": 1,
+      "epoch": 5,
+      "loss": 0.5756683300124176,
+      "loss_full": 0.3145215566089349,
+      "loss_mrl": 0.43524460436136864,
+      "l0_accuracy": 0.988,
+      "l1_accuracy": 0.967
+    }
+  ],
+  "training_config": {
+    "prefix_probs": [
+      0.4,
+      0.3,
+      0.2,
+      0.1
+    ],
+    "block_keep_probs": [
+      0.95,
+      0.9,
+      0.8,
+      0.7
+    ],
+    "mrl_weight": 0.6,
+    "margin_weight": 0.5,
+    "class_weight": 1.0,
+    "stage1_epochs": 5,
+    "stage2_epochs": 0,
+    "batch_size": 16,
+    "lr": 0.0001,
+    "weight_decay": 0.01,
+    "temperature": 0.07,
+    "grad_clip": 1.0,
+    "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+  }
+}

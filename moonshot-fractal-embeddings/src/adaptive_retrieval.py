@@ -408,8 +408,14 @@ def run_adaptive_retrieval(
 
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dataset", default="clinc")
+    parser.add_argument("--model", default="bge-small")
+    parser.add_argument("--seeds", type=int, nargs="+", default=[42, 123, 456])
+    args = parser.parse_args()
     run_adaptive_retrieval(
-        model_key="bge-small",
-        dataset_name="clinc",
-        seeds=(42, 123, 456),
+        model_key=args.model,
+        dataset_name=args.dataset,
+        seeds=tuple(args.seeds),
     )
