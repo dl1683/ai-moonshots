@@ -41,7 +41,7 @@
 Modern embedding models support dimensional truncation, but truncation typically changes fidelity rather than semantic level, leaving no mechanism to \emph{steer} between coarse and fine meaning at inference time.
 We introduce \textbf{Fractal Embeddings}, a hierarchy-aligned prefix supervision scheme that trains short prefixes (64d) on coarse labels ($L_0$) and full embeddings (256d) on fine labels ($L_1$), using a frozen backbone with learned heads only.
 Against a matched Matryoshka Representation Learning (MRL) baseline trained on $L_1$ at all prefix lengths, our method preserves full-resolution performance while inducing robust \emph{steerability}: truncated prefixes encode coarse semantics, whereas full vectors recover fine semantics.
-On CLINC-150, V5 achieves $\steer = +0.144 \pm 0.037$ while MRL produces $\steer = +0.015 \pm 0.011$ ($p = 0.020$, Cohen's $d = 4.0$, 3~seeds).
+On CLINC-150, V5 achieves $\steer = +0.150 \pm 0.028$ while MRL produces $\steer = +0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, Cohen's $d = 4.3$, 5~seeds).
 Causal ablations on two datasets identify alignment as the driver: inverting alignment reverses the steerability sign (CLINC: $-0.018$, TREC: $-0.025$), and removing prefix-specific supervision collapses it to near-zero; all comparisons significant ($p \leq 0.03$, Cohen's $d \geq 2.7$).
 In a synthetic hierarchy experiment with fixed text and varied coarse partitions, steerability scales with coarse entropy $\hlz$ and exhibits a Goldilocks optimum at ${\sim}12$--$16$ coarse classes (quadratic $R^2 = 0.964$).
 Across six real datasets spanning four domains, steerability is strongly rank-correlated with conditional entropy $\hlo$ (Spearman $\rho = 0.94$, $p = 0.005$).
@@ -233,10 +233,10 @@ Dataset & Baseline & V5 & MRL & Baseline & V5 & MRL \\
 \midrule
 Yahoo & 0.688 & 0.699 & 0.698 & 0.603 & 0.629 & 0.635 \\
 GoEmotions & 0.502 & 0.600 & 0.578 & 0.343 & 0.429 & 0.411 \\
-Newsgroups & 0.815 & 0.808 & 0.797 & 0.658 & 0.641 & 0.649 \\
-TREC & 0.854 & 0.934 & 0.931 & 0.718 & 0.791 & 0.786 \\
+Newsgroups & 0.815 & 0.802 & 0.800 & 0.658 & 0.639 & 0.650 \\
+TREC & 0.854 & 0.934 & 0.932 & 0.718 & 0.794 & 0.790 \\
 arXiv & 0.721 & 0.729 & 0.721 & 0.465 & 0.448 & 0.446 \\
-CLINC & 0.961 & 0.955 & 0.913 & 0.887 & 0.681 & 0.713 \\
+CLINC & 0.961 & 0.954 & 0.910 & 0.887 & 0.676 & 0.704 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -250,7 +250,8 @@ CLINC & 0.961 & 0.955 & 0.913 & 0.887 & 0.681 & 0.713 \\
 
 \paragraph{Steerability.}
 Despite classification parity, V5 produces dramatically higher steerability than MRL across all six datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
-Steerability increases with hierarchy complexity ($\hlo$): from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) through GoEmotions ($+0.020$, $\hlo = 1.88$), TREC ($+0.045$, $\hlo = 2.21$), and arXiv ($+0.027$, $\hlo = 2.62$) to $\steer = +0.144$ on CLINC ($\hlo = 3.90$).
+Steerability increases with hierarchy complexity ($\hlo$): from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) through GoEmotions ($+0.020$, $\hlo = 1.88$), TREC ($+0.044$, $\hlo = 2.21$), and arXiv ($+0.027$, $\hlo = 2.62$) to $\steer = +0.150$ on CLINC ($\hlo = 3.90$).
+After Holm--Bonferroni correction across six tests, CLINC and TREC remain significant ($p_\text{adj} = 0.004$ and $0.031$; Cohen's $d = 4.3$ and $2.4$); arXiv is borderline ($p_\text{adj} = 0.062$, $d = 1.8$).
 arXiv falls slightly below TREC despite higher $\hlo$, likely because cross-listed papers create fuzzy category boundaries that reduce effective hierarchy depth; we discuss this further in Section~\ref{sec:scaling}.
 MRL steerability is consistently near zero ($\steer_\text{MRL} < 0.02$), confirming that steerability requires explicit hierarchy alignment.
 A sign test confirms the consistency: V5 $>$ MRL steerability on all 6 datasets ($p = 2^{-6} = 0.016$, one-sided binomial).
@@ -265,11 +266,11 @@ A sign test confirms the consistency: V5 $>$ MRL steerability on all 6 datasets 
 Dataset & $\hlo$ & V5 $\steer$ & MRL $\steer$ & Gap & Seeds \\
 \midrule
 Yahoo & 1.23 & $+0.015 \pm 0.019$ & $+0.005 \pm 0.011$ & $+0.010$ & 5 \\
-GoEmotions & 1.88 & $+0.020 \pm 0.018$ & $+0.006 \pm 0.016$ & $+0.014$ & 5 \\
-Newsgroups & 1.88 & $+0.022 \pm 0.029$ & $+0.009 \pm 0.012$ & $+0.013$ & 3 \\
-TREC & 2.21 & $+0.045 \pm 0.023$ & $+0.003 \pm 0.019$ & $+0.041$ & 3 \\
+GoEmotions & 1.88 & $+0.020 \pm 0.018$ & $+0.006 \pm 0.017$ & $+0.014$ & 5 \\
+Newsgroups & 1.88 & $+0.035 \pm 0.029$ & $+0.000 \pm 0.016$ & $+0.035$ & 5 \\
+TREC & 2.21 & $+0.044 \pm 0.017$ & $-0.001 \pm 0.015$ & $+0.045$ & 5 \\
 arXiv & 2.62 & $+0.027 \pm 0.015$ & $-0.001 \pm 0.013$ & $+0.028$ & 5 \\
-CLINC & 3.90 & $+0.144 \pm 0.037$ & $+0.015 \pm 0.011$ & $+0.129$ & 3 \\
+CLINC & 3.90 & $+0.150 \pm 0.028$ & $+0.007 \pm 0.016$ & $+0.143$ & 5 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -442,7 +443,7 @@ The larger Qwen3 backbone shows higher steerability, suggesting the effect scale
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
 Model & V5 $\steer$ & MRL $\steer$ & V5 $\steer$ & MRL $\steer$ \\
 \midrule
-BGE-small (BAAI, 33M) & $+0.144 \pm 0.037$ & $+0.015 \pm 0.011$ & $+0.045 \pm 0.019$ & $+0.003$ \\
+BGE-small (BAAI, 33M) & $+0.150 \pm 0.028$ & $+0.007 \pm 0.016$ & $+0.044 \pm 0.017$ & $-0.001 \pm 0.015$ \\
 E5-small (Microsoft, 33M) & $+0.130 \pm 0.031$ & $+0.015 \pm 0.008$ & --- & --- \\
 Qwen3-0.6B (Alibaba, 600M) & $+0.153 \pm 0.013$ & $+0.008 \pm 0.006$ & $+0.081 \pm 0.012$ & $+0.011 \pm 0.002$ \\
 \bottomrule
