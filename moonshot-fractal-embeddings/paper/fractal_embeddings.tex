@@ -457,17 +457,34 @@ Qwen3-0.6B (Alibaba, 600M) & $+0.153 \pm 0.013$ & $+0.008 \pm 0.006$ & $+0.081 \
 
 \paragraph{Downstream utility: Adaptive retrieval.}
 Beyond classification, we test whether steerability enables practical \emph{adaptive search}.
-We split test data into queries and documents, and compare four strategies: fixed~64d (fast), fixed~256d (full), adaptive progressive extension (start at 64d, extend if uncertain), and two-stage pipeline (64d first-pass, 256d reranker).
-We evaluate on CLINC-150 (deep hierarchy, $\hlo = 3.90$) and TREC (moderate, $\hlo = 2.21$), each with 3 seeds:
+We split test data into queries and documents, and compare fixed-resolution strategies at 64d and 256d, evaluated on CLINC-150 (deep, $\hlo = 3.90$) and TREC (moderate, $\hlo = 2.21$), each with 3 seeds.
+Table~\ref{tab:adaptive} shows that V5 provides two distinct operating points: a fast 64d prefix optimized for coarse retrieval ($L_0 = 97.5\%$ on CLINC) and a full 256d embedding that recovers fine accuracy ($L_1 = 92.5\%$, $+11.2$pp).
+MRL shows negligible change across dimensions ($\leq 0.4$pp $L_1$ improvement), confirming it cannot support coarse-first, fine-on-demand retrieval pipelines.
+V5's prefix at 64d achieves $4\times$ dimensionality reduction while specializing for the coarse task, enabling two-stage retrieval: fast coarse filtering followed by fine reranking only where needed.
 
-\begin{itemize}
-    \item \textbf{V5 at 64d}: CLINC $L_0 = 97.5\%$, $L_1 = 81.3\%$; TREC $L_0 = 94.0\%$, $L_1 = 71.3\%$. In both cases the short prefix is coarse-specialized.
-    \item \textbf{V5 at 256d}: CLINC $L_1 = 92.5\%$; TREC $L_1 = 74.5\%$. Full resolution recovers fine accuracy ($+11.2$pp on CLINC, $+3.2$pp on TREC).
-    \item \textbf{MRL at 64d}: CLINC $L_1 = 91.2\%$; TREC $L_1 = 74.1\%$. MRL prefixes are \emph{not} coarse-specialized.
-    \item \textbf{MRL at 256d}: CLINC $L_1 = 91.6\%$; TREC $L_1 = 73.9\%$. MRL shows negligible $L_1$ change ($+0.4$pp CLINC, $-0.2$pp TREC).
-\end{itemize}
-The same pattern holds across both hierarchy depths: V5 provides two distinct operating points---a fast 64d prefix optimized for coarse retrieval, and a full 256d embedding that recovers fine accuracy---enabling coarse-first, fine-on-demand retrieval pipelines.
-MRL's flat $L_1$ profile across dimensions confirms it cannot support such adaptive strategies.
+\begin{table}[t]
+\caption{Adaptive retrieval: V5 provides distinct operating points at 64d and 256d. At 64d ($4\times$ cheaper), V5 specializes for $L_0$; extending to 256d recovers $L_1$. MRL shows no specialization: $L_1$ accuracy is flat across dimensions. Values are means over 3 seeds.}
+\label{tab:adaptive}
+\centering
+\small
+\begin{tabular}{llcccc}
+\toprule
+& & \multicolumn{2}{c}{CLINC ($\hlo = 3.90$)} & \multicolumn{2}{c}{TREC ($\hlo = 2.21$)} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6}
+Method & Dims & $L_0$ & $L_1$ & $L_0$ & $L_1$ \\
+\midrule
+V5 & 64d ($4\times$ cheaper) & 97.5 & 81.3 & 94.0 & 71.3 \\
+V5 & 256d (full) & 98.3 & 92.5 & 95.6 & 74.5 \\
+\rowcolor[gray]{0.93}
+$\Delta$ (256d$-$64d) & & $+0.8$ & $+11.2$ & $+1.6$ & $+3.2$ \\
+\midrule
+MRL & 64d & 92.1 & 91.2 & 92.3 & 74.1 \\
+MRL & 256d & 91.6 & 91.6 & 93.2 & 73.9 \\
+\rowcolor[gray]{0.93}
+$\Delta$ (256d$-$64d) & & $-0.5$ & $+0.4$ & $+0.9$ & $-0.2$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph{Limitations.}
 \begin{itemize}
