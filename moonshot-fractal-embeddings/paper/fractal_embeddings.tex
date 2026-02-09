@@ -47,7 +47,7 @@ In a synthetic hierarchy experiment with fixed text and varied coarse partitions
 Across eight real datasets spanning six domains, steerability is predicted by the product of hierarchy depth $\hlo$ and baseline learnability (Spearman $\rho = 0.90$, $p = 0.002$; Pearson $r = 0.97$), revealing an interaction: steerability requires \emph{both} hierarchical complexity and model capacity to resolve the fine task.
 MRL produces near-zero steerability in all conditions.
 Cross-model replication on three model families (BGE-small, E5-small, Qwen3-0.6B) confirms architecture invariance.
-These results support hierarchy alignment as a principled control knob for semantic granularity.
+Concurrent work by \citet{hanley2025hierarchical} applies a similar principle to news clustering; our work provides theoretical grounding, formal steerability metrics, and causal evidence that explains \emph{why} and \emph{when} this approach works.
 \end{abstract}
 
 % Hero figure
@@ -576,8 +576,8 @@ Doubling the prefix dimension from 64 to 128 should shift the Goldilocks peak ri
 \paragraph{Multi-resolution embeddings.}
 Matryoshka Representation Learning (MRL)~\citep{kusupati2022matryoshka} trains embeddings that support prefix truncation, but all prefix lengths are supervised on the same task, producing no semantic specialization.
 SMEC~\citep{li2025smrl} rethinks MRL training for retrieval embedding compression; Matryoshka Multimodal Models~\citep{cai2024m3} apply the nesting principle to visual tokens in vision-language models.
-None of these approaches introduce hierarchy-awareness: truncation changes \emph{fidelity}, not \emph{semantic level}.
-Our work shows that aligning prefix supervision with hierarchy is the missing ingredient that converts fidelity truncation into semantic zoom.
+Most closely related to our work, \citet{hanley2025hierarchical} independently train multilingual Matryoshka embeddings where different dimension subsets capture story similarity at different levels of granularity (events, narratives, themes) for news article clustering.
+While sharing the core insight that prefix lengths should correspond to semantic granularity, our work provides complementary contributions: (i)~a formal information-theoretic framework connecting hierarchy-aligned supervision to successive refinement, (ii)~an explicit steerability metric with causal ablation studies, (iii)~a systematic evaluation across eight domains with three encoder families, and (iv)~a scaling trend linking steerability magnitude to hierarchy structure.
 
 \paragraph{Dimensional redundancy.}
 \citet{dufter2025random} show that randomly removing 50\% of embedding dimensions causes $<$10\% performance degradation, revealing massive redundancy in standard embeddings.

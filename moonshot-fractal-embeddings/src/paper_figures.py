@@ -758,6 +758,53 @@ def fig9_retrieval_benchmark():
     print(f"  Fig 9 saved: {FIGURES_DIR / 'fig9_retrieval.png'}")
 
 
+def fig10_three_level():
+    """3-level hierarchy: monotonic semantic zoom across 3 granularity levels."""
+    result_path = RESULTS_DIR / "three_level_clinc.json"
+    if not result_path.exists():
+        print("  Fig 10: No 3-level results yet. Skipping.")
+        return
+
+    data = json.load(open(result_path))
+    results_list = data["results"]
+
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4.5))
+
+    dims = [64, 128, 192, 256]
+    js = [1, 2, 3, 4]
+    level_colors = {'l0': '#E53935', 'l1': '#FB8C00', 'l2': '#1E88E5'}
+    level_labels = {'l0': 'L0 (super-domain)', 'l1': 'L1 (domain)', 'l2': 'L2 (intent)'}
+
+    for panel, method in enumerate(['v5', 'mrl']):
+        ax = axes[panel]
+        for level in ['l0', 'l1', 'l2']:
+            means = []
+            stds = []
+            for j in js:
+                vals = [r[method]['prefix_results'][j][level] for r in results_list]
+                means.append(np.mean(vals))
+                stds.append(np.std(vals))
+            ax.errorbar(dims, means, yerr=stds, marker='o', capsize=3,
+                       color=level_colors[level], label=level_labels[level],
+                       linewidth=2, markersize=6)
+
+        title = 'V5 (Hierarchy-Aligned)' if method == 'v5' else 'MRL (Flat Supervision)'
+        ax.set_title(title, fontweight='bold')
+        ax.set_xlabel('Embedding Dimensions')
+        ax.set_ylabel('kNN Accuracy')
+        ax.set_xticks(dims)
+        ax.legend(fontsize=9)
+        ax.grid(True, alpha=0.3)
+
+    fig.suptitle('3-Level Hierarchy: Monotonic Semantic Zoom (CLINC 5->10->150)',
+                fontweight='bold', fontsize=13, y=1.02)
+    fig.tight_layout()
+    fig.savefig(FIGURES_DIR / "fig10_three_level.png", dpi=150)
+    fig.savefig(FIGURES_DIR / "fig10_three_level.pdf")
+    plt.close(fig)
+    print(f"  Fig 10 saved: {FIGURES_DIR / 'fig10_three_level.png'}")
+
+
 # ============================================================================
 # Main
 # ============================================================================
@@ -773,5 +820,6 @@ if __name__ == "__main__":
     fig7_entropy_allocation()
     fig8_prefix_surgery()
     fig9_retrieval_benchmark()
+    fig10_three_level()
 
     print("\nDone!")
