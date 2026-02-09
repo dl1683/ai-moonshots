@@ -16,10 +16,10 @@ from pathlib import Path
 RESULTS_DIR = Path(__file__).parent.parent / "results"
 
 # Dataset order (by H(L1|L0))
-DATASETS = ["yahoo", "goemotions", "newsgroups", "trec", "arxiv", "clinc"]
+DATASETS = ["yahoo", "goemotions", "newsgroups", "trec", "arxiv", "clinc", "dbpedia_classes", "wos"]
 DATASET_H = {
     "yahoo": 1.23, "goemotions": 1.88, "newsgroups": 1.88,
-    "trec": 2.21, "arxiv": 2.62, "clinc": 3.90
+    "trec": 2.21, "arxiv": 2.62, "dbpedia_classes": 3.17, "clinc": 3.90, "wos": 5.05
 }
 
 

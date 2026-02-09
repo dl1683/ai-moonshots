@@ -18,10 +18,11 @@ from pathlib import Path
 
 RESULTS_DIR = Path(__file__).parent.parent / "results"
 
-DATASETS = ["yahoo", "goemotions", "newsgroups", "trec", "arxiv", "clinc"]
+DATASETS = ["yahoo", "goemotions", "newsgroups", "trec", "arxiv", "clinc", "dbpedia_classes", "wos"]
 DATASET_NAMES = {
     "yahoo": "Yahoo", "goemotions": "GoEmotions", "newsgroups": "Newsgroups",
-    "trec": "TREC", "arxiv": "arXiv", "clinc": "CLINC"
+    "trec": "TREC", "arxiv": "arXiv", "clinc": "CLINC",
+    "dbpedia_classes": "DBPedia", "wos": "WOS"
 }
 DATASET_H = {
     "yahoo": 1.23, "goemotions": 1.88, "newsgroups": 1.88,

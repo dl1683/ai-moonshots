@@ -197,14 +197,17 @@ def fig3_forest_plot():
 
     datasets = []
     # Load all available datasets
-    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv', 'clinc']:
+    ALL_DS = ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv', 'clinc', 'dbpedia_classes', 'wos']
+    DS_DISPLAY = {'goemotions': 'GoEmo', 'dbpedia_classes': 'DBPedia'}
+    DS_H_FALLBACK = {'dbpedia_classes': 3.17, 'wos': 5.05}
+    for ds_name in ALL_DS:
         if ds_name == 'clinc':
             v5_s, mrl_s = load_clinc_steers()
         else:
             v5_s, mrl_s = load_benchmark_steers(ds_name)
         if v5_s:
-            h = profiles.get(ds_name, {}).get('h_l1_given_l0', 0)
-            display_name = 'GoEmo' if ds_name == 'goemotions' else ds_name.upper()
+            h = profiles.get(ds_name, {}).get('h_l1_given_l0', DS_H_FALLBACK.get(ds_name, 0))
+            display_name = DS_DISPLAY.get(ds_name, ds_name.upper())
             datasets.append({
                 'name': display_name,
                 'h': h,
@@ -314,14 +317,17 @@ def fig5_scaling_law():
     profiles = json.load(open(RESULTS_DIR / "hierarchy_profiles.json"))
 
     datasets_data = []
-    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv', 'clinc']:
+    ALL_DS = ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv', 'clinc', 'dbpedia_classes', 'wos']
+    DS_DISPLAY = {'goemotions': 'GoEmo', 'dbpedia_classes': 'DBPedia'}
+    DS_H_FALLBACK = {'dbpedia_classes': 3.17, 'wos': 5.05}
+    for ds_name in ALL_DS:
         if ds_name == 'clinc':
             v5_s, _ = load_clinc_steers()
         else:
             v5_s, _ = load_benchmark_steers(ds_name)
         if v5_s:
-            h = profiles[ds_name]['h_l1_given_l0']
-            display_name = 'GoEmo' if ds_name == 'goemotions' else ds_name.upper()
+            h = profiles.get(ds_name, {}).get('h_l1_given_l0', DS_H_FALLBACK.get(ds_name, 0))
+            display_name = DS_DISPLAY.get(ds_name, ds_name.upper())
             datasets_data.append({
                 'name': display_name,
                 'h': h,
