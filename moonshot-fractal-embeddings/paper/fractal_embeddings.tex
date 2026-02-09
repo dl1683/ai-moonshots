@@ -130,6 +130,14 @@ CLINC-150 & 10 & 150 & 15.0 & 3.32 & 3.90 & 10{,}000 & 2{,}000 \\
 \end{tabular}
 \end{table}
 
+\paragraph{Statistical methodology.}
+All experiments use $n \geq 5$ random seeds per condition (seeds 42, 123, 456, 789, 1024).
+Steerability differences (V5 minus MRL, paired by seed) are tested with two-sided paired $t$-tests.
+For the six per-dataset comparisons in Table~\ref{tab:steerability}, we apply Holm--Bonferroni correction~\citep{holm1979simple} to control the family-wise error rate at $\alpha = 0.05$.
+Effect sizes are reported as Cohen's $d$ (paired).
+Standard deviations are sample estimates (ddof $= 1$).
+Causal ablation tests (Section~\ref{sec:causal}) are corrected within their own family of 4 comparisons (2 datasets $\times$ 2 conditions).
+
 %=======================================================================
 \section{Method: Progressive Prefix Supervision (V5)}
 \label{sec:method}
