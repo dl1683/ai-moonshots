@@ -491,7 +491,8 @@ V5 creates distinct retrieval operating points: $L_1$ Recall@1 climbs from 87.1\
 MRL shows essentially flat $L_1$ Recall@1 ($93.6\% \rightarrow 94.3\%$, $\Delta = +0.6$pp).
 The V5 ramp is $10\times$ larger than MRL's, directly demonstrating dimensionality-dependent retrieval resolution.
 While MRL achieves marginally higher absolute $L_1$ Recall@1 at each prefix length (because all capacity is devoted to fine retrieval regardless of truncation), it offers no lever to trade dimensionality for semantic granularity.
-V5 enables practical two-stage pipelines: fast $4\times$-cheaper coarse filtering at 64d, followed by fine reranking at 256d only where needed.
+V5 enables \emph{query-adaptive} retrieval: when a user query targets a coarse category (``documents about travel''), the 64d prefix suffices; when it targets a fine distinction (``hotel vs.\ flight booking''), extending to 256d recovers the additional resolution.
+MRL's fixed behavior forces full-resolution retrieval regardless of query specificity, losing this adaptive capability.
 
 \begin{table}[t]
 \caption{Retrieval benchmark (CLINC-150, Recall@1, 3~seeds). V5 $L_1$ Recall@1 ramps $+6.3$pp from 64d to 256d ($10\times$ MRL's $+0.6$pp), enabling controllable retrieval resolution. MRL is flat across dimensions.}
@@ -517,9 +518,9 @@ $L_1$ & V5  & 87.1 & 92.7 & 93.7 & 93.4 \\
 
 \paragraph{Three-level hierarchy extension.}
 To test generalization beyond two levels, we construct a 3-level hierarchy on CLINC: 5~super-domains $\rightarrow$ 10~domains $\rightarrow$ 150~intents, with V5 training aligned across three granularity levels ($j=1 \rightarrow L_0$, $j=2 \rightarrow L_0{+}L_1$, $j=3 \rightarrow L_1{+}L_2$, $j=4 \rightarrow L_2$).
-Table~\ref{tab:threelevel} shows that V5 exhibits a clear \emph{ramp gradient}: the $L_2$ (intent) accuracy ramp from 64d to 256d is $+3.2$pp, the $L_1$ (domain) ramp is $+1.0$pp, and the $L_0$ (super-domain) ramp is $+0.5$pp.
+Table~\ref{tab:threelevel} shows that V5 exhibits a clear \emph{ramp gradient}: the $L_2$ (intent) accuracy ramp from 64d to 256d is $+3.2$pp, the $L_1$ (domain) ramp is $+1.0$pp, and the $L_0$ (super-domain) ramp is $+0.5$pp (Figure~\ref{fig:threelevel} in the appendix).
 MRL is flat at all levels ($\leq 0.4$pp ramp).
-The 3-level steerability $\steer_{02} = +0.027 \pm 0.004$ (V5) vs.\ $+0.002 \pm 0.004$ (MRL, 3~seeds), confirming that fractal supervision generalizes to deeper hierarchies.
+The 3-level steerability $\steer_{02} = +0.027 \pm 0.004$ (V5) vs.\ $+0.002 \pm 0.004$ (MRL, 3~seeds; paired $t = 22.4$, $p < 0.002$, Cohen's $d = 12.9$), confirming that fractal supervision generalizes to deeper hierarchies with strong statistical significance even at $n = 3$.
 
 \begin{table}[t]
 \caption{Three-level hierarchy (CLINC, 5$\rightarrow$10$\rightarrow$150, 3~seeds). V5 shows a ramp gradient: finer levels benefit more from additional dimensions. MRL is flat.}
@@ -672,6 +673,16 @@ The connection to successive refinement theory suggests this is not merely an em
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig9_retrieval.pdf}
     \caption{Retrieval benchmark on CLINC-150 (3~seeds). V5 $L_1$ Recall@1 (solid blue) ramps steeply from 64d to 192d ($+6.3$pp) while MRL $L_1$ (solid orange) is flat ($+0.6$pp). Both methods achieve comparable $L_0$ Recall@1 (dashed lines, $>97\%$). The $10\times$ larger ramp demonstrates that V5's prefix specialization transfers from classification to retrieval.}
     \label{fig:retrieval}
+\end{figure}
+
+\section{Three-Level Hierarchy Visualization}
+\label{app:threelevel}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig10_three_level.pdf}
+    \caption{Three-level hierarchy experiment (CLINC, 5$\rightarrow$10$\rightarrow$150, 3~seeds). \textbf{Left}: V5 shows clear separation between levels---$L_2$ (intent) gains the most from additional dimensions while $L_0$ (super-domain) is near ceiling throughout. \textbf{Right}: MRL curves are bunched together with minimal ramp at any level, confirming that flat supervision cannot exploit hierarchical structure even with three granularity levels.}
+    \label{fig:threelevel}
 \end{figure}
 
 \section{Full Synthetic Hierarchy Results}

@@ -781,7 +781,7 @@ def fig10_three_level():
             means = []
             stds = []
             for j in js:
-                vals = [r[method]['prefix_results'][j][level] for r in results_list]
+                vals = [r[method]['prefix_results'][str(j)][level] for r in results_list]
                 means.append(np.mean(vals))
                 stds.append(np.std(vals))
             ax.errorbar(dims, means, yerr=stds, marker='o', capsize=3,
