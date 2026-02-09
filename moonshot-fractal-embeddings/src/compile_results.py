@@ -29,7 +29,7 @@ def load_all_data():
     datasets = {}
 
     # Standard benchmark files (TREC, Yahoo, Newsgroups, DBPedia)
-    for ds in ['yahoo', 'trec', 'newsgroups', 'dbpedia']:
+    for ds in ['yahoo', 'trec', 'newsgroups']:
         bench = RESULTS_DIR / f"benchmark_bge-small_{ds}.json"
         if not bench.exists():
             continue
