@@ -265,23 +265,32 @@ def train_l0_only_model(config, train_data, val_data, num_l0, device, seed, stag
     Implementation: Use MRL trainer but with L0 labels as the target.
     We modify the dataset so l1 = l0 and num_l1 = num_l0.
     """
-    # Create modified dataset where L1 labels = L0 labels
-    modified_train = []
-    for text, l0, l1 in train_data.samples:
-        modified_train.append((text, l0, l0))  # L1 replaced with L0
+    from hierarchical_datasets import HierarchicalSample
+    from copy import copy
 
-    modified_val = []
-    for text, l0, l1 in val_data.samples:
-        modified_val.append((text, l0, l0))
+    # Create modified samples where L1 labels = L0 labels
+    modified_train_samples = []
+    for s in train_data.samples:
+        ms = copy(s)
+        ms.level1_label = s.level0_label
+        ms.level1_name = s.level0_name
+        modified_train_samples.append(ms)
+
+    modified_val_samples = []
+    for s in val_data.samples:
+        ms = copy(s)
+        ms.level1_label = s.level0_label
+        ms.level1_name = s.level0_name
+        modified_val_samples.append(ms)
 
     class ModifiedDataset:
-        def __init__(self, samples, l0_names, l1_names):
+        def __init__(self, samples, l0_names):
             self.samples = samples
             self.level0_names = l0_names
             self.level1_names = l0_names  # Use L0 names for L1 too
 
-    mod_train = ModifiedDataset(modified_train, train_data.level0_names, train_data.level0_names)
-    mod_val = ModifiedDataset(modified_val, val_data.level0_names, val_data.level0_names)
+    mod_train = ModifiedDataset(modified_train_samples, train_data.level0_names)
+    mod_val = ModifiedDataset(modified_val_samples, train_data.level0_names)
 
     # Use MRL trainer (all prefixes on same label) with L0 as target
     model = FractalModelV5(
@@ -308,9 +317,9 @@ def train_l0_only_model(config, train_data, val_data, num_l0, device, seed, stag
 
 def evaluate_knn(model, test_data, device, prefix_len=None, k=5):
     """Evaluate k-NN accuracy at given prefix length for both L0 and L1."""
-    texts = [s[0] for s in test_data.samples]
-    l0_labels = np.array([s[1] for s in test_data.samples])
-    l1_labels = np.array([s[2] for s in test_data.samples])
+    texts = [s.text for s in test_data.samples]
+    l0_labels = np.array([s.level0_label for s in test_data.samples])
+    l1_labels = np.array([s.level1_label for s in test_data.samples])
 
     embs = model.encode(texts, batch_size=32, prefix_len=prefix_len)
     embs = embs.numpy()
@@ -373,10 +382,21 @@ def run_dual_encoder_experiment(seeds=[42, 123, 456]):
         print("[1] Loading CLINC...")
         train_data = load_hierarchical_dataset("clinc", split="train", max_samples=10000)
         test_data = load_hierarchical_dataset("clinc", split="test", max_samples=2000)
-        train_ds, val_ds = split_train_val(train_data, val_ratio=0.1, seed=seed)
 
         num_l0 = len(train_data.level0_names)
         num_l1 = len(train_data.level1_names)
+
+        # Split train/val
+        train_samples, val_samples = split_train_val(train_data.samples, val_ratio=0.15, seed=seed)
+
+        class TempDataset:
+            def __init__(self, samples, l0_names, l1_names):
+                self.samples = samples
+                self.level0_names = l0_names
+                self.level1_names = l1_names
+
+        train_ds = TempDataset(train_samples, train_data.level0_names, train_data.level1_names)
+        val_ds = TempDataset(val_samples, train_data.level0_names, train_data.level1_names)
 
         # Train L0-only encoder
         print(f"\n[2] Training L0-only encoder (E_L0)...")
