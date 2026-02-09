@@ -258,7 +258,7 @@ WOS & 0.619 & 0.625 & 0.610 & 0.170 & 0.148 & 0.156 \\
 Despite classification parity, V5 produces dramatically higher steerability than MRL across all eight datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
 Steerability generally increases with hierarchy complexity ($\hlo$): from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) through GoEmotions ($+0.020$, $\hlo = 1.88$), TREC ($+0.044$, $\hlo = 2.21$), and arXiv ($+0.027$, $\hlo = 2.62$) to $\steer = +0.120$ on DBPedia Classes ($\hlo = 3.17$) and $\steer = +0.150$ on CLINC ($\hlo = 3.90$).
 WOS ($\hlo = 5.05$) shows a moderate effect ($\steer = +0.038$) despite the deepest hierarchy, due to a floor effect in $L_1$ accuracy (Section~\ref{sec:scaling}).
-After Holm--Bonferroni correction across eight tests, CLINC, DBPedia Classes, and TREC remain significant ($p_\text{adj} < 0.001$, $< 0.001$, and $0.012$; paired Cohen's $d = 4.3$, $5.5$, and $2.4$); arXiv and WOS are borderline ($p_\text{adj} = 0.064$ and $0.078$).
+After Holm--Bonferroni correction across eight tests, DBPedia Classes, CLINC, and TREC remain significant ($p_\text{adj} = 0.002$, $0.004$, and $0.038$; paired Cohen's $d = 5.5$, $4.3$, and $2.4$); arXiv is borderline ($p_\text{adj} = 0.078$) and WOS does not reach significance ($p_\text{adj} = 0.111$).
 The shallow-hierarchy datasets (Yahoo, GoEmotions, Newsgroups; $\hlo \leq 1.88$) show consistent but small effects that do not reach per-dataset significance---a predicted consequence of the capacity-demand matching theory (Section~\ref{sec:scaling}): when $\hlo$ is low, there is little refinement information for V5 to separate from coarse information, so the steerability signal is inherently small.
 MRL steerability is consistently near zero ($|\steer_\text{MRL}| < 0.02$ on all datasets), confirming that steerability requires explicit hierarchy alignment.
 A sign test confirms the consistency: V5 $>$ MRL steerability on all 8 datasets ($p = 2^{-8} = 0.004$, one-sided binomial).
@@ -279,7 +279,7 @@ GoEmotions & 1.88 & $+0.020 \pm 0.018$ & $+0.006 \pm 0.017$ & $+0.014$ & 5 \\
 Newsgroups & 1.88 & $+0.035 \pm 0.029$ & $+0.000 \pm 0.016$ & $+0.035$ & 5 \\
 TREC & 2.21 & $+0.044 \pm 0.017$ & $-0.001 \pm 0.015$ & $+0.045$ & 5 \\
 arXiv & 2.62 & $+0.027 \pm 0.015$ & $-0.001 \pm 0.013$ & $+0.028$ & 5 \\
-DBPedia Classes & 3.17 & $+0.120 \pm 0.017$ & $+0.008 \pm 0.008$ & $+0.112$ & 5 \\
+DBPedia Classes & 3.17 & $+0.120 \pm 0.016$ & $+0.008 \pm 0.008$ & $+0.112$ & 5 \\
 CLINC & 3.90 & $+0.150 \pm 0.028$ & $+0.007 \pm 0.016$ & $+0.143$ & 5 \\
 WOS & 5.05 & $+0.038 \pm 0.026$ & $+0.001 \pm 0.005$ & $+0.036$ & 5 \\
 \bottomrule
@@ -537,7 +537,7 @@ The dual-encoder approach thus doubles storage and serving cost while delivering
 To test generalization beyond two levels, we construct a 3-level hierarchy on CLINC: 5~super-domains $\rightarrow$ 10~domains $\rightarrow$ 150~intents, with V5 training aligned across three granularity levels ($j=1 \rightarrow L_0$, $j=2 \rightarrow L_0{+}L_1$, $j=3 \rightarrow L_1{+}L_2$, $j=4 \rightarrow L_2$).
 Table~\ref{tab:threelevel} shows that V5 exhibits a clear \emph{ramp gradient}: the $L_2$ (intent) accuracy ramp from 64d to 256d is $+3.2$pp, the $L_1$ (domain) ramp is $+1.0$pp, and the $L_0$ (super-domain) ramp is $+0.5$pp (Figure~\ref{fig:threelevel} in the appendix).
 MRL is flat at all levels ($\leq 0.4$pp ramp).
-The 3-level steerability $\steer_{02} = +0.027 \pm 0.004$ (V5) vs.\ $+0.002 \pm 0.004$ (MRL, 3~seeds; paired $t = 22.4$, $p < 0.002$, Cohen's $d = 12.9$), confirming that fractal supervision generalizes to deeper hierarchies with strong statistical significance even at $n = 3$.
+The 3-level steerability $\steer_{02} = +0.027 \pm 0.005$ (V5) vs.\ $+0.002 \pm 0.005$ (MRL, 3~seeds; paired $t = 18.9$, $p = 0.003$, Cohen's $d = 10.9$), confirming that fractal supervision generalizes to deeper hierarchies with strong statistical significance even at $n = 3$.
 
 \begin{table}[t]
 \caption{Three-level hierarchy (CLINC, 5$\rightarrow$10$\rightarrow$150, 3~seeds). V5 shows a ramp gradient: finer levels benefit more from additional dimensions. MRL is flat.}
