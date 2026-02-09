@@ -196,14 +196,16 @@ def run_noisy_hierarchy_test():
     print("NOISY HIERARCHY SENSITIVITY TEST")
     print("=" * 70)
 
-    from hierarchical_datasets import load_clinc150
-    from fractal_v5 import FractalV5Trainer, FractalConfig
-    from mrl_v5_baseline import MRLBaselineTrainer
+    from hierarchical_datasets import load_hierarchical_dataset, HierarchicalDataset
+    from fractal_v5 import FractalModelV5, V5Trainer
+    from multi_model_pipeline import MODELS
     from copy import copy
+    import gc
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     noise_rates = [0.0, 0.10, 0.20, 0.30, 0.50]
     seeds = [42, 123, 456]
+    model_key = "bge-small"
 
     results = {}
 
@@ -218,14 +220,18 @@ def run_noisy_hierarchy_test():
             print(f"\n  Seed {seed}...")
             np.random.seed(seed)
             torch.manual_seed(seed)
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed(seed)
 
-            # Load CLINC
-            train_data = load_clinc150(split="train")
-            val_data = load_clinc150(split="test")
+            # Load CLINC fresh each time
+            train_data = load_hierarchical_dataset("clinc", split="train")
+            val_data = load_hierarchical_dataset("clinc", split="test")
+
+            num_l0 = len(set(s.level0_label for s in train_data.samples))
+            num_l1 = len(set(s.level1_label for s in train_data.samples))
 
             # Corrupt L0 labels in training data
             if noise_rate > 0:
-                num_l0 = len(set(s.level0_label for s in train_data.samples))
                 n_corrupt = int(len(train_data.samples) * noise_rate)
                 corrupt_indices = np.random.choice(len(train_data.samples), n_corrupt, replace=False)
 
@@ -233,63 +239,76 @@ def run_noisy_hierarchy_test():
                     s = train_data.samples[idx]
                     # Assign random wrong L0 label
                     wrong_labels = [l for l in range(num_l0) if l != s.level0_label]
-                    new_l0 = np.random.choice(wrong_labels)
+                    new_l0 = int(np.random.choice(wrong_labels))
                     # Create modified sample
                     new_s = copy(s)
-                    new_s.level0_label = int(new_l0)
-                    new_s.level0_name = train_data.level0_names[int(new_l0)]
+                    new_s.level0_label = new_l0
+                    new_s.level0_name = train_data.level0_names[new_l0]
                     train_data.samples[idx] = new_s
 
-            num_l0 = len(set(s.level0_label for s in train_data.samples))
-            num_l1 = len(set(s.level1_label for s in train_data.samples))
+                print(f"    Corrupted {n_corrupt}/{len(train_data.samples)} L0 labels")
 
             # Train V5
-            config = FractalConfig(
-                model_name="BAAI/bge-small-en-v1.5",
-                output_dim=256,
-                num_top_classes=num_l0,
-                num_bot_classes=num_l1,
-                epochs=5,
-                batch_size=16,
-                lr=1e-4,
+            config = MODELS[model_key]
+            model = FractalModelV5(
+                config=config,
+                num_l0_classes=num_l0,
+                num_l1_classes=num_l1,
+                num_scales=4,
+                scale_dim=64,
+                device=device,
+            ).to(device)
+
+            trainer = V5Trainer(
+                model=model,
+                train_dataset=train_data,
+                val_dataset=val_data,
+                device=device,
+                stage1_epochs=5,
+                stage2_epochs=0,
             )
 
-            v5_trainer = FractalV5Trainer(config, device=device)
-            v5_trainer.train(train_data, val_data)
+            trainer.train(batch_size=16, patience=5)
 
             # Evaluate steerability on CLEAN val data
-            clean_val = load_clinc150(split="test")
-            v5_accs = {}
-            for j in [1, 2, 3, 4]:
-                prefix_len = j * 64
-                l0_acc, l1_acc = v5_trainer.evaluate_knn(clean_val, prefix_dim=prefix_len)
-                v5_accs[j] = {"l0": l0_acc, "l1": l1_acc}
+            clean_val = load_hierarchical_dataset("clinc", split="test")
 
-            v5_steer = (v5_accs[1]["l0"] - v5_accs[4]["l0"]) + (v5_accs[4]["l1"] - v5_accs[1]["l1"])
+            # Create a temp dataset object for evaluate_prefix_accuracy
+            class TempDS:
+                def __init__(self, samples, l0n, l1n):
+                    self.samples = samples
+                    self.level0_names = l0n
+                    self.level1_names = l1n
+            trainer.val_dataset = TempDS(clean_val.samples, clean_val.level0_names, clean_val.level1_names)
+            prefix_results = trainer.evaluate_prefix_accuracy()
+
+            v5_steer = (prefix_results['j1_l0'] - prefix_results['j4_l0']) + \
+                       (prefix_results['j4_l1'] - prefix_results['j1_l1'])
 
             print(f"    V5 steer = {v5_steer:+.4f}")
-            print(f"    V5 L0@j1={v5_accs[1]['l0']:.3f}, L0@j4={v5_accs[4]['l0']:.3f}")
-            print(f"    V5 L1@j1={v5_accs[1]['l1']:.3f}, L1@j4={v5_accs[4]['l1']:.3f}")
+            print(f"    V5 L0@j1={prefix_results['j1_l0']:.3f}, L0@j4={prefix_results['j4_l0']:.3f}")
+            print(f"    V5 L1@j1={prefix_results['j1_l1']:.3f}, L1@j4={prefix_results['j4_l1']:.3f}")
 
             seed_results.append({
                 "seed": seed,
                 "noise_rate": noise_rate,
                 "v5_steer": v5_steer,
-                "v5_accs": v5_accs,
+                "prefix_results": prefix_results,
             })
 
             # Clean up GPU memory
-            del v5_trainer
+            del model, trainer
             torch.cuda.empty_cache()
+            gc.collect()
 
         steers = [r["v5_steer"] for r in seed_results]
         mean_steer = np.mean(steers)
-        std_steer = np.std(steers, ddof=1)
+        std_steer = np.std(steers, ddof=1) if len(steers) > 1 else 0
 
         results[noise_rate] = {
             "noise_rate": noise_rate,
-            "mean_steer": mean_steer,
-            "std_steer": std_steer,
+            "mean_steer": float(mean_steer),
+            "std_steer": float(std_steer),
             "seeds": seed_results,
         }
 
