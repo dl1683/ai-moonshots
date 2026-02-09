@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 RESULTS_DIR = Path(__file__).parent.parent / "results"
 ALL_SEEDS = [42, 123, 456, 789, 1024]
-ALL_DATASETS = ['yahoo', 'newsgroups', 'trec', 'clinc', 'goemotions', 'arxiv', 'dbpedia_classes']
+ALL_DATASETS = ['yahoo', 'newsgroups', 'trec', 'clinc', 'goemotions', 'arxiv', 'dbpedia_classes', 'wos']
 
 
 def compute_steer(pa):
