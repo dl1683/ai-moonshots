@@ -339,7 +339,7 @@ For each test sample, we independently classify $L_0$ and $L_1$ from (a)~the pre
 
 On CLINC-150, V5 shows 1.8\% less $L_1$ information in the prefix (94.7\% vs.\ 96.5\% for MRL prefix-only $L_1$ accuracy), consistent with the training objective concentrating coarse information in early dimensions.
 The effect is modest because 64 dimensions provide sufficient capacity for both $L_0$ (10~classes) and $L_1$ (150~classes) on this dataset.
-The stronger evidence for semantic separation comes from the steerability metric itself (\S\ref{sec:main}), which measures the \emph{behavioral} consequence of prefix truncation rather than the raw information content.
+The stronger evidence for semantic separation comes from the steerability metric itself (\S\ref{sec:results}), which measures the \emph{behavioral} consequence of prefix truncation rather than the raw information content.
 
 %=======================================================================
 \section{Steerability Scaling Trend}
@@ -635,6 +635,31 @@ CLINC & 3.90 & $+0.143$ & $+0.124$ & $+0.27$ & $+0.143$ \\
 \midrule
 V5 $>$ MRL & & 6/6 & 6/6 & 4/6 & 6/6 \\
 Sign test $p$ & & 0.016 & 0.016 & 0.34 & 0.016 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Per-Seed Steerability Values}
+\label{app:perseed}
+
+Table~\ref{tab:perseed} reports individual seed steerability values for all six datasets, enabling full transparency about the variability underlying the summary statistics in Table~\ref{tab:steerability}.
+
+\begin{table}[h]
+\caption{Per-seed steerability values (V5 and MRL) across all six datasets. Seeds: 42, 123, 456, 789, 1024.}
+\label{tab:perseed}
+\centering
+\scriptsize
+\begin{tabular}{lrrrrr|rrrrr}
+\toprule
+& \multicolumn{5}{c|}{V5 $\steer$ by seed} & \multicolumn{5}{c}{MRL $\steer$ by seed} \\
+Dataset & 42 & 123 & 456 & 789 & 1024 & 42 & 123 & 456 & 789 & 1024 \\
+\midrule
+Yahoo & +.016 & +.020 & $-.004$ & $-.002$ & +.044 & $-.010$ & +.016 & +.006 & +.016 & $-.002$ \\
+GoEmo & $-.002$ & +.024 & +.026 & +.006 & +.044 & +.022 & +.022 & +.006 & $-.012$ & $-.010$ \\
+News & +.040 & $-.012$ & +.038 & +.044 & +.066 & $-.002$ & +.022 & +.008 & $-.018$ & $-.010$ \\
+TREC & +.018 & +.062 & +.054 & +.042 & +.046 & +.000 & +.024 & $-.014$ & $-.002$ & $-.012$ \\
+arXiv & +.038 & +.018 & +.012 & +.018 & +.048 & $-.014$ & $-.010$ & +.000 & +.000 & +.020 \\
+CLINC & +.104 & +.178 & +.150 & +.168 & +.150 & +.012 & +.028 & +.006 & $-.016$ & +.004 \\
 \bottomrule
 \end{tabular}
 \end{table}
