@@ -248,9 +248,10 @@ def print_comparison_table(all_results: Dict, dataset: str, seeds: List[int]):
 
             for seed in seeds:
                 sk = str(seed)
+                jk = str(j)
                 for m in v5_vals:
-                    v5_vals[m].append(all_results[sk]["v5"][j][level][m])
-                    mrl_vals[m].append(all_results[sk]["mrl"][j][level][m])
+                    v5_vals[m].append(all_results[sk]["v5"][jk][level][m])
+                    mrl_vals[m].append(all_results[sk]["mrl"][jk][level][m])
 
             v5_mean = {m: np.mean(v5_vals[m]) for m in v5_vals}
             mrl_mean = {m: np.mean(mrl_vals[m]) for m in mrl_vals}
@@ -423,8 +424,8 @@ def run_retrieval_benchmark(
         deltas = []
         for seed in seeds:
             sk = str(seed)
-            r1  = all_seed_results[sk][method]["1"]["L0"]["recall@10"]
-            r4  = all_seed_results[sk][method]["4"]["L0"]["recall@10"]
+            r1  = all_seed_results[sk][method].get("1", all_seed_results[sk][method].get(1, {})).get("L0", {}).get("recall@10", 0)
+            r4  = all_seed_results[sk][method].get("4", all_seed_results[sk][method].get(4, {})).get("L0", {}).get("recall@10", 0)
             deltas.append(r1 - r4)
         mean_d = np.mean(deltas)
         std_d  = np.std(deltas)
