@@ -41,7 +41,7 @@
 Modern embedding models support dimensional truncation, but truncation typically changes fidelity rather than semantic level, leaving no mechanism to \emph{steer} between coarse and fine meaning at inference time.
 We introduce \textbf{Fractal Embeddings}, a hierarchy-aligned prefix supervision scheme that trains short prefixes (64d) on coarse labels ($L_0$) and full embeddings (256d) on fine labels ($L_1$), using a frozen backbone with learned heads only.
 Against a matched Matryoshka Representation Learning (MRL) baseline trained on $L_1$ at all prefix lengths, our method preserves full-resolution performance while inducing robust \emph{steerability}: truncated prefixes encode coarse semantics, whereas full vectors recover fine semantics.
-On CLINC-150, V5 achieves $\steer = +0.144 \pm 0.037$ while MRL produces $\steer = +0.015 \pm 0.011$ ($p < 0.01$, 3~seeds).
+On CLINC-150, V5 achieves $\steer = +0.144 \pm 0.037$ while MRL produces $\steer = +0.015 \pm 0.011$ ($p = 0.020$, Cohen's $d = 4.0$, 3~seeds).
 Causal ablations on two datasets identify alignment as the driver: inverting alignment reverses the steerability sign (CLINC: $-0.018$, TREC: $-0.025$), and removing prefix-specific supervision collapses it to near-zero; all comparisons significant ($p \leq 0.03$, Cohen's $d \geq 2.7$).
 In a synthetic hierarchy experiment with fixed text and varied coarse partitions, steerability scales with coarse entropy $\hlz$ and exhibits a Goldilocks optimum at ${\sim}12$--$16$ coarse classes (quadratic $R^2 = 0.964$).
 Across six real datasets spanning four domains, steerability is strongly rank-correlated with conditional entropy $\hlo$ (Spearman $\rho = 0.94$, $p = 0.005$).
