@@ -116,19 +116,20 @@ class ThreeLevelV5Trainer:
         self.lr = lr
         self.prefix_weight = prefix_weight
 
-        # We need THREE classification heads: L0, L1, L2
-        # model.head_top -> L0 (super-domain, 5 classes)
-        # model.head_bot -> L2 (intent, 150 classes)
-        # Need a new head for L1 (domain, 10 classes)
+        # Classification heads:
+        # model.fractal_head.head_top -> L0 (super-domain, 5 classes)
+        # model.fractal_head.head_leaf -> L2 (intent, 150 classes)
+        # New head_mid -> L1 (domain, 10 classes)
         self.num_l1 = len(train_dataset.level1_names)
-        output_dim = model.output_dim
-        self.head_mid = torch.nn.Linear(output_dim, self.num_l1).to(device)
+        output_dim = model.embed_dim  # 256 (num_scales * scale_dim)
+        self.head_mid = torch.nn.Sequential(
+            torch.nn.LayerNorm(output_dim),
+            torch.nn.Linear(output_dim, self.num_l1),
+        ).to(device)
 
-        # Optimizer over all trainable params
+        # Optimizer over fractal head + mid head (backbone already frozen)
         self.optimizer = torch.optim.AdamW(
-            list(model.head.parameters()) +
-            list(model.head_top.parameters()) +
-            list(model.head_bot.parameters()) +
+            list(model.fractal_head.parameters()) +
             list(self.head_mid.parameters()),
             lr=lr, weight_decay=0.01
         )
@@ -140,33 +141,39 @@ class ThreeLevelV5Trainer:
         # Prefix sampling probs: [0.4, 0.3, 0.2, 0.1]
         self.prefix_probs = [0.4, 0.3, 0.2, 0.1]
 
-    def _get_prefix_embedding(self, emb, j):
-        """Get first j*64 dimensions of embedding."""
-        dim = j * (emb.shape[1] // 4)
-        return emb[:, :dim]
-
-    def _compute_loss(self, emb, l0_labels, l1_labels, l2_labels, j):
+    def _compute_loss(self, result, l0_labels, l1_labels, l2_labels, j):
         """Compute 3-level progressive loss for prefix j."""
-        prefix_emb = self._get_prefix_embedding(emb, j)
+        fh = self.model.fractal_head
+        if j < 4:
+            prefix_emb = fh.get_prefix_embedding(result['blocks'], j)
+        else:
+            prefix_emb = result['full_embedding']
 
         if j == 1:
-            # Pure L0
-            logits_l0 = self.model.head_top(prefix_emb)
+            logits_l0 = fh.head_top(prefix_emb)
             return self.ce_loss(logits_l0, l0_labels)
         elif j == 2:
-            # Mix L0 + L1
-            logits_l0 = self.model.head_top(prefix_emb)
+            logits_l0 = fh.head_top(prefix_emb)
             logits_l1 = self.head_mid(prefix_emb)
             return 0.6 * self.ce_loss(logits_l0, l0_labels) + 0.4 * self.ce_loss(logits_l1, l1_labels)
         elif j == 3:
-            # Mix L1 + L2
             logits_l1 = self.head_mid(prefix_emb)
-            logits_l2 = self.model.head_bot(prefix_emb)
+            logits_l2 = fh.head_leaf(prefix_emb)
             return 0.3 * self.ce_loss(logits_l1, l1_labels) + 0.7 * self.ce_loss(logits_l2, l2_labels)
         else:  # j == 4
-            # Pure L2
-            logits_l2 = self.model.head_bot(prefix_emb)
+            logits_l2 = fh.head_leaf(prefix_emb)
             return self.ce_loss(logits_l2, l2_labels)
+
+    def _tokenize_texts(self, texts, max_len=512):
+        """Tokenize texts for forward pass (preserves gradients unlike encode())."""
+        max_len = min(self.model.config.max_seq_len, max_len)
+        if self.model.config.prefix_query:
+            texts = [self.model.config.prefix_query + t for t in texts]
+        inputs = self.model.tokenizer(
+            texts, padding=True, truncation=True,
+            max_length=max_len, return_tensors="pt"
+        )
+        return inputs['input_ids'].to(self.device), inputs['attention_mask'].to(self.device)
 
     def train(self, batch_size=16):
         """Train the 3-level V5 model."""
@@ -186,6 +193,7 @@ class ThreeLevelV5Trainer:
             self.model.train()
             self.head_mid.train()
             total_loss = 0
+            num_batches = 0
             perm = np.random.permutation(n)
 
             for start in range(0, n, batch_size):
@@ -198,36 +206,38 @@ class ThreeLevelV5Trainer:
                 self.optimizer.zero_grad()
 
                 with autocast(enabled=True):
-                    emb = self.model.encode(batch_texts, batch_size=len(batch_texts))
-                    if isinstance(emb, np.ndarray):
-                        emb = torch.tensor(emb, device=self.device, dtype=torch.float32)
-                    elif not emb.is_cuda:
-                        emb = emb.to(self.device)
+                    # Tokenize and forward (preserves gradients)
+                    input_ids, attention_mask = self._tokenize_texts(batch_texts)
+                    result = self.model(input_ids, attention_mask)
 
                     # Full-embedding L2 loss
-                    full_loss = self.ce_loss(self.model.head_bot(emb), batch_l2)
+                    full_emb = result['full_embedding']
+                    full_loss = self.ce_loss(
+                        self.model.fractal_head.head_leaf(full_emb), batch_l2
+                    )
 
                     # Sample prefix j
                     j = np.random.choice([1, 2, 3, 4], p=self.prefix_probs)
-                    prefix_loss = self._compute_loss(emb, batch_l0, batch_l1, batch_l2, j)
+                    prefix_loss = self._compute_loss(result, batch_l0, batch_l1, batch_l2, j)
 
                     loss = full_loss + self.prefix_weight * prefix_loss
 
                 scaler.scale(loss).backward()
                 scaler.unscale_(self.optimizer)
                 torch.nn.utils.clip_grad_norm_(
-                    list(self.model.parameters()) + list(self.head_mid.parameters()), 1.0
+                    list(self.model.fractal_head.parameters()) + list(self.head_mid.parameters()), 1.0
                 )
                 scaler.step(self.optimizer)
                 scaler.update()
                 total_loss += loss.item()
+                num_batches += 1
 
             self.scheduler.step()
 
             # Evaluate on val set
             val_l0, val_l1, val_l2 = self._evaluate()
             score = val_l0 + val_l1 + val_l2
-            print(f"  Epoch {epoch+1}: loss={total_loss/(n/batch_size):.4f}, "
+            print(f"  Epoch {epoch+1}: loss={total_loss/max(num_batches,1):.4f}, "
                   f"L0={val_l0:.4f}, L1={val_l1:.4f}, L2={val_l2:.4f}")
 
             if score > best_score:
@@ -253,13 +263,15 @@ class ThreeLevelV5Trainer:
         l2_true = np.array([s.level2_label for s in self.val_data.samples])
 
         with torch.no_grad():
+            # encode() is fine for eval (no_grad is intended)
             emb = self.model.encode(texts, batch_size=32)
             if isinstance(emb, np.ndarray):
                 emb = torch.tensor(emb, device=self.device, dtype=torch.float32)
+            emb = emb.to(self.device)
 
-            l0_logits = self.model.head_top(emb)
+            l0_logits = self.model.fractal_head.head_top(emb)
             l1_logits = self.head_mid(emb)
-            l2_logits = self.model.head_bot(emb)
+            l2_logits = self.model.fractal_head.head_leaf(emb)
 
             l0_pred = l0_logits.argmax(dim=1).cpu().numpy()
             l1_pred = l1_logits.argmax(dim=1).cpu().numpy()
@@ -449,25 +461,7 @@ def run_three_level_experiment(
             num_scales=4, scale_dim=64, device=device,
         ).to(device)
 
-        mrl_train_data = TempDS(train_data.samples, train_data.level0_names,
-                                train_data.level1_names, train_data.level2_names)
-        mrl_val_data = TempDS(val_data.samples, val_data.level0_names,
-                              val_data.level1_names, val_data.level2_names)
-
-        # MRL needs level0_label = level2_label for its training
-        for s in mrl_train_data.samples:
-            s_new = HierarchicalSample(
-                text=s.text,
-                level0_label=s.level2_label,
-                level1_label=s.level2_label,
-                level2_label=s.level2_label,
-                level0_name=s.level2_name,
-                level1_name=s.level2_name,
-                level2_name=s.level2_name,
-            )
-            mrl_train_data.samples[mrl_train_data.samples.index(s)] = s_new
-
-        # Actually, simpler: just create new sample lists
+        # MRL baseline: all prefixes trained on L2 (finest level)
         mrl_train_samples = []
         for s in train_data.samples:
             mrl_train_samples.append(HierarchicalSample(
