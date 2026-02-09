@@ -124,8 +124,114 @@ class InvertedV5Trainer(V5Trainer):
         return avg_loss, val_metrics
 
 
+class UniformHierarchicalTrainer(V5Trainer):
+    """Uniform Hierarchical Multi-Task: every prefix gets 0.5*L0 + 0.5*L1.
+
+    Tests whether hierarchy AWARENESS alone (using both label levels)
+    produces steerability, or if hierarchy ALIGNMENT (V5's short->L0,
+    full->L1 mapping) is required. Prediction: near-zero steerability.
+    """
+
+    def _train_epoch(self, dataloader, optimizer, epoch: int, stage: int) -> Tuple[float, Dict]:
+        total_loss = 0
+        num_batches = 0
+        use_amp = (stage == 2)
+
+        for batch_idx, batch in enumerate(dataloader):
+            optimizer.zero_grad()
+            batch_size = batch['anchor_ids'].shape[0]
+            prefix_lengths = self.sample_prefix_length(batch_size).to(self.device)
+
+            with autocast(enabled=use_amp):
+                # ===== FULL PATH: 0.5*L0 + 0.5*L1 =====
+                full_dropout_mask = self.create_full_dropout_mask(batch_size)
+                anchor_full = self.model(
+                    batch['anchor_ids'], batch['anchor_mask'],
+                    block_dropout_mask=full_dropout_mask
+                )
+                l1_pos_full = self.model(batch['l1_pos_ids'], batch['l1_pos_mask'])
+                l0_pos_full = self.model(batch['l0_pos_ids'], batch['l0_pos_mask'])
+                full_emb = anchor_full['full_embedding']
+
+                # L1 losses on full path
+                full_contrastive_l1 = self.contrastive_loss(full_emb, l1_pos_full['full_embedding'])
+                full_margin_l1 = self.margin_loss(full_emb, batch['l1_labels'])
+                full_cls_l1 = F.cross_entropy(
+                    self.model.fractal_head.classify_leaf(full_emb),
+                    batch['l1_labels']
+                )
+                loss_full_l1 = full_contrastive_l1 + self.MARGIN_WEIGHT * full_margin_l1 + self.CLASS_WEIGHT * full_cls_l1
+
+                # L0 losses on full path
+                full_contrastive_l0 = self.contrastive_loss(full_emb, l0_pos_full['full_embedding'])
+                full_margin_l0 = self.margin_loss(full_emb, batch['l0_labels'])
+                full_cls_l0 = F.cross_entropy(
+                    self.model.fractal_head.classify_top(full_emb),
+                    batch['l0_labels']
+                )
+                loss_full_l0 = full_contrastive_l0 + self.MARGIN_WEIGHT * full_margin_l0 + self.CLASS_WEIGHT * full_cls_l0
+
+                loss_full = 0.5 * loss_full_l1 + 0.5 * loss_full_l0
+
+                # ===== PREFIX PATH: 0.5*L0 + 0.5*L1 (same mix) =====
+                prefix_dropout_mask = self.create_block_dropout_mask(batch_size, prefix_lengths)
+                anchor_prefix = self.model(
+                    batch['anchor_ids'], batch['anchor_mask'],
+                    block_dropout_mask=prefix_dropout_mask
+                )
+                l1_pos_prefix = self.model(batch['l1_pos_ids'], batch['l1_pos_mask'])
+                l0_pos_prefix = self.model(batch['l0_pos_ids'], batch['l0_pos_mask'])
+                mode_prefix_len = prefix_lengths.mode().values.item()
+                prefix_emb = self.model.fractal_head.get_prefix_embedding(
+                    anchor_prefix['blocks'], mode_prefix_len
+                )
+
+                # L1 losses on prefix path
+                prefix_contrastive_l1 = self.contrastive_loss(prefix_emb, l1_pos_prefix['full_embedding'])
+                prefix_margin_l1 = self.margin_loss(prefix_emb, batch['l1_labels'])
+                prefix_cls_l1 = F.cross_entropy(
+                    self.model.fractal_head.classify_leaf(prefix_emb),
+                    batch['l1_labels']
+                )
+                loss_prefix_l1 = prefix_contrastive_l1 + self.MARGIN_WEIGHT * prefix_margin_l1 + self.CLASS_WEIGHT * prefix_cls_l1
+
+                # L0 losses on prefix path
+                prefix_contrastive_l0 = self.contrastive_loss(prefix_emb, l0_pos_prefix['full_embedding'])
+                prefix_margin_l0 = self.margin_loss(prefix_emb, batch['l0_labels'])
+                prefix_cls_l0 = F.cross_entropy(
+                    self.model.fractal_head.classify_top(prefix_emb),
+                    batch['l0_labels']
+                )
+                loss_prefix_l0 = prefix_contrastive_l0 + self.MARGIN_WEIGHT * prefix_margin_l0 + self.CLASS_WEIGHT * prefix_cls_l0
+
+                loss_prefix = 0.5 * loss_prefix_l1 + 0.5 * loss_prefix_l0
+
+                loss = loss_full + self.PREFIX_WEIGHT * loss_prefix
+
+            if torch.isnan(loss):
+                continue
+
+            if use_amp:
+                self.scaler.scale(loss).backward()
+                self.scaler.unscale_(optimizer)
+                torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
+                self.scaler.step(optimizer)
+                self.scaler.update()
+            else:
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
+                optimizer.step()
+
+            total_loss += loss.item()
+            num_batches += 1
+
+        avg_loss = total_loss / max(num_batches, 1)
+        val_metrics = self._evaluate()
+        return avg_loss, val_metrics
+
+
 class NoPrefixV5Trainer(V5Trainer):
-    """V5 Trainer with NO prefix supervision — full→L1 only."""
+    """V5 Trainer with NO prefix supervision — full->L1 only."""
 
     def _train_epoch(self, dataloader, optimizer, epoch: int, stage: int) -> Tuple[float, Dict]:
         total_loss = 0
@@ -320,6 +426,7 @@ def run_all_ablations(
         'v5': V5Trainer,
         'inverted': InvertedV5Trainer,
         'no_prefix': NoPrefixV5Trainer,
+        'uhmt': UniformHierarchicalTrainer,
     }
 
     train_data = load_hierarchical_dataset(dataset_name, split="train", max_samples=10000)
