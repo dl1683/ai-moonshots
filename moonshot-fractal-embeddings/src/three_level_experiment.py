@@ -353,7 +353,7 @@ def evaluate_3level_steerability(model, test_data, head_mid, device="cuda"):
 
     # Compute steerability metrics
     s_02 = (results[1]['l0'] - results[4]['l0']) + (results[4]['l2'] - results[1]['l2'])
-    s_01 = (results[1]['l0'] - results[2]['l0']) + (results[1]['l1'] - results[1]['l1'])
+    s_01 = (results[1]['l0'] - results[2]['l0']) + (results[2]['l1'] - results[1]['l1'])
     s_12 = (results[2]['l1'] - results[4]['l1']) + (results[4]['l2'] - results[2]['l2'])
 
     # Better metric: monotonic zoom score
