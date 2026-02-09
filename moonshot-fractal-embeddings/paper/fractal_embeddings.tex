@@ -485,7 +485,7 @@ Qwen3-0.6B (Alibaba, 600M) & $+0.153 \pm 0.013$ & $+0.008 \pm 0.006$ & $+0.081 \
 \paragraph{Downstream utility: Retrieval benchmark.}
 Beyond classification, we evaluate whether steerability translates to controllable \emph{retrieval}.
 We train V5 and MRL models on CLINC-150, encode the test set ($n = 2{,}000$) at each prefix length $j \in \{1, \ldots, 4\}$, and measure Recall@$k$ and MRR for nearest-neighbor retrieval at both hierarchy levels.
-Table~\ref{tab:retrieval} reports Recall@1 averaged over 3~seeds.
+Table~\ref{tab:retrieval} reports Recall@1 averaged over 3~seeds (Figure~\ref{fig:retrieval} in the appendix visualizes the full ramp).
 
 V5 creates distinct retrieval operating points: $L_1$ Recall@1 climbs from 87.1\% at 64d to 93.4\% at 256d ($\Delta = +6.3$pp), demonstrating smooth recovery of fine-grained retrieval as more dimensions become available.
 MRL shows essentially flat $L_1$ Recall@1 ($93.6\% \rightarrow 94.3\%$, $\Delta = +0.6$pp).
@@ -633,6 +633,16 @@ The connection to successive refinement theory suggests this is not merely an em
     \includegraphics[width=\linewidth]{../results/figures/paper/fig7_entropy_allocation.pdf}
     \caption{Disentangling the scaling law. \textbf{Left:} Steerability vs.\ $\hlz$ (prefix task demand) --- the true driver, confirmed by the synthetic experiment. \textbf{Right:} Steerability vs.\ $\hlo$ --- a confounded proxy in observational data. Synthetic data (green diamonds) breaks the confound: $\hlo$ anti-correlates with steerability when $\hlz$ is varied independently.}
     \label{fig:entropy_alloc}
+\end{figure}
+
+\section{Retrieval Benchmark Visualization}
+\label{app:retrieval}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig9_retrieval.pdf}
+    \caption{Retrieval benchmark on CLINC-150 (3~seeds). V5 $L_1$ Recall@1 (solid blue) ramps steeply from 64d to 192d ($+6.3$pp) while MRL $L_1$ (solid orange) is flat ($+0.6$pp). Both methods achieve comparable $L_0$ Recall@1 (dashed lines, $>97\%$). The $10\times$ larger ramp demonstrates that V5's prefix specialization transfers from classification to retrieval.}
+    \label{fig:retrieval}
 \end{figure}
 
 \section{Full Synthetic Hierarchy Results}
