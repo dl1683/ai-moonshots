@@ -197,7 +197,7 @@ def fig3_forest_plot():
 
     datasets = []
     # Load all available datasets
-    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'clinc']:
+    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv', 'clinc']:
         if ds_name == 'clinc':
             v5_s, mrl_s = load_clinc_steers()
         else:
@@ -314,7 +314,7 @@ def fig5_scaling_law():
     profiles = json.load(open(RESULTS_DIR / "hierarchy_profiles.json"))
 
     datasets_data = []
-    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'clinc']:
+    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv', 'clinc']:
         if ds_name == 'clinc':
             v5_s, _ = load_clinc_steers()
         else:
@@ -357,7 +357,7 @@ def fig5_scaling_law():
            label=f'Linear fit (R²={r**2:.3f})')
 
     # Data points with error bars — custom offsets for overlapping labels
-    label_offsets = {'GoEmo': (8, -16), 'NEWSGROUPS': (8, 8)}
+    label_offsets = {'GoEmo': (8, -16), 'NEWSGROUPS': (8, 8), 'ARXIV': (8, -14)}
     for d in datasets_data:
         ci = 1.96 * d['steer_std'] / np.sqrt(d['n']) if d['n'] > 1 else d['steer_std']
         ax.errorbar(d['h'], d['steer_mean'], yerr=ci,
@@ -474,7 +474,7 @@ def fig7_entropy_allocation():
     # --- Left panel: S vs H(L0) ---
     # Real datasets
     real_data = []
-    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'clinc']:
+    for ds_name in ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv', 'clinc']:
         if ds_name == 'clinc':
             v5_s, _ = load_clinc_steers()
         else:
