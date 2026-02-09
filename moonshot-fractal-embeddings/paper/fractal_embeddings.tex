@@ -135,7 +135,7 @@ WOS & 10 & 336 & 33.6 & 2.90 & 5.05 & 8{,}688 & 2{,}000 \\
 \paragraph{Statistical methodology.}
 All experiments use $n \geq 5$ random seeds per condition (seeds 42, 123, 456, 789, 1024).
 Steerability differences (V5 minus MRL, paired by seed) are tested with two-sided paired $t$-tests.
-For the seven per-dataset comparisons in Table~\ref{tab:steerability}, we apply Holm--Bonferroni correction~\citep{holm1979simple} to control the family-wise error rate at $\alpha = 0.05$.
+For the eight per-dataset comparisons in Table~\ref{tab:steerability}, we apply Holm--Bonferroni correction~\citep{holm1979simple} to control the family-wise error rate at $\alpha = 0.05$.
 Effect sizes are reported as Cohen's $d$ (paired); applying the Hedges' $g$ small-sample correction ($\approx 0.80$ for $n = 5$, $0.57$ for $n = 3$) yields qualitatively identical conclusions, with all large effects ($d > 2$) remaining large.
 Standard deviations are sample estimates (ddof $= 1$).
 Causal ablation tests (Section~\ref{sec:causal}) are corrected within their own family of 4 comparisons (2 datasets $\times$ 2 conditions); the UHMT baseline comparison is corrected in a separate family of 2 tests.
@@ -219,12 +219,13 @@ Algorithm~\ref{alg:v5} summarizes the procedure.
 %=======================================================================
 
 \paragraph{Classification performance.}
-At full embedding length ($j=4$, 256d), V5 and MRL achieve comparable classification accuracy on Yahoo, GoEmotions, Newsgroups, TREC, arXiv, DBPedia Classes, and WOS (Table~\ref{tab:accuracy}).
-On CLINC, V5 retains higher $L_0$ accuracy at $j=4$ while MRL retains higher $L_1$---a natural consequence of V5's coarse-to-fine information allocation, which persists even at full length.
-Both methods substantially outperform the unfinetuned baseline across all datasets.
+At full embedding length ($j=4$, 256d), V5 and MRL achieve comparable $k$-NN classification accuracy on all eight datasets (Table~\ref{tab:accuracy}).
+On most datasets, both methods improve over the unfinetuned baseline, particularly at $L_0$.
+The exceptions are instructive: on CLINC ($K_1 = 150$), the 384d$\rightarrow$256d linear projection sacrifices some $L_1$ $k$-NN accuracy (V5: 67.6\%, MRL: 70.4\%, vs.\ baseline 88.7\% in the original 384d space), though the classification heads themselves achieve $>$95\% on the validation set.
+This reflects a deliberate trade-off: V5 reorganizes the embedding space for prefix-level semantic specialization rather than maximizing $k$-NN accuracy at full resolution.
 
 \begin{table}[t]
-\caption{Classification accuracy at full embedding length ($j = 4$, 256d). V5 and MRL are comparable on all eight datasets. On CLINC, V5 retains higher $L_0$ while MRL retains higher $L_1$---reflecting V5's coarse-to-fine allocation. Both improve substantially over the unfinetuned baseline.}
+\caption{$k$-NN classification accuracy at full embedding length ($j = 4$, 256d). V5 and MRL are comparable across datasets. Baseline uses the original backbone (384d); V5/MRL use learned 256d projections, which trade some $k$-NN accuracy for prefix-level structure on high-$K_1$ datasets (e.g., CLINC with $K_1 = 150$).}
 \label{tab:accuracy}
 \centering
 \small
