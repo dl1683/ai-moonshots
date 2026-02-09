@@ -547,6 +547,16 @@ V5 training approximates this: block 1 encodes $Y_0$, blocks 2--$J$ encode the r
 MRL instead performs single-resolution coding at each rate, losing the nested structure.
 This explains why V5 achieves accuracy parity at full resolution while gaining steerability at short prefixes: it matches the rate-distortion bound for the multi-resolution problem.
 
+The successive refinement framework yields three testable predictions, all confirmed by our experiments:
+
+\paragraph{Corollary 1 (Sign reversal under inversion).}
+\emph{Under inverted supervision ($\mathbf{z}_{\leq 1} \rightarrow L_1$, $\mathbf{z} \rightarrow L_0$), the capacity bottleneck forces the prefix to allocate capacity to $L_1|L_0$ (refinement) rather than $L_0$ (coarse), producing $\steer < 0$.}
+This is confirmed: inverted alignment yields $\steer = -0.018$ (CLINC) and $-0.025$ (TREC).
+
+\paragraph{Corollary 2 (UHMT collapse).}
+\emph{Under uniform multi-task supervision (all prefix lengths receive $0.5 \cdot \mathcal{L}_{L_0} + 0.5 \cdot \mathcal{L}_{L_1}$), no prefix length is privileged for either task. The optimizer distributes $L_0$ and $L_1|L_0$ information uniformly across all blocks, yielding $\steer \approx 0$.}
+This is confirmed: UHMT produces $\steer = +0.001$ (CLINC) and $-0.009$ (TREC), both indistinguishable from zero.
+
 \paragraph{Theorem 2 (Goldilocks capacity-demand matching, informal).}
 \emph{With fixed $H(Y_1)$ and varying $K_0$, steerability $\steer(K_0)$ peaks at $H^*(L_0) \approx C(d/J)$:}
 \begin{itemize}
