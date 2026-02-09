@@ -26,7 +26,8 @@ DATASET_NAMES = {
 }
 DATASET_H = {
     "yahoo": 1.23, "goemotions": 1.88, "newsgroups": 1.88,
-    "trec": 2.21, "arxiv": 2.62, "clinc": 3.90
+    "trec": 2.21, "arxiv": 2.62, "clinc": 3.90,
+    "dbpedia_classes": 3.17, "wos": 5.05
 }
 
 
