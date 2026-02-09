@@ -185,7 +185,7 @@ This isolates the effect of hierarchy alignment from all other training choices 
 Head-only training for 5 epochs, batch size 16, learning rate $10^{-4}$ with AdamW and cosine decay.
 Mixed-precision (FP16) training with gradient clipping at 1.0.
 Best model selected by validation score $\text{L0} + \text{L1}$.
-Crucially, V5 adds \textbf{zero inference-time overhead}: at deployment, the backbone and projection head are identical to MRL; steerability comes from how the head was trained, not from any architectural change.
+Crucially, V5 adds \textbf{zero inference-time architectural overhead}: at deployment, the model has the same parameter count and compute as MRL; steerability comes from how the projection head was trained, not from any architectural change.
 Algorithm~\ref{alg:v5} summarizes the procedure.
 
 \begin{algorithm}[t]
@@ -258,7 +258,7 @@ WOS & 0.619 & 0.625 & 0.610 & 0.170 & 0.148 & 0.156 \\
 Despite classification parity, V5 produces dramatically higher steerability than MRL across all eight datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
 Steerability generally increases with hierarchy complexity ($\hlo$): from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) through GoEmotions ($+0.020$, $\hlo = 1.88$), TREC ($+0.044$, $\hlo = 2.21$), and arXiv ($+0.027$, $\hlo = 2.62$) to $\steer = +0.120$ on DBPedia Classes ($\hlo = 3.17$) and $\steer = +0.150$ on CLINC ($\hlo = 3.90$).
 WOS ($\hlo = 5.05$) shows a moderate effect ($\steer = +0.038$) despite the deepest hierarchy, due to a floor effect in $L_1$ accuracy (Section~\ref{sec:scaling}).
-After Holm--Bonferroni correction across eight tests, CLINC, DBPedia Classes, and TREC remain significant ($p_\text{adj} < 0.001$, $< 0.001$, and $0.012$; Cohen's $d = 6.2$, $8.7$, and $2.8$); arXiv and WOS are borderline ($p_\text{adj} = 0.064$ and $0.078$).
+After Holm--Bonferroni correction across eight tests, CLINC, DBPedia Classes, and TREC remain significant ($p_\text{adj} < 0.001$, $< 0.001$, and $0.012$; paired Cohen's $d = 4.3$, $5.5$, and $2.4$); arXiv and WOS are borderline ($p_\text{adj} = 0.064$ and $0.078$).
 The shallow-hierarchy datasets (Yahoo, GoEmotions, Newsgroups; $\hlo \leq 1.88$) show consistent but small effects that do not reach per-dataset significance---a predicted consequence of the capacity-demand matching theory (Section~\ref{sec:scaling}): when $\hlo$ is low, there is little refinement information for V5 to separate from coarse information, so the steerability signal is inherently small.
 MRL steerability is consistently near zero ($|\steer_\text{MRL}| < 0.02$ on all datasets), confirming that steerability requires explicit hierarchy alignment.
 A sign test confirms the consistency: V5 $>$ MRL steerability on all 8 datasets ($p = 2^{-8} = 0.004$, one-sided binomial).
@@ -393,7 +393,7 @@ This product captures the intuition that steerability requires \emph{both} refin
 \end{itemize}
 The product predictor resolves the WOS deviation: WOS has the highest $\hlo$ but the lowest $A_{L_1}^\text{base}$ (17.0\%, vs.\ 88.7\% for CLINC), yielding a moderate product that correctly places it among the lower-steerability datasets.
 This interaction effect has a natural information-theoretic interpretation: steerability depends on the \emph{usable refinement information} $\hlo \cdot A_{L_1}^\text{base}$, not on $\hlo$ alone.
-When the pretrained model cannot already resolve fine-grained distinctions (low $A_{L_1}^\text{base}$), head-only training cannot create steerability, regardless of how deep the hierarchy is.
+When the pretrained model cannot already resolve fine-grained distinctions (low $A_{L_1}^\text{base}$), head-only training yields only minimal steerability, regardless of how deep the hierarchy is.
 
 A leave-one-out sensitivity analysis (Appendix~\ref{app:scaling_robust}) confirms robustness: all LOO Spearman values remain positive ($\rho \geq 0.61$), and the bootstrap 95\% CI for the raw $\hlo$ correlation is $[0.05, 1.0]$ with 98.0\% of resamples positive.
 
