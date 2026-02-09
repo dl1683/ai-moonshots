@@ -148,7 +148,8 @@ def main():
         h = DATASET_H[ds]
         name = {
             "yahoo": "Yahoo", "goemotions": "GoEmotions", "newsgroups": "Newsgroups",
-            "trec": "TREC", "arxiv": "arXiv", "clinc": "CLINC"
+            "trec": "TREC", "arxiv": "arXiv", "clinc": "CLINC",
+            "dbpedia_classes": "DBPedia Classes", "wos": "WOS"
         }[ds]
 
         # Format p-value
