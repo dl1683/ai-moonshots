@@ -90,7 +90,7 @@ Our key contributions are:
 %=======================================================================
 
 \paragraph{Hierarchical classification.}
-We consider datasets with two-level label hierarchies: each sample $x$ has a coarse label $y^{(0)} \in \{1, \ldots, K_0\}$ and a fine label $y^{(1)} \in \{1, \ldots, K_1\}$, where each fine class maps to exactly one coarse class.
+We primarily evaluate on two-level label hierarchies: each sample $x$ has a coarse label $y^{(0)} \in \{1, \ldots, K_0\}$ and a fine label $y^{(1)} \in \{1, \ldots, K_1\}$, where each fine class maps to exactly one coarse class (extension to three levels is demonstrated in Section~\ref{sec:generality}).
 The hierarchy is characterized by the branching factor $K_1/K_0$ and the conditional entropy $\hlo$, which measures how much additional information $L_1$ carries beyond $L_0$.
 
 \paragraph{Prefix-truncated embeddings.}
@@ -515,11 +515,40 @@ $L_1$ & V5  & 87.1 & 92.7 & 93.7 & 93.4 \\
 \end{tabular}
 \end{table}
 
+\paragraph{Three-level hierarchy extension.}
+To test generalization beyond two levels, we construct a 3-level hierarchy on CLINC: 5~super-domains $\rightarrow$ 10~domains $\rightarrow$ 150~intents, with V5 training aligned across three granularity levels ($j=1 \rightarrow L_0$, $j=2 \rightarrow L_0{+}L_1$, $j=3 \rightarrow L_1{+}L_2$, $j=4 \rightarrow L_2$).
+Table~\ref{tab:threelevel} shows that V5 exhibits a clear \emph{ramp gradient}: the $L_2$ (intent) accuracy ramp from 64d to 256d is $+3.2$pp, the $L_1$ (domain) ramp is $+1.0$pp, and the $L_0$ (super-domain) ramp is $+0.5$pp.
+MRL is flat at all levels ($\leq 0.4$pp ramp).
+The 3-level steerability $\steer_{02} = +0.027 \pm 0.004$ (V5) vs.\ $+0.002 \pm 0.004$ (MRL, 3~seeds), confirming that fractal supervision generalizes to deeper hierarchies.
+
+\begin{table}[t]
+\caption{Three-level hierarchy (CLINC, 5$\rightarrow$10$\rightarrow$150, 3~seeds). V5 shows a ramp gradient: finer levels benefit more from additional dimensions. MRL is flat.}
+\label{tab:threelevel}
+\centering
+\small
+\begin{tabular}{llcccc}
+\toprule
+& & \multicolumn{4}{c}{$k$-NN Accuracy (\%)} \\
+\cmidrule(lr){3-6}
+Level & Method & 64d & 128d & 192d & 256d \\
+\midrule
+$L_0$ (5 super) & V5  & 98.6 & 98.9 & 99.0 & 99.1 \\
+                & MRL & 98.4 & 98.6 & 98.6 & 98.7 \\
+\midrule
+$L_1$ (10 domain) & V5  & 97.7 & 98.3 & 98.5 & 98.7 \\
+                   & MRL & 97.9 & 98.0 & 98.1 & 98.1 \\
+\midrule
+$L_2$ (150 intent) & V5  & 92.7 & 94.7 & 95.4 & 95.9 \\
+                    & MRL & 94.9 & 95.2 & 95.3 & 95.3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \paragraph{Limitations.}
 \begin{itemize}
     \item \textbf{Shallow hierarchies}: On Yahoo Answers ($K_0 = 4$, $\hlo = 1.23$), steerability is small and noisy ($\steer = 0.015 \pm 0.019$, 5~seeds). The method is most valuable for moderately deep hierarchies where the fine task is learnable.
     \item \textbf{Floor effects}: On WOS ($K_1 = 336$), head-only training achieves only ${\sim}15\%$ $L_1$ accuracy (floor), limiting steerability despite high $\hlo = 5.05$. Steerability requires both hierarchical complexity and model capacity to learn the fine task.
-    \item \textbf{Two-level hierarchies}: Our current formulation handles two-level hierarchies ($L_0$, $L_1$). Extension to deeper hierarchies is straightforward in principle but untested.
+    \item \textbf{Deeper hierarchies}: The 3-level extension (Table~\ref{tab:threelevel}) confirms generalization but with a modest effect size; with only 5~super-domain classes, $L_0$ is near ceiling at all prefixes. Evaluation on naturally deep hierarchies (e.g., ICD-10, product taxonomies) remains future work.
 \end{itemize}
 
 %=======================================================================
