@@ -304,7 +304,7 @@ Only the prefix-to-hierarchy mapping changes:
 \end{figure}
 
 \paragraph{Results.}
-The ablation results (Table~\ref{tab:ablation}, Figure~\ref{fig:ablation}) provide strong evidence that alignment drives steerability:
+The ablation results (Table~\ref{tab:ablation}, Figure~\ref{fig:ablation}) provide strong evidence that alignment drives steerability.\footnote{The absolute steerability in Table~\ref{tab:ablation} is lower than in Table~\ref{tab:steerability} because the ablation uses a fixed train/val split to eliminate data-split variance across conditions; the within-condition comparisons (V5 vs.\ inverted, V5 vs.\ no-prefix) are the relevant tests.}
 
 \begin{table}[t]
 \caption{Causal ablation on two datasets (BGE-small). All conditions share a fixed train/val split to eliminate data-split variance. Inverting alignment reverses the steerability sign on both datasets; removing prefix-specific alignment collapses it. All four $p$-values survive Holm--Bonferroni correction within this family ($m = 4$; largest adjusted $p = 0.030$).}
@@ -538,7 +538,7 @@ Doubling the prefix dimension from 64 to 128 should shift the Goldilocks peak ri
 
 \paragraph{Multi-resolution embeddings.}
 Matryoshka Representation Learning (MRL)~\citep{kusupati2022matryoshka} trains embeddings that support prefix truncation, but all prefix lengths are supervised on the same task, producing no semantic specialization.
-SMRL~\citep{li2025smrl} extends MRL with sequential training to reduce gradient variance; Matryoshka Multimodal Models~\citep{cai2024m3} apply the nesting principle to visual tokens in vision-language models.
+SMEC~\citep{li2025smrl} rethinks MRL training for retrieval embedding compression; Matryoshka Multimodal Models~\citep{cai2024m3} apply the nesting principle to visual tokens in vision-language models.
 None of these approaches introduce hierarchy-awareness: truncation changes \emph{fidelity}, not \emph{semantic level}.
 Our work shows that aligning prefix supervision with hierarchy is the missing ingredient that converts fidelity truncation into semantic zoom.
 
