@@ -328,17 +328,15 @@ def fig5_scaling_law():
         if v5_s:
             h = profiles.get(ds_name, {}).get('h_l1_given_l0', DS_H_FALLBACK.get(ds_name, 0))
             display_name = DS_DISPLAY.get(ds_name, ds_name.upper())
-            # Get best L1 accuracy at j=4 for learnability
+            # Get baseline (unfinetuned) L1 accuracy for learnability
             bench_file = RESULTS_DIR / f"benchmark_bge-small_{ds_name}.json"
             best_l1 = 0
             if bench_file.exists():
                 bd = json.load(open(bench_file))
-                for method in ['v5', 'mrl']:
-                    for sk in bd.get(method, {}):
-                        entry = bd[method][sk]
-                        if isinstance(entry, dict) and 'prefix_accuracy' in entry:
-                            l1_j4 = entry['prefix_accuracy'].get('j4_l1', 0)
-                            best_l1 = max(best_l1, l1_j4)
+                # Use unfinetuned baseline L1 accuracy (same across seeds)
+                first_seed = list(bd.get('v5', {}).keys())[0] if bd.get('v5') else None
+                if first_seed:
+                    best_l1 = bd['v5'][first_seed].get('baseline', {}).get('l1_accuracy', 0)
             datasets_data.append({
                 'name': display_name,
                 'ds_name': ds_name,
@@ -404,7 +402,7 @@ def fig5_scaling_law():
                      textcoords="offset points", xytext=offset,
                      fontsize=10, fontweight='bold')
 
-    ax2.set_xlabel('H(L1|L0) x L1 Accuracy -- Usable Refinement Info')
+    ax2.set_xlabel('H(L1|L0) x Baseline L1 Accuracy')
     ax2.set_ylabel('V5 Steerability Score')
     ax2.set_title(f'Product Predictor: rho={rho_p:.2f} (p={p_p:.4f})\nAccounts for WOS floor effect',
                   fontweight='bold')

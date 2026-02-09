@@ -44,7 +44,7 @@ Against a matched Matryoshka Representation Learning (MRL) baseline trained on $
 On CLINC-150, V5 achieves $\steer = +0.150 \pm 0.028$ while MRL produces $\steer = +0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, Cohen's $d = 4.3$, 5~seeds).
 Causal ablations on two datasets identify alignment as the driver: inverting alignment reverses the steerability sign (CLINC: $-0.018$, TREC: $-0.025$), and removing prefix-specific supervision collapses it to near-zero; all comparisons significant ($p \leq 0.03$, Cohen's $d \geq 2.7$).
 In a synthetic hierarchy experiment with fixed text and varied coarse partitions, steerability scales with coarse entropy $\hlz$ and exhibits a Goldilocks optimum at ${\sim}12$--$16$ coarse classes (quadratic $R^2 = 0.964$).
-Across seven real datasets spanning five domains, steerability is predicted by the product of hierarchy depth $\hlo$ and model learnability (Spearman $\rho = 0.89$, $p = 0.007$; Pearson $r = 0.95$), revealing an interaction: steerability requires \emph{both} hierarchical complexity and model capacity to learn the fine task.
+Across seven real datasets spanning five domains, steerability is predicted by the product of hierarchy depth $\hlo$ and baseline learnability (Spearman $\rho = 0.86$, $p = 0.014$; Pearson $r = 0.97$), revealing an interaction: steerability requires \emph{both} hierarchical complexity and model capacity to resolve the fine task.
 MRL produces near-zero steerability in all conditions.
 Cross-model replication on three model families (BGE-small, E5-small, Qwen3-0.6B) confirms architecture invariance.
 These results support hierarchy alignment as a principled control knob for semantic granularity.
@@ -239,7 +239,7 @@ Newsgroups & 0.815 & 0.802 & 0.800 & 0.658 & 0.639 & 0.650 \\
 TREC & 0.854 & 0.934 & 0.932 & 0.718 & 0.794 & 0.790 \\
 arXiv & 0.721 & 0.729 & 0.721 & 0.465 & 0.448 & 0.446 \\
 CLINC & 0.961 & 0.954 & 0.910 & 0.887 & 0.676 & 0.704 \\
-WOS & 0.619 & 0.623 & 0.610 & 0.170 & 0.147 & 0.155 \\
+WOS & 0.619 & 0.625 & 0.610 & 0.170 & 0.148 & 0.156 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -254,13 +254,13 @@ WOS & 0.619 & 0.623 & 0.610 & 0.170 & 0.147 & 0.155 \\
 \paragraph{Steerability.}
 Despite classification parity, V5 produces dramatically higher steerability than MRL across all seven datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
 Steerability generally increases with hierarchy complexity ($\hlo$): from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) through GoEmotions ($+0.020$, $\hlo = 1.88$), TREC ($+0.044$, $\hlo = 2.21$), and arXiv ($+0.027$, $\hlo = 2.62$) to $\steer = +0.150$ on CLINC ($\hlo = 3.90$).
-WOS ($\hlo = 5.05$) shows a moderate effect ($\steer = +0.029$) despite the deepest hierarchy, due to a floor effect in $L_1$ accuracy (Section~\ref{sec:scaling}).
+WOS ($\hlo = 5.05$) shows a moderate effect ($\steer = +0.038$) despite the deepest hierarchy, due to a floor effect in $L_1$ accuracy (Section~\ref{sec:scaling}).
 After Holm--Bonferroni correction across seven tests, CLINC and TREC remain significant ($p_\text{adj} = 0.004$ and $0.038$; Cohen's $d = 4.3$ and $2.4$); arXiv is borderline ($p_\text{adj} = 0.078$, $d = 1.8$).
 The shallow-hierarchy datasets (Yahoo, GoEmotions, Newsgroups; $\hlo \leq 1.88$) show consistent but small effects that do not reach per-dataset significance---a predicted consequence of the capacity-demand matching theory (Section~\ref{sec:scaling}): when $\hlo$ is low, there is little refinement information for V5 to separate from coarse information, so the steerability signal is inherently small.
 MRL steerability is consistently near zero ($|\steer_\text{MRL}| < 0.02$ on all datasets), confirming that steerability requires explicit hierarchy alignment.
 A sign test confirms the consistency: V5 $>$ MRL steerability on all 7 datasets ($p = 2^{-7} = 0.008$, one-sided binomial).
-A random-effects meta-analysis (DerSimonian--Laird) across all seven datasets yields a pooled Cohen's $d = 1.22$ (95\% CI: $[0.51, 1.93]$, $z = 3.35$, $p = 0.0008$), confirming a robust overall V5 advantage.
-The substantial heterogeneity ($I^2 = 52\%$) is expected: the scaling trend analysis (Section~\ref{sec:scaling}) predicts that effect size is moderated by the interaction of hierarchy depth and model learnability.
+A random-effects meta-analysis (DerSimonian--Laird) across all seven datasets yields a pooled Cohen's $d = 1.24$ (95\% CI: $[0.54, 1.94]$, $z = 3.48$, $p = 0.0005$), confirming a robust overall V5 advantage.
+The substantial heterogeneity ($I^2 = 53\%$) is expected: the scaling trend analysis (Section~\ref{sec:scaling}) predicts that effect size is moderated by the interaction of hierarchy depth and model learnability.
 
 \begin{table}[t]
 \caption{Steerability across datasets ($\steer$ = coarse specialization + fine specialization, Eq.~\ref{eq:steerability}). V5 achieves positive steerability that scales with hierarchy complexity. MRL is consistently near zero. Reported as mean $\pm$ SD across seeds.}
@@ -277,7 +277,7 @@ Newsgroups & 1.88 & $+0.035 \pm 0.029$ & $+0.000 \pm 0.016$ & $+0.035$ & 5 \\
 TREC & 2.21 & $+0.044 \pm 0.017$ & $-0.001 \pm 0.015$ & $+0.045$ & 5 \\
 arXiv & 2.62 & $+0.027 \pm 0.015$ & $-0.001 \pm 0.013$ & $+0.028$ & 5 \\
 CLINC & 3.90 & $+0.150 \pm 0.028$ & $+0.007 \pm 0.016$ & $+0.143$ & 5 \\
-WOS & 5.05 & $+0.029 \pm 0.019$ & $-0.001 \pm 0.004$ & $+0.030$ & 5 \\
+WOS & 5.05 & $+0.038 \pm 0.026$ & $+0.001 \pm 0.005$ & $+0.036$ & 5 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -361,32 +361,32 @@ We present two complementary analyses: an observational study across real datase
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig5_scaling_law.pdf}
-    \caption{Steerability across seven real datasets. \textbf{Left:} Raw steerability vs.\ $\hlo$. WOS (highest $\hlo$) falls below the trend due to a floor effect in $L_1$ accuracy. \textbf{Right:} Steerability vs.\ the product predictor $\hlo \times A_{L_1}$ ($\rho = 0.89$, $p = 0.007$), which accounts for both hierarchy complexity and model learnability.}
+    \caption{Steerability across seven real datasets. \textbf{Left:} Raw steerability vs.\ $\hlo$ ($\rho = 0.72$, $p = 0.068$). WOS (highest $\hlo$) falls below the trend due to a floor effect in $L_1$ accuracy. \textbf{Right:} Steerability vs.\ the product predictor $\hlo \times A_{L_1}^\text{base}$ ($\rho = 0.86$, $p = 0.014$), which accounts for both hierarchy complexity and baseline learnability.}
     \label{fig:scaling}
 \end{figure}
 
 Across seven real datasets spanning $\hlo$ from 1.23 (Yahoo) to 5.05 bits (WOS), we observe a positive association between hierarchy complexity and steerability (Figure~\ref{fig:scaling}).
-Using all seven datasets, the raw Spearman correlation with $\hlo$ is $\rho = 0.49$ ($p = 0.27$); excluding WOS, the six remaining datasets yield $\rho = 0.83$ ($p = 0.042$).
+Using all seven datasets, the raw Spearman correlation with $\hlo$ is $\rho = 0.72$ ($p = 0.068$); excluding WOS, the six remaining datasets yield $\rho = 0.78$ ($p = 0.066$).
 
 \paragraph{WOS and the floor effect.}
 WOS ($K_1 = 336$ fine classes, $\hlo = 5.05$) falls below the linear trend despite having the deepest hierarchy.
-The explanation is a \emph{floor effect}: with 336 fine classes and head-only training, neither V5 nor MRL achieves meaningful $L_1$ accuracy (10.8\% and 11.0\% respectively, vs.\ 0.3\% chance), limiting steerability because the $L_1$ component of $\steer$ cannot differentiate across prefix lengths when $L_1$ accuracy is near floor.
+The explanation is a \emph{floor effect}: with 336 fine classes and head-only training, neither V5 nor MRL achieves meaningful $L_1$ accuracy (11.1\% and 11.5\% respectively, vs.\ 0.3\% chance), limiting steerability because the $L_1$ component of $\steer$ cannot differentiate across prefix lengths when $L_1$ accuracy is near floor.
 By contrast, CLINC ($K_1 = 150$) achieves $L_1 > 67\%$, providing ample dynamic range.
 
 \paragraph{Interaction analysis: steerability requires both complexity and learnability.}
 This motivates a moderated predictor: \emph{effective steerability requires both hierarchical complexity and model learnability}.
-We define a product predictor $\hlo \times A_{L_1}$, where $A_{L_1}$ is the best $L_1$ accuracy at $j = 4$ (maximum of V5 and MRL, measuring how learnable the fine task is).
-This product captures the intuition that steerability requires \emph{both} refinement information (high $\hlo$) and the capacity to actually learn it (high $A_{L_1}$):
+We define a product predictor $\hlo \times A_{L_1}^\text{base}$, where $A_{L_1}^\text{base}$ is the \emph{unfinetuned baseline} $L_1$ accuracy, measuring how much fine-grained information the pretrained backbone captures before any training.
+This product captures the intuition that steerability requires \emph{both} refinement information (high $\hlo$) and model capacity to resolve it (high $A_{L_1}^\text{base}$):
 \begin{itemize}
-    \item $\hlo$ alone: Spearman $\rho = 0.49$ ($p = 0.27$)
-    \item $A_{L_1}$ alone: Spearman $\rho = 0.64$ ($p = 0.12$)
-    \item $\hlo \times A_{L_1}$: Spearman $\rho = 0.89$ ($p = 0.007$); Pearson $r = 0.95$ ($p = 0.001$)
+    \item $\hlo$ alone: Spearman $\rho = 0.72$ ($p = 0.068$)
+    \item $A_{L_1}^\text{base}$ alone: Spearman $\rho = 0.54$ ($p = 0.22$)
+    \item $\hlo \times A_{L_1}^\text{base}$: Spearman $\rho = 0.86$ ($p = 0.014$); Pearson $r = 0.97$ ($p < 0.001$)
 \end{itemize}
-The product predictor resolves the WOS deviation: WOS has the highest $\hlo$ but the lowest $A_{L_1}$, yielding a moderate product that correctly places it among the lower-steerability datasets.
-This interaction effect has a natural information-theoretic interpretation: steerability depends on the \emph{usable refinement information} $\hlo \cdot A_{L_1}$, not on $\hlo$ alone.
-When the model cannot actually extract fine-grained information (low $A_{L_1}$), there is nothing for V5 to separate from coarse information, regardless of how deep the hierarchy is.
+The product predictor resolves the WOS deviation: WOS has the highest $\hlo$ but the lowest $A_{L_1}^\text{base}$ (17.0\%, vs.\ 88.7\% for CLINC), yielding a moderate product that correctly places it among the lower-steerability datasets.
+This interaction effect has a natural information-theoretic interpretation: steerability depends on the \emph{usable refinement information} $\hlo \cdot A_{L_1}^\text{base}$, not on $\hlo$ alone.
+When the pretrained model cannot already resolve fine-grained distinctions (low $A_{L_1}^\text{base}$), head-only training cannot create steerability, regardless of how deep the hierarchy is.
 
-A leave-one-out sensitivity analysis (Appendix~\ref{app:scaling_robust}) confirms that the product predictor is robust: all LOO values remain positive, and the strongest leveraged dataset (CLINC, deepest hierarchy with highest $A_{L_1}$) reduces $\rho$ only to 0.71 when dropped.
+A leave-one-out sensitivity analysis (Appendix~\ref{app:scaling_robust}) confirms robustness: all LOO Spearman values remain positive ($\rho \geq 0.55$), and the bootstrap 95\% CI for the raw $\hlo$ correlation is $[-0.06, 1.0]$ with 96.4\% of resamples positive.
 
 In natural datasets, $\hlz$ and $\hlo$ are positively correlated (more coarse classes $\Rightarrow$ more fine classes per coarse class).
 This confound prevents us from determining whether the mechanism operates through $\hlz$ (prefix task demand) or $\hlo$ (refinement complexity).
@@ -506,7 +506,7 @@ $\Delta$ (256d$-$64d) & & $-0.5$ & $+0.4$ & $+0.9$ & $-0.2$ \\
 \paragraph{Limitations.}
 \begin{itemize}
     \item \textbf{Shallow hierarchies}: On Yahoo Answers ($K_0 = 4$, $\hlo = 1.23$), steerability is small and noisy ($\steer = 0.015 \pm 0.019$, 5~seeds). The method is most valuable for moderately deep hierarchies where the fine task is learnable.
-    \item \textbf{Floor and ceiling effects}: On WOS ($K_1 = 336$), head-only training achieves only ${\sim}11\%$ $L_1$ accuracy (floor), limiting steerability despite high $\hlo = 5.05$. On DBPedia ($K_0 = 14$, $L_0 = 100\%$), there is no room for steerability improvement (ceiling). Steerability requires both hierarchical complexity and model capacity to learn the fine task.
+    \item \textbf{Floor and ceiling effects}: On WOS ($K_1 = 336$), head-only training achieves only ${\sim}11$--$12\%$ $L_1$ accuracy (floor), limiting steerability despite high $\hlo = 5.05$. On DBPedia ($K_0 = 14$, $L_0 = 100\%$), there is no room for steerability improvement (ceiling). Steerability requires both hierarchical complexity and model capacity to learn the fine task.
     \item \textbf{Two-level hierarchies}: Our current formulation handles two-level hierarchies ($L_0$, $L_1$). Extension to deeper hierarchies is straightforward in principle but untested.
 \end{itemize}
 
@@ -584,7 +584,7 @@ The two are orthogonal and potentially complementary: fractal embeddings could b
 %=======================================================================
 
 We have shown that a simple modification to embedding training---aligning prefix supervision with semantic hierarchy---creates embeddings where dimensional truncation corresponds to semantic zoom.
-Through controlled ablations on two datasets, synthetic hierarchy experiments, cross-model replication on three families, and a random-effects meta-analysis across seven datasets ($d = 1.22$, $p = 0.0008$), we support the \textbf{Fractal Embedding Principle}: steerability is driven by alignment, scales with the interaction of hierarchy depth and model learnability, and is absent in standard MRL.
+Through controlled ablations on two datasets, synthetic hierarchy experiments, cross-model replication on three families, and a random-effects meta-analysis across seven datasets ($d = 1.24$, $p = 0.0005$), we support the \textbf{Fractal Embedding Principle}: steerability is driven by alignment, scales with the interaction of hierarchy depth and baseline learnability ($\rho = 0.86$), and is absent in standard MRL.
 We connect this to the classical theory of successive refinement, showing that V5 training approximates the optimal multi-resolution code for hierarchical semantic sources.
 
 The practical implications extend beyond classification.
@@ -671,7 +671,7 @@ Newsgroups & 1.88 & $+0.035$ & $+0.037$ & $+0.03$ & $+0.035$ \\
 TREC & 2.21 & $+0.045$ & $+0.039$ & $+0.27$ & $+0.045$ \\
 arXiv & 2.62 & $+0.028$ & $+0.020$ & $+0.17$ & $+0.028$ \\
 CLINC & 3.90 & $+0.143$ & $+0.124$ & $+0.27$ & $+0.143$ \\
-WOS & 5.05 & $+0.021$ & $+0.004$ & $+0.28$ & $+0.021$ \\
+WOS & 5.05 & $+0.036$ & $+0.027$ & $+0.30$ & $+0.036$ \\
 \midrule
 V5 $>$ MRL & & 7/7 & 7/7 & 5/7 & 7/7 \\
 Sign test $p$ & & 0.008 & 0.008 & 0.23 & 0.008 \\
@@ -682,7 +682,7 @@ Sign test $p$ & & 0.008 & 0.008 & 0.23 & 0.008 \\
 \section{Per-Seed Steerability Values}
 \label{app:perseed}
 
-Table~\ref{tab:perseed} reports individual seed steerability values for all six datasets, enabling full transparency about the variability underlying the summary statistics in Table~\ref{tab:steerability}.
+Table~\ref{tab:perseed} reports individual seed steerability values for all seven datasets, enabling full transparency about the variability underlying the summary statistics in Table~\ref{tab:steerability}.
 
 \begin{table}[h]
 \caption{Per-seed steerability values (V5 and MRL) across all seven datasets. Seeds: 42, 123, 456, 789, 1024.}
@@ -700,7 +700,7 @@ News & +.040 & $-.012$ & +.038 & +.044 & +.066 & $-.002$ & +.022 & +.008 & $-.01
 TREC & +.018 & +.062 & +.054 & +.042 & +.046 & +.000 & +.024 & $-.014$ & $-.002$ & $-.012$ \\
 arXiv & +.038 & +.018 & +.012 & +.018 & +.048 & $-.014$ & $-.010$ & +.000 & +.000 & +.020 \\
 CLINC & +.104 & +.178 & +.150 & +.168 & +.150 & +.012 & +.028 & +.006 & $-.016$ & +.004 \\
-WOS & +.032 & +.022 & +.008 & +.052 & --- & +.000 & $-.004$ & +.004 & $-.004$ & --- \\
+WOS & +.032 & +.022 & +.008 & +.052 & +.074 & +.000 & $-.004$ & +.004 & $-.004$ & +.010 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -708,11 +708,11 @@ WOS & +.032 & +.022 & +.008 & +.052 & --- & +.000 & $-.004$ & +.004 & $-.004$ & 
 \section{Scaling Trend Robustness}
 \label{app:scaling_robust}
 
-With seven datasets, we provide a thorough sensitivity analysis of the raw $\hlo$ correlation ($\rho = 0.49$) and the product predictor $\hlo \times A_{L_1}$ ($\rho = 0.89$).
+With seven datasets, we provide a thorough sensitivity analysis of the raw $\hlo$ correlation ($\rho = 0.72$) and the product predictor $\hlo \times A_{L_1}^\text{base}$ ($\rho = 0.86$).
 Table~\ref{tab:loo} reports leave-one-out (LOO) Spearman correlations for $\hlo$ alone.
 
 \begin{table}[h]
-\caption{Leave-one-out sensitivity analysis for the $\hlo$ scaling trend ($k = 7$). WOS and CLINC have the highest Cook's distances (3.94 and 0.93), reflecting their roles as boundary cases: WOS as a floor-effect dataset and CLINC as the strongest effect. Dropping WOS improves $\rho$ to 0.78 ($p = 0.066$), confirming its outlier status due to the $L_1$ floor effect.}
+\caption{Leave-one-out sensitivity analysis for the $\hlo$ scaling trend ($k = 7$). WOS and CLINC have the highest Cook's distances (3.76 and 0.94), reflecting their roles as boundary cases: WOS as a floor-effect dataset and CLINC as the strongest effect. Dropping WOS improves $\rho$ to 0.78 ($p = 0.066$), and the product predictor $\hlo \times A_{L_1}^\text{base}$ resolves this without dropping any dataset ($\rho = 0.86$, $p = 0.014$).}
 \label{tab:loo}
 \centering
 \small
@@ -720,23 +720,23 @@ Table~\ref{tab:loo} reports leave-one-out (LOO) Spearman correlations for $\hlo$
 \toprule
 Dropped & $k$ & Spearman $\rho$ & $p$ & Pearson $r$ & $p$ \\
 \midrule
-None (full) & 7 & 0.49 & 0.268 & 0.38 & 0.403 \\
+None (full) & 7 & 0.72 & 0.068 & 0.49 & 0.261 \\
 \midrule
-Yahoo & 6 & 0.17 & 0.742 & 0.29 & 0.575 \\
-GoEmotions & 6 & 0.26 & 0.623 & 0.34 & 0.512 \\
-Newsgroups & 6 & 0.60 & 0.208 & 0.37 & 0.471 \\
-TREC & 6 & 0.52 & 0.288 & 0.38 & 0.454 \\
-arXiv & 6 & 0.61 & 0.200 & 0.38 & 0.457 \\
-CLINC & 6 & 0.41 & 0.425 & $-0.08$ & 0.874 \\
+Yahoo & 6 & 0.55 & 0.257 & 0.42 & 0.412 \\
+GoEmotions & 6 & 0.60 & 0.208 & 0.46 & 0.363 \\
+Newsgroups & 6 & 0.71 & 0.111 & 0.48 & 0.331 \\
+TREC & 6 & 0.84 & 0.036 & 0.50 & 0.317 \\
+arXiv & 6 & 0.81 & 0.050 & 0.50 & 0.314 \\
+CLINC & 6 & 0.67 & 0.148 & 0.49 & 0.322 \\
 WOS & 6 & 0.78 & 0.066 & 0.90 & 0.014 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The raw $\hlo$ correlation is weakened by WOS (Cook's $D = 3.94$), which has the deepest hierarchy but the lowest $L_1$ learnability.
-Dropping WOS recovers $\rho = 0.78$ ($p = 0.066$), and the product predictor $\hlo \times A_{L_1}$ resolves this without dropping any dataset ($\rho = 0.89$, $p = 0.007$; see Section~\ref{sec:scaling}).
-A bootstrap analysis (10{,}000 resamples) of the raw $\hlo$ correlation yields 83.1\% of values $> 0$, while the product predictor bootstrap would yield $> 95\%$ positive values.
-The meta-analysis prediction interval for a new dataset's Cohen's $d$ is $[-0.72, 3.16]$, reflecting heterogeneity ($I^2 = 52\%$) that the interaction model predicts: datasets differ systematically in effect size based on both hierarchy depth and learnability.
+The raw $\hlo$ correlation is influenced by WOS (Cook's $D = 3.76$), which has the deepest hierarchy but the lowest $L_1$ learnability.
+Dropping WOS improves $\rho$ to $0.78$ ($p = 0.066$), and the product predictor $\hlo \times A_{L_1}^\text{base}$ resolves this without dropping any dataset ($\rho = 0.86$, $p = 0.014$; see Section~\ref{sec:scaling}).
+A bootstrap analysis (10{,}000 resamples) of the raw $\hlo$ correlation yields 96.4\% of values $> 0$.
+The meta-analysis prediction interval for a new dataset's Cohen's $d$ is $[-0.70, 3.18]$, reflecting heterogeneity ($I^2 = 53\%$) that the interaction model predicts: datasets differ systematically in effect size based on both hierarchy depth and learnability.
 
 \section{Broader Impact}
 \label{app:impact}
