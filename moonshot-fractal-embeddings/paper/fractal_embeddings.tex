@@ -13,7 +13,7 @@
 \usepackage{amssymb}
 \usepackage{nicefrac}
 \usepackage{microtype}
-\usepackage[table]{xcolor}
+\usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage{algorithm}
@@ -47,7 +47,7 @@ In a synthetic hierarchy experiment with fixed text and varied coarse partitions
 Across six real datasets spanning four domains, steerability is strongly correlated with conditional entropy $\hlo$ (Spearman $\rho = 0.83$, $p = 0.042$; Pearson $r = 0.90$, $R^2 = 0.82$).
 MRL produces near-zero steerability in all conditions.
 Cross-model replication on three model families (BGE-small, E5-small, Qwen3-0.6B) confirms architecture invariance.
-These results establish hierarchy alignment as a principled control knob for semantic granularity.
+These results support hierarchy alignment as a principled control knob for semantic granularity.
 \end{abstract}
 
 % Hero figure
@@ -475,12 +475,10 @@ Method & Dims & $L_0$ & $L_1$ & $L_0$ & $L_1$ \\
 \midrule
 V5 & 64d ($4\times$ cheaper) & 97.5 & 81.3 & 94.0 & 71.3 \\
 V5 & 256d (full) & 98.3 & 92.5 & 95.6 & 74.5 \\
-\rowcolor[gray]{0.93}
 $\Delta$ (256d$-$64d) & & $+0.8$ & $+11.2$ & $+1.6$ & $+3.2$ \\
 \midrule
 MRL & 64d & 92.1 & 91.2 & 92.3 & 74.1 \\
 MRL & 256d & 91.6 & 91.6 & 93.2 & 73.9 \\
-\rowcolor[gray]{0.93}
 $\Delta$ (256d$-$64d) & & $-0.5$ & $+0.4$ & $+0.9$ & $-0.2$ \\
 \bottomrule
 \end{tabular}
