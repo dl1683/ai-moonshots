@@ -657,8 +657,8 @@ Through controlled ablations on two datasets, synthetic hierarchy experiments, c
 We connect this to the classical theory of successive refinement, showing that V5 training approximates the optimal multi-resolution code for hierarchical semantic sources.
 
 The practical implications extend beyond classification.
-In retrieval systems, fractal embeddings enable \emph{adaptive search}: start with a 64-dimensional prefix for fast coarse filtering, then extend to 256 dimensions only for queries that require fine-grained resolution---achieving the quality of full-resolution search at a fraction of the compute.
-In any domain with hierarchical semantics---product taxonomies, medical coding (ICD-10), intent classification, scientific categorization---a single fractal embedding replaces separate coarse and fine models.
+In retrieval systems, fractal embeddings enable \emph{adaptive search}: routing coarse queries to the 64d prefix ($3.7\times$ faster on HNSW indexes) and fine queries to full 256d, achieving higher mixed accuracy than MRL at 38\% lower average compute.
+Crucially, a single fractal embedding outperforms even dedicated specialist encoders: V5's 64d prefix achieves higher coarse accuracy (97.5\%) than a full 256d encoder trained exclusively on coarse labels (95.8\%), eliminating the need for separate coarse and fine models in any domain with hierarchical semantics.
 
 Our synthetic hierarchy experiment reveals that the prefix acts as a \emph{routing bottleneck}: steerability peaks when coarse task complexity matches the prefix's representational capacity.
 This Goldilocks effect provides principled design guidance: measure $\hlz$ of your hierarchy and size prefix dimensions to match.
