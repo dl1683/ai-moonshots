@@ -256,6 +256,8 @@ The three shallow-hierarchy datasets (Yahoo, GoEmotions, Newsgroups; $\hlo \leq 
 arXiv falls slightly below TREC despite higher $\hlo$, likely because cross-listed papers create fuzzy category boundaries that reduce effective hierarchy depth; we discuss this further in Section~\ref{sec:scaling}.
 MRL steerability is consistently near zero ($\steer_\text{MRL} < 0.02$), confirming that steerability requires explicit hierarchy alignment.
 A sign test confirms the consistency: V5 $>$ MRL steerability on all 6 datasets ($p = 2^{-6} = 0.016$, one-sided binomial).
+A random-effects meta-analysis (DerSimonian--Laird) across all six datasets yields a pooled Cohen's $d = 1.23$ (95\% CI: $[0.42, 2.04]$, $z = 2.98$, $p = 0.003$), confirming a robust overall V5 advantage.
+The substantial heterogeneity ($I^2 = 59\%$, $Q = 12.1$, $p_Q = 0.033$) is expected: the scaling trend analysis (Section~\ref{sec:scaling}) predicts that effect size increases with hierarchy depth.
 
 \begin{table}[t]
 \caption{Steerability across datasets ($\steer$ = coarse specialization + fine specialization, Eq.~\ref{eq:steerability}). V5 achieves positive steerability that scales with hierarchy complexity. MRL is consistently near zero. Reported as mean $\pm$ SD across seeds.}
