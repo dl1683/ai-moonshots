@@ -442,15 +442,16 @@ Qwen3-0.6B (Alibaba, 600M) & $+0.153 \pm 0.013$ & $+0.008 \pm 0.006$ & $+0.081 \
 \paragraph{Downstream utility: Adaptive retrieval.}
 Beyond classification, we test whether steerability enables practical \emph{adaptive search}.
 We split test data into queries and documents, and compare four strategies: fixed~64d (fast), fixed~256d (full), adaptive progressive extension (start at 64d, extend if uncertain), and two-stage pipeline (64d first-pass, 256d reranker).
-Across 3 seeds on CLINC-150:
+We evaluate on CLINC-150 (deep hierarchy, $\hlo = 3.90$) and TREC (moderate, $\hlo = 2.21$), each with 3 seeds:
 
 \begin{itemize}
-    \item \textbf{V5 at 64d}: $L_0 = 97.5\%$, $L_1 = 81.3\%$; excellent coarse retrieval with 75\% dimension savings.
-    \item \textbf{MRL at 64d}: $L_0 = 97.3\%$, $L_1 = 91.2\%$; higher $L_1$ because the prefix was trained on fine labels.
-    \item \textbf{V5 at 256d}: $L_1 = 92.5\%$ vs.\ MRL $L_1 = 91.6\%$; V5 slightly better at full resolution.
-    \item \textbf{V5 steering range}: $L_1$ improves by 11.2\% from 64d to 256d; MRL improves by only 0.4\%.
+    \item \textbf{V5 at 64d}: CLINC $L_0 = 97.5\%$, $L_1 = 81.3\%$; TREC $L_0 = 94.0\%$, $L_1 = 71.3\%$. In both cases the short prefix is coarse-specialized.
+    \item \textbf{V5 at 256d}: CLINC $L_1 = 92.5\%$; TREC $L_1 = 74.5\%$. Full resolution recovers fine accuracy ($+11.2$pp on CLINC, $+3.2$pp on TREC).
+    \item \textbf{MRL at 64d}: CLINC $L_1 = 91.2\%$; TREC $L_1 = 74.1\%$. MRL prefixes are \emph{not} coarse-specialized.
+    \item \textbf{MRL at 256d}: CLINC $L_1 = 91.6\%$; TREC $L_1 = 73.9\%$. MRL shows negligible $L_1$ change ($+0.4$pp CLINC, $-0.2$pp TREC).
 \end{itemize}
-This confirms steerability's practical signature: V5 provides two distinct operating points---a fast 64d prefix that matches MRL's coarse accuracy, and a full 256d embedding that recovers fine accuracy---enabling coarse-first, fine-on-demand retrieval pipelines that MRL cannot support.
+The same pattern holds across both hierarchy depths: V5 provides two distinct operating points---a fast 64d prefix optimized for coarse retrieval, and a full 256d embedding that recovers fine accuracy---enabling coarse-first, fine-on-demand retrieval pipelines.
+MRL's flat $L_1$ profile across dimensions confirms it cannot support such adaptive strategies.
 
 \paragraph{Limitations.}
 \begin{itemize}
