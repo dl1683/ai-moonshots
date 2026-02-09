@@ -526,6 +526,12 @@ From the 5-seed CLINC data, V5 adaptive \emph{dominates} MRL-256d whenever $\alp
 At $\alpha = 0.7$ (mostly coarse), the advantage grows to $+2.9$pp at 122d.
 The key driver is V5's 64d prefix: its $L_0$ accuracy (96.4\%) far exceeds MRL's (91.0\%), providing a compute-efficient coarse classifier that MRL cannot match at any prefix length (Figure~\ref{fig:pareto} in the appendix).
 
+\paragraph{Dual-encoder baseline.}
+An alternative to V5's single-model steerability is to train \emph{two} dedicated encoders: $E_{L_0}$ trained only on coarse labels and $E_{L_1}$ (= MRL) trained only on fine labels, each at full 256d.
+On CLINC (3~seeds), the dual system achieves $L_0 = 95.8\%$ (via $E_{L_0}$) and $L_1 = 94.8\%$ (via $E_{L_1}$), requiring two models and two indexes.
+V5 adaptive (64d for coarse, 256d for fine) achieves $L_0 = 97.5\%$ and $L_1 = 94.5\%$---\emph{higher} coarse accuracy at $4\times$ fewer dimensions, with comparable fine accuracy, using a single model and single index.
+The dual-encoder approach thus doubles storage and serving cost while delivering \emph{worse} coarse performance than V5's 64d prefix, confirming that hierarchy-aligned prefix supervision is strictly more efficient than the ``train separate specialists'' alternative.
+
 \paragraph{Three-level hierarchy extension.}
 To test generalization beyond two levels, we construct a 3-level hierarchy on CLINC: 5~super-domains $\rightarrow$ 10~domains $\rightarrow$ 150~intents, with V5 training aligned across three granularity levels ($j=1 \rightarrow L_0$, $j=2 \rightarrow L_0{+}L_1$, $j=3 \rightarrow L_1{+}L_2$, $j=4 \rightarrow L_2$).
 Table~\ref{tab:threelevel} shows that V5 exhibits a clear \emph{ramp gradient}: the $L_2$ (intent) accuracy ramp from 64d to 256d is $+3.2$pp, the $L_1$ (domain) ramp is $+1.0$pp, and the $L_0$ (super-domain) ramp is $+0.5$pp (Figure~\ref{fig:threelevel} in the appendix).
