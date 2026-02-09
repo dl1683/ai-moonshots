@@ -128,7 +128,7 @@ Synthetic (ALL 8 CONDITIONS COMPLETE):
 
 ---
 
-## Figures (6 total)
+## Figures (8 total)
 
 | # | Description | Status |
 |---|-------------|--------|
@@ -137,26 +137,33 @@ Synthetic (ALL 8 CONDITIONS COMPLETE):
 | 3 | Cross-dataset steerability forest plot | DONE |
 | 4 | Causal ablation bar/point plot | DONE |
 | 5 | Scaling law scatter S vs H(L1|L0) | DONE |
-| 6 | Synthetic hierarchy causal curve | RUNNING |
+| 6 | Synthetic: S vs H(L0) Goldilocks effect | DONE |
+| 7 | Entropy allocation: real + synthetic | DONE |
+| 8 | Prefix surgery: coarse transfer + fine preservation | PENDING (after experiment) |
 
-## Tables (4 total)
+## Tables (5 total)
 
 | # | Description | Status |
 |---|-------------|--------|
 | 1 | Dataset stats and hierarchy profiles | DONE |
 | 2 | Classification accuracy parity | DONE |
 | 3 | Causal ablation full statistics | DONE |
-| 4 | Cross-model replication | TODO |
+| 4 | Cross-model replication (3 seeds) | RUNNING |
+| 5 | Synthetic hierarchy (all 8 K0) | DONE |
 
 ---
 
 ## Critical Path to NeurIPS Submission
 
-1. [RUNNING] Synthetic hierarchy experiment → Figure 6
-2. [TODO] Cross-model replication (Qwen3-0.6B on CLINC+TREC) → Table 4
-3. [TODO] 4 new dataset benchmarks (GoEmotions, arXiv, DBPedia Cls, WOS) → Strengthen Fig 5
-4. [TODO] LOO prediction test with n=8 → Section 7
-5. [TODO] LaTeX paper draft
-6. [TODO] Codex review of final draft
+1. [DONE] Synthetic hierarchy experiment (all 8 K0) -> Fig 6, 7
+2. [RUNNING] Cross-model replication, 3 seeds (Qwen3-0.6B) -> Table 4
+3. [DONE] LaTeX paper draft (paper/fractal_embeddings.tex)
+4. [PENDING] Prefix surgery experiment -> Fig 8
+5. [PENDING] CIFAR-100 vision experiment -> extends beyond text
+6. [PENDING] Downstream eval (retrieval + MI + tree-distance)
+7. [PENDING] GoEmotions benchmark -> 5th dataset for n=5 scaling law
+8. [TODO] Hard Codex review of final paper
+9. [TODO] Final polish and submission
 
-**Killer experiment** (Codex recommendation): Cross-backbone synthetic hierarchy replication on Qwen3-0.6B. If it works → "general principle" not "single-model effect."
+**Codex harsh review (4/10)**: Key gaps: self-fulfilling metric, n=4 scaling law, no downstream utility, modest effects.
+**Addressing**: downstream_eval.py (non-circular metrics), prefix_surgery.py (paradigm demo), vision_fractal.py (cross-modality), GoEmotions (5th dataset).
