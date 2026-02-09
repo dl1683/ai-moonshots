@@ -313,7 +313,7 @@ def fig4_ablation():
 # Figure 5: Scaling law scatter S vs H(L1|L0)
 # ============================================================================
 def fig5_scaling_law():
-    """Scatter plot of steerability vs H(L1|L0) with linear fit."""
+    """Two-panel: (Left) S vs H(L1|L0), (Right) S vs H*L1_acc product predictor."""
     profiles = json.load(open(RESULTS_DIR / "hierarchy_profiles.json"))
 
     datasets_data = []
@@ -322,69 +322,98 @@ def fig5_scaling_law():
     DS_H_FALLBACK = {'dbpedia_classes': 3.17, 'wos': 5.05}
     for ds_name in ALL_DS:
         if ds_name == 'clinc':
-            v5_s, _ = load_clinc_steers()
+            v5_s, mrl_s = load_clinc_steers()
         else:
-            v5_s, _ = load_benchmark_steers(ds_name)
+            v5_s, mrl_s = load_benchmark_steers(ds_name)
         if v5_s:
             h = profiles.get(ds_name, {}).get('h_l1_given_l0', DS_H_FALLBACK.get(ds_name, 0))
             display_name = DS_DISPLAY.get(ds_name, ds_name.upper())
+            # Get best L1 accuracy at j=4 for learnability
+            bench_file = RESULTS_DIR / f"benchmark_bge-small_{ds_name}.json"
+            best_l1 = 0
+            if bench_file.exists():
+                bd = json.load(open(bench_file))
+                for method in ['v5', 'mrl']:
+                    for sk in bd.get(method, {}):
+                        entry = bd[method][sk]
+                        if isinstance(entry, dict) and 'prefix_accuracy' in entry:
+                            l1_j4 = entry['prefix_accuracy'].get('j4_l1', 0)
+                            best_l1 = max(best_l1, l1_j4)
             datasets_data.append({
                 'name': display_name,
+                'ds_name': ds_name,
                 'h': h,
                 'steer_mean': np.mean(v5_s),
                 'steer_std': np.std(v5_s) if len(v5_s) > 1 else 0,
                 'n': len(v5_s),
+                'l1_acc': best_l1,
             })
 
-    h_vals = [d['h'] for d in datasets_data]
-    s_vals = [d['steer_mean'] for d in datasets_data]
-    s_errs = [d['steer_std'] for d in datasets_data]
+    h_vals = np.array([d['h'] for d in datasets_data])
+    s_vals = np.array([d['steer_mean'] for d in datasets_data])
+    l1_vals = np.array([d['l1_acc'] for d in datasets_data])
+    product = h_vals * l1_vals
 
-    # Linear fit
-    slope, intercept, r, p, se = stats.linregress(h_vals, s_vals)
-    h_fit = np.linspace(0.5, 4.5, 100)
-    s_fit = slope * h_fit + intercept
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5))
 
-    # Spearman
-    rho, p_spearman = stats.spearmanr(h_vals, s_vals)
+    # --- Left: S vs H(L1|L0) ---
+    rho_h, p_h = stats.spearmanr(h_vals, s_vals)
+    slope_h, intercept_h, r_h, p_lr, se_h = stats.linregress(h_vals, s_vals)
+    h_fit = np.linspace(0.5, max(h_vals) + 0.5, 100)
+    ax1.plot(h_fit, slope_h * h_fit + intercept_h, '-', color='gray',
+             linewidth=1.5, alpha=0.7, label=f'Linear fit (R²={r_h**2:.3f})')
 
-    fig, ax = plt.subplots(figsize=(7, 5))
-
-    # Confidence band (approximate)
-    n_pts = len(h_vals)
-    h_mean = np.mean(h_vals)
-    s_residuals = np.array(s_vals) - (slope * np.array(h_vals) + intercept)
-    mse = np.sum(s_residuals**2) / (n_pts - 2)
-    for h_pt in h_fit:
-        se_pred = np.sqrt(mse * (1/n_pts + (h_pt - h_mean)**2 / np.sum((np.array(h_vals) - h_mean)**2)))
-
-    # Fit line
-    ax.plot(h_fit, s_fit, '-', color='gray', linewidth=1.5, alpha=0.7,
-           label=f'Linear fit (R²={r**2:.3f})')
-
-    # Data points with error bars — custom offsets for overlapping labels
-    label_offsets = {'GoEmo': (8, -16), 'NEWSGROUPS': (8, 8), 'ARXIV': (8, -14)}
+    label_offsets = {'GoEmo': (8, -16), 'NEWSGROUPS': (8, 8), 'ARXIV': (8, -14), 'WOS': (8, -14)}
     for d in datasets_data:
         ci = 1.96 * d['steer_std'] / np.sqrt(d['n']) if d['n'] > 1 else d['steer_std']
-        ax.errorbar(d['h'], d['steer_mean'], yerr=ci,
-                   fmt='o', markersize=10, color=V5_COLOR,
-                   capsize=5, linewidth=1.5, markeredgecolor='black',
-                   markeredgewidth=0.5)
+        marker = 'D' if d['ds_name'] == 'wos' else 'o'
+        ax1.errorbar(d['h'], d['steer_mean'], yerr=ci,
+                     fmt=marker, markersize=10, color=V5_COLOR,
+                     capsize=5, linewidth=1.5, markeredgecolor='black',
+                     markeredgewidth=0.5)
         offset = label_offsets.get(d['name'], (8, 8))
-        ax.annotate(d['name'], (d['h'], d['steer_mean']),
-                   textcoords="offset points", xytext=offset,
-                   fontsize=10, fontweight='bold')
+        ax1.annotate(d['name'], (d['h'], d['steer_mean']),
+                     textcoords="offset points", xytext=offset,
+                     fontsize=10, fontweight='bold')
 
-    ax.set_xlabel('H(L1|L0) — Hierarchy Refinement Entropy (bits)')
-    ax.set_ylabel('V5 Steerability Score')
-    ax.set_title(f'Steerability Scales with Hierarchy Depth\n'
-                f'Spearman ρ={rho:.2f} (p={p_spearman:.3f}), '
-                f'slope={slope:.4f}±{se:.4f}',
-                fontweight='bold')
-    ax.legend(loc='upper left')
-    ax.grid(alpha=0.3)
-    ax.axhline(y=0, color='black', linewidth=0.5, linestyle='-')
+    ax1.set_xlabel('H(L1|L0) -- Hierarchy Refinement Entropy (bits)')
+    ax1.set_ylabel('V5 Steerability Score')
+    ax1.set_title(f'Raw Scaling: rho={rho_h:.2f} (p={p_h:.3f})\nWOS deviates due to L1 floor effect',
+                  fontweight='bold')
+    ax1.legend(loc='upper left')
+    ax1.grid(alpha=0.3)
+    ax1.axhline(y=0, color='black', linewidth=0.5, linestyle='-')
 
+    # --- Right: S vs H * L1_acc (product predictor) ---
+    rho_p, p_p = stats.spearmanr(product, s_vals)
+    r_p, pr_p = stats.pearsonr(product, s_vals)
+    slope_p, intercept_p, _, _, _ = stats.linregress(product, s_vals)
+    p_fit = np.linspace(0, max(product) + 0.3, 100)
+    ax2.plot(p_fit, slope_p * p_fit + intercept_p, '-', color='gray',
+             linewidth=1.5, alpha=0.7, label=f'Linear fit (R²={r_p**2:.3f})')
+
+    for d, prod in zip(datasets_data, product):
+        ci = 1.96 * d['steer_std'] / np.sqrt(d['n']) if d['n'] > 1 else d['steer_std']
+        marker = 'D' if d['ds_name'] == 'wos' else 'o'
+        ax2.errorbar(prod, d['steer_mean'], yerr=ci,
+                     fmt=marker, markersize=10, color=V5_COLOR,
+                     capsize=5, linewidth=1.5, markeredgecolor='black',
+                     markeredgewidth=0.5)
+        offset = label_offsets.get(d['name'], (8, 8))
+        ax2.annotate(d['name'], (prod, d['steer_mean']),
+                     textcoords="offset points", xytext=offset,
+                     fontsize=10, fontweight='bold')
+
+    ax2.set_xlabel('H(L1|L0) x L1 Accuracy -- Usable Refinement Info')
+    ax2.set_ylabel('V5 Steerability Score')
+    ax2.set_title(f'Product Predictor: rho={rho_p:.2f} (p={p_p:.4f})\nAccounts for WOS floor effect',
+                  fontweight='bold')
+    ax2.legend(loc='upper left')
+    ax2.grid(alpha=0.3)
+    ax2.axhline(y=0, color='black', linewidth=0.5, linestyle='-')
+
+    fig.suptitle('Steerability Scaling: Hierarchy Depth x Model Learnability',
+                 fontsize=14, fontweight='bold', y=1.02)
     fig.tight_layout()
     fig.savefig(FIGURES_DIR / "fig5_scaling_law.png")
     fig.savefig(FIGURES_DIR / "fig5_scaling_law.pdf")
