@@ -179,15 +179,16 @@ class UniformHierarchicalTrainer(V5Trainer):
                     batch['anchor_ids'], batch['anchor_mask'],
                     block_dropout_mask=prefix_dropout_mask
                 )
-                l1_pos_prefix = self.model(batch['l1_pos_ids'], batch['l1_pos_mask'])
-                l0_pos_prefix = self.model(batch['l0_pos_ids'], batch['l0_pos_mask'])
+                # Reuse positive embeddings from full path (same inputs, no dropout)
+                l1_pos_emb_for_prefix = l1_pos_full['full_embedding']
+                l0_pos_emb_for_prefix = l0_pos_full['full_embedding']
                 mode_prefix_len = prefix_lengths.mode().values.item()
                 prefix_emb = self.model.fractal_head.get_prefix_embedding(
                     anchor_prefix['blocks'], mode_prefix_len
                 )
 
                 # L1 losses on prefix path
-                prefix_contrastive_l1 = self.contrastive_loss(prefix_emb, l1_pos_prefix['full_embedding'])
+                prefix_contrastive_l1 = self.contrastive_loss(prefix_emb, l1_pos_emb_for_prefix)
                 prefix_margin_l1 = self.margin_loss(prefix_emb, batch['l1_labels'])
                 prefix_cls_l1 = F.cross_entropy(
                     self.model.fractal_head.classify_leaf(prefix_emb),
@@ -196,7 +197,7 @@ class UniformHierarchicalTrainer(V5Trainer):
                 loss_prefix_l1 = prefix_contrastive_l1 + self.MARGIN_WEIGHT * prefix_margin_l1 + self.CLASS_WEIGHT * prefix_cls_l1
 
                 # L0 losses on prefix path
-                prefix_contrastive_l0 = self.contrastive_loss(prefix_emb, l0_pos_prefix['full_embedding'])
+                prefix_contrastive_l0 = self.contrastive_loss(prefix_emb, l0_pos_emb_for_prefix)
                 prefix_margin_l0 = self.margin_loss(prefix_emb, batch['l0_labels'])
                 prefix_cls_l0 = F.cross_entropy(
                     self.model.fractal_head.classify_top(prefix_emb),

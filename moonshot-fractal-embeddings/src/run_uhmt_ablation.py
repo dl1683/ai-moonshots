@@ -15,6 +15,9 @@ import torch
 from pathlib import Path
 from datetime import datetime
 
+# Force unbuffered output for background execution
+sys.stdout.reconfigure(line_buffering=True)
+
 sys.path.insert(0, os.path.dirname(__file__))
 
 from ablation_steerability import (
