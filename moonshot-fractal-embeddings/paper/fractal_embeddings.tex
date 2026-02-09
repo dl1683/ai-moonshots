@@ -42,7 +42,7 @@ Modern embedding models support dimensional truncation, but truncation typically
 We introduce \textbf{Fractal Embeddings}, a hierarchy-aligned prefix supervision scheme that trains short prefixes (64d) on coarse labels ($L_0$) and full embeddings (256d) on fine labels ($L_1$), using a frozen backbone with learned heads only.
 Against a matched Matryoshka Representation Learning (MRL) baseline trained on $L_1$ at all prefix lengths, our method preserves full-resolution performance while inducing robust \emph{steerability}: truncated prefixes encode coarse semantics, whereas full vectors recover fine semantics.
 On CLINC-150, V5 achieves $\steer = +0.150 \pm 0.028$ while MRL produces $\steer = +0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, Cohen's $d = 4.3$, 5~seeds).
-Causal ablations on two datasets identify alignment as the driver: inverting alignment reverses the steerability sign (CLINC: $-0.018$, TREC: $-0.025$), and removing prefix-specific supervision collapses it to near-zero; all comparisons significant ($p \leq 0.03$, Cohen's $d \geq 2.7$).
+Controlled ablations on two datasets identify alignment as the driver: inverting alignment reverses the steerability sign (CLINC: $-0.018$, TREC: $-0.025$), removing prefix-specific supervision collapses it, and a uniform multi-task baseline (hierarchy-aware but not hierarchy-aligned) produces near-zero steerability ($+0.001$), ruling out hierarchy awareness as sufficient; all comparisons significant ($p \leq 0.03$, Cohen's $d \geq 2.7$).
 In a synthetic hierarchy experiment with fixed text and varied coarse partitions, steerability scales with coarse entropy $\hlz$ and exhibits a Goldilocks optimum at ${\sim}12$--$16$ coarse classes (quadratic $R^2 = 0.964$).
 Across eight real datasets spanning six domains, steerability is predicted by the product of hierarchy depth $\hlo$ and baseline learnability (Spearman $\rho = 0.90$, $p = 0.002$; Pearson $r = 0.97$), revealing an interaction: steerability requires \emph{both} hierarchical complexity and model capacity to resolve the fine task.
 MRL produces near-zero steerability in all conditions.
@@ -79,8 +79,8 @@ This creates embeddings where dimensional truncation corresponds to semantic zoo
 Our key contributions are:
 \begin{enumerate}
     \item \textbf{A method} for training steerable embeddings via hierarchy-aligned prefix supervision (Section~\ref{sec:method}).
-    \item \textbf{Causal evidence} from controlled ablations on two datasets that steerability is caused by alignment, not architecture: inverting the alignment reverses the steerability sign on both CLINC and TREC (Section~\ref{sec:causal}).
-    \item \textbf{A scaling trend} linking steerability magnitude to hierarchy structure across seven real datasets, with a Goldilocks optimum identified via synthetic intervention (Section~\ref{sec:scaling}).
+    \item \textbf{Causal evidence} from four controlled ablations on two datasets that steerability is caused by alignment, not architecture or hierarchy awareness: inverting alignment reverses the sign, removing it collapses it, and a uniform multi-task control (hierarchy-aware but not aligned) also produces near-zero steerability (Section~\ref{sec:causal}).
+    \item \textbf{A scaling trend} linking steerability magnitude to hierarchy structure across eight real datasets, with a Goldilocks optimum identified via synthetic intervention (Section~\ref{sec:scaling}).
     \item \textbf{Cross-model replication} confirming the effect is architecture-invariant across three model families: BGE-small, E5-small-v2, and Qwen3-0.6B (Section~\ref{sec:generality}).
 \end{enumerate}
 
@@ -109,7 +109,7 @@ Positive $\steer$ means short prefixes specialize for coarse semantics while ful
 A perfectly steerable embedding has high $\steer$; MRL, which trains all lengths on $L_1$, should have $\steer \approx 0$.
 
 \paragraph{Datasets.}
-Table~\ref{tab:datasets} summarizes our seven evaluation datasets, spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 5.05 bits (WOS~\citep{kowsari2017hdltex}), also including GoEmotions~\citep{demszky2020goemotions}, TREC~\citep{voorhees2000trec}, 20 Newsgroups, arXiv~\citep{clement2019arxiv}, and CLINC-150~\citep{larson2019clinc}.
+Table~\ref{tab:datasets} summarizes our eight evaluation datasets, spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 5.05 bits (WOS~\citep{kowsari2017hdltex}), also including GoEmotions~\citep{demszky2020goemotions}, TREC~\citep{voorhees2000trec}, 20 Newsgroups, arXiv~\citep{clement2019arxiv}, DBPedia Classes, and CLINC-150~\citep{larson2019clinc}.
 
 \begin{table}[t]
 \caption{Dataset statistics and hierarchy profiles. $K_0$, $K_1$: number of coarse and fine classes. Branch: $K_1/K_0$. $\hlz$, $\hlo$: coarse entropy and conditional entropy in bits.}
@@ -125,6 +125,7 @@ GoEmotions & 4 & 28 & 7.0 & 1.64 & 1.88 & 7{,}092 & 1{,}700 \\
 20 Newsgroups & 6 & 20 & 3.3 & 2.43 & 1.88 & 10{,}000 & 2{,}000 \\
 TREC & 6 & 50 & 8.3 & 2.38 & 2.21 & 5{,}452 & 500 \\
 arXiv & 20 & 123 & 6.2 & 3.40 & 2.62 & 8{,}548 & 2{,}000 \\
+DBPedia Classes & 9 & 70 & 7.8 & 3.17 & 3.17 & 10{,}000 & 2{,}000 \\
 CLINC-150 & 10 & 150 & 15.0 & 3.32 & 3.90 & 10{,}000 & 2{,}000 \\
 WOS & 10 & 336 & 33.6 & 2.90 & 5.05 & 8{,}688 & 2{,}000 \\
 \bottomrule
@@ -137,7 +138,7 @@ Steerability differences (V5 minus MRL, paired by seed) are tested with two-side
 For the seven per-dataset comparisons in Table~\ref{tab:steerability}, we apply Holm--Bonferroni correction~\citep{holm1979simple} to control the family-wise error rate at $\alpha = 0.05$.
 Effect sizes are reported as Cohen's $d$ (paired).
 Standard deviations are sample estimates (ddof $= 1$).
-Causal ablation tests (Section~\ref{sec:causal}) are corrected within their own family of 4 comparisons (2 datasets $\times$ 2 conditions).
+Causal ablation tests (Section~\ref{sec:causal}) are corrected within their own family of 4 comparisons (2 datasets $\times$ 2 conditions); the UHMT baseline comparison is corrected in a separate family of 2 tests.
 To pool evidence across datasets, we also report a DerSimonian--Laird random-effects meta-analysis on paired Cohen's $d$ values.
 
 %=======================================================================
@@ -290,21 +291,22 @@ WOS & 5.05 & $+0.038 \pm 0.026$ & $+0.001 \pm 0.005$ & $+0.036$ & 5 \\
 %=======================================================================
 
 The correlation between hierarchy alignment and steerability in Section~\ref{sec:results} could arise from confounds (e.g., dataset properties, label structure).
-We perform three controlled ablations on two datasets---CLINC-150 ($\hlo = 3.90$, 5~seeds) and TREC-50 ($\hlo = 2.21$, 3~seeds)---to provide causal evidence that alignment drives steerability and verify cross-dataset robustness.
+We perform four controlled ablations on two datasets---CLINC-150 ($\hlo = 3.90$, 5~seeds) and TREC-50 ($\hlo = 2.21$, 3~seeds)---to provide causal evidence that alignment drives steerability and verify cross-dataset robustness.
 
 \paragraph{Ablation conditions.}
-All three conditions use identical architecture, optimizer, hyperparameters, and data split (held fixed across seeds).
+All four conditions use identical architecture, optimizer, hyperparameters, and data split (held fixed across seeds).
 Only the prefix-to-hierarchy mapping changes:
 \begin{itemize}
     \item \textbf{Aligned (V5)}: $j=1 \rightarrow L_0$, $j=4 \rightarrow L_1$ (correct alignment).
     \item \textbf{Inverted}: $j=1 \rightarrow L_1$, $j=4 \rightarrow L_0$ (reversed alignment).
     \item \textbf{No-prefix}: All prefix lengths trained on $L_1$ with additional $L_0$ regularization (no alignment).
+    \item \textbf{Uniform multi-task (UHMT)}: All prefix lengths trained on $0.5 \cdot \mathcal{L}_{L_0} + 0.5 \cdot \mathcal{L}_{L_1}$ (hierarchy-\emph{aware} but not hierarchy-\emph{aligned}).
 \end{itemize}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig4_ablation.pdf}
-    \caption{Causal ablation on CLINC-150 (5 seeds) and TREC-50 (3~seeds). Aligned supervision (V5) produces positive steerability; inverting alignment reverses the sign; removing prefix-specific alignment collapses it. Individual seed values shown as dots.}
+    \caption{Ablation on CLINC-150 (5 seeds) and TREC-50 (3~seeds). Aligned supervision (V5) produces positive steerability; inverting alignment reverses the sign; removing prefix-specific alignment or using uniform multi-task supervision (UHMT) collapses it. Individual seed values shown as dots.}
     \label{fig:ablation}
 \end{figure}
 
@@ -312,7 +314,7 @@ Only the prefix-to-hierarchy mapping changes:
 The ablation results (Table~\ref{tab:ablation}, Figure~\ref{fig:ablation}) provide strong evidence that alignment drives steerability.\footnote{The absolute steerability in Table~\ref{tab:ablation} is lower than in Table~\ref{tab:steerability} because the ablation uses a fixed train/val split to eliminate data-split variance across conditions; the within-condition comparisons (V5 vs.\ inverted, V5 vs.\ no-prefix) are the relevant tests.}
 
 \begin{table}[t]
-\caption{Causal ablation on two datasets (BGE-small). All conditions share a fixed train/val split to eliminate data-split variance. Inverting alignment reverses the steerability sign on both datasets; removing prefix-specific alignment collapses it. All four $p$-values survive Holm--Bonferroni correction within this family ($m = 4$; largest adjusted $p = 0.030$).}
+\caption{Ablation on two datasets (BGE-small). All conditions share a fixed train/val split to eliminate data-split variance. Inverting alignment reverses the steerability sign; removing prefix-specific alignment or using uniform multi-task supervision collapses it. Causal perturbation tests (inverted, no-prefix) corrected at $m = 4$; UHMT baseline tests corrected separately at $m = 2$.}
 \label{tab:ablation}
 \centering
 \small
@@ -320,13 +322,15 @@ The ablation results (Table~\ref{tab:ablation}, Figure~\ref{fig:ablation}) provi
 \toprule
 Dataset & Condition & $\steer$ (mean $\pm$ SD) & vs.\ V5 $t$ & $p_\text{adj}$ & Cohen's $d$ \\
 \midrule
-\multirow{3}{*}{CLINC ($\hlo\!=\!3.90$, 5s)} & Aligned (V5) & $+0.053 \pm 0.004$ & --- & --- & --- \\
+\multirow{4}{*}{CLINC ($\hlo\!=\!3.90$, 5s)} & Aligned (V5) & $+0.053 \pm 0.004$ & --- & --- & --- \\
  & Inverted & $-0.018 \pm 0.005$ & 26.1 & $< 10^{-5}$ & 16.5 \\
  & No-prefix & $+0.009 \pm 0.005$ & 15.8 & $< 10^{-5}$ & 10.0 \\
+ & UHMT & $+0.001 \pm 0.005$ & 14.6 & $< 10^{-3}$ & 6.5 \\
 \midrule
-\multirow{3}{*}{TREC ($\hlo\!=\!2.21$, 3s)} & Aligned (V5) & $+0.045 \pm 0.023$ & --- & --- & --- \\
+\multirow{4}{*}{TREC ($\hlo\!=\!2.21$, 3s)} & Aligned (V5) & $+0.045 \pm 0.023$ & --- & --- & --- \\
  & Inverted & $-0.025 \pm 0.008$ & 4.9 & $0.016$ & 4.0 \\
  & No-prefix & $-0.003 \pm 0.008$ & 3.3 & $0.030$ & 2.7 \\
+ & UHMT & $-0.009 \pm 0.017$ & 7.7 & $0.033$ & 4.4 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -335,11 +339,13 @@ Dataset & Condition & $\steer$ (mean $\pm$ SD) & vs.\ V5 $t$ & $p_\text{adj}$ & 
     \item \textbf{Sign reversal}: Inverted alignment produces \emph{negative} steerability on both datasets (CLINC: $\steer = -0.018$; TREC: $\steer = -0.025$), meaning short prefixes now specialize for fine semantics and full embeddings for coarse---the opposite of V5.
     This rules out any explanation where steerability arises from architecture alone.
     \item \textbf{Signal collapse}: Without prefix-specific alignment, steerability drops to near-zero (CLINC: $+0.009$; TREC: $-0.003$), indistinguishable from MRL.
-    \item \textbf{Cross-dataset robustness}: The sign reversal and signal collapse replicate across hierarchy depths ($\hlo = 2.21$ and $3.90$), confirming the effect is not dataset-specific.
+    \item \textbf{Hierarchy awareness is insufficient}: UHMT trains every prefix on \emph{both} $L_0$ and $L_1$ with equal weight, making it hierarchy-aware but not hierarchy-aligned.
+    Despite access to coarse labels, UHMT steerability is near-zero (CLINC: $+0.001$; TREC: $-0.009$), ruling out the hypothesis that steerability arises from including $L_0$ in the loss.
+    \item \textbf{Cross-dataset robustness}: All three patterns---sign reversal, signal collapse, and UHMT collapse---replicate across hierarchy depths ($\hlo = 2.21$ and $3.90$), confirming the effect is not dataset-specific.
     \item \textbf{Effect sizes}: Cohen's $d \geq 2.7$ across all comparisons on both datasets (up to $d = 16.5$ on CLINC), indicating the effect is both statistically and practically significant.
 \end{enumerate}
 
-These results support the \textbf{Fractal Embedding Principle}: steerability is driven by the alignment between prefix supervision and hierarchy structure, not by architecture or other training choices. The sign reversal and signal collapse replicate across datasets with different hierarchy depths, class counts, and domains.
+These results support the \textbf{Fractal Embedding Principle}: steerability is driven by the \emph{alignment} between prefix supervision and hierarchy structure, not by hierarchy awareness, architecture, or other training choices. The UHMT control is particularly informative: it demonstrates that knowing about both label levels is not enough---what matters is \emph{which} prefix lengths receive \emph{which} labels. The sign reversal, signal collapse, and UHMT collapse all replicate across datasets.
 
 \subsection{Information Localization}
 

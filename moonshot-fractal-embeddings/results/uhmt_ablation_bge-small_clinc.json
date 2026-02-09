@@ -1,0 +1,162 @@
+{
+  "ablation": "uhmt",
+  "model": "bge-small",
+  "dataset": "clinc",
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024
+  ],
+  "timestamp": "2026-02-09T00:12:04.310353",
+  "results": [
+    {
+      "ablation": "uhmt",
+      "seed": 42,
+      "prefix_results": {
+        "j1": {
+          "l0": 0.9765,
+          "l1": 0.916
+        },
+        "j2": {
+          "l0": 0.977,
+          "l1": 0.9235
+        },
+        "j3": {
+          "l0": 0.9785,
+          "l1": 0.9235
+        },
+        "j4": {
+          "l0": 0.976,
+          "l1": 0.923
+        }
+      },
+      "short_coarse": 0.9765,
+      "full_fine": 0.923,
+      "specialization_gap": 0.0605,
+      "coarse_gain": 0.000500000000000056,
+      "fine_gain": 0.007000000000000006,
+      "steerability_score": 0.007500000000000062
+    },
+    {
+      "ablation": "uhmt",
+      "seed": 123,
+      "prefix_results": {
+        "j1": {
+          "l0": 0.979,
+          "l1": 0.9195
+        },
+        "j2": {
+          "l0": 0.979,
+          "l1": 0.9225
+        },
+        "j3": {
+          "l0": 0.979,
+          "l1": 0.9225
+        },
+        "j4": {
+          "l0": 0.979,
+          "l1": 0.9205
+        }
+      },
+      "short_coarse": 0.979,
+      "full_fine": 0.9205,
+      "specialization_gap": 0.0595,
+      "coarse_gain": 0.0,
+      "fine_gain": 0.0010000000000000009,
+      "steerability_score": 0.0010000000000000009
+    },
+    {
+      "ablation": "uhmt",
+      "seed": 456,
+      "prefix_results": {
+        "j1": {
+          "l0": 0.9805,
+          "l1": 0.9265
+        },
+        "j2": {
+          "l0": 0.979,
+          "l1": 0.927
+        },
+        "j3": {
+          "l0": 0.978,
+          "l1": 0.9265
+        },
+        "j4": {
+          "l0": 0.9765,
+          "l1": 0.9215
+        }
+      },
+      "short_coarse": 0.9805,
+      "full_fine": 0.9215,
+      "specialization_gap": 0.05400000000000005,
+      "coarse_gain": 0.0040000000000000036,
+      "fine_gain": -0.0050000000000000044,
+      "steerability_score": -0.0010000000000000009
+    },
+    {
+      "ablation": "uhmt",
+      "seed": 789,
+      "prefix_results": {
+        "j1": {
+          "l0": 0.974,
+          "l1": 0.9175
+        },
+        "j2": {
+          "l0": 0.9765,
+          "l1": 0.925
+        },
+        "j3": {
+          "l0": 0.979,
+          "l1": 0.9185
+        },
+        "j4": {
+          "l0": 0.977,
+          "l1": 0.9155
+        }
+      },
+      "short_coarse": 0.974,
+      "full_fine": 0.9155,
+      "specialization_gap": 0.056499999999999995,
+      "coarse_gain": -0.0030000000000000027,
+      "fine_gain": -0.0020000000000000018,
+      "steerability_score": -0.0050000000000000044
+    },
+    {
+      "ablation": "uhmt",
+      "seed": 1024,
+      "prefix_results": {
+        "j1": {
+          "l0": 0.979,
+          "l1": 0.9245
+        },
+        "j2": {
+          "l0": 0.9795,
+          "l1": 0.926
+        },
+        "j3": {
+          "l0": 0.98,
+          "l1": 0.9295
+        },
+        "j4": {
+          "l0": 0.9795,
+          "l1": 0.926
+        }
+      },
+      "short_coarse": 0.979,
+      "full_fine": 0.926,
+      "specialization_gap": 0.05449999999999999,
+      "coarse_gain": -0.000500000000000056,
+      "fine_gain": 0.0015000000000000568,
+      "steerability_score": 0.0010000000000000009
+    }
+  ],
+  "summary": {
+    "steerability_mean": 0.0007000000000000117,
+    "steerability_std": 0.0045221676218380295,
+    "short_coarse_mean": 0.9778,
+    "full_fine_mean": 0.9213000000000001,
+    "spec_gap_mean": 0.05700000000000001
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "ablation": "uhmt",
+  "model": "bge-small",
+  "dataset": "trec",
+  "seeds": [
+    42,
+    123,
+    456
+  ],
+  "timestamp": "2026-02-09T00:19:09.585696",
+  "results": [
+    {
+      "ablation": "uhmt",
+      "seed": 42,
+      "prefix_results": {
+        "j1": {
+          "l0": 0.938,
+          "l1": 0.798
+        },
+        "j2": {
+          "l0": 0.938,
+          "l1": 0.786
+        },
+        "j3": {
+          "l0": 0.944,
+          "l1": 0.782
+        },
+        "j4": {
+          "l0": 0.948,
+          "l1": 0.78
+        }
+      },
+      "short_coarse": 0.938,
+      "full_fine": 0.78,
+      "specialization_gap": 0.1399999999999999,
+      "coarse_gain": -0.010000000000000009,
+      "fine_gain": -0.018000000000000016,
+      "steerability_score": -0.028000000000000025
+    },
+    {
+      "ablation": "uhmt",
+      "seed": 123,
+      "prefix_results": {
+        "j1": {
+          "l0": 0.942,
+          "l1": 0.782
+        },
+        "j2": {
+          "l0": 0.946,
+          "l1": 0.772
+        },
+        "j3": {
+          "l0": 0.946,
+          "l1": 0.774
+        },
+        "j4": {
+          "l0": 0.94,
+          "l1": 0.774
+        }
+      },
+      "short_coarse": 0.942,
+      "full_fine": 0.774,
+      "specialization_gap": 0.15999999999999992,
+      "coarse_gain": 0.0020000000000000018,
+      "fine_gain": -0.008000000000000007,
+      "steerability_score": -0.006000000000000005
+    },
+    {
+      "ablation": "uhmt",
+      "seed": 456,
+      "prefix_results": {
+        "j1": {
+          "l0": 0.936,
+          "l1": 0.768
+        },
+        "j2": {
+          "l0": 0.944,
+          "l1": 0.782
+        },
+        "j3": {
+          "l0": 0.936,
+          "l1": 0.772
+        },
+        "j4": {
+          "l0": 0.94,
+          "l1": 0.778
+        }
+      },
+      "short_coarse": 0.936,
+      "full_fine": 0.778,
+      "specialization_gap": 0.16800000000000004,
+      "coarse_gain": -0.0039999999999998925,
+      "fine_gain": 0.010000000000000009,
+      "steerability_score": 0.006000000000000116
+    }
+  ],
+  "summary": {
+    "steerability_mean": -0.009333333333333305,
+    "steerability_std": 0.017243356208503483,
+    "short_coarse_mean": 0.9386666666666666,
+    "full_fine_mean": 0.7773333333333333,
+    "spec_gap_mean": 0.15599999999999994
+  }
+}
