@@ -517,6 +517,15 @@ $L_1$ & V5  & 87.1 & 92.7 & 93.7 & 93.4 \\
 \end{tabular}
 \end{table}
 
+\paragraph{Workload-adaptive Pareto analysis.}
+V5's steerability translates directly to a system-level advantage.
+Consider a mixed workload where a fraction $\alpha$ of queries require coarse classification and $1-\alpha$ require fine.
+V5 routes coarse queries to the 64d prefix and fine queries to the full 256d embedding, yielding average dimensionality $64\alpha + 256(1-\alpha)$ and mixed accuracy $\alpha \cdot \text{L0@}j_1 + (1-\alpha) \cdot \text{L1@}j_4$.
+MRL, lacking prefix specialization, must always use full 256d.
+From the 5-seed CLINC data, V5 adaptive \emph{dominates} MRL-256d whenever $\alpha \geq 0.35$ (i.e., when $\geq 35\%$ of queries are coarse): at $\alpha = 0.5$ (equal mix), V5 achieves $+1.3$pp higher mixed accuracy at $38\%$ lower average dimensionality (160d vs.\ 256d).
+At $\alpha = 0.7$ (mostly coarse), the advantage grows to $+2.9$pp at 122d.
+The key driver is V5's 64d prefix: its $L_0$ accuracy (96.4\%) far exceeds MRL's (91.0\%), providing a compute-efficient coarse classifier that MRL cannot match at any prefix length (Figure~\ref{fig:pareto} in the appendix).
+
 \paragraph{Three-level hierarchy extension.}
 To test generalization beyond two levels, we construct a 3-level hierarchy on CLINC: 5~super-domains $\rightarrow$ 10~domains $\rightarrow$ 150~intents, with V5 training aligned across three granularity levels ($j=1 \rightarrow L_0$, $j=2 \rightarrow L_0{+}L_1$, $j=3 \rightarrow L_1{+}L_2$, $j=4 \rightarrow L_2$).
 Table~\ref{tab:threelevel} shows that V5 exhibits a clear \emph{ramp gradient}: the $L_2$ (intent) accuracy ramp from 64d to 256d is $+3.2$pp, the $L_1$ (domain) ramp is $+1.0$pp, and the $L_0$ (super-domain) ramp is $+0.5$pp (Figure~\ref{fig:threelevel} in the appendix).
@@ -684,6 +693,16 @@ The connection to successive refinement theory suggests this is not merely an em
     \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig10_three_level.pdf}
     \caption{Three-level hierarchy experiment (CLINC, 5$\rightarrow$10$\rightarrow$150, 3~seeds). \textbf{Left}: V5 shows clear separation between levels---$L_2$ (intent) gains the most from additional dimensions while $L_0$ (super-domain) is near ceiling throughout. \textbf{Right}: MRL curves are bunched together with minimal ramp at any level, confirming that flat supervision cannot exploit hierarchical structure even with three granularity levels.}
     \label{fig:threelevel}
+\end{figure}
+
+\section{Workload-Adaptive Pareto Analysis}
+\label{app:pareto}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{../results/figures/paper/fig11_pareto.pdf}
+    \caption{\textbf{Left:} Mixed $k$-NN accuracy ($\alpha \cdot L_0@j_1 + (1-\alpha) \cdot L_1@j_4$) as a function of workload mix $\alpha$ (fraction of coarse queries). V5 adaptive routing dominates MRL-256d for $\alpha \geq 0.35$. \textbf{Right:} Pareto frontier---V5 achieves higher accuracy at lower average dimensionality than any fixed MRL operating point. Shaded bands show $\pm 1$ SD across 5 seeds.}
+    \label{fig:pareto}
 \end{figure}
 
 \section{Full Synthetic Hierarchy Results}
