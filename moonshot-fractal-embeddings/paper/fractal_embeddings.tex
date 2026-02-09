@@ -182,6 +182,7 @@ This isolates the effect of hierarchy alignment from all other training choices 
 Head-only training for 5 epochs, batch size 16, learning rate $10^{-4}$ with AdamW and cosine decay.
 Mixed-precision (FP16) training with gradient clipping at 1.0.
 Best model selected by validation score $\text{L0} + \text{L1}$.
+Crucially, V5 adds \textbf{zero inference-time overhead}: at deployment, the backbone and projection head are identical to MRL; steerability comes from how the head was trained, not from any architectural change.
 Algorithm~\ref{alg:v5} summarizes the procedure.
 
 \begin{algorithm}[t]
