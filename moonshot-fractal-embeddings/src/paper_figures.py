@@ -680,6 +680,84 @@ def fig8_prefix_surgery():
     print(f"  Fig 8 saved: {FIGURES_DIR / 'fig8_prefix_surgery.png'}")
 
 
+def fig9_retrieval_benchmark():
+    """Retrieval benchmark: Recall@1 at each prefix length for V5 vs MRL.
+    Shows V5's L1 Recall ramps from 64d to 256d while MRL is flat."""
+    retrieval_files = sorted(Path(RESULTS_DIR).glob("retrieval_benchmark_*.json"))
+    if not retrieval_files:
+        print("  Fig 9: No retrieval benchmark results yet. Skipping.")
+        return
+
+    # Load all available datasets
+    all_data = {}
+    for f in retrieval_files:
+        data = json.load(open(f))
+        ds_name = data["dataset"]
+        all_data[ds_name] = data
+
+    n_datasets = len(all_data)
+    fig, axes = plt.subplots(1, n_datasets, figsize=(5 * n_datasets, 4.5), squeeze=False)
+
+    dims = [64, 128, 192, 256]
+    js = ["1", "2", "3", "4"]
+
+    for col, (ds_name, data) in enumerate(sorted(all_data.items())):
+        ax = axes[0, col]
+        seeds = data["seeds"]
+        results = data["results_by_seed"]
+
+        # Aggregate across seeds
+        for level, style in [("L0", "--"), ("L1", "-")]:
+            v5_means = []
+            mrl_means = []
+            v5_stds = []
+            mrl_stds = []
+            for j in js:
+                v5_vals = [results[str(s)]["v5"][j][level]["recall@1"] for s in seeds]
+                mrl_vals = [results[str(s)]["mrl"][j][level]["recall@1"] for s in seeds]
+                v5_means.append(np.mean(v5_vals))
+                mrl_means.append(np.mean(mrl_vals))
+                v5_stds.append(np.std(v5_vals))
+                mrl_stds.append(np.std(mrl_vals))
+
+            label_suffix = " (coarse)" if level == "L0" else " (fine)"
+            ax.errorbar(dims, v5_means, yerr=v5_stds, marker='o', linestyle=style,
+                       color=V5_COLOR, label=f'V5 {level}{label_suffix}', capsize=3,
+                       linewidth=2 if level == "L1" else 1.2,
+                       markersize=7 if level == "L1" else 5)
+            ax.errorbar(dims, mrl_means, yerr=mrl_stds, marker='s', linestyle=style,
+                       color=MRL_COLOR, label=f'MRL {level}{label_suffix}', capsize=3,
+                       linewidth=2 if level == "L1" else 1.2,
+                       markersize=7 if level == "L1" else 5)
+
+        ax.set_xlabel('Embedding Dimensions')
+        ax.set_ylabel('Recall@1')
+        ax.set_title(f'{ds_name.upper()}', fontweight='bold')
+        ax.set_xticks(dims)
+        ax.legend(fontsize=8, loc='lower right')
+        ax.set_ylim(0.82, 1.01)
+        ax.grid(True, alpha=0.3)
+
+        # Annotate the L1 ramp
+        v5_l1_64 = np.mean([results[str(s)]["v5"]["1"]["L1"]["recall@1"] for s in seeds])
+        v5_l1_256 = np.mean([results[str(s)]["v5"]["4"]["L1"]["recall@1"] for s in seeds])
+        mrl_l1_64 = np.mean([results[str(s)]["mrl"]["1"]["L1"]["recall@1"] for s in seeds])
+        mrl_l1_256 = np.mean([results[str(s)]["mrl"]["4"]["L1"]["recall@1"] for s in seeds])
+        v5_delta = v5_l1_256 - v5_l1_64
+        mrl_delta = mrl_l1_256 - mrl_l1_64
+        ax.annotate(f'V5 L1 ramp: +{v5_delta:.1%}',
+                   xy=(160, (v5_l1_64 + v5_l1_256)/2), fontsize=9,
+                   color=V5_COLOR, fontweight='bold')
+
+    fig.suptitle('Retrieval Benchmark: V5 Enables Coarse-to-Fine Recall via Truncation',
+                fontweight='bold', fontsize=13, y=1.02)
+    fig.tight_layout()
+    fig.savefig(FIGURES_DIR / "fig9_retrieval.png", dpi=150)
+    fig.savefig(FIGURES_DIR / "fig9_retrieval.pdf")
+    plt.close(fig)
+    print(f"  Fig 9 saved: {FIGURES_DIR / 'fig9_retrieval.png'}")
+
+
 # ============================================================================
 # Main
 # ============================================================================
@@ -694,5 +772,6 @@ if __name__ == "__main__":
     fig6_synthetic()
     fig7_entropy_allocation()
     fig8_prefix_surgery()
+    fig9_retrieval_benchmark()
 
     print("\nDone!")
