@@ -584,4 +584,29 @@ The experiment uses CLINC-150 text with randomly reassigned hierarchies, holding
 All models converge within 5 epochs of head-only training.
 Stage 2 (backbone fine-tuning) was tested but provided no improvement over head-only training, consistent with the finding that the frozen backbone already provides sufficient representational capacity for hierarchy-aligned supervision.
 
+\section{Reproducibility}
+\label{app:reproducibility}
+
+\paragraph{Code and data.}
+All code, trained models, and result JSONs are publicly available at \url{https://github.com/dl1683/ai-moonshots}.
+Every experiment uses publicly available datasets (CLINC-150, TREC, Yahoo Answers, 20 Newsgroups, GoEmotions, arXiv) loaded through the \texttt{datasets} library, with deterministic train/test splits seeded per experiment.
+
+\paragraph{Hyperparameters.}
+All experiments use identical hyperparameters: 5 epochs head-only training, batch size 16, learning rate $10^{-4}$, AdamW optimizer with cosine decay, FP16 mixed precision, gradient clipping at 1.0.
+Prefix sampling probabilities $[0.4, 0.3, 0.2, 0.1]$ and block dropout keep rates $[0.95, 0.9, 0.8, 0.7]$ are fixed across all datasets and models.
+No hyperparameter tuning was performed per dataset.
+
+\paragraph{Compute.}
+All experiments were run on a single NVIDIA RTX 5090 Laptop GPU (24GB VRAM).
+Each V5 or MRL training run takes approximately 2 minutes for BGE-small (33M parameters) and 8 minutes for Qwen3-0.6B.
+The full experimental suite (6 datasets $\times$ 5 seeds $\times$ 2 methods $\times$ 3 model families $+$ ablations $+$ synthetic experiments) requires approximately 12 GPU-hours.
+
+\section{Broader Impact}
+\label{app:impact}
+
+Fractal embeddings add a semantic control knob to existing embedding models without modifying the backbone.
+The primary application is more efficient retrieval systems: coarse-first filtering reduces compute by 4$\times$ (64d vs.\ 256d) without sacrificing fine-grained accuracy when needed.
+We do not foresee negative societal impacts beyond those inherent to embedding-based retrieval systems generally.
+The method is agnostic to the content domain and does not introduce new biases beyond those present in the frozen backbone.
+
 \end{document}
