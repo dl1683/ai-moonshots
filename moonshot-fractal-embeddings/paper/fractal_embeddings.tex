@@ -603,6 +603,42 @@ All experiments were run on a single NVIDIA RTX 5090 Laptop GPU (24GB VRAM).
 Each V5 or MRL training run takes approximately 2 minutes for BGE-small (33M parameters) and 8 minutes for Qwen3-0.6B.
 The full experimental suite (6 datasets $\times$ 5 seeds $\times$ 2 methods $\times$ 3 model families $+$ ablations $+$ synthetic experiments) requires approximately 12 GPU-hours.
 
+\section{Metric Robustness}
+\label{app:robustness}
+
+To verify that our conclusions do not depend on the specific formulation of $\steer$ (Eq.~\ref{eq:steerability}), we evaluate three alternative steerability metrics:
+\begin{itemize}
+    \item $\steer_\text{AUC}$: Average of $(L_0@j_1 - L_0@j_k) + (L_1@j_k - L_1@j_1)$ over $k = 2, 3, 4$, integrating across all prefix lengths rather than using only the endpoints.
+    \item $\steer_\text{mono}$: Fraction of adjacent prefix pairs where $L_0$ accuracy decreases and $L_1$ accuracy increases with prefix length (perfect ordering $= 1.0$, random $= 0.5$).
+    \item $\steer_\text{gap}$: Specialization gap $= (L_0@j_1 - L_1@j_1) - (L_0@j_4 - L_1@j_4)$, measuring how much more coarse-specialized $j_1$ is relative to $j_4$.
+\end{itemize}
+
+Table~\ref{tab:robustness} reports the V5\,--\,MRL gap for each metric on each dataset.
+Three of four metrics show V5 $>$ MRL on all six datasets (sign test $p = 0.016$); the fourth ($\steer_\text{mono}$) agrees on 4/6.
+All pairwise rank correlations across datasets exceed $\rho = 0.93$ ($p < 0.008$), confirming that the four metrics recover the same dataset ordering of steerability.
+
+\begin{table}[h]
+\caption{Metric robustness: V5\,--\,MRL gap under four steerability formulations. Positive values indicate V5 advantage. Three of four metrics agree V5 $>$ MRL on all 6 datasets.}
+\label{tab:robustness}
+\centering
+\small
+\begin{tabular}{lccccc}
+\toprule
+Dataset & $\hlo$ & $\Delta\steer_\text{orig}$ & $\Delta\steer_\text{AUC}$ & $\Delta\steer_\text{mono}$ & $\Delta\steer_\text{gap}$ \\
+\midrule
+Yahoo & 1.23 & $+0.010$ & $+0.013$ & $-0.10$ & $+0.010$ \\
+GoEmotions & 1.88 & $+0.014$ & $+0.014$ & $-0.07$ & $+0.014$ \\
+Newsgroups & 1.88 & $+0.035$ & $+0.037$ & $+0.03$ & $+0.035$ \\
+TREC & 2.21 & $+0.045$ & $+0.039$ & $+0.27$ & $+0.045$ \\
+arXiv & 2.62 & $+0.028$ & $+0.020$ & $+0.17$ & $+0.028$ \\
+CLINC & 3.90 & $+0.143$ & $+0.124$ & $+0.27$ & $+0.143$ \\
+\midrule
+V5 $>$ MRL & & 6/6 & 6/6 & 4/6 & 6/6 \\
+Sign test $p$ & & 0.016 & 0.016 & 0.34 & 0.016 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Broader Impact}
 \label{app:impact}
 
