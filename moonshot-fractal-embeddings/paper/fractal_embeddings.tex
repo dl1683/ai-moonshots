@@ -79,8 +79,8 @@ This creates embeddings where dimensional truncation corresponds to semantic zoo
 Our key contributions are:
 \begin{enumerate}
     \item \textbf{A method} for training steerable embeddings via hierarchy-aligned prefix supervision (Section~\ref{sec:method}).
-    \item \textbf{Causal identification} across two datasets that steerability is caused by alignment, not architecture: inverting the alignment reverses the steerability sign on both CLINC and TREC (Section~\ref{sec:causal}).
-    \item \textbf{A scaling law} linking steerability magnitude to hierarchy structure, with a Goldilocks optimum identified via synthetic causal intervention (Section~\ref{sec:scaling}).
+    \item \textbf{Causal evidence} from controlled ablations on two datasets that steerability is caused by alignment, not architecture: inverting the alignment reverses the steerability sign on both CLINC and TREC (Section~\ref{sec:causal}).
+    \item \textbf{A scaling trend} linking steerability magnitude to hierarchy structure across six real datasets, with a Goldilocks optimum identified via synthetic intervention (Section~\ref{sec:scaling}).
     \item \textbf{Cross-model replication} confirming the effect is architecture-invariant across three model families: BGE-small, E5-small-v2, and Qwen3-0.6B (Section~\ref{sec:generality}).
 \end{enumerate}
 
@@ -276,12 +276,12 @@ CLINC & 3.90 & $+0.150 \pm 0.028$ & $+0.007 \pm 0.016$ & $+0.143$ & 5 \\
 \end{table}
 
 %=======================================================================
-\section{Causal Identification}
+\section{Causal Evidence via Ablation}
 \label{sec:causal}
 %=======================================================================
 
 The correlation between hierarchy alignment and steerability in Section~\ref{sec:results} could arise from confounds (e.g., dataset properties, label structure).
-We perform three causal ablations on two datasets---CLINC-150 ($\hlo = 3.90$, 5~seeds) and TREC-50 ($\hlo = 2.21$, 3~seeds)---to isolate the effect of alignment and verify cross-dataset robustness.
+We perform three controlled ablations on two datasets---CLINC-150 ($\hlo = 3.90$, 5~seeds) and TREC-50 ($\hlo = 2.21$, 3~seeds)---to provide causal evidence that alignment drives steerability and verify cross-dataset robustness.
 
 \paragraph{Ablation conditions.}
 All three conditions use identical architecture, optimizer, hyperparameters, and data split (held fixed across seeds).
@@ -300,7 +300,7 @@ Only the prefix-to-hierarchy mapping changes:
 \end{figure}
 
 \paragraph{Results.}
-The ablation results (Table~\ref{tab:ablation}, Figure~\ref{fig:ablation}) provide definitive causal evidence:
+The ablation results (Table~\ref{tab:ablation}, Figure~\ref{fig:ablation}) provide strong evidence that alignment drives steerability:
 
 \begin{table}[t]
 \caption{Causal ablation on two datasets (BGE-small). All conditions share a fixed train/val split to eliminate data-split variance. Inverting alignment reverses the steerability sign on both datasets; removing prefix-specific alignment collapses it. All four $p$-values survive Holm--Bonferroni correction within this family ($m = 4$; largest adjusted $p = 0.030$).}
@@ -330,7 +330,7 @@ Dataset & Condition & $\steer$ (mean $\pm$ SD) & vs.\ V5 $t$ & $p_\text{adj}$ & 
     \item \textbf{Effect sizes}: Cohen's $d \geq 2.7$ across all comparisons on both datasets (up to $d = 16.5$ on CLINC), indicating the effect is both statistically and practically significant.
 \end{enumerate}
 
-These results establish the \textbf{Fractal Embedding Principle}: steerability is \emph{caused} by the alignment between prefix supervision and hierarchy structure, not by any other aspect of training. The effect replicates across datasets with different hierarchy depths, class counts, and domains.
+These results support the \textbf{Fractal Embedding Principle}: steerability is driven by the alignment between prefix supervision and hierarchy structure, not by architecture or other training choices. The sign reversal and signal collapse replicate across datasets with different hierarchy depths, class counts, and domains.
 
 \subsection{Information Localization}
 
@@ -342,7 +342,7 @@ The effect is modest because 64 dimensions provide sufficient capacity for both 
 The stronger evidence for semantic separation comes from the steerability metric itself (\S\ref{sec:main}), which measures the \emph{behavioral} consequence of prefix truncation rather than the raw information content.
 
 %=======================================================================
-\section{Steerability Scaling Law}
+\section{Steerability Scaling Trend}
 \label{sec:scaling}
 %=======================================================================
 
