@@ -208,19 +208,14 @@ def main():
     print("  INTERACTION ANALYSIS: STEERABILITY ~ H x LEARNABILITY")
     print(f"{'=' * 80}")
 
-    # Load L1 accuracy at j=4 (max of V5 and MRL) as learnability proxy
+    # Load baseline (unfinetuned) L1 accuracy as learnability proxy
     l1_accs = []
     for d in ds_stats:
         f = RESULTS_DIR / f"benchmark_bge-small_{d['name']}.json"
         data = json.load(open(f))
-        best_l1 = 0
-        for method in ['v5', 'mrl']:
-            for sk in data.get(method, {}):
-                entry = data[method][sk]
-                if isinstance(entry, dict) and 'prefix_accuracy' in entry:
-                    l1_j4 = entry['prefix_accuracy'].get('j4_l1', 0)
-                    best_l1 = max(best_l1, l1_j4)
-        l1_accs.append(best_l1)
+        first_seed = list(data.get('v5', {}).keys())[0]
+        baseline_l1 = data['v5'][first_seed].get('baseline', {}).get('l1_accuracy', 0)
+        l1_accs.append(baseline_l1)
     l1_accs = np.array(l1_accs)
 
     # Compute product: H(L1|L0) x L1_accuracy
@@ -230,7 +225,7 @@ def main():
     r_prod, pr_prod = stats.pearsonr(product, gaps)
     rho_l1, p_l1 = stats.spearmanr(l1_accs, gaps)
 
-    print(f"\n  L1 accuracy (max V5/MRL at j=4): {[f'{a:.3f}' for a in l1_accs]}")
+    print(f"\n  Baseline L1 accuracy (unfinetuned): {[f'{a:.3f}' for a in l1_accs]}")
     print(f"  Product H*L1_acc: {[f'{p:.3f}' for p in product]}")
     print(f"\n  Predictors of steerability:")
     print(f"    H(L1|L0) alone:       Spearman rho={rho_full:.3f} (p={p_full:.4f})")

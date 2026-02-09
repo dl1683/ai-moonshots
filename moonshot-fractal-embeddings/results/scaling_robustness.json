@@ -98,27 +98,27 @@
   },
   "interaction_analysis": {
     "l1_accuracies": {
-      "yahoo": 0.658,
-      "goemotions": 0.444,
-      "newsgroups": 0.664,
-      "trec": 0.802,
-      "arxiv": 0.414,
-      "clinc": 0.722,
-      "wos": 0.14
+      "yahoo": 0.6025,
+      "goemotions": 0.34294117647058825,
+      "newsgroups": 0.658,
+      "trec": 0.718,
+      "arxiv": 0.4645,
+      "clinc": 0.8875,
+      "wos": 0.17
     },
     "product_h_l1": {
-      "yahoo": 0.8085504,
-      "goemotions": 0.835386,
-      "newsgroups": 1.249316,
-      "trec": 1.7709764000000003,
-      "arxiv": 1.0862532,
-      "clinc": 2.8207818,
-      "wos": 0.7070000000000001
+      "yahoo": 0.740352,
+      "goemotions": 0.6452438235294118,
+      "newsgroups": 1.238027,
+      "trec": 1.5854876,
+      "arxiv": 1.2187551,
+      "clinc": 3.4673737499999997,
+      "wos": 0.8585
     },
     "rho_h_alone": 0.7207499701564473,
-    "rho_l1_alone": 0.4642857142857144,
-    "rho_product": 0.642857142857143,
-    "p_product": 0.11939237342741094,
-    "pearson_product": 0.9253698891259322
+    "rho_l1_alone": 0.5357142857142858,
+    "rho_product": 0.8571428571428573,
+    "p_product": 0.01369732661532562,
+    "pearson_product": 0.9751601338154208
   }
 }
