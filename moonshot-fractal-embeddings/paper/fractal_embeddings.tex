@@ -41,13 +41,12 @@
 Modern embedding models support dimensional truncation, but truncation typically changes fidelity rather than semantic level, leaving no mechanism to \emph{steer} between coarse and fine meaning at inference time.
 We introduce \textbf{Fractal Embeddings}, a hierarchy-aligned prefix supervision scheme that trains short prefixes (64d) on coarse labels ($L_0$) and full embeddings (256d) on fine labels ($L_1$), using a frozen backbone with learned heads only.
 Against a matched Matryoshka Representation Learning (MRL) baseline trained on $L_1$ at all prefix lengths, our method preserves full-resolution performance while inducing robust \emph{steerability}: truncated prefixes encode coarse semantics, whereas full vectors recover fine semantics.
-On CLINC-150, V5 achieves $\steer = +0.150 \pm 0.028$ while MRL produces $\steer = +0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, Cohen's $d = 4.3$, 5~seeds).
-Controlled ablations on two datasets identify alignment as the driver: inverting alignment reverses the steerability sign (CLINC: $-0.018$, TREC: $-0.025$), removing prefix-specific supervision collapses it, and a uniform multi-task baseline (hierarchy-aware but not hierarchy-aligned) produces near-zero steerability ($+0.001$), ruling out hierarchy awareness as sufficient; all comparisons significant ($p \leq 0.03$, Cohen's $d \geq 2.7$).
-In a synthetic hierarchy experiment with fixed text and varied coarse partitions, steerability scales with coarse entropy $\hlz$ and exhibits a Goldilocks optimum at ${\sim}12$--$16$ coarse classes (quadratic $R^2 = 0.964$).
-Across eight real datasets spanning six domains, steerability is predicted by the product of hierarchy depth $\hlo$ and baseline learnability (Spearman $\rho = 0.90$, $p = 0.002$; Pearson $r = 0.97$), revealing an interaction: steerability requires \emph{both} hierarchical complexity and model capacity to resolve the fine task.
-MRL produces near-zero steerability in all conditions.
-Cross-model replication on three model families (BGE-small, E5-small, Qwen3-0.6B) confirms architecture invariance.
-Concurrent work by \citet{hanley2025hierarchical} applies a similar principle to news clustering; our work provides theoretical grounding, formal steerability metrics, and causal evidence that explains \emph{why} and \emph{when} this approach works.
+On CLINC-150, V5 achieves $\steer = +0.150 \pm 0.028$ vs.\ MRL $\steer = +0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, Cohen's $d = 4.3$, 5~seeds).
+Controlled ablations identify alignment as the causal driver: inverting alignment reverses the steerability sign, removing prefix supervision collapses it, and a uniform multi-task baseline (hierarchy-aware but not aligned) produces near-zero steerability; all comparisons significant ($p \leq 0.03$, $d \geq 2.7$).
+A synthetic hierarchy experiment reveals a Goldilocks optimum where steerability peaks when coarse task complexity matches prefix capacity (quadratic $R^2 = 0.964$).
+Across eight real datasets spanning six domains, steerability is predicted by the product of hierarchy depth $\hlo$ and baseline learnability (Spearman $\rho = 0.90$, $p = 0.002$; Pearson $r = 0.97$).
+Cross-model replication on three encoder families (BGE-small, E5-small, Qwen3-0.6B) confirms architecture invariance.
+We connect these findings to the classical theory of successive refinement, providing formal information-theoretic grounding for \emph{why} and \emph{when} hierarchy-aligned supervision produces steerability.
 \end{abstract}
 
 % Hero figure
