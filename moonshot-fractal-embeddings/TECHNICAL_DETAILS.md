@@ -249,4 +249,13 @@ All in `results/figures/paper/`:
 
 5. **"One model replaces two"** - V5's 64d prefix beats a dedicated 256d coarse encoder, eliminating the need for separate coarse/fine models.
 
-6. **"Graceful degradation"** - Even with noisy hierarchies (10-30% L0 label corruption), steerability degrades gracefully (preliminary results from sensitivity test).
+6. **"Graceful degradation"** - Even with 50% of coarse labels corrupted, steerability remains positive (+0.061, 34% retention). At 10% noise, 85% of steerability is retained.
+
+### Noisy Hierarchy Sensitivity (CLINC, 3 seeds)
+| Noise % | V5 S (mean +/- SD) | Retention |
+|---------|-------------------|-----------|
+| 0% | +0.179 +/- 0.018 | 100% |
+| 10% | +0.152 +/- 0.016 | 85% |
+| 20% | +0.105 +/- 0.023 | 59% |
+| 30% | +0.128 +/- 0.014 | 71% |
+| 50% | +0.061 +/- 0.036 | 34% |
