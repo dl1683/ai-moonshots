@@ -355,7 +355,7 @@ For each test sample, we independently classify $L_0$ and $L_1$ from (a)~the pre
 
 On CLINC-150, V5 shows 1.8\% less $L_1$ information in the prefix (94.7\% vs.\ 96.5\% for MRL prefix-only $L_1$ accuracy), consistent with the training objective concentrating coarse information in early dimensions.
 The effect is modest because 64 dimensions provide sufficient capacity for both $L_0$ (10~classes) and $L_1$ (150~classes) on this dataset.
-The stronger evidence for semantic separation comes from the steerability metric itself (\S\ref{sec:results}), which measures the \emph{behavioral} consequence of prefix truncation rather than the raw information content.
+The stronger evidence for semantic separation comes from the steerability metric itself (\S\ref{sec:results}), which measures the \emph{operational} consequence of prefix truncation rather than the raw information content.
 
 %=======================================================================
 \section{Steerability Scaling Trend}
@@ -459,7 +459,7 @@ Figure~\ref{fig:entropy_alloc} in the appendix visualizes both relationships sid
 %=======================================================================
 
 \paragraph{Cross-model replication.}
-To verify architecture invariance, we replicate the CLINC experiment on two additional model families: E5-small-v2~(Microsoft, contrastive pre-training, 384d) and Qwen3-Embedding-0.6B ($h = 1024$, 10$\times$ larger than BGE-small), plus TREC on Qwen3.
+To verify architecture invariance, we replicate the CLINC experiment on two additional model families: E5-small-v2~(Microsoft, contrastive pre-training, 384d) and Qwen3-Embedding-0.6B ($h = 1024$, $18\times$ more parameters than BGE-small), plus TREC on Qwen3.
 Table~\ref{tab:crossmodel} shows that all three model families produce the same V5 $\gg$ MRL steerability gap:
 BGE-small $+0.144$, E5-small $+0.130$, Qwen3 $+0.153$ (all $p < 0.025$, Holm-corrected across 3 model families).
 MRL steerability is near-zero across all models ($\leq 0.015$).
@@ -530,7 +530,7 @@ The dimensionality savings translate directly to wall-clock speedups: on FAISS H
 \paragraph{Dual-encoder baseline.}
 An alternative to V5's single-model steerability is to train \emph{two} dedicated encoders: $E_{L_0}$ trained only on coarse labels and $E_{L_1}$ (= MRL) trained only on fine labels, each at full 256d.
 On CLINC (3~seeds), the dual system achieves $L_0 = 95.8\%$ (via $E_{L_0}$) and $L_1 = 94.8\%$ (via $E_{L_1}$), requiring two models and two indexes.
-V5 adaptive (64d for coarse, 256d for fine) achieves $L_0 = 97.5\%$ and $L_1 = 94.5\%$---\emph{higher} coarse accuracy at $4\times$ fewer dimensions, with comparable fine accuracy, using a single model and single index.
+V5 adaptive (64d for coarse, 256d for fine) achieves $L_0 = 97.5\%$ and $L_1 = 94.5\%$---\emph{higher} coarse accuracy at one-quarter the dimensionality, with comparable fine accuracy, using a single model and single index.
 The dual-encoder approach thus doubles storage and serving cost while delivering \emph{worse} coarse performance than V5's 64d prefix, confirming that hierarchy-aligned prefix supervision is strictly more efficient than the ``train separate specialists'' alternative.
 
 \paragraph{Three-level hierarchy extension.}
