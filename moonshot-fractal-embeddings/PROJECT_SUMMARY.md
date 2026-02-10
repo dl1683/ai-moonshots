@@ -7,7 +7,7 @@ This document summarizes the entire Fractal Embeddings research project as of Fe
 
 ## One-Paragraph Summary
 
-We introduce **Fractal Embeddings (V5)**, a hierarchy-aligned prefix supervision scheme for Matryoshka-style embeddings. Instead of training all prefix lengths on the finest label (as standard MRL does), V5 trains short prefixes (64d) on coarse labels and full embeddings (256d) on fine labels. This creates embeddings where dimensional truncation corresponds to **semantic zoom**: fewer dimensions = coarser meaning, more dimensions = finer meaning. We call this property **steerability**. Across 8 datasets, 3 model families, and 4 causal ablations, we show steerability is robust, causally driven by alignment (not hierarchy awareness), and predicted by the interaction of hierarchy depth and model capacity. A successive refinement theory from information theory explains why and when this works. The paper is targeting **NeurIPS 2026**.
+We introduce **Fractal Embeddings (V5)**, a hierarchy-aligned prefix supervision scheme for Matryoshka-style embeddings. Instead of training all prefix lengths on the finest label (as standard MRL does), V5 trains short prefixes (64d) on coarse labels and full embeddings (256d) on fine labels. This creates embeddings where dimensional truncation corresponds to **semantic zoom**: fewer dimensions = coarser meaning, more dimensions = finer meaning. We call this property **steerability**. Across 8 datasets, 3 model families, and 4 causal ablations, we show steerability is robust, causally driven by alignment (not hierarchy awareness), and predicted by the interaction of hierarchy depth and model capacity. A successive refinement theory from information theory explains why and when this works.
 
 ---
 
@@ -133,7 +133,7 @@ Steerability peaks when H(L0) ~ C(d/J). Below: spare capacity leaks L1 info. Abo
 
 ---
 
-## Paper Structure (NeurIPS 2026 Draft)
+## Paper Structure
 
 1. **Introduction** - Problem, solution, contributions
 2. **Setup & Definitions** - Hierarchical classification, steerability metric, 8 datasets
@@ -167,9 +167,9 @@ Steerability peaks when H(L0) ~ C(d/J). Below: spare capacity leaks L1 info. Abo
 
 | Category | File | Description |
 |----------|------|-------------|
-| Paper | `paper/fractal_embeddings.tex` | NeurIPS 2026 draft (~877 lines) |
+| Paper | `paper/fractal_embeddings.tex` | Research paper draft (~877 lines) |
 | Paper | `paper/references.bib` | 21 references |
-| Paper | `paper/neurips_2026.sty` | Style file |
+| Paper | `paper/neurips_2026.sty` | LaTeX style file |
 | Implementation | `src/fractal_v5.py` | V5 implementation |
 | Implementation | `src/mrl_v5_baseline.py` | MRL baseline |
 | Implementation | `src/hierarchical_datasets.py` | 8 dataset loaders |
@@ -190,7 +190,7 @@ Steerability peaks when H(L0) ~ C(d/J). Below: spare capacity leaks L1 info. Abo
 - **Paper:** ~95% complete, abstract trimmed, p-values fixed, proofread done
 - **Running:** Noisy hierarchy sensitivity test (CLINC, 0-50% L0 corruption, 3 seeds each)
 - **Planned:** DBPedia Classes ablation (3rd dataset for causal evidence)
-- **Codex review score:** 8.0/10 ("lean accept")
+- **Codex review score:** 8.0/10
 - **Top remaining risks:**
   1. No direct HEAL/CSR/SMRL head-to-head comparison
   2. Causal ablations only on 2 datasets (CLINC + TREC)
