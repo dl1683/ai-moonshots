@@ -38,15 +38,14 @@
 \maketitle
 
 \begin{abstract}
-Modern embedding models support dimensional truncation, but truncation typically changes fidelity rather than semantic level, leaving no mechanism to \emph{steer} between coarse and fine meaning at inference time.
-We introduce \textbf{Fractal Embeddings}, a hierarchy-aligned prefix supervision scheme that trains short prefixes (64d) on coarse labels ($L_0$) and full embeddings (256d) on fine labels ($L_1$), using a frozen backbone with learned heads only.
-Against a matched Matryoshka Representation Learning (MRL) baseline trained on $L_1$ at all prefix lengths, our method preserves full-resolution performance while inducing robust \emph{steerability}: truncated prefixes encode coarse semantics, whereas full vectors recover fine semantics.
-On CLINC-150, V5 achieves $\steer = +0.150 \pm 0.028$ vs.\ MRL $\steer = +0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, Cohen's $d = 4.3$, 5~seeds).
-Controlled ablations identify alignment as the causal driver: inverting alignment reverses the steerability sign, removing prefix supervision collapses it, and a uniform multi-task baseline (hierarchy-aware but not aligned) produces near-zero steerability; all comparisons significant ($p \leq 0.03$, $d \geq 2.7$).
-A synthetic hierarchy experiment reveals a Goldilocks optimum where steerability peaks when coarse task complexity matches prefix capacity (quadratic $R^2 = 0.964$).
-Across eight real datasets spanning six domains, steerability is predicted by the product of hierarchy depth $\hlo$ and baseline learnability (Spearman $\rho = 0.90$, $p = 0.002$; Pearson $r = 0.97$).
-Cross-model replication on three encoder families (BGE-small, E5-small, Qwen3-0.6B) confirms architecture invariance.
-We connect these findings to the classical theory of successive refinement, providing formal information-theoretic grounding for \emph{why} and \emph{when} hierarchy-aligned supervision produces steerability.
+Matryoshka Representation Learning (MRL) trains embeddings that support dimensional truncation, but all prefix lengths encode the same semantic content at varying fidelity---there is no mechanism to \emph{steer} between coarse and fine meaning.
+We introduce \textbf{Fractal Embeddings}, which align prefix supervision with label hierarchy: short prefixes (64d) learn coarse labels while full embeddings (256d) learn fine labels, converting truncation into \emph{semantic zoom} at zero additional inference cost.
+Four controlled ablations establish that \emph{alignment}---not hierarchy awareness---causally drives steerability: inverting alignment reverses its sign; removing it or applying uniform multi-task training collapses it to zero (all $p \leq 0.03$, Cohen's $d \geq 2.7$).
+Across eight datasets spanning conditional entropies from 1.23 to 5.05 bits, a random-effects meta-analysis yields pooled $d = 1.49$ ($p = 0.0003$), with all eight favouring fractal training (sign test $p = 0.004$).
+On CLINC-150, steerability reaches $\steer = +0.150 \pm 0.028$ versus MRL's $+0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, $d = 4.3$).
+A synthetic hierarchy experiment identifies a Goldilocks optimum where steerability peaks at capacity--demand matching (quadratic $R^2 = 0.964$), and steerability magnitude across real datasets is predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$, $p = 0.002$).
+Replication across three encoder families confirms architecture invariance.
+We ground these findings in the classical theory of successive refinement, providing formal conditions for when and why hierarchy-aligned supervision produces steerability.
 \end{abstract}
 
 % Hero figure
@@ -62,25 +61,27 @@ We connect these findings to the classical theory of successive refinement, prov
 \label{sec:intro}
 %=======================================================================
 
-Dense text embeddings~\citep{reimers2019sentence} are the backbone of modern retrieval systems, mapping sentences to fixed-dimensional vectors where similarity in vector space approximates semantic similarity.
-Recent work on \emph{Matryoshka Representation Learning} (MRL)~\citep{kusupati2022matryoshka} has shown that embeddings can be trained to support dimensional truncation: a 256-dimensional embedding can be truncated to 64 dimensions with graceful accuracy degradation, enabling efficient storage and retrieval.
-
-However, dimensional truncation in MRL changes \emph{fidelity}---the amount of information preserved---not \emph{semantic granularity}.
-A 64-dimensional MRL prefix encodes the same kind of information as the full vector, just with lower resolution.
-This is a missed opportunity: real-world semantics are inherently \emph{hierarchical}.
-A question like ``What is the capital of France?'' simultaneously belongs to the coarse category \texttt{LOCATION} and the fine-grained category \texttt{CITY}.
-An ideal embedding should allow a user to \emph{steer} between these levels by choosing how many dimensions to use.
+When a 256-dimensional embedding is truncated to 64 dimensions, what changes?
+Under standard Matryoshka training~\citep{kusupati2022matryoshka}, the answer is \emph{fidelity}: the shorter vector approximates the full one with reduced precision but encodes the same kind of semantic information.
+We argue this is a missed opportunity.
+Real-world semantics are inherently hierarchical---a query like ``What is the capital of France?'' belongs simultaneously to the coarse category \textsc{location} and the fine category \textsc{city}---and an embedding that supports truncation \emph{already has the interface} for multi-resolution access.
+What it lacks is the training signal to make truncation semantically meaningful.
 
 We introduce \textbf{Fractal Embeddings}, a simple modification to MRL training that aligns prefix supervision with semantic hierarchy.
-Instead of training all prefix lengths on the finest-grained labels (as in MRL), we train short prefixes on coarse labels ($L_0$) and full embeddings on fine labels ($L_1$).
-This creates embeddings where dimensional truncation corresponds to semantic zoom: fewer dimensions $\rightarrow$ coarser meaning, more dimensions $\rightarrow$ finer meaning (Figure~\ref{fig:teaser}).
+Short prefixes are trained on coarse labels; full embeddings are trained on fine labels; intermediate prefixes receive blended supervision.
+The result is an embedding where dimensional truncation corresponds to \emph{semantic zoom}: fewer dimensions yield coarser meaning, more dimensions recover finer distinctions (Figure~\ref{fig:teaser}).
+Critically, this adds \textbf{zero inference-time cost}---the deployed model has identical architecture and parameter count to MRL.
+The difference lies entirely in \emph{how} the projection head is trained.
 
-Our key contributions are:
+We call the resulting property \emph{steerability}: the degree to which prefix truncation controls semantic granularity rather than merely degrading fidelity.
+Our evaluation spans eight hierarchical text datasets, three encoder families, four controlled ablations, a synthetic causal experiment, and connections to 30 years of information theory.
+The main findings are:
+
 \begin{enumerate}
-    \item \textbf{A method} for training steerable embeddings via hierarchy-aligned prefix supervision (Section~\ref{sec:method}).
-    \item \textbf{Causal evidence} from four controlled ablations on two datasets that steerability is caused by alignment, not architecture or hierarchy awareness: inverting alignment reverses the sign, removing it collapses it, and a uniform multi-task control (hierarchy-aware but not aligned) also produces near-zero steerability (Section~\ref{sec:causal}).
-    \item \textbf{A scaling trend} linking steerability magnitude to hierarchy structure across eight real datasets, with a Goldilocks optimum identified via synthetic intervention (Section~\ref{sec:scaling}).
-    \item \textbf{Cross-model replication} confirming the effect is architecture-invariant across three model families: BGE-small, E5-small-v2, and Qwen3-0.6B (Section~\ref{sec:generality}).
+    \item \textbf{A method} for inducing steerable embeddings via hierarchy-aligned prefix supervision, requiring only head-only training on a frozen backbone (Section~\ref{sec:method}).
+    \item \textbf{Causal identification}: four ablations on two datasets establish that steerability is driven by the alignment between prefix length and hierarchy level---not by architecture, hierarchy awareness, or other training choices. Inverting alignment reverses the sign; removing it or using a uniform multi-task control collapses it (Section~\ref{sec:causal}).
+    \item \textbf{A scaling analysis} linking steerability magnitude to the interaction of hierarchy depth and model learnability across eight datasets ($\rho = 0.90$, $p = 0.002$), with a Goldilocks optimum identified via synthetic intervention ($R^2 = 0.964$; Section~\ref{sec:scaling}).
+    \item \textbf{Broad generality}: cross-model replication on BGE-small, E5-small, and Qwen3-0.6B; downstream retrieval benchmarks showing $10\times$ larger dimensionality--accuracy ramps; and $3.7\times$ HNSW query speedups from prefix routing (Section~\ref{sec:generality}).
 \end{enumerate}
 
 %=======================================================================
@@ -89,29 +90,30 @@ Our key contributions are:
 %=======================================================================
 
 \paragraph{Hierarchical classification.}
-We primarily evaluate on two-level label hierarchies: each sample $x$ has a coarse label $y^{(0)} \in \{1, \ldots, K_0\}$ and a fine label $y^{(1)} \in \{1, \ldots, K_1\}$, where each fine class maps to exactly one coarse class (extension to three levels is demonstrated in Section~\ref{sec:generality}).
-The hierarchy is characterized by the branching factor $K_1/K_0$ and the conditional entropy $\hlo$, which measures how much additional information $L_1$ carries beyond $L_0$.
+Each sample $x$ carries a coarse label $y^{(0)} \in \{1, \ldots, K_0\}$ and a fine label $y^{(1)} \in \{1, \ldots, K_1\}$, where every fine class maps to exactly one coarse class.
+We characterize hierarchy depth by the conditional entropy $\hlo$---the additional information $L_1$ carries beyond $L_0$.
+Extension to three levels is demonstrated in Section~\ref{sec:generality}.
 
 \paragraph{Prefix-truncated embeddings.}
-Given an embedding $\mathbf{e} \in \mathbb{R}^d$, the $j$-th prefix is $\mathbf{e}_{1:jd/J}$ for $j \in \{1, \ldots, J\}$.
+Given $\mathbf{e} \in \mathbb{R}^d$, the $j$-th prefix is $\mathbf{e}_{1:jd/J}$ for $j \in \{1, \ldots, J\}$.
 We use $J = 4$ with $d = 256$, giving prefixes of 64, 128, 192, and 256 dimensions.
-Classification accuracy is evaluated using a $k$-NN classifier ($k = 5$) on cosine distance.
+Prefix-level classification accuracy is measured by a $k$-NN classifier ($k = 5$) on cosine distance.
 
 \paragraph{Steerability.}
-We define the steerability metric:
+We quantify the semantic specialization of prefix truncation via:
 \begin{equation}
     \steer = \underbrace{(\text{L0@}j_1 - \text{L0@}j_4)}_{\text{coarse specialization}} + \underbrace{(\text{L1@}j_4 - \text{L1@}j_1)}_{\text{fine specialization}}
     \label{eq:steerability}
 \end{equation}
-where $\text{L}k\text{@}j$ denotes level-$k$ classification accuracy at prefix length $j$.
-Positive $\steer$ means short prefixes specialize for coarse semantics while full embeddings specialize for fine semantics.
-A perfectly steerable embedding has high $\steer$; MRL, which trains all lengths on $L_1$, should have $\steer \approx 0$.
+where $\text{L}k\text{@}j$ denotes level-$k$ accuracy at prefix length $j$.
+Positive $\steer$ means short prefixes favour coarse semantics while full embeddings favour fine.
+A perfectly steerable embedding has high $\steer$; MRL, training all lengths on $L_1$, should yield $\steer \approx 0$.
 
 \paragraph{Datasets.}
-Table~\ref{tab:datasets} summarizes our eight evaluation datasets, spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 5.05 bits (WOS~\citep{kowsari2017hdltex}), also including GoEmotions~\citep{demszky2020goemotions}, TREC~\citep{voorhees2000trec}, 20 Newsgroups, arXiv~\citep{clement2019arxiv}, DBPedia Classes, and CLINC-150~\citep{larson2019clinc}.
+Table~\ref{tab:datasets} summarizes eight evaluation datasets spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 5.05 bits (WOS~\citep{kowsari2017hdltex}), including GoEmotions~\citep{demszky2020goemotions}, TREC~\citep{voorhees2000trec}, 20 Newsgroups, arXiv~\citep{clement2019arxiv}, DBPedia Classes, and CLINC-150~\citep{larson2019clinc}.
 
 \begin{table}[t]
-\caption{Dataset statistics and hierarchy profiles. $K_0$, $K_1$: number of coarse and fine classes. Branch: $K_1/K_0$. $\hlz$, $\hlo$: coarse entropy and conditional entropy in bits.}
+\caption{Dataset statistics and hierarchy profiles. $K_0$, $K_1$: coarse and fine class counts. Branch: $K_1/K_0$. $\hlz$, $\hlo$: coarse entropy and conditional entropy in bits.}
 \label{tab:datasets}
 \centering
 \small
@@ -132,66 +134,68 @@ WOS & 10 & 336 & 33.6 & 2.90 & 5.05 & 8{,}688 & 2{,}000 \\
 \end{table}
 
 \paragraph{Statistical methodology.}
-All experiments use $n \geq 5$ random seeds per condition (seeds 42, 123, 456, 789, 1024).
-Steerability differences (V5 minus MRL, paired by seed) are tested with two-sided paired $t$-tests.
-For the eight per-dataset comparisons in Table~\ref{tab:steerability}, we apply Holm--Bonferroni correction~\citep{holm1979simple} to control the family-wise error rate at $\alpha = 0.05$.
-Effect sizes are reported as Cohen's $d$ (paired); applying the Hedges' $g$ small-sample correction ($\approx 0.80$ for $n = 5$, $0.57$ for $n = 3$) yields qualitatively identical conclusions, with all large effects ($d > 2$) remaining large.
-Standard deviations are sample estimates (ddof $= 1$).
-Causal ablation tests (Section~\ref{sec:causal}) are corrected within their own family of 4 comparisons (2 datasets $\times$ 2 conditions); the UHMT baseline comparison is corrected in a separate family of 2 tests.
-To pool evidence across datasets, we also report a DerSimonian--Laird random-effects meta-analysis on paired Cohen's $d$ values.
+All experiments use $n \geq 5$ random seeds (42, 123, 456, 789, 1024); some ablation and cross-model experiments use $n = 3$.
+Paired $t$-tests compare V5 and MRL steerability per dataset; the eight main comparisons (Table~\ref{tab:steerability}) are corrected via Holm--Bonferroni~\citep{holm1979simple} at $\alpha = 0.05$.
+Causal ablation tests (Section~\ref{sec:causal}) are corrected within their own families.
+Effect sizes are paired Cohen's $d$; Hedges' $g$ corrections ($\approx 0.80$ for $n = 5$, $0.57$ for $n = 3$) yield qualitatively identical conclusions.
+Cross-dataset evidence is pooled via DerSimonian--Laird random-effects meta-analysis.
+
+\paragraph{Theory preview.}
+The classical theory of \emph{successive refinement}~\citep{equitz1991successive,rimoldi1994successive} shows that hierarchical sources admit optimal multi-resolution codes where each refinement layer adds residual information.
+V5 training approximates this structure: the prefix encodes coarse semantics, and additional dimensions encode the refinement.
+Section~\ref{sec:theory} formalises this connection and derives two testable predictions---sign reversal under inversion and a Goldilocks capacity--demand optimum---both confirmed by our experiments.
 
 %=======================================================================
 \section{Method: Progressive Prefix Supervision (V5)}
 \label{sec:method}
 %=======================================================================
 
-Our method modifies MRL training in one key way: we align the \emph{supervision signal} with the \emph{prefix length}, so that shorter prefixes are trained to capture coarse structure while longer prefixes capture fine structure.
+Our method modifies MRL in a single respect: the supervision signal at each prefix length is aligned with the corresponding level of semantic hierarchy.
 
 \paragraph{Architecture.}
-We use a frozen pretrained embedding backbone (BGE-small-en-v1.5~\citep{xiao2023bge} or Qwen3-Embedding-0.6B) with a learned linear projection head $W \in \mathbb{R}^{h \times d}$ mapping from hidden dimension $h$ to output dimension $d = 256$.
-Two classification heads operate on the output: $\text{head}_\text{top}$ (coarse, $K_0$ classes) and $\text{head}_\text{bot}$ (fine, $K_1$ classes).
+A frozen pretrained backbone (BGE-small-en-v1.5~\citep{xiao2023bge}, 33M parameters, or Qwen3-Embedding-0.6B, 600M) produces hidden representations $\mathbf{h} \in \mathbb{R}^h$.
+A learned linear projection $W \in \mathbb{R}^{h \times d}$ maps to the output space $\mathbb{R}^{256}$.
+Two classification heads operate on the projected output: $\text{head}_\text{top}$ ($K_0$ coarse classes) and $\text{head}_\text{bot}$ ($K_1$ fine classes).
 
 \paragraph{Progressive prefix supervision.}
-During training, we randomly sample a prefix length $j \in \{1, 2, 3, 4\}$ with probabilities $[0.4, 0.3, 0.2, 0.1]$ (favoring shorter prefixes).
-The loss depends on $j$:
+During training, a prefix index $j \in \{1, 2, 3, 4\}$ is sampled with probabilities $[0.4, 0.3, 0.2, 0.1]$, favouring shorter prefixes.
+The prefix loss depends on $j$:
 \begin{equation}
     \mathcal{L}_\text{prefix}(j) = \begin{cases}
         \mathcal{L}_\text{CE}(\text{head}_\text{top}(\mathbf{e}_{1:64}), y^{(0)}) & j = 1 \\
-        \alpha \cdot \mathcal{L}_\text{CE}(\text{head}_\text{top}(\mathbf{e}_{1:jd/4}), y^{(0)}) + (1-\alpha) \cdot \mathcal{L}_\text{CE}(\text{head}_\text{bot}(\mathbf{e}_{1:jd/4}), y^{(1)}) & j = 2,3 \\
+        \alpha_j \cdot \mathcal{L}_\text{CE}(\text{head}_\text{top}(\mathbf{e}_{1:jd/4}), y^{(0)}) + (1-\alpha_j) \cdot \mathcal{L}_\text{CE}(\text{head}_\text{bot}(\mathbf{e}_{1:jd/4}), y^{(1)}) & j = 2,3 \\
         \mathcal{L}_\text{CE}(\text{head}_\text{bot}(\mathbf{e}_{1:256}), y^{(1)}) & j = 4
     \end{cases}
     \label{eq:v5loss}
 \end{equation}
-where $\alpha$ decreases with $j$ (e.g., $\alpha = 0.7$ for $j=2$, $\alpha = 0.3$ for $j=3$).
-The total loss combines the full-embedding loss with the sampled prefix loss:
+where $\alpha_j$ decreases with $j$ ($\alpha_2 = 0.7$, $\alpha_3 = 0.3$), creating a smooth coarse-to-fine gradient.
+The total loss combines the full-embedding fine loss with the sampled prefix loss:
 \begin{equation}
-    \mathcal{L} = \mathcal{L}_\text{CE}(\text{head}_\text{bot}(\mathbf{e}), y^{(1)}) + w_\text{prefix} \cdot \mathcal{L}_\text{prefix}(j)
+    \mathcal{L} = \mathcal{L}_\text{CE}(\text{head}_\text{bot}(\mathbf{e}), y^{(1)}) + 0.6 \cdot \mathcal{L}_\text{prefix}(j)
 \end{equation}
-with $w_\text{prefix} = 0.6$.
 
 \paragraph{Block dropout.}
-To prevent later dimensions from carrying redundant coarse information, we apply block dropout during training: dimension blocks are independently kept with probabilities $[0.95, 0.9, 0.8, 0.7]$ for blocks 1--4.
-This forces the network to encode coarse information in early dimensions (high keep probability) and fine information in later dimensions (lower keep probability).
+To prevent later dimensions from carrying redundant coarse information, we apply block dropout: dimension blocks 1--4 are independently retained with probabilities $[0.95, 0.9, 0.8, 0.7]$.
+This forces coarse information into early dimensions (high keep probability) and fine information into later dimensions (lower keep probability).
 
 \paragraph{MRL baseline.}
-Our matched baseline uses identical architecture and training procedure, but trains \emph{all} prefix lengths on $L_1$ (fine labels):
+The matched baseline uses identical architecture, optimizer, and hyperparameters but trains all prefix lengths on $L_1$:
 \begin{equation}
     \mathcal{L}_\text{MRL}(j) = \mathcal{L}_\text{CE}(\text{head}_\text{bot}(\mathbf{e}_{1:jd/4}), y^{(1)}) \quad \forall j
 \end{equation}
-This isolates the effect of hierarchy alignment from all other training choices (backbone, optimizer, epochs, batch size).
+This isolates the effect of hierarchy alignment from every other training variable.
 
-\paragraph{Training details.}
-Head-only training for 5 epochs, batch size 16, learning rate $10^{-4}$ with AdamW and cosine decay.
-Mixed-precision (FP16) training with gradient clipping at 1.0.
-Best model selected by validation score $\text{L0} + \text{L1}$.
-Crucially, V5 adds \textbf{zero inference-time architectural overhead}: at deployment, the model has the same parameter count and compute as MRL; steerability comes from how the projection head was trained, not from any architectural change.
-Algorithm~\ref{alg:v5} summarizes the procedure.
+\paragraph{Training.}
+Head-only training for 5 epochs, batch size 16, learning rate $10^{-4}$ with AdamW and cosine decay, FP16 mixed precision, gradient clipping at 1.0.
+Best model selected by validation $\text{L0} + \text{L1}$.
+No hyperparameters are tuned per dataset.
+Algorithm~\ref{alg:v5} summarises the procedure.
 
 \begin{algorithm}[t]
 \caption{V5 Progressive Prefix Supervision}
 \label{alg:v5}
 \begin{algorithmic}[1]
-\REQUIRE Backbone $f_\theta$ (frozen), head $W$, dataset $\mathcal{D}$ with $(x, y^{(0)}, y^{(1)})$
+\REQUIRE Backbone $f_\theta$ (frozen), projection head $W$, dataset $\mathcal{D}$ with $(x, y^{(0)}, y^{(1)})$
 \REQUIRE Prefix probs $\mathbf{p} = [0.4, 0.3, 0.2, 0.1]$, block keep $\mathbf{k} = [0.95, 0.9, 0.8, 0.7]$
 \FOR{each batch $\{(x_i, y_i^{(0)}, y_i^{(1)})\}$}
     \STATE $\mathbf{h} \leftarrow f_\theta(x_i)$ \hfill \COMMENT{frozen backbone}
@@ -213,18 +217,18 @@ Algorithm~\ref{alg:v5} summarizes the procedure.
 \end{algorithm}
 
 %=======================================================================
-\section{Main Results: Steerability Without Sacrificing Accuracy}
+\section{Main Results}
 \label{sec:results}
 %=======================================================================
 
-\paragraph{Classification performance.}
-At full embedding length ($j=4$, 256d), V5 and MRL achieve comparable $k$-NN classification accuracy on all eight datasets (Table~\ref{tab:accuracy}).
-On most datasets, both methods improve over the unfinetuned baseline, particularly at $L_0$.
-The exceptions are instructive: on CLINC ($K_1 = 150$), the 384d$\rightarrow$256d linear projection sacrifices some $L_1$ $k$-NN accuracy (V5: 67.6\%, MRL: 70.4\%, vs.\ baseline 88.7\% in the original 384d space), though the classification heads themselves achieve $>$95\% on the validation set.
-This reflects a deliberate trade-off: V5 reorganizes the embedding space for prefix-level semantic specialization rather than maximizing $k$-NN accuracy at full resolution.
+\paragraph{Classification performance is preserved.}
+At full embedding length ($j=4$, 256d), V5 and MRL achieve comparable $k$-NN accuracy across all eight datasets (Table~\ref{tab:accuracy}).
+Both methods improve over the unfinetuned baseline on most datasets.
+The notable exception is CLINC ($K_1 = 150$): the 384d$\rightarrow$256d linear projection reduces $L_1$ $k$-NN accuracy (V5: 67.6\%, MRL: 70.4\%) relative to the 384d baseline (88.7\%), though both methods' classification heads achieve $>$95\% on the validation set.
+This reflects V5's trade-off: the embedding space is reorganised for prefix-level specialization rather than maximising $k$-NN accuracy at full resolution.
 
 \begin{table}[t]
-\caption{$k$-NN classification accuracy at full embedding length ($j = 4$, 256d). V5 and MRL are comparable across datasets. Baseline uses the original backbone (384d); V5/MRL use learned 256d projections, which trade some $k$-NN accuracy for prefix-level structure on high-$K_1$ datasets (e.g., CLINC with $K_1 = 150$).}
+\caption{$k$-NN classification accuracy at full embedding length ($j = 4$, 256d). V5 and MRL are comparable across datasets. Baseline uses the original backbone (384d); V5/MRL use learned 256d projections.}
 \label{tab:accuracy}
 \centering
 \small
@@ -249,23 +253,26 @@ WOS & 0.619 & 0.625 & 0.610 & 0.170 & 0.148 & 0.156 \\
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig3_forest_plot.pdf}
-    \caption{Cross-dataset steerability: V5 (blue) produces positive steerability that scales with hierarchy depth across eight datasets, while MRL (orange) remains near zero. Error bars show 95\% CIs.}
+    \caption{Steerability across eight datasets. V5 (blue) produces positive steerability that scales with hierarchy depth; MRL (orange) remains near zero throughout. Error bars: 95\% CIs across 5 seeds.}
     \label{fig:forest}
 \end{figure}
 
-\paragraph{Steerability.}
-Despite classification parity, V5 produces dramatically higher steerability than MRL across all eight datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
-Steerability generally increases with hierarchy complexity ($\hlo$): from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) through GoEmotions ($+0.020$, $\hlo = 1.88$), TREC ($+0.044$, $\hlo = 2.21$), and arXiv ($+0.027$, $\hlo = 2.62$) to $\steer = +0.120$ on DBPedia Classes ($\hlo = 3.17$) and $\steer = +0.150$ on CLINC ($\hlo = 3.90$).
-WOS ($\hlo = 5.05$) shows a moderate effect ($\steer = +0.038$) despite the deepest hierarchy, due to a floor effect in $L_1$ accuracy (Section~\ref{sec:scaling}).
-After Holm--Bonferroni correction across eight tests, DBPedia Classes, CLINC, and TREC remain significant ($p_\text{adj} = 0.002$, $0.004$, and $0.038$; paired Cohen's $d = 5.5$, $4.3$, and $2.4$); arXiv is borderline ($p_\text{adj} = 0.078$) and WOS does not reach significance ($p_\text{adj} = 0.111$).
-The shallow-hierarchy datasets (Yahoo, GoEmotions, Newsgroups; $\hlo \leq 1.88$) show consistent but small effects that do not reach per-dataset significance---a predicted consequence of the capacity-demand matching theory (Section~\ref{sec:scaling}): when $\hlo$ is low, there is little refinement information for V5 to separate from coarse information, so the steerability signal is inherently small.
-MRL steerability is consistently near zero ($|\steer_\text{MRL}| < 0.02$ on all datasets), confirming that steerability requires explicit hierarchy alignment.
-A sign test confirms the consistency: V5 $>$ MRL steerability on all 8 datasets ($p = 2^{-8} = 0.004$, one-sided binomial).
-A random-effects meta-analysis (DerSimonian--Laird) across all eight datasets yields a pooled Cohen's $d = 1.49$ (95\% CI: $[0.69, 2.30]$, $z = 3.63$, $p = 0.0003$), confirming a robust overall V5 advantage.
-The 95\% prediction interval for a new dataset's $d$ is $[-0.70, 3.18]$, which includes zero---reflecting substantial heterogeneity ($I^2 = 63\%$) that the scaling trend analysis (Section~\ref{sec:scaling}) predicts: effect size is moderated by the interaction of hierarchy depth and model learnability, so low-hierarchy datasets are expected to show small or null effects.
+\paragraph{Steerability emerges from hierarchy alignment.}
+Despite comparable full-resolution accuracy, V5 produces dramatically higher steerability than MRL on all eight datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
+The effect scales with hierarchy complexity: from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) to $+0.150$ on CLINC ($\hlo = 3.90$), with WOS ($\hlo = 5.05$) showing a moderate effect ($+0.038$) due to a floor effect analysed in Section~\ref{sec:scaling}.
+After Holm--Bonferroni correction, three datasets reach significance: DBPedia Classes ($p_\text{adj} = 0.002$, $d = 5.5$), CLINC ($p_\text{adj} = 0.004$, $d = 4.3$), and TREC ($p_\text{adj} = 0.038$, $d = 2.4$).
+ArXiv is borderline ($p_\text{adj} = 0.078$, $d = 1.8$).
+
+The shallow-hierarchy datasets (Yahoo, GoEmotions, Newsgroups; $\hlo \leq 1.88$) show consistent but small effects that do not survive per-dataset correction---a consequence the scaling analysis (Section~\ref{sec:scaling}) predicts: when hierarchy depth is low, there is little refinement information for V5 to separate, so the signal is inherently small.
+MRL steerability is near zero throughout ($|\steer_\text{MRL}| < 0.02$ on all datasets).
+
+\paragraph{Pooled evidence.}
+A sign test confirms universal directionality: V5 $>$ MRL on 8/8 datasets ($p = 0.004$, binomial).
+A DerSimonian--Laird meta-analysis yields pooled $d = 1.49$ (95\% CI: $[0.69, 2.30]$, $z = 3.63$, $p = 0.0003$).
+The 95\% prediction interval for a new dataset is $[-0.70, 3.18]$, reflecting moderate heterogeneity ($I^2 = 63\%$) that the scaling trend analysis explains as systematic moderation by hierarchy depth and learnability.
 
 \begin{table}[t]
-\caption{Steerability across eight datasets ($\steer$ = coarse specialization + fine specialization, Eq.~\ref{eq:steerability}). V5 achieves positive steerability that scales with hierarchy complexity. MRL is consistently near zero. Reported as mean $\pm$ SD across 5 seeds.}
+\caption{Steerability across eight datasets (Eq.~\ref{eq:steerability}). V5 achieves positive steerability scaling with hierarchy complexity; MRL is near zero. Mean $\pm$ SD over 5 seeds.}
 \label{tab:steerability}
 \centering
 \small
@@ -286,35 +293,36 @@ WOS & 5.05 & $+0.038 \pm 0.026$ & $+0.001 \pm 0.005$ & $+0.036$ & 5 \\
 \end{table}
 
 %=======================================================================
-\section{Causal Evidence via Ablation}
+\section{Why It Works: Causal Evidence via Ablation}
 \label{sec:causal}
 %=======================================================================
 
-The correlation between hierarchy alignment and steerability in Section~\ref{sec:results} could arise from confounds (e.g., dataset properties, label structure).
-We perform four controlled ablations on two datasets---CLINC-150 ($\hlo = 3.90$, 5~seeds) and TREC-50 ($\hlo = 2.21$, 3~seeds)---to provide causal evidence that alignment drives steerability and verify cross-dataset robustness.
+The main results establish \emph{that} hierarchy-aligned supervision produces steerability.
+We now ask \emph{why}: is the effect driven by the specific prefix-to-hierarchy mapping, or could it arise from other aspects of training?
+Four controlled ablations on CLINC-150 ($\hlo = 3.90$, 5 seeds) and TREC-50 ($\hlo = 2.21$, 3 seeds) isolate the causal mechanism.
 
-\paragraph{Ablation conditions.}
-All four conditions use identical architecture, optimizer, hyperparameters, and data split (held fixed across seeds).
-Only the prefix-to-hierarchy mapping changes:
+\paragraph{Ablation design.}
+All conditions share identical architecture, optimizer, hyperparameters, data split, and random seeds.
+Only the prefix-to-hierarchy mapping varies:
 \begin{itemize}
     \item \textbf{Aligned (V5)}: $j=1 \rightarrow L_0$, $j=4 \rightarrow L_1$ (correct alignment).
     \item \textbf{Inverted}: $j=1 \rightarrow L_1$, $j=4 \rightarrow L_0$ (reversed alignment).
-    \item \textbf{No-prefix}: All prefix lengths trained on $L_1$ with additional $L_0$ regularization (no alignment).
-    \item \textbf{Uniform multi-task (UHMT)}: All prefix lengths trained on $0.5 \cdot \mathcal{L}_{L_0} + 0.5 \cdot \mathcal{L}_{L_1}$ (hierarchy-\emph{aware} but not hierarchy-\emph{aligned}).
+    \item \textbf{No-prefix}: All prefix lengths trained on $L_1$ with $L_0$ regularisation (alignment removed).
+    \item \textbf{UHMT}: All prefix lengths trained on $0.5 \cdot \mathcal{L}_{L_0} + 0.5 \cdot \mathcal{L}_{L_1}$ (hierarchy-\emph{aware} but not hierarchy-\emph{aligned}).
 \end{itemize}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig4_ablation.pdf}
-    \caption{Ablation on CLINC-150 (5 seeds) and TREC-50 (3~seeds). Aligned supervision (V5) produces positive steerability; inverting alignment reverses the sign; removing prefix-specific alignment or using uniform multi-task supervision (UHMT) collapses it. Individual seed values shown as dots.}
+    \caption{Ablation results on CLINC-150 (5 seeds) and TREC-50 (3 seeds). Aligned supervision produces positive steerability; inversion reverses the sign; removing alignment or using uniform multi-task training collapses it. Dots show individual seeds.}
     \label{fig:ablation}
 \end{figure}
 
-\paragraph{Results.}
-The ablation results (Table~\ref{tab:ablation}, Figure~\ref{fig:ablation}) provide strong evidence that alignment drives steerability.\footnote{The absolute steerability in Table~\ref{tab:ablation} is lower than in Table~\ref{tab:steerability} because the ablation uses a fixed train/val split to eliminate data-split variance across conditions; the within-condition comparisons (V5 vs.\ inverted, V5 vs.\ no-prefix) are the relevant tests.}
+\paragraph{Three causal signatures.}
+The results (Table~\ref{tab:ablation}, Figure~\ref{fig:ablation}) reveal three distinct causal signatures that jointly rule out non-alignment explanations:\footnote{Absolute steerability values are lower here than in Table~\ref{tab:steerability} because ablations use a fixed train/val split to eliminate data-split variance across conditions.}
 
 \begin{table}[t]
-\caption{Ablation on two datasets (BGE-small). All conditions share a fixed train/val split to eliminate data-split variance. Inverting alignment reverses the steerability sign; removing prefix-specific alignment or using uniform multi-task supervision collapses it. Causal perturbation tests (inverted, no-prefix) corrected at $m = 4$; UHMT baseline tests corrected separately at $m = 2$.}
+\caption{Causal ablation (BGE-small). All conditions share fixed data splits. Causal perturbation tests corrected at $m = 4$; UHMT tests corrected at $m = 2$.}
 \label{tab:ablation}
 \centering
 \small
@@ -336,87 +344,73 @@ Dataset & Condition & $\steer$ (mean $\pm$ SD) & vs.\ V5 $t$ & $p_\text{adj}$ & 
 \end{table}
 
 \begin{enumerate}
-    \item \textbf{Sign reversal}: Inverted alignment produces \emph{negative} steerability on both datasets (CLINC: $\steer = -0.018$; TREC: $\steer = -0.025$), meaning short prefixes now specialize for fine semantics and full embeddings for coarse---the opposite of V5.
-    This rules out any explanation where steerability arises from architecture alone.
-    \item \textbf{Signal collapse}: Without prefix-specific alignment, steerability drops to near-zero (CLINC: $+0.009$; TREC: $-0.003$), indistinguishable from MRL.
-    \item \textbf{Hierarchy awareness is insufficient}: UHMT trains every prefix on \emph{both} $L_0$ and $L_1$ with equal weight, making it hierarchy-aware but not hierarchy-aligned.
-    Despite access to coarse labels, UHMT steerability is near-zero (CLINC: $+0.001$; TREC: $-0.009$), ruling out the hypothesis that steerability arises from including $L_0$ in the loss.
-    \item \textbf{Cross-dataset robustness}: All three patterns---sign reversal, signal collapse, and UHMT collapse---replicate across hierarchy depths ($\hlo = 2.21$ and $3.90$), confirming the effect is not dataset-specific.
-    \item \textbf{Effect sizes}: Cohen's $d \geq 2.7$ across all comparisons on both datasets (up to $d = 16.5$ on CLINC), indicating the effect is both statistically and practically significant.
+    \item \textbf{Sign reversal.} Inverted alignment produces \emph{negative} steerability (CLINC: $-0.018$; TREC: $-0.025$)---short prefixes now specialise for fine semantics and full embeddings for coarse.
+    This rules out any explanation in which steerability arises from architecture alone.
+    \item \textbf{Collapse without alignment.} Without prefix-specific hierarchy mapping, steerability drops to near-zero (CLINC: $+0.009$; TREC: $-0.003$), indistinguishable from MRL.
+    \item \textbf{Awareness is insufficient.} UHMT trains every prefix on \emph{both} $L_0$ and $L_1$ equally, making it hierarchy-aware but not hierarchy-aligned. Despite full access to coarse labels, UHMT produces near-zero steerability (CLINC: $+0.001$; TREC: $-0.009$).
+    This eliminates the hypothesis that steerability arises from including $L_0$ in the loss; what matters is \emph{which} prefix lengths receive \emph{which} labels.
 \end{enumerate}
 
-These results support the \textbf{Fractal Embedding Principle}: steerability is driven by the \emph{alignment} between prefix supervision and hierarchy structure, not by hierarchy awareness, architecture, or other training choices. The UHMT control is particularly informative: it demonstrates that knowing about both label levels is not enough---what matters is \emph{which} prefix lengths receive \emph{which} labels. The sign reversal, signal collapse, and UHMT collapse all replicate across datasets.
+All three patterns replicate across hierarchy depths ($\hlo = 2.21$ and $3.90$), with $d \geq 2.7$ throughout.
 
-\subsection{Information Localization}
+\subsection{Information Localisation}
 
-The ablations above modify \emph{training}; we additionally measure whether V5 concentrates different semantic levels in different embedding blocks.
-For each test sample, we independently classify $L_0$ and $L_1$ from (a)~the prefix only (first 64d) and (b)~the suffix only (dims~65--256), using $k$-NN against references at the same granularity.
-
-On CLINC-150, V5 shows 1.8\% less $L_1$ information in the prefix (94.7\% vs.\ 96.5\% for MRL prefix-only $L_1$ accuracy), consistent with the training objective concentrating coarse information in early dimensions.
-The effect is modest because 64 dimensions provide sufficient capacity for both $L_0$ (10~classes) and $L_1$ (150~classes) on this dataset.
-The stronger evidence for semantic separation comes from the steerability metric itself (\S\ref{sec:results}), which measures the \emph{operational} consequence of prefix truncation rather than the raw information content.
+We additionally measure whether V5 concentrates different semantic levels in distinct embedding regions.
+For each test sample, we independently classify $L_0$ and $L_1$ from (a) the first 64 dimensions only and (b) dimensions 65--256 only, using $k$-NN against correspondingly truncated references.
+On CLINC, V5 shows 1.8\% lower $L_1$ accuracy in the prefix (94.7\% vs.\ 96.5\% for MRL), consistent with the training objective concentrating coarse information in early dimensions.
+The stronger evidence for semantic separation comes from steerability itself, which measures the \emph{operational} consequence of truncation rather than raw information content.
 
 %=======================================================================
-\section{Steerability Scaling Trend}
+\section{When It Works: Steerability Scaling Analysis}
 \label{sec:scaling}
 %=======================================================================
 
-Having established that alignment causes steerability, we investigate what determines its \emph{magnitude}.
-We present two complementary analyses: an observational study across real datasets and a causal intervention using synthetic hierarchies.
+Having established that alignment causes steerability, we investigate what determines its \emph{magnitude}: an observational analysis across real datasets and a causal intervention via synthetic hierarchies.
 
-\subsection{Observational: Steerability Scales with Hierarchy Complexity}
+\subsection{Observational: Scaling with Hierarchy Complexity}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig5_scaling_law.pdf}
-    \caption{Steerability across eight real datasets. \textbf{Left:} Raw steerability vs.\ $\hlo$ ($\rho = 0.74$, $p = 0.035$). WOS (highest $\hlo$) falls below the trend due to a floor effect in $L_1$ accuracy. \textbf{Right:} Steerability vs.\ the product predictor $\hlo \times A_{L_1}^\text{base}$ ($\rho = 0.90$, $p = 0.002$), which accounts for both hierarchy complexity and baseline learnability.}
+    \caption{\textbf{Left:} Steerability vs.\ $\hlo$ across eight datasets ($\rho = 0.74$, $p = 0.035$). WOS deviates due to a floor effect. \textbf{Right:} Product predictor $\hlo \times A_{L_1}^\text{base}$ accounts for both complexity and learnability ($\rho = 0.90$, $p = 0.002$).}
     \label{fig:scaling}
 \end{figure}
 
-Across eight real datasets spanning $\hlo$ from 1.23 (Yahoo) to 5.05 bits (WOS), we observe a significant positive association between hierarchy complexity and steerability (Figure~\ref{fig:scaling}).
-Using all eight datasets, the raw Spearman correlation with $\hlo$ is $\rho = 0.74$ ($p = 0.035$); excluding WOS, the seven remaining datasets yield $\rho = 0.87$ ($p = 0.012$).
+Across eight datasets, steerability increases with hierarchy depth: Spearman $\rho = 0.74$ ($p = 0.035$) against $\hlo$ alone (Figure~\ref{fig:scaling}, left).
+However, WOS ($\hlo = 5.05$) falls below the trend.
 
-\paragraph{WOS and the floor effect.}
-WOS ($K_1 = 336$ fine classes, $\hlo = 5.05$) falls below the linear trend despite having the deepest hierarchy.
-The explanation is a \emph{floor effect}: with 336 fine classes and head-only training, neither V5 nor MRL achieves meaningful $L_1$ accuracy (11.1\% and 11.5\% respectively, vs.\ 0.3\% chance), limiting steerability because the $L_1$ component of $\steer$ cannot differentiate across prefix lengths when $L_1$ accuracy is near floor.
-By contrast, CLINC ($K_1 = 150$) achieves $L_1 > 67\%$, providing ample dynamic range.
+\paragraph{The WOS floor effect.}
+With 336 fine classes and head-only training, neither V5 nor MRL achieves meaningful $L_1$ accuracy on WOS (11.1\% and 11.5\%; chance is 0.3\%).
+When $L_1$ accuracy is near floor, the fine component of $\steer$ cannot differentiate across prefix lengths, capping steerability regardless of hierarchy depth.
 
-\paragraph{Interaction analysis: steerability requires both complexity and learnability.}
-This motivates a moderated predictor: \emph{effective steerability requires both hierarchical complexity and model learnability}.
-We define a product predictor $\hlo \times A_{L_1}^\text{base}$, where $A_{L_1}^\text{base}$ is the \emph{unfinetuned baseline} $L_1$ accuracy, measuring how much fine-grained information the pretrained backbone captures before any training.
-This product captures the intuition that steerability requires \emph{both} refinement information (high $\hlo$) and model capacity to resolve it (high $A_{L_1}^\text{base}$):
+\paragraph{The product predictor.}
+This motivates a moderated predictor: effective steerability requires both hierarchy complexity \emph{and} model capacity to exploit it.
+We define $\hlo \times A_{L_1}^\text{base}$, where $A_{L_1}^\text{base}$ is the \emph{unfinetuned} baseline $L_1$ accuracy---a measure of how much fine-grained information the pretrained backbone captures before any training:
 \begin{itemize}
-    \item $\hlo$ alone: Spearman $\rho = 0.74$ ($p = 0.035$)
-    \item $A_{L_1}^\text{base}$ alone: Spearman $\rho = 0.69$ ($p = 0.058$)
-    \item $\hlo \times A_{L_1}^\text{base}$: Spearman $\rho = 0.90$ ($p = 0.002$); Pearson $r = 0.97$ ($p < 0.001$)
+    \item $\hlo$ alone: $\rho = 0.74$ ($p = 0.035$)
+    \item $A_{L_1}^\text{base}$ alone: $\rho = 0.69$ ($p = 0.058$)
+    \item $\hlo \times A_{L_1}^\text{base}$: $\rho = 0.90$ ($p = 0.002$); Pearson $r = 0.97$ ($p < 0.001$)
 \end{itemize}
-The product predictor resolves the WOS deviation: WOS has the highest $\hlo$ but the lowest $A_{L_1}^\text{base}$ (17.0\%, vs.\ 88.7\% for CLINC), yielding a moderate product that correctly places it among the lower-steerability datasets.
-This interaction effect has a natural information-theoretic interpretation: steerability depends on the \emph{usable refinement information} $\hlo \cdot A_{L_1}^\text{base}$, not on $\hlo$ alone.
-When the pretrained model cannot already resolve fine-grained distinctions (low $A_{L_1}^\text{base}$), head-only training yields only minimal steerability, regardless of how deep the hierarchy is.
-
-A leave-one-out sensitivity analysis (Appendix~\ref{app:scaling_robust}) confirms robustness: all LOO Spearman values remain positive ($\rho \geq 0.61$), and the bootstrap 95\% CI for the raw $\hlo$ correlation is $[0.05, 1.0]$ with 98.0\% of resamples positive.
-
-In natural datasets, $\hlz$ and $\hlo$ are positively correlated (more coarse classes $\Rightarrow$ more fine classes per coarse class), as seen across our eight datasets.
-This confound prevents us from determining from observational data alone whether the mechanism operates through $\hlz$ (prefix task demand) or $\hlo$ (refinement complexity).
+The product predictor correctly places WOS among lower-steerability datasets: it has the highest $\hlo$ but the lowest $A_{L_1}^\text{base}$ (17.0\%, vs.\ 88.7\% for CLINC).
+A leave-one-out analysis confirms robustness: all LOO $\rho \geq 0.61$, and bootstrap 95\% CI for $\rho(\hlo)$ is $[0.05, 1.0]$ with 98.0\% positive (Appendix~\ref{app:scaling_robust}).
 
 \subsection{Causal: Synthetic Hierarchy Experiment}
 
-To break this confound, we construct synthetic hierarchies with \emph{fixed text and fixed total entropy} $H(L_1) = \log_2 150$ but varying coarse partitions $K_0 \in \{2, 3, 5, 10, 15, 25, 50, 75\}$.
-As $K_0$ increases, $\hlz = \log_2 K_0$ increases while $\hlo = \log_2(150/K_0)$ decreases.
-We train V5 and MRL on each synthetic hierarchy using CLINC-150 text and evaluate steerability.
+Natural datasets confound $\hlz$ (prefix task demand) with $\hlo$ (refinement complexity), since more coarse classes typically yield more fine subclasses.
+To disentangle these, we construct synthetic hierarchies on CLINC-150 text with fixed total entropy $H(L_1) = \log_2 150$ but varying coarse partitions $K_0 \in \{2, 3, 5, 10, 15, 25, 50, 75\}$.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig6_synthetic.pdf}
-    \caption{Synthetic hierarchy experiment: steerability shows a ``Goldilocks'' effect, peaking when coarse task entropy $\hlz$ matches prefix capacity ($K_0 \approx 12$--16). MRL remains near zero throughout. Quadratic fit $R^2 = 0.964$.}
+    \caption{Synthetic hierarchy experiment: steerability peaks when coarse entropy $\hlz$ matches prefix capacity ($K_0 \approx 12$--$16$), revealing a Goldilocks effect. Quadratic $R^2 = 0.964$. MRL stays near zero throughout.}
     \label{fig:synthetic}
 \end{figure}
 
-\paragraph{Results.}
-Figure~\ref{fig:synthetic} reveals the mechanism:
+\paragraph{The Goldilocks effect.}
+Figure~\ref{fig:synthetic} and Table~\ref{tab:synthetic} reveal an inverted-U relationship:
 
 \begin{table}[t]
-\caption{Synthetic hierarchy experiment. Fixed total entropy ($\log_2 150 = 7.23$ bits), varied coarse partition $K_0$. Steerability rises with $\hlz$, peaks at $K_0 \approx 15$, then declines---a \emph{Goldilocks} effect. MRL is near zero throughout.}
+\caption{Synthetic hierarchy experiment. Fixed total entropy ($\log_2 150 = 7.23$ bits), varying $K_0$. Steerability peaks at $K_0 \approx 15$---a capacity--demand matching optimum.}
 \label{tab:synthetic}
 \centering
 \small
@@ -437,35 +431,27 @@ $K_0$ & $\hlz$ & $\hlo$ & Branch & V5 $\steer$ & MRL $\steer$ & Gap \\
 \end{table}
 
 \begin{enumerate}
-    \item \textbf{Rising phase} ($K_0 = 2 \rightarrow 15$): Steerability increases with $\hlz$.
-    More coarse classes create a richer ``routing codebook'' for the prefix, allowing finer-grained coarse discrimination.
-    \item \textbf{Falling phase} ($K_0 = 15 \rightarrow 75$): Steerability declines as $\hlz$ exceeds the prefix's representational capacity.
-    With only 64 dimensions, the prefix cannot reliably distinguish 50+ coarse classes.
-    \item \textbf{Goldilocks optimum}: Peak at $K_0 \approx 12$--$16$ ($H^*(L_0) \approx 3.6$--$4.0$ bits), matching the effective capacity of a 64-dimensional prefix space.
-    A quadratic fit captures the inverted-U shape with $R^2 = 0.964$.
-    \item \textbf{MRL control}: MRL steerability remains near zero ($|\steer| < 0.02$) across all 8 conditions, confirming that the effect requires hierarchy-aligned supervision.
+    \item \textbf{Rising phase} ($K_0 = 2 \rightarrow 15$): more coarse classes create a richer ``routing codebook'' for the 64d prefix, enabling finer coarse discrimination.
+    \item \textbf{Falling phase} ($K_0 = 15 \rightarrow 75$): $\hlz$ exceeds the prefix's representational capacity. With 64 dimensions, the prefix cannot reliably distinguish 50+ coarse classes.
+    \item \textbf{Optimum}: peak at $K_0 \approx 12$--$16$ ($H^*(L_0) \approx 3.6$--$4.0$ bits), matching the effective capacity of a 64-dimensional prefix. A quadratic fit captures the shape with $R^2 = 0.964$.
+    \item \textbf{MRL control}: MRL steerability remains near zero ($|\steer| < 0.02$) across all conditions, confirming the requirement for hierarchy-aligned supervision.
 \end{enumerate}
 
-\paragraph{Resolving the observational confound.}
-The synthetic experiment reveals that $\steer \sim \hlz$ (prefix task demand), not $\steer \sim \hlo$.
-In natural datasets, the observational correlation with $\hlo$ arises because $\hlz$ and $\hlo$ covary positively.
-The synthetic experiment breaks this confound by holding total entropy fixed while varying $K_0$.
-Figure~\ref{fig:entropy_alloc} in the appendix visualizes both relationships side by side.
+The synthetic experiment also resolves the observational confound: steerability is driven by $\hlz$ (prefix task demand), not $\hlo$. In natural datasets, the $\hlo$ correlation arises because the two entropies covary. Figure~\ref{fig:entropy_alloc} in the appendix visualises both relationships.
 
 %=======================================================================
-\section{Generality and Limitations}
+\section{Generality, Downstream Utility, and Extensions}
 \label{sec:generality}
 %=======================================================================
 
 \paragraph{Cross-model replication.}
-To verify architecture invariance, we replicate the CLINC experiment on two additional model families: E5-small-v2~(Microsoft, contrastive pre-training, 384d) and Qwen3-Embedding-0.6B ($h = 1024$, $18\times$ more parameters than BGE-small), plus TREC on Qwen3.
-Table~\ref{tab:crossmodel} shows that all three model families produce the same V5 $\gg$ MRL steerability gap:
-BGE-small $+0.144$, E5-small $+0.130$, Qwen3 $+0.153$ (all $p < 0.025$, Holm-corrected across 3 model families).
-MRL steerability is near-zero across all models ($\leq 0.015$).
+We replicate the CLINC experiment on E5-small-v2 (Microsoft, contrastive pre-training, 384d) and Qwen3-Embedding-0.6B ($h = 1024$, $18\times$ more parameters).
+Table~\ref{tab:crossmodel} confirms that the steerability gap is architecture-invariant: BGE-small $+0.144$, E5-small $+0.130$, Qwen3 $+0.153$ (all $p < 0.025$, Holm-corrected across 3 families).
+MRL steerability remains $\leq 0.015$ on all models.
 The larger Qwen3 backbone shows higher steerability, suggesting the effect scales with model capacity.
 
 \begin{table}[t]
-\caption{Cross-model replication (3 seeds each). Steerability is architecture-invariant across three model families with different pre-training objectives and sizes. The V5 $\gg$ MRL pattern holds universally ($p < 0.025$, Holm-corrected, $m = 3$).}
+\caption{Cross-model replication (3 seeds each). Steerability is architecture-invariant across three encoder families ($p < 0.025$, Holm-corrected, $m = 3$).}
 \label{tab:crossmodel}
 \centering
 \small
@@ -482,20 +468,14 @@ Qwen3-0.6B (Alibaba, 600M) & $+0.153 \pm 0.013$ & $+0.008 \pm 0.006$ & $+0.081 \
 \end{tabular}
 \end{table}
 
-\paragraph{Downstream utility: Retrieval benchmark.}
-Beyond classification, we evaluate whether steerability translates to controllable \emph{retrieval}.
-We train V5 and MRL models on CLINC-150, encode the test set ($n = 2{,}000$) at each prefix length $j \in \{1, \ldots, 4\}$, and measure Recall@$k$ and MRR for nearest-neighbor retrieval at both hierarchy levels.
-Table~\ref{tab:retrieval} reports Recall@1 averaged over 3~seeds (Figure~\ref{fig:retrieval} in the appendix visualizes the full ramp).
-
-V5 creates distinct retrieval operating points: $L_1$ Recall@1 climbs from 87.1\% at 64d to 93.4\% at 256d ($\Delta = +6.3$pp), demonstrating smooth recovery of fine-grained retrieval as more dimensions become available.
-MRL shows essentially flat $L_1$ Recall@1 ($93.6\% \rightarrow 94.3\%$, $\Delta = +0.6$pp).
-The V5 ramp is $10\times$ larger than MRL's, directly demonstrating dimensionality-dependent retrieval resolution.
-While MRL achieves marginally higher absolute $L_1$ Recall@1 at each prefix length (because all capacity is devoted to fine retrieval regardless of truncation), it offers no lever to trade dimensionality for semantic granularity.
-V5 enables \emph{query-adaptive} retrieval: when a user query targets a coarse category (``documents about travel''), the 64d prefix suffices; when it targets a fine distinction (``hotel vs.\ flight booking''), extending to 256d recovers the additional resolution.
-MRL's fixed behavior forces full-resolution retrieval regardless of query specificity, losing this adaptive capability.
+\paragraph{Downstream retrieval.}
+We evaluate whether steerability transfers beyond classification to controllable retrieval.
+Table~\ref{tab:retrieval} reports Recall@1 on CLINC at each prefix length (3 seeds; full ramp in Figure~\ref{fig:retrieval}, Appendix).
+V5 $L_1$ Recall@1 climbs from 87.1\% (64d) to 93.4\% (256d)---a $+6.3$pp ramp, $10\times$ larger than MRL's $+0.6$pp.
+This demonstrates that prefix-level semantic specialisation directly yields dimensionality-dependent retrieval resolution.
 
 \begin{table}[t]
-\caption{Retrieval benchmark (CLINC-150, Recall@1, 3~seeds). V5 $L_1$ Recall@1 ramps $+6.3$pp from 64d to 256d ($10\times$ MRL's $+0.6$pp), enabling controllable retrieval resolution. MRL is flat across dimensions.}
+\caption{Retrieval Recall@1 on CLINC-150 (3 seeds). V5's $L_1$ ramp ($+6.3$pp) is $10\times$ MRL's ($+0.6$pp).}
 \label{tab:retrieval}
 \centering
 \small
@@ -516,30 +496,25 @@ $L_1$ & V5  & 87.1 & 92.7 & 93.7 & 93.4 \\
 \end{tabular}
 \end{table}
 
-\paragraph{Workload-adaptive Pareto analysis.}
-V5's steerability translates directly to a system-level advantage.
-Consider a mixed workload where a fraction $\alpha$ of queries require coarse classification and $1-\alpha$ require fine.
-V5 routes coarse queries to the 64d prefix and fine queries to the full 256d embedding, yielding average dimensionality $64\alpha + 256(1-\alpha)$ and mixed accuracy $\alpha \cdot \text{L0@}j_1 + (1-\alpha) \cdot \text{L1@}j_4$.
-MRL, lacking prefix specialization, must always use full 256d.
-From the 5-seed CLINC data, V5 adaptive \emph{dominates} MRL-256d whenever $\alpha \geq 0.35$ (i.e., when $\geq 35\%$ of queries are coarse): at $\alpha = 0.5$ (equal mix), V5 achieves $+1.3$pp higher mixed accuracy at $38\%$ lower average dimensionality (160d vs.\ 256d).
-At $\alpha = 0.7$ (mostly coarse), the advantage grows to $+2.9$pp at 122d.
-The key driver is V5's 64d prefix: its $L_0$ accuracy (96.4\%) far exceeds MRL's (91.0\%), providing a compute-efficient coarse classifier that MRL cannot match at any prefix length (Figure~\ref{fig:pareto} in the appendix).
-The dimensionality savings translate directly to wall-clock speedups: on FAISS HNSW indexes with 100K vectors, 64d queries execute $3.7\times$ faster than 256d queries (39~$\mu$s vs.\ 145~$\mu$s per query; see Table~\ref{tab:latency} in the appendix).
+\paragraph{Workload-adaptive Pareto advantage.}
+V5's steerability enables query-adaptive routing: coarse queries use the 64d prefix, fine queries use the full 256d embedding.
+On CLINC (5 seeds), this dominates MRL-256d whenever $\geq 35\%$ of queries are coarse.
+At a 50/50 workload mix, V5 adaptive achieves $+1.3$pp higher accuracy at 38\% lower average dimensionality (160d vs.\ 256d).
+The dimensionality savings translate to wall-clock speedups: on FAISS HNSW indexes with 100K vectors, 64d queries execute $3.7\times$ faster than 256d (39~$\mu$s vs.\ 145~$\mu$s; Table~\ref{tab:latency}, Appendix).
 
-\paragraph{Dual-encoder baseline.}
-An alternative to V5's single-model steerability is to train \emph{two} dedicated encoders: $E_{L_0}$ trained only on coarse labels and $E_{L_1}$ (= MRL) trained only on fine labels, each at full 256d.
-On CLINC (3~seeds), the dual system achieves $L_0 = 95.8\%$ (via $E_{L_0}$) and $L_1 = 94.8\%$ (via $E_{L_1}$), requiring two models and two indexes.
-V5 adaptive (64d for coarse, 256d for fine) achieves $L_0 = 97.5\%$ and $L_1 = 94.5\%$---\emph{higher} coarse accuracy at one-quarter the dimensionality, with comparable fine accuracy, using a single model and single index.
-The dual-encoder approach thus doubles storage and serving cost while delivering \emph{worse} coarse performance than V5's 64d prefix, confirming that hierarchy-aligned prefix supervision is strictly more efficient than the ``train separate specialists'' alternative.
+\paragraph{Single model replaces two.}
+A natural alternative to V5 is training two dedicated encoders: $E_{L_0}$ for coarse and $E_{L_1}$ for fine, each at 256d.
+On CLINC (3 seeds), the dual system achieves $L_0 = 95.8\%$ and $L_1 = 94.8\%$, requiring two models and two indexes.
+V5 adaptive (64d for coarse, 256d for fine) achieves $L_0 = 97.5\%$ at one-quarter the dimensionality and $L_1 = 94.5\%$ at full resolution---\emph{higher} coarse accuracy from a single model.
 
-\paragraph{Three-level hierarchy extension.}
-To test generalization beyond two levels, we construct a 3-level hierarchy on CLINC: 5~super-domains $\rightarrow$ 10~domains $\rightarrow$ 150~intents, with V5 training aligned across three granularity levels ($j=1 \rightarrow L_0$, $j=2 \rightarrow L_0{+}L_1$, $j=3 \rightarrow L_1{+}L_2$, $j=4 \rightarrow L_2$).
-Table~\ref{tab:threelevel} shows that V5 exhibits a clear \emph{ramp gradient}: the $L_2$ (intent) accuracy ramp from 64d to 256d is $+3.2$pp, the $L_1$ (domain) ramp is $+1.0$pp, and the $L_0$ (super-domain) ramp is $+0.5$pp (Figure~\ref{fig:threelevel} in the appendix).
-MRL is flat at all levels ($\leq 0.4$pp ramp).
-The 3-level steerability $\steer_{02} = +0.027 \pm 0.005$ (V5) vs.\ $+0.002 \pm 0.005$ (MRL, 3~seeds; paired $t = 18.9$, $p = 0.003$, Cohen's $d = 10.9$), confirming that fractal supervision generalizes to deeper hierarchies with strong statistical significance even at $n = 3$.
+\paragraph{Three-level hierarchy.}
+To test generalisation beyond two levels, we construct a 3-level CLINC hierarchy: 5~super-domains $\rightarrow$ 10~domains $\rightarrow$ 150~intents.
+V5 exhibits a clear ramp gradient: $L_2$ (intent) accuracy gains $+3.2$pp from 64d to 256d, $L_1$ (domain) gains $+1.0$pp, and $L_0$ (super-domain) gains $+0.5$pp.
+MRL is flat at all levels ($\leq 0.4$pp; Table~\ref{tab:threelevel}).
+Three-level steerability $\steer_{02} = +0.027 \pm 0.005$ (V5) vs.\ $+0.002 \pm 0.005$ (MRL; $t = 18.9$, $p = 0.003$, $d = 10.9$).
 
 \begin{table}[t]
-\caption{Three-level hierarchy (CLINC, 5$\rightarrow$10$\rightarrow$150, 3~seeds). V5 shows a ramp gradient: finer levels benefit more from additional dimensions. MRL is flat.}
+\caption{Three-level hierarchy (CLINC, 5$\rightarrow$10$\rightarrow$150, 3 seeds). V5 shows a ramp gradient: finer levels gain more from additional dimensions. MRL is flat.}
 \label{tab:threelevel}
 \centering
 \small
@@ -561,17 +536,18 @@ $L_2$ (150 intent) & V5  & 92.7 & 94.7 & 95.4 & 95.9 \\
 \end{tabular}
 \end{table}
 
-\paragraph{Limitations.}
+%=======================================================================
+\section{Limitations}
+\label{sec:limitations}
+%=======================================================================
+
 \begin{itemize}
-    \item \textbf{Shallow hierarchies}: On Yahoo Answers ($K_0 = 4$, $\hlo = 1.23$), steerability is small and noisy ($\steer = 0.015 \pm 0.019$, 5~seeds). The method is most valuable for moderately deep hierarchies where the fine task is learnable.
-    \item \textbf{Floor effects}: On WOS ($K_1 = 336$), head-only training achieves only ${\sim}15\%$ $L_1$ accuracy (floor), limiting steerability despite high $\hlo = 5.05$. Steerability requires both hierarchical complexity and model capacity to learn the fine task.
-    \item \textbf{Deeper hierarchies}: The 3-level extension (Table~\ref{tab:threelevel}) confirms generalization but with a modest effect size; with only 5~super-domain classes, $L_0$ is near ceiling at all prefixes. Evaluation on naturally deep hierarchies (e.g., ICD-10, product taxonomies) remains future work.
-    \item \textbf{Hierarchy noise robustness}: To test sensitivity to imperfect hierarchies, we corrupt $L_0$ labels at rates from 10\% to 50\% and retrain V5 on CLINC (3~seeds).
-    Steerability degrades gracefully: at 10\% noise, 85\% of steerability is retained ($\steer = +0.152$); at 30\%, 71\% ($\steer = +0.128$); even at 50\% corruption, steerability remains positive ($\steer = +0.061$, 34\% retention).
-    This confirms that V5 does not require a perfect hierarchy to produce meaningful steerability.
-    \item \textbf{Baseline scope}: We compare against a matched MRL baseline that controls all training variables except the prefix-to-label mapping.
-    We do not benchmark against HEAL~\citep{zhang2025heal}, CSR~\citep{chen2025csr}, or SMRL~\citep{li2025smrl} because these methods address orthogonal goals: HEAL optimizes hierarchy-aware \emph{global} embeddings without prefix steerability; CSR targets sparse compression, not hierarchical granularity; SMRL improves MRL's fidelity ramp but retains flat supervision.
-    None offers a prefix-level steering mechanism, making accuracy comparisons at fixed dimensionality inapposite---the relevant comparison is the \emph{existence} of steerability, which our ablations and the UHMT control isolate.
+    \item \textbf{Shallow hierarchies.} On datasets with low $\hlo$ (e.g., Yahoo, $\hlo = 1.23$), steerability is small and noisy ($\steer = 0.015 \pm 0.019$). The method is most valuable for moderately deep hierarchies where the fine task is learnable.
+    \item \textbf{Floor effects.} On WOS ($K_1 = 336$), head-only training achieves only ${\sim}15\%$ $L_1$ accuracy, capping steerability despite high $\hlo = 5.05$. Steerability requires both hierarchy complexity and model capacity.
+    \item \textbf{Deeper hierarchies.} The 3-level extension confirms generalisation with a strong effect ($d = 10.9$), but only 5 super-domain classes leave $L_0$ near ceiling at all prefixes. Evaluation on naturally deep taxonomies (ICD-10, product hierarchies) remains future work.
+    \item \textbf{Hierarchy noise robustness.} Corrupting $L_0$ labels at 10\%--50\% and retraining V5 on CLINC (3 seeds), steerability degrades gracefully: 85\% retained at 10\% noise ($\steer = +0.152$), 71\% at 30\% ($+0.128$), 34\% at 50\% ($+0.061$). V5 does not require a perfect hierarchy for meaningful steerability.
+    \item \textbf{Baseline scope.} We compare against a matched MRL baseline controlling all variables except the prefix-to-label mapping. We do not benchmark HEAL~\citep{zhang2025heal}, CSR~\citep{chen2025csr}, or SMRL~\citep{li2025smrl} because these address orthogonal goals---none offers prefix-level steering, making fixed-dimensionality accuracy comparisons inapposite.
+    \item \textbf{Ablation coverage.} Causal ablations are concentrated on CLINC and TREC (two datasets). Cross-dataset replication of all four ablation conditions remains future work.
 \end{itemize}
 
 %=======================================================================
@@ -579,50 +555,51 @@ $L_2$ (150 intent) & V5  & 92.7 & 94.7 & 95.4 & 95.9 \\
 \label{sec:theory}
 %=======================================================================
 
-We provide a formal information-theoretic analysis connecting fractal embeddings to the classical theory of \emph{successive refinement}~\citep{equitz1991successive,rimoldi1994successive}.
+We connect our empirical findings to the classical theory of \emph{successive refinement}~\citep{equitz1991successive,rimoldi1994successive}, providing formal conditions for when and why hierarchy-aligned supervision produces steerability.
 
 \paragraph{Setup.}
-Let $(X, Y_0, Y_1)$ be a hierarchical source with $Y_0 = g(Y_1)$ (coarse is a deterministic function of fine).
+Let $(X, Y_0, Y_1)$ be a hierarchical source with $Y_0 = g(Y_1)$.
 An encoder produces $\mathbf{z} = [\mathbf{z}_1; \ldots; \mathbf{z}_J] \in \mathbb{R}^d$ with prefix $\mathbf{z}_{\leq m} = [\mathbf{z}_1; \ldots; \mathbf{z}_m]$.
-Let $C(d')$ denote the effective capacity (in bits) of a $d'$-dimensional embedding under the encoder family.
+Let $C(d')$ denote the effective capacity (in bits) of a $d'$-dimensional embedding.
 
 \paragraph{Theorem 1 (Hierarchy-Successive-Refinement, informal).}
 \emph{Assume $C(d/J) \geq H(L_0)$ and $C(d/J) < H(L_1)$.
 Under V5 supervision ($\mathbf{z}_{\leq 1} \rightarrow L_0$, $\mathbf{z} \rightarrow L_1$):}
 \begin{equation}
-    I(\mathbf{z}_{\leq 1}; L_0) > I(\mathbf{z}_{\leq 1}; L_1 | L_0) \quad \text{(coarse-prioritized prefix)}
+    I(\mathbf{z}_{\leq 1}; L_0) > I(\mathbf{z}_{\leq 1}; L_1 | L_0) \quad \text{(coarse-prioritised prefix)}
 \end{equation}
-\emph{Under MRL ($\mathbf{z}_{\leq 1} \rightarrow L_1$, $\mathbf{z} \rightarrow L_1$): no specialization, $I(\mathbf{z}_{\leq 1}; L_0) \approx I(\mathbf{z}; L_0)$.}
+\emph{Under MRL ($\mathbf{z}_{\leq 1} \rightarrow L_1$, $\mathbf{z} \rightarrow L_1$): no specialisation.}
 
-The proof follows from the capacity bottleneck: V5's prefix loss depends only on $L_0$, so the optimal prefix maximizes $I(\mathbf{z}_{\leq 1}; L_0)$. Since $C(d/J) < H(L_1)$ but $C(d/J) \geq H(L_0)$, the prefix allocates capacity preferentially to the coarse task.
-MRL's prefix loss targets $L_1$, distributing capacity across both $L_0$ and $L_1|L_0$ components without specialization.
+The proof follows from the capacity bottleneck: V5's prefix loss targets only $L_0$, so the optimal prefix maximises $I(\mathbf{z}_{\leq 1}; L_0)$.
+Since $C(d/J) < H(L_1)$ but $C(d/J) \geq H(L_0)$, the prefix allocates capacity preferentially to the coarse task.
+MRL distributes capacity across both $L_0$ and $L_1|L_0$ without specialisation.
 
 \paragraph{Connection to successive refinement.}
 Hierarchical sources are naturally \emph{successively refinable}~\citep{rimoldi1994successive}: the optimal multi-resolution code first encodes $Y_0$ at rate $R_1 \geq H(Y_0)$, then encodes the residual $Y_1|Y_0$ at rate $R_2 \geq H(Y_1|Y_0)$.
-V5 training approximates this: block 1 encodes $Y_0$, blocks 2--$J$ encode the refinement.
-MRL instead performs single-resolution coding at each rate, losing the nested structure.
-This explains why V5 achieves accuracy parity at full resolution while gaining steerability at short prefixes: it matches the rate-distortion bound for the multi-resolution problem.
+V5 approximates this structure: block~1 encodes $Y_0$; blocks 2--$J$ encode the refinement.
+MRL performs single-resolution coding at each rate, losing the nested structure.
+This explains why V5 achieves accuracy parity at full resolution while gaining steerability at short prefixes.
 
-The successive refinement framework yields three testable predictions, all confirmed by our experiments:
+The successive refinement framework yields three testable predictions, all confirmed:
 
-\paragraph{Corollary 1 (Sign reversal under inversion).}
-\emph{Under inverted supervision ($\mathbf{z}_{\leq 1} \rightarrow L_1$, $\mathbf{z} \rightarrow L_0$), the capacity bottleneck forces the prefix to allocate capacity to $L_1|L_0$ (refinement) rather than $L_0$ (coarse), producing $\steer < 0$.}
-This is confirmed: inverted alignment yields $\steer = -0.018$ (CLINC) and $-0.025$ (TREC).
+\paragraph{Corollary 1 (Sign reversal).}
+\emph{Under inverted supervision ($\mathbf{z}_{\leq 1} \rightarrow L_1$, $\mathbf{z} \rightarrow L_0$), the bottleneck forces the prefix to encode refinement information, producing $\steer < 0$.}
+Confirmed: $\steer = -0.018$ (CLINC), $-0.025$ (TREC).
 
 \paragraph{Corollary 2 (UHMT collapse).}
-\emph{Under uniform multi-task supervision (all prefix lengths receive $0.5 \cdot \mathcal{L}_{L_0} + 0.5 \cdot \mathcal{L}_{L_1}$), no prefix length is privileged for either task. The optimizer distributes $L_0$ and $L_1|L_0$ information uniformly across all blocks, yielding $\steer \approx 0$.}
-This is confirmed: UHMT produces $\steer = +0.001$ (CLINC) and $-0.009$ (TREC), both indistinguishable from zero.
+\emph{Under uniform multi-task supervision, no prefix is privileged for either task; the optimiser distributes information uniformly, yielding $\steer \approx 0$.}
+Confirmed: $\steer = +0.001$ (CLINC), $-0.009$ (TREC).
 
-\paragraph{Theorem 2 (Goldilocks capacity-demand matching, informal).}
-\emph{With fixed $H(Y_1)$ and varying $K_0$, steerability $\steer(K_0)$ peaks at $H^*(L_0) \approx C(d/J)$:}
+\paragraph{Theorem 2 (Goldilocks capacity--demand matching, informal).}
+\emph{With fixed $H(Y_1)$ and varying $K_0$, steerability peaks at $H^*(L_0) \approx C(d/J)$:}
 \begin{itemize}
-    \item \emph{When $H(L_0) < C(d/J)$}: spare prefix capacity leaks $L_1|L_0$ information, reducing $\steer$.
-    \item \emph{When $H(L_0) > C(d/J)$}: by Fano's inequality, prefix errors degrade coarse classification, reducing $\steer$.
+    \item \emph{$H(L_0) < C(d/J)$}: spare capacity leaks $L_1|L_0$ information, reducing $\steer$.
+    \item \emph{$H(L_0) > C(d/J)$}: by Fano's inequality, prefix errors degrade coarse classification, reducing $\steer$.
     \item \emph{Taylor expansion around $H^*$}: $\steer \approx \steer^* - \alpha(H(L_0) - H^*)^2$, matching the empirical quadratic fit ($R^2 = 0.964$).
 \end{itemize}
 
 \paragraph{Testable prediction.}
-Doubling the prefix dimension from 64 to 128 should shift the Goldilocks peak rightward (to higher $K_0$), as $C(d/J)$ increases. This is verifiable via a capacity sweep ablation.
+Doubling prefix capacity from 64 to 128 dimensions should shift the Goldilocks peak rightward (to higher $K_0$), verifiable via a capacity sweep.
 
 %=======================================================================
 \section{Related Work}
@@ -630,44 +607,43 @@ Doubling the prefix dimension from 64 to 128 should shift the Goldilocks peak ri
 %=======================================================================
 
 \paragraph{Multi-resolution embeddings.}
-Matryoshka Representation Learning (MRL)~\citep{kusupati2022matryoshka} trains embeddings that support prefix truncation, but all prefix lengths are supervised on the same task, producing no semantic specialization.
-SMEC~\citep{li2025smrl} rethinks MRL training for retrieval embedding compression; Matryoshka Multimodal Models~\citep{cai2024m3} apply the nesting principle to visual tokens in vision-language models.
-Most closely related to our work, \citet{hanley2025hierarchical} independently train multilingual Matryoshka embeddings where different dimension subsets capture story similarity at different levels of granularity (events, narratives, themes) for news article clustering.
-While sharing the core insight that prefix lengths should correspond to semantic granularity, our work provides complementary contributions: (i)~a formal information-theoretic framework connecting hierarchy-aligned supervision to successive refinement, (ii)~an explicit steerability metric with causal ablation studies, (iii)~a systematic evaluation across eight domains with three encoder families, and (iv)~a scaling trend linking steerability magnitude to hierarchy structure.
+MRL~\citep{kusupati2022matryoshka} trains embeddings supporting prefix truncation, but all lengths target the same task.
+SMEC~\citep{li2025smrl} rethinks MRL training for retrieval compression; Matryoshka Multimodal Models~\citep{cai2024m3} apply the nesting principle to visual tokens.
+Most closely related, \citet{hanley2025hierarchical} independently train multilingual Matryoshka embeddings where different dimension subsets capture story similarity at different granularity levels for news clustering.
+Our work provides complementary contributions: a formal successive-refinement framework, an explicit steerability metric with causal ablations, evaluation across eight domains and three encoder families, and a scaling trend linking steerability to hierarchy structure.
 
 \paragraph{Dimensional redundancy.}
-\citet{dufter2025random} show that randomly removing 50\% of embedding dimensions causes $<$10\% performance degradation, revealing massive redundancy in standard embeddings.
-We exploit this redundancy differently: rather than discarding dimensions for compression, we \emph{structure} them to carry semantically distinct information at each prefix length.
-Random removal preserves flat performance but destroys hierarchical steerability---precisely the property we engineer.
-\citet{luan2025limits} prove that the expressiveness of single-vector embeddings for top-$k$ retrieval is bounded by dimensionality, motivating multi-resolution access patterns that our method enables.
+\citet{dufter2025random} show that randomly removing 50\% of dimensions causes $<$10\% performance loss, revealing massive redundancy.
+We exploit this differently: rather than discarding dimensions for compression, we \emph{structure} them to carry semantically distinct information at each prefix length.
+\citet{luan2025limits} prove that single-vector embedding expressiveness for top-$k$ retrieval is bounded by dimensionality, motivating multi-resolution access patterns.
 
 \paragraph{Hierarchical embeddings.}
-Hyperbolic embeddings~\citep{nickel2017poincare} represent hierarchies through non-Euclidean geometry.
-HEAL~\citep{zhang2025heal} (ICLR 2025) aligns LLM embeddings with domain hierarchies via hierarchical contrastive losses and matrix factorization.
-Unlike HEAL, which requires external hierarchical labels and preprocessing, our method derives hierarchy from the embedding's own prefix structure, making it intrinsic and architecture-agnostic.
-HEAL does not offer steerability via dimensional truncation.
+Hyperbolic embeddings~\citep{nickel2017poincare} represent hierarchies through curved geometry.
+HEAL~\citep{zhang2025heal} aligns LLM embeddings with domain hierarchies via contrastive losses and matrix factorisation, but does not offer steerability via dimensional truncation.
 
 \paragraph{Sparse and compressed embeddings.}
-CSR~\citep{chen2025csr} (ICML 2025) and CSRv2~\citep{chen2026csrv2} (ICLR 2026) learn sparse codes as alternatives to MRL, achieving superior efficiency through selective activation.
-These address adaptive dimensionality via sparsity; our approach addresses it via hierarchical prefix structure.
-The two are orthogonal and potentially complementary: fractal embeddings could be sparsified for further efficiency.
+CSR~\citep{chen2025csr} and CSRv2~\citep{chen2026csrv2} learn sparse codes as alternatives to MRL, achieving efficiency through selective activation.
+These address adaptive dimensionality via sparsity; our approach uses hierarchical prefix structure.
+The two are orthogonal and potentially complementary.
 
 %=======================================================================
 \section{Conclusion}
 \label{sec:conclusion}
 %=======================================================================
 
-We have shown that a simple modification to embedding training---aligning prefix supervision with semantic hierarchy---creates embeddings where dimensional truncation corresponds to semantic zoom.
-Through controlled ablations on two datasets, synthetic hierarchy experiments, cross-model replication on three families, and a random-effects meta-analysis across eight datasets ($d = 1.49$, $p = 0.0003$), we support the \textbf{Fractal Embedding Principle}: steerability is driven by alignment, scales with the interaction of hierarchy depth and baseline learnability ($\rho = 0.90$), and is absent in standard MRL.
-We connect this to the classical theory of successive refinement, showing that V5 training approximates the optimal multi-resolution code for hierarchical semantic sources.
+We have shown that aligning prefix supervision with semantic hierarchy converts dimensional truncation from a fidelity knob into a \emph{semantic zoom} control---at zero inference cost.
+The evidence is threefold.
+\emph{Empirically}, fractal training produces steerability on all eight datasets (pooled $d = 1.49$, $p = 0.0003$), with magnitude predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$).
+\emph{Causally}, four controlled ablations on two datasets establish that the specific prefix-to-hierarchy alignment---not hierarchy awareness, not architecture, not optimiser---drives the effect; sign reversal under inversion and collapse under uniform multi-task training both replicate.
+\emph{Theoretically}, the successive refinement framework explains \emph{why} V5 works (capacity bottleneck forces coarse-first encoding) and \emph{when} it works best (Goldilocks capacity--demand matching, $R^2 = 0.964$).
 
-The practical implications extend beyond classification.
-In retrieval systems, fractal embeddings enable \emph{adaptive search}: routing coarse queries to the 64d prefix ($3.7\times$ faster on HNSW indexes) and fine queries to full 256d, achieving higher mixed accuracy than MRL at 38\% lower average compute.
-Crucially, a single fractal embedding outperforms even dedicated specialist encoders: V5's 64d prefix achieves higher coarse accuracy (97.5\%) than a full 256d encoder trained exclusively on coarse labels (95.8\%), eliminating the need for separate coarse and fine models in any domain with hierarchical semantics.
+The practical implications are concrete.
+A single fractal embedding enables query-adaptive retrieval: routing coarse queries to the 64d prefix ($3.7\times$ faster on HNSW) and fine queries to 256d, yielding higher mixed accuracy than MRL at 38\% lower compute.
+A single V5 model replaces a dual-encoder system: its 64d prefix achieves 97.5\% coarse accuracy, exceeding a dedicated 256d coarse encoder (95.8\%).
+The synthetic hierarchy experiment provides design guidance: measure $\hlz$ and size prefix capacity to match.
 
-Our synthetic hierarchy experiment reveals that the prefix acts as a \emph{routing bottleneck}: steerability peaks when coarse task complexity matches the prefix's representational capacity.
-This Goldilocks effect provides principled design guidance: measure $\hlz$ of your hierarchy and size prefix dimensions to match.
-The connection to successive refinement theory suggests this is not merely an empirical regularity but a fundamental property of information allocation in hierarchical representations.
+The connection to successive refinement suggests this is not an empirical curiosity but a fundamental property of information allocation in hierarchical representations.
+We release all code, data, and experimental artifacts to support replication and extension.
 
 \bibliography{references}
 \bibliographystyle{plainnat}
@@ -683,27 +659,27 @@ The connection to successive refinement theory suggests this is not merely an em
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{../results/figures/paper/fig7_entropy_allocation.pdf}
-    \caption{Disentangling the scaling law. \textbf{Left:} Steerability vs.\ $\hlz$ (prefix task demand) --- the true driver, confirmed by the synthetic experiment. \textbf{Right:} Steerability vs.\ $\hlo$ --- a confounded proxy in observational data. Synthetic data (green diamonds) breaks the confound: $\hlo$ anti-correlates with steerability when $\hlz$ is varied independently.}
+    \caption{Disentangling the scaling law. \textbf{Left:} Steerability vs.\ $\hlz$ (prefix task demand)---the true driver, confirmed by the synthetic experiment. \textbf{Right:} Steerability vs.\ $\hlo$---a confounded proxy in observational data. Synthetic data (green diamonds) breaks the confound: $\hlo$ anti-correlates with steerability when $\hlz$ is varied independently.}
     \label{fig:entropy_alloc}
 \end{figure}
 
-\section{Retrieval Benchmark Visualization}
+\section{Retrieval Benchmark Visualisation}
 \label{app:retrieval}
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig9_retrieval.pdf}
-    \caption{Retrieval benchmark on CLINC-150 (3~seeds). V5 $L_1$ Recall@1 (solid blue) ramps steeply from 64d to 192d ($+6.3$pp) while MRL $L_1$ (solid orange) is flat ($+0.6$pp). Both methods achieve comparable $L_0$ Recall@1 (dashed lines, $>97\%$). The $10\times$ larger ramp demonstrates that V5's prefix specialization transfers from classification to retrieval.}
+    \caption{Retrieval benchmark on CLINC-150 (3 seeds). V5 $L_1$ Recall@1 ramps steeply from 64d to 192d ($+6.3$pp) while MRL is flat ($+0.6$pp). Both achieve comparable $L_0$ Recall@1 ($>97\%$). The $10\times$ larger ramp demonstrates that prefix specialisation transfers from classification to retrieval.}
     \label{fig:retrieval}
 \end{figure}
 
-\section{Three-Level Hierarchy Visualization}
+\section{Three-Level Hierarchy Visualisation}
 \label{app:threelevel}
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig10_three_level.pdf}
-    \caption{Three-level hierarchy experiment (CLINC, 5$\rightarrow$10$\rightarrow$150, 3~seeds). \textbf{Left}: V5 shows clear separation between levels---$L_2$ (intent) gains the most from additional dimensions while $L_0$ (super-domain) is near ceiling throughout. \textbf{Right}: MRL curves are bunched together with minimal ramp at any level, confirming that flat supervision cannot exploit hierarchical structure even with three granularity levels.}
+    \caption{Three-level hierarchy (CLINC, 5$\rightarrow$10$\rightarrow$150, 3 seeds). \textbf{Left}: V5 shows clear level separation---$L_2$ gains most from additional dimensions while $L_0$ is near ceiling. \textbf{Right}: MRL curves are bunched with minimal ramp at any level.}
     \label{fig:threelevel}
 \end{figure}
 
@@ -713,7 +689,7 @@ The connection to successive refinement theory suggests this is not merely an em
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{../results/figures/paper/fig11_pareto.pdf}
-    \caption{\textbf{Left:} Mixed $k$-NN accuracy ($\alpha \cdot L_0@j_1 + (1-\alpha) \cdot L_1@j_4$) as a function of workload mix $\alpha$ (fraction of coarse queries). V5 adaptive routing dominates MRL-256d for $\alpha \geq 0.35$. \textbf{Right:} Pareto frontier---V5 achieves higher accuracy at lower average dimensionality than any fixed MRL operating point. Shaded bands show $\pm 1$ SD across 5 seeds.}
+    \caption{\textbf{Left:} Mixed accuracy vs.\ workload mix $\alpha$ (fraction coarse). V5 adaptive dominates MRL-256d for $\alpha \geq 0.35$. \textbf{Right:} Pareto frontier---V5 achieves higher accuracy at lower dimensionality. Bands: $\pm 1$ SD (5 seeds).}
     \label{fig:pareto}
 \end{figure}
 
@@ -721,7 +697,7 @@ The connection to successive refinement theory suggests this is not merely an em
 \label{app:latency}
 
 \begin{table}[h]
-\caption{FAISS query latency and throughput at different embedding dimensionalities. Measured on an RTX 5090 with normalized float32 vectors. \textbf{Flat}: exact inner-product search over 10K vectors. \textbf{HNSW}: approximate search (M=32, efSearch=16) over 100K vectors. V5's 64d prefix queries are $3.7$--$5.1\times$ faster than 256d, confirming that the Pareto savings from Section~\ref{sec:generality} translate to real wall-clock speedups.}
+\caption{FAISS query latency at different dimensionalities (RTX 5090, float32). V5's 64d prefix queries are $3.7$--$5.1\times$ faster than 256d.}
 \label{tab:latency}
 \centering
 \small
@@ -743,47 +719,43 @@ Dim & Latency ($\mu$s) & Speedup & Latency ($\mu$s) & Speedup \\
 \label{app:synthetic}
 
 See Table~\ref{tab:synthetic} for complete results across all 8 coarse partition sizes.
-The experiment uses CLINC-150 text with randomly reassigned hierarchies, holding total class count fixed at 150 while varying $K_0$ from 2 to 75.
+The experiment holds total class count fixed at 150 while varying $K_0$ from 2 to 75 with randomly assigned hierarchies on CLINC-150 text.
 
 \section{Training Convergence}
 \label{app:convergence}
 
 All models converge within 5 epochs of head-only training.
-Stage 2 (backbone fine-tuning) was tested but provided no improvement over head-only training, consistent with the finding that the frozen backbone already provides sufficient representational capacity for hierarchy-aligned supervision.
+Stage 2 (backbone fine-tuning) was tested but provided no improvement, consistent with the frozen backbone providing sufficient representational capacity for hierarchy-aligned supervision.
 
 \section{Reproducibility}
 \label{app:reproducibility}
 
 \paragraph{Code and data.}
-All code, trained models, and result JSONs are publicly available at \url{https://github.com/dl1683/ai-moonshots}.
-Every experiment uses publicly available datasets (CLINC-150, TREC, Yahoo Answers, 20 Newsgroups, GoEmotions, arXiv, DBPedia Classes, WOS) loaded through the \texttt{datasets} library, with deterministic train/test splits seeded per experiment.
+All code, trained models, and result JSONs are available at \url{https://github.com/dl1683/ai-moonshots}.
+Every experiment uses publicly available datasets loaded via the \texttt{datasets} library with deterministic seeded splits.
 
 \paragraph{Hyperparameters.}
-All experiments use identical hyperparameters: 5 epochs head-only training, batch size 16, learning rate $10^{-4}$, AdamW optimizer with cosine decay, FP16 mixed precision, gradient clipping at 1.0.
-Prefix sampling probabilities $[0.4, 0.3, 0.2, 0.1]$ and block dropout keep rates $[0.95, 0.9, 0.8, 0.7]$ are fixed across all datasets and models.
-No hyperparameter tuning was performed per dataset.
+All experiments use: 5 epochs head-only training, batch size 16, lr $10^{-4}$, AdamW with cosine decay, FP16, gradient clipping at 1.0.
+Prefix sampling $[0.4, 0.3, 0.2, 0.1]$ and block dropout $[0.95, 0.9, 0.8, 0.7]$ are fixed across all datasets and models.
+No per-dataset tuning.
 
 \paragraph{Compute.}
-All experiments were run on a single NVIDIA RTX 5090 Laptop GPU (24GB VRAM).
-Each V5 or MRL training run takes approximately 2 minutes for BGE-small (33M parameters) and 8 minutes for Qwen3-0.6B.
-The full experimental suite (8 datasets $\times$ 5 seeds $\times$ 2 methods $\times$ 3 model families $+$ ablations $+$ synthetic experiments) requires approximately 16 GPU-hours.
+Single NVIDIA RTX 5090 Laptop GPU (24GB VRAM).
+Each training run: $\sim$2 min (BGE-small, 33M) or $\sim$8 min (Qwen3-0.6B).
+Full suite: $\sim$16 GPU-hours.
 
 \section{Metric Robustness}
 \label{app:robustness}
 
-To verify that our conclusions do not depend on the specific formulation of $\steer$ (Eq.~\ref{eq:steerability}), we evaluate three alternative steerability metrics:
+We verify conclusions hold under three alternative steerability formulations:
 \begin{itemize}
-    \item $\steer_\text{AUC}$: Average of $(L_0@j_1 - L_0@j_k) + (L_1@j_k - L_1@j_1)$ over $k = 2, 3, 4$, integrating across all prefix lengths rather than using only the endpoints.
-    \item $\steer_\text{mono}$: Fraction of adjacent prefix pairs where $L_0$ accuracy decreases and $L_1$ accuracy increases with prefix length (perfect ordering $= 1.0$, random $= 0.5$).
-    \item $\steer_\text{gap}$: Specialization gap $= (L_0@j_1 - L_1@j_1) - (L_0@j_4 - L_1@j_4)$, measuring how much more coarse-specialized $j_1$ is relative to $j_4$.
+    \item $\steer_\text{AUC}$: average steerability over all prefix pairs $k = 2, 3, 4$.
+    \item $\steer_\text{mono}$: fraction of adjacent pairs with monotonic coarse-decrease / fine-increase.
+    \item $\steer_\text{gap}$: specialisation gap $(L_0@j_1 - L_1@j_1) - (L_0@j_4 - L_1@j_4)$.
 \end{itemize}
 
-Table~\ref{tab:robustness} reports the V5\,--\,MRL gap for each metric on each dataset.
-Three of four metrics show V5 $>$ MRL on all eight datasets (sign test $p = 0.004$); the fourth ($\steer_\text{mono}$) agrees on 6/8.
-All pairwise rank correlations across datasets exceed $\rho = 0.90$ ($p < 0.005$), confirming that the four metrics recover the same dataset ordering of steerability.
-
 \begin{table}[h]
-\caption{Metric robustness: V5\,--\,MRL gap under four steerability formulations. Positive values indicate V5 advantage. Three of four metrics agree V5 $>$ MRL on all 8 datasets.}
+\caption{Metric robustness: V5$\,$--$\,$MRL gap under four steerability formulations. Three of four agree V5 $>$ MRL on all 8 datasets.}
 \label{tab:robustness}
 \centering
 \small
@@ -806,13 +778,13 @@ Sign test $p$ & & 0.004 & 0.004 & 0.14 & 0.004 \\
 \end{tabular}
 \end{table}
 
+All pairwise rank correlations exceed $\rho = 0.90$ ($p < 0.005$), confirming all four metrics recover the same dataset ordering.
+
 \section{Per-Seed Steerability Values}
 \label{app:perseed}
 
-Table~\ref{tab:perseed} reports individual seed steerability values for all eight datasets, enabling full transparency about the variability underlying the summary statistics in Table~\ref{tab:steerability}.
-
 \begin{table}[h]
-\caption{Per-seed steerability values (V5 and MRL) across all eight datasets. Seeds: 42, 123, 456, 789, 1024.}
+\caption{Per-seed steerability (V5 and MRL) across all eight datasets. Seeds: 42, 123, 456, 789, 1024.}
 \label{tab:perseed}
 \centering
 \scriptsize
@@ -836,11 +808,8 @@ WOS & +.032 & +.022 & +.008 & +.052 & +.074 & +.000 & $-.004$ & +.004 & $-.004$ 
 \section{Scaling Trend Robustness}
 \label{app:scaling_robust}
 
-With eight datasets, we provide a thorough sensitivity analysis of the raw $\hlo$ correlation ($\rho = 0.74$) and the product predictor $\hlo \times A_{L_1}^\text{base}$ ($\rho = 0.90$).
-Table~\ref{tab:loo} reports leave-one-out (LOO) Spearman correlations for $\hlo$ alone.
-
 \begin{table}[h]
-\caption{Leave-one-out sensitivity analysis for the $\hlo$ scaling trend ($k = 8$). WOS has the highest Cook's distance (3.68), reflecting its role as a floor-effect boundary case. Dropping WOS improves $\rho$ to 0.87 ($p = 0.012$), and the product predictor $\hlo \times A_{L_1}^\text{base}$ resolves this without dropping any dataset ($\rho = 0.90$, $p = 0.002$).}
+\caption{Leave-one-out sensitivity for the $\hlo$ scaling trend. WOS (Cook's $D = 3.68$) is the highest-influence point; the product predictor resolves its deviation without dropping any dataset.}
 \label{tab:loo}
 \centering
 \small
@@ -862,17 +831,15 @@ WOS & 7 & 0.87 & 0.012 & 0.91 & 0.004 \\
 \end{tabular}
 \end{table}
 
-The raw $\hlo$ correlation is influenced by WOS (Cook's $D = 3.68$), which has the deepest hierarchy but the lowest $L_1$ learnability.
-Dropping WOS improves $\rho$ to $0.87$ ($p = 0.012$), and the product predictor $\hlo \times A_{L_1}^\text{base}$ resolves this without dropping any dataset ($\rho = 0.90$, $p = 0.002$; see Section~\ref{sec:scaling}).
-A bootstrap analysis (10{,}000 resamples) of the raw $\hlo$ correlation yields 98.0\% of values $> 0$.
-The meta-analysis 95\% prediction interval for a new dataset's Cohen's $d$ is $[-0.70, 3.18]$, reflecting heterogeneity ($I^2 = 63\%$) that the interaction model resolves: datasets differ systematically in effect size based on both hierarchy depth and learnability, so the wide interval is an expected consequence of the moderating variables rather than methodological noise.
+Bootstrap analysis (10{,}000 resamples): 98.0\% of $\rho(\hlo)$ values positive.
+Meta-analysis prediction interval $[-0.70, 3.18]$ reflects heterogeneity ($I^2 = 63\%$) explained by the interaction model.
 
 \section{Broader Impact}
 \label{app:impact}
 
 Fractal embeddings add a semantic control knob to existing embedding models without modifying the backbone.
-The primary application is more efficient retrieval systems: coarse-first filtering reduces compute by 4$\times$ (64d vs.\ 256d) without sacrificing fine-grained accuracy when needed.
-We do not foresee negative societal impacts beyond those inherent to embedding-based retrieval systems generally.
-The method is agnostic to the content domain and does not introduce new biases beyond those present in the frozen backbone.
+The primary application is more efficient retrieval: coarse-first filtering reduces compute by $4\times$ without sacrificing fine-grained accuracy when needed.
+We do not foresee negative societal impacts beyond those inherent to embedding-based retrieval generally.
+The method is domain-agnostic and introduces no biases beyond those present in the frozen backbone.
 
 \end{document}
