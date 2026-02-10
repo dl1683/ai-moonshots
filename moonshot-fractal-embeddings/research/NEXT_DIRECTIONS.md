@@ -1,6 +1,6 @@
 # Future Research Directions
 
-**Last Updated**: February 6, 2026
+**Last Updated**: February 10, 2026
 
 ---
 
@@ -14,9 +14,7 @@
 - Boundary conditions identified (depths 5-7, requires learnable per-level signal)
 
 ### Theoretical Foundation
-- **GENERALIZATION_THEORY.md**: Minimax bounds, DAG extensions, end-to-end training
-- **SAMPLE_COMPLEXITY_THEORY.md**: Sample complexity separation, Fano bounds, scale-separated embeddings
-- **SCALE_SEPARATED_EMBEDDINGS_THEORY.md**: Access complexity proofs (Theorems A-D)
+- **THEORY.md**: Canonical theory doc (minimax/sample-complexity/access-complexity/successive-refinement summary)
 
 ---
 
@@ -48,17 +46,17 @@ Current benchmarks use 2-level hierarchies with <100 classes. Deep taxonomies (3
 ## Priority 3: Extensions
 
 ### Hierarchical Reasoning via Fractal Latent Space
-**Status**: Hypothesis documented in `exploratory/HIERARCHICAL_REASONING_HYPOTHESIS.md`
+**Status**: Consolidated in `research/IDEAS.md`
 
 Core idea: If LLM hidden states had fractal/hierarchical structure, the model might exhibit better hierarchical reasoning (planning, analogy, multi-step).
 
 ### Hyperbolic Fractal Embeddings
-**Status**: Theory documented in `exploratory/HYPERBOLIC_FRACTAL_EMBEDDINGS.md`
+**Status**: Consolidated in `research/IDEAS.md`
 
 Core idea: Combine fractal prefix structure with hyperbolic geometry for natural tree-metric embeddings.
 
 ### Trajectory Embeddings
-**Status**: Theory documented in `exploratory/TRAJECTORY_EMBEDDINGS.md`
+**Status**: Consolidated in `research/IDEAS.md`
 
 Core idea: Meaning as dynamics rather than points — embeddings that capture how concepts evolve across scales.
 

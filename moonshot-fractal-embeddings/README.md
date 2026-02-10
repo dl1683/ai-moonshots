@@ -124,12 +124,10 @@ moonshot-fractal-embeddings/
 │   ├── newsgroups_benchmark_qwen3-0.6b.json
 │   └── archive/                       # Ablation experiment results
 ├── research/
-│   ├── MASTER_DOCUMENT.md             # Complete unified writeup
-│   ├── GENERALIZATION_THEORY.md       # Minimax bounds, distribution-free bounds, DAG extensions
-│   ├── SAMPLE_COMPLEXITY_THEORY.md    # Sample complexity separation, Fano bounds
-│   ├── SCALE_SEPARATED_EMBEDDINGS_THEORY.md # Information-theoretic proofs
+│   ├── THEORY.md                      # Canonical theory doc (limitations, proofs, advantages)
+│   ├── IDEAS.md                       # Consolidated exploratory ideas
+│   ├── EFFICIENCY_ANALYSIS.md         # Efficiency and inference-cost analysis
 │   ├── NEXT_DIRECTIONS.md             # Future research priorities
-│   └── exploratory/                   # Unvalidated theoretical extensions
 └── checkpoints/                       # Trained model weights
 ```
 
@@ -154,7 +152,7 @@ Scale-separated embeddings achieve **Ω(k/(j+1)) access complexity advantage** o
 | j=0 (coarsest) | d₀ | Ω(k·d₀) | **Ω(k)** |
 | j=k-1 (finest) | k·d₀ | k·d₀ | 1 |
 
-See `research/SCALE_SEPARATED_EMBEDDINGS_THEORY.md` for full proofs.
+See `research/THEORY.md` for the canonical theory and proof summary.
 
 ---
 
@@ -192,10 +190,11 @@ See `research/SCALE_SEPARATED_EMBEDDINGS_THEORY.md` for full proofs.
 ## Research Documents
 
 For the complete research writeup, see:
-- **[MASTER_DOCUMENT.md](research/MASTER_DOCUMENT.md)** - Full unified theory and results
-- **[GENERALIZATION_THEORY.md](research/GENERALIZATION_THEORY.md)** - Minimax bounds, DAG extensions
-- **[SAMPLE_COMPLEXITY_THEORY.md](research/SAMPLE_COMPLEXITY_THEORY.md)** - Sample complexity separation, Fano bounds
-- **[SCALE_SEPARATED_EMBEDDINGS_THEORY.md](research/SCALE_SEPARATED_EMBEDDINGS_THEORY.md)** - Scale-separated embedding proofs
+- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - End-to-end project summary, positioning, and status
+- **[TECHNICAL_DETAILS.md](TECHNICAL_DETAILS.md)** - Detailed method/stats appendix
+- **[THEORY.md](research/THEORY.md)** - Canonical theory doc: limits, proofs, and why fractal supervision works
+- **[NEXT_DIRECTIONS.md](research/NEXT_DIRECTIONS.md)** - Prioritized roadmap
+- **[IDEAS.md](research/IDEAS.md)** - Consolidated speculative ideas (non-validated)
 
 ---
 

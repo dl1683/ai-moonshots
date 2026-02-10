@@ -1,7 +1,7 @@
 # Fractal Embeddings: Complete Project Summary
 
 ## For Cloud AI Agents
-This document summarizes the entire Fractal Embeddings research project as of Feb 9, 2026. Use it to understand the work, write about it, or identify next steps.
+This document summarizes the entire Fractal Embeddings research project as of Feb 10, 2026. Use it to understand the work, write about it, or identify next steps.
 
 ---
 
@@ -163,6 +163,48 @@ Steerability peaks when H(L0) ~ C(d/J). Below: spare capacity leaks L1 info. Abo
 
 ---
 
+## Narrative and Positioning
+
+### Recommended Narrative
+1. **Semantic zoom:** prefix length controls semantic resolution (coarse vs fine), not just fidelity.
+2. **Alignment over awareness:** hierarchy awareness alone is insufficient (UHMT); alignment drives steerability.
+3. **Information-theoretic grounding:** successive refinement explains why this objective works.
+
+### Headline Numbers
+1. 8/8 datasets: V5 steerability > MRL steerability.
+2. Pooled effect size: Cohen's d = 1.49, p = 0.0003.
+3. Product predictor for steerability: rho = 0.90, p = 0.002.
+4. Retrieval ramp: V5 +6.3pp vs MRL +0.6pp (CLINC).
+5. Latency: 64d queries are ~3.7x faster than 256d (HNSW benchmark).
+
+### Risk Register (Current)
+1. Effects are smaller on shallow hierarchies (expected under low conditional entropy).
+2. WOS shows floor effects due to low fine-label learnability.
+3. Causal ablations are concentrated on CLINC/TREC, not all datasets.
+4. Some downstream evaluations are currently CLINC-only.
+
+---
+
+## Publication Execution
+
+### Submission Targets
+1. NeurIPS 2026.
+2. EMNLP 2026 (fallback path).
+
+### Minimum Must-Have for Final Submission
+1. Finalize cross-backbone replication table and significance.
+2. Keep all claims aligned to current 8-dataset statistics artifacts.
+3. Include one concise "limitations and boundary conditions" section.
+4. Ensure all reported table values are generated from canonical result JSON files.
+5. Keep ablation narrative causal (sign reversal + no-prefix + UHMT controls).
+
+### Competitive Positioning Summary
+1. MRL-family methods: adaptive dimension but not semantic steerability.
+2. Hierarchy-aware methods (e.g., HEAL): hierarchy signal without prefix-level control.
+3. Our differentiated claim: intrinsic prefix steerability + causal evidence + theory + scaling analysis.
+
+---
+
 ## Key Files
 
 | Category | File | Description |
@@ -181,11 +223,11 @@ Steerability peaks when H(L0) ~ C(d/J). Below: spare capacity leaks L1 info. Abo
 | Statistics | `src/scaling_robustness.py` | LOO + interaction analysis |
 | Statistics | `src/metric_robustness.py` | 4-metric construct validity |
 | Figures | `src/paper_figures.py` | All paper figures |
-| Theory | `research/SUCCESSIVE_REFINEMENT_THEORY.md` | Formal theorems |
+| Theory | `research/THEORY.md` | Canonical theory: limitations, proofs, and fractal advantages |
 
 ---
 
-## Current Status (Feb 9, 2026)
+## Current Status (Feb 10, 2026)
 
 - **Paper:** ~95% complete, abstract trimmed, p-values fixed, proofread done
 - **Running:** Noisy hierarchy sensitivity test (CLINC, 0-50% L0 corruption, 3 seeds each)
