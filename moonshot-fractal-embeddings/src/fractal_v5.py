@@ -830,6 +830,8 @@ def run_v5_experiment(
     batch_size: int = 32,
     device: str = "cuda",
     seed: int = 42,
+    max_train_samples: int = 10000,
+    max_test_samples: int = 2000,
 ):
     """Run V5 experiment with hierarchy-aligned prefix supervision."""
     import random
@@ -849,8 +851,8 @@ def run_v5_experiment(
 
     # Load data
     print("\n[1] Loading data...")
-    train_data = load_hierarchical_dataset(dataset_name, split="train", max_samples=10000)
-    test_data = load_hierarchical_dataset(dataset_name, split="test", max_samples=2000)
+    train_data = load_hierarchical_dataset(dataset_name, split="train", max_samples=max_train_samples)
+    test_data = load_hierarchical_dataset(dataset_name, split="test", max_samples=max_test_samples)
 
     train_samples, val_samples = split_train_val(train_data.samples, val_ratio=0.15)
 
