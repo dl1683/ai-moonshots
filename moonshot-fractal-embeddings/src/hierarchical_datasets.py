@@ -1127,13 +1127,32 @@ def load_hierarchical_dataset(name: str, split: str = "train", max_samples: int 
         "dbpedia_classes": DBPediaClassesHierarchical,
     }
 
-    # HUPD deep hierarchy variants (factory-based, not class-based)
+    # Deep hierarchy variants (factory-based, not class-based)
     hupd_loaders = {
         "hupd": _make_hupd_loader(0, 2),         # Section->Subclass, H~4.45
         "hupd_sec_sub": _make_hupd_loader(0, 2),  # Section->Subclass
         "hupd_sec_cls": _make_hupd_loader(0, 1),  # Section->Class, H~2.44
         "hupd_cls_sub": _make_hupd_loader(1, 2),  # Class->Subclass
     }
+
+    # HWV deep hierarchy variants
+    def _make_hwv_loader(coarse_level, fine_level):
+        def loader(split="train", max_samples=None):
+            from deep_hierarchy_datasets import load_deep_hierarchy_dataset
+            return load_deep_hierarchy_dataset(
+                "hwv", split=split, max_samples=max_samples,
+                coarse_level=coarse_level, fine_level=fine_level,
+            )
+        return loader
+
+    hwv_loaders = {
+        "hwv": _make_hwv_loader(0, 3),           # Root->L3, H~5.08
+        "hwv_l0_l2": _make_hwv_loader(0, 2),     # Root->L2, H~4.36
+        "hwv_l0_l3": _make_hwv_loader(0, 3),     # Root->L3, H~5.08
+        "hwv_l1_l3": _make_hwv_loader(1, 3),     # L1->L3, H~3.16
+    }
+
+    hupd_loaders.update(hwv_loaders)
 
     key = name.lower()
 

@@ -46,12 +46,19 @@ DEEP_CONFIGS = {
         'max_train': 30000,  # More samples needed for 587 classes
         'max_test': 5000,
     },
-    'hupd_cls_sub': {
-        'dataset_name': 'hupd_cls_sub',
-        'description': 'HUPD Class(121) -> Subclass(587)',
-        'expected_H': None,  # Will compute
-        'max_train': 30000,
-        'max_test': 5000,
+    'hwv_l0_l2': {
+        'dataset_name': 'hwv_l0_l2',
+        'description': 'HWV Root(10) -> L2(381)',
+        'expected_H': 4.36,
+        'max_train': 8000,   # ~9K available
+        'max_test': 2000,
+    },
+    'hwv_l0_l3': {
+        'dataset_name': 'hwv_l0_l3',
+        'description': 'HWV Root(10) -> L3(437)',
+        'expected_H': 5.08,
+        'max_train': 5000,   # ~6K available at depth 4+
+        'max_test': 1500,
     },
 }
 

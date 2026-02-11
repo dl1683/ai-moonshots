@@ -588,6 +588,152 @@ class AmazonDeepHierarchical(HierarchicalDataset):
 
 
 # ============================================================
+# HWV (Hierarchical WikiVitals) Dataset
+# ============================================================
+
+class HWVHierarchical(HierarchicalDataset):
+    """Hierarchical WikiVitals: Wikipedia articles with 6-level category hierarchy.
+
+    Source: https://github.com/RomanPlaud/revisitingHTC
+    11 root categories -> 109 L1 -> 381 L2 -> 437 L3 -> 231 L4
+
+    Entropy at different depth pairs:
+      L0->L1: H=2.73, L0->L2: H=4.36, L0->L3: H=5.08
+      L1->L2: H=1.80, L1->L3: H=3.16
+
+    Args:
+        split: "train", "val", or "test"
+        max_samples: limit samples
+        coarse_level: hierarchy level for L0 (0-4)
+        fine_level: hierarchy level for L1 (must be > coarse_level)
+        min_samples_per_class: filter rare classes
+        max_text_len: truncate article text
+    """
+
+    DATA_DIR = Path(__file__).parent.parent / "data" / "hwv_repo" / "data" / "HWV"
+
+    def __init__(
+        self,
+        split: str = "train",
+        max_samples: int = None,
+        coarse_level: int = 0,
+        fine_level: int = 3,
+        min_samples_per_class: int = 5,
+        max_text_len: int = 512,
+    ):
+        super().__init__()
+        self.coarse_level = coarse_level
+        self.fine_level = fine_level
+
+        data_dir = HWVHierarchical.DATA_DIR
+        if not data_dir.exists():
+            print(f"HWV data not found at {data_dir}")
+            print("Clone: git clone --depth=1 https://github.com/RomanPlaud/revisitingHTC.git data/hwv_repo")
+            return
+
+        # Map split names
+        split_map = {
+            'train': 'hwv_train.json',
+            'val': 'hwv_val.json',
+            'test': 'hwv_test.json',
+        }
+        split_file = data_dir / split_map.get(split, f'hwv_{split}.json')
+
+        if not split_file.exists():
+            print(f"Split file not found: {split_file}")
+            return
+
+        print(f"Loading HWV ({split})...")
+        print(f"  Coarse level: {coarse_level}, Fine level: {fine_level}")
+
+        with open(split_file, encoding='utf-8') as f:
+            raw_data = [json.loads(line) for line in f if line.strip()]
+
+        # Filter samples with enough depth
+        valid_data = []
+        for item in raw_data:
+            labels = item.get('label', [])
+            if len(labels) <= max(coarse_level, fine_level):
+                continue
+            text = item.get('token', '')
+            if isinstance(text, list):
+                text = ' '.join(str(t) for t in text)
+            text = str(text)
+            if len(text) < 20:
+                continue
+            valid_data.append({
+                'text': text[:max_text_len],
+                'coarse': labels[coarse_level],
+                'fine': labels[fine_level],
+            })
+
+        # Filter rare fine classes
+        fine_counts = Counter(d['fine'] for d in valid_data)
+        valid_fines = {f for f, c in fine_counts.items() if c >= min_samples_per_class}
+
+        # Also filter rare coarse classes
+        filtered = [d for d in valid_data if d['fine'] in valid_fines]
+        coarse_counts = Counter(d['coarse'] for d in filtered)
+        valid_coarse = {c for c, cnt in coarse_counts.items() if cnt >= min_samples_per_class}
+        filtered = [d for d in filtered if d['coarse'] in valid_coarse]
+
+        # Build label mappings
+        coarse_set = sorted(set(d['coarse'] for d in filtered))
+        fine_set = sorted(set(d['fine'] for d in filtered))
+        coarse_to_id = {name: i for i, name in enumerate(coarse_set)}
+        fine_to_id = {name: i for i, name in enumerate(fine_set)}
+
+        self.level0_names = coarse_set
+        self.level1_names = fine_set
+
+        for d in filtered:
+            self.samples.append(HierarchicalSample(
+                text=d['text'],
+                level0_label=coarse_to_id[d['coarse']],
+                level1_label=fine_to_id[d['fine']],
+                level2_label=0,
+                level0_name=d['coarse'],
+                level1_name=d['fine'],
+                level2_name='',
+            ))
+
+        if max_samples and len(self.samples) > max_samples:
+            random.shuffle(self.samples)
+            self.samples = self.samples[:max_samples]
+
+        print(f"  Loaded {len(self.samples)} articles ({split})")
+        print(f"  L0 classes: {len(self.level0_names)}")
+        print(f"  L1 classes: {len(self.level1_names)}")
+
+        self._compute_entropy()
+
+    def _compute_entropy(self):
+        """Compute H(L1|L0)."""
+        from math import log2
+        l0_counts = Counter()
+        joint_counts = Counter()
+        for s in self.samples:
+            l0_counts[s.level0_label] += 1
+            joint_counts[(s.level0_label, s.level1_label)] += 1
+
+        n = len(self.samples)
+        h = 0.0
+        for l0 in l0_counts:
+            p_l0 = l0_counts[l0] / n
+            h_l1_l0 = 0.0
+            for (l0_, l1), count in joint_counts.items():
+                if l0_ != l0:
+                    continue
+                p = count / l0_counts[l0]
+                if p > 0:
+                    h_l1_l0 -= p * log2(p)
+            h += p_l0 * h_l1_l0
+
+        self.conditional_entropy = h
+        print(f"  H(L1|L0) = {h:.2f} bits")
+
+
+# ============================================================
 # Registry
 # ============================================================
 
@@ -596,6 +742,8 @@ DEEP_DATASETS = {
     'hupd_patents': HUPDHierarchical,
     'enzyme': ENZYMEHierarchical,
     'amazon_deep': AmazonDeepHierarchical,
+    'hwv': HWVHierarchical,
+    'hwv_wikivitals': HWVHierarchical,
 }
 
 
