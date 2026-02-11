@@ -111,16 +111,22 @@ CPC_LEVEL_DESCRIPTIONS = {
 class HUPDHierarchical(HierarchicalDataset):
     """Harvard USPTO Patent Dataset with CPC hierarchy.
 
-    5-level hierarchy: Section -> Class -> Subclass -> Group -> Subgroup
-    Text: title + abstract
+    3-level usable hierarchy: Section (9) -> Class (125) -> Subclass (626)
+    Text: invention_title (patent titles, 10-20 words avg)
+    Data: 1.9M patents with CPC codes from 4.5M total
+
+    Loads metadata via pandas from HuggingFace hub feather file.
+    No abstract available in metadata — uses titles only.
 
     Args:
-        split: "train" or "test"
+        split: "train" or "test" (80/20 chronological split)
         max_samples: limit samples
-        coarse_level: which CPC level for L0 (0=section, 1=class, 2=subclass)
-        fine_level: which CPC level for L1 (must be > coarse_level)
-        min_samples_per_class: filter out rare classes
+        coarse_level: 0=section(9), 1=class(125), 2=subclass(626)
+        fine_level: must be > coarse_level
+        min_samples_per_class: filter rare classes
     """
+
+    FEATHER_PATH = None  # Cached path
 
     def __init__(
         self,
@@ -133,112 +139,88 @@ class HUPDHierarchical(HierarchicalDataset):
         super().__init__()
         self.coarse_level = coarse_level
         self.fine_level = fine_level
-        self.all_level_names = CPC_LEVEL_NAMES
+        # Map levels: 0=section, 1=class, 2=subclass
+        level_names = ['section', 'cls', 'subclass']
+        level_chars = [1, 3, 4]  # How many chars of CPC code for each level
 
-        if not DATASETS_AVAILABLE:
-            raise RuntimeError("datasets library required for HUPD")
+        coarse_key = level_names[coarse_level]
+        fine_key = level_names[fine_level]
+        coarse_chars = level_chars[coarse_level]
+        fine_chars = level_chars[fine_level]
 
         print(f"Loading HUPD patents...")
-        print(f"  Coarse level: {CPC_LEVEL_NAMES[coarse_level]} ({CPC_LEVEL_DESCRIPTIONS[CPC_LEVEL_NAMES[coarse_level]]})")
-        print(f"  Fine level: {CPC_LEVEL_NAMES[fine_level]} ({CPC_LEVEL_DESCRIPTIONS[CPC_LEVEL_NAMES[fine_level]]})")
+        print(f"  Coarse: {coarse_key} ({coarse_chars} chars)")
+        print(f"  Fine: {fine_key} ({fine_chars} chars)")
 
-        # Load sample split (manageable size)
-        # For full experiment, use date-filtered full split
+        # Download feather file via huggingface_hub
+        import pandas as pd
+        from huggingface_hub import hf_hub_download
+
+        if HUPDHierarchical.FEATHER_PATH is None:
+            HUPDHierarchical.FEATHER_PATH = hf_hub_download(
+                repo_id='HUPD/hupd',
+                filename='hupd_metadata_2022-02-22.feather',
+                repo_type='dataset',
+            )
+        feather_path = HUPDHierarchical.FEATHER_PATH
+
+        df = pd.read_feather(feather_path)
+        # Filter to patents with CPC codes and titles
+        df = df[df['main_cpc_label'].str.len() > 0].copy()
+        df = df[df['invention_title'].notna() & (df['invention_title'].str.len() > 10)].copy()
+
+        # Parse hierarchy from CPC code prefix
+        df['coarse'] = df['main_cpc_label'].str[:coarse_chars]
+        df['fine'] = df['main_cpc_label'].str[:fine_chars]
+
+        # Chronological train/test split (80/20)
+        df = df.sort_values('filing_date')
+        split_idx = int(len(df) * 0.8)
         if split == "train":
-            ds = load_dataset(
-                'HUPD/hupd',
-                name='sample',
-                data_files="https://huggingface.co/datasets/HUPD/hupd/blob/main/hupd_metadata_2022-02-22.feather",
-                icpr_label=None,
-                train_filing_start_date='2016-01-01',
-                train_filing_end_date='2016-01-21',
-                trust_remote_code=True,
-            )
-            raw = ds['train']
+            df = df.iloc[:split_idx]
         else:
-            ds = load_dataset(
-                'HUPD/hupd',
-                name='sample',
-                data_files="https://huggingface.co/datasets/HUPD/hupd/blob/main/hupd_metadata_2022-02-22.feather",
-                icpr_label=None,
-                train_filing_start_date='2016-01-01',
-                train_filing_end_date='2016-01-21',
-                val_filing_start_date='2016-01-22',
-                val_filing_end_date='2016-01-31',
-                trust_remote_code=True,
-            )
-            raw = ds['validation']
-
-        # Parse CPC codes and build hierarchy
-        coarse_key = CPC_LEVEL_NAMES[coarse_level]
-        fine_key = CPC_LEVEL_NAMES[fine_level]
-
-        # First pass: collect all labels and filter
-        label_counts = defaultdict(int)
-        parsed_data = []
-
-        for item in raw:
-            cpc = item.get('main_cpc_label', '')
-            if not cpc:
-                continue
-
-            levels = parse_cpc_code(str(cpc))
-            if levels is None or coarse_key not in levels or fine_key not in levels:
-                continue
-
-            title = item.get('title', '') or ''
-            abstract = item.get('abstract', '') or ''
-            text = f"{title}. {abstract}".strip()
-            if len(text) < 20:
-                continue
-
-            coarse_name = levels[coarse_key]
-            fine_name = levels[fine_key]
-
-            parsed_data.append({
-                'text': text[:1024],  # Truncate long patents
-                'coarse': coarse_name,
-                'fine': fine_name,
-                'all_levels': levels,
-            })
-            label_counts[(coarse_name, fine_name)] += 1
+            df = df.iloc[split_idx:]
 
         # Filter rare classes
-        valid_fines = {fine for (coarse, fine), count in label_counts.items()
-                       if count >= min_samples_per_class}
+        fine_counts = df['fine'].value_counts()
+        valid_fines = set(fine_counts[fine_counts >= min_samples_per_class].index)
+        df = df[df['fine'].isin(valid_fines)]
+
+        # Also filter coarse classes with too few samples
+        coarse_counts = df['coarse'].value_counts()
+        valid_coarse = set(coarse_counts[coarse_counts >= min_samples_per_class].index)
+        df = df[df['coarse'].isin(valid_coarse)]
 
         # Build label mappings
-        coarse_set = sorted(set(d['coarse'] for d in parsed_data if d['fine'] in valid_fines))
-        fine_set = sorted(set(d['fine'] for d in parsed_data if d['fine'] in valid_fines))
-
+        coarse_set = sorted(df['coarse'].unique())
+        fine_set = sorted(df['fine'].unique())
         coarse_to_id = {name: i for i, name in enumerate(coarse_set)}
         fine_to_id = {name: i for i, name in enumerate(fine_set)}
 
         self.level0_names = coarse_set
         self.level1_names = fine_set
 
-        # Build samples
-        for d in parsed_data:
-            if d['fine'] not in valid_fines:
-                continue
-            if d['coarse'] not in coarse_to_id or d['fine'] not in fine_to_id:
-                continue
+        # Sample if needed
+        if max_samples and len(df) > max_samples:
+            df = df.sample(n=max_samples, random_state=42)
 
+        # Build samples
+        for _, row in df.iterrows():
+            coarse_name = row['coarse']
+            fine_name = row['fine']
+            if coarse_name not in coarse_to_id or fine_name not in fine_to_id:
+                continue
             self.samples.append(HierarchicalSample(
-                text=d['text'],
-                level0_label=coarse_to_id[d['coarse']],
-                level1_label=fine_to_id[d['fine']],
-                level2_label=0,  # Not used for 2-level eval
-                level0_name=d['coarse'],
-                level1_name=d['fine'],
+                text=str(row['invention_title'])[:512],
+                level0_label=coarse_to_id[coarse_name],
+                level1_label=fine_to_id[fine_name],
+                level2_label=0,
+                level0_name=coarse_name,
+                level1_name=fine_name,
                 level2_name='',
             ))
 
-        if max_samples and len(self.samples) > max_samples:
-            random.shuffle(self.samples)
-            self.samples = self.samples[:max_samples]
-
-        print(f"  Loaded {len(self.samples)} patents")
+        print(f"  Loaded {len(self.samples)} patents ({split})")
         print(f"  L0 classes ({coarse_key}): {len(self.level0_names)}")
         print(f"  L1 classes ({fine_key}): {len(self.level1_names)}")
 
