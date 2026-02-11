@@ -1099,6 +1099,17 @@ class DBPediaClassesHierarchical(HierarchicalDataset):
         AGNewsHierarchical._create_mock_data(self)
 
 
+def _make_hupd_loader(coarse_level, fine_level):
+    """Create a HUPD loader factory for the given hierarchy pair."""
+    def loader(split="train", max_samples=None):
+        from deep_hierarchy_datasets import load_deep_hierarchy_dataset
+        return load_deep_hierarchy_dataset(
+            "hupd", split=split, max_samples=max_samples,
+            coarse_level=coarse_level, fine_level=fine_level,
+        )
+    return loader
+
+
 def load_hierarchical_dataset(name: str, split: str = "train", max_samples: int = None) -> HierarchicalDataset:
     """Load a hierarchical dataset by name."""
     datasets_map = {
@@ -1116,10 +1127,24 @@ def load_hierarchical_dataset(name: str, split: str = "train", max_samples: int 
         "dbpedia_classes": DBPediaClassesHierarchical,
     }
 
-    if name.lower() not in datasets_map:
-        raise ValueError(f"Unknown dataset: {name}. Available: {list(datasets_map.keys())}")
+    # HUPD deep hierarchy variants (factory-based, not class-based)
+    hupd_loaders = {
+        "hupd": _make_hupd_loader(0, 2),         # Section->Subclass, H~4.45
+        "hupd_sec_sub": _make_hupd_loader(0, 2),  # Section->Subclass
+        "hupd_sec_cls": _make_hupd_loader(0, 1),  # Section->Class, H~2.44
+        "hupd_cls_sub": _make_hupd_loader(1, 2),  # Class->Subclass
+    }
 
-    return datasets_map[name.lower()](split=split, max_samples=max_samples)
+    key = name.lower()
+
+    if key in hupd_loaders:
+        return hupd_loaders[key](split=split, max_samples=max_samples)
+
+    if key not in datasets_map:
+        all_names = list(datasets_map.keys()) + list(hupd_loaders.keys())
+        raise ValueError(f"Unknown dataset: {name}. Available: {all_names}")
+
+    return datasets_map[key](split=split, max_samples=max_samples)
 
 
 # =============================================================================
