@@ -46,7 +46,7 @@ On CLINC-150, steerability reaches $\steer = +0.150 \pm 0.028$ versus MRL's $+0.
 A synthetic hierarchy experiment identifies a Goldilocks optimum where steerability peaks at capacity--demand matching (quadratic $R^2 = 0.964$), and steerability magnitude across real datasets is predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$, $p = 0.002$).
 A backbone fine-tuning control on two datasets confirms that alignment is both necessary and sufficient: a flat MRL baseline with $4.4\times$ more trainable parameters (backbone fine-tuning) produces zero steerability ($d = 8.1$ and $d = 4.8$ vs.\ head-only V5 on CLINC and DBPedia Classes respectively).
 Replication across three encoder families confirms architecture invariance.
-We ground these findings in the classical theory of successive refinement: exploiting the log-loss universality theorem, we prove that hierarchy-aligned prefix supervision is compatible with optimal fine encoding, and derive the Goldilocks optimum and scaling law from information-theoretic first principles.
+We ground these findings in the classical theory of successive refinement, connecting V5's prefix cross-entropy loss to the log-loss universality theorem and deriving a Goldilocks capacity--demand optimum and product scaling law from information-theoretic principles.
 \end{abstract}
 
 % Hero figure
@@ -144,8 +144,8 @@ Cross-dataset evidence is pooled via DerSimonian--Laird random-effects meta-anal
 
 \paragraph{Theory preview.}
 The classical theory of \emph{successive refinement}~\citep{equitz1991successive,rimoldi1994successive} shows that hierarchical sources admit optimal multi-resolution codes where each refinement layer adds residual information.
-A key enabling result is the \emph{log-loss universality theorem}~\citep{kostina2019universality}: any discrete source is successively refinable when the coarse stage uses cross-entropy, which is exactly V5's prefix loss.
-Section~\ref{sec:theory} exploits this to prove that hierarchy-aligned prefix supervision is compatible with optimal fine encoding, and derives testable predictions---sign reversal under inversion, a Goldilocks capacity--demand optimum, and a product scaling law---all confirmed by our experiments.
+A key enabling result is the \emph{log-loss universality theorem}~\citep{no2019universality}: any discrete memoryless source is successively refinable when the first-stage decoder uses cross-entropy.
+Section~\ref{sec:theory} connects V5's prefix supervision to this framework and derives testable predictions---sign reversal under inversion, a Goldilocks capacity--demand optimum, and a product scaling law---all confirmed by our experiments.
 
 %=======================================================================
 \section{Method: Progressive Prefix Supervision (V5)}
@@ -605,7 +605,12 @@ Let $C(d')$ denote the effective capacity (in bits) of a $d'$-dimensional embedd
 A source $X$ is \emph{successively refinable} at distortion pair $(D_1, D_2)$ if a two-stage code can achieve the point-to-point rate-distortion optimum at \emph{both} stages simultaneously~\citep{equitz1991successive}.
 Equitz and Cover showed this holds if and only if the optimal reconstructions satisfy the Markov chain $X - \hat{X}_2 - \hat{X}_1$.
 Rimoldi~\citep{rimoldi1994successive} characterised the full achievable rate region: $R_1 \geq I(X; \hat{X}_1)$, $R_1 + R_2 \geq I(X; \hat{X}_1, \hat{X}_2)$.
-Crucially, Kostina and Tuncel~\citep{kostina2019universality} proved a \emph{universality} result: any discrete memoryless source is successively refinable when the first-stage decoder uses \emph{logarithmic loss}---which is mathematically identical to cross-entropy.
+Crucially, No~\citep{no2019universality} proved a \emph{universality} result: any discrete memoryless source is successively refinable when the first-stage decoder uses \emph{logarithmic loss}---which is mathematically identical to cross-entropy.
+
+\paragraph{Connecting V5 to successive refinement.}
+The standard successive refinement setup encodes a single source $X$ at two resolutions.
+Our setup is structurally different: the prefix targets $Y_0 = g(Y_1)$ (a deterministic coarsening) while the full embedding targets $Y_1$.
+The log-loss universality theorem applies directly when both stages target the \emph{same} source; our setting---where Stage~1 targets a function of the source---requires an additional argument.
 
 \paragraph{Theorem 1 (Hierarchy-Successive-Refinement).}
 \emph{Let $(X, Y_0, Y_1)$ be a hierarchical source with $Y_0 = g(Y_1)$.
@@ -614,16 +619,19 @@ Under V5 supervision ($\mathbf{z}_{\leq 1} \rightarrow Y_0$ via cross-entropy, $
 \begin{equation}
     I(\mathbf{z}_{\leq 1}; Y_0) > I(\mathbf{z}_{\leq 1}; Y_1 | Y_0) \quad \text{(coarse-prioritised prefix)}
 \end{equation}
-\emph{Moreover, this prefix allocation is compatible with optimal fine encoding: the coarse prefix does not constrain the achievable rate for $Y_1|Y_0$ in the remaining dimensions.
-Under MRL ($\mathbf{z}_{\leq 1} \rightarrow Y_1$, $\mathbf{z} \rightarrow Y_1$): no specialisation.}
+\emph{Under MRL ($\mathbf{z}_{\leq 1} \rightarrow Y_1$, $\mathbf{z} \rightarrow Y_1$): no specialisation.}
 
 \paragraph{Proof sketch.}
 The capacity bottleneck $C(d/J) < H(Y_1)$ means the prefix cannot encode all of $Y_1$, but $C(d/J) \geq H(Y_0)$ ensures it can encode $Y_0$.
 V5's prefix cross-entropy loss targeting $Y_0$ forces the optimal prefix to maximise $I(\mathbf{z}_{\leq 1}; Y_0)$, yielding coarse-prioritised encoding.
-The key non-triviality is that this does not penalise the fine stage.
-Since the prefix loss is cross-entropy (log loss) and $Y_0$ is a deterministic function of $Y_1$, the log-loss universality theorem~\citep{kostina2019universality} guarantees successive refinability: the remaining dimensions $\mathbf{z}_{2:J}$ can achieve the optimal rate for $Y_1|Y_0$ without rate loss.
+Because $Y_0 = g(Y_1)$, encoding $Y_0$ in the prefix is \emph{strictly less demanding} than encoding $Y_1$: any rate sufficient for $Y_0$ leaves residual capacity for $Y_1|Y_0$.
+The log-loss universality result~\citep{no2019universality} guarantees that when Stage~1 uses cross-entropy, successive refinement of $Y_1$ is achievable; since $Y_0$ is a sufficient statistic for its own prediction (it is deterministic), Stage~1 targeting $Y_0$ imposes a \emph{weaker} constraint than targeting $Y_1$ directly.
 MRL distributes capacity across both $Y_0$ and $Y_1|Y_0$ at every prefix length, destroying the nested structure.
 \hfill$\square$
+
+\paragraph{Remark.}
+The formal reduction from our multi-target setting to the single-source successive refinement problem remains an open direction.
+The argument above relies on the monotonicity of the coarsening map and the universality of log loss; a complete proof would require bounding the gap introduced by targeting $g(Y_1)$ rather than $Y_1$ at Stage~1, which we leave to future work.
 
 The successive refinement framework yields three testable predictions, all confirmed:
 
@@ -700,7 +708,7 @@ The evidence is threefold.
 \emph{Empirically}, fractal training produces steerability on all eight datasets (pooled $d = 1.49$, $p = 0.0003$), with magnitude predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$).
 \emph{Causally}, four controlled ablations establish that the specific prefix-to-hierarchy alignment---not hierarchy awareness, not architecture, not optimiser---drives the effect: all conditions are highly significant on CLINC ($d \geq 6.1$), with directionally consistent replication on TREC.
 A factorial backbone control on two datasets confirms alignment is both necessary and sufficient: $4.4\times$ more trainable parameters without alignment produce zero steerability ($d = 8.1$ on CLINC, $d = 4.8$ on DBPedia Classes).
-\emph{Theoretically}, the successive refinement framework---anchored by the log-loss universality theorem---explains \emph{why} V5 works (cross-entropy at the prefix guarantees compatibility with optimal fine encoding) and \emph{when} it works best (Goldilocks capacity--demand matching, $R^2 = 0.964$).
+\emph{Theoretically}, the successive refinement framework explains \emph{why} V5 works (the capacity bottleneck forces coarse-first encoding, and cross-entropy at the prefix connects to log-loss universality) and \emph{when} it works best (Goldilocks capacity--demand matching, $R^2 = 0.964$).
 
 The practical implications are concrete.
 A single fractal embedding enables query-adaptive retrieval: routing coarse queries to the 64d prefix ($3.7\times$ faster on HNSW) and fine queries to 256d, yielding higher mixed accuracy than MRL at 38\% lower compute.
