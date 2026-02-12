@@ -44,7 +44,7 @@ Four controlled ablations establish that \emph{alignment}---not hierarchy awaren
 Across eight datasets spanning conditional entropies from 1.23 to 5.05 bits, a random-effects meta-analysis yields pooled $d = 1.49$ ($p = 0.0003$), with all eight favouring fractal training (sign test $p = 0.004$).
 On CLINC-150, steerability reaches $\steer = +0.150 \pm 0.028$ versus MRL's $+0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, $d = 4.3$).
 A synthetic hierarchy experiment identifies a Goldilocks optimum where steerability peaks at capacity--demand matching (quadratic $R^2 = 0.964$), and steerability magnitude across real datasets is predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$, $p = 0.002$).
-A backbone fine-tuning control confirms that alignment is both necessary and sufficient: a flat MRL baseline with $4.4\times$ more trainable parameters (backbone fine-tuning) produces zero steerability ($d = 8.1$ vs.\ head-only V5).
+A backbone fine-tuning control on two datasets confirms that alignment is both necessary and sufficient: a flat MRL baseline with $4.4\times$ more trainable parameters (backbone fine-tuning) produces zero steerability ($d = 8.1$ and $d = 4.8$ vs.\ head-only V5 on CLINC and DBPedia Classes respectively).
 Replication across three encoder families confirms architecture invariance.
 We ground these findings in the classical theory of successive refinement, providing formal conditions for when and why hierarchy-aligned supervision produces steerability.
 \end{abstract}
@@ -460,10 +460,11 @@ We test this with a $2 \times 2$ factorial design crossing alignment (V5/MRL) wi
 (ii) \textbf{MRL-frozen} (flat, head-only, 2.1M params);
 (iii) \textbf{MRL+backbone} (flat, head + last 4 backbone layers, 9.2M params);
 (iv) \textbf{V5+backbone} (aligned, head + backbone, 9.2M params).
-On CLINC: V5-frozen $\steer = +0.050 \pm 0.005$ vs.\ MRL+backbone $\steer = +0.003 \pm 0.003$ ($d = 8.1$, $p < 10^{-7}$; Figure~\ref{fig:backbone}).
-The alignment factor has a massive effect; the capacity factor has none.
-Specifically, $4.4\times$ more trainable parameters cannot recover steerability without hierarchy-aligned prefix supervision ($p = 0.40$ for MRL-frozen vs.\ MRL+backbone).
-Adding backbone fine-tuning to V5 also yields no improvement ($p = 0.57$), confirming that alignment is both necessary and sufficient under these conditions.
+On CLINC: V5-frozen $\steer = +0.050 \pm 0.005$ vs.\ MRL+backbone $\steer = +0.003 \pm 0.003$ ($d = 8.1$, $p < 10^{-4}$).
+On DBPedia Classes: V5-frozen $\steer = +0.053 \pm 0.010$ vs.\ MRL+backbone $\steer = -0.000 \pm 0.003$ ($d = 4.8$, $p < 10^{-3}$; Figure~\ref{fig:backbone}).
+On both datasets, the alignment factor has a massive effect; the capacity factor has none.
+Specifically, $4.4\times$ more trainable parameters cannot recover steerability without hierarchy-aligned prefix supervision ($p = 0.40$ and $p = 0.71$ for MRL-frozen vs.\ MRL+backbone on CLINC and DBPedia respectively).
+Adding backbone fine-tuning to V5 also yields no improvement ($p = 0.57$ on CLINC), confirming that alignment is both necessary and sufficient under these conditions.
 
 \begin{figure}[t]
     \centering
@@ -627,7 +628,7 @@ Confirmed: $\steer = +0.001$ (CLINC), $-0.009$ (TREC).
 \emph{Increasing model capacity (e.g., unfreezing backbone layers) under flat MRL supervision does not create a capacity bottleneck at any prefix length, and therefore cannot induce steerability.}
 The proof is immediate: MRL's loss function treats all prefix lengths identically with respect to label information.
 Without a prefix-specific bottleneck, additional capacity distributes evenly, maintaining $\steer \approx 0$ regardless of parameter count.
-Confirmed: MRL with $4.4\times$ more parameters ($9.2$M vs.\ $2.1$M) yields $\steer = +0.003$ on CLINC ($d = 8.1$ vs.\ V5 head-only).
+Confirmed: MRL with $4.4\times$ more parameters ($9.2$M vs.\ $2.1$M) yields $\steer = +0.003$ on CLINC ($d = 8.1$) and $\steer = -0.000$ on DBPedia Classes ($d = 4.8$) vs.\ V5 head-only.
 
 \paragraph{Theorem 2 (Goldilocks capacity--demand matching, informal).}
 \emph{With fixed $H(Y_1)$ and varying $K_0$, steerability peaks at $H^*(L_0) \approx C(d/J)$:}
@@ -676,7 +677,7 @@ We have shown that aligning prefix supervision with semantic hierarchy converts 
 The evidence is threefold.
 \emph{Empirically}, fractal training produces steerability on all eight datasets (pooled $d = 1.49$, $p = 0.0003$), with magnitude predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$).
 \emph{Causally}, four controlled ablations establish that the specific prefix-to-hierarchy alignment---not hierarchy awareness, not architecture, not optimiser---drives the effect: all conditions are highly significant on CLINC ($d \geq 6.1$), with directionally consistent replication on TREC.
-A factorial backbone control confirms alignment is both necessary and sufficient: $4.4\times$ more trainable parameters without alignment produce zero steerability ($d = 8.1$).
+A factorial backbone control on two datasets confirms alignment is both necessary and sufficient: $4.4\times$ more trainable parameters without alignment produce zero steerability ($d = 8.1$ on CLINC, $d = 4.8$ on DBPedia Classes).
 \emph{Theoretically}, the successive refinement framework explains \emph{why} V5 works (capacity bottleneck forces coarse-first encoding) and \emph{when} it works best (Goldilocks capacity--demand matching, $R^2 = 0.964$).
 
 The practical implications are concrete.
