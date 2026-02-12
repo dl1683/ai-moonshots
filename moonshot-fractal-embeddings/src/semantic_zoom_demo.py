@@ -39,7 +39,7 @@ def train_and_get_embeddings(dataset_name, model_key="bge-small",
     import random
     from fractal_v5 import (FractalModelV5, V5Trainer, MODELS as V5_MODELS,
                              split_train_val)
-    from mrl_v5_baseline import MRLModelV5, MRLTrainer
+    from mrl_v5_baseline import MRLTrainerV5
     from hierarchical_datasets import load_hierarchical_dataset
 
     torch.manual_seed(seed)
@@ -80,11 +80,11 @@ def train_and_get_embeddings(dataset_name, model_key="bge-small",
             device=device, stage1_epochs=5, stage2_epochs=0, unfreeze_layers=4,
         )
     else:
-        model = MRLModelV5(
+        model = FractalModelV5(
             config=config, num_l0_classes=num_l0, num_l1_classes=num_l1,
             num_scales=4, scale_dim=64, device=device,
         ).to(device)
-        trainer = MRLTrainer(
+        trainer = MRLTrainerV5(
             model=model, train_dataset=train_data, val_dataset=val_data,
             device=device, stage1_epochs=5, stage2_epochs=0, unfreeze_layers=4,
         )

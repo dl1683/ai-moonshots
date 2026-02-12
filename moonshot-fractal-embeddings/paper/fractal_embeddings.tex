@@ -609,6 +609,12 @@ Confirmed: $\steer = -0.018$ (CLINC), $-0.025$ (TREC).
 \emph{Under uniform multi-task supervision, no prefix is privileged for either task; the optimiser distributes information uniformly, yielding $\steer \approx 0$.}
 Confirmed: $\steer = +0.001$ (CLINC), $-0.009$ (TREC).
 
+\paragraph{Corollary 3 (Capacity irrelevance).}
+\emph{Increasing model capacity (e.g., unfreezing backbone layers) under flat MRL supervision does not create a capacity bottleneck at any prefix length, and therefore cannot induce steerability.}
+The proof is immediate: MRL's loss function treats all prefix lengths identically with respect to label information.
+Without a prefix-specific bottleneck, additional capacity distributes evenly, maintaining $\steer \approx 0$ regardless of parameter count.
+Confirmed: MRL with $4.4\times$ more parameters ($9.2$M vs.\ $2.1$M) yields $\steer = +0.003$ on CLINC ($d = 12.9$ vs.\ V5 head-only).
+
 \paragraph{Theorem 2 (Goldilocks capacity--demand matching, informal).}
 \emph{With fixed $H(Y_1)$ and varying $K_0$, steerability peaks at $H^*(L_0) \approx C(d/J)$:}
 \begin{itemize}
