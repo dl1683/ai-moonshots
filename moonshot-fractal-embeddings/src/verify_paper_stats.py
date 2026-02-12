@@ -130,59 +130,72 @@ def verify_backbone():
                     check("Backbone d (CLINC)", 8.1, d, tol=0.2)
 
 
+def compute_steerability_from_prefix(prefix_acc):
+    """Compute steerability from prefix_accuracy dict."""
+    j1_l0 = prefix_acc.get("j1_l0", 0)
+    j4_l0 = prefix_acc.get("j4_l0", 0)
+    j1_l1 = prefix_acc.get("j1_l1", 0)
+    j4_l1 = prefix_acc.get("j4_l1", 0)
+    return (j1_l0 - j4_l0) + (j4_l1 - j1_l1)
+
+
 def verify_crossmodel():
     """Verify cross-model gaps."""
     print("\n=== CROSS-MODEL GAPS ===")
 
     # Paper claims: BGE +0.143, E5 +0.115, Qwen3 +0.145
+    # Actual file names differ per model
     models = {
-        "bge-small": {"clinc_gap": 0.143},
-        "e5-small": {"clinc_gap": 0.115},
-        "qwen3-0.6b": {"clinc_gap": 0.145},
+        "bge-small": {
+            "clinc_gap": 0.143,
+            "v5_file": "benchmark_bge-small_clinc.json",
+        },
+        "e5-small": {
+            "clinc_gap": 0.115,
+            "v5_file": "benchmark_e5-small_clinc.json",
+        },
+        "qwen3-0.6b": {
+            "clinc_gap": 0.145,
+            "v5_file": "crossmodel_qwen3-0.6b_clinc.json",
+        },
     }
 
     for model, expected in models.items():
-        v5_path = RESULTS_DIR / f"steerability_bge-small_clinc.json"
-        # Cross-model files have different naming
-        cm_path = RESULTS_DIR / f"cross_model_{model}_clinc.json"
-        steer_path = RESULTS_DIR / f"steerability_{model}_clinc.json"
+        path = RESULTS_DIR / expected["v5_file"]
+        if not path.exists():
+            print(f"  {model}: missing {expected['v5_file']}")
+            continue
 
-        for p in [cm_path, steer_path]:
-            if p.exists():
-                with open(p) as f:
-                    data = json.load(f)
-                if "results" in data:
-                    results = data["results"]
-                    if isinstance(results, dict):
-                        v5_vals = [
-                            r["steerability_score"]
-                            for r in results.get("v5", results.get("fractal", []))
-                        ]
-                        mrl_vals = [
-                            r["steerability_score"]
-                            for r in results.get("mrl", [])
-                        ]
-                    elif isinstance(results, list):
-                        v5_vals = [r.get("v5_steerability", 0) for r in results]
-                        mrl_vals = [r.get("mrl_steerability", 0) for r in results]
-                    else:
-                        continue
+        with open(path) as f:
+            data = json.load(f)
 
-                    if v5_vals and mrl_vals:
-                        gap = np.mean(v5_vals) - np.mean(mrl_vals)
-                        print(
-                            f"  {model}: V5={np.mean(v5_vals):.3f}, "
-                            f"MRL={np.mean(mrl_vals):.3f}, gap={gap:.3f}"
-                        )
-                        check(
-                            f"Cross-model gap {model}",
-                            expected["clinc_gap"],
-                            gap,
-                            tol=0.002,
-                        )
-                break
+        v5_steers = []
+        mrl_steers = []
+
+        for seed_key, seed_data in data.get("v5", {}).items():
+            pa = seed_data.get("prefix_accuracy", {})
+            if pa:
+                v5_steers.append(compute_steerability_from_prefix(pa))
+
+        for seed_key, seed_data in data.get("mrl", {}).items():
+            pa = seed_data.get("prefix_accuracy", {})
+            if pa:
+                mrl_steers.append(compute_steerability_from_prefix(pa))
+
+        if v5_steers and mrl_steers:
+            gap = np.mean(v5_steers) - np.mean(mrl_steers)
+            print(
+                f"  {model}: V5={np.mean(v5_steers):.3f}, "
+                f"MRL={np.mean(mrl_steers):.3f}, gap={gap:.3f}"
+            )
+            check(
+                f"Cross-model gap {model}",
+                expected["clinc_gap"],
+                gap,
+                tol=0.002,
+            )
         else:
-            print(f"  {model}: no result file found")
+            print(f"  {model}: could not compute steerability from {path.name}")
 
 
 def verify_retrieval():
@@ -249,43 +262,109 @@ def verify_meta_analysis():
     """Verify meta-analysis values."""
     print("\n=== META-ANALYSIS ===")
 
-    path = RESULTS_DIR / "meta_analysis_results.json"
-    if not path.exists():
-        print("  Missing meta_analysis_results.json")
+    for fname in ["meta_analysis.json", "meta_analysis_results.json"]:
+        path = RESULTS_DIR / fname
+        if path.exists():
+            break
+    else:
+        print("  Missing meta-analysis results")
         return
 
     with open(path) as f:
         ma = json.load(f)
 
-    if "random_effects" in ma:
-        re = ma["random_effects"]
-        print(f"  Pooled d: {re.get('pooled_d', 'N/A')}")
-        print(f"  z: {re.get('z', 'N/A')}, p: {re.get('p', 'N/A')}")
-        print(f"  I^2: {re.get('I2', 'N/A')}")
-        if "pooled_d" in re:
-            check("Meta pooled d", 1.49, re["pooled_d"], tol=0.02)
+    # Handle both formats: {random_effects: {...}} and {cohens_d: {...}}
+    re = ma.get("random_effects", ma.get("cohens_d", {}))
+    if re:
+        pooled = re.get("pooled_d", re.get("pooled"))
+        z_val = re.get("z")
+        p_val = re.get("p")
+        i2 = re.get("I2")
+        print(f"  Pooled d: {pooled}")
+        print(f"  z: {z_val}, p: {p_val}")
+        print(f"  I^2: {i2}")
+        if pooled is not None:
+            check("Meta pooled d", 1.49, pooled, tol=0.02)
+        if z_val is not None:
+            check("Meta z", 3.63, z_val, tol=0.02)
+        if p_val is not None:
+            check("Meta p", 0.0003, p_val, tol=0.0001)
 
 
 def verify_scaling():
-    """Verify scaling analysis."""
+    """Verify scaling analysis: raw H and product predictor correlations."""
     print("\n=== SCALING ANALYSIS ===")
 
-    path = RESULTS_DIR / "scaling_robustness_results.json"
-    if not path.exists():
-        # Try other filenames
-        path = RESULTS_DIR / "paper_statistics_holm.json"
-        if not path.exists():
-            print("  No scaling results found")
-            return
+    # Raw H correlation from scaling_robustness.json
+    sr_path = RESULTS_DIR / "scaling_robustness.json"
+    if sr_path.exists():
+        with open(sr_path) as f:
+            sr = json.load(f)
+        fc = sr.get("full_correlation", {})
+        rho_raw = fc.get("spearman_rho")
+        if rho_raw is not None:
+            print(f"  Raw H rho: {rho_raw:.4f} (p={fc.get('spearman_p', 'N/A'):.4f})")
+            check("Raw H Spearman rho", 0.74, rho_raw, tol=0.02)
+        bs = sr.get("bootstrap_rho", {})
+        if bs:
+            print(f"  Bootstrap frac positive: {bs.get('frac_positive', 'N/A')}")
+    else:
+        print("  Missing scaling_robustness.json")
 
-    with open(path) as f:
-        data = json.load(f)
+    # Product predictor: compute from hierarchy_profiles + benchmark files
+    # Replicates paper_figures.py fig5_scaling_law() logic
+    profiles_path = RESULTS_DIR / "hierarchy_profiles.json"
+    DS_H_FALLBACK = {"dbpedia_classes": 3.17, "wos": 5.05}
+    ALL_DS = ["yahoo", "goemotions", "newsgroups", "trec", "arxiv",
+              "clinc", "dbpedia_classes", "wos"]
 
-    if "product_predictor" in data:
-        pp = data["product_predictor"]
-        print(f"  Product rho: {pp.get('spearman_rho', 'N/A')}")
-        print(f"  Product p: {pp.get('spearman_p', 'N/A')}")
-        print(f"  Pearson r: {pp.get('pearson_r', 'N/A')}")
+    if not profiles_path.exists():
+        print("  Missing hierarchy_profiles.json")
+        return
+
+    with open(profiles_path) as f:
+        profiles = json.load(f)
+
+    h_vals, prod_vals, s_vals = [], [], []
+    for ds in ALL_DS:
+        h = profiles.get(ds, {}).get("h_l1_given_l0", DS_H_FALLBACK.get(ds, 0))
+        if h == 0:
+            continue
+
+        # Get steerability values from benchmark/steerability files
+        bench_file = RESULTS_DIR / f"benchmark_bge-small_{ds}.json"
+        steer_file = RESULTS_DIR / f"steerability_bge-small_{ds}.json"
+        v5_steers = []
+        best_l1 = 0
+
+        for bf in [bench_file, steer_file]:
+            if bf.exists():
+                with open(bf) as f:
+                    bd = json.load(f)
+                for seed_key, seed_data in bd.get("v5", {}).items():
+                    pa = seed_data.get("prefix_accuracy", {})
+                    if pa:
+                        s = compute_steerability_from_prefix(pa)
+                        v5_steers.append(s)
+                    if best_l1 == 0:
+                        best_l1 = seed_data.get("baseline", {}).get("l1_accuracy", 0)
+                if v5_steers:
+                    break
+
+        if v5_steers and best_l1 > 0:
+            h_vals.append(h)
+            prod_vals.append(h * best_l1)
+            s_vals.append(np.mean(v5_steers))
+
+    if len(h_vals) >= 5:
+        rho_p, p_p = sp_stats.spearmanr(prod_vals, s_vals)
+        r_p, pr_p = sp_stats.pearsonr(prod_vals, s_vals)
+        print(f"  Product predictor ({len(h_vals)} datasets): "
+              f"rho={rho_p:.2f} (p={p_p:.4f}), r={r_p:.2f} (p={pr_p:.4f})")
+        check("Product Spearman rho", 0.90, rho_p, tol=0.02)
+        check("Product Pearson r", 0.97, r_p, tol=0.02)
+    else:
+        print(f"  Only {len(h_vals)} datasets with product data, need >= 5")
 
 
 if __name__ == "__main__":
