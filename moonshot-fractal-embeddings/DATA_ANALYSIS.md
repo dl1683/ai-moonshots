@@ -94,7 +94,8 @@ CLINC ablation (5 seeds):
   No-prefix:   S = +0.009 +/- 0.005  (collapse)
   UHMT:        S = +0.001 +/- 0.005  (collapse, 210x smaller than V5)
 
-All comparisons: p <= 0.033, d >= 2.7
+CLINC: all p_adj < 10^-3, d >= 6.1 (paired)
+TREC (3 seeds): directionally consistent, UHMT significant (d=4.4, p=0.017)
 ```
 
 **Why it matters:** This separates V5 from methods that merely "know about" hierarchy. Hierarchy awareness alone (UHMT) produces near-zero steerability. The mechanism is structural alignment of prefix length to hierarchy level.
@@ -405,7 +406,7 @@ V5 dominates MRL-256d when >= 35% of queries are coarse. At a 50/50 mix of coars
 
 ### Strongest Evidence (Highlight in Any Writeup)
 
-1. **Four-condition ablation with sign reversal** — Inverted supervision produces negative steerability; UHMT collapses to zero. This is textbook causal evidence. All p <= 0.033, d >= 2.7.
+1. **Four-condition ablation with sign reversal** — Inverted supervision produces negative steerability; UHMT collapses to zero. This is textbook causal evidence. All p_adj < 10^-3, d >= 6.1 on CLINC; directionally consistent on TREC.
 
 2. **Hierarchy randomization** — True hierarchy +0.72% vs random -0.10%, CI excludes zero. Proves structure dependency causally.
 
