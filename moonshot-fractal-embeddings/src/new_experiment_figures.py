@@ -258,10 +258,16 @@ def fig_backbone_summary():
     ax.axhline(y=0, color='gray', linestyle='--', alpha=0.3)
     ax.set_title('Alignment Is Necessary and Sufficient for Steerability')
 
-    # Add bracket annotation
-    ax.annotate('', xy=(0.08, 0.052), xytext=(0.28, 0.052),
-               arrowprops=dict(arrowstyle='<->', color='red', lw=1.5))
-    ax.text(0.18, 0.054, 'd=12.9', ha='center', fontsize=9, color='red', fontweight='bold')
+    # Add significance bracket for CLINC V5-frozen vs flat_finetune
+    if 'clinc' in results and 'v5_frozen' in results['clinc'] and 'flat_finetune' in results['clinc']:
+        v5f = [r['steerability_score'] for r in results['clinc']['v5_frozen']]
+        flat = [r['steerability_score'] for r in results['clinc']['flat_finetune']]
+        diff = np.array(v5f[:min(len(v5f),len(flat))]) - np.array(flat[:min(len(v5f),len(flat))])
+        d_paired = np.mean(diff) / np.std(diff, ddof=1) if np.std(diff, ddof=1) > 0 else 0
+        clinc_idx = list(datasets).index('clinc') if 'clinc' in datasets else 0
+        ymax = max(np.mean(v5f), np.mean(flat)) + max(np.std(v5f), np.std(flat)) + 0.005
+        ax.annotate(f'd={abs(d_paired):.1f}', xy=(clinc_idx + 1.5*width, ymax+0.003),
+                   ha='center', fontsize=9, color='red', fontweight='bold')
 
     plt.tight_layout()
     out = FIGURES_DIR / "fig_backbone_summary.png"
