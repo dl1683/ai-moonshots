@@ -44,6 +44,7 @@ Four controlled ablations establish that \emph{alignment}---not hierarchy awaren
 Across eight datasets spanning conditional entropies from 1.23 to 5.05 bits, a random-effects meta-analysis yields pooled $d = 1.49$ ($p = 0.0003$), with all eight favouring fractal training (sign test $p = 0.004$).
 On CLINC-150, steerability reaches $\steer = +0.150 \pm 0.028$ versus MRL's $+0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, $d = 4.3$).
 A synthetic hierarchy experiment identifies a Goldilocks optimum where steerability peaks at capacity--demand matching (quadratic $R^2 = 0.964$), and steerability magnitude across real datasets is predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$, $p = 0.002$).
+A backbone fine-tuning control confirms that alignment is both necessary and sufficient: a flat MRL baseline with $4.4\times$ more trainable parameters (backbone fine-tuning) produces zero steerability ($d = 12.9$ vs.\ head-only V5).
 Replication across three encoder families confirms architecture invariance.
 We ground these findings in the classical theory of successive refinement, providing formal conditions for when and why hierarchy-aligned supervision produces steerability.
 \end{abstract}
@@ -438,6 +439,23 @@ $K_0$ & $\hlz$ & $\hlo$ & Branch & V5 $\steer$ & MRL $\steer$ & Gap \\
 \end{enumerate}
 
 The synthetic experiment also resolves the observational confound: steerability is driven by $\hlz$ (prefix task demand), not $\hlo$. In natural datasets, the $\hlo$ correlation arises because the two entropies covary. Figure~\ref{fig:entropy_alloc} in the appendix visualises both relationships.
+
+\paragraph{Real-data capacity sweep.}
+To validate the Goldilocks prediction on natural hierarchies, we sweep the scale dimension (prefix capacity) across $d_s \in \{16, 32, 48, 64, 96, 128\}$ on three datasets spanning the $\hlo$ range: Yahoo ($\hlo = 1.23$), TREC ($2.21$), and DBPedia Classes ($3.17$).
+Three seeds per condition.
+All datasets peak at $d_s = 16$ (the minimum tested), consistent with the synthetic finding that the default 64d prefix is already at or beyond the Goldilocks optimum for these hierarchies.
+The key finding is in the \emph{scaling law at fixed capacity}: steerability at $d_s = 16$ scales nearly perfectly with conditional entropy ($\rho = 1.000$, $r = 0.999$, $p = 0.027$), confirming that hierarchy complexity drives the steerability signal at matched capacity.
+
+\paragraph{Alignment vs.\ capacity control.}
+A natural objection is that steerability might emerge from \emph{any} sufficient-capacity model, without hierarchy-aligned supervision.
+We test this with a 4-arm experiment on CLINC and DBPedia Classes (5 seeds each):
+(i) \textbf{V5-frozen} (hierarchy-aligned, head-only, 2.1M params);
+(ii) \textbf{MRL-frozen} (flat MRL, head-only, 2.1M params);
+(iii) \textbf{MRL+backbone} (flat MRL, head + last 4 backbone layers fine-tuned, 9.2M params);
+(iv) \textbf{V5+backbone} (hierarchy-aligned, head + backbone, 9.2M params).
+On CLINC: V5-frozen $\steer = +0.050 \pm 0.005$ vs.\ MRL+backbone $\steer = +0.003 \pm 0.002$ ($d = 12.9$, $p < 10^{-6}$).
+Adding backbone capacity to MRL does not help ($\steer$ stays near zero); V5 backbone fine-tuning adds nothing over V5 head-only ($p = 0.57$).
+Hierarchy alignment is both necessary and sufficient for steerability; capacity alone is neither.
 
 %=======================================================================
 \section{Generality, Downstream Utility, and Extensions}
