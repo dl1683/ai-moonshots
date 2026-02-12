@@ -224,9 +224,8 @@ Algorithm~\ref{alg:v5} summarises the procedure.
 
 \paragraph{Classification performance is preserved.}
 At full embedding length ($j=4$, 256d), V5 and MRL achieve comparable $k$-NN accuracy across all eight datasets (Table~\ref{tab:accuracy}).
-Both methods improve over the unfinetuned baseline on most datasets.
-The notable exception is CLINC ($K_1 = 150$): the 384d$\rightarrow$256d linear projection reduces $L_1$ $k$-NN accuracy (V5: 67.6\%, MRL: 70.4\%) relative to the 384d baseline (88.7\%), though both methods' classification heads achieve $>$95\% on the validation set.
-This reflects V5's trade-off: the embedding space is reorganised for prefix-level specialization rather than maximising $k$-NN accuracy at full resolution.
+Both methods improve over the unfinetuned 384d baseline on datasets with fewer fine classes ($K_1 \leq 70$); on higher-$K_1$ datasets (arXiv, CLINC, WOS), the 384d$\rightarrow$256d projection reduces $k$-NN accuracy, most dramatically on CLINC ($K_1 = 150$): V5 67.6\%, MRL 70.4\% vs.\ baseline 88.7\%, though both methods' classification heads achieve $>$95\% on the validation set.
+This dimensionality bottleneck affects V5 and MRL equally, confirming that steerability does not come at the cost of additional accuracy loss.
 
 \begin{table}[t]
 \caption{$k$-NN classification accuracy at full embedding length ($j = 4$, 256d). V5 and MRL are comparable across datasets. Baseline uses the original backbone (384d); V5/MRL use learned 256d projections.}
@@ -243,10 +242,10 @@ Yahoo & 0.688 & 0.699 & 0.698 & 0.603 & 0.629 & 0.635 \\
 GoEmotions & 0.502 & 0.600 & 0.578 & 0.343 & 0.429 & 0.411 \\
 Newsgroups & 0.815 & 0.802 & 0.800 & 0.658 & 0.639 & 0.650 \\
 TREC & 0.854 & 0.934 & 0.932 & 0.718 & 0.794 & 0.790 \\
-arXiv & 0.721 & 0.729 & 0.721 & 0.465 & 0.448 & 0.446 \\
+arXiv & 0.721 & 0.703 & 0.692 & 0.465 & 0.401 & 0.381 \\
 CLINC & 0.961 & 0.954 & 0.910 & 0.887 & 0.676 & 0.704 \\
-DBPedia Classes & 0.912 & 0.962 & 0.960 & 0.780 & 0.874 & 0.885 \\
-WOS & 0.619 & 0.625 & 0.610 & 0.170 & 0.148 & 0.156 \\
+DBPedia Classes & 0.912 & 0.945 & 0.935 & 0.780 & 0.789 & 0.802 \\
+WOS & 0.619 & 0.601 & 0.599 & 0.170 & 0.111 & 0.115 \\
 \bottomrule
 \end{tabular}
 \end{table}

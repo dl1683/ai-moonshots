@@ -394,6 +394,40 @@ def verify_dataset_table():
             print(f"  {ds}: missing from profiles")
 
 
+def verify_accuracy_table():
+    """Verify Table 2: k-NN accuracy at j=4 (prefix_accuracy source)."""
+    print("\n=== TABLE 2: k-NN ACCURACY (j=4, 256d) ===")
+
+    # Paper Table 2 values (V5 and MRL from prefix_accuracy['j4'])
+    paper_vals = {
+        "yahoo":      {"v5_l0": 0.699, "v5_l1": 0.629, "mrl_l0": 0.698, "mrl_l1": 0.635},
+        "goemotions": {"v5_l0": 0.600, "v5_l1": 0.429, "mrl_l0": 0.578, "mrl_l1": 0.411},
+        "newsgroups": {"v5_l0": 0.802, "v5_l1": 0.639, "mrl_l0": 0.800, "mrl_l1": 0.650},
+        "trec":       {"v5_l0": 0.934, "v5_l1": 0.794, "mrl_l0": 0.932, "mrl_l1": 0.790},
+        "arxiv":      {"v5_l0": 0.703, "v5_l1": 0.401, "mrl_l0": 0.692, "mrl_l1": 0.381},
+        "clinc":      {"v5_l0": 0.954, "v5_l1": 0.676, "mrl_l0": 0.910, "mrl_l1": 0.704},
+        "dbpedia_classes": {"v5_l0": 0.945, "v5_l1": 0.789, "mrl_l0": 0.935, "mrl_l1": 0.802},
+        "wos":        {"v5_l0": 0.601, "v5_l1": 0.111, "mrl_l0": 0.599, "mrl_l1": 0.115},
+    }
+
+    for ds, expected in paper_vals.items():
+        bench_file = RESULTS_DIR / f"benchmark_bge-small_{ds}.json"
+        if not bench_file.exists():
+            print(f"  {ds}: missing benchmark file")
+            continue
+
+        with open(bench_file) as f:
+            bd = json.load(f)
+
+        for method, sub_key in [("v5", "v5"), ("mrl", "mrl")]:
+            seeds = sorted(bd[method].keys())
+            j4_l0 = np.mean([bd[method][s]["prefix_accuracy"]["j4_l0"] for s in seeds])
+            j4_l1 = np.mean([bd[method][s]["prefix_accuracy"]["j4_l1"] for s in seeds])
+
+            check(f"{ds} {method} L0", expected[f"{method}_l0"], j4_l0, tol=0.002)
+            check(f"{ds} {method} L1", expected[f"{method}_l1"], j4_l1, tol=0.002)
+
+
 if __name__ == "__main__":
     print("=" * 60)
     print("PAPER STATISTICS VERIFICATION")
@@ -401,6 +435,7 @@ if __name__ == "__main__":
     print("=" * 60)
 
     verify_dataset_table()
+    verify_accuracy_table()
     verify_ablation()
     verify_backbone()
     verify_crossmodel()
