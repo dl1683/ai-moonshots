@@ -1,0 +1,771 @@
+{
+  "experiment": "backbone_finetune_control",
+  "model": "bge-small",
+  "arms": {
+    "v5_frozen": "V5 head-only (current approach)",
+    "mrl_frozen": "MRL head-only (current baseline)",
+    "flat_finetune": "MRL with backbone fine-tuning (flat + capacity)",
+    "v5_finetune": "V5 with backbone fine-tuning (alignment + capacity)"
+  },
+  "datasets": [
+    "clinc",
+    "dbpedia_classes",
+    "trec"
+  ],
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024
+  ],
+  "config": {
+    "stage1_epochs": 5,
+    "stage2_epochs": 5,
+    "unfreeze_layers": 4,
+    "batch_size": 16
+  },
+  "timestamp": "2026-02-11T21:30:44.171085",
+  "results": {
+    "clinc": {
+      "v5_frozen": [
+        {
+          "arm": "v5_frozen",
+          "dataset": "clinc",
+          "seed": 42,
+          "trainable_params": 2066592,
+          "total_params": 35426592,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.9765,
+              "l1": 0.888
+            },
+            "j2": {
+              "l0": 0.9775,
+              "l1": 0.936
+            },
+            "j3": {
+              "l0": 0.9785,
+              "l1": 0.945
+            },
+            "j4": {
+              "l0": 0.98,
+              "l1": 0.946
+            }
+          },
+          "short_coarse": 0.9765,
+          "full_fine": 0.946,
+          "specialization_gap": 0.08850000000000002,
+          "coarse_gain": -0.0034999999999999476,
+          "fine_gain": 0.05799999999999994,
+          "steerability_score": 0.05449999999999999
+        },
+        {
+          "arm": "v5_frozen",
+          "dataset": "clinc",
+          "seed": 123,
+          "trainable_params": 2066592,
+          "total_params": 35426592,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.9705,
+              "l1": 0.883
+            },
+            "j2": {
+              "l0": 0.9745,
+              "l1": 0.9255
+            },
+            "j3": {
+              "l0": 0.978,
+              "l1": 0.9385
+            },
+            "j4": {
+              "l0": 0.9765,
+              "l1": 0.936
+            }
+          },
+          "short_coarse": 0.9705,
+          "full_fine": 0.936,
+          "specialization_gap": 0.08750000000000002,
+          "coarse_gain": -0.006000000000000005,
+          "fine_gain": 0.05300000000000005,
+          "steerability_score": 0.04700000000000004
+        },
+        {
+          "arm": "v5_frozen",
+          "dataset": "clinc",
+          "seed": 456,
+          "trainable_params": 2066592,
+          "total_params": 35426592,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.974,
+              "l1": 0.889
+            },
+            "j2": {
+              "l0": 0.9795,
+              "l1": 0.9315
+            },
+            "j3": {
+              "l0": 0.98,
+              "l1": 0.9375
+            },
+            "j4": {
+              "l0": 0.9825,
+              "l1": 0.9405
+            }
+          },
+          "short_coarse": 0.974,
+          "full_fine": 0.9405,
+          "specialization_gap": 0.08499999999999996,
+          "coarse_gain": -0.008500000000000063,
+          "fine_gain": 0.05149999999999999,
+          "steerability_score": 0.04299999999999993
+        },
+        {
+          "arm": "v5_frozen",
+          "dataset": "clinc",
+          "seed": 789,
+          "trainable_params": 2066592,
+          "total_params": 35426592,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.975,
+              "l1": 0.886
+            },
+            "j2": {
+              "l0": 0.979,
+              "l1": 0.9335
+            },
+            "j3": {
+              "l0": 0.9775,
+              "l1": 0.9425
+            },
+            "j4": {
+              "l0": 0.979,
+              "l1": 0.939
+            }
+          },
+          "short_coarse": 0.975,
+          "full_fine": 0.939,
+          "specialization_gap": 0.08899999999999997,
+          "coarse_gain": -0.0040000000000000036,
+          "fine_gain": 0.052999999999999936,
+          "steerability_score": 0.04899999999999993
+        },
+        {
+          "arm": "v5_frozen",
+          "dataset": "clinc",
+          "seed": 1024,
+          "trainable_params": 2066592,
+          "total_params": 35426592,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.975,
+              "l1": 0.88
+            },
+            "j2": {
+              "l0": 0.9795,
+              "l1": 0.93
+            },
+            "j3": {
+              "l0": 0.983,
+              "l1": 0.9415
+            },
+            "j4": {
+              "l0": 0.983,
+              "l1": 0.943
+            }
+          },
+          "short_coarse": 0.975,
+          "full_fine": 0.943,
+          "specialization_gap": 0.09499999999999997,
+          "coarse_gain": -0.008000000000000007,
+          "fine_gain": 0.06299999999999994,
+          "steerability_score": 0.05499999999999994
+        }
+      ],
+      "mrl_frozen": [
+        {
+          "arm": "mrl_frozen",
+          "dataset": "clinc",
+          "seed": 42,
+          "trainable_params": 2102572,
+          "total_params": 35462572,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.978,
+              "l1": 0.9525
+            },
+            "j2": {
+              "l0": 0.9795,
+              "l1": 0.958
+            },
+            "j3": {
+              "l0": 0.982,
+              "l1": 0.96
+            },
+            "j4": {
+              "l0": 0.9815,
+              "l1": 0.96
+            }
+          },
+          "short_coarse": 0.978,
+          "full_fine": 0.96,
+          "specialization_gap": 0.025499999999999967,
+          "coarse_gain": -0.0035000000000000586,
+          "fine_gain": 0.007499999999999951,
+          "steerability_score": 0.0039999999999998925
+        },
+        {
+          "arm": "mrl_frozen",
+          "dataset": "clinc",
+          "seed": 123,
+          "trainable_params": 2102572,
+          "total_params": 35462572,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.983,
+              "l1": 0.9515
+            },
+            "j2": {
+              "l0": 0.982,
+              "l1": 0.953
+            },
+            "j3": {
+              "l0": 0.9835,
+              "l1": 0.9555
+            },
+            "j4": {
+              "l0": 0.982,
+              "l1": 0.9545
+            }
+          },
+          "short_coarse": 0.983,
+          "full_fine": 0.9545,
+          "specialization_gap": 0.03149999999999997,
+          "coarse_gain": 0.0010000000000000009,
+          "fine_gain": 0.0030000000000000027,
+          "steerability_score": 0.0040000000000000036
+        },
+        {
+          "arm": "mrl_frozen",
+          "dataset": "clinc",
+          "seed": 456,
+          "trainable_params": 2102572,
+          "total_params": 35462572,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.9815,
+              "l1": 0.953
+            },
+            "j2": {
+              "l0": 0.984,
+              "l1": 0.9585
+            },
+            "j3": {
+              "l0": 0.9845,
+              "l1": 0.9575
+            },
+            "j4": {
+              "l0": 0.9845,
+              "l1": 0.9585
+            }
+          },
+          "short_coarse": 0.9815,
+          "full_fine": 0.9585,
+          "specialization_gap": 0.02850000000000008,
+          "coarse_gain": -0.0030000000000000027,
+          "fine_gain": 0.00550000000000006,
+          "steerability_score": 0.0025000000000000577
+        },
+        {
+          "arm": "mrl_frozen",
+          "dataset": "clinc",
+          "seed": 789,
+          "trainable_params": 2102572,
+          "total_params": 35462572,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.983,
+              "l1": 0.954
+            },
+            "j2": {
+              "l0": 0.984,
+              "l1": 0.9545
+            },
+            "j3": {
+              "l0": 0.9835,
+              "l1": 0.9535
+            },
+            "j4": {
+              "l0": 0.9825,
+              "l1": 0.9555
+            }
+          },
+          "short_coarse": 0.983,
+          "full_fine": 0.9555,
+          "specialization_gap": 0.029000000000000026,
+          "coarse_gain": 0.0004999999999999449,
+          "fine_gain": 0.0015000000000000568,
+          "steerability_score": 0.0020000000000000018
+        },
+        {
+          "arm": "mrl_frozen",
+          "dataset": "clinc",
+          "seed": 1024,
+          "trainable_params": 2102572,
+          "total_params": 35462572,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.9795,
+              "l1": 0.9435
+            },
+            "j2": {
+              "l0": 0.9815,
+              "l1": 0.9525
+            },
+            "j3": {
+              "l0": 0.981,
+              "l1": 0.9545
+            },
+            "j4": {
+              "l0": 0.981,
+              "l1": 0.953
+            }
+          },
+          "short_coarse": 0.9795,
+          "full_fine": 0.953,
+          "specialization_gap": 0.03600000000000003,
+          "coarse_gain": -0.0014999999999999458,
+          "fine_gain": 0.009499999999999953,
+          "steerability_score": 0.008000000000000007
+        }
+      ],
+      "flat_finetune": [
+        {
+          "arm": "flat_finetune",
+          "dataset": "clinc",
+          "seed": 42,
+          "trainable_params": 9200428,
+          "total_params": 35462572,
+          "stage1_epochs": 5,
+          "stage2_epochs": 5,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.983,
+              "l1": 0.9565
+            },
+            "j2": {
+              "l0": 0.982,
+              "l1": 0.9565
+            },
+            "j3": {
+              "l0": 0.984,
+              "l1": 0.961
+            },
+            "j4": {
+              "l0": 0.982,
+              "l1": 0.959
+            }
+          },
+          "short_coarse": 0.983,
+          "full_fine": 0.959,
+          "specialization_gap": 0.026499999999999968,
+          "coarse_gain": 0.0010000000000000009,
+          "fine_gain": 0.0024999999999999467,
+          "steerability_score": 0.0034999999999999476
+        },
+        {
+          "arm": "flat_finetune",
+          "dataset": "clinc",
+          "seed": 123,
+          "trainable_params": 9200428,
+          "total_params": 35462572,
+          "stage1_epochs": 5,
+          "stage2_epochs": 5,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.983,
+              "l1": 0.958
+            },
+            "j2": {
+              "l0": 0.985,
+              "l1": 0.9625
+            },
+            "j3": {
+              "l0": 0.9855,
+              "l1": 0.9605
+            },
+            "j4": {
+              "l0": 0.985,
+              "l1": 0.9595
+            }
+          },
+          "short_coarse": 0.983,
+          "full_fine": 0.9595,
+          "specialization_gap": 0.025000000000000022,
+          "coarse_gain": -0.0020000000000000018,
+          "fine_gain": 0.0015000000000000568,
+          "steerability_score": -0.0004999999999999449
+        },
+        {
+          "arm": "flat_finetune",
+          "dataset": "clinc",
+          "seed": 456,
+          "trainable_params": 9200428,
+          "total_params": 35462572,
+          "stage1_epochs": 5,
+          "stage2_epochs": 5,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.982,
+              "l1": 0.956
+            },
+            "j2": {
+              "l0": 0.984,
+              "l1": 0.9635
+            },
+            "j3": {
+              "l0": 0.9825,
+              "l1": 0.9615
+            },
+            "j4": {
+              "l0": 0.9845,
+              "l1": 0.9645
+            }
+          },
+          "short_coarse": 0.982,
+          "full_fine": 0.9645,
+          "specialization_gap": 0.026000000000000023,
+          "coarse_gain": -0.0025000000000000577,
+          "fine_gain": 0.008500000000000063,
+          "steerability_score": 0.006000000000000005
+        },
+        {
+          "arm": "flat_finetune",
+          "dataset": "clinc",
+          "seed": 789,
+          "trainable_params": 9200428,
+          "total_params": 35462572,
+          "stage1_epochs": 5,
+          "stage2_epochs": 5,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.981,
+              "l1": 0.9565
+            },
+            "j2": {
+              "l0": 0.9825,
+              "l1": 0.957
+            },
+            "j3": {
+              "l0": 0.9835,
+              "l1": 0.9575
+            },
+            "j4": {
+              "l0": 0.981,
+              "l1": 0.957
+            }
+          },
+          "short_coarse": 0.981,
+          "full_fine": 0.957,
+          "specialization_gap": 0.024499999999999966,
+          "coarse_gain": 0.0,
+          "fine_gain": 0.0004999999999999449,
+          "steerability_score": 0.0004999999999999449
+        },
+        {
+          "arm": "flat_finetune",
+          "dataset": "clinc",
+          "seed": 1024,
+          "trainable_params": 9200428,
+          "total_params": 35462572,
+          "stage1_epochs": 5,
+          "stage2_epochs": 5,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.9835,
+              "l1": 0.9545
+            },
+            "j2": {
+              "l0": 0.9825,
+              "l1": 0.9575
+            },
+            "j3": {
+              "l0": 0.982,
+              "l1": 0.958
+            },
+            "j4": {
+              "l0": 0.983,
+              "l1": 0.958
+            }
+          },
+          "short_coarse": 0.9835,
+          "full_fine": 0.958,
+          "specialization_gap": 0.029000000000000026,
+          "coarse_gain": 0.000500000000000056,
+          "fine_gain": 0.0034999999999999476,
+          "steerability_score": 0.0040000000000000036
+        }
+      ],
+      "v5_finetune": [
+        {
+          "arm": "v5_finetune",
+          "dataset": "clinc",
+          "seed": 42,
+          "trainable_params": 9164448,
+          "total_params": 35426592,
+          "stage1_epochs": 5,
+          "stage2_epochs": 5,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.981,
+              "l1": 0.902
+            },
+            "j2": {
+              "l0": 0.982,
+              "l1": 0.9475
+            },
+            "j3": {
+              "l0": 0.986,
+              "l1": 0.9585
+            },
+            "j4": {
+              "l0": 0.987,
+              "l1": 0.959
+            }
+          },
+          "short_coarse": 0.981,
+          "full_fine": 0.959,
+          "specialization_gap": 0.07899999999999996,
+          "coarse_gain": -0.006000000000000005,
+          "fine_gain": 0.05699999999999994,
+          "steerability_score": 0.050999999999999934
+        },
+        {
+          "arm": "v5_finetune",
+          "dataset": "clinc",
+          "seed": 123,
+          "trainable_params": 9164448,
+          "total_params": 35426592,
+          "stage1_epochs": 5,
+          "stage2_epochs": 5,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.9815,
+              "l1": 0.896
+            },
+            "j2": {
+              "l0": 0.9825,
+              "l1": 0.952
+            },
+            "j3": {
+              "l0": 0.9855,
+              "l1": 0.9585
+            },
+            "j4": {
+              "l0": 0.986,
+              "l1": 0.9605
+            }
+          },
+          "short_coarse": 0.9815,
+          "full_fine": 0.9605,
+          "specialization_gap": 0.08550000000000002,
+          "coarse_gain": -0.0044999999999999485,
+          "fine_gain": 0.0645,
+          "steerability_score": 0.06000000000000005
+        },
+        {
+          "arm": "v5_finetune",
+          "dataset": "clinc",
+          "seed": 456,
+          "trainable_params": 9164448,
+          "total_params": 35426592,
+          "stage1_epochs": 5,
+          "stage2_epochs": 5,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.978,
+              "l1": 0.89
+            },
+            "j2": {
+              "l0": 0.9805,
+              "l1": 0.9395
+            },
+            "j3": {
+              "l0": 0.9835,
+              "l1": 0.9525
+            },
+            "j4": {
+              "l0": 0.984,
+              "l1": 0.955
+            }
+          },
+          "short_coarse": 0.978,
+          "full_fine": 0.955,
+          "specialization_gap": 0.08799999999999997,
+          "coarse_gain": -0.006000000000000005,
+          "fine_gain": 0.06499999999999995,
+          "steerability_score": 0.05899999999999994
+        },
+        {
+          "arm": "v5_finetune",
+          "dataset": "clinc",
+          "seed": 789,
+          "trainable_params": 9164448,
+          "total_params": 35426592,
+          "stage1_epochs": 5,
+          "stage2_epochs": 5,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.979,
+              "l1": 0.9075
+            },
+            "j2": {
+              "l0": 0.9815,
+              "l1": 0.9485
+            },
+            "j3": {
+              "l0": 0.981,
+              "l1": 0.9535
+            },
+            "j4": {
+              "l0": 0.983,
+              "l1": 0.9495
+            }
+          },
+          "short_coarse": 0.979,
+          "full_fine": 0.9495,
+          "specialization_gap": 0.07150000000000001,
+          "coarse_gain": -0.0040000000000000036,
+          "fine_gain": 0.04200000000000004,
+          "steerability_score": 0.038000000000000034
+        },
+        {
+          "arm": "v5_finetune",
+          "dataset": "clinc",
+          "seed": 1024,
+          "trainable_params": 9164448,
+          "total_params": 35426592,
+          "stage1_epochs": 5,
+          "stage2_epochs": 5,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.98,
+              "l1": 0.896
+            },
+            "j2": {
+              "l0": 0.9825,
+              "l1": 0.945
+            },
+            "j3": {
+              "l0": 0.985,
+              "l1": 0.9545
+            },
+            "j4": {
+              "l0": 0.988,
+              "l1": 0.958
+            }
+          },
+          "short_coarse": 0.98,
+          "full_fine": 0.958,
+          "specialization_gap": 0.08399999999999996,
+          "coarse_gain": -0.008000000000000007,
+          "fine_gain": 0.061999999999999944,
+          "steerability_score": 0.05399999999999994
+        }
+      ]
+    },
+    "dbpedia_classes": {
+      "v5_frozen": [
+        {
+          "arm": "v5_frozen",
+          "dataset": "dbpedia_classes",
+          "seed": 42,
+          "trainable_params": 2045775,
+          "total_params": 35405775,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.9605,
+              "l1": 0.8325
+            },
+            "j2": {
+              "l0": 0.961,
+              "l1": 0.8725
+            },
+            "j3": {
+              "l0": 0.961,
+              "l1": 0.8805
+            },
+            "j4": {
+              "l0": 0.958,
+              "l1": 0.873
+            }
+          },
+          "short_coarse": 0.9605,
+          "full_fine": 0.873,
+          "specialization_gap": 0.128,
+          "coarse_gain": 0.0025000000000000577,
+          "fine_gain": 0.04049999999999998,
+          "steerability_score": 0.04300000000000004
+        },
+        {
+          "arm": "v5_frozen",
+          "dataset": "dbpedia_classes",
+          "seed": 123,
+          "trainable_params": 2045775,
+          "total_params": 35405775,
+          "stage1_epochs": 5,
+          "stage2_epochs": 0,
+          "prefix_results": {
+            "j1": {
+              "l0": 0.9605,
+              "l1": 0.8155
+            },
+            "j2": {
+              "l0": 0.9625,
+              "l1": 0.8635
+            },
+            "j3": {
+              "l0": 0.961,
+              "l1": 0.8695
+            },
+            "j4": {
+              "l0": 0.9605,
+              "l1": 0.866
+            }
+          },
+          "short_coarse": 0.9605,
+          "full_fine": 0.866,
+          "specialization_gap": 0.14500000000000002,
+          "coarse_gain": 0.0,
+          "fine_gain": 0.05049999999999999,
+          "steerability_score": 0.05049999999999999
+        }
+      ]
+    }
+  }
+}
