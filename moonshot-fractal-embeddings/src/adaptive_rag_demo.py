@@ -434,7 +434,7 @@ def run_rag_demo(
             ).to(device)
             v5_trainer = V5Trainer(
                 model=v5_model, train_dataset=train_data_trimmed, val_dataset=val_data,
-                device=device, stage1_epochs=5,
+                device=device, stage1_epochs=5, stage2_epochs=0,
             )
             v5_trainer.train(batch_size=16, patience=5)
 
@@ -446,7 +446,7 @@ def run_rag_demo(
             ).to(device)
             mrl_trainer = MRLTrainerV5(
                 model=mrl_model, train_dataset=train_data_trimmed, val_dataset=val_data,
-                device=device, stage1_epochs=5,
+                device=device, stage1_epochs=5, stage2_epochs=0,
             )
             mrl_trainer.train(batch_size=16, patience=5)
 
