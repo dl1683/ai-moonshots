@@ -367,12 +367,40 @@ def verify_scaling():
         print(f"  Only {len(h_vals)} datasets with product data, need >= 5")
 
 
+def verify_dataset_table():
+    """Verify Table 1: dataset H(L1|L0) against profiles."""
+    print("\n=== TABLE 1: DATASET PROFILES ===")
+
+    profiles_path = RESULTS_DIR / "hierarchy_profiles.json"
+    if not profiles_path.exists():
+        print("  Missing hierarchy_profiles.json")
+        return
+
+    with open(profiles_path) as f:
+        profiles = json.load(f)
+
+    # Paper Table 1 values: H(L1|L0) is what matters for claims
+    paper_h = {
+        "yahoo": 1.23, "goemotions": 1.88, "newsgroups": 1.88,
+        "trec": 2.21, "arxiv": 2.62, "dbpedia_classes": 3.17,
+        "clinc": 3.90, "wos": 5.05,
+    }
+
+    for ds, expected_h in paper_h.items():
+        actual_h = profiles.get(ds, {}).get("h_l1_given_l0")
+        if actual_h is not None:
+            check(f"H(L1|L0) {ds}", expected_h, actual_h, tol=0.02)
+        else:
+            print(f"  {ds}: missing from profiles")
+
+
 if __name__ == "__main__":
     print("=" * 60)
     print("PAPER STATISTICS VERIFICATION")
     print("Using paired tests per methodology Section 2")
     print("=" * 60)
 
+    verify_dataset_table()
     verify_ablation()
     verify_backbone()
     verify_crossmodel()
