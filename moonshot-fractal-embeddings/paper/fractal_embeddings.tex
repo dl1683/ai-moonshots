@@ -443,8 +443,15 @@ The synthetic experiment also resolves the observational confound: steerability 
 \paragraph{Real-data capacity sweep.}
 To validate the Goldilocks prediction on natural hierarchies, we sweep the scale dimension (prefix capacity) across $d_s \in \{16, 32, 48, 64, 96, 128\}$ on four datasets spanning the $\hlo$ range: Yahoo ($\hlo = 1.23$), TREC ($2.21$), DBPedia Classes ($3.17$), and CLINC ($3.90$).
 Three seeds per condition.
-All datasets peak at $d_s = 16$ (the minimum tested), consistent with the synthetic finding that the default 64d prefix is already at or beyond the Goldilocks optimum for these hierarchies.
-The key finding is in the \emph{scaling law at fixed capacity}: steerability at $d_s = 16$ scales nearly perfectly with conditional entropy across all four datasets ($\rho = 1.000$, $r = 0.989$, $p = 0.011$), confirming that hierarchy complexity drives the steerability signal at matched capacity.
+All datasets peak at $d_s = 16$ (the minimum tested), consistent with the synthetic finding that the default 64d prefix is already at or beyond the Goldilocks optimum for these hierarchies (Figure~\ref{fig:capacity_sweep}a).
+The key finding is in the \emph{scaling law at fixed capacity}: steerability at $d_s = 16$ scales nearly perfectly with conditional entropy across all four datasets ($\rho = 1.000$, $r = 0.985$, $p = 0.015$; Figure~\ref{fig:capacity_sweep}b), confirming that hierarchy complexity drives the steerability signal at matched capacity.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig_capacity_sweep.pdf}
+    \caption{\textbf{Real-data capacity sweep.} (a)~Steerability vs.\ prefix capacity ($d_s$) for four datasets. All peak at $d_s = 16$, confirming the default 64d prefix exceeds the Goldilocks optimum. (b)~At fixed capacity ($d_s = 16$), steerability scales perfectly with $\hlo$ ($\rho = 1.000$, $r = 0.985$).}
+    \label{fig:capacity_sweep}
+\end{figure}
 
 \paragraph{Alignment vs.\ capacity control.}
 A natural objection is that steerability might emerge from \emph{any} sufficient-capacity model, without hierarchy-aligned supervision.
@@ -453,10 +460,17 @@ We test this with a $2 \times 2$ factorial design crossing alignment (V5/MRL) wi
 (ii) \textbf{MRL-frozen} (flat, head-only, 2.1M params);
 (iii) \textbf{MRL+backbone} (flat, head + last 4 backbone layers, 9.2M params);
 (iv) \textbf{V5+backbone} (aligned, head + backbone, 9.2M params).
-On CLINC: V5-frozen $\steer = +0.050 \pm 0.005$ vs.\ MRL+backbone $\steer = +0.003 \pm 0.002$ ($d = 12.9$, $p < 10^{-6}$).
+On CLINC: V5-frozen $\steer = +0.050 \pm 0.005$ vs.\ MRL+backbone $\steer = +0.003 \pm 0.002$ ($d = 12.9$, $p < 10^{-7}$; Figure~\ref{fig:backbone}).
 The alignment factor has a massive effect; the capacity factor has none.
 Specifically, $4.4\times$ more trainable parameters cannot recover steerability without hierarchy-aligned prefix supervision ($p = 0.40$ for MRL-frozen vs.\ MRL+backbone).
 Adding backbone fine-tuning to V5 also yields no improvement ($p = 0.57$), confirming that alignment is both necessary and sufficient under these conditions.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig_backbone_control.pdf}
+    \caption{\textbf{Alignment vs.\ capacity control} ($2 \times 2$ factorial). V5 with head-only training (2.1M params) dominates MRL with full backbone fine-tuning (9.2M params) on both datasets. $4.4\times$ more parameters without alignment produce zero steerability. *** denotes $p < 0.001$.}
+    \label{fig:backbone}
+\end{figure}
 
 %=======================================================================
 \section{Generality, Downstream Utility, and Extensions}

@@ -18,7 +18,9 @@ from scipy import stats as sp_stats
 
 RESULTS_DIR = Path(__file__).parent.parent / "results"
 FIGURES_DIR = RESULTS_DIR / "figures"
+PAPER_FIGS = RESULTS_DIR / "figures" / "paper"
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+PAPER_FIGS.mkdir(parents=True, exist_ok=True)
 
 # Style
 plt.rcParams.update({
@@ -120,8 +122,11 @@ def fig_capacity_sweep():
     plt.tight_layout()
     out = FIGURES_DIR / "fig_capacity_sweep.png"
     plt.savefig(out)
+    out_pdf = PAPER_FIGS / "fig_capacity_sweep.pdf"
+    plt.savefig(out_pdf, bbox_inches='tight')
     plt.close()
     print(f"  Saved {out}")
+    print(f"  Saved {out_pdf}")
 
 
 def fig_backbone_control():
@@ -202,8 +207,11 @@ def fig_backbone_control():
     plt.tight_layout()
     out = FIGURES_DIR / "fig_backbone_control.png"
     plt.savefig(out)
+    out_pdf = PAPER_FIGS / "fig_backbone_control.pdf"
+    plt.savefig(out_pdf, bbox_inches='tight')
     plt.close()
     print(f"  Saved {out}")
+    print(f"  Saved {out_pdf}")
 
 
 def fig_backbone_summary():
