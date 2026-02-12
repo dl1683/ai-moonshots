@@ -647,8 +647,8 @@ Doubling prefix capacity from 64 to 128 dimensions should shift the Goldilocks p
 \paragraph{Multi-resolution embeddings.}
 MRL~\citep{kusupati2022matryoshka} trains embeddings supporting prefix truncation, but all lengths target the same task.
 SMEC~\citep{li2025smrl} rethinks MRL training for retrieval compression; Matryoshka Multimodal Models~\citep{cai2024m3} apply the nesting principle to visual tokens.
-Most closely related, \citet{hanley2025hierarchical} independently train multilingual Matryoshka embeddings where different dimension subsets capture story similarity at different granularity levels for news clustering.
-Our work provides complementary contributions: a formal successive-refinement framework, an explicit steerability metric with causal ablations, evaluation across eight domains and three encoder families, and a scaling trend linking steerability to hierarchy structure.
+Most closely related, \citet{hanley2025hierarchical} independently train multilingual Matryoshka embeddings where shorter prefixes capture coarse story themes and longer prefixes capture fine-grained event identity, using progressively stricter similarity thresholds per dimension level.
+Our work complements theirs by contributing a formal successive-refinement framework explaining \emph{why} prefix--hierarchy alignment works, an explicit steerability metric with four causal ablations isolating alignment as the active ingredient, cross-domain evaluation across eight hierarchical classification datasets and three encoder families, and scaling laws linking steerability magnitude to hierarchy structure.
 
 \paragraph{Dimensional redundancy.}
 \citet{dufter2025random} show that randomly removing 50\% of dimensions causes $<$10\% performance loss, revealing massive redundancy.
@@ -659,7 +659,7 @@ We exploit this differently: rather than discarding dimensions for compression, 
 Hyperbolic embeddings~\citep{nickel2017poincare} represent hierarchies through curved geometry.
 HEAL~\citep{zhang2025heal} aligns LLM embeddings with domain hierarchies via contrastive losses and matrix factorisation, but does not offer steerability via dimensional truncation.
 Concurrent work on coarse-to-fine retrieval~\citep{jiang2025funnelrag} and multi-granularity RAG interfaces~\citep{chen2026arag} address the granularity problem through external pipeline mechanisms (multiple retrievers, separate tools) rather than encoding granularity into the vector itself.
-Our work is the first to embed multi-level semantic granularity in a single vector's prefix structure.
+Our work provides the first theoretical and causal analysis of \emph{why} prefix--hierarchy alignment produces steerability, grounded in the classical theory of successive refinement.
 
 \paragraph{Sparse and compressed embeddings.}
 CSR~\citep{chen2025csr} and CSRv2~\citep{chen2026csrv2} learn sparse codes as alternatives to MRL, achieving efficiency through selective activation.
