@@ -73,7 +73,8 @@
     "n_l0": 10,
     "n_l1": 336,
     "branching_factor": 33.6,
-    "h_l1_given_l0": 5.054453444463944
+    "h_l1_given_l0": 5.054453444463944,
+    "h_l0": 2.9002851636279496
   },
   "goemotions": {
     "dataset": "goemotions",
