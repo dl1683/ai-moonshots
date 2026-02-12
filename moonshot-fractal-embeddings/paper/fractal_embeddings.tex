@@ -75,6 +75,7 @@ Critically, this adds \textbf{zero inference-time cost}---the deployed model has
 The difference lies entirely in \emph{how} the projection head is trained.
 
 We call the resulting property \emph{steerability}: the degree to which prefix truncation controls semantic granularity rather than merely degrading fidelity.
+While prefix-level granularity has been explored for news clustering~\citep{hanley2025hierarchical}, no prior work provides causal evidence for \emph{why} it works, formal theory grounding it in successive refinement~\citep{equitz1991successive}, or scaling laws predicting \emph{when} it works best.
 Our evaluation spans eight hierarchical text datasets, three encoder families, four controlled ablations, a synthetic causal experiment, and connections to 30 years of information theory.
 The main findings are:
 
