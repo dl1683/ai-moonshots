@@ -651,14 +651,14 @@ Most closely related, \citet{hanley2025hierarchical} independently train multili
 Our work complements theirs by contributing a formal successive-refinement framework explaining \emph{why} prefix--hierarchy alignment works, an explicit steerability metric with four causal ablations isolating alignment as the active ingredient, cross-domain evaluation across eight hierarchical classification datasets and three encoder families, and scaling laws linking steerability magnitude to hierarchy structure.
 
 \paragraph{Dimensional redundancy.}
-\citet{dufter2025random} show that randomly removing 50\% of dimensions causes $<$10\% performance loss, revealing massive redundancy.
+\citet{takeshita2025random} show that randomly removing 50\% of dimensions causes $<$10\% performance loss, revealing massive redundancy.
 We exploit this differently: rather than discarding dimensions for compression, we \emph{structure} them to carry semantically distinct information at each prefix length.
-\citet{luan2025limits} prove that single-vector embedding expressiveness for top-$k$ retrieval is bounded by dimensionality, motivating multi-resolution access patterns.
+\citet{weller2025limits} prove that single-vector embedding expressiveness for top-$k$ retrieval is bounded by dimensionality, motivating multi-resolution access patterns.
 
 \paragraph{Hierarchical embeddings.}
 Hyperbolic embeddings~\citep{nickel2017poincare} represent hierarchies through curved geometry.
 HEAL~\citep{zhang2025heal} aligns LLM embeddings with domain hierarchies via contrastive losses and matrix factorisation, but does not offer steerability via dimensional truncation.
-Concurrent work on coarse-to-fine retrieval~\citep{jiang2025funnelrag} and multi-granularity RAG interfaces~\citep{chen2026arag} address the granularity problem through external pipeline mechanisms (multiple retrievers, separate tools) rather than encoding granularity into the vector itself.
+Concurrent work on coarse-to-fine retrieval~\citep{zhao2025funnelrag} and multi-granularity RAG interfaces~\citep{du2026arag} address the granularity problem through external pipeline mechanisms (multiple retrievers, separate tools) rather than encoding granularity into the vector itself.
 Our work provides the first theoretical and causal analysis of \emph{why} prefix--hierarchy alignment produces steerability, grounded in the classical theory of successive refinement.
 
 \paragraph{Sparse and compressed embeddings.}
