@@ -448,14 +448,15 @@ The key finding is in the \emph{scaling law at fixed capacity}: steerability at 
 
 \paragraph{Alignment vs.\ capacity control.}
 A natural objection is that steerability might emerge from \emph{any} sufficient-capacity model, without hierarchy-aligned supervision.
-We test this with a 4-arm experiment on CLINC and DBPedia Classes (5 seeds each):
-(i) \textbf{V5-frozen} (hierarchy-aligned, head-only, 2.1M params);
-(ii) \textbf{MRL-frozen} (flat MRL, head-only, 2.1M params);
-(iii) \textbf{MRL+backbone} (flat MRL, head + last 4 backbone layers fine-tuned, 9.2M params);
-(iv) \textbf{V5+backbone} (hierarchy-aligned, head + backbone, 9.2M params).
+We test this with a $2 \times 2$ factorial design crossing alignment (V5/MRL) with training regime (head-only/backbone fine-tuning) on CLINC and DBPedia Classes (5 seeds each):
+(i) \textbf{V5-frozen} (aligned, head-only, 2.1M params);
+(ii) \textbf{MRL-frozen} (flat, head-only, 2.1M params);
+(iii) \textbf{MRL+backbone} (flat, head + last 4 backbone layers, 9.2M params);
+(iv) \textbf{V5+backbone} (aligned, head + backbone, 9.2M params).
 On CLINC: V5-frozen $\steer = +0.050 \pm 0.005$ vs.\ MRL+backbone $\steer = +0.003 \pm 0.002$ ($d = 12.9$, $p < 10^{-6}$).
-Adding backbone capacity to MRL does not help ($\steer$ stays near zero); V5 backbone fine-tuning adds nothing over V5 head-only ($p = 0.57$).
-Hierarchy alignment is both necessary and sufficient for steerability; capacity alone is neither.
+The alignment factor has a massive effect; the capacity factor has none.
+Specifically, $4.4\times$ more trainable parameters cannot recover steerability without hierarchy-aligned prefix supervision ($p = 0.40$ for MRL-frozen vs.\ MRL+backbone).
+Adding backbone fine-tuning to V5 also yields no improvement ($p = 0.57$), confirming that alignment is both necessary and sufficient under these conditions.
 
 %=======================================================================
 \section{Generality, Downstream Utility, and Extensions}
@@ -638,6 +639,8 @@ We exploit this differently: rather than discarding dimensions for compression, 
 \paragraph{Hierarchical embeddings.}
 Hyperbolic embeddings~\citep{nickel2017poincare} represent hierarchies through curved geometry.
 HEAL~\citep{zhang2025heal} aligns LLM embeddings with domain hierarchies via contrastive losses and matrix factorisation, but does not offer steerability via dimensional truncation.
+Concurrent work on coarse-to-fine retrieval~\citep{jiang2025funnelrag} and multi-granularity RAG interfaces~\citep{chen2026arag} address the granularity problem through external pipeline mechanisms (multiple retrievers, separate tools) rather than encoding granularity into the vector itself.
+Our work is the first to embed multi-level semantic granularity in a single vector's prefix structure.
 
 \paragraph{Sparse and compressed embeddings.}
 CSR~\citep{chen2025csr} and CSRv2~\citep{chen2026csrv2} learn sparse codes as alternatives to MRL, achieving efficiency through selective activation.
@@ -653,6 +656,7 @@ We have shown that aligning prefix supervision with semantic hierarchy converts 
 The evidence is threefold.
 \emph{Empirically}, fractal training produces steerability on all eight datasets (pooled $d = 1.49$, $p = 0.0003$), with magnitude predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$).
 \emph{Causally}, four controlled ablations on two datasets establish that the specific prefix-to-hierarchy alignment---not hierarchy awareness, not architecture, not optimiser---drives the effect; sign reversal under inversion and collapse under uniform multi-task training both replicate.
+A factorial backbone control confirms alignment is both necessary and sufficient: $4.4\times$ more trainable parameters without alignment produce zero steerability ($d = 12.9$).
 \emph{Theoretically}, the successive refinement framework explains \emph{why} V5 works (capacity bottleneck forces coarse-first encoding) and \emph{when} it works best (Goldilocks capacity--demand matching, $R^2 = 0.964$).
 
 The practical implications are concrete.
