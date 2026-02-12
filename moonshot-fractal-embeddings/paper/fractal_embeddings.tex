@@ -224,7 +224,7 @@ Algorithm~\ref{alg:v5} summarises the procedure.
 
 \paragraph{Classification performance is preserved.}
 At full embedding length ($j=4$, 256d), V5 and MRL achieve comparable $k$-NN accuracy across all eight datasets (Table~\ref{tab:accuracy}).
-Both methods improve over the unfinetuned 384d baseline on datasets with fewer fine classes ($K_1 \leq 70$); on higher-$K_1$ datasets (arXiv, CLINC, WOS), the 384d$\rightarrow$256d projection reduces $k$-NN accuracy, most dramatically on CLINC ($K_1 = 150$): V5 67.6\%, MRL 70.4\% vs.\ baseline 88.7\%, though both methods' classification heads achieve $>$95\% on the validation set.
+Both methods generally improve over the unfinetuned 384d baseline on lower-$K_1$ datasets; on higher-$K_1$ datasets (arXiv, CLINC, WOS), the 384d$\rightarrow$256d projection reduces $k$-NN accuracy, most dramatically on CLINC ($K_1 = 150$): V5 67.6\%, MRL 70.4\% vs.\ baseline 88.7\%, though both methods' classification heads achieve $>$95\% on the validation set.
 This dimensionality bottleneck affects V5 and MRL equally, confirming that steerability does not come at the cost of additional accuracy loss.
 
 \begin{table}[t]
