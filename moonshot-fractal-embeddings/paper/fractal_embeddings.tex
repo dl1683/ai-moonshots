@@ -441,10 +441,10 @@ $K_0$ & $\hlz$ & $\hlo$ & Branch & V5 $\steer$ & MRL $\steer$ & Gap \\
 The synthetic experiment also resolves the observational confound: steerability is driven by $\hlz$ (prefix task demand), not $\hlo$. In natural datasets, the $\hlo$ correlation arises because the two entropies covary. Figure~\ref{fig:entropy_alloc} in the appendix visualises both relationships.
 
 \paragraph{Real-data capacity sweep.}
-To validate the Goldilocks prediction on natural hierarchies, we sweep the scale dimension (prefix capacity) across $d_s \in \{16, 32, 48, 64, 96, 128\}$ on three datasets spanning the $\hlo$ range: Yahoo ($\hlo = 1.23$), TREC ($2.21$), and DBPedia Classes ($3.17$).
+To validate the Goldilocks prediction on natural hierarchies, we sweep the scale dimension (prefix capacity) across $d_s \in \{16, 32, 48, 64, 96, 128\}$ on four datasets spanning the $\hlo$ range: Yahoo ($\hlo = 1.23$), TREC ($2.21$), DBPedia Classes ($3.17$), and CLINC ($3.90$).
 Three seeds per condition.
 All datasets peak at $d_s = 16$ (the minimum tested), consistent with the synthetic finding that the default 64d prefix is already at or beyond the Goldilocks optimum for these hierarchies.
-The key finding is in the \emph{scaling law at fixed capacity}: steerability at $d_s = 16$ scales nearly perfectly with conditional entropy ($\rho = 1.000$, $r = 0.999$, $p = 0.027$), confirming that hierarchy complexity drives the steerability signal at matched capacity.
+The key finding is in the \emph{scaling law at fixed capacity}: steerability at $d_s = 16$ scales nearly perfectly with conditional entropy across all four datasets ($\rho = 1.000$, $r = 0.989$, $p = 0.011$), confirming that hierarchy complexity drives the steerability signal at matched capacity.
 
 \paragraph{Alignment vs.\ capacity control.}
 A natural objection is that steerability might emerge from \emph{any} sufficient-capacity model, without hierarchy-aligned supervision.
