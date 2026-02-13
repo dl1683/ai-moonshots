@@ -16,15 +16,22 @@ from pathlib import Path
 
 RESULTS_DIR = Path(__file__).parent.parent / "results"
 
-DATASETS = ["yahoo", "goemotions", "newsgroups", "trec", "arxiv", "clinc", "dbpedia_classes", "wos"]
+DATASETS = ["yahoo", "goemotions", "newsgroups", "trec", "arxiv",
+            "hupd_sec_cls", "dbpedia_classes", "clinc", "hwv_l0_l2",
+            "hupd_sec_sub", "hwv_l0_l3", "wos"]
 DATASET_NAMES = {
     "yahoo": "Yahoo", "goemotions": "GoEmotions", "newsgroups": "Newsgroups",
     "trec": "TREC", "arxiv": "arXiv", "clinc": "CLINC",
-    "dbpedia_classes": "DBPedia", "wos": "WOS"
+    "dbpedia_classes": "DBPedia", "wos": "WOS",
+    "hupd_sec_cls": "HUPD-SC", "hupd_sec_sub": "HUPD-SS",
+    "hwv_l0_l2": "HWV-L2", "hwv_l0_l3": "HWV-L3",
 }
 DATASET_H = {
     "yahoo": 1.23, "goemotions": 1.88, "newsgroups": 1.88,
-    "trec": 2.21, "arxiv": 2.62, "dbpedia_classes": 3.17, "clinc": 3.90, "wos": 5.05
+    "trec": 2.21, "arxiv": 2.62,
+    "hupd_sec_cls": 2.42, "dbpedia_classes": 3.17, "clinc": 3.90,
+    "hwv_l0_l2": 4.09, "hupd_sec_sub": 4.44, "hwv_l0_l3": 4.59,
+    "wos": 5.05,
 }
 
 

@@ -15,7 +15,9 @@ from itertools import combinations
 
 RESULTS_DIR = Path(__file__).parent.parent / "results"
 
-DATASETS = ["yahoo", "goemotions", "newsgroups", "trec", "arxiv", "clinc", "dbpedia_classes", "wos"]
+DATASETS = ["yahoo", "goemotions", "newsgroups", "trec", "arxiv",
+            "hupd_sec_cls", "dbpedia_classes", "clinc", "hwv_l0_l2",
+            "hupd_sec_sub", "hwv_l0_l3", "wos"]
 
 
 def compute_steer(pa):
@@ -76,8 +78,10 @@ def get_hlo():
     # Fallback to known values
     known = {
         "yahoo": 1.2288, "goemotions": 1.8815, "newsgroups": 1.8815,
-        "trec": 2.2082, "arxiv": 2.6238, "dbpedia_classes": 3.17, "clinc": 3.9069,
-        "wos": 5.05
+        "trec": 2.2082, "arxiv": 2.6238,
+        "hupd_sec_cls": 2.42, "dbpedia_classes": 3.17, "clinc": 3.9069,
+        "hwv_l0_l2": 4.09, "hupd_sec_sub": 4.44, "hwv_l0_l3": 4.59,
+        "wos": 5.05,
     }
     for ds in DATASETS:
         if ds not in hlo_map:
