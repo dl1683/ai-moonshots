@@ -48,16 +48,16 @@ DEEP_CONFIGS = {
     },
     'hwv_l0_l2': {
         'dataset_name': 'hwv_l0_l2',
-        'description': 'HWV Root(10) -> L2(381)',
-        'expected_H': 4.36,
-        'max_train': 8000,   # ~9K available
+        'description': 'HWV Root(10) -> L2(253)',
+        'expected_H': 4.09,
+        'max_train': 5635,   # all available
         'max_test': 2000,
     },
     'hwv_l0_l3': {
         'dataset_name': 'hwv_l0_l3',
-        'description': 'HWV Root(10) -> L3(437)',
-        'expected_H': 5.08,
-        'max_train': 5000,   # ~6K available at depth 4+
+        'description': 'HWV Root(10) -> L3(230)',
+        'expected_H': 4.59,
+        'max_train': 3402,   # all available
         'max_test': 1500,
     },
 }
