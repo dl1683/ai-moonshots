@@ -41,9 +41,9 @@
 Matryoshka Representation Learning (MRL) trains embeddings that support dimensional truncation, but all prefix lengths encode the same semantic content at varying fidelity---there is no mechanism to \emph{steer} between coarse and fine meaning.
 We introduce \textbf{Fractal Embeddings}, which align prefix supervision with label hierarchy: short prefixes (64d) learn coarse labels while full embeddings (256d) learn fine labels, converting truncation into \emph{semantic zoom} at zero additional inference cost.
 Four controlled ablations establish that \emph{alignment}---not hierarchy awareness---causally drives steerability: inverting alignment reverses its sign; removing it or applying uniform multi-task training collapses it to zero (all $p_{\text{adj}} < 10^{-3}$, $d \geq 6.1$ on CLINC; directionally consistent on TREC with $n = 3$).
-Across eight datasets spanning conditional entropies from 1.23 to 5.05 bits, a random-effects meta-analysis yields pooled $d = 1.49$ ($p = 0.0003$), with all eight favouring fractal training (sign test $p = 0.004$).
-On CLINC-150, steerability reaches $\steer = +0.150 \pm 0.028$ versus MRL's $+0.007 \pm 0.016$ ($p_\text{adj} = 0.004$, $d = 4.3$).
-A synthetic hierarchy experiment identifies a Goldilocks optimum where steerability peaks at capacity--demand matching (quadratic $R^2 = 0.964$), and steerability magnitude across real datasets is predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$, $p = 0.002$).
+Across nine datasets spanning conditional entropies from 1.23 to 5.05 bits, a random-effects meta-analysis yields pooled $d = 1.48$ ($p < 0.0001$), with all nine favouring fractal training (sign test $p = 0.002$).
+On CLINC-150, steerability reaches $\steer = +0.150 \pm 0.028$ versus MRL's $+0.007 \pm 0.016$ ($p_\text{adj} = 0.005$, $d = 4.3$).
+A synthetic hierarchy experiment identifies a Goldilocks optimum where steerability peaks at capacity--demand matching (quadratic $R^2 = 0.964$), and steerability magnitude across real datasets is predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.85$, $p = 0.004$).
 A backbone fine-tuning control on three datasets confirms that alignment is both necessary and sufficient: a flat MRL baseline with $4.5\times$ more trainable parameters (backbone fine-tuning) produces near-zero steerability ($d = 11.6$, $7.4$, and $4.4$ vs.\ head-only V5 on CLINC, DBPedia Classes, and TREC respectively).
 Replication across three encoder families confirms architecture invariance.
 Beyond classification, prefix specialisation transfers to million-scale retrieval (BEIR DBPedia-Entity, 4.6M documents): a hierarchy-aligned projection achieves 94--97\% of SVD-optimal retrieval quality while maintaining semantic steering.
@@ -78,13 +78,13 @@ The difference lies entirely in \emph{how} the projection head is trained.
 
 We call the resulting property \emph{steerability}: the degree to which prefix truncation controls semantic granularity rather than merely degrading fidelity.
 While prefix-level granularity has been explored for news clustering~\citep{hanley2025hierarchical}, no prior work provides causal evidence for \emph{why} it works, formal theory grounding it in successive refinement~\citep{equitz1991successive}, or scaling laws predicting \emph{when} it works best.
-Our evaluation spans eight hierarchical text datasets, three encoder families, four controlled ablations, a synthetic causal experiment, and connections to 30 years of information theory.
+Our evaluation spans nine hierarchical text datasets, three encoder families, four controlled ablations, a synthetic causal experiment, and connections to 30 years of information theory.
 The main findings are:
 
 \begin{enumerate}
     \item \textbf{A method} for inducing steerable embeddings via hierarchy-aligned prefix supervision, requiring only head-only training on a frozen backbone (Section~\ref{sec:method}).
     \item \textbf{Causal identification}: four ablations on two datasets establish that steerability is driven by the alignment between prefix length and hierarchy level---not by architecture, hierarchy awareness, or other training choices. Inverting alignment reverses the sign; removing it or using a uniform multi-task control collapses it (Section~\ref{sec:causal}).
-    \item \textbf{A scaling analysis} linking steerability magnitude to the interaction of hierarchy depth and model learnability across eight datasets ($\rho = 0.90$, $p = 0.002$), with a Goldilocks optimum identified via synthetic intervention ($R^2 = 0.964$; Section~\ref{sec:scaling}).
+    \item \textbf{A scaling analysis} linking steerability magnitude to the interaction of hierarchy depth and model learnability across nine datasets ($\rho = 0.85$, $p = 0.004$), with a Goldilocks optimum identified via synthetic intervention ($R^2 = 0.964$; Section~\ref{sec:scaling}).
     \item \textbf{Broad generality}: cross-model replication on BGE-small, E5-small, and Qwen3-0.6B; downstream retrieval benchmarks showing $10\times$ larger dimensionality--accuracy ramps; transfer to million-scale retrieval (BEIR DBPedia-Entity, 4.6M documents); validation on natural deep hierarchies (HUPD patent taxonomy); and $3.7\times$ HNSW query speedups from prefix routing (Section~\ref{sec:generality}).
     \item \textbf{Information-theoretic foundations}: a steerability identity ($\steer = I(M_2; L_1|L_0, M_1)$), a converse bound proving flat supervision \emph{cannot} achieve high steerability, and a constructive achievability result showing V5's advantage grows linearly with excess prefix capacity (Section~\ref{sec:theory}).
 \end{enumerate}
@@ -115,7 +115,7 @@ Positive $\steer$ means short prefixes favour coarse semantics while full embedd
 A perfectly steerable embedding has high $\steer$; MRL, training all lengths on $L_1$, should yield $\steer \approx 0$.
 
 \paragraph{Datasets.}
-Table~\ref{tab:datasets} summarises eight evaluation datasets spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 5.05 bits (WOS~\citep{kowsari2017hdltex}), including GoEmotions~\citep{demszky2020goemotions}, TREC~\citep{voorhees2000trec}, 20 Newsgroups~\citep{lang1995newsgroups}, arXiv~\citep{clement2019arxiv}, DBPedia Classes~\citep{lehmann2015dbpedia}, and CLINC-150~\citep{larson2019clinc}.
+Table~\ref{tab:datasets} summarises nine evaluation datasets spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 5.05 bits (WOS~\citep{kowsari2017hdltex}), including GoEmotions~\citep{demszky2020goemotions}, TREC~\citep{voorhees2000trec}, 20 Newsgroups~\citep{lang1995newsgroups}, arXiv~\citep{clement2019arxiv}, HUPD patents~\citep{suzgun2024hupd}, DBPedia Classes~\citep{lehmann2015dbpedia}, and CLINC-150~\citep{larson2019clinc}.
 
 \begin{table}[t]
 \caption{Dataset statistics and hierarchy profiles. $K_0$, $K_1$: coarse and fine class counts. Branch: $K_1/K_0$. $\hlz$, $\hlo$: coarse entropy and conditional entropy in bits.}
@@ -130,6 +130,7 @@ Yahoo Answers & 4 & 10 & 2.5 & 1.91 & 1.23 & 10{,}000 & 2{,}000 \\
 GoEmotions & 4 & 28 & 7.0 & 1.83 & 1.88 & 5{,}899 & 1{,}450 \\
 20 Newsgroups & 6 & 20 & 3.3 & 2.43 & 1.88 & 10{,}000 & 2{,}000 \\
 TREC & 6 & 50 & 8.3 & 2.38 & 2.21 & 5{,}452 & 500 \\
+HUPD (patents) & 8 & 121 & 15.1 & 2.74 & 2.42 & 12{,}793 & 3{,}000 \\
 arXiv & 20 & 123 & 6.2 & 3.40 & 2.62 & 8{,}548 & 2{,}000 \\
 DBPedia Classes & 9 & 70 & 7.8 & 2.09 & 3.17 & 10{,}000 & 2{,}000 \\
 CLINC-150 & 10 & 150 & 15.0 & 3.32 & 3.90 & 10{,}000 & 2{,}000 \\
@@ -140,7 +141,7 @@ WOS & 10 & 336 & 33.6 & 2.90 & 5.05 & 8{,}688 & 2{,}000 \\
 
 \paragraph{Statistical methodology.}
 All experiments use $n \geq 5$ random seeds (42, 123, 456, 789, 1024); some ablation and cross-model experiments use $n = 3$.
-Paired $t$-tests compare V5 and MRL steerability per dataset; the eight main comparisons (Table~\ref{tab:steerability}) are corrected via Holm--Bonferroni~\citep{holm1979simple} at $\alpha = 0.05$.
+Paired $t$-tests compare V5 and MRL steerability per dataset; the nine main comparisons (Table~\ref{tab:steerability}) are corrected via Holm--Bonferroni~\citep{holm1979simple} at $\alpha = 0.05$.
 Causal ablation tests (Section~\ref{sec:causal}) are corrected within their own families.
 Effect sizes are paired Cohen's $d$; Hedges' $g$ corrections ($\approx 0.80$ for $n = 5$, $0.57$ for $n = 3$) yield qualitatively identical conclusions.
 Cross-dataset evidence is pooled via DerSimonian--Laird random-effects meta-analysis.
@@ -227,7 +228,7 @@ Algorithm~\ref{alg:v5} summarises the procedure.
 %=======================================================================
 
 \paragraph{Classification performance is preserved.}
-At full embedding length ($j=4$, 256d), V5 and MRL achieve comparable $k$-NN accuracy across all eight datasets (Table~\ref{tab:accuracy}).
+At full embedding length ($j=4$, 256d), V5 and MRL achieve comparable $k$-NN accuracy across all nine datasets (Table~\ref{tab:accuracy}).
 Both methods generally improve over the unfinetuned 384d baseline on lower-$K_1$ datasets; on higher-$K_1$ datasets (arXiv, CLINC, WOS), the 384d$\rightarrow$256d projection reduces $k$-NN accuracy, most dramatically on CLINC ($K_1 = 150$): V5 67.6\%, MRL 70.4\% vs.\ baseline 88.7\%, though both methods' classification heads achieve $>$95\% on the validation set.
 This dimensionality bottleneck affects V5 and MRL equally, confirming that steerability does not come at the cost of additional accuracy loss.
 
@@ -246,6 +247,7 @@ Yahoo & 0.688 & 0.699 & 0.698 & 0.603 & 0.629 & 0.635 \\
 GoEmotions & 0.502 & 0.600 & 0.578 & 0.343 & 0.429 & 0.411 \\
 Newsgroups & 0.815 & 0.802 & 0.800 & 0.658 & 0.639 & 0.650 \\
 TREC & 0.854 & 0.934 & 0.932 & 0.718 & 0.794 & 0.790 \\
+HUPD & 0.627 & 0.663 & 0.648 & 0.476 & 0.505 & 0.496 \\
 arXiv & 0.721 & 0.703 & 0.692 & 0.465 & 0.401 & 0.381 \\
 CLINC & 0.961 & 0.954 & 0.910 & 0.887 & 0.676 & 0.704 \\
 DBPedia Classes & 0.912 & 0.945 & 0.935 & 0.780 & 0.789 & 0.802 \\
@@ -257,26 +259,26 @@ WOS & 0.619 & 0.601 & 0.599 & 0.170 & 0.111 & 0.115 \\
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig3_forest_plot.pdf}
-    \caption{Steerability across eight datasets. V5 (blue) produces positive steerability that scales with hierarchy depth; MRL (orange) remains near zero throughout. Error bars: 95\% CIs across 5 seeds.}
+    \caption{Steerability across nine datasets. V5 (blue) produces positive steerability that scales with hierarchy depth; MRL (orange) remains near zero throughout. Error bars: 95\% CIs across 5 seeds.}
     \label{fig:forest}
 \end{figure}
 
 \paragraph{Steerability emerges from hierarchy alignment.}
-Despite comparable full-resolution accuracy, V5 produces dramatically higher steerability than MRL on all eight datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
+Despite comparable full-resolution accuracy, V5 produces dramatically higher steerability than MRL on all nine datasets (Figure~\ref{fig:forest}, Table~\ref{tab:steerability}).
 The effect scales with hierarchy complexity: from $\steer = +0.015$ on Yahoo ($\hlo = 1.23$) to $+0.150$ on CLINC ($\hlo = 3.90$), with WOS ($\hlo = 5.05$) showing a moderate effect ($+0.038$) due to a floor effect analysed in Section~\ref{sec:scaling}.
-After Holm--Bonferroni correction, three datasets reach significance: DBPedia Classes ($p_\text{adj} = 0.002$, $d = 5.5$), CLINC ($p_\text{adj} = 0.004$, $d = 4.3$), and TREC ($p_\text{adj} = 0.038$, $d = 2.4$).
-ArXiv is borderline ($p_\text{adj} = 0.078$, $d = 1.8$).
+After Holm--Bonferroni correction ($m = 9$), three datasets reach significance: DBPedia Classes ($p_\text{adj} = 0.002$, $d = 5.5$), CLINC ($p_\text{adj} = 0.005$, $d = 4.3$), and TREC ($p_\text{adj} = 0.044$, $d = 2.4$).
+ArXiv is borderline ($p_\text{adj} = 0.093$, $d = 1.8$).
 
 The shallow-hierarchy datasets (Yahoo, GoEmotions, Newsgroups; $\hlo \leq 1.88$) show consistent but small effects that do not survive per-dataset correction---a consequence that the scaling analysis (Section~\ref{sec:scaling}) predicts: when hierarchy depth is low, there is little refinement information for V5 to separate, so the signal is inherently small.
 MRL steerability is near zero throughout ($|\steer_\text{MRL}| < 0.02$ on all datasets).
 
 \paragraph{Pooled evidence.}
-A sign test confirms universal directionality: V5 $>$ MRL on 8/8 datasets ($p = 0.004$, binomial).
-A DerSimonian--Laird meta-analysis yields pooled $d = 1.49$ (95\% CI: $[0.69, 2.30]$, $z = 3.63$, $p = 0.0003$).
-The 95\% prediction interval for a new dataset is $[-0.70, 3.18]$, reflecting moderate heterogeneity ($I^2 = 63\%$) that the scaling trend analysis explains as systematic moderation by hierarchy depth and learnability.
+A sign test confirms universal directionality: V5 $>$ MRL on 9/9 datasets ($p = 0.002$, binomial).
+A DerSimonian--Laird meta-analysis yields pooled $d = 1.48$ (95\% CI: $[0.76, 2.19]$, $z = 4.04$, $p < 0.0001$).
+The 95\% prediction interval for a new dataset is $[-0.60, 3.56]$, reflecting moderate heterogeneity ($I^2 = 59\%$) that the scaling trend analysis explains as systematic moderation by hierarchy depth and learnability.
 
 \begin{table}[t]
-\caption{Steerability across eight datasets (Eq.~\ref{eq:steerability}). V5 achieves positive steerability scaling with hierarchy complexity; MRL is near zero. Mean $\pm$ SD over 5 seeds.}
+\caption{Steerability across nine datasets (Eq.~\ref{eq:steerability}). V5 achieves positive steerability scaling with hierarchy complexity; MRL is near zero. Mean $\pm$ SD over 5 seeds. The first eight are standard text benchmarks; HUPD is a natural patent taxonomy.}
 \label{tab:steerability}
 \centering
 \small
@@ -288,6 +290,7 @@ Yahoo & 1.23 & $+0.015 \pm 0.019$ & $+0.005 \pm 0.011$ & $+0.010$ & 5 \\
 GoEmotions & 1.88 & $+0.020 \pm 0.018$ & $+0.006 \pm 0.017$ & $+0.014$ & 5 \\
 Newsgroups & 1.88 & $+0.035 \pm 0.029$ & $+0.000 \pm 0.016$ & $+0.035$ & 5 \\
 TREC & 2.21 & $+0.044 \pm 0.017$ & $-0.001 \pm 0.015$ & $+0.045$ & 5 \\
+HUPD (patents) & 2.42 & $+0.043 \pm 0.019$ & $-0.002 \pm 0.017$ & $+0.045$ & 5 \\
 arXiv & 2.62 & $+0.027 \pm 0.015$ & $-0.001 \pm 0.013$ & $+0.028$ & 5 \\
 DBPedia Classes & 3.17 & $+0.120 \pm 0.016$ & $+0.008 \pm 0.008$ & $+0.112$ & 5 \\
 CLINC & 3.90 & $+0.150 \pm 0.028$ & $+0.007 \pm 0.016$ & $+0.143$ & 5 \\
@@ -376,11 +379,11 @@ Having established that alignment causes steerability, we investigate what deter
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig5_scaling_law.pdf}
-    \caption{\textbf{Left:} Steerability vs.\ $\hlo$ across eight datasets ($\rho = 0.74$, $p = 0.035$). WOS deviates due to a floor effect. \textbf{Right:} Product predictor $\hlo \times A_{L_1}^\text{base}$ accounts for both complexity and learnability ($\rho = 0.90$, $p = 0.002$).}
+    \caption{\textbf{Left:} Steerability vs.\ $\hlo$ across nine datasets ($\rho = 0.67$, $p = 0.049$). WOS deviates due to a floor effect. \textbf{Right:} Product predictor $\hlo \times A_{L_1}^\text{base}$ accounts for both complexity and learnability ($\rho = 0.85$, $p = 0.004$).}
     \label{fig:scaling}
 \end{figure}
 
-Across eight datasets, steerability increases with hierarchy depth: Spearman $\rho = 0.74$ ($p = 0.035$) against $\hlo$ alone (Figure~\ref{fig:scaling}, left).
+Across nine datasets, steerability increases with hierarchy depth: Spearman $\rho = 0.67$ ($p = 0.049$) against $\hlo$ alone (Figure~\ref{fig:scaling}, left).
 However, WOS ($\hlo = 5.05$) falls below the trend.
 
 \paragraph{The WOS floor effect.}
@@ -392,12 +395,12 @@ This motivates a moderated predictor: effective steerability requires both hiera
 The theoretical basis follows from the decomposition $\steer = \Delta_0 + \Delta_1$, where $\Delta_0 = \text{L0@}j_1 - \text{L0@}j_4$ saturates once prefix capacity exceeds $H(L_0)$ (Section~\ref{sec:theory}), making the refinement gap $\Delta_1 = \text{L1@}j_4 - \text{L1@}j_1$ the dominant scaling term.
 Since $\Delta_1$ requires both residual hierarchy information ($\hlo > 0$) and a backbone capable of extracting it, we define $\hlo \times A_{L_1}^\text{base}$, where $A_{L_1}^\text{base}$ is the \emph{unfinetuned} baseline $L_1$ accuracy---a measure of how much fine-grained information the pretrained backbone captures before any training:
 \begin{itemize}
-    \item $\hlo$ alone: $\rho = 0.74$ ($p = 0.035$)
-    \item $A_{L_1}^\text{base}$ alone: $\rho = 0.69$ ($p = 0.058$)
-    \item $\hlo \times A_{L_1}^\text{base}$: $\rho = 0.90$ ($p = 0.002$); Pearson $r = 0.97$ ($p < 0.001$)
+    \item $\hlo$ alone: $\rho = 0.67$ ($p = 0.049$)
+    \item $A_{L_1}^\text{base}$ alone: $\rho = 0.67$ ($p = 0.049$)
+    \item $\hlo \times A_{L_1}^\text{base}$: $\rho = 0.85$ ($p = 0.004$); Pearson $r = 0.97$ ($p < 0.001$)
 \end{itemize}
 The product predictor correctly places WOS among lower-steerability datasets: it has the highest $\hlo$ but the lowest $A_{L_1}^\text{base}$ (17.0\%, vs.\ 88.7\% for CLINC).
-A leave-one-out analysis confirms robustness: all LOO $\rho \geq 0.61$, and bootstrap 95\% CI for $\rho(\hlo)$ is $[0.05, 1.0]$ with 98.0\% positive (Appendix~\ref{app:scaling_robust}).
+A leave-one-out analysis confirms robustness: all LOO $\rho \geq 0.53$, and bootstrap 95\% CI for $\rho(\hlo)$ is $[-0.06, 1.0]$ with 96.7\% positive (Appendix~\ref{app:scaling_robust}).
 A nonlinear power-law fit $\steer \propto \hlo^{a} \cdot (A_{L_1}^\text{base})^{b}$ yields $a = 1.6 \pm 0.3$, $b = 1.2 \pm 0.2$ ($R^2 = 0.957$), suggesting super-linear scaling with hierarchy depth---a testable prediction for deeper taxonomies.
 
 \subsection{Causal: Synthetic Hierarchy Experiment}
@@ -606,9 +609,9 @@ Classification-only (V5 proj.) & $d \times 4$ & 0.021 & 0.033 & 0.039 & 0.042 \\
 At identical storage budgets and query latencies (all methods use the same dimensionality), the ``cost of steerability'' is $6\%$ at 64d and $3\%$ at 256d---a favourable Pareto tradeoff for applications that benefit from granularity control.
 
 \paragraph{Natural deep hierarchies.}
-To test generalisation beyond curated text classification datasets, we evaluate on the Harvard USPTO Patent Dataset (HUPD)~\citep{suzgun2024hupd}, which provides a natural 2-level hierarchy: 8 patent sections $\rightarrow$ 121 technology classes ($\hlo = 2.42$ bits).
-On 5 seeds, V5 achieves $\steer = +0.043 \pm 0.017$ versus MRL's $-0.002 \pm 0.016$ (paired $t = 3.63$, $p = 0.022$, $d = 1.8$).
-This confirms that V5's steerability advantage holds on a real-world taxonomy with 121 fine-grained classes, not just curated benchmarks.
+The Harvard USPTO Patent Dataset (HUPD)~\citep{suzgun2024hupd} provides a natural 2-level hierarchy: 8 patent sections $\rightarrow$ 121 technology classes ($\hlo = 2.42$ bits).
+Unlike our other eight datasets (curated text classification benchmarks), HUPD's hierarchy emerges from real patent office taxonomic practice, providing an important external validity check.
+V5 achieves $\steer = +0.043 \pm 0.019$ versus MRL's $-0.002 \pm 0.017$ ($d = 1.8$, $p_\text{adj} = 0.110$; Table~\ref{tab:steerability}), confirming that V5's steerability advantage holds on real-world taxonomies.
 
 %=======================================================================
 \section{Limitations}
@@ -732,7 +735,7 @@ Confirmed: MRL with $9.2$M parameters yields $\steer = +0.003$ on CLINC ($d = 11
 \emph{At the Goldilocks optimum, $\steer \propto \hlo \cdot A_{L_1}^{\text{base}}$.}
 The scaling follows from the steerability decomposition: the coarse specialisation term $\Delta_0$ saturates at the Goldilocks optimum (prefix capacity $\approx H(L_0)$), leaving the refinement gap $\Delta_1 = \text{L1@}j_4 - \text{L1@}j_1$ as the dominant term.
 Under sufficient total capacity, $\text{L1@}j_4$ scales with the backbone's ability to extract fine information ($A_{L_1}^\text{base}$), while $\text{L1@}j_1$ is suppressed by the prefix bottleneck in proportion to $\hlo$ (more refinement bits are excluded from the prefix).
-The product $\hlo \cdot A_{L_1}^\text{base}$ thus captures both the amount of refinement information available and the model's capacity to exploit it, explaining the empirical $\rho = 0.90$ across eight datasets.
+The product $\hlo \cdot A_{L_1}^\text{base}$ thus captures both the amount of refinement information available and the model's capacity to exploit it, explaining the empirical $\rho = 0.85$ across nine datasets.
 
 \paragraph{Testable predictions.}
 (1)~Doubling prefix capacity from 64 to 128 dimensions should shift the Goldilocks peak rightward (to higher $K_0$), verifiable via a capacity sweep.
@@ -772,7 +775,7 @@ The two are orthogonal and potentially complementary.
 
 We have shown that aligning prefix supervision with semantic hierarchy converts dimensional truncation from a fidelity knob into a \emph{semantic zoom} control---at zero inference cost.
 The evidence is threefold.
-\emph{Empirically}, fractal training produces steerability on all eight datasets (pooled $d = 1.49$, $p = 0.0003$), with magnitude predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$).
+\emph{Empirically}, fractal training produces steerability on all nine datasets (pooled $d = 1.48$, $p < 0.0001$), with magnitude predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.85$).
 \emph{Causally}, four controlled ablations establish that the specific prefix-to-hierarchy alignment---not hierarchy awareness, not architecture, not optimiser---drives the effect: all conditions are highly significant on CLINC ($d \geq 6.1$), with directionally consistent replication on TREC.
 A factorial backbone control on three datasets confirms alignment is both necessary and sufficient: $4.5\times$ more trainable parameters without alignment produce near-zero steerability ($d = 11.6$ on CLINC, $d = 7.4$ on DBPedia Classes, $d = 4.4$ on TREC).
 \emph{Theoretically}, the successive refinement framework explains \emph{why} V5 works (the capacity bottleneck forces coarse-first encoding), \emph{when} it works best (Goldilocks capacity--demand matching, $R^2 = 0.964$), and \emph{why flat supervision cannot}: a formal converse bound proves that steerability under flat log-loss vanishes as prefix capacity grows, while V5's advantage increases linearly with excess prefix capacity ($\steer_\text{V5} - \steer_\text{flat} \geq R_1 - H(L_0)$).
@@ -934,7 +937,7 @@ All pairwise rank correlations exceed $\rho = 0.90$ ($p < 0.005$), confirming al
 \label{app:perseed}
 
 \begin{table}[h]
-\caption{Per-seed steerability (V5 and MRL) across all eight datasets. Seeds: 42, 123, 456, 789, 1024.}
+\caption{Per-seed steerability (V5 and MRL) across all nine datasets. Seeds: 42, 123, 456, 789, 1024.}
 \label{tab:perseed}
 \centering
 \scriptsize
@@ -947,6 +950,7 @@ Yahoo & +.016 & +.020 & $-.004$ & $-.002$ & +.044 & $-.010$ & +.016 & +.006 & +.
 GoEmo & $-.002$ & +.024 & +.026 & +.006 & +.044 & +.022 & +.022 & +.006 & $-.012$ & $-.010$ \\
 News & +.040 & $-.012$ & +.038 & +.044 & +.066 & $-.002$ & +.022 & +.008 & $-.018$ & $-.010$ \\
 TREC & +.018 & +.062 & +.054 & +.042 & +.046 & +.000 & +.024 & $-.014$ & $-.002$ & $-.012$ \\
+HUPD & +.052 & +.044 & +.030 & +.070 & +.020 & +.020 & $-.026$ & $-.004$ & $-.008$ & +.008 \\
 arXiv & +.038 & +.018 & +.012 & +.018 & +.048 & $-.014$ & $-.010$ & +.000 & +.000 & +.020 \\
 DBP & +.118 & +.092 & +.130 & +.130 & +.130 & +.020 & +.008 & +.008 & +.000 & +.002 \\
 CLINC & +.104 & +.178 & +.150 & +.168 & +.150 & +.012 & +.028 & +.006 & $-.016$ & +.004 \\
@@ -959,7 +963,7 @@ WOS & +.032 & +.022 & +.008 & +.052 & +.074 & +.000 & $-.004$ & +.004 & $-.004$ 
 \label{app:scaling_robust}
 
 \begin{table}[h]
-\caption{Leave-one-out sensitivity for the $\hlo$ scaling trend. WOS (Cook's $D = 3.68$) is the highest-influence point; the product predictor resolves its deviation without dropping any dataset.}
+\caption{Leave-one-out sensitivity for the $\hlo$ scaling trend. WOS (Cook's $D = 4.16$) is the highest-influence point; the product predictor resolves its deviation without dropping any dataset.}
 \label{tab:loo}
 \centering
 \small
@@ -967,22 +971,23 @@ WOS & +.032 & +.022 & +.008 & +.052 & +.074 & +.000 & $-.004$ & +.004 & $-.004$ 
 \toprule
 Dropped & $k$ & Spearman $\rho$ & $p$ & Pearson $r$ & $p$ \\
 \midrule
-None (full) & 8 & 0.74 & 0.035 & 0.49 & 0.218 \\
+None (full) & 9 & 0.67 & 0.049 & 0.49 & 0.176 \\
 \midrule
-Yahoo & 7 & 0.61 & 0.144 & 0.40 & 0.376 \\
-GoEmotions & 7 & 0.64 & 0.119 & 0.45 & 0.318 \\
-Newsgroups & 7 & 0.71 & 0.071 & 0.47 & 0.289 \\
-TREC & 7 & 0.83 & 0.021 & 0.48 & 0.272 \\
-arXiv & 7 & 0.78 & 0.041 & 0.50 & 0.259 \\
-DBPedia Classes & 7 & 0.72 & 0.068 & 0.49 & 0.261 \\
-CLINC & 7 & 0.72 & 0.068 & 0.34 & 0.457 \\
-WOS & 7 & 0.87 & 0.012 & 0.91 & 0.004 \\
+Yahoo & 8 & 0.53 & 0.180 & 0.41 & 0.310 \\
+GoEmotions & 8 & 0.55 & 0.160 & 0.45 & 0.258 \\
+Newsgroups & 8 & 0.62 & 0.102 & 0.48 & 0.233 \\
+TREC & 8 & 0.74 & 0.035 & 0.49 & 0.219 \\
+arXiv & 8 & 0.73 & 0.040 & 0.50 & 0.206 \\
+HUPD sec$\rightarrow$cls & 8 & 0.74 & 0.035 & 0.49 & 0.218 \\
+DBPedia Classes & 8 & 0.62 & 0.099 & 0.49 & 0.214 \\
+CLINC & 8 & 0.62 & 0.099 & 0.34 & 0.412 \\
+WOS & 8 & 0.81 & 0.014 & 0.91 & 0.002 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Bootstrap analysis (10{,}000 resamples): 98.0\% of $\rho(\hlo)$ values positive.
-Meta-analysis prediction interval $[-0.70, 3.18]$ reflects heterogeneity ($I^2 = 63\%$) explained by the interaction model.
+Bootstrap analysis (10{,}000 resamples): 96.7\% of $\rho(\hlo)$ values positive.
+Meta-analysis prediction interval $[-0.60, 3.56]$ reflects heterogeneity ($I^2 = 59\%$) explained by the interaction model.
 
 \section{Broader Impact}
 \label{app:impact}
