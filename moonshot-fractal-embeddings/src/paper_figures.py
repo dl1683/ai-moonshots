@@ -198,9 +198,15 @@ def fig3_forest_plot():
 
     datasets = []
     # Load all available datasets
-    ALL_DS = ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv', 'clinc', 'dbpedia_classes', 'wos']
-    DS_DISPLAY = {'goemotions': 'GoEmo', 'dbpedia_classes': 'DBPedia'}
-    DS_H_FALLBACK = {'dbpedia_classes': 3.17, 'wos': 5.05}
+    ALL_DS = ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv',
+              'hupd_sec_cls', 'clinc', 'dbpedia_classes',
+              'hwv_l0_l2', 'hupd_sec_sub', 'hwv_l0_l3', 'wos']
+    DS_DISPLAY = {'goemotions': 'GoEmo', 'dbpedia_classes': 'DBPedia',
+                  'hupd_sec_cls': 'HUPD-SC', 'hupd_sec_sub': 'HUPD-SS',
+                  'hwv_l0_l2': 'HWV-L2', 'hwv_l0_l3': 'HWV-L3'}
+    DS_H_FALLBACK = {'dbpedia_classes': 3.17, 'wos': 5.05,
+                     'hupd_sec_cls': 2.42, 'hupd_sec_sub': 4.44,
+                     'hwv_l0_l2': 4.09, 'hwv_l0_l3': 4.59}
     for ds_name in ALL_DS:
         if ds_name == 'clinc':
             v5_s, mrl_s = load_clinc_steers()
@@ -332,9 +338,15 @@ def fig5_scaling_law():
     profiles = json.load(open(RESULTS_DIR / "hierarchy_profiles.json"))
 
     datasets_data = []
-    ALL_DS = ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv', 'clinc', 'dbpedia_classes', 'wos']
-    DS_DISPLAY = {'goemotions': 'GoEmo', 'dbpedia_classes': 'DBPedia'}
-    DS_H_FALLBACK = {'dbpedia_classes': 3.17, 'wos': 5.05}
+    ALL_DS = ['yahoo', 'goemotions', 'newsgroups', 'trec', 'arxiv',
+              'hupd_sec_cls', 'clinc', 'dbpedia_classes',
+              'hwv_l0_l2', 'hupd_sec_sub', 'hwv_l0_l3', 'wos']
+    DS_DISPLAY = {'goemotions': 'GoEmo', 'dbpedia_classes': 'DBPedia',
+                  'hupd_sec_cls': 'HUPD-SC', 'hupd_sec_sub': 'HUPD-SS',
+                  'hwv_l0_l2': 'HWV-L2', 'hwv_l0_l3': 'HWV-L3'}
+    DS_H_FALLBACK = {'dbpedia_classes': 3.17, 'wos': 5.05,
+                     'hupd_sec_cls': 2.42, 'hupd_sec_sub': 4.44,
+                     'hwv_l0_l2': 4.09, 'hwv_l0_l3': 4.59}
     for ds_name in ALL_DS:
         if ds_name == 'clinc':
             v5_s, mrl_s = load_clinc_steers()
