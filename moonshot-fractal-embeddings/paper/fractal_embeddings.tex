@@ -46,7 +46,7 @@ On CLINC-150, steerability reaches $\steer = +0.150 \pm 0.028$ versus MRL's $+0.
 A synthetic hierarchy experiment identifies a Goldilocks optimum where steerability peaks at capacity--demand matching (quadratic $R^2 = 0.964$), and steerability magnitude across real datasets is predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$, $p = 0.002$).
 A backbone fine-tuning control on three datasets confirms that alignment is both necessary and sufficient: a flat MRL baseline with $4.5\times$ more trainable parameters (backbone fine-tuning) produces near-zero steerability ($d = 11.6$, $7.4$, and $4.4$ vs.\ head-only V5 on CLINC, DBPedia Classes, and TREC respectively).
 Replication across three encoder families confirms architecture invariance.
-We ground these findings in the classical theory of successive refinement, connecting V5's prefix cross-entropy loss to the log-loss universality theorem and deriving a Goldilocks capacity--demand optimum and product scaling law from information-theoretic principles.
+We ground these findings in the classical theory of successive refinement, proving that steerability equals the refinement mutual information $I(M_2; L_1|L_0, M_1)$ and deriving a converse bound showing flat supervision \emph{cannot} achieve high steerability (the V5 advantage grows linearly with excess prefix capacity), alongside a Goldilocks capacity--demand optimum and product scaling law.
 \end{abstract}
 
 % Hero figure
@@ -84,6 +84,7 @@ The main findings are:
     \item \textbf{Causal identification}: four ablations on two datasets establish that steerability is driven by the alignment between prefix length and hierarchy level---not by architecture, hierarchy awareness, or other training choices. Inverting alignment reverses the sign; removing it or using a uniform multi-task control collapses it (Section~\ref{sec:causal}).
     \item \textbf{A scaling analysis} linking steerability magnitude to the interaction of hierarchy depth and model learnability across eight datasets ($\rho = 0.90$, $p = 0.002$), with a Goldilocks optimum identified via synthetic intervention ($R^2 = 0.964$; Section~\ref{sec:scaling}).
     \item \textbf{Broad generality}: cross-model replication on BGE-small, E5-small, and Qwen3-0.6B; downstream retrieval benchmarks showing $10\times$ larger dimensionality--accuracy ramps; and $3.7\times$ HNSW query speedups from prefix routing (Section~\ref{sec:generality}).
+    \item \textbf{Information-theoretic foundations}: a steerability identity ($\steer = I(M_2; L_1|L_0, M_1)$), a converse bound proving flat supervision \emph{cannot} achieve high steerability, and a constructive achievability result showing V5's advantage grows linearly with excess prefix capacity (Section~\ref{sec:theory}).
 \end{enumerate}
 
 %=======================================================================
@@ -145,7 +146,7 @@ Cross-dataset evidence is pooled via DerSimonian--Laird random-effects meta-anal
 \paragraph{Theory preview.}
 The classical theory of \emph{successive refinement}~\citep{equitz1991successive,rimoldi1994successive} shows that hierarchical sources admit optimal multi-resolution codes where each refinement layer adds residual information.
 A key enabling result is the \emph{log-loss universality theorem}~\citep{no2019universality}: any discrete memoryless source is successively refinable when the first-stage decoder uses cross-entropy.
-Section~\ref{sec:theory} connects V5's prefix supervision to this framework and derives testable predictions---sign reversal under inversion, a Goldilocks capacity--demand optimum, and a product scaling law---all confirmed by our experiments.
+Section~\ref{sec:theory} connects V5's prefix supervision to this framework, proves that steerability equals the refinement mutual information $I(M_2; L_1|L_0, M_1)$, derives a formal converse showing flat supervision \emph{cannot} produce high steerability, and yields testable predictions---sign reversal, a Goldilocks optimum, and a product scaling law---all confirmed by our experiments.
 
 %=======================================================================
 \section{Method: Progressive Prefix Supervision (V5)}
@@ -735,7 +736,7 @@ The evidence is threefold.
 \emph{Empirically}, fractal training produces steerability on all eight datasets (pooled $d = 1.49$, $p = 0.0003$), with magnitude predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$).
 \emph{Causally}, four controlled ablations establish that the specific prefix-to-hierarchy alignment---not hierarchy awareness, not architecture, not optimiser---drives the effect: all conditions are highly significant on CLINC ($d \geq 6.1$), with directionally consistent replication on TREC.
 A factorial backbone control on three datasets confirms alignment is both necessary and sufficient: $4.5\times$ more trainable parameters without alignment produce near-zero steerability ($d = 11.6$ on CLINC, $d = 7.4$ on DBPedia Classes, $d = 4.4$ on TREC).
-\emph{Theoretically}, the successive refinement framework explains \emph{why} V5 works (the capacity bottleneck forces coarse-first encoding, and cross-entropy at the prefix connects to log-loss universality) and \emph{when} it works best (Goldilocks capacity--demand matching, $R^2 = 0.964$).
+\emph{Theoretically}, the successive refinement framework explains \emph{why} V5 works (the capacity bottleneck forces coarse-first encoding), \emph{when} it works best (Goldilocks capacity--demand matching, $R^2 = 0.964$), and \emph{why flat supervision cannot}: a formal converse bound proves that steerability under flat log-loss vanishes as prefix capacity grows, while V5's advantage increases linearly with excess prefix capacity ($\steer_\text{V5} - \steer_\text{flat} \geq R_1 - H(L_0)$).
 
 The practical implications are concrete.
 A single fractal embedding enables query-adaptive retrieval: routing coarse queries to the 64d prefix ($3.7\times$ faster on HNSW) and fine queries to 256d, yielding higher mixed accuracy than MRL at 38\% lower compute.
