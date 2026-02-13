@@ -113,7 +113,7 @@ Positive $\steer$ means short prefixes favour coarse semantics while full embedd
 A perfectly steerable embedding has high $\steer$; MRL, training all lengths on $L_1$, should yield $\steer \approx 0$.
 
 \paragraph{Datasets.}
-Table~\ref{tab:datasets} summarizes eight evaluation datasets spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 5.05 bits (WOS~\citep{kowsari2017hdltex}), including GoEmotions~\citep{demszky2020goemotions}, TREC~\citep{voorhees2000trec}, 20 Newsgroups, arXiv~\citep{clement2019arxiv}, DBPedia Classes, and CLINC-150~\citep{larson2019clinc}.
+Table~\ref{tab:datasets} summarises eight evaluation datasets spanning conditional entropies from 1.23 (Yahoo~\citep{zhang2015yahoo}) to 5.05 bits (WOS~\citep{kowsari2017hdltex}), including GoEmotions~\citep{demszky2020goemotions}, TREC~\citep{voorhees2000trec}, 20 Newsgroups~\citep{lang1995newsgroups}, arXiv~\citep{clement2019arxiv}, DBPedia Classes~\citep{lehmann2015dbpedia}, and CLINC-150~\citep{larson2019clinc}.
 
 \begin{table}[t]
 \caption{Dataset statistics and hierarchy profiles. $K_0$, $K_1$: coarse and fine class counts. Branch: $K_1/K_0$. $\hlz$, $\hlo$: coarse entropy and conditional entropy in bits.}
@@ -265,7 +265,7 @@ The effect scales with hierarchy complexity: from $\steer = +0.015$ on Yahoo ($\
 After Holm--Bonferroni correction, three datasets reach significance: DBPedia Classes ($p_\text{adj} = 0.002$, $d = 5.5$), CLINC ($p_\text{adj} = 0.004$, $d = 4.3$), and TREC ($p_\text{adj} = 0.038$, $d = 2.4$).
 ArXiv is borderline ($p_\text{adj} = 0.078$, $d = 1.8$).
 
-The shallow-hierarchy datasets (Yahoo, GoEmotions, Newsgroups; $\hlo \leq 1.88$) show consistent but small effects that do not survive per-dataset correction---a consequence the scaling analysis (Section~\ref{sec:scaling}) predicts: when hierarchy depth is low, there is little refinement information for V5 to separate, so the signal is inherently small.
+The shallow-hierarchy datasets (Yahoo, GoEmotions, Newsgroups; $\hlo \leq 1.88$) show consistent but small effects that do not survive per-dataset correction---a consequence that the scaling analysis (Section~\ref{sec:scaling}) predicts: when hierarchy depth is low, there is little refinement information for V5 to separate, so the signal is inherently small.
 MRL steerability is near zero throughout ($|\steer_\text{MRL}| < 0.02$ on all datasets).
 
 \paragraph{Pooled evidence.}
@@ -476,7 +476,7 @@ Alignment remains both necessary and sufficient: head-only V5 produces higher st
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig_backbone_control.pdf}
-    \caption{\textbf{Alignment vs.\ capacity control} ($2 \times 2$ factorial). V5 with head-only training (2.1M params) dominates MRL with full backbone fine-tuning (9.2M params) on both datasets. $4.5\times$ more parameters without alignment produce zero steerability. *** denotes $p < 0.001$.}
+    \caption{\textbf{Alignment vs.\ capacity control} ($2 \times 2$ factorial). V5 with head-only training (2.1M params) dominates MRL with full backbone fine-tuning (9.2M params) on all three datasets. $4.5\times$ more parameters without alignment produce zero steerability. *** denotes $p < 0.001$.}
     \label{fig:backbone}
 \end{figure}
 
@@ -539,7 +539,7 @@ $L_1$ & V5  & 87.1 & 92.7 & 93.7 & 93.4 \\
 
 \paragraph{Workload-adaptive Pareto advantage.}
 V5's steerability enables query-adaptive routing: coarse queries use the 64d prefix, fine queries use the full 256d embedding.
-On CLINC (5 seeds), this dominates MRL-256d whenever $\geq 35\%$ of queries are coarse.
+On CLINC (5 seeds), this dominates MRL-256d whenever $\geq 35\%$ of queries are coarse (Figure~\ref{fig:pareto}, Appendix).
 At a 50/50 workload mix, V5 adaptive achieves $+1.3$pp higher accuracy at 38\% lower average dimensionality (160d vs.\ 256d).
 The dimensionality savings translate to wall-clock speedups: on FAISS HNSW indexes with 100K vectors, 64d queries execute $3.7\times$ faster than 256d (39~$\mu$s vs.\ 145~$\mu$s; Table~\ref{tab:latency}, Appendix).
 
@@ -551,7 +551,7 @@ V5 adaptive (64d for coarse, 256d for fine) achieves $L_0 = 97.5\%$ at one-quart
 \paragraph{Three-level hierarchy.}
 To test generalisation beyond two levels, we construct a 3-level CLINC hierarchy: 5~super-domains $\rightarrow$ 10~domains $\rightarrow$ 150~intents.
 V5 exhibits a clear ramp gradient: $L_2$ (intent) accuracy gains $+3.2$pp from 64d to 256d, $L_1$ (domain) gains $+1.0$pp, and $L_0$ (super-domain) gains $+0.5$pp.
-MRL is flat at all levels ($\leq 0.4$pp; Table~\ref{tab:threelevel}).
+MRL is flat at all levels ($\leq 0.4$pp; Table~\ref{tab:threelevel}, Figure~\ref{fig:threelevel} in Appendix).
 Three-level steerability $\steer_{02} = +0.027 \pm 0.005$ (V5) vs.\ $+0.002 \pm 0.005$ (MRL; $t = 18.9$, $p = 0.003$, $d = 10.9$).
 
 \begin{table}[t]
@@ -612,7 +612,7 @@ Classification-only (V5 proj.) & 0.021 & 0.033 & 0.039 & 0.042 \\
     \item \textbf{Floor effects.} On WOS ($K_1 = 336$), head-only training achieves only ${\sim}15\%$ $L_1$ accuracy, capping steerability despite high $\hlo = 5.05$. Steerability requires both hierarchy complexity and model capacity.
     \item \textbf{Deeper hierarchies.} The 3-level extension confirms generalisation with a strong effect ($d = 10.9$), but only 5 super-domain classes leave $L_0$ near ceiling at all prefixes. Evaluation on naturally deep taxonomies (ICD-10, product hierarchies) remains future work.
     \item \textbf{Hierarchy noise robustness.} Corrupting $L_0$ labels at 10\%--50\% and retraining V5 on CLINC (3 seeds), steerability degrades gracefully: 85\% retained at 10\% noise ($\steer = +0.152$), 71\% at 30\% ($+0.128$), 34\% at 50\% ($+0.061$). V5 does not require a perfect hierarchy for meaningful steerability.
-    \item \textbf{Baseline scope.} We compare against a matched MRL baseline controlling all variables except the prefix-to-label mapping. We do not benchmark HEAL~\citep{zhang2025heal}, CSR~\citep{chen2025csr}, or SMRL~\citep{li2025smrl} because these address orthogonal goals---none offers prefix-level steering, making fixed-dimensionality accuracy comparisons inapposite.
+    \item \textbf{Baseline scope.} We compare against a matched MRL baseline controlling all variables except the prefix-to-label mapping. We do not benchmark HEAL~\citep{zhang2025heal}, CSR~\citep{chen2025csr}, or SMEC~\citep{li2025smrl} because these address orthogonal goals---none offers prefix-level steering, making fixed-dimensionality accuracy comparisons inapposite.
     \item \textbf{Ablation coverage.} Causal ablations are concentrated on CLINC and TREC (two datasets). Cross-dataset replication of all four ablation conditions remains future work.
 \end{itemize}
 
@@ -773,8 +773,8 @@ The synthetic hierarchy experiment provides design guidance: measure $\hlz$ and 
 The connection to successive refinement suggests this is not an empirical curiosity but a fundamental property of information allocation in hierarchical representations.
 We release all code, data, and experimental artifacts to support replication and extension.
 
-\bibliography{references}
 \bibliographystyle{plainnat}
+\bibliography{references}
 
 %=======================================================================
 % APPENDIX
