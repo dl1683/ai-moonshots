@@ -698,6 +698,23 @@ Substituting gives $\steer = I(M_2; L_1|L_0, M_1) \geq 0$.\hfill$\square$
 
 This identity reveals that steerability equals exactly the \emph{refinement information} that Stage~2 provides about $L_1$ beyond what $L_0$ and $M_1$ already encode.
 
+\paragraph{Theorem 3 (Steerability--leakage decomposition).}
+\emph{For any two-stage prefix code $(M_1, M_2)$ over a hierarchical source with discrete finite-entropy labels $L_0 = g(L_1)$:}
+\begin{equation}
+    \steer = H(L_1|L_0) - I(M_1; L_1|L_0) - \Delta, \quad \Delta := H(L_1|L_0, M_1, M_2) \geq 0.
+    \label{eq:decomposition}
+\end{equation}
+\emph{Consequently: (i)~$\steer \leq H(L_1|L_0) - I(M_1; L_1|L_0)$: steerability is bounded by how \textbf{little} the prefix encodes about the fine residual $L_1|L_0$.
+(ii)~$\steer = H(L_1|L_0)$ if and only if $I(M_1; L_1|L_0) = 0$ and $\Delta = 0$.}
+
+\emph{Proof.}
+From the Proposition, $\steer = I(M_2; L_1|L_0, M_1) = H(L_1|L_0, M_1) - H(L_1|L_0, M_1, M_2)$.
+Expanding $H(L_1|L_0, M_1) = H(L_1|L_0) - I(M_1; L_1|L_0)$ and setting $\Delta := H(L_1|L_0, M_1, M_2)$ yields the decomposition directly.\hfill$\square$
+
+This decomposes steerability into two complementary bottlenecks: \emph{prefix leakage} $I(M_1; L_1|L_0)$---how much fine information the prefix absorbs, leaving less for Stage~2 to contribute---and \emph{residual uncertainty} $\Delta$---fine information that neither stage captures.
+Maximal steerability requires both zero leakage (the prefix encodes \emph{only} coarse information) and zero residual uncertainty (the full code determines $L_1|L_0$ completely).
+This is a \textbf{necessity} result: \emph{any} method achieving high steerability---regardless of architecture, capacity, or training procedure---must produce a prefix with low $I(M_1; L_1|L_0)$.
+
 \paragraph{Corollary 3 (Flat supervision converse).}
 \emph{If $M_1$ is flat-log-loss optimal at rate $R_1$ (i.e., $H(L_1|M_1) = H(L_1) - R_1$), then
 $\steer_\text{flat} \leq \min\{R_2,\; H(L_1) - R_1\}$.}
@@ -710,9 +727,9 @@ Also $\steer \leq I(M_2; L_1|M_1) \leq R_2$.\hfill$\square$
 As prefix capacity grows ($R_1 \to H(L_1)$), the flat bound vanishes: $\steer_\text{flat} \to 0$.
 This is an \emph{impossibility} property of the objective---$4.5\times$ more trainable parameters cannot break it.
 
-\emph{V5 achievability.}
-Under hierarchy-aligned supervision with $I(M_1; L_1|L_0) = 0$ and $R_1 \geq H(L_0)$, we have $H(L_1|L_0, M_1) = H(L_1|L_0)$.
-Stage~2 encodes $L_1|L_0$ at rate $R_2$; when $R_2 \geq H(L_1|L_0)$, achievability by standard source coding gives $\steer_\text{V5} = H(L_1|L_0)$.
+\emph{V5 achievability (via Theorem~3).}
+Hierarchy-aligned supervision sets $I(M_1; L_1|L_0) = 0$ (zero prefix leakage) by construction; with $R_1 \geq H(L_0)$, the prefix captures $L_0$ fully and nothing else.
+Stage~2 then encodes $L_1|L_0$ at rate $R_2$; when $R_2 \geq H(L_1|L_0)$, we have $\Delta = 0$, and the decomposition gives $\steer_\text{V5} = H(L_1|L_0)$.
 
 \emph{Separation.}
 When $H(L_0) < R_1 < H(L_1)$ and $R_2 \geq H(L_1|L_0)$:
