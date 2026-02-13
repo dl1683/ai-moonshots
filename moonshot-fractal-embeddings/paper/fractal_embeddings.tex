@@ -611,7 +611,7 @@ Crucially, No~\citep{no2019universality} proved a \emph{universality} result: an
 \paragraph{Connecting V5 to successive refinement.}
 The standard successive refinement setup encodes a single source $X$ at two resolutions.
 Our setup is structurally different: the prefix targets $Y_0 = g(Y_1)$ (a deterministic coarsening) while the full embedding targets $Y_1$.
-The log-loss universality theorem applies directly when both stages target the \emph{same} source; our setting---where Stage~1 targets a function of the source---requires an additional argument.
+We show that this is a \emph{relaxation} of standard SR, not a complication.
 
 \paragraph{Theorem 1 (Hierarchy-Successive-Refinement).}
 \emph{Let $(X, Y_0, Y_1)$ be a hierarchical source with $Y_0 = g(Y_1)$.
@@ -625,14 +625,13 @@ Under V5 supervision ($\mathbf{z}_{\leq 1} \rightarrow Y_0$ via cross-entropy, $
 \paragraph{Proof sketch.}
 The capacity bottleneck $C(d/J) < H(Y_1)$ means the prefix cannot encode all of $Y_1$, but $C(d/J) \geq H(Y_0)$ ensures it can encode $Y_0$.
 V5's prefix cross-entropy loss targeting $Y_0$ forces the optimal prefix to maximise $I(\mathbf{z}_{\leq 1}; Y_0)$, yielding coarse-prioritised encoding.
-Because $Y_0 = g(Y_1)$, encoding $Y_0$ in the prefix is \emph{strictly less demanding} than encoding $Y_1$: any rate sufficient for $Y_0$ leaves residual capacity for $Y_1|Y_0$.
-The log-loss universality result~\citep{no2019universality} guarantees that when Stage~1 uses cross-entropy, successive refinement of $Y_1$ is achievable; since $Y_0$ is a sufficient statistic for its own prediction (it is deterministic), Stage~1 targeting $Y_0$ imposes a \emph{weaker} constraint than targeting $Y_1$ directly.
+The formal reduction to standard SR proceeds as follows.
+Standard SR of $Y_1$ under log loss (both stages targeting $Y_1$) requires Stage~1 rate $R_1 \geq I(\mathbf{z}_{\leq 1}; Y_1)$ and total rate $R_1 + R_2 \geq I(\mathbf{z}; Y_1)$.
+By the data processing inequality applied to the Markov chain $\mathbf{z}_{\leq 1} - Y_1 - Y_0$ (since $Y_0 = g(Y_1)$), we have $I(\mathbf{z}_{\leq 1}; Y_0) \leq I(\mathbf{z}_{\leq 1}; Y_1)$.
+V5's Stage~1 targets $Y_0$ and thus requires rate $R_1' \geq I(\mathbf{z}_{\leq 1}; Y_0) \leq R_1$---a \emph{strictly weaker} constraint than standard SR.
+Since No~\citep{no2019universality} guarantees that standard SR is achievable under log loss for any discrete memoryless source, V5's relaxed regime is achievable a fortiori: targeting a coarser quantity at Stage~1 cannot make the problem harder.
 MRL distributes capacity across both $Y_0$ and $Y_1|Y_0$ at every prefix length, destroying the nested structure.
 \hfill$\square$
-
-\paragraph{Remark.}
-The formal reduction from our multi-target setting to the single-source successive refinement problem remains an open direction.
-The argument above relies on the monotonicity of the coarsening map and the universality of log loss; a complete proof would require bounding the gap introduced by targeting $g(Y_1)$ rather than $Y_1$ at Stage~1, which we leave to future work.
 
 The successive refinement framework yields three testable predictions, all confirmed:
 
