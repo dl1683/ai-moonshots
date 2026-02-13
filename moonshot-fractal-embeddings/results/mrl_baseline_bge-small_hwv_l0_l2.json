@@ -1,0 +1,99 @@
+{
+  "method": "mrl_baseline",
+  "model": "bge-small",
+  "dataset": "hwv_l0_l2",
+  "baseline": {
+    "l0_accuracy": 0.9144876325088339,
+    "l1_accuracy": 0.6855123674911661
+  },
+  "mrl": {
+    "l0_accuracy": 0.958303886925795,
+    "l1_accuracy": 0.781625441696113
+  },
+  "delta": {
+    "l0": 0.04381625441696113,
+    "l1": 0.09611307420494697
+  },
+  "prefix_accuracy": {
+    "j1_l0": 0.92,
+    "j1_l1": 0.618,
+    "j2_l0": 0.922,
+    "j2_l1": 0.624,
+    "j3_l0": 0.918,
+    "j3_l1": 0.616,
+    "j4_l0": 0.916,
+    "j4_l1": 0.616
+  },
+  "history": [
+    {
+      "stage": 1,
+      "epoch": 1,
+      "loss": 8.570022785349897,
+      "loss_full": 5.147575167448897,
+      "loss_mrl": 5.704079133115317,
+      "l0_accuracy": 0.8663171690694627,
+      "l1_accuracy": 0.4521625163826999
+    },
+    {
+      "stage": 1,
+      "epoch": 2,
+      "loss": 5.986605684223928,
+      "loss_full": 3.506894539845617,
+      "loss_mrl": 4.132851730836065,
+      "l0_accuracy": 0.8833551769331586,
+      "l1_accuracy": 0.48230668414154654
+    },
+    {
+      "stage": 1,
+      "epoch": 3,
+      "loss": 4.765569188877156,
+      "loss_full": 2.757528441124841,
+      "loss_mrl": 3.3467344382875845,
+      "l0_accuracy": 0.8833551769331586,
+      "l1_accuracy": 0.49017038007863695
+    },
+    {
+      "stage": 1,
+      "epoch": 4,
+      "loss": 3.9231215080148294,
+      "loss_full": 2.251674455639563,
+      "loss_mrl": 2.7857449666449896,
+      "l0_accuracy": 0.8938401048492791,
+      "l1_accuracy": 0.5150720838794234
+    },
+    {
+      "stage": 1,
+      "epoch": 5,
+      "loss": 3.310209500162225,
+      "loss_full": 1.8872661931734336,
+      "loss_mrl": 2.371572086293446,
+      "l0_accuracy": 0.891218872870249,
+      "l1_accuracy": 0.5242463958060288
+    }
+  ],
+  "training_config": {
+    "prefix_probs": [
+      0.4,
+      0.3,
+      0.2,
+      0.1
+    ],
+    "block_keep_probs": [
+      0.95,
+      0.9,
+      0.8,
+      0.7
+    ],
+    "mrl_weight": 0.6,
+    "margin_weight": 0.5,
+    "class_weight": 1.0,
+    "stage1_epochs": 5,
+    "stage2_epochs": 0,
+    "batch_size": 16,
+    "lr": 0.0001,
+    "weight_decay": 0.01,
+    "temperature": 0.07,
+    "grad_clip": 1.0,
+    "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+  }
+}

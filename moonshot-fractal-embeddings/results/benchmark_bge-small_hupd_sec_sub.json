@@ -1,0 +1,952 @@
+{
+  "model": "bge-small",
+  "dataset": "hupd_sec_sub",
+  "config": "HUPD Section(8) -> Subclass(587)",
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024
+  ],
+  "timestamp": "2026-02-13T01:12:24.405512",
+  "v5": {
+    "42": {
+      "model": "bge-small",
+      "dataset": "hupd_sec_sub",
+      "baseline": {
+        "l0_accuracy": 0.6195,
+        "l1_accuracy": 0.3335
+      },
+      "v5": {
+        "l0_accuracy": 0.66,
+        "l1_accuracy": 0.3615
+      },
+      "delta": {
+        "l0": 0.04049999999999998,
+        "l1": 0.02799999999999997
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.646,
+        "j1_l1": 0.282,
+        "j2_l0": 0.666,
+        "j2_l1": 0.312,
+        "j3_l0": 0.622,
+        "j3_l1": 0.314,
+        "j4_l0": 0.628,
+        "j4_l1": 0.32
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 7.870964705495906,
+          "loss_full": 5.645246413267944,
+          "loss_prefix": 3.7095303254617487,
+          "l0_accuracy": 0.901,
+          "l1_accuracy": 0.813
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 6.734057384027276,
+          "loss_full": 4.669389025609296,
+          "loss_prefix": 3.4411137868886006,
+          "l0_accuracy": 0.913,
+          "l1_accuracy": 0.817
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 6.26431279493155,
+          "loss_full": 4.256081411713048,
+          "loss_prefix": 3.3470521696229327,
+          "l0_accuracy": 0.922,
+          "l1_accuracy": 0.837
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.944605332568176,
+          "loss_full": 3.984584327479054,
+          "loss_prefix": 3.2667015493663034,
+          "l0_accuracy": 0.917,
+          "l1_accuracy": 0.83
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.717302759040268,
+          "loss_full": 3.789963989329517,
+          "loss_prefix": 3.2122311677251543,
+          "l0_accuracy": 0.92,
+          "l1_accuracy": 0.837
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
+    },
+    "123": {
+      "model": "bge-small",
+      "dataset": "hupd_sec_sub",
+      "baseline": {
+        "l0_accuracy": 0.6195,
+        "l1_accuracy": 0.3335
+      },
+      "v5": {
+        "l0_accuracy": 0.6595,
+        "l1_accuracy": 0.37
+      },
+      "delta": {
+        "l0": 0.039999999999999925,
+        "l1": 0.03649999999999998
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.656,
+        "j1_l1": 0.302,
+        "j2_l0": 0.656,
+        "j2_l1": 0.308,
+        "j3_l0": 0.65,
+        "j3_l1": 0.318,
+        "j4_l0": 0.63,
+        "j4_l1": 0.308
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 7.85311260020225,
+          "loss_full": 5.629614027072313,
+          "loss_prefix": 3.70583080558251,
+          "l0_accuracy": 0.901,
+          "l1_accuracy": 0.805
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 6.725435265921112,
+          "loss_full": 4.654561512751089,
+          "loss_prefix": 3.4514561213347545,
+          "l0_accuracy": 0.911,
+          "l1_accuracy": 0.813
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 6.281893023870941,
+          "loss_full": 4.275632306896057,
+          "loss_prefix": 3.343767721551403,
+          "l0_accuracy": 0.922,
+          "l1_accuracy": 0.821
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.95041347969146,
+          "loss_full": 3.982564631560094,
+          "loss_prefix": 3.2797479459217618,
+          "l0_accuracy": 0.921,
+          "l1_accuracy": 0.827
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.712139534024069,
+          "loss_full": 3.7886460787969125,
+          "loss_prefix": 3.205822291529567,
+          "l0_accuracy": 0.916,
+          "l1_accuracy": 0.824
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
+    },
+    "456": {
+      "model": "bge-small",
+      "dataset": "hupd_sec_sub",
+      "baseline": {
+        "l0_accuracy": 0.6195,
+        "l1_accuracy": 0.3335
+      },
+      "v5": {
+        "l0_accuracy": 0.66,
+        "l1_accuracy": 0.3685
+      },
+      "delta": {
+        "l0": 0.04049999999999998,
+        "l1": 0.034999999999999976
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.63,
+        "j1_l1": 0.28,
+        "j2_l0": 0.64,
+        "j2_l1": 0.286,
+        "j3_l0": 0.626,
+        "j3_l1": 0.298,
+        "j4_l0": 0.636,
+        "j4_l1": 0.302
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 7.839384426449175,
+          "loss_full": 5.628493320822417,
+          "loss_prefix": 3.6848183579014657,
+          "l0_accuracy": 0.902,
+          "l1_accuracy": 0.809
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 6.704290121121514,
+          "loss_full": 4.642062314769678,
+          "loss_prefix": 3.4370462092241847,
+          "l0_accuracy": 0.907,
+          "l1_accuracy": 0.807
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 6.264288423951706,
+          "loss_full": 4.255280973469105,
+          "loss_prefix": 3.3483456214866543,
+          "l0_accuracy": 0.919,
+          "l1_accuracy": 0.826
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.953100695795284,
+          "loss_full": 3.9910093773725936,
+          "loss_prefix": 3.270152066584518,
+          "l0_accuracy": 0.908,
+          "l1_accuracy": 0.82
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.722427201151549,
+          "loss_full": 3.795297802988449,
+          "loss_prefix": 3.211882214050245,
+          "l0_accuracy": 0.914,
+          "l1_accuracy": 0.829
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
+    },
+    "789": {
+      "model": "bge-small",
+      "dataset": "hupd_sec_sub",
+      "baseline": {
+        "l0_accuracy": 0.6195,
+        "l1_accuracy": 0.3335
+      },
+      "v5": {
+        "l0_accuracy": 0.662,
+        "l1_accuracy": 0.3585
+      },
+      "delta": {
+        "l0": 0.04249999999999998,
+        "l1": 0.024999999999999967
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.644,
+        "j1_l1": 0.28,
+        "j2_l0": 0.634,
+        "j2_l1": 0.306,
+        "j3_l0": 0.63,
+        "j3_l1": 0.308,
+        "j4_l0": 0.624,
+        "j4_l1": 0.312
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 7.8507548011932755,
+          "loss_full": 5.633241575164604,
+          "loss_prefix": 3.69585524062465,
+          "l0_accuracy": 0.903,
+          "l1_accuracy": 0.81
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 6.73052872541853,
+          "loss_full": 4.6597213361197545,
+          "loss_prefix": 3.451345509753789,
+          "l0_accuracy": 0.916,
+          "l1_accuracy": 0.819
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 6.28131589943305,
+          "loss_full": 4.270022817273486,
+          "loss_prefix": 3.3521550066190255,
+          "l0_accuracy": 0.913,
+          "l1_accuracy": 0.824
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.943748920483697,
+          "loss_full": 3.98228706789196,
+          "loss_prefix": 3.2691029459611514,
+          "l0_accuracy": 0.918,
+          "l1_accuracy": 0.828
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.714274055676951,
+          "loss_full": 3.7894129292259837,
+          "loss_prefix": 3.2081017498683213,
+          "l0_accuracy": 0.913,
+          "l1_accuracy": 0.829
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
+    },
+    "1024": {
+      "model": "bge-small",
+      "dataset": "hupd_sec_sub",
+      "baseline": {
+        "l0_accuracy": 0.6195,
+        "l1_accuracy": 0.3335
+      },
+      "v5": {
+        "l0_accuracy": 0.662,
+        "l1_accuracy": 0.371
+      },
+      "delta": {
+        "l0": 0.04249999999999998,
+        "l1": 0.03749999999999998
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.648,
+        "j1_l1": 0.274,
+        "j2_l0": 0.632,
+        "j2_l1": 0.308,
+        "j3_l0": 0.64,
+        "j3_l1": 0.3,
+        "j4_l0": 0.614,
+        "j4_l1": 0.308
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 7.864917841770296,
+          "loss_full": 5.645650247135258,
+          "loss_prefix": 3.698779172616495,
+          "l0_accuracy": 0.902,
+          "l1_accuracy": 0.8
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 6.734024876639957,
+          "loss_full": 4.663925584246939,
+          "loss_prefix": 3.4501653460034154,
+          "l0_accuracy": 0.91,
+          "l1_accuracy": 0.81
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 6.279421082265992,
+          "loss_full": 4.2717491327073045,
+          "loss_prefix": 3.346119790148914,
+          "l0_accuracy": 0.912,
+          "l1_accuracy": 0.824
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 5.947186054143691,
+          "loss_full": 3.984538433097658,
+          "loss_prefix": 3.271079241333151,
+          "l0_accuracy": 0.911,
+          "l1_accuracy": 0.828
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.707953304873971,
+          "loss_full": 3.7871581907559158,
+          "loss_prefix": 3.2013250699915683,
+          "l0_accuracy": 0.918,
+          "l1_accuracy": 0.841
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "prefix_weight": 0.6
+      }
+    }
+  },
+  "mrl": {
+    "42": {
+      "method": "mrl_baseline",
+      "model": "bge-small",
+      "dataset": "hupd_sec_sub",
+      "baseline": {
+        "l0_accuracy": 0.6195,
+        "l1_accuracy": 0.3335
+      },
+      "mrl": {
+        "l0_accuracy": 0.646,
+        "l1_accuracy": 0.335
+      },
+      "delta": {
+        "l0": 0.026499999999999968,
+        "l1": 0.0015000000000000013
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.602,
+        "j1_l1": 0.308,
+        "j2_l0": 0.594,
+        "j2_l1": 0.3,
+        "j3_l0": 0.604,
+        "j3_l1": 0.306,
+        "j4_l0": 0.6,
+        "j4_l1": 0.292
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 9.106898658556448,
+          "loss_full": 5.622973564424012,
+          "loss_mrl": 5.8065415828449085,
+          "l0_accuracy": 0.911,
+          "l1_accuracy": 0.824
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 7.387621352845864,
+          "loss_full": 4.606225121738319,
+          "loss_mrl": 4.635660213784766,
+          "l0_accuracy": 0.918,
+          "l1_accuracy": 0.827
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 6.734021297224183,
+          "loss_full": 4.212118179278266,
+          "loss_mrl": 4.203171700612645,
+          "l0_accuracy": 0.907,
+          "l1_accuracy": 0.817
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 6.299555941482534,
+          "loss_full": 3.9501826498741495,
+          "loss_mrl": 3.915621986290566,
+          "l0_accuracy": 0.912,
+          "l1_accuracy": 0.826
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.960904728051714,
+          "loss_full": 3.737950034084774,
+          "loss_mrl": 3.7049243421034705,
+          "l0_accuracy": 0.909,
+          "l1_accuracy": 0.834
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "mrl_weight": 0.6,
+        "margin_weight": 0.5,
+        "class_weight": 1.0,
+        "stage1_epochs": 5,
+        "stage2_epochs": 0,
+        "batch_size": 16,
+        "lr": 0.0001,
+        "weight_decay": 0.01,
+        "temperature": 0.07,
+        "grad_clip": 1.0,
+        "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+      }
+    },
+    "123": {
+      "method": "mrl_baseline",
+      "model": "bge-small",
+      "dataset": "hupd_sec_sub",
+      "baseline": {
+        "l0_accuracy": 0.6195,
+        "l1_accuracy": 0.3335
+      },
+      "mrl": {
+        "l0_accuracy": 0.6405,
+        "l1_accuracy": 0.365
+      },
+      "delta": {
+        "l0": 0.020999999999999908,
+        "l1": 0.03149999999999997
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.616,
+        "j1_l1": 0.302,
+        "j2_l0": 0.648,
+        "j2_l1": 0.302,
+        "j3_l0": 0.626,
+        "j3_l1": 0.3,
+        "j4_l0": 0.636,
+        "j4_l1": 0.308
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 9.096709699260263,
+          "loss_full": 5.6104170370818975,
+          "loss_mrl": 5.810487535513732,
+          "l0_accuracy": 0.905,
+          "l1_accuracy": 0.819
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 7.381775600868359,
+          "loss_full": 4.602871976400676,
+          "loss_mrl": 4.631505843989532,
+          "l0_accuracy": 0.906,
+          "l1_accuracy": 0.814
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 6.711701625421233,
+          "loss_full": 4.192338313524585,
+          "loss_mrl": 4.198938683758404,
+          "l0_accuracy": 0.909,
+          "l1_accuracy": 0.828
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 6.301771687086961,
+          "loss_full": 3.939096932796607,
+          "loss_mrl": 3.9377911008689037,
+          "l0_accuracy": 0.912,
+          "l1_accuracy": 0.827
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.941859335379493,
+          "loss_full": 3.714418169026984,
+          "loss_mrl": 3.7124018032748,
+          "l0_accuracy": 0.912,
+          "l1_accuracy": 0.828
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "mrl_weight": 0.6,
+        "margin_weight": 0.5,
+        "class_weight": 1.0,
+        "stage1_epochs": 5,
+        "stage2_epochs": 0,
+        "batch_size": 16,
+        "lr": 0.0001,
+        "weight_decay": 0.01,
+        "temperature": 0.07,
+        "grad_clip": 1.0,
+        "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+      }
+    },
+    "456": {
+      "method": "mrl_baseline",
+      "model": "bge-small",
+      "dataset": "hupd_sec_sub",
+      "baseline": {
+        "l0_accuracy": 0.6195,
+        "l1_accuracy": 0.3335
+      },
+      "mrl": {
+        "l0_accuracy": 0.66,
+        "l1_accuracy": 0.3735
+      },
+      "delta": {
+        "l0": 0.04049999999999998,
+        "l1": 0.03999999999999998
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.6,
+        "j1_l1": 0.302,
+        "j2_l0": 0.618,
+        "j2_l1": 0.298,
+        "j3_l0": 0.618,
+        "j3_l1": 0.302,
+        "j4_l0": 0.6,
+        "j4_l1": 0.304
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 9.09214236592888,
+          "loss_full": 5.614511059937919,
+          "loss_mrl": 5.796051924390004,
+          "l0_accuracy": 0.898,
+          "l1_accuracy": 0.811
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 7.366789345753223,
+          "loss_full": 4.589943687569229,
+          "loss_mrl": 4.6280759199520105,
+          "l0_accuracy": 0.904,
+          "l1_accuracy": 0.812
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 6.746934963796372,
+          "loss_full": 4.214932887924643,
+          "loss_mrl": 4.2200032993964385,
+          "l0_accuracy": 0.915,
+          "l1_accuracy": 0.831
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 6.318565357597849,
+          "loss_full": 3.9561209010898617,
+          "loss_mrl": 3.9374072612975177,
+          "l0_accuracy": 0.913,
+          "l1_accuracy": 0.829
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.98378018239387,
+          "loss_full": 3.7452451267039266,
+          "loss_mrl": 3.7308916047700964,
+          "l0_accuracy": 0.911,
+          "l1_accuracy": 0.836
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "mrl_weight": 0.6,
+        "margin_weight": 0.5,
+        "class_weight": 1.0,
+        "stage1_epochs": 5,
+        "stage2_epochs": 0,
+        "batch_size": 16,
+        "lr": 0.0001,
+        "weight_decay": 0.01,
+        "temperature": 0.07,
+        "grad_clip": 1.0,
+        "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+      }
+    },
+    "789": {
+      "method": "mrl_baseline",
+      "model": "bge-small",
+      "dataset": "hupd_sec_sub",
+      "baseline": {
+        "l0_accuracy": 0.6195,
+        "l1_accuracy": 0.3335
+      },
+      "mrl": {
+        "l0_accuracy": 0.6585,
+        "l1_accuracy": 0.3495
+      },
+      "delta": {
+        "l0": 0.038999999999999924,
+        "l1": 0.01599999999999996
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.618,
+        "j1_l1": 0.318,
+        "j2_l0": 0.622,
+        "j2_l1": 0.3,
+        "j3_l0": 0.62,
+        "j3_l1": 0.302,
+        "j4_l0": 0.624,
+        "j4_l1": 0.306
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 9.08380553268251,
+          "loss_full": 5.600698164083008,
+          "loss_mrl": 5.80517870322206,
+          "l0_accuracy": 0.899,
+          "l1_accuracy": 0.813
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 7.385329267136137,
+          "loss_full": 4.60356608025711,
+          "loss_mrl": 4.636271800911217,
+          "l0_accuracy": 0.911,
+          "l1_accuracy": 0.819
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 6.738156318813936,
+          "loss_full": 4.211974365968154,
+          "loss_mrl": 4.21030309758987,
+          "l0_accuracy": 0.92,
+          "l1_accuracy": 0.831
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 6.288972784851428,
+          "loss_full": 3.9379001136561085,
+          "loss_mrl": 3.9184542790540777,
+          "l0_accuracy": 0.917,
+          "l1_accuracy": 0.827
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.948332003334112,
+          "loss_full": 3.7152819118852305,
+          "loss_mrl": 3.7217500029799333,
+          "l0_accuracy": 0.911,
+          "l1_accuracy": 0.832
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "mrl_weight": 0.6,
+        "margin_weight": 0.5,
+        "class_weight": 1.0,
+        "stage1_epochs": 5,
+        "stage2_epochs": 0,
+        "batch_size": 16,
+        "lr": 0.0001,
+        "weight_decay": 0.01,
+        "temperature": 0.07,
+        "grad_clip": 1.0,
+        "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+      }
+    },
+    "1024": {
+      "method": "mrl_baseline",
+      "model": "bge-small",
+      "dataset": "hupd_sec_sub",
+      "baseline": {
+        "l0_accuracy": 0.6195,
+        "l1_accuracy": 0.3335
+      },
+      "mrl": {
+        "l0_accuracy": 0.644,
+        "l1_accuracy": 0.3665
+      },
+      "delta": {
+        "l0": 0.024499999999999966,
+        "l1": 0.032999999999999974
+      },
+      "prefix_accuracy": {
+        "j1_l0": 0.644,
+        "j1_l1": 0.306,
+        "j2_l0": 0.652,
+        "j2_l1": 0.31,
+        "j3_l0": 0.632,
+        "j3_l1": 0.316,
+        "j4_l0": 0.65,
+        "j4_l1": 0.312
+      },
+      "history": [
+        {
+          "stage": 1,
+          "epoch": 1,
+          "loss": 9.09842141947352,
+          "loss_full": 5.619039440961709,
+          "loss_mrl": 5.798969725020846,
+          "l0_accuracy": 0.904,
+          "l1_accuracy": 0.808
+        },
+        {
+          "stage": 1,
+          "epoch": 2,
+          "loss": 7.386870142511258,
+          "loss_full": 4.608012039261055,
+          "loss_mrl": 4.631429995211742,
+          "l0_accuracy": 0.905,
+          "l1_accuracy": 0.814
+        },
+        {
+          "stage": 1,
+          "epoch": 3,
+          "loss": 6.733324037458663,
+          "loss_full": 4.211936493266495,
+          "loss_mrl": 4.2023123934454185,
+          "l0_accuracy": 0.917,
+          "l1_accuracy": 0.83
+        },
+        {
+          "stage": 1,
+          "epoch": 4,
+          "loss": 6.303286380636363,
+          "loss_full": 3.9479273264868215,
+          "loss_mrl": 3.92559827494442,
+          "l0_accuracy": 0.916,
+          "l1_accuracy": 0.829
+        },
+        {
+          "stage": 1,
+          "epoch": 5,
+          "loss": 5.970283930911157,
+          "loss_full": 3.738458158901162,
+          "loss_mrl": 3.7197094732209255,
+          "l0_accuracy": 0.917,
+          "l1_accuracy": 0.837
+        }
+      ],
+      "training_config": {
+        "prefix_probs": [
+          0.4,
+          0.3,
+          0.2,
+          0.1
+        ],
+        "block_keep_probs": [
+          0.95,
+          0.9,
+          0.8,
+          0.7
+        ],
+        "mrl_weight": 0.6,
+        "margin_weight": 0.5,
+        "class_weight": 1.0,
+        "stage1_epochs": 5,
+        "stage2_epochs": 0,
+        "batch_size": 16,
+        "lr": 0.0001,
+        "weight_decay": 0.01,
+        "temperature": 0.07,
+        "grad_clip": 1.0,
+        "note": "num_l0_classes set to num_l1_classes so head_top outputs L1 logits"
+      }
+    }
+  }
+}
