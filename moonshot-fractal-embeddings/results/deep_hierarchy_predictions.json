@@ -1,0 +1,56 @@
+{
+  "description": "Pre-registered predictions for deep hierarchy experiments (frozen before results)",
+  "timestamp": "2026-02-12T23:00:00",
+  "calibration": {
+    "method": "Linear regression on product predictor (H * base_L1) vs V5 steerability",
+    "n_calibration_datasets": 8,
+    "fit": "S = 0.0501 * (H * base_L1) - 0.0204",
+    "r_squared": 0.943,
+    "spearman_rho": 0.905,
+    "p_value": 0.002
+  },
+  "predictions": {
+    "hupd_sec_sub": {
+      "H_L1_given_L0": 4.44,
+      "K0": 8,
+      "K1": 587,
+      "base_L1_observed": 0.3335,
+      "product": 1.481,
+      "predicted_S": 0.054,
+      "predicted_ordering": "higher than hupd_sec_cls (product 1.48 vs 1.15)",
+      "risk_factor": "floor effect possible with K1=587"
+    },
+    "hwv_l0_l2": {
+      "H_L1_given_L0": 4.09,
+      "K0": 10,
+      "K1": 253,
+      "base_L1_range": [0.15, 0.35],
+      "product_range": [0.61, 1.43],
+      "predicted_S_range": [0.010, 0.051],
+      "note": "baseline L1 unknown, prediction conditioned on base_L1"
+    },
+    "hwv_l0_l3": {
+      "H_L1_given_L0": 4.59,
+      "K0": 10,
+      "K1": 230,
+      "base_L1_range": [0.15, 0.35],
+      "product_range": [0.69, 1.61],
+      "predicted_S_range": [0.014, 0.060],
+      "note": "baseline L1 unknown, prediction conditioned on base_L1"
+    }
+  },
+  "key_testable_predictions": [
+    "hupd_sec_sub steerability > hupd_sec_cls steerability (product 1.48 > 1.15)",
+    "Ranking across all configs follows product predictor ordering",
+    "All V5 > MRL (sign test)",
+    "Effect sizes correlate with product values (Spearman rho > 0.7)"
+  ],
+  "reference": {
+    "hupd_sec_cls_observed": {
+      "product": 1.151,
+      "V5_S": 0.043,
+      "MRL_S": -0.002,
+      "d": 1.8
+    }
+  }
+}
