@@ -625,11 +625,12 @@ Under V5 supervision ($\mathbf{z}_{\leq 1} \rightarrow Y_0$ via cross-entropy, $
 \paragraph{Proof sketch.}
 The capacity bottleneck $C(d/J) < H(Y_1)$ means the prefix cannot encode all of $Y_1$, but $C(d/J) \geq H(Y_0)$ ensures it can encode $Y_0$.
 V5's prefix cross-entropy loss targeting $Y_0$ forces the optimal prefix to maximise $I(\mathbf{z}_{\leq 1}; Y_0)$, yielding coarse-prioritised encoding.
-The formal reduction to standard SR proceeds as follows.
-Standard SR of $Y_1$ under log loss (both stages targeting $Y_1$) requires Stage~1 rate $R_1 \geq I(\mathbf{z}_{\leq 1}; Y_1)$ and total rate $R_1 + R_2 \geq I(\mathbf{z}; Y_1)$.
-By the data processing inequality applied to the Markov chain $\mathbf{z}_{\leq 1} - Y_1 - Y_0$ (since $Y_0 = g(Y_1)$), we have $I(\mathbf{z}_{\leq 1}; Y_0) \leq I(\mathbf{z}_{\leq 1}; Y_1)$.
-V5's Stage~1 targets $Y_0$ and thus requires rate $R_1' \geq I(\mathbf{z}_{\leq 1}; Y_0) \leq R_1$---a \emph{strictly weaker} constraint than standard SR.
-Since No~\citep{no2019universality} guarantees that standard SR is achievable under log loss for any discrete memoryless source, V5's relaxed regime is achievable a fortiori: targeting a coarser quantity at Stage~1 cannot make the problem harder.
+The formal reduction to standard SR proceeds by decoder mapping.
+Take any SR code for $Y_1$ under log loss at both stages (existence guaranteed by No~\citep{no2019universality}).
+Keep the encoder and Stage~2 decoder unchanged.
+Replace the Stage~1 decoder $q_1(\cdot | m_1) \in \Delta(\mathcal{Y}_1)$ with the coarse marginal $q_0(y_0 | m_1) = \sum_{y_1 : g(y_1) = y_0} q_1(y_1 | m_1)$.
+The resulting Stage~1 log loss on $Y_0$ satisfies $H(Y_0 | M_1) \leq H(Y_1 | M_1)$ (marginalising over a partition cannot increase entropy), so V5's Stage~1 constraint is \emph{strictly weaker} than standard SR's.
+Since Stage~2 is unchanged, V5's rate region contains the standard SR rate region: any achievable $(R_1, R_2)$ for same-source SR yields an achievable point for V5's coarse-first regime.
 MRL distributes capacity across both $Y_0$ and $Y_1|Y_0$ at every prefix length, destroying the nested structure.
 \hfill$\square$
 
