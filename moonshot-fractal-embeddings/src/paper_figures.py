@@ -817,6 +817,94 @@ def fig10_three_level():
     print(f"  Fig 10 saved: {FIGURES_DIR / 'fig10_three_level.png'}")
 
 
+def fig_beir_retrieval():
+    """Million-scale BEIR retrieval: SVD, hierarchy-aligned, classification-only projections."""
+    # Load results
+    beir_path = RESULTS_DIR / "beir_contrastive_projection.json"
+    if not beir_path.exists():
+        print("  Fig BEIR: No contrastive projection results. Skipping.")
+        return
+
+    data = json.load(open(beir_path))
+    results = data["results"]
+
+    # Base model truncation (from beir_dbpedia_benchmark.json)
+    base_path = RESULTS_DIR / "beir_dbpedia_benchmark.json"
+    if base_path.exists():
+        base_data = json.load(open(base_path))
+        base_results = base_data["results_base"]
+    else:
+        base_results = {"64": {"ndcg_at_10": 0.182}, "128": {"ndcg_at_10": 0.301},
+                        "192": {"ndcg_at_10": 0.336}, "256": {"ndcg_at_10": 0.356}}
+
+    # Classification projection (from beir_v5_mrl_retrieval.json)
+    cls_path = RESULTS_DIR / "beir_v5_mrl_retrieval.json"
+    cls_results = {}
+    if cls_path.exists():
+        cls_data = json.load(open(cls_path))
+        v5_seeds = cls_data.get("results", {}).get("v5", {})
+        for dim_str in ["64", "128", "192", "256"]:
+            vals = []
+            for seed_key, seed_data in v5_seeds.items():
+                if isinstance(seed_data, dict) and dim_str in seed_data:
+                    vals.append(seed_data[dim_str].get("ndcg_at_10", 0))
+            if vals:
+                cls_results[dim_str] = np.mean(vals)
+
+    dims = [64, 128, 192, 256]
+    dim_strs = ["64", "128", "192", "256"]
+
+    fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+
+    # 1. Naive truncation
+    base_vals = [base_results[d]["ndcg_at_10"] for d in dim_strs]
+    ax.plot(dims, base_vals, 'o-', color='#607D8B', label='Naive truncation',
+            linewidth=1.5, markersize=6)
+
+    # 2. SVD rotation
+    svd_vals = [results["svd_baseline"][d]["ndcg_at_10"] for d in dim_strs]
+    ax.plot(dims, svd_vals, 's-', color='#4CAF50', label='SVD rotation',
+            linewidth=2, markersize=7)
+
+    # 3. Hierarchy-aligned (alpha=0.01)
+    aligned_key = "aligned_alpha_0.01"
+    if aligned_key in results:
+        aligned_vals = [results[aligned_key][d]["ndcg_at_10"] for d in dim_strs]
+        ax.plot(dims, aligned_vals, '^-', color=V5_COLOR, label='Hierarchy-aligned',
+                linewidth=2, markersize=7)
+
+    # 4. Classification-only (collapsed)
+    if cls_results:
+        cls_vals = [cls_results.get(d, 0) for d in dim_strs]
+        ax.plot(dims, cls_vals, 'x--', color=INV_COLOR, label='Classification-only',
+                linewidth=1.5, markersize=8, markeredgewidth=2)
+
+    ax.set_xlabel('Prefix Dimensions')
+    ax.set_ylabel('nDCG@10')
+    ax.set_title('Million-Scale Retrieval (BEIR DBPedia-Entity, 4.6M docs)', fontweight='bold')
+    ax.set_xticks(dims)
+    ax.legend(loc='lower right')
+    ax.grid(True, alpha=0.3)
+    ax.set_ylim(-0.02, 0.40)
+
+    # Annotate the 64d improvement
+    ax.annotate(f'+38%', xy=(64, svd_vals[0]), xytext=(80, svd_vals[0] + 0.04),
+               fontsize=9, color='#4CAF50', fontweight='bold',
+               arrowprops=dict(arrowstyle='->', color='#4CAF50', lw=1.2))
+
+    # Annotate the collapse
+    if cls_results:
+        ax.annotate('Collapse\n(-88%)', xy=(256, cls_vals[-1] if cls_vals else 0.04),
+                    xytext=(220, 0.10), fontsize=9, color=INV_COLOR, fontweight='bold',
+                    arrowprops=dict(arrowstyle='->', color=INV_COLOR, lw=1.2))
+
+    fig.tight_layout()
+    fig.savefig(FIGURES_DIR / "fig_beir_retrieval.png", dpi=150)
+    fig.savefig(FIGURES_DIR / "fig_beir_retrieval.pdf")
+    plt.close(fig)
+    print(f"  Fig BEIR saved: {FIGURES_DIR / 'fig_beir_retrieval.pdf'}")
+
+
 # ============================================================================
 # Main
 # ============================================================================
@@ -833,5 +921,6 @@ if __name__ == "__main__":
     fig8_prefix_surgery()
     fig9_retrieval_benchmark()
     fig10_three_level()
+    fig_beir_retrieval()
 
     print("\nDone!")

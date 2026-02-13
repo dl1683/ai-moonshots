@@ -579,7 +579,7 @@ $L_2$ (150 intent) & V5  & 92.7 & 94.7 & 95.4 & 95.9 \\
 
 \paragraph{Million-scale retrieval.}
 To verify that prefix-based granularity control scales beyond classification, we evaluate on BEIR DBPedia-Entity~\citep{thakur2021beir} (4.6M documents, 400 queries).
-Table~\ref{tab:beir} compares four projection strategies at each prefix dimension.
+Table~\ref{tab:beir} compares four projection strategies at each prefix dimension (Figure~\ref{fig:beir}, Appendix).
 Naive truncation of bge-small's 384d embeddings yields monotonically increasing nDCG@10 from 0.182 (64d) to 0.356 (256d), confirming that the prefix-truncation mechanism provides a \emph{predictable latency--quality tradeoff at million-scale}.
 An SVD-optimal rotation (PCA on 500K corpus vectors projected to 256d) improves further: 0.252 at 64d ($+38\%$ vs.\ truncation), 0.365 at 256d, explaining 90.4\% of variance.
 A hierarchy-aligned projection---initialised from SVD and fine-tuned with cosine similarity preservation plus V5-style prefix classification ($\alpha_{\mathrm{hier}} = 0.01$)---retains 94\% of SVD quality at 64d (0.237) and 97\% at 256d (0.353) while learning to steer prefix semantics.
@@ -597,7 +597,7 @@ Method & 64d & 128d & 192d & 256d \\
 Naive truncation & 0.182 & 0.301 & 0.336 & 0.356 \\
 SVD rotation & \textbf{0.252} & \textbf{0.317} & \textbf{0.348} & \textbf{0.365} \\
 Hierarchy-aligned ($\alpha = 0.01$) & 0.237 & 0.309 & 0.339 & 0.353 \\
-Classification-only (V5 proj.) & 0.004 & 0.011 & 0.027 & 0.042 \\
+Classification-only (V5 proj.) & 0.021 & 0.033 & 0.039 & 0.042 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -799,6 +799,16 @@ We release all code, data, and experimental artifacts to support replication and
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig9_retrieval.pdf}
     \caption{Retrieval benchmark on CLINC-150 (3 seeds). V5 $L_1$ Recall@1 ramps steeply from 64d to 192d ($+6.3$pp) while MRL is flat ($+0.6$pp). Both achieve comparable $L_0$ Recall@1 ($>97\%$). The $10\times$ larger ramp demonstrates that prefix specialisation transfers from classification to retrieval.}
     \label{fig:retrieval}
+\end{figure}
+
+\section{Million-Scale Retrieval Visualisation}
+\label{app:beir}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig_beir_retrieval.pdf}
+    \caption{Million-scale retrieval on BEIR DBPedia-Entity (4.6M documents). SVD rotation (green) improves over naive truncation (grey) by $+38\%$ at 64d. Hierarchy-aligned projection (blue) retains 94--97\% of SVD quality while adding prefix-level semantic structure. Classification-only projection (red) collapses retrieval ($-88\%$), confirming that distance preservation is essential.}
+    \label{fig:beir}
 \end{figure}
 
 \section{Three-Level Hierarchy Visualisation}
