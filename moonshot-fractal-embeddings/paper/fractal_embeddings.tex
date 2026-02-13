@@ -577,6 +577,14 @@ $L_2$ (150 intent) & V5  & 92.7 & 94.7 & 95.4 & 95.9 \\
 \end{tabular}
 \end{table}
 
+\paragraph{Million-scale retrieval.}
+To verify that prefix-based granularity control scales beyond classification, we evaluate on BEIR DBPedia-Entity~\citep{thakur2021beir} (4.6M documents, 400 queries).
+Using bge-small's native 384d embeddings truncated to $\{64, 128, 192, 256\}$ dimensions, nDCG@10 rises monotonically from 0.182 (64d) to 0.356 (256d), with query latency scaling proportionally (8.9ms to 48.8ms on FAISS FlatIP).
+This confirms that the prefix-truncation mechanism underlying V5's steerability provides a \emph{predictable latency--quality tradeoff at million-scale}: an operator can select the prefix length to match a latency budget without re-indexing.
+
+Notably, applying V5's classification-supervised projection to the same corpus \emph{destroys} retrieval quality (nDCG@10 drops from 0.356 to 0.042 at 256d; MRL: 0.057).
+This boundary-condition result demonstrates that classification objectives optimise for class separation, not distance preservation---a finding consistent with Theorem~\ref{thm:goldilocks}'s capacity-demand framing: the projection head allocates capacity to the 14-class boundary, not the fine-grained similarity structure required for ad-hoc retrieval across 4.6M diverse documents.
+
 %=======================================================================
 \section{Limitations}
 \label{sec:limitations}
