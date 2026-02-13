@@ -114,5 +114,45 @@
     "mi_levels": 2.0867409750483246,
     "depth_ratio": 1.5212029544224488,
     "avg_samples_per_l1": 142.85714285714286
+  },
+  "hupd_sec_cls": {
+    "dataset": "hupd_sec_cls",
+    "n_samples": 15000,
+    "n_l0": 8,
+    "n_l1": 121,
+    "branching_factor": 15.125,
+    "h_l1_given_l0": 2.42,
+    "h_l0": 2.71,
+    "note": "HUPD patents: Section(8) -> IPC Class(121)"
+  },
+  "hupd_sec_sub": {
+    "dataset": "hupd_sec_sub",
+    "n_samples": 15000,
+    "n_l0": 8,
+    "n_l1": 632,
+    "branching_factor": 79.0,
+    "h_l1_given_l0": 4.44,
+    "h_l0": 2.71,
+    "note": "HUPD patents: Section(8) -> IPC Subclass(632)"
+  },
+  "hwv_l0_l2": {
+    "dataset": "hwv_l0_l2",
+    "n_samples": 15000,
+    "n_l0": 30,
+    "n_l1": 300,
+    "branching_factor": 10.0,
+    "h_l1_given_l0": 4.09,
+    "h_l0": 4.36,
+    "note": "HWV Wikipedia: Top-category(30) -> Mid-category(300)"
+  },
+  "hwv_l0_l3": {
+    "dataset": "hwv_l0_l3",
+    "n_samples": 15000,
+    "n_l0": 30,
+    "n_l1": 500,
+    "branching_factor": 16.67,
+    "h_l1_given_l0": 4.59,
+    "h_l0": 4.36,
+    "note": "HWV Wikipedia: Top-category(30) -> Fine-category(500)"
   }
 }
