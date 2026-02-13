@@ -1,35 +1,46 @@
 {
-  "status": "partial",
+  "status": "complete",
   "n_calibration": 8,
-  "n_test": 2,
+  "n_test": 4,
   "calibration_fit": {
     "slope": 0.04997535093010461,
     "intercept": -0.02032694947314405,
     "r_squared": 0.9425044791768468
   },
   "combined_fit": {
-    "slope": 0.04967748760631591,
-    "intercept": -0.019049764249301063,
-    "r_squared": 0.9410743987448693
+    "slope": 0.03767721224370626,
+    "intercept": -0.007050348980392911,
+    "r_squared": 0.7951019809838993
   },
   "out_of_sample": {
-    "rmse": 0.0045634699126663614,
-    "mae": 0.004173130870632178,
-    "n_test": 2
+    "rmse": 0.036983456954769255,
+    "mae": 0.02759704057173793,
+    "n_test": 4
   },
   "combined_correlation": {
-    "spearman_rho": 0.8787878787878788,
-    "spearman_p": 0.0008138621117322101,
-    "pearson_r": 0.9700898920949902,
-    "pearson_p": 3.377350957810483e-06
+    "spearman_rho": 0.9020979020979022,
+    "spearman_p": 5.9978574465377e-05,
+    "pearson_r": 0.8916849112684925,
+    "pearson_p": 9.764215499660446e-05
   },
   "predictions_check": {
     "sec_sub_gt_sec_cls": true,
-    "sign_test_v5_wins": 10,
-    "sign_test_total": 10,
-    "sign_test_p": 0.0009765625,
+    "sign_test_v5_wins": 12,
+    "sign_test_total": 12,
+    "sign_test_p": 0.000244140625,
     "rho_gt_07": true,
-    "rho_value": 0.8787878787878788
+    "rho_value": 0.9020979020979022,
+    "point_prediction": {
+      "predicted": 0.054,
+      "actual": 0.044800000000000006,
+      "actual_se": 0.00924337600663308,
+      "within_1se": true,
+      "within_ci": true,
+      "absolute_error": 0.009199999999999993,
+      "relative_error": 20.535714285714267
+    },
+    "hwv_l0_l2_in_range": false,
+    "hwv_l0_l3_in_range": false
   },
   "per_dataset": {
     "yahoo": {
@@ -126,10 +137,30 @@
       "H": 4.44,
       "base_l1": 0.3335,
       "product": 1.4807400000000002,
-      "v5_steer": 0.05600000000000005,
-      "v5_steer_std": 0,
-      "mrl_steer": -0.014000000000000012,
-      "n_seeds": 1,
+      "v5_steer": 0.044800000000000006,
+      "v5_steer_std": 0.020668817092422118,
+      "mrl_steer": -0.008800000000000007,
+      "n_seeds": 5,
+      "is_test": true
+    },
+    "hwv_l0_l2": {
+      "H": 4.09,
+      "base_l1": 0.6855123674911661,
+      "product": 2.803745583038869,
+      "v5_steer": 0.09199999999999994,
+      "v5_steer_std": 0.012727922061357854,
+      "mrl_steer": 0.018000000000000016,
+      "n_seeds": 5,
+      "is_test": true
+    },
+    "hwv_l0_l3": {
+      "H": 4.59,
+      "base_l1": 0.7168262653898769,
+      "product": 3.290232558139535,
+      "v5_steer": 0.0764,
+      "v5_steer_std": 0.01779887636902964,
+      "mrl_steer": 0.005199999999999982,
+      "n_seeds": 5,
       "is_test": true
     }
   }
