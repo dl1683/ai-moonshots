@@ -191,9 +191,11 @@ class CSRTrainer(BaselineTrainer):
         # 4. InfoNCE contrastive (same L1 = positive)
         batch_size = output.shape[0]
         sim = output @ output.T / self.TEMPERATURE
+        diag_mask = torch.eye(batch_size, device=embeddings.device, dtype=torch.bool)
+
         # Use L1 labels for positives
         pos_mask = (l1_labels.unsqueeze(1) == l1_labels.unsqueeze(0)).float()
-        pos_mask.fill_diagonal_(0)
+        pos_mask = pos_mask.masked_fill(diag_mask, 0)
 
         num_pos = pos_mask.sum(dim=1)
         valid = num_pos > 0
@@ -201,9 +203,8 @@ class CSRTrainer(BaselineTrainer):
         if valid.any():
             sim_max = sim.max(dim=1, keepdim=True).values.detach()
             sim_stable = sim - sim_max
-            exp_sim = torch.exp(sim_stable)
-            exp_sim.fill_diagonal_(0)
-            log_denom = torch.log(exp_sim.sum(dim=1) + 1e-8)
+            sim_no_self = sim_stable.masked_fill(diag_mask, -1e9)
+            log_denom = torch.logsumexp(sim_no_self, dim=1)
             pos_sum = (sim_stable * pos_mask).sum(dim=1)
             contrastive = -(pos_sum[valid] / num_pos[valid].clamp(min=1) - log_denom[valid]).mean()
         else:

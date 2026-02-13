@@ -140,28 +140,25 @@ class HEALTrainer(BaselineTrainer):
 
         # Similarity matrix
         sim = embeddings @ embeddings.T / temperature  # [B, B]
+        diag_mask = torch.eye(batch_size, device=embeddings.device, dtype=torch.bool)
 
         # Mask: same class = 1, different = 0, diagonal = 0
         labels_eq = labels.unsqueeze(1) == labels.unsqueeze(0)  # [B, B]
-        mask_pos = labels_eq.float()
-        mask_pos.fill_diagonal_(0)
+        mask_pos = labels_eq.float().masked_fill(diag_mask, 0)
 
         # Number of positives per anchor
         num_pos = mask_pos.sum(dim=1)  # [B]
 
         # For numerical stability
         sim_max = sim.max(dim=1, keepdim=True).values.detach()
-        sim = sim - sim_max
+        sim_stable = sim - sim_max
 
-        # Log-sum-exp over all (including negatives)
-        exp_sim = torch.exp(sim)
-        # Exclude self
-        exp_sim.fill_diagonal_(0)
-        log_sum_exp = torch.log(exp_sim.sum(dim=1) + 1e-8)  # [B]
+        # Log-sum-exp over all (excluding self via large negative)
+        sim_no_self = sim_stable.masked_fill(diag_mask, -1e9)
+        log_sum_exp = torch.logsumexp(sim_no_self, dim=1)  # [B]
 
         # Mean of log(exp(sim_pos) / sum(exp(sim_all)))
-        # = mean of (sim_pos - log_sum_exp)
-        pos_sim_sum = (sim * mask_pos).sum(dim=1)  # [B]
+        pos_sim_sum = (sim_stable * mask_pos).sum(dim=1)  # [B]
 
         # Only count anchors with at least one positive
         valid = num_pos > 0
@@ -190,32 +187,33 @@ class HEALTrainer(BaselineTrainer):
             return torch.tensor(0.0, device=embeddings.device)
 
         sim = embeddings @ embeddings.T / temperature
+        diag_mask = torch.eye(batch_size, device=embeddings.device, dtype=torch.bool)
 
-        # Positive mask: same L1 label
+        # Positive mask: same L1 label, exclude diagonal
         mask_pos = (l1_labels.unsqueeze(1) == l1_labels.unsqueeze(0)).float()
-        mask_pos.fill_diagonal_(0)
+        mask_pos = mask_pos.masked_fill(diag_mask, 0)
 
         # Hard negative mask: same L0 but different L1
         same_l0 = (l0_labels.unsqueeze(1) == l0_labels.unsqueeze(0)).float()
         diff_l1 = 1.0 - (l1_labels.unsqueeze(1) == l1_labels.unsqueeze(0)).float()
         hard_neg = same_l0 * diff_l1
-        hard_neg.fill_diagonal_(0)
+        hard_neg = hard_neg.masked_fill(diag_mask, 0)
 
         # Weight: 1.0 for easy negatives, 1.0 + HIERARCHY_WEIGHT for hard negatives
         neg_weight = torch.ones(batch_size, batch_size, device=embeddings.device)
         neg_weight = neg_weight + self.HIERARCHY_WEIGHT * hard_neg
-        neg_weight.fill_diagonal_(0)
+        neg_weight = neg_weight.masked_fill(diag_mask, 0)
 
         # Stability
         sim_max = sim.max(dim=1, keepdim=True).values.detach()
-        sim = sim - sim_max
+        sim_stable = sim - sim_max
 
-        exp_sim = torch.exp(sim) * neg_weight
-        exp_sim.fill_diagonal_(0)
+        # Weighted log-sum-exp (exclude self)
+        exp_sim = torch.exp(sim_stable) * neg_weight
         log_denom = torch.log(exp_sim.sum(dim=1) + 1e-8)
 
         num_pos = mask_pos.sum(dim=1)
-        pos_sim_sum = (sim * mask_pos).sum(dim=1)
+        pos_sim_sum = (sim_stable * mask_pos).sum(dim=1)
 
         valid = num_pos > 0
         if not valid.any():

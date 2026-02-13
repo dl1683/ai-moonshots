@@ -184,12 +184,14 @@ class SMECTrainer(BaselineTrainer):
 
         # Similarity: anchors vs all
         sim = anchors @ all_emb.T / temperature  # [batch, batch + memory]
+        total_size = all_emb.shape[0]
 
-        # Positive mask: same L1 label
+        # Positive mask: same L1 label, exclude self-similarity
         pos_mask = (labels.unsqueeze(1) == all_lab.unsqueeze(0)).float()
-        # Zero out self-similarity (first batch_size columns)
-        for i in range(batch_size):
-            pos_mask[i, i] = 0
+        # Create self-exclusion mask (only for batch_size x batch_size top-left)
+        self_mask = torch.zeros(batch_size, total_size, device=anchors.device, dtype=torch.bool)
+        self_mask[:batch_size, :batch_size] = torch.eye(batch_size, device=anchors.device, dtype=torch.bool)
+        pos_mask = pos_mask.masked_fill(self_mask, 0)
 
         num_pos = pos_mask.sum(dim=1)
         valid = num_pos > 0
@@ -200,11 +202,9 @@ class SMECTrainer(BaselineTrainer):
         sim_max = sim.max(dim=1, keepdim=True).values.detach()
         sim_stable = sim - sim_max
 
-        exp_sim = torch.exp(sim_stable)
-        for i in range(batch_size):
-            exp_sim[i, i] = 0  # exclude self
-
-        log_denom = torch.log(exp_sim.sum(dim=1) + 1e-8)
+        # Exclude self via masking (large negative)
+        sim_no_self = sim_stable.masked_fill(self_mask, -1e9)
+        log_denom = torch.logsumexp(sim_no_self, dim=1)
         pos_sum = (sim_stable * pos_mask).sum(dim=1)
 
         loss = -(pos_sum[valid] / num_pos[valid].clamp(min=1) - log_denom[valid])
@@ -245,9 +245,11 @@ class SMECTrainer(BaselineTrainer):
 
         # Sequential stage training
         epochs_per_stage = max(cfg.epochs // (cfg.num_scales + 1), 3)
-        memory = CrossBatchMemory(self.XBM_CAPACITY, cfg.output_dim)
 
         for stage in range(cfg.num_scales):
+            # Fresh memory for each stage (different embedding dims)
+            stage_dim = (stage + 1) * cfg.scale_dim
+            memory = CrossBatchMemory(self.XBM_CAPACITY, stage_dim)
             print(f"\n  --- Stage {stage+1}/{cfg.num_scales} "
                   f"(dims 1..{(stage+1)*cfg.scale_dim}) ---")
 
@@ -335,6 +337,9 @@ class SMECTrainer(BaselineTrainer):
                 total_loss = torch.tensor(0.0, device=cfg.device)
                 weights = [0.4, 0.3, 0.2, 0.1]
 
+                bs = len(batch_emb)
+                diag_mask = torch.eye(bs, device=cfg.device, dtype=torch.bool)
+
                 for s in range(cfg.num_scales):
                     dim = (s + 1) * cfg.scale_dim
                     prefix = F.normalize(full_emb[:, :dim], dim=-1)
@@ -342,16 +347,15 @@ class SMECTrainer(BaselineTrainer):
                     # InfoNCE
                     sim = prefix @ prefix.T / self.TEMPERATURE
                     pos_mask = (batch_l1.unsqueeze(1) == batch_l1.unsqueeze(0)).float()
-                    pos_mask.fill_diagonal_(0)
+                    pos_mask = pos_mask.masked_fill(diag_mask, 0)
                     num_pos = pos_mask.sum(dim=1)
                     valid = num_pos > 0
 
                     if valid.any():
                         sim_max = sim.max(dim=1, keepdim=True).values.detach()
                         sim_s = sim - sim_max
-                        exp_s = torch.exp(sim_s)
-                        exp_s.fill_diagonal_(0)
-                        log_d = torch.log(exp_s.sum(dim=1) + 1e-8)
+                        sim_no_self = sim_s.masked_fill(diag_mask, -1e9)
+                        log_d = torch.logsumexp(sim_no_self, dim=1)
                         pos_s = (sim_s * pos_mask).sum(dim=1)
                         infonce_s = -(pos_s[valid] / num_pos[valid].clamp(min=1) - log_d[valid]).mean()
                     else:
