@@ -48,17 +48,21 @@ Every claim in the abstract and main text mapped to supporting evidence.
 | 26 | Product scaling law derivable from theory | Corollary 2, empirical rho=0.90 | PROVED + VERIFIED |
 | 27 | Log-loss universality connection (No 2019) | Citation + formal connection | CITED + PROVED |
 
-## Deep Hierarchy (IN PROGRESS)
+## Deep Hierarchy
 
 | # | Claim | Evidence | Status |
 |---|-------|----------|--------|
-| 28 | V5 steerability on HUPD patents (natural hierarchy) | 4/5 V5 seeds: +0.052, +0.044, +0.030, +0.070 | IN PROGRESS |
-| 29 | MRL near-zero on HUPD | 4/5 MRL seeds: +0.020, -0.026, -0.004, -0.008 | IN PROGRESS |
-| 30 | Deep hierarchy generalisation (HWV Wikipedia) | Not yet started | PENDING |
+| 28 | V5 steerability on HUPD Sec->Cls (natural hierarchy) | 5 seeds: S=+0.043+/-0.017, d=1.8, p=0.022 | VERIFIED |
+| 29 | MRL near-zero on HUPD Sec->Cls | 5 seeds: S=-0.002+/-0.016 | VERIFIED |
+| 30 | HUPD Sec->Sub (587 classes, H=4.44) | Running (hupd_sec_sub) | IN PROGRESS |
+| 31 | HWV Root->L2 (253 classes, H=4.09) | Queued after hupd_sec_sub | PENDING |
+| 32 | HWV Root->L3 (230 classes, H=4.59) | Queued after hwv_l0_l2 | PENDING |
+| 33 | Pre-registered prediction: sec_sub S > sec_cls S | Prediction frozen in deep_hierarchy_predictions.json | REGISTERED |
 
 ## Gaps / Future Work
 
-- [ ] Deep hierarchy experiments complete (ETA: ~2 hours)
+- [x] HUPD sec_cls complete (5 seeds, d=1.8, p=0.022)
+- [ ] Deep hierarchy remaining (hupd_sec_sub, hwv_l0_l2, hwv_l0_l3) - running
 - [ ] Vision replication (CIFAR-100 with image hierarchies) - stretch goal
 - [ ] Cross-domain transfer (train on one hierarchy, test on another) - future work
 - [ ] Larger models (>1B params) - resource constrained
