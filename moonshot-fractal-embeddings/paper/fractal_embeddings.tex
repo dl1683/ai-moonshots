@@ -96,7 +96,7 @@ The main findings are:
 
 \paragraph{Hierarchical classification.}
 Each sample $x$ carries a coarse label $y^{(0)} \in \{1, \ldots, K_0\}$ and a fine label $y^{(1)} \in \{1, \ldots, K_1\}$, where every fine class maps to exactly one coarse class.
-We characterize hierarchy depth by the conditional entropy $\hlo$---the additional information $L_1$ carries beyond $L_0$.
+We characterise hierarchy depth by the conditional entropy $\hlo$---the additional information $L_1$ carries beyond $L_0$.
 Extension to three levels is demonstrated in Section~\ref{sec:generality}.
 
 \paragraph{Prefix-truncated embeddings.}
@@ -514,11 +514,11 @@ Qwen3-0.6B (Alibaba, 600M) & $+0.153 \pm 0.013$ & $+0.008 \pm 0.006$ & $+0.081 \
 \paragraph{Downstream retrieval.}
 We evaluate whether steerability transfers beyond classification to controllable retrieval.
 Table~\ref{tab:retrieval} reports Recall@1 on CLINC at each prefix length (3 seeds; full ramp in Figure~\ref{fig:retrieval}, Appendix).
-V5 $L_1$ Recall@1 climbs from 87.1\% (64d) to 93.4\% (256d)---a $+6.3$pp ramp, $10\times$ larger than MRL's $+0.6$pp.
+V5 $L_1$ Recall@1 climbs from 87.1\% (64d) to 93.4\% (256d)---a $+6.3$pp ramp, ${\sim}10\times$ larger than MRL's $+0.7$pp.
 This demonstrates that prefix-level semantic specialisation directly yields dimensionality-dependent retrieval resolution.
 
 \begin{table}[t]
-\caption{Retrieval Recall@1 on CLINC-150 (3 seeds). V5's $L_1$ ramp ($+6.3$pp) is $10\times$ MRL's ($+0.6$pp).}
+\caption{Retrieval Recall@1 on CLINC-150 (3 seeds). V5's $L_1$ ramp ($+6.3$pp) is ${\sim}10\times$ MRL's ($+0.7$pp).}
 \label{tab:retrieval}
 \centering
 \small
@@ -534,7 +534,7 @@ $L_0$ & V5  & 97.2 & 97.8 & 98.0 & 97.9 \\
 $L_1$ & V5  & 87.1 & 92.7 & 93.7 & 93.4 \\
       & MRL & 93.6 & 93.9 & 94.3 & 94.3 \\
 \midrule
-\multicolumn{2}{l}{$L_1$ ramp (256d$-$64d)} & \multicolumn{4}{c}{V5: $+6.3 \pm 1.1$pp \quad MRL: $+0.6 \pm 0.4$pp \quad Ratio: $10\times$} \\
+\multicolumn{2}{l}{$L_1$ ramp (256d$-$64d)} & \multicolumn{4}{c}{V5: $+6.3 \pm 1.1$pp \quad MRL: $+0.7 \pm 0.4$pp \quad Ratio: ${\sim}10\times$} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -716,7 +716,7 @@ When $H(L_0) < R_1 < H(L_1)$ and $R_2 \geq H(L_1|L_0)$:
 $\steer_\text{V5} - \steer_\text{flat} \geq H(L_1|L_0) - [H(L_1) - R_1] = R_1 - H(L_0) > 0$.
 The V5 advantage grows linearly with excess prefix capacity above $H(L_0)$.
 This separation is not merely asymptotic: the exponential strong converse for successive refinement~\citep{zhou2019exponential} shows that operating outside the achievable rate region incurs an \emph{exponentially} decaying probability of correct decoding.
-More broadly, the recent single-letter characterization of mismatched distortion-rate functions~\citep{letreust2025mismatched} establishes that encoder-decoder objective misalignment (flat training evaluated by hierarchical steerability) incurs a strictly positive penalty whenever $H(L_1|L_0) > 0$.
+More broadly, the recent single-letter characterisation of mismatched distortion-rate functions~\citep{letreust2025mismatched} establishes that encoder-decoder objective misalignment (flat training evaluated by hierarchical steerability) incurs a strictly positive penalty whenever $H(L_1|L_0) > 0$.
 
 Confirmed: MRL with $9.2$M parameters yields $\steer = +0.003$ on CLINC ($d = 11.6$), $\steer = -0.000$ on DBPedia Classes ($d = 7.4$), and $\steer = +0.008$ on TREC ($d = 4.4$) vs.\ V5 head-only at $2.1$M parameters.
 
@@ -809,7 +809,7 @@ We release all code, data, and experimental artifacts at \url{https://github.com
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{../results/figures/paper/fig9_retrieval.pdf}
-    \caption{Retrieval benchmark on CLINC-150 (3 seeds). V5 $L_1$ Recall@1 ramps steeply from 64d to 192d ($+6.3$pp) while MRL is flat ($+0.6$pp). Both achieve comparable $L_0$ Recall@1 ($>97\%$). The $10\times$ larger ramp demonstrates that prefix specialisation transfers from classification to retrieval.}
+    \caption{Retrieval benchmark on CLINC-150 (3 seeds). V5 $L_1$ Recall@1 ramps steeply from 64d to 256d ($+6.3$pp) while MRL is flat ($+0.7$pp). Both achieve comparable $L_0$ Recall@1 ($>97\%$). The ${\sim}10\times$ larger ramp demonstrates that prefix specialisation transfers from classification to retrieval.}
     \label{fig:retrieval}
 \end{figure}
 
@@ -875,7 +875,7 @@ The experiment holds total class count fixed at 150 while varying $K_0$ from 2 t
 \label{app:convergence}
 
 All models converge within 5 epochs of head-only training.
-Stage 2 (backbone fine-tuning) was tested but provided no improvement, consistent with the frozen backbone providing sufficient representational capacity for hierarchy-aligned supervision.
+Backbone fine-tuning was tested in a controlled $2\times 2$ factorial experiment (Section~\ref{sec:scaling}): adding backbone parameters to MRL produces zero steerability, while adding them to V5 yields no improvement on CLINC or TREC and \emph{reduces} steerability on DBPedia Classes ($d = 2.2$, $p = 0.009$), consistent with the frozen backbone providing sufficient representational capacity and backbone training partially undoing the coarse--fine separation.
 
 \section{Reproducibility}
 \label{app:reproducibility}
