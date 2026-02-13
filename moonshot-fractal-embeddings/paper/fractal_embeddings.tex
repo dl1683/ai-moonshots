@@ -588,21 +588,22 @@ A hierarchy-aligned projection---initialised from SVD and fine-tuned with cosine
 By contrast, applying a classification-only projection \emph{destroys} retrieval (nDCG@10 $= 0.042$ at 256d; $-88\%$), confirming that distance preservation is essential for ad-hoc retrieval.
 
 \begin{table}[t]
-\caption{Million-scale retrieval on BEIR DBPedia-Entity (4.6M docs). nDCG@10 at each prefix dimension. SVD rotation improves over naive truncation; hierarchy alignment incurs ${\leq}3\%$ cost.}
+\caption{Budget-matched retrieval on BEIR DBPedia-Entity (4.6M docs). At each index budget (bytes/doc), we compare nDCG@10 and whether the method supports semantic steering. Hierarchy-aligned projection adds steerability at ${\leq}6\%$ nDCG cost relative to SVD.}
 \label{tab:beir}
 \centering
 \small
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \toprule
-Method & 64d & 128d & 192d & 256d \\
+Method & Bytes/doc & 64d & 128d & 192d & 256d \\
 \midrule
-Naive truncation & 0.182 & 0.301 & 0.336 & 0.356 \\
-SVD rotation & \textbf{0.252} & \textbf{0.317} & \textbf{0.348} & \textbf{0.365} \\
-Hierarchy-aligned ($\alpha = 0.01$) & 0.237 & 0.309 & 0.339 & 0.353 \\
-Classification-only (V5 proj.) & 0.021 & 0.033 & 0.039 & 0.042 \\
+Naive truncation & $d \times 4$ & 0.182 & 0.301 & 0.336 & 0.356 \\
+SVD rotation & $d \times 4$ & \textbf{0.252} & \textbf{0.317} & \textbf{0.348} & \textbf{0.365} \\
+Hierarchy-aligned ($\alpha = 0.01$) & $d \times 4$ & 0.237 & 0.309 & 0.339 & 0.353 \\
+Classification-only (V5 proj.) & $d \times 4$ & 0.021 & 0.033 & 0.039 & 0.042 \\
 \bottomrule
 \end{tabular}
 \end{table}
+At identical storage budgets and query latencies (all methods use the same dimensionality), the ``cost of steerability'' is $6\%$ at 64d and $3\%$ at 256d---a favourable Pareto tradeoff for applications that benefit from granularity control.
 
 \paragraph{Natural deep hierarchies.}
 To test generalisation beyond curated text classification datasets, we evaluate on the Harvard USPTO Patent Dataset (HUPD)~\citep{suzgun2024hupd}, which provides a natural 2-level hierarchy: 8 patent sections $\rightarrow$ 121 technology classes ($\hlo = 2.42$ bits).
@@ -614,14 +615,18 @@ This confirms that V5's steerability advantage holds on a real-world taxonomy wi
 \label{sec:limitations}
 %=======================================================================
 
+We identify three boundary conditions under which steerability degrades, each predicted by the product scaling law ($\steer \propto \hlo \cdot A_{L_1}^{\text{base}}$):
+
 \begin{itemize}
-    \item \textbf{Shallow hierarchies.} On datasets with low $\hlo$ (e.g., Yahoo, $\hlo = 1.23$), steerability is small and noisy ($\steer = 0.015 \pm 0.019$). The method is most valuable for moderately deep hierarchies where the fine task is learnable.
-    \item \textbf{Floor effects.} On WOS ($K_1 = 336$), head-only training achieves only ${\sim}15\%$ $L_1$ accuracy, capping steerability despite high $\hlo = 5.05$. Steerability requires both hierarchy complexity and model capacity.
-    \item \textbf{Deeper hierarchies.} HUPD Section$\rightarrow$Class ($K_1 = 121$) confirms generalisation with $d = 1.8$. The 3-level CLINC extension yields $d = 10.9$ but only 5 super-domain classes leave $L_0$ near ceiling. Evaluation on even deeper taxonomies (Section$\rightarrow$Subclass with $K_1 = 587$) is in progress.
-    \item \textbf{Hierarchy noise robustness.} Corrupting $L_0$ labels at 10\%--50\% and retraining V5 on CLINC (3 seeds), steerability degrades gracefully: 85\% retained at 10\% noise ($\steer = +0.152$), 71\% at 30\% ($+0.128$), 34\% at 50\% ($+0.061$). V5 does not require a perfect hierarchy for meaningful steerability.
-    \item \textbf{Baseline scope.} We compare against a matched MRL baseline controlling all variables except the prefix-to-label mapping. We do not benchmark HEAL~\citep{zhang2025heal}, CSR~\citep{chen2025csr}, or SMEC~\citep{li2025smrl} because these address orthogonal goals---none offers prefix-level steering, making fixed-dimensionality accuracy comparisons inapposite.
-    \item \textbf{Ablation coverage.} Causal ablations are concentrated on CLINC and TREC (two datasets). Cross-dataset replication of all four ablation conditions remains future work.
+    \item \textbf{Low hierarchy depth ($\hlo < 2$).} On Yahoo ($\hlo = 1.23$), steerability is small and noisy ($\steer = 0.015 \pm 0.019$, $d = 0.4$). The method is most valuable when $\hlo \gtrsim 2$ bits, where the product predictor exceeds $\sim$1.0.
+    \item \textbf{Low baseline learnability ($A_{L_1}^{\text{base}} < 0.2$).} On WOS ($K_1 = 336$), head-only training achieves only ${\sim}17\%$ $L_1$ accuracy; despite $\hlo = 5.05$, the product is only 0.86 and steerability is suppressed ($\steer = 0.038$, $d = 1.5$). Steerability requires both hierarchy complexity \emph{and} model capacity.
+    \item \textbf{Noisy or misspecified taxonomy.} Corrupting $L_0$ labels at 10\%--50\% on CLINC (3 seeds), steerability degrades gracefully: 85\% retained at 10\% noise ($\steer = +0.152$), 71\% at 30\% ($+0.128$), 34\% at 50\% ($+0.061$). Inverting the hierarchy entirely reverses sign ($\steer < 0$; Section~\ref{sec:causal}). V5 tolerates moderate taxonomy noise but requires coarse--fine alignment to be approximately correct.
 \end{itemize}
+
+\paragraph{Scope limitations.}
+We compare against a matched MRL baseline controlling all variables except the prefix-to-label mapping.
+We do not benchmark HEAL~\citep{zhang2025heal}, CSR~\citep{chen2025csr}, or SMEC~\citep{li2025smrl} because these address orthogonal goals---none offers prefix-level steering, making fixed-dimensionality accuracy comparisons inapposite.
+Causal ablations are concentrated on CLINC and TREC; cross-dataset replication of all four ablation conditions remains future work.
 
 %=======================================================================
 \section{Theoretical Analysis: Successive Refinement}
