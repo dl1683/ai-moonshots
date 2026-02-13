@@ -23,8 +23,10 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 from pathlib import Path
 
-# Ensure src/ is on path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+# Ensure src/ is on path (resolve to avoid '..' in module __file__ paths)
+_SRC_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
+if _SRC_DIR not in sys.path:
+    sys.path.insert(0, _SRC_DIR)
 
 # ============================================================================
 # Configuration
