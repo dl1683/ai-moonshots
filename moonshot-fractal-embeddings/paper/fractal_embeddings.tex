@@ -908,7 +908,7 @@ We verify conclusions hold under three alternative steerability formulations:
 \end{itemize}
 
 \begin{table}[h]
-\caption{Metric robustness: V5$\,$--$\,$MRL gap under four steerability formulations. Three of four agree V5 $>$ MRL on all 8 datasets.}
+\caption{Metric robustness: V5$\,$--$\,$MRL gap under four steerability formulations. Three of four agree V5 $>$ MRL on all nine datasets.}
 \label{tab:robustness}
 \centering
 \small
@@ -921,17 +921,18 @@ GoEmotions & 1.88 & $+0.014$ & $+0.014$ & $-0.07$ & $+0.014$ \\
 Newsgroups & 1.88 & $+0.035$ & $+0.037$ & $+0.03$ & $+0.035$ \\
 TREC & 2.21 & $+0.045$ & $+0.039$ & $+0.27$ & $+0.045$ \\
 arXiv & 2.62 & $+0.028$ & $+0.020$ & $+0.17$ & $+0.028$ \\
-DBPedia Cl. & 3.17 & $+0.112$ & $+0.106$ & $+0.33$ & $+0.112$ \\
+HUPD (patents) & 2.42 & $+0.045$ & $+0.040$ & $+0.10$ & $+0.045$ \\
+DBPedia Cl. & 3.17 & $+0.112$ & $+0.106$ & $+0.23$ & $+0.112$ \\
 CLINC & 3.90 & $+0.143$ & $+0.124$ & $+0.27$ & $+0.143$ \\
 WOS & 5.05 & $+0.036$ & $+0.027$ & $+0.30$ & $+0.036$ \\
 \midrule
-V5 $>$ MRL & & 8/8 & 8/8 & 6/8 & 8/8 \\
-Sign test $p$ & & 0.004 & 0.004 & 0.14 & 0.004 \\
+V5 $>$ MRL & & 9/9 & 9/9 & 7/9 & 9/9 \\
+Sign test $p$ & & 0.002 & 0.002 & 0.09 & 0.002 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-All pairwise rank correlations exceed $\rho = 0.90$ ($p < 0.005$), confirming all four metrics recover the same dataset ordering.
+All pairwise rank correlations between the original, AUC, and gap metrics exceed $\rho = 0.98$ ($p < 0.001$), confirming these formulations recover the same dataset ordering. The monotonicity metric shows weaker agreement ($\rho = 0.68$, $p = 0.045$) but still supports V5 on 7/9 datasets.
 
 \section{Per-Seed Steerability Values}
 \label{app:perseed}

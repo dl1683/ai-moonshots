@@ -34,6 +34,7 @@ steps = [
     ("Random-effects meta-analysis", [sys.executable, "-u", "src/meta_analysis.py"]),
     ("Scaling trend robustness", [sys.executable, "-u", "src/scaling_robustness.py"]),
     ("Regenerate paper figures", [sys.executable, "-u", "src/paper_figures.py"]),
+    ("Pre-registered prediction validation", [sys.executable, "-u", "src/prediction_validation.py"]),
 ]
 
 for i, (desc, cmd) in enumerate(steps, 1):
