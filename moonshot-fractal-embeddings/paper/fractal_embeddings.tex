@@ -678,6 +678,8 @@ Stage~2 encodes $L_1|L_0$ at rate $R_2$; when $R_2 \geq H(L_1|L_0)$, achievabili
 When $H(L_0) < R_1 < H(L_1)$ and $R_2 \geq H(L_1|L_0)$:
 $\steer_\text{V5} - \steer_\text{flat} \geq H(L_1|L_0) - [H(L_1) - R_1] = R_1 - H(L_0) > 0$.
 The V5 advantage grows linearly with excess prefix capacity above $H(L_0)$.
+This separation is not merely asymptotic: the exponential strong converse for successive refinement~\citep{zhou2019exponential} shows that operating outside the achievable rate region incurs an \emph{exponentially} decaying probability of correct decoding.
+More broadly, the recent single-letter characterization of mismatched distortion-rate functions~\citep{letreust2025mismatched} establishes that encoder-decoder objective misalignment (flat training evaluated by hierarchical steerability) incurs a strictly positive penalty whenever $H(L_1|L_0) > 0$.
 
 Confirmed: MRL with $9.2$M parameters yields $\steer = +0.003$ on CLINC ($d = 11.6$), $\steer = -0.000$ on DBPedia Classes ($d = 7.4$), and $\steer = +0.008$ on TREC ($d = 4.4$) vs.\ V5 head-only at $2.1$M parameters.
 
