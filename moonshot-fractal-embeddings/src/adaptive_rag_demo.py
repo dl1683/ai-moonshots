@@ -373,6 +373,7 @@ def run_rag_demo(
     confidence_mode='gap',
     max_train=10000,
     max_test=2000,
+    stage2_epochs=0,
 ):
     """Run the full adaptive RAG demo across datasets and seeds."""
     print("=" * 70)
@@ -434,7 +435,7 @@ def run_rag_demo(
             ).to(device)
             v5_trainer = V5Trainer(
                 model=v5_model, train_dataset=train_data_trimmed, val_dataset=val_data,
-                device=device, stage1_epochs=5, stage2_epochs=0,
+                device=device, stage1_epochs=5, stage2_epochs=stage2_epochs,
             )
             v5_trainer.train(batch_size=16, patience=5)
 
@@ -446,7 +447,7 @@ def run_rag_demo(
             ).to(device)
             mrl_trainer = MRLTrainerV5(
                 model=mrl_model, train_dataset=train_data_trimmed, val_dataset=val_data,
-                device=device, stage1_epochs=5, stage2_epochs=0,
+                device=device, stage1_epochs=5, stage2_epochs=stage2_epochs,
             )
             mrl_trainer.train(batch_size=16, patience=5)
 
@@ -574,7 +575,8 @@ def run_rag_demo(
     results['global_summary'] = compute_global_summary(results)
 
     # Save
-    out_path = RESULTS_DIR / "adaptive_rag_demo.json"
+    suffix = "_backbone" if stage2_epochs > 0 else ""
+    out_path = RESULTS_DIR / f"adaptive_rag_demo{suffix}.json"
     with open(out_path, 'w') as f:
         json.dump(results, f, indent=2, default=lambda x: float(x) if hasattr(x, 'item') else x)
     print(f"\nResults saved to {out_path}")
@@ -745,6 +747,8 @@ if __name__ == "__main__":
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--quick", action="store_true",
                         help="Quick mode: 1 seed only")
+    parser.add_argument("--backbone", action="store_true",
+                        help="Enable Stage 2 backbone fine-tuning (8 epochs)")
     args = parser.parse_args()
 
     if args.quick:
@@ -755,4 +759,5 @@ if __name__ == "__main__":
         model_key=args.model,
         seeds=tuple(args.seeds),
         device=args.device,
+        stage2_epochs=8 if args.backbone else 0,
     )
