@@ -651,8 +651,8 @@ Flat supervision optimises $I(\mathbf{z}_{\leq m}; L_1)$ at every prefix length 
 Since $L_0 = g(L_1)$, both $L_0$ and $L_1|L_0$ accuracy improve monotonically with $m$---there is no prefix-specific bottleneck to create differential specialisation.
 Crucially, the loss landscape is symmetric with respect to label level: gradients on early dimensions carry no preference for coarse over fine information.
 As total capacity grows, both L0 and L1 curves saturate, and $\steer = (\text{L0@}j_1 - \text{L0@}j_4) + (\text{L1@}j_4 - \text{L1@}j_1) \rightarrow 0$ because both monotone gains cancel.
-This is an \emph{impossibility} property of the training objective, not a limitation of the model: $4.4\times$ more trainable parameters cannot break the symmetry.
-Confirmed: MRL with $9.2$M parameters yields $\steer = +0.003$ on CLINC ($d = 8.1$) and $\steer = -0.000$ on DBPedia Classes ($d = 4.8$) vs.\ V5 head-only at $2.1$M parameters.
+This is an \emph{impossibility} property of the training objective, not a limitation of the model: $4.5\times$ more trainable parameters cannot break the symmetry.
+Confirmed: MRL with $9.2$M parameters yields $\steer = +0.003$ on CLINC ($d = 11.6$), $\steer = -0.000$ on DBPedia Classes ($d = 7.4$), and $\steer = +0.008$ on TREC ($d = 4.4$) vs.\ V5 head-only at $2.1$M parameters.
 
 \paragraph{Theorem 2 (Goldilocks capacity--demand matching, informal).}
 \emph{With fixed $H(Y_1)$ and varying $K_0$, steerability peaks at $H^*(L_0) \approx C(d/J)$:}
