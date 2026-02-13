@@ -46,6 +46,8 @@ On CLINC-150, steerability reaches $\steer = +0.150 \pm 0.028$ versus MRL's $+0.
 A synthetic hierarchy experiment identifies a Goldilocks optimum where steerability peaks at capacity--demand matching (quadratic $R^2 = 0.964$), and steerability magnitude across real datasets is predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.90$, $p = 0.002$).
 A backbone fine-tuning control on three datasets confirms that alignment is both necessary and sufficient: a flat MRL baseline with $4.5\times$ more trainable parameters (backbone fine-tuning) produces near-zero steerability ($d = 11.6$, $7.4$, and $4.4$ vs.\ head-only V5 on CLINC, DBPedia Classes, and TREC respectively).
 Replication across three encoder families confirms architecture invariance.
+Beyond classification, prefix specialisation transfers to million-scale retrieval (BEIR DBPedia-Entity, 4.6M documents): a hierarchy-aligned projection achieves 94--97\% of SVD-optimal retrieval quality while maintaining semantic steering.
+Evaluation on a natural deep hierarchy (HUPD patent taxonomy, 121 classes) confirms V5's advantage on real taxonomies ($d = 1.8$, $p = 0.022$).
 We ground these findings in the classical theory of successive refinement, proving that steerability equals the refinement mutual information $I(M_2; L_1|L_0, M_1)$ and deriving a converse bound showing flat supervision \emph{cannot} achieve high steerability (the V5 advantage grows linearly with excess prefix capacity), alongside a Goldilocks capacity--demand optimum and product scaling law.
 \end{abstract}
 
@@ -83,7 +85,7 @@ The main findings are:
     \item \textbf{A method} for inducing steerable embeddings via hierarchy-aligned prefix supervision, requiring only head-only training on a frozen backbone (Section~\ref{sec:method}).
     \item \textbf{Causal identification}: four ablations on two datasets establish that steerability is driven by the alignment between prefix length and hierarchy level---not by architecture, hierarchy awareness, or other training choices. Inverting alignment reverses the sign; removing it or using a uniform multi-task control collapses it (Section~\ref{sec:causal}).
     \item \textbf{A scaling analysis} linking steerability magnitude to the interaction of hierarchy depth and model learnability across eight datasets ($\rho = 0.90$, $p = 0.002$), with a Goldilocks optimum identified via synthetic intervention ($R^2 = 0.964$; Section~\ref{sec:scaling}).
-    \item \textbf{Broad generality}: cross-model replication on BGE-small, E5-small, and Qwen3-0.6B; downstream retrieval benchmarks showing $10\times$ larger dimensionality--accuracy ramps; and $3.7\times$ HNSW query speedups from prefix routing (Section~\ref{sec:generality}).
+    \item \textbf{Broad generality}: cross-model replication on BGE-small, E5-small, and Qwen3-0.6B; downstream retrieval benchmarks showing $10\times$ larger dimensionality--accuracy ramps; transfer to million-scale retrieval (BEIR DBPedia-Entity, 4.6M documents); validation on natural deep hierarchies (HUPD patent taxonomy); and $3.7\times$ HNSW query speedups from prefix routing (Section~\ref{sec:generality}).
     \item \textbf{Information-theoretic foundations}: a steerability identity ($\steer = I(M_2; L_1|L_0, M_1)$), a converse bound proving flat supervision \emph{cannot} achieve high steerability, and a constructive achievability result showing V5's advantage grows linearly with excess prefix capacity (Section~\ref{sec:theory}).
 \end{enumerate}
 
@@ -776,7 +778,7 @@ A single V5 model replaces a dual-encoder system: its 64d prefix achieves 97.5\%
 The synthetic hierarchy experiment provides design guidance: measure $\hlz$ and size prefix capacity to match.
 
 The connection to successive refinement suggests this is not an empirical curiosity but a fundamental property of information allocation in hierarchical representations.
-We release all code, data, and experimental artifacts to support replication and extension.
+We release all code, data, and experimental artifacts at \url{https://github.com/dl1683/ai-moonshots} to support replication and extension.
 
 \bibliographystyle{plainnat}
 \bibliography{references}
