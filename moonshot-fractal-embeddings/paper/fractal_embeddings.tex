@@ -25,7 +25,7 @@
 \newcommand{\hlz}{H(L_0)}
 \newcommand{\hlo}{H(L_1|L_0)}
 
-\title{Fractal Embeddings: Hierarchy-Aligned Prefix Supervision\\for Steerable Semantic Granularity}
+\title{Truncation Is Not Compression:\\Hierarchy-Aligned Embeddings via Successive Refinement}
 
 \author{
   Devansh \\
@@ -38,17 +38,17 @@
 \maketitle
 
 \begin{abstract}
-Matryoshka Representation Learning (MRL) trains embeddings that support dimensional truncation, but all prefix lengths encode the same semantic content at varying fidelity---there is no mechanism to \emph{steer} between coarse and fine meaning.
-We introduce \textbf{Fractal Embeddings}, which align prefix supervision with label hierarchy: short prefixes (64d) learn coarse labels while full embeddings (256d) learn fine labels, converting truncation into \emph{semantic zoom} at zero additional inference cost.
-Four controlled ablations establish that \emph{alignment}---not hierarchy awareness---causally drives steerability: inverting alignment reverses its sign; removing it or applying uniform multi-task training collapses it to zero (all $p_{\text{adj}} < 10^{-3}$, $d \geq 6.1$ on CLINC; directionally consistent on TREC with $n = 3$).
-Across nine datasets spanning conditional entropies from 1.23 to 5.05 bits, a random-effects meta-analysis yields pooled $d = 1.48$ ($p < 0.0001$), with all nine favouring fractal training (sign test $p = 0.002$).
-On CLINC-150, steerability reaches $\steer = +0.150 \pm 0.028$ versus MRL's $+0.007 \pm 0.016$ ($p_\text{adj} = 0.005$, $d = 4.3$).
-A synthetic hierarchy experiment identifies a Goldilocks optimum where steerability peaks at capacity--demand matching (quadratic $R^2 = 0.964$), and steerability magnitude across real datasets is predicted by the product of hierarchy depth and baseline learnability ($\rho = 0.85$, $p = 0.004$).
-A backbone fine-tuning control on three datasets confirms that alignment is both necessary and sufficient: a flat MRL baseline with $4.5\times$ more trainable parameters (backbone fine-tuning) produces near-zero steerability ($d = 11.6$, $7.4$, and $4.4$ vs.\ head-only V5 on CLINC, DBPedia Classes, and TREC respectively).
-Replication across three encoder families confirms architecture invariance.
-Beyond classification, prefix specialisation transfers to million-scale retrieval (BEIR DBPedia-Entity, 4.6M documents): a hierarchy-aligned projection achieves 94--97\% of SVD-optimal retrieval quality while maintaining semantic steering.
-Evaluation on a natural deep hierarchy (HUPD patent taxonomy, 121 classes) confirms V5's advantage on real taxonomies ($d = 1.8$, $p = 0.022$).
-We ground these findings in the classical theory of successive refinement, proving that steerability equals the refinement mutual information $I(M_2; L_1|L_0, M_1)$ and deriving a converse bound showing flat supervision \emph{cannot} achieve high steerability (the V5 advantage grows linearly with excess prefix capacity), alongside a Goldilocks capacity--demand optimum and product scaling law.
+Truncation is not compression: in standard multi-resolution embedding models, shortening a vector does not produce coarser semantics, because every prefix length is trained on the same fine-grained objective.
+We formalise this limitation with a necessity result.
+For hierarchical labels $(L_0, L_1)$ and prefix code $M_1$, steerability---the degree to which truncation controls semantic granularity---satisfies
+$\steer = H(L_1|L_0) - I(M_1; L_1|L_0) - \Delta$,
+where $I(M_1; L_1|L_0)$ is the fine information leaked into the prefix and $\Delta \geq 0$ is the uncaptured residual.
+Any method achieving steerable granularity must therefore learn a scale-separated prefix; flat Matryoshka training is provably bounded.
+Guided by this principle, we train embeddings via hierarchy-aligned successive refinement: short prefixes learn coarse labels, full embeddings learn fine labels, so each prefix resolves uncertainty at its appropriate semantic scale.
+This changes only the training loss; inference dimensionality and compute are unchanged.
+Across nine hierarchical datasets, steerability improvements are consistent and large (meta-analytic $d = 1.49$, $p < 0.0001$; sign test $9/9$, $p = 0.002$), and four causal ablations confirm the mechanism ($p_\text{adj} < 10^{-3}$, $d \geq 6.1$).
+A pre-registered product-form scaling predictor identifies \emph{when} the method works best ($\rho = 0.85$, $p = 0.004$; out-of-sample prediction error 4.3\%).
+The resulting representation supports \emph{semantic zoom}: truncation zooms out, full embeddings zoom in.
 \end{abstract}
 
 % Hero figure
@@ -65,28 +65,28 @@ We ground these findings in the classical theory of successive refinement, provi
 %=======================================================================
 
 When a 256-dimensional embedding is truncated to 64 dimensions, what changes?
-Under standard Matryoshka training~\citep{kusupati2022matryoshka}, the answer is \emph{fidelity}: the shorter vector approximates the full one with reduced precision but encodes the same kind of semantic information.
-We argue this is a missed opportunity.
-Real-world semantics are inherently hierarchical---a query like ``What is the capital of France?'' belongs simultaneously to the coarse category \textsc{location} and the fine category \textsc{city}---and an embedding that supports truncation \emph{already has the interface} for multi-resolution access.
-What it lacks is the training signal to make truncation semantically meaningful.
+Under standard Matryoshka Representation Learning (MRL)~\citep{kusupati2022matryoshka}, the answer is \emph{fidelity}: the shorter vector approximates the full one with reduced precision but encodes the same kind of semantic information.
+This is not compression---it is information removal.
+Real-world semantics are inherently hierarchical---``quantum entanglement'' \emph{is} ``physics'' \emph{is} ``science''---yet MRL truncation discards structure indiscriminately rather than resolving it at a coarser grain.
 
-We introduce \textbf{Fractal Embeddings}, a simple modification to MRL training that aligns prefix supervision with semantic hierarchy.
-Short prefixes are trained on coarse labels; full embeddings are trained on fine labels; intermediate prefixes receive blended supervision.
-The result is an embedding where dimensional truncation corresponds to \emph{semantic zoom}: fewer dimensions yield coarser meaning, more dimensions recover finer distinctions (Figure~\ref{fig:teaser}).
-Critically, this adds \textbf{zero inference-time cost}---the deployed model has identical architecture and parameter count to MRL.
-The difference lies entirely in \emph{how} the projection head is trained.
+We prove this limitation is structural, not incidental.
+Steerability---the degree to which truncation controls semantic granularity---obeys a decomposition $\steer = H(L_1|L_0) - I(M_1; L_1|L_0) - \Delta$ (Theorem~3), where $I(M_1; L_1|L_0)$ measures how much fine-grained information leaks into the prefix and $\Delta$ captures uncaptured residual.
+Scale-separated prefixes are \emph{necessary}: any method that achieves steerable truncation must keep the prefix free of fine detail, and flat MRL objectives are provably bounded (Corollary~3).
 
-We call the resulting property \emph{steerability}: the degree to which prefix truncation controls semantic granularity rather than merely degrading fidelity.
-While prefix-level granularity has been explored for news clustering~\citep{hanley2025hierarchical}, no prior work provides causal evidence for \emph{why} it works, formal theory grounding it in successive refinement~\citep{equitz1991successive}, or scaling laws predicting \emph{when} it works best.
-Our evaluation spans nine hierarchical text datasets, three encoder families, four controlled ablations, a synthetic causal experiment, and connections to 30 years of information theory.
-The main findings are:
+This theorem implies a design principle grounded in 30 years of successive refinement theory~\citep{equitz1991successive,rimoldi1994successive,no2019universality}: embeddings should be trained so that added dimensions reduce conditional uncertainty at progressively finer semantic levels.
+We realise this principle with \textbf{hierarchy-aligned prefix supervision}: short prefixes learn coarse labels, full embeddings learn fine labels, and intermediate prefixes receive blended supervision (Figure~\ref{fig:teaser}).
+The result is \emph{semantic zoom}---truncation zooms out, full embeddings zoom in---at \textbf{zero inference cost}.
+The difference from MRL lies entirely in \emph{which} labels supervise \emph{which} prefix lengths.
+
+While prefix-level granularity has been explored for news clustering~\citep{hanley2025hierarchical}, no prior work provides a formal necessity result, causal ablations isolating \emph{alignment} as the active ingredient, or scaling laws predicting \emph{when} it works best.
+Our main contributions are:
 
 \begin{enumerate}
-    \item \textbf{A method} for inducing steerable embeddings via hierarchy-aligned prefix supervision, requiring only head-only training on a frozen backbone (Section~\ref{sec:method}).
-    \item \textbf{Causal identification}: four ablations on two datasets establish that steerability is driven by the alignment between prefix length and hierarchy level---not by architecture, hierarchy awareness, or other training choices. Inverting alignment reverses the sign; removing it or using a uniform multi-task control collapses it (Section~\ref{sec:causal}).
-    \item \textbf{A scaling analysis} linking steerability magnitude to the interaction of hierarchy depth and model learnability across nine datasets ($\rho = 0.85$, $p = 0.004$), with a Goldilocks optimum identified via synthetic intervention ($R^2 = 0.964$; Section~\ref{sec:scaling}).
-    \item \textbf{Broad generality}: cross-model replication on BGE-small, E5-small, and Qwen3-0.6B; downstream retrieval benchmarks showing $10\times$ larger dimensionality--accuracy ramps; transfer to million-scale retrieval (BEIR DBPedia-Entity, 4.6M documents); validation on natural deep hierarchies (HUPD patent taxonomy); and $3.7\times$ HNSW query speedups from prefix routing (Section~\ref{sec:generality}).
-    \item \textbf{Information-theoretic foundations}: a steerability identity ($\steer = I(M_2; L_1|L_0, M_1)$), a converse bound proving flat supervision \emph{cannot} achieve high steerability, and a constructive achievability result showing V5's advantage grows linearly with excess prefix capacity (Section~\ref{sec:theory}).
+    \item \textbf{A necessity theorem} for steerable embeddings: we prove that steerability and prefix fine-leakage are complementary, so scale-separated prefixes are required and flat MRL is fundamentally bounded (Section~\ref{sec:theory}).
+    \item \textbf{Hierarchy-aligned prefix supervision}, converting truncation from fidelity loss into controllable semantic zoom at zero inference overhead (Section~\ref{sec:method}).
+    \item \textbf{Causal and cross-dataset evidence}: nine datasets, meta-analytic $d = 1.49$ ($p < 0.0001$), sign test $9/9$ ($p = 0.002$), and four ablations confirming alignment as the mechanism ($d \geq 6.1$; Section~\ref{sec:causal}).
+    \item \textbf{A pre-registered scaling predictor} linking steerability to hierarchy depth $\times$ model learnability ($\rho = 0.85$, $p = 0.004$; out-of-sample error 4.3\%), with a Goldilocks capacity--demand optimum ($R^2 = 0.964$; Section~\ref{sec:scaling}).
+    \item \textbf{Broad generality}: three encoder families, million-scale retrieval (BEIR, 4.6M documents), natural deep taxonomies (HUPD patents), and $3.7\times$ HNSW query speedups (Section~\ref{sec:generality}).
 \end{enumerate}
 
 %=======================================================================
