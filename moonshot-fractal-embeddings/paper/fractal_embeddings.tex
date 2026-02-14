@@ -297,13 +297,13 @@ These results validate the central thesis from both directions: hierarchy-aware 
 \paragraph{Efficiency--steerability tradeoff.}
 Although HEAL achieves higher raw steerability, V5 dominates on the efficiency frontier.
 V5 uses ${\sim}$130K head parameters trained for 5 epochs with cross-entropy (${\sim}$43 GFLOPs), vs.\ HEAL's ${\sim}$600K-parameter trunk with level-specific projectors trained for 30 epochs with $O(n^2)$ contrastive loss (${\sim}$1{,}100 GFLOPs)---a ${\sim}28\times$ compute gap.
-Normalising steerability by training compute, V5 achieves $9\times$ higher steerability per GFLOP (Figure~\ref{fig:pareto}).
+Normalising steerability by training compute, V5 achieves $8\times$ higher steerability per GFLOP (Figure~\ref{fig:pareto}).
 V5's additional contributions---the formal successive refinement framework predicting \emph{when} and \emph{how much} steerability emerges (Section~\ref{sec:theory}) and the predictive scaling law (Section~\ref{sec:scaling})---are orthogonal to architecture choice and could in principle be combined with HEAL's projector design.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.85\linewidth]{../results/figures/paper/fig_pareto_efficiency.pdf}
-    \caption{Efficiency--steerability Pareto frontier. \textbf{Left}: Steerability vs.\ head parameters. \textbf{Right}: Steerability vs.\ training compute. V5 (blue circles) achieves $9\times$ higher steerability per GFLOP than HEAL (green diamonds). Each point is one dataset. CSR and SMEC cluster near zero steerability regardless of compute.}
+    \caption{Efficiency--steerability Pareto frontier. \textbf{Left}: Steerability vs.\ head parameters. \textbf{Right}: Steerability vs.\ training compute. V5 (blue circles) achieves $8\times$ higher steerability per GFLOP than HEAL (green diamonds). Each point is one dataset. CSR and SMEC cluster near zero steerability regardless of compute.}
     \label{fig:pareto}
 \end{figure}
 
