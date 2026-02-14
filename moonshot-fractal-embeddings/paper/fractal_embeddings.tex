@@ -1042,7 +1042,7 @@ We verify conclusions hold under three alternative steerability formulations:
 \end{itemize}
 
 \begin{table}[h]
-\caption{Metric robustness: V5$\,$--$\,$MRL gap under four steerability formulations (original nine datasets). Three of four agree V5 $>$ MRL on all nine. All twelve datasets show 12/12 agreement under $\steer_\text{orig}$.}
+\caption{Metric robustness: V5$\,$--$\,$MRL gap under four steerability formulations across all twelve datasets. Three of four metrics agree V5 $>$ MRL on all twelve; the monotonicity metric agrees on 10/12.}
 \label{tab:robustness}
 \centering
 \small
@@ -1054,25 +1054,28 @@ Yahoo & 1.23 & $+0.010$ & $+0.013$ & $-0.10$ & $+0.010$ \\
 GoEmotions & 1.88 & $+0.014$ & $+0.014$ & $-0.07$ & $+0.014$ \\
 Newsgroups & 1.88 & $+0.035$ & $+0.037$ & $+0.03$ & $+0.035$ \\
 TREC & 2.21 & $+0.045$ & $+0.039$ & $+0.27$ & $+0.045$ \\
-arXiv & 2.62 & $+0.028$ & $+0.020$ & $+0.17$ & $+0.028$ \\
 HUPD (patents) & 2.42 & $+0.045$ & $+0.040$ & $+0.10$ & $+0.045$ \\
+arXiv & 2.62 & $+0.028$ & $+0.020$ & $+0.17$ & $+0.028$ \\
 DBPedia Cl. & 3.17 & $+0.112$ & $+0.106$ & $+0.23$ & $+0.112$ \\
 CLINC & 3.90 & $+0.143$ & $+0.124$ & $+0.27$ & $+0.143$ \\
+HWV-L2 & 4.09 & $+0.074$ & $+0.067$ & $+0.10$ & $+0.074$ \\
+HUPD (sec$\to$sub) & 4.44 & $+0.054$ & $+0.043$ & $+0.23$ & $+0.054$ \\
+HWV-L3 & 4.59 & $+0.071$ & $+0.067$ & $+0.07$ & $+0.071$ \\
 WOS & 5.05 & $+0.036$ & $+0.027$ & $+0.30$ & $+0.036$ \\
 \midrule
-V5 $>$ MRL & & 9/9 & 9/9 & 7/9 & 9/9 \\
-Sign test $p$ & & 0.002 & 0.002 & 0.09 & 0.002 \\
+V5 $>$ MRL & & 12/12 & 12/12 & 10/12 & 12/12 \\
+Sign test $p$ & & 0.0002 & 0.0002 & 0.019 & 0.0002 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-All pairwise rank correlations between the original, AUC, and gap metrics exceed $\rho = 0.98$ ($p < 0.001$), confirming these formulations recover the same dataset ordering. The monotonicity metric shows weaker agreement ($\rho = 0.68$, $p = 0.045$) but still supports V5 on 7/9 of the original datasets.
+All pairwise rank correlations between the original, AUC, and gap metrics exceed $\rho = 0.98$ ($p < 0.001$), confirming these formulations recover the same dataset ordering. The monotonicity metric shows weaker agreement ($\rho = 0.51$, $p = 0.091$) but still supports V5 on 10/12 datasets ($p = 0.019$).
 
 \section{Per-Seed Steerability Values}
 \label{app:perseed}
 
 \begin{table}[h]
-\caption{Per-seed steerability (V5 and MRL) across the original nine datasets. Seeds: 42, 123, 456, 789, 1024. Deep-hierarchy per-seed values are available in the supplementary materials.}
+\caption{Per-seed steerability (V5 and MRL) across all twelve datasets. Seeds: 42, 123, 456, 789, 1024.}
 \label{tab:perseed}
 \centering
 \scriptsize
@@ -1090,6 +1093,10 @@ arXiv & +.038 & +.018 & +.012 & +.018 & +.048 & $-.014$ & $-.010$ & +.000 & +.00
 DBP & +.118 & +.092 & +.130 & +.130 & +.130 & +.020 & +.008 & +.008 & +.000 & +.002 \\
 CLINC & +.104 & +.178 & +.150 & +.168 & +.150 & +.012 & +.028 & +.006 & $-.016$ & +.004 \\
 WOS & +.032 & +.022 & +.008 & +.052 & +.074 & +.000 & $-.004$ & +.004 & $-.004$ & +.010 \\
+\midrule
+HWV-L2 & +.110 & +.080 & +.098 & +.092 & +.080 & +.010 & +.026 & +.028 & +.024 & +.002 \\
+HUPD-sub & +.056 & +.032 & +.016 & +.052 & +.068 & $-.014$ & $-.014$ & +.002 & $-.018$ & +.000 \\
+HWV-L3 & +.068 & +.104 & +.060 & +.084 & +.066 & +.002 & +.016 & +.008 & $-.004$ & +.004 \\
 \bottomrule
 \end{tabular}
 \end{table}
