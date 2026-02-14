@@ -1,0 +1,22 @@
+{
+  "method": "heal",
+  "model": "bge-small",
+  "dataset": "yahoo",
+  "seed": 42,
+  "prefix_accuracy": {
+    "j1_l0": 0.6955,
+    "j1_l1": 0.482,
+    "j2_l0": 0.6915,
+    "j2_l1": 0.6125,
+    "j3_l0": 0.6925,
+    "j3_l1": 0.606,
+    "j4_l0": 0.6985,
+    "j4_l1": 0.603
+  },
+  "steerability": 0.118,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 6.162640230565131,
+    "head_params": 595982
+  }
+}

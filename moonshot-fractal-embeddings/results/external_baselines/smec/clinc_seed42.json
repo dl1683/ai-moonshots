@@ -1,0 +1,22 @@
+{
+  "method": "smec",
+  "model": "bge-small",
+  "dataset": "clinc",
+  "seed": 42,
+  "prefix_accuracy": {
+    "j1_l0": 0.985,
+    "j1_l1": 0.968,
+    "j2_l0": 0.9865,
+    "j2_l1": 0.9675,
+    "j3_l0": 0.9855,
+    "j3_l1": 0.9675,
+    "j4_l0": 0.985,
+    "j4_l1": 0.966
+  },
+  "steerability": -0.0020000000000000018,
+  "training": {
+    "epochs_per_stage": 6,
+    "total_stages": 4,
+    "head_params": 739548
+  }
+}

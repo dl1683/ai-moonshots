@@ -1,0 +1,22 @@
+{
+  "method": "heal",
+  "model": "bge-small",
+  "dataset": "newsgroups",
+  "seed": 123,
+  "prefix_accuracy": {
+    "j1_l0": 0.8,
+    "j1_l1": 0.5575,
+    "j2_l0": 0.801,
+    "j2_l1": 0.6575,
+    "j3_l0": 0.8015,
+    "j3_l1": 0.6615,
+    "j4_l0": 0.804,
+    "j4_l1": 0.6565
+  },
+  "steerability": 0.09499999999999997,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 5.286826135237006,
+    "head_params": 598682
+  }
+}
