@@ -1,0 +1,22 @@
+{
+  "method": "heal",
+  "model": "bge-small",
+  "dataset": "wos",
+  "seed": 456,
+  "prefix_accuracy": {
+    "j1_l0": 0.6015,
+    "j1_l1": 0.0695,
+    "j2_l0": 0.61,
+    "j2_l1": 0.15,
+    "j3_l0": 0.608,
+    "j3_l1": 0.1485,
+    "j4_l0": 0.607,
+    "j4_l1": 0.1445
+  },
+  "steerability": 0.06950000000000003,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 5.0350410576108136,
+    "head_params": 680154
+  }
+}
