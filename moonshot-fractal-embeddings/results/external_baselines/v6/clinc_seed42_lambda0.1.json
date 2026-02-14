@@ -1,0 +1,25 @@
+{
+  "method": "v6_adversarial",
+  "model": "bge-small",
+  "dataset": "clinc",
+  "seed": 42,
+  "lambda_adv": 0.1,
+  "prefix_accuracy": {
+    "j1_l0": 0.9795,
+    "j1_l1": 0.882,
+    "j2_l0": 0.9825,
+    "j2_l1": 0.9495,
+    "j3_l0": 0.9835,
+    "j3_l1": 0.955,
+    "j4_l0": 0.983,
+    "j4_l1": 0.9575
+  },
+  "steerability": 0.07200000000000006,
+  "training": {
+    "epochs_run": 20,
+    "best_loss": 0.2749083389522164,
+    "total_params": 5051350,
+    "v5_head_params": 5021472,
+    "adversary_params": 29878
+  }
+}

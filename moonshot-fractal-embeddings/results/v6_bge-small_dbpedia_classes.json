@@ -1,0 +1,97 @@
+{
+  "model": "bge-small",
+  "dataset": "dbpedia_classes",
+  "method": "v6",
+  "lambda_adv": 0.3,
+  "baseline": {
+    "l0_accuracy": 0.9115,
+    "l1_accuracy": 0.78
+  },
+  "v6": {
+    "l0_accuracy": 0.9605,
+    "l1_accuracy": 0.873
+  },
+  "delta": {
+    "l0": 0.049000000000000044,
+    "l1": 0.09299999999999997
+  },
+  "prefix_accuracy": {
+    "j1_l0": 0.936,
+    "j1_l1": 0.604,
+    "j2_l0": 0.942,
+    "j2_l1": 0.77,
+    "j3_l0": 0.944,
+    "j3_l1": 0.77,
+    "j4_l0": 0.944,
+    "j4_l1": 0.78
+  },
+  "steerability": 0.16800000000000015,
+  "history": [
+    {
+      "stage": 1,
+      "epoch": 1,
+      "loss": 7.311327909168444,
+      "loss_full": 4.323287590105731,
+      "loss_prefix": 3.8266655520388952,
+      "loss_adv": 2.30680300104887,
+      "l0_accuracy": 0.965,
+      "l1_accuracy": 0.855
+    },
+    {
+      "stage": 1,
+      "epoch": 2,
+      "loss": 5.085240399030814,
+      "loss_full": 2.6272009696279253,
+      "loss_prefix": 3.0811721337469002,
+      "loss_adv": 2.0311201277532076,
+      "l0_accuracy": 0.974,
+      "l1_accuracy": 0.886
+    },
+    {
+      "stage": 1,
+      "epoch": 3,
+      "loss": 4.465917078175939,
+      "loss_full": 2.122294177238206,
+      "loss_prefix": 2.865743922111683,
+      "loss_adv": 2.0805881485006865,
+      "l0_accuracy": 0.978,
+      "l1_accuracy": 0.911
+    },
+    {
+      "stage": 1,
+      "epoch": 4,
+      "loss": 4.0882786718526285,
+      "loss_full": 1.8266327730695109,
+      "loss_prefix": 2.713910768802901,
+      "loss_adv": 2.110997862385628,
+      "l0_accuracy": 0.981,
+      "l1_accuracy": 0.915
+    },
+    {
+      "stage": 1,
+      "epoch": 5,
+      "loss": 3.824281784824859,
+      "loss_full": 1.6113092352573137,
+      "loss_prefix": 2.6171634779836896,
+      "loss_adv": 2.1422478937564935,
+      "l0_accuracy": 0.983,
+      "l1_accuracy": 0.908
+    }
+  ],
+  "training_config": {
+    "prefix_probs": [
+      0.4,
+      0.3,
+      0.2,
+      0.1
+    ],
+    "block_keep_probs": [
+      0.95,
+      0.9,
+      0.8,
+      0.7
+    ],
+    "prefix_weight": 0.6,
+    "lambda_adv": 0.3
+  }
+}

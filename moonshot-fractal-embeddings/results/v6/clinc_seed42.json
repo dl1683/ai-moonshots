@@ -1,0 +1,97 @@
+{
+  "model": "bge-small",
+  "dataset": "clinc",
+  "method": "v6",
+  "lambda_adv": 0.5,
+  "baseline": {
+    "l0_accuracy": 0.961,
+    "l1_accuracy": 0.8875
+  },
+  "v6": {
+    "l0_accuracy": 0.982,
+    "l1_accuracy": 0.947
+  },
+  "delta": {
+    "l0": 0.02100000000000002,
+    "l1": 0.0595
+  },
+  "prefix_accuracy": {
+    "j1_l0": 0.968,
+    "j1_l1": 0.49,
+    "j2_l0": 0.968,
+    "j2_l1": 0.642,
+    "j3_l0": 0.962,
+    "j3_l1": 0.68,
+    "j4_l0": 0.958,
+    "j4_l1": 0.684
+  },
+  "steerability": 0.20400000000000007,
+  "history": [
+    {
+      "stage": 1,
+      "epoch": 1,
+      "loss": 7.633049473833682,
+      "loss_full": 4.272719387687854,
+      "loss_prefix": 3.3893309804930616,
+      "loss_adv": 2.6534628405499814,
+      "l0_accuracy": 0.977,
+      "l1_accuracy": 0.901
+    },
+    {
+      "stage": 1,
+      "epoch": 2,
+      "loss": 4.907998768251334,
+      "loss_full": 2.150832056109585,
+      "loss_prefix": 2.4739202505617,
+      "loss_adv": 2.5456289969273467,
+      "l0_accuracy": 0.98,
+      "l1_accuracy": 0.925
+    },
+    {
+      "stage": 1,
+      "epoch": 3,
+      "loss": 3.8895956731554286,
+      "loss_full": 1.3347191221233625,
+      "loss_prefix": 2.1576477996448973,
+      "loss_adv": 2.520575646144241,
+      "l0_accuracy": 0.985,
+      "l1_accuracy": 0.946
+    },
+    {
+      "stage": 1,
+      "epoch": 4,
+      "loss": 3.477730420098376,
+      "loss_full": 0.9923664576082087,
+      "loss_prefix": 1.9944687837095403,
+      "loss_adv": 2.577365303217475,
+      "l0_accuracy": 0.985,
+      "l1_accuracy": 0.955
+    },
+    {
+      "stage": 1,
+      "epoch": 5,
+      "loss": 3.244838025142897,
+      "loss_full": 0.778022386467279,
+      "loss_prefix": 1.89553697340524,
+      "loss_adv": 2.6589868219930732,
+      "l0_accuracy": 0.983,
+      "l1_accuracy": 0.959
+    }
+  ],
+  "training_config": {
+    "prefix_probs": [
+      0.4,
+      0.3,
+      0.2,
+      0.1
+    ],
+    "block_keep_probs": [
+      0.95,
+      0.9,
+      0.8,
+      0.7
+    ],
+    "prefix_weight": 0.6,
+    "lambda_adv": 0.5
+  }
+}

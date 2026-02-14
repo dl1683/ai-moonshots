@@ -1,0 +1,25 @@
+{
+  "method": "v6_adversarial",
+  "model": "bge-small",
+  "dataset": "dbpedia_classes",
+  "seed": 42,
+  "lambda_adv": 0.1,
+  "prefix_accuracy": {
+    "j1_l0": 0.9635,
+    "j1_l1": 0.7075,
+    "j2_l0": 0.966,
+    "j2_l1": 0.8855,
+    "j3_l0": 0.967,
+    "j3_l1": 0.8905,
+    "j4_l0": 0.966,
+    "j4_l1": 0.894
+  },
+  "steerability": 0.18400000000000005,
+  "training": {
+    "epochs_run": 20,
+    "best_loss": 0.23916585914268615,
+    "total_params": 5020197,
+    "v5_head_params": 5000655,
+    "adversary_params": 19542
+  }
+}
