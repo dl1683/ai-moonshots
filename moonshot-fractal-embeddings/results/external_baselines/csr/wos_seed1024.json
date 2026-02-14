@@ -1,0 +1,22 @@
+{
+  "method": "csr",
+  "model": "bge-small",
+  "dataset": "wos",
+  "seed": 1024,
+  "prefix_accuracy": {
+    "j1_l0": 0.587,
+    "j1_l1": 0.121,
+    "j2_l0": 0.595,
+    "j2_l1": 0.1225,
+    "j3_l0": 0.598,
+    "j3_l1": 0.125,
+    "j4_l0": 0.5975,
+    "j4_l1": 0.1275
+  },
+  "steerability": -0.004000000000000059,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 2.7540956358366375,
+    "head_params": 847066
+  }
+}

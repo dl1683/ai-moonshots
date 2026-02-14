@@ -1,0 +1,22 @@
+{
+  "method": "smec",
+  "model": "bge-small",
+  "dataset": "dbpedia_classes",
+  "seed": 42,
+  "prefix_accuracy": {
+    "j1_l0": 0.968,
+    "j1_l1": 0.907,
+    "j2_l0": 0.967,
+    "j2_l1": 0.9035,
+    "j3_l0": 0.9675,
+    "j3_l1": 0.905,
+    "j4_l0": 0.9665,
+    "j4_l1": 0.903
+  },
+  "steerability": -0.0025000000000000577,
+  "training": {
+    "epochs_per_stage": 6,
+    "total_stages": 4,
+    "head_params": 688028
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "method": "smec",
+  "model": "bge-small",
+  "dataset": "trec",
+  "seed": 42,
+  "prefix_accuracy": {
+    "j1_l0": 0.91,
+    "j1_l1": 0.796,
+    "j2_l0": 0.918,
+    "j2_l1": 0.814,
+    "j3_l0": 0.914,
+    "j3_l1": 0.806,
+    "j4_l0": 0.912,
+    "j4_l1": 0.796
+  },
+  "steerability": -0.0020000000000000018,
+  "training": {
+    "epochs_per_stage": 6,
+    "total_stages": 4,
+    "head_params": 675148
+  }
+}

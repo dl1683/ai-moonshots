@@ -1,0 +1,22 @@
+{
+  "method": "csr",
+  "model": "bge-small",
+  "dataset": "hupd_sec_sub",
+  "seed": 42,
+  "prefix_accuracy": {
+    "j1_l0": 0.6642,
+    "j1_l1": 0.3776,
+    "j2_l0": 0.6708,
+    "j2_l1": 0.385,
+    "j3_l0": 0.6782,
+    "j3_l1": 0.3886,
+    "j4_l0": 0.681,
+    "j4_l1": 0.3916
+  },
+  "steerability": -0.0028000000000000247,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 1.8173113016372031,
+    "head_params": 911059
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "method": "csr",
+  "model": "bge-small",
+  "dataset": "newsgroups",
+  "seed": 123,
+  "prefix_accuracy": {
+    "j1_l0": 0.807,
+    "j1_l1": 0.6605,
+    "j2_l0": 0.813,
+    "j2_l1": 0.665,
+    "j3_l0": 0.812,
+    "j3_l1": 0.666,
+    "j4_l0": 0.8115,
+    "j4_l1": 0.667
+  },
+  "steerability": 0.002000000000000113,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 1.2591285807422445,
+    "head_params": 764826
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "method": "smec",
+  "model": "bge-small",
+  "dataset": "wos",
+  "seed": 42,
+  "prefix_accuracy": {
+    "j1_l0": 0.5465,
+    "j1_l1": 0.1375,
+    "j2_l0": 0.5585,
+    "j2_l1": 0.1435,
+    "j3_l0": 0.5505,
+    "j3_l1": 0.142,
+    "j4_l0": 0.5555,
+    "j4_l1": 0.1465
+  },
+  "steerability": -2.7755575615628914e-17,
+  "training": {
+    "epochs_per_stage": 6,
+    "total_stages": 4,
+    "head_params": 859332
+  }
+}

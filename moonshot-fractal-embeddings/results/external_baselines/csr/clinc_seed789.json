@@ -1,0 +1,22 @@
+{
+  "method": "csr",
+  "model": "bge-small",
+  "dataset": "clinc",
+  "seed": 789,
+  "prefix_accuracy": {
+    "j1_l0": 0.9825,
+    "j1_l1": 0.959,
+    "j2_l0": 0.9845,
+    "j2_l1": 0.961,
+    "j3_l0": 0.984,
+    "j3_l1": 0.9595,
+    "j4_l0": 0.984,
+    "j4_l1": 0.9585
+  },
+  "steerability": -0.0019999999999998908,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 0.6354802605472033,
+    "head_params": 799264
+  }
+}

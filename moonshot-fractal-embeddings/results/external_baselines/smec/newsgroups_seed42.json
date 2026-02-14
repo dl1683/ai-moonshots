@@ -1,0 +1,22 @@
+{
+  "method": "smec",
+  "model": "bge-small",
+  "dataset": "newsgroups",
+  "seed": 42,
+  "prefix_accuracy": {
+    "j1_l0": 0.803,
+    "j1_l1": 0.646,
+    "j2_l0": 0.7965,
+    "j2_l1": 0.6475,
+    "j3_l0": 0.802,
+    "j3_l1": 0.6525,
+    "j4_l0": 0.8055,
+    "j4_l1": 0.653
+  },
+  "steerability": 0.0045000000000000595,
+  "training": {
+    "epochs_per_stage": 6,
+    "total_stages": 4,
+    "head_params": 655828
+  }
+}

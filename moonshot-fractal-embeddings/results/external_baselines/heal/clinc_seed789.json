@@ -1,0 +1,22 @@
+{
+  "method": "heal",
+  "model": "bge-small",
+  "dataset": "clinc",
+  "seed": 789,
+  "prefix_accuracy": {
+    "j1_l0": 0.9825,
+    "j1_l1": 0.7,
+    "j2_l0": 0.9845,
+    "j2_l1": 0.963,
+    "j3_l0": 0.9835,
+    "j3_l1": 0.963,
+    "j4_l0": 0.9835,
+    "j4_l1": 0.9635
+  },
+  "steerability": 0.26250000000000007,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 2.7843835595287856,
+    "head_params": 632352
+  }
+}

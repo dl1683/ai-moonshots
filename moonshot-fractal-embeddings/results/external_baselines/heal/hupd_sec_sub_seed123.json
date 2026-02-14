@@ -1,0 +1,22 @@
+{
+  "method": "heal",
+  "model": "bge-small",
+  "dataset": "hupd_sec_sub",
+  "seed": 123,
+  "prefix_accuracy": {
+    "j1_l0": 0.6592,
+    "j1_l1": 0.235,
+    "j2_l0": 0.6804,
+    "j2_l1": 0.3852,
+    "j3_l0": 0.6786,
+    "j3_l1": 0.3954,
+    "j4_l0": 0.678,
+    "j4_l1": 0.4006
+  },
+  "steerability": 0.14679999999999999,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 5.558577649136807,
+    "head_params": 744531
+  }
+}

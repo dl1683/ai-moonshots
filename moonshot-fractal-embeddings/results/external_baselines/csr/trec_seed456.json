@@ -1,0 +1,22 @@
+{
+  "method": "csr",
+  "model": "bge-small",
+  "dataset": "trec",
+  "seed": 456,
+  "prefix_accuracy": {
+    "j1_l0": 0.934,
+    "j1_l1": 0.804,
+    "j2_l0": 0.94,
+    "j2_l1": 0.806,
+    "j3_l0": 0.94,
+    "j3_l1": 0.798,
+    "j4_l0": 0.934,
+    "j4_l1": 0.804
+  },
+  "steerability": 0.0,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 1.4943824368853902,
+    "head_params": 772536
+  }
+}

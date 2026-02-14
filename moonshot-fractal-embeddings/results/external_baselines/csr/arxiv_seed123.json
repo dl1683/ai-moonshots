@@ -1,0 +1,22 @@
+{
+  "method": "csr",
+  "model": "bge-small",
+  "dataset": "arxiv",
+  "seed": 123,
+  "prefix_accuracy": {
+    "j1_l0": 0.7215,
+    "j1_l1": 0.4385,
+    "j2_l0": 0.7315,
+    "j2_l1": 0.45,
+    "j3_l0": 0.7355,
+    "j3_l1": 0.4585,
+    "j4_l0": 0.73,
+    "j4_l1": 0.458
+  },
+  "steerability": 0.011000000000000065,
+  "training": {
+    "epochs_run": 30,
+    "best_loss": 1.4767476433440099,
+    "head_params": 794895
+  }
+}
