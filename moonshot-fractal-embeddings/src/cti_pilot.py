@@ -59,7 +59,7 @@ from multi_model_pipeline import MODELS
 
 SCRIPT_VERSION = "1.0.0"
 EPS = 1e-12
-EXPECTED_MODEL_DIMS = {"bge-base": 768, "e5-base": 768, "bge-small": 384}
+EXPECTED_MODEL_DIMS = {"bge-base": 768, "e5-base": 768, "bge-small": 384, "pythia-410m": 1024}
 
 
 @dataclass(frozen=True)
@@ -1550,7 +1550,7 @@ from multi_model_pipeline import MODELS
 
 SCRIPT_VERSION = "1.0.0"
 EPS = 1e-12
-EXPECTED_MODEL_DIMS = {"bge-base": 768, "e5-base": 768, "bge-small": 384}
+EXPECTED_MODEL_DIMS = {"bge-base": 768, "e5-base": 768, "bge-small": 384, "pythia-410m": 1024}
 
 
 @dataclass(frozen=True)
