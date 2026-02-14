@@ -212,6 +212,10 @@ class FractalModelV5(nn.Module):
             trust_remote_code=config.trust_remote_code,
         )
 
+        # Decoder models (GPT, Pythia, etc.) may lack a pad token
+        if self.tokenizer.pad_token is None:
+            self.tokenizer.pad_token = self.tokenizer.eos_token
+
         if config.pooling == "last":
             self.tokenizer.padding_side = "left"
 
