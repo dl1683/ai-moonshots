@@ -644,11 +644,18 @@ def run_v6_experiment(
             return bool(obj)
         return obj
 
-    results_path = (Path(__file__).parent.parent / "results" /
-                    f"v6_{model_key}_{dataset_name}.json")
+    results_dir = Path(__file__).parent.parent / "results" / "v6"
+    results_dir.mkdir(parents=True, exist_ok=True)
+    results_path = results_dir / f"{dataset_name}_seed{seed}.json"
     with open(results_path, 'w') as f:
         json.dump(convert(results), f, indent=2)
     print(f"\nResults saved to {results_path}")
+
+    # Also save to legacy location for backwards compat
+    legacy_path = (Path(__file__).parent.parent / "results" /
+                   f"v6_{model_key}_{dataset_name}.json")
+    with open(legacy_path, 'w') as f:
+        json.dump(convert(results), f, indent=2)
 
     return results
 

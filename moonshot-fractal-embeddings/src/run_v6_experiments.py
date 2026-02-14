@@ -53,6 +53,8 @@ def run_all(
         seeds = SEEDS
 
     all_results = []
+    v6_dir = RESULTS_DIR / "v6"
+    v6_dir.mkdir(parents=True, exist_ok=True)
     total = len(datasets) * len(seeds)
     done = 0
 
@@ -60,9 +62,20 @@ def run_all(
         limits = DATASET_LIMITS.get(ds_name, {"max_train": 10000, "max_test": 2000})
 
         for seed in seeds:
-            result_path = RESULTS_DIR / f"v6_bge-small_{ds_name}.json"
+            result_path = v6_dir / f"{ds_name}_seed{seed}.json"
 
-            # Check if seed already done (multi-seed results stored in one file)
+            # Skip if already done
+            if result_path.exists():
+                done += 1
+                print(f"\n  SKIP {done}/{total}: {ds_name} seed={seed} (exists)")
+                try:
+                    with open(result_path) as f:
+                        r = json.load(f)
+                    all_results.append(r)
+                except Exception:
+                    pass
+                continue
+
             done += 1
             print(f"\n{'#' * 70}")
             print(f"# V6 RUN {done}/{total}: {ds_name} seed={seed} "
