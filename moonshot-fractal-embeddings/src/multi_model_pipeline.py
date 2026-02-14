@@ -188,6 +188,16 @@ MODELS = {
         pooling="mean",
         trust_remote_code=True,
     ),
+    # =========================================================================
+    # DECODER MODELS (for CTI cross-paradigm validation)
+    # =========================================================================
+    "pythia-410m": ModelConfig(
+        name="Pythia-410M",
+        hf_path="EleutherAI/pythia-410m",
+        hidden_dim=1024,
+        max_seq_len=2048,
+        pooling="last",
+    ),
 }
 
 
