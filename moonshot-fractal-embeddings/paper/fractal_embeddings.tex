@@ -298,6 +298,8 @@ These results validate the central thesis from both directions: hierarchy-aware 
 Although HEAL achieves higher raw steerability, V5 dominates on the efficiency frontier.
 V5 uses ${\sim}$130K head parameters trained for 5 epochs with cross-entropy (${\sim}$43 GFLOPs), vs.\ HEAL's ${\sim}$600K-parameter trunk with level-specific projectors trained for 30 epochs with $O(n^2)$ contrastive loss (${\sim}$1{,}100 GFLOPs)---a ${\sim}28\times$ compute gap.
 Normalising steerability by training compute, V5 achieves $8\times$ higher steerability per GFLOP (Figure~\ref{fig:pareto}).
+A compute-matched comparison confirms this is not merely a training-time advantage: restricting HEAL to 5 epochs (matching V5's budget), HEAL achieves $\steer = +0.165$ on CLINC and $+0.221$ on DBPedia Classes---only marginally above V5's $+0.150$ and $+0.120$ respectively.
+Most of HEAL's steerability advantage therefore arises from its $6\times$ longer training schedule, not from architectural separation alone.
 V5's additional contributions---the formal successive refinement framework predicting \emph{when} and \emph{how much} steerability emerges (Section~\ref{sec:theory}) and the predictive scaling law (Section~\ref{sec:scaling})---are orthogonal to architecture choice and could in principle be combined with HEAL's projector design.
 
 \begin{figure}[t]

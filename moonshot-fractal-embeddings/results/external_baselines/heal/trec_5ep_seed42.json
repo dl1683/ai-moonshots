@@ -1,0 +1,22 @@
+{
+  "method": "heal",
+  "model": "bge-small",
+  "dataset": "trec",
+  "seed": 42,
+  "prefix_accuracy": {
+    "j1_l0": 0.958,
+    "j1_l1": 0.74,
+    "j2_l0": 0.948,
+    "j2_l1": 0.81,
+    "j3_l0": 0.948,
+    "j3_l1": 0.82,
+    "j4_l0": 0.946,
+    "j4_l1": 0.824
+  },
+  "steerability": 0.09599999999999997,
+  "training": {
+    "epochs_run": 5,
+    "best_loss": 6.318479715391647,
+    "head_params": 606392
+  }
+}
