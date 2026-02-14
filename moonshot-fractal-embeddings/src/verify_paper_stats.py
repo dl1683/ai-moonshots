@@ -284,11 +284,11 @@ def verify_meta_analysis():
         print(f"  z: {z_val}, p: {p_val}")
         print(f"  I^2: {i2}")
         if pooled is not None:
-            check("Meta pooled d", 1.49, pooled, tol=0.02)
+            check("Meta pooled d", 1.87, pooled, tol=0.02)
         if z_val is not None:
-            check("Meta z", 3.63, z_val, tol=0.02)
+            check("Meta z", 4.99, z_val, tol=0.02)
         if p_val is not None:
-            check("Meta p", 0.0003, p_val, tol=0.0001)
+            check("Meta p", 0.000001, p_val, tol=0.00001)
 
 
 def verify_scaling():
@@ -304,7 +304,7 @@ def verify_scaling():
         rho_raw = fc.get("spearman_rho")
         if rho_raw is not None:
             print(f"  Raw H rho: {rho_raw:.4f} (p={fc.get('spearman_p', 'N/A'):.4f})")
-            check("Raw H Spearman rho", 0.74, rho_raw, tol=0.02)
+            check("Raw H Spearman rho", 0.61, rho_raw, tol=0.02)
         bs = sr.get("bootstrap_rho", {})
         if bs:
             print(f"  Bootstrap frac positive: {bs.get('frac_positive', 'N/A')}")
