@@ -1,0 +1,159 @@
+{
+  "calibration_data": [
+    {
+      "name": "yahoo",
+      "product": 0.740352,
+      "actual_S": 0.009600000000000075,
+      "type": "calibration"
+    },
+    {
+      "name": "goemotions",
+      "product": 0.6452438235294118,
+      "actual_S": 0.014000000000000002,
+      "type": "calibration"
+    },
+    {
+      "name": "newsgroups",
+      "product": 1.238027,
+      "actual_S": 0.03520000000000005,
+      "type": "calibration"
+    },
+    {
+      "name": "trec",
+      "product": 1.5854876,
+      "actual_S": 0.04519999999999995,
+      "type": "calibration"
+    },
+    {
+      "name": "arxiv",
+      "product": 1.2187551,
+      "actual_S": 0.02759999999999997,
+      "type": "calibration"
+    },
+    {
+      "name": "dbpedia_classes",
+      "product": 2.4726,
+      "actual_S": 0.11240000000000003,
+      "type": "calibration"
+    },
+    {
+      "name": "clinc",
+      "product": 3.4673737499999997,
+      "actual_S": 0.1432,
+      "type": "calibration"
+    },
+    {
+      "name": "wos",
+      "product": 0.8585,
+      "actual_S": 0.036400000000000016,
+      "type": "calibration"
+    }
+  ],
+  "round1_data": [
+    {
+      "name": "hupd_sec_cls",
+      "product": 1.15,
+      "predicted_S": 0.037,
+      "actual_S": 0.043199999999999995,
+      "type": "round1_test"
+    },
+    {
+      "name": "hupd_sec_sub",
+      "product": 1.48,
+      "predicted_S": 0.054,
+      "actual_S": 0.044800000000000006,
+      "type": "round1_test"
+    },
+    {
+      "name": "hwv_l0_l2",
+      "product": 2.8,
+      "predicted_S": 0.12,
+      "actual_S": 0.09199999999999994,
+      "type": "round1_test"
+    },
+    {
+      "name": "hwv_l0_l3",
+      "product": 3.29,
+      "predicted_S": 0.145,
+      "actual_S": 0.0764,
+      "type": "round1_test"
+    }
+  ],
+  "round2_data": [
+    {
+      "name": "amazon",
+      "product": 0.463766,
+      "predicted_S": 0.0028,
+      "prediction_interval": [
+        -0.0227,
+        0.0284
+      ],
+      "actual_S": null,
+      "type": "round2_test"
+    },
+    {
+      "name": "hupd_cls_sub",
+      "product": 0.6756570000000001,
+      "predicted_S": 0.0134,
+      "prediction_interval": [
+        -0.0121,
+        0.039
+      ],
+      "actual_S": null,
+      "type": "round2_test"
+    },
+    {
+      "name": "hwv_l1_l3",
+      "product": 1.9846559999999998,
+      "predicted_S": 0.0789,
+      "prediction_interval": [
+        0.0533,
+        0.1044
+      ],
+      "actual_S": null,
+      "type": "round2_test"
+    },
+    {
+      "name": "agnews",
+      "product": 0.9407970000000001,
+      "predicted_S": 0.0267,
+      "prediction_interval": [
+        0.0012,
+        0.0522
+      ],
+      "actual_S": null,
+      "type": "round2_test"
+    }
+  ],
+  "statistics": {
+    "calibration": {
+      "n": 8,
+      "slope": 0.04837186374661785,
+      "intercept": -0.0209763521823859,
+      "r_squared": 0.9555776514023138,
+      "p": 2.7862834261214366e-05
+    },
+    "round1": {
+      "n": 4,
+      "rmse": 0.03746011211942645,
+      "mae": 0.02800000000000001,
+      "sign_correct": 4
+    },
+    "combined_test": {
+      "n": 4,
+      "spearman_rho": 0.7999999999999999,
+      "spearman_p": 0.20000000000000007,
+      "pearson_r": 0.887595625552565,
+      "pearson_p": 0.11240437444743501,
+      "rmse": 0.03746011211942645,
+      "mae": 0.02800000000000001
+    },
+    "combined_all": {
+      "n": 12,
+      "spearman_rho": 0.9090909090909092,
+      "spearman_p": 4.191044653034233e-05,
+      "pearson_r": 0.9081587689798335,
+      "pearson_p": 4.403269608247175e-05
+    }
+  }
+}
