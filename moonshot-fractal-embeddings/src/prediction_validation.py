@@ -439,11 +439,15 @@ def generate_figure(cal_data, test_data, cal_slope, cal_intercept, all_slope, al
             bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
 
     plt.tight_layout()
-    fig_path = RESULTS_DIR / "figures" / "fig_prediction_validation.png"
-    fig_path.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(fig_path, dpi=200, bbox_inches='tight')
+    fig_dir = RESULTS_DIR / "figures" / "paper"
+    fig_dir.mkdir(parents=True, exist_ok=True)
+    fig_path_pdf = fig_dir / "fig_prediction_validation.pdf"
+    fig_path_png = RESULTS_DIR / "figures" / "fig_prediction_validation.png"
+    plt.savefig(fig_path_pdf, dpi=200, bbox_inches='tight')
+    plt.savefig(fig_path_png, dpi=200, bbox_inches='tight')
     plt.close()
-    print(f"\n  Figure saved to {fig_path}")
+    print(f"\n  Figure saved to {fig_path_pdf}")
+    print(f"  Figure saved to {fig_path_png}")
 
 
 if __name__ == "__main__":
