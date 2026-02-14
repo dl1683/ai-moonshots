@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-02-13T_PRE_EXPERIMENT",
+  "calibration": {
+    "method": "linear_regression_product_predictor",
+    "datasets": [
+      "yahoo",
+      "goemotions",
+      "newsgroups",
+      "trec",
+      "arxiv",
+      "dbpedia_classes",
+      "clinc",
+      "wos"
+    ],
+    "n_calibration": 8,
+    "fit": "S = 0.049975 * (H * base_L1) + -0.020327",
+    "slope": 0.04997535093010461,
+    "intercept": -0.02032694947314405,
+    "r_squared": 0.9425044791768468,
+    "residual_se": 0.01302820984969371
+  },
+  "predictions": {
+    "amazon": {
+      "H": 0.922,
+      "base_l1": 0.503,
+      "product": 0.463766,
+      "predicted_S": 0.0028,
+      "prediction_interval_95": [
+        -0.0227,
+        0.0284
+      ],
+      "n_l0": 4,
+      "n_l1": 12
+    },
+    "hupd_cls_sub": {
+      "H": 2.029,
+      "base_l1": 0.333,
+      "product": 0.6756570000000001,
+      "predicted_S": 0.0134,
+      "prediction_interval_95": [
+        -0.0121,
+        0.039
+      ],
+      "n_l0": 121,
+      "n_l1": 587
+    },
+    "hwv_l1_l3": {
+      "H": 2.768,
+      "base_l1": 0.717,
+      "product": 1.9846559999999998,
+      "predicted_S": 0.0789,
+      "prediction_interval_95": [
+        0.0533,
+        0.1044
+      ],
+      "n_l0": 41,
+      "n_l1": 230
+    },
+    "agnews": {
+      "H": 1.677,
+      "base_l1": 0.561,
+      "product": 0.9407970000000001,
+      "predicted_S": 0.0267,
+      "prediction_interval_95": [
+        0.0012,
+        0.0522
+      ],
+      "n_l0": 4,
+      "n_l1": 18
+    }
+  },
+  "note": "These predictions were computed BEFORE running V5/MRL experiments on these datasets."
+}
