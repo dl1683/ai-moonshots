@@ -1,0 +1,384 @@
+{
+  "objective": "classification",
+  "model": "pythia-160m",
+  "lora_r": 16,
+  "num_steps": 500,
+  "avg_loss": NaN,
+  "train_time_sec": 18.59573006629944,
+  "geometry": {
+    "0": {
+      "layer": 0,
+      "s_relative": 0.0,
+      "anisotropy": 0.03166620805859566,
+      "effective_rank": 272.8046569824219,
+      "spectral_concentration_top10": 0.23959147930145264,
+      "intrinsic_dim": 300.2019800535687
+    },
+    "1": {
+      "layer": 1,
+      "s_relative": 0.08333333333333333,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "2": {
+      "layer": 2,
+      "s_relative": 0.16666666666666666,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "3": {
+      "layer": 3,
+      "s_relative": 0.25,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "4": {
+      "layer": 4,
+      "s_relative": 0.3333333333333333,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "5": {
+      "layer": 5,
+      "s_relative": 0.4166666666666667,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "6": {
+      "layer": 6,
+      "s_relative": 0.5,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "7": {
+      "layer": 7,
+      "s_relative": 0.5833333333333334,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "8": {
+      "layer": 8,
+      "s_relative": 0.6666666666666666,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "9": {
+      "layer": 9,
+      "s_relative": 0.75,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "10": {
+      "layer": 10,
+      "s_relative": 0.8333333333333334,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "11": {
+      "layer": 11,
+      "s_relative": 0.9166666666666666,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    },
+    "12": {
+      "layer": 12,
+      "s_relative": 1.0,
+      "anisotropy": NaN,
+      "effective_rank": 0.0,
+      "spectral_concentration_top10": 0.0,
+      "intrinsic_dim": 0.0
+    }
+  },
+  "quality": {
+    "clinc": {
+      "0": {
+        "layer": 0,
+        "knn_l0": 0.487,
+        "knn_l1": 0.197
+      },
+      "1": {
+        "layer": 1,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "2": {
+        "layer": 2,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "3": {
+        "layer": 3,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "4": {
+        "layer": 4,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "5": {
+        "layer": 5,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "6": {
+        "layer": 6,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "7": {
+        "layer": 7,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "8": {
+        "layer": 8,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "9": {
+        "layer": 9,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "10": {
+        "layer": 10,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "11": {
+        "layer": 11,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      },
+      "12": {
+        "layer": 12,
+        "knn_l0": 0.102,
+        "knn_l1": 0.323
+      }
+    },
+    "dbpedia_classes": {
+      "0": {
+        "layer": 0,
+        "knn_l0": 0.463,
+        "knn_l1": 0.065
+      },
+      "1": {
+        "layer": 1,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "2": {
+        "layer": 2,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "3": {
+        "layer": 3,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "4": {
+        "layer": 4,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "5": {
+        "layer": 5,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "6": {
+        "layer": 6,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "7": {
+        "layer": 7,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "8": {
+        "layer": 8,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "9": {
+        "layer": 9,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "10": {
+        "layer": 10,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "11": {
+        "layer": 11,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      },
+      "12": {
+        "layer": 12,
+        "knn_l0": 0.522,
+        "knn_l1": 0.116
+      }
+    },
+    "yahoo": {
+      "0": {
+        "layer": 0,
+        "knn_l0": 0.342,
+        "knn_l1": 0.163
+      },
+      "1": {
+        "layer": 1,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "2": {
+        "layer": 2,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "3": {
+        "layer": 3,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "4": {
+        "layer": 4,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "5": {
+        "layer": 5,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "6": {
+        "layer": 6,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "7": {
+        "layer": 7,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "8": {
+        "layer": 8,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "9": {
+        "layer": 9,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "10": {
+        "layer": 10,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "11": {
+        "layer": 11,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      },
+      "12": {
+        "layer": 12,
+        "knn_l0": 0.351,
+        "knn_l1": 0.224
+      }
+    },
+    "20newsgroups": {
+      "0": {
+        "layer": 0,
+        "knn_l0": 0.224,
+        "knn_l1": 0.057
+      },
+      "1": {
+        "layer": 1,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "2": {
+        "layer": 2,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "3": {
+        "layer": 3,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "4": {
+        "layer": 4,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "5": {
+        "layer": 5,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "6": {
+        "layer": 6,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "7": {
+        "layer": 7,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "8": {
+        "layer": 8,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "9": {
+        "layer": 9,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "10": {
+        "layer": 10,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "11": {
+        "layer": 11,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      },
+      "12": {
+        "layer": 12,
+        "knn_l0": 0.596,
+        "knn_l1": 0.399
+      }
+    }
+  }
+}

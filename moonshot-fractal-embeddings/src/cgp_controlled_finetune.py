@@ -66,100 +66,27 @@ DATASET_NAME = "clinc"  # Primary dataset for training/eval
 EVAL_DATASETS = ["clinc", "dbpedia_classes", "yahoo", "20newsgroups"]
 
 
-class LoRALayer(nn.Module):
-    """Simple LoRA adapter for linear layers."""
+def apply_lora(base_model, r=16, alpha=32):
+    """Apply PEFT LoRA to the base model."""
+    from peft import LoraConfig, get_peft_model
 
-    def __init__(self, in_features: int, out_features: int, r: int = 16, alpha: int = 32):
-        super().__init__()
-        self.r = r
-        self.alpha = alpha
-        self.scaling = alpha / r
-        self.lora_A = nn.Parameter(torch.randn(in_features, r) * 0.01)
-        self.lora_B = nn.Parameter(torch.zeros(r, out_features))
+    # Find target modules for Pythia (GPT-NeoX architecture)
+    target_modules = ["query_key_value"]  # Pythia uses fused QKV
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return (x @ self.lora_A @ self.lora_B) * self.scaling
+    config = LoraConfig(
+        r=r,
+        lora_alpha=alpha,
+        target_modules=target_modules,
+        lora_dropout=0.05,
+        bias="none",
+        task_type="CAUSAL_LM",
+    )
 
-
-class LoRAModel(nn.Module):
-    """Wraps a pretrained model with LoRA adapters on attention layers."""
-
-    def __init__(self, base_model, hidden_dim: int, r: int = 16, alpha: int = 32):
-        super().__init__()
-        self.base_model = base_model
-
-        # Freeze base model
-        for param in self.base_model.parameters():
-            param.requires_grad = False
-
-        # Add LoRA to attention query/value projections
-        self.lora_layers = nn.ModuleDict()
-        for i, layer in enumerate(self._get_transformer_layers()):
-            attn = self._get_attention(layer)
-            if attn is not None:
-                self.lora_layers[f"q_{i}"] = LoRALayer(hidden_dim, hidden_dim, r, alpha)
-                self.lora_layers[f"v_{i}"] = LoRALayer(hidden_dim, hidden_dim, r, alpha)
-
-        # Register hooks to inject LoRA
-        self._hooks = []
-        self._register_hooks()
-
-    def _get_transformer_layers(self):
-        if hasattr(self.base_model, "gpt_neox"):
-            return self.base_model.gpt_neox.layers
-        elif hasattr(self.base_model, "transformer"):
-            if hasattr(self.base_model.transformer, "h"):
-                return self.base_model.transformer.h
-        elif hasattr(self.base_model, "model"):
-            if hasattr(self.base_model.model, "layers"):
-                return self.base_model.model.layers
-        raise ValueError(f"Cannot find transformer layers in {type(self.base_model)}")
-
-    def _get_attention(self, layer):
-        if hasattr(layer, "attention"):
-            return layer.attention
-        elif hasattr(layer, "self_attn"):
-            return layer.self_attn
-        return None
-
-    def _register_hooks(self):
-        """Register forward hooks that add LoRA output to Q and V projections."""
-        layers = self._get_transformer_layers()
-        for i, layer in enumerate(layers):
-            attn = self._get_attention(layer)
-            if attn is None:
-                continue
-
-            # Find query and value projection layers
-            q_proj = None
-            v_proj = None
-            if hasattr(attn, "query_key_value"):
-                # Pythia uses fused QKV
-                q_proj = attn.query_key_value
-            elif hasattr(attn, "q_proj"):
-                q_proj = attn.q_proj
-                v_proj = attn.v_proj
-
-            if q_proj is not None:
-                hook = self._make_hook(f"q_{i}", q_proj)
-                self._hooks.append(q_proj.register_forward_hook(hook))
-
-            if v_proj is not None:
-                hook = self._make_hook(f"v_{i}", v_proj)
-                self._hooks.append(v_proj.register_forward_hook(hook))
-
-    def _make_hook(self, key, target_module):
-        def hook_fn(module, input, output):
-            if key in self.lora_layers:
-                lora_out = self.lora_layers[key](input[0])
-                return output + lora_out
-        return hook_fn
-
-    def forward(self, **kwargs):
-        return self.base_model(**kwargs)
-
-    def trainable_params(self):
-        return sum(p.numel() for p in self.parameters() if p.requires_grad)
+    peft_model = get_peft_model(base_model, config)
+    trainable = sum(p.numel() for p in peft_model.parameters() if p.requires_grad)
+    total = sum(p.numel() for p in peft_model.parameters())
+    print(f"  LoRA: {trainable:,} trainable / {total:,} total ({100*trainable/total:.2f}%)")
+    return peft_model
 
 
 # ── Objectives ────────────────────────────────────────────────────────
@@ -289,33 +216,15 @@ def train_lm(model, tokenizer, texts, device, num_steps=500):
             labels = input_ids.clone()
             labels[attention_mask == 0] = -100  # ignore padding
 
+            # CausalLM models return logits directly when labels are provided
             outputs = model(
                 input_ids=input_ids,
                 attention_mask=attention_mask,
+                labels=labels,
                 output_hidden_states=True,
                 return_dict=True,
             )
-
-            # Get logits from final hidden state
-            hidden = outputs.hidden_states[-1]
-            # Use the base model's embedding to get logits
-            if hasattr(model.base_model, "embed_out"):
-                logits = model.base_model.embed_out(hidden)
-            elif hasattr(model.base_model, "lm_head"):
-                logits = model.base_model.lm_head(hidden)
-            else:
-                # Use weight tying
-                logits = hidden @ model.base_model.gpt_neox.embed_in.weight.T
-
-            # Shift logits and labels
-            shift_logits = logits[:, :-1, :].contiguous()
-            shift_labels = labels[:, 1:].contiguous()
-
-            loss = F.cross_entropy(
-                shift_logits.view(-1, shift_logits.size(-1)),
-                shift_labels.view(-1),
-                ignore_index=-100,
-            )
+            loss = outputs.loss
 
             optimizer.zero_grad()
             loss.backward()
@@ -336,8 +245,8 @@ def train_classification(model, tokenizer, texts, labels, n_classes, device, num
     dataset = LabeledDataset(texts, labels, tokenizer)
     loader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, drop_last=True)
 
-    # Classification head
-    cls_head = nn.Linear(HIDDEN_DIM, n_classes).to(device)
+    # Classification head (half precision to match model)
+    cls_head = nn.Linear(HIDDEN_DIM, n_classes).half().to(device)
 
     params = list(filter(lambda p: p.requires_grad, model.parameters())) + list(cls_head.parameters())
     optimizer = torch.optim.AdamW(params, lr=LR)
@@ -416,26 +325,15 @@ def train_mlm(model, tokenizer, texts, device, num_steps=500, mask_prob=0.15):
             noise = torch.randint(0, vocab_size, input_ids.shape, device=device)
             corrupted = torch.where(mask, noise, input_ids)
 
+            # CausalLM with labels computes loss internally
             outputs = model(
                 input_ids=corrupted,
                 attention_mask=attention_mask,
+                labels=labels,
                 output_hidden_states=True,
                 return_dict=True,
             )
-
-            hidden = outputs.hidden_states[-1]
-            if hasattr(model.base_model, "embed_out"):
-                logits = model.base_model.embed_out(hidden)
-            elif hasattr(model.base_model, "lm_head"):
-                logits = model.base_model.lm_head(hidden)
-            else:
-                logits = hidden @ model.base_model.gpt_neox.embed_in.weight.T
-
-            loss = F.cross_entropy(
-                logits.view(-1, logits.size(-1)),
-                labels.view(-1),
-                ignore_index=-100,
-            )
+            loss = outputs.loss
 
             optimizer.zero_grad()
             loss.backward()
@@ -508,20 +406,36 @@ def measure_geometry(model, tokenizer, texts, device, max_samples=500):
 
 def measure_knn_quality(model, tokenizer, dataset_name, device, max_samples=1000):
     """Measure kNN quality at each layer (reusing atlas pipeline)."""
-    from cti_knn_sweep import extract_all_layer_representations, evaluate_knn_per_layer
+    from cti_knn_sweep import extract_all_layer_representations, knn_accuracy
 
     data = load_hierarchical_dataset(dataset_name, split="test", max_samples=max_samples)
     texts = [s.text for s in data.samples]
     l0_labels = np.array([s.level0_label for s in data.samples])
     l1_labels = np.array([s.level1_label for s in data.samples])
 
-    model.eval()
+    # PEFT models wrap the base model; extract_all_layer_representations
+    # needs the HF model that supports output_hidden_states
+    if hasattr(model, 'base_model') and hasattr(model.base_model, 'model'):
+        # PEFT CausalLM wraps as model.base_model.model
+        extract_model = model
+    elif hasattr(model, 'base_model'):
+        extract_model = model.base_model
+    else:
+        extract_model = model
+
     layer_reps = extract_all_layer_representations(
-        model.base_model if hasattr(model, 'base_model') else model,
-        tokenizer, texts, "last", device, batch_size=32
+        extract_model, tokenizer, texts, pooling="last", device=device, batch_size=32
     )
 
-    results = evaluate_knn_per_layer(layer_reps, l0_labels, l1_labels, k=5)
+    results = {}
+    for layer_idx, reps in layer_reps.items():
+        knn_l0 = knn_accuracy(reps, l0_labels, k=5)
+        knn_l1 = knn_accuracy(reps, l1_labels, k=5)
+        results[layer_idx] = {
+            "layer": layer_idx,
+            "knn_l0": float(knn_l0),
+            "knn_l1": float(knn_l1),
+        }
     return results
 
 
@@ -544,10 +458,8 @@ def run_objective(objective: str, device: str = "cuda"):
     base_model = AutoModelForCausalLM.from_pretrained(HF_PATH, torch_dtype=torch.float16)
     base_model = base_model.to(device)
 
-    # Wrap with LoRA
-    lora_model = LoRAModel(base_model, HIDDEN_DIM, LORA_R, LORA_ALPHA)
-    lora_model = lora_model.to(device)
-    print(f"  LoRA trainable params: {lora_model.trainable_params():,}")
+    # Apply LoRA via PEFT
+    lora_model = apply_lora(base_model, LORA_R, LORA_ALPHA)
 
     # Load training data
     data = load_hierarchical_dataset(DATASET_NAME, split="train", max_samples=5000)
@@ -646,26 +558,12 @@ def run_baseline(device: str = "cuda"):
     base_model = AutoModelForCausalLM.from_pretrained(HF_PATH, torch_dtype=torch.float16)
     base_model = base_model.to(device).eval()
 
-    # Wrap minimally for API compatibility
-    class BaseWrapper:
-        def __init__(self, model):
-            self.base_model = model
-        def eval(self):
-            self.base_model.eval()
-            return self
-        def __call__(self, **kwargs):
-            return self.base_model(**kwargs)
-        def parameters(self):
-            return self.base_model.parameters()
-
-    wrapper = BaseWrapper(base_model)
-
     # Measure geometry
     test_data = load_hierarchical_dataset(DATASET_NAME, split="test", max_samples=800)
     test_texts = [s.text for s in test_data.samples]
 
     print("  Measuring baseline geometry...")
-    geometry = measure_geometry(wrapper, tokenizer, test_texts, device)
+    geometry = measure_geometry(base_model, tokenizer, test_texts, device)
 
     for li in sorted(geometry.keys()):
         g = geometry[li]
@@ -677,7 +575,7 @@ def run_baseline(device: str = "cuda"):
     quality = {}
     for ds_name in EVAL_DATASETS:
         try:
-            q = measure_knn_quality(wrapper, tokenizer, ds_name, device)
+            q = measure_knn_quality(base_model, tokenizer, ds_name, device)
             quality[ds_name] = q
             best_l1 = max(q.values(), key=lambda x: x.get("knn_l1", 0)).get("knn_l1", 0)
             print(f"    {ds_name}: best L1={best_l1:.4f}")

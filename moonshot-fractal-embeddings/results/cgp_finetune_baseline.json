@@ -1,0 +1,380 @@
+{
+  "objective": "baseline",
+  "model": "pythia-160m",
+  "geometry": {
+    "0": {
+      "layer": 0,
+      "s_relative": 0.0,
+      "anisotropy": 0.03592069447040558,
+      "effective_rank": 272.8046569824219,
+      "spectral_concentration_top10": 0.23959147930145264,
+      "intrinsic_dim": 300.2019800535688
+    },
+    "1": {
+      "layer": 1,
+      "s_relative": 0.08333333333333333,
+      "anisotropy": 0.2909541428089142,
+      "effective_rank": 308.2773742675781,
+      "spectral_concentration_top10": 0.46420198678970337,
+      "intrinsic_dim": 33.952539891216496
+    },
+    "2": {
+      "layer": 2,
+      "s_relative": 0.16666666666666666,
+      "anisotropy": 0.41811537742614746,
+      "effective_rank": 318.707763671875,
+      "spectral_concentration_top10": 0.5853993892669678,
+      "intrinsic_dim": 29.61218527338769
+    },
+    "3": {
+      "layer": 3,
+      "s_relative": 0.25,
+      "anisotropy": 0.4125277101993561,
+      "effective_rank": 324.13201904296875,
+      "spectral_concentration_top10": 0.5724657773971558,
+      "intrinsic_dim": 26.47648916140574
+    },
+    "4": {
+      "layer": 4,
+      "s_relative": 0.3333333333333333,
+      "anisotropy": 0.35452330112457275,
+      "effective_rank": 294.0175476074219,
+      "spectral_concentration_top10": 0.7314022183418274,
+      "intrinsic_dim": 27.002075416289834
+    },
+    "5": {
+      "layer": 5,
+      "s_relative": 0.4166666666666667,
+      "anisotropy": 0.46660077571868896,
+      "effective_rank": 284.31781005859375,
+      "spectral_concentration_top10": 0.7770088911056519,
+      "intrinsic_dim": 26.840595488703546
+    },
+    "6": {
+      "layer": 6,
+      "s_relative": 0.5,
+      "anisotropy": 0.5933746099472046,
+      "effective_rank": 266.0618591308594,
+      "spectral_concentration_top10": 0.8243343830108643,
+      "intrinsic_dim": 23.445185217613076
+    },
+    "7": {
+      "layer": 7,
+      "s_relative": 0.5833333333333334,
+      "anisotropy": 0.677905797958374,
+      "effective_rank": 260.57244873046875,
+      "spectral_concentration_top10": 0.8458688259124756,
+      "intrinsic_dim": 23.4343370880557
+    },
+    "8": {
+      "layer": 8,
+      "s_relative": 0.6666666666666666,
+      "anisotropy": 0.7781383395195007,
+      "effective_rank": 245.6100311279297,
+      "spectral_concentration_top10": 0.8804173469543457,
+      "intrinsic_dim": 23.921166406233276
+    },
+    "9": {
+      "layer": 9,
+      "s_relative": 0.75,
+      "anisotropy": 0.7430509924888611,
+      "effective_rank": 247.2728271484375,
+      "spectral_concentration_top10": 0.8659912943840027,
+      "intrinsic_dim": 23.005259558891005
+    },
+    "10": {
+      "layer": 10,
+      "s_relative": 0.8333333333333334,
+      "anisotropy": 0.7027238607406616,
+      "effective_rank": 251.3805694580078,
+      "spectral_concentration_top10": 0.8385375738143921,
+      "intrinsic_dim": 22.673781653505394
+    },
+    "11": {
+      "layer": 11,
+      "s_relative": 0.9166666666666666,
+      "anisotropy": 0.7057977914810181,
+      "effective_rank": 260.5704650878906,
+      "spectral_concentration_top10": 0.8278248310089111,
+      "intrinsic_dim": 22.48689834913011
+    },
+    "12": {
+      "layer": 12,
+      "s_relative": 1.0,
+      "anisotropy": 0.9916056394577026,
+      "effective_rank": 63.32674789428711,
+      "spectral_concentration_top10": 0.9940793514251709,
+      "intrinsic_dim": 29.475370379803262
+    }
+  },
+  "quality": {
+    "clinc": {
+      "0": {
+        "layer": 0,
+        "knn_l0": 0.487,
+        "knn_l1": 0.197
+      },
+      "1": {
+        "layer": 1,
+        "knn_l0": 0.486,
+        "knn_l1": 0.231
+      },
+      "2": {
+        "layer": 2,
+        "knn_l0": 0.499,
+        "knn_l1": 0.211
+      },
+      "3": {
+        "layer": 3,
+        "knn_l0": 0.518,
+        "knn_l1": 0.229
+      },
+      "4": {
+        "layer": 4,
+        "knn_l0": 0.556,
+        "knn_l1": 0.265
+      },
+      "5": {
+        "layer": 5,
+        "knn_l0": 0.58,
+        "knn_l1": 0.272
+      },
+      "6": {
+        "layer": 6,
+        "knn_l0": 0.567,
+        "knn_l1": 0.272
+      },
+      "7": {
+        "layer": 7,
+        "knn_l0": 0.582,
+        "knn_l1": 0.281
+      },
+      "8": {
+        "layer": 8,
+        "knn_l0": 0.582,
+        "knn_l1": 0.304
+      },
+      "9": {
+        "layer": 9,
+        "knn_l0": 0.598,
+        "knn_l1": 0.304
+      },
+      "10": {
+        "layer": 10,
+        "knn_l0": 0.575,
+        "knn_l1": 0.282
+      },
+      "11": {
+        "layer": 11,
+        "knn_l0": 0.586,
+        "knn_l1": 0.266
+      },
+      "12": {
+        "layer": 12,
+        "knn_l0": 0.608,
+        "knn_l1": 0.295
+      }
+    },
+    "dbpedia_classes": {
+      "0": {
+        "layer": 0,
+        "knn_l0": 0.463,
+        "knn_l1": 0.065
+      },
+      "1": {
+        "layer": 1,
+        "knn_l0": 0.588,
+        "knn_l1": 0.178
+      },
+      "2": {
+        "layer": 2,
+        "knn_l0": 0.607,
+        "knn_l1": 0.18
+      },
+      "3": {
+        "layer": 3,
+        "knn_l0": 0.646,
+        "knn_l1": 0.208
+      },
+      "4": {
+        "layer": 4,
+        "knn_l0": 0.613,
+        "knn_l1": 0.182
+      },
+      "5": {
+        "layer": 5,
+        "knn_l0": 0.619,
+        "knn_l1": 0.219
+      },
+      "6": {
+        "layer": 6,
+        "knn_l0": 0.68,
+        "knn_l1": 0.261
+      },
+      "7": {
+        "layer": 7,
+        "knn_l0": 0.676,
+        "knn_l1": 0.245
+      },
+      "8": {
+        "layer": 8,
+        "knn_l0": 0.701,
+        "knn_l1": 0.298
+      },
+      "9": {
+        "layer": 9,
+        "knn_l0": 0.685,
+        "knn_l1": 0.28
+      },
+      "10": {
+        "layer": 10,
+        "knn_l0": 0.705,
+        "knn_l1": 0.303
+      },
+      "11": {
+        "layer": 11,
+        "knn_l0": 0.704,
+        "knn_l1": 0.341
+      },
+      "12": {
+        "layer": 12,
+        "knn_l0": 0.695,
+        "knn_l1": 0.329
+      }
+    },
+    "yahoo": {
+      "0": {
+        "layer": 0,
+        "knn_l0": 0.342,
+        "knn_l1": 0.163
+      },
+      "1": {
+        "layer": 1,
+        "knn_l0": 0.412,
+        "knn_l1": 0.299
+      },
+      "2": {
+        "layer": 2,
+        "knn_l0": 0.416,
+        "knn_l1": 0.282
+      },
+      "3": {
+        "layer": 3,
+        "knn_l0": 0.427,
+        "knn_l1": 0.276
+      },
+      "4": {
+        "layer": 4,
+        "knn_l0": 0.42,
+        "knn_l1": 0.257
+      },
+      "5": {
+        "layer": 5,
+        "knn_l0": 0.44,
+        "knn_l1": 0.255
+      },
+      "6": {
+        "layer": 6,
+        "knn_l0": 0.419,
+        "knn_l1": 0.264
+      },
+      "7": {
+        "layer": 7,
+        "knn_l0": 0.431,
+        "knn_l1": 0.267
+      },
+      "8": {
+        "layer": 8,
+        "knn_l0": 0.442,
+        "knn_l1": 0.307
+      },
+      "9": {
+        "layer": 9,
+        "knn_l0": 0.44,
+        "knn_l1": 0.316
+      },
+      "10": {
+        "layer": 10,
+        "knn_l0": 0.452,
+        "knn_l1": 0.34
+      },
+      "11": {
+        "layer": 11,
+        "knn_l0": 0.456,
+        "knn_l1": 0.332
+      },
+      "12": {
+        "layer": 12,
+        "knn_l0": 0.461,
+        "knn_l1": 0.323
+      }
+    },
+    "20newsgroups": {
+      "0": {
+        "layer": 0,
+        "knn_l0": 0.224,
+        "knn_l1": 0.057
+      },
+      "1": {
+        "layer": 1,
+        "knn_l0": 0.315,
+        "knn_l1": 0.088
+      },
+      "2": {
+        "layer": 2,
+        "knn_l0": 0.334,
+        "knn_l1": 0.085
+      },
+      "3": {
+        "layer": 3,
+        "knn_l0": 0.327,
+        "knn_l1": 0.086
+      },
+      "4": {
+        "layer": 4,
+        "knn_l0": 0.31,
+        "knn_l1": 0.091
+      },
+      "5": {
+        "layer": 5,
+        "knn_l0": 0.324,
+        "knn_l1": 0.095
+      },
+      "6": {
+        "layer": 6,
+        "knn_l0": 0.339,
+        "knn_l1": 0.091
+      },
+      "7": {
+        "layer": 7,
+        "knn_l0": 0.312,
+        "knn_l1": 0.083
+      },
+      "8": {
+        "layer": 8,
+        "knn_l0": 0.335,
+        "knn_l1": 0.086
+      },
+      "9": {
+        "layer": 9,
+        "knn_l0": 0.343,
+        "knn_l1": 0.103
+      },
+      "10": {
+        "layer": 10,
+        "knn_l0": 0.339,
+        "knn_l1": 0.099
+      },
+      "11": {
+        "layer": 11,
+        "knn_l0": 0.36,
+        "knn_l1": 0.103
+      },
+      "12": {
+        "layer": 12,
+        "knn_l0": 0.391,
+        "knn_l1": 0.108
+      }
+    }
+  }
+}
