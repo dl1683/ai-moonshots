@@ -94,8 +94,9 @@ class LoRALinear(nn.Module):
         self.r = r
         self.alpha = alpha
         self.scaling = alpha / r
-        self.lora_A = nn.Parameter(torch.randn(r, original.in_features) * 0.01)
-        self.lora_B = nn.Parameter(torch.zeros(original.out_features, r))
+        dev = original.weight.device
+        self.lora_A = nn.Parameter(torch.randn(r, original.in_features, device=dev) * 0.01)
+        self.lora_B = nn.Parameter(torch.zeros(original.out_features, r, device=dev))
 
         # Freeze original
         for p in self.original.parameters():
@@ -461,6 +462,18 @@ def main():
             gc.collect()
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
+
+        # Incremental save after each model completes
+        partial = {
+            "experiment": "CGP Week 3: Cross-Architecture Replication (partial)",
+            "models_completed": model_name,
+            "results": all_results,
+        }
+        partial_path = RESULTS_DIR / "cgp_week3_cross_arch_partial.json"
+        with open(partial_path, "w") as f:
+            json.dump(partial, f, indent=2,
+                      default=lambda o: float(o) if hasattr(o, 'item') else str(o))
+        print(f"  Partial save: {len(all_results)} conditions -> {partial_path}")
 
     # Save
     output = {
