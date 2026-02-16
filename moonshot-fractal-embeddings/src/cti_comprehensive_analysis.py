@@ -15,7 +15,7 @@ DS_CLASSES = {"clinc": 150, "dbpedia_classes": 68, "agnews": 18, "trec": 42}
 
 def load_observations(path=None, exclude_step0=True, metric="knn_l1"):
     if path is None:
-        path = RESULTS_DIR / "cti_checkpoint_sweep.json"
+        path = RESULTS_DIR / "cti_checkpoint_sweep_all.json"
     with open(path) as f:
         data = json.load(f)
 

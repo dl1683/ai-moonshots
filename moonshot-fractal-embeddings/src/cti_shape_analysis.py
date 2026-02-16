@@ -10,7 +10,7 @@ RESULTS_DIR = Path(__file__).resolve().parent.parent / "results"
 
 
 def main():
-    with open(RESULTS_DIR / "cti_checkpoint_sweep.json") as f:
+    with open(RESULTS_DIR / "cti_checkpoint_sweep_all.json") as f:
         data = json.load(f)
 
     x_common = np.linspace(0, 1, 21)
