@@ -95,8 +95,9 @@ class LoRALinear(nn.Module):
         self.alpha = alpha
         self.scaling = alpha / r
         dev = original.weight.device
-        self.lora_A = nn.Parameter(torch.randn(r, original.in_features, device=dev) * 0.01)
-        self.lora_B = nn.Parameter(torch.zeros(original.out_features, r, device=dev))
+        dtype = original.weight.dtype
+        self.lora_A = nn.Parameter(torch.randn(r, original.in_features, device=dev, dtype=dtype) * 0.01)
+        self.lora_B = nn.Parameter(torch.zeros(original.out_features, r, device=dev, dtype=dtype))
 
         # Freeze original
         for p in self.original.parameters():
