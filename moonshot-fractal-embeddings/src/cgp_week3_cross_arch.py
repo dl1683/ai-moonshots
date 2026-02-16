@@ -275,6 +275,24 @@ def compute_metrics(embeddings, l0_labels, l1_labels, k=5):
     trace_within = max(sigma_within.trace().item(), 1e-8)
     fisher_q = trace_between / trace_within
 
+    # Centroid regularity (kappa) and composite G
+    C_classes = len(centroids) if len(centroids) >= 2 else 0
+    d_dim = emb.shape[1]
+    kappa = 0.0
+    composite_G = 0.0
+
+    if len(centroids) >= 2:
+        cent_t_full = torch.stack(centroids)
+        pairwise_sq = torch.cdist(cent_t_full.unsqueeze(0),
+                                   cent_t_full.unsqueeze(0)).squeeze(0) ** 2
+        triu_kappa = torch.triu(torch.ones_like(pairwise_sq), diagonal=1).bool()
+        pairwise_vals = pairwise_sq[triu_kappa]
+        d_min_sq = pairwise_vals.min().item()
+        d_avg_sq = pairwise_vals.mean().item()
+        kappa = d_min_sq / max(d_avg_sq, 1e-8)
+        # G = kappa * C * d * Q / (C-1)
+        composite_G = kappa * C_classes * d_dim * fisher_q / max(C_classes - 1, 1)
+
     # Anisotropy
     _, S, _ = torch.linalg.svd(emb, full_matrices=False)
     S = S / S.sum()
@@ -288,6 +306,10 @@ def compute_metrics(embeddings, l0_labels, l1_labels, k=5):
         "fisher_q": fisher_q,
         "trace_between": trace_between,
         "trace_within": trace_within,
+        "kappa": kappa,
+        "composite_G": composite_G,
+        "n_classes": C_classes,
+        "dim": d_dim,
         "anisotropy": anisotropy,
         "effective_rank": effective_rank,
         "mean_inter": mean_inter,

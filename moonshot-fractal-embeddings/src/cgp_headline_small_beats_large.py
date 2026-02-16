@@ -225,10 +225,35 @@ def evaluate(model, tokenizer, device, ds_name, max_samples=1000):
     s_w /= n
     fisher_q = s_b.trace().item() / max(s_w.trace().item(), 1e-8)
 
+    # Centroid regularity (kappa) and composite G
+    centroids_list = []
+    for lbl in l1_t.unique():
+        m = l1_t == lbl
+        ce = emb[m]
+        if len(ce) >= 2:
+            centroids_list.append(ce.mean(0))
+
+    C_cls = len(centroids_list)
+    d_dim = emb.shape[1]
+    kappa = 0.0
+    composite_G = 0.0
+
+    if C_cls >= 2:
+        ct = torch.stack(centroids_list)
+        pw_sq = torch.cdist(ct.unsqueeze(0), ct.unsqueeze(0)).squeeze(0) ** 2
+        triu_m = torch.triu(torch.ones_like(pw_sq), diagonal=1).bool()
+        pw_vals = pw_sq[triu_m]
+        d_min_sq = pw_vals.min().item()
+        d_avg_sq = pw_vals.mean().item()
+        kappa = d_min_sq / max(d_avg_sq, 1e-8)
+        composite_G = kappa * C_cls * d_dim * fisher_q / max(C_cls - 1, 1)
+
     return {
         "knn_l0": knn_l0,
         "knn_l1": knn_l1,
         "fisher_q": fisher_q,
+        "kappa": kappa,
+        "composite_G": composite_G,
         "n_samples": n,
         "n_l0_classes": len(set(l0)),
         "n_l1_classes": len(set(l1)),
