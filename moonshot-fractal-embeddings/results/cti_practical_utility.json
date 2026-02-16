@@ -1,0 +1,74 @@
+{
+  "experiment": "CTI Practical Utility",
+  "description": "Predicted best layer (from universal law) vs final layer (standard practice)",
+  "n_profiles": 252,
+  "summary": {
+    "mean_improvement": -0.0006468253968253963,
+    "mean_oracle": 0.011375000000000001,
+    "recovery_ratio": -0.05686377114948538,
+    "mean_layer_error": 1.5476190476190477,
+    "median_layer_error": 0.0,
+    "frac_pred_ge_final": 0.9325396825396826,
+    "frac_pred_hurts": 0.027777777777777776
+  },
+  "degraded_profiles": {
+    "n": 62,
+    "mean_improvement": 0.0002338709677419357,
+    "mean_oracle": 0.04270161290322581,
+    "recovery_ratio": 0.005476864966949957
+  },
+  "per_family": {
+    "pythia": {
+      "n": 176,
+      "mean_improvement": -0.0009659090909090902,
+      "mean_oracle": 0.00506818181818182,
+      "mean_layer_error": 1.5511363636363635
+    },
+    "olmo2": {
+      "n": 44,
+      "mean_improvement": 0.00015909090909090924,
+      "mean_oracle": 0.009477272727272723,
+      "mean_layer_error": 1.1818181818181819
+    },
+    "cerebras-gpt": {
+      "n": 12,
+      "mean_improvement": 0.0,
+      "mean_oracle": 0.016583333333333335,
+      "mean_layer_error": 2.4166666666666665
+    },
+    "opt": {
+      "n": 8,
+      "mean_improvement": 0.0,
+      "mean_oracle": 0.014249999999999999,
+      "mean_layer_error": 1.5
+    },
+    "gpt2": {
+      "n": 12,
+      "mean_improvement": 0.0,
+      "mean_oracle": 0.10370833333333333,
+      "mean_layer_error": 2.0
+    }
+  },
+  "per_dataset": {
+    "clinc": {
+      "n": 63,
+      "mean_improvement": -0.0010396825396825396,
+      "mean_oracle": 0.010730158730158729
+    },
+    "dbpedia_classes": {
+      "n": 63,
+      "mean_improvement": -0.000833333333333334,
+      "mean_oracle": 0.009492063492063491
+    },
+    "agnews": {
+      "n": 63,
+      "mean_improvement": -0.0005238095238095243,
+      "mean_oracle": 0.004801587301587302
+    },
+    "trec": {
+      "n": 63,
+      "mean_improvement": -0.00019047619047618712,
+      "mean_oracle": 0.020476190476190478
+    }
+  }
+}
