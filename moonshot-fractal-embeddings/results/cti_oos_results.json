@@ -1,0 +1,27 @@
+{
+  "oos_rmse": {
+    "power_law": 1.0106081522802328,
+    "sigmoid": 0.051811046132260744,
+    "exponential": 0.041254561033757374,
+    "linear": 0.042797339982084855,
+    "piecewise_sigmoid": 0.03720216349141594
+  },
+  "oos_mae": {
+    "power_law": 0.4293163649592028,
+    "sigmoid": 0.037526913234435494,
+    "exponential": 0.034221182456977924,
+    "linear": 0.03562721264549473,
+    "piecewise_sigmoid": 0.026800970450984098
+  },
+  "oos_wins": {
+    "linear": 11,
+    "power_law": 24,
+    "sigmoid": 27,
+    "exponential": 12,
+    "piecewise_sigmoid": 14
+  },
+  "total_curves_tested": 88,
+  "bootstrap_stable_rate": 0.0,
+  "n_bootstrap_tested": 80,
+  "n_bootstrap_stable": 0
+}
