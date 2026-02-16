@@ -365,6 +365,135 @@ def test_h4_uniformity(rows, datasets):
     return {"per_objective": results, "pass": overall_pass}
 
 
+def test_q_vs_s(rows, datasets):
+    """
+    Compute multivariate Fisher Q and compare predictive power to scalar S.
+    Q = trace(Sigma_between) / trace(Sigma_within)
+    """
+    # For each condition, we have class_sep_l1 (scalar S).
+    # We need to compute Q from the raw condition data.
+    # Since we only have summary stats in the flat rows, we can test
+    # whether additional geometric features improve on S alone.
+
+    # Collect feature vectors for prediction
+    features = []
+    targets_l0 = []
+    targets_l1 = []
+
+    feature_names = [
+        "class_sep_l1", "alignment_l1", "uniformity", "anisotropy",
+        "effective_rank", "hubness_skewness", "mean_local_margin",
+        "mean_neighborhood_entropy",
+    ]
+
+    for r in rows:
+        if r["objective"] == "baseline":
+            continue
+        if r["dataset"] not in datasets:
+            continue
+
+        feat = [r.get(f, 0.0) for f in feature_names]
+        if all(np.isfinite(f) for f in feat):
+            features.append(feat)
+            targets_l0.append(r["knn_l0"])
+            targets_l1.append(r["knn_l1"])
+
+    if len(features) < 10:
+        return {"error": "insufficient data"}
+
+    X = np.array(features)
+    y_l0 = np.array(targets_l0)
+    y_l1 = np.array(targets_l1)
+
+    # R2 with just S (class_sep_l1, index 0)
+    reg_s = LinearRegression().fit(X[:, :1], y_l0)
+    r2_s_l0 = reg_s.score(X[:, :1], y_l0)
+    reg_s1 = LinearRegression().fit(X[:, :1], y_l1)
+    r2_s_l1 = reg_s1.score(X[:, :1], y_l1)
+
+    # R2 with all features (proxy for Q-like multivariate discriminant)
+    reg_all = LinearRegression().fit(X, y_l0)
+    r2_all_l0 = reg_all.score(X, y_l0)
+    reg_all1 = LinearRegression().fit(X, y_l1)
+    r2_all_l1 = reg_all1.score(X, y_l1)
+
+    # Feature importances
+    importances_l0 = {}
+    for i, fn in enumerate(feature_names):
+        importances_l0[fn] = float(abs(reg_all.coef_[i]) * X[:, i].std())
+
+    return {
+        "n_points": len(features),
+        "r2_S_only_l0": float(r2_s_l0),
+        "r2_S_only_l1": float(r2_s_l1),
+        "r2_all_features_l0": float(r2_all_l0),
+        "r2_all_features_l1": float(r2_all_l1),
+        "improvement_l0": float(r2_all_l0 - r2_s_l0),
+        "improvement_l1": float(r2_all_l1 - r2_s_l1),
+        "feature_importances_l0": importances_l0,
+        "s_is_sufficient": bool(r2_all_l0 - r2_s_l0 < 0.05),
+    }
+
+
+def test_mediation(rows, datasets):
+    """
+    Test if Q/S mediates the objective -> quality path.
+    If adding objective indicators doesn't improve R2 beyond S, mediation holds.
+    """
+    features_with_obj = []
+    features_no_obj = []
+    targets = []
+
+    for r in rows:
+        if r["objective"] == "baseline":
+            continue
+        if r["dataset"] not in datasets:
+            continue
+
+        sep = r.get("class_sep_l1", 0.0)
+        if not np.isfinite(sep):
+            continue
+
+        # Without objective indicator
+        features_no_obj.append([sep])
+
+        # With objective indicator (one-hot)
+        obj_contrastive = 1.0 if r["objective"] == "contrastive" else 0.0
+        obj_lm = 1.0 if r["objective"] == "lm" else 0.0
+        features_with_obj.append([sep, obj_contrastive, obj_lm])
+
+        targets.append(r["knn_l0"])
+
+    if len(targets) < 10:
+        return {"error": "insufficient data"}
+
+    X_no = np.array(features_no_obj)
+    X_with = np.array(features_with_obj)
+    y = np.array(targets)
+
+    reg_no = LinearRegression().fit(X_no, y)
+    r2_no = reg_no.score(X_no, y)
+
+    reg_with = LinearRegression().fit(X_with, y)
+    r2_with = reg_with.score(X_with, y)
+
+    # Mediation holds if adding objective doesn't improve R2 much
+    delta_r2 = r2_with - r2_no
+
+    return {
+        "n_points": len(targets),
+        "r2_sep_only": float(r2_no),
+        "r2_sep_plus_objective": float(r2_with),
+        "delta_r2": float(delta_r2),
+        "mediation_holds": bool(delta_r2 < 0.05),
+        "interpretation": (
+            "Mediation CONFIRMED: objective adds negligible information beyond class separation"
+            if delta_r2 < 0.05 else
+            f"Mediation PARTIAL: objective adds {delta_r2:.3f} R2 beyond class separation"
+        ),
+    }
+
+
 def make_decision(h1, h2, h3, h4):
     """GREEN / YELLOW / RED decision."""
     h1_pass = h1["pass"]
@@ -429,6 +558,23 @@ def main():
             print(f"  {obj}: uni_diff={r['mean_diff']:.4f}, helps={r['uniformity_helps']}")
     print(f"  H4 overall: {'PASS' if h4['pass'] else 'FAIL'}")
 
+    # Theory tests
+    print("\n--- Theory Test: Q vs S ---")
+    q_vs_s = test_q_vs_s(rows, datasets)
+    if "r2_S_only_l0" in q_vs_s:
+        print(f"  R2(S only, L0) = {q_vs_s['r2_S_only_l0']:.3f}")
+        print(f"  R2(all features, L0) = {q_vs_s['r2_all_features_l0']:.3f}")
+        print(f"  Improvement: {q_vs_s['improvement_l0']:.3f}")
+        print(f"  S is sufficient: {q_vs_s['s_is_sufficient']}")
+
+    print("\n--- Theory Test: Mediation ---")
+    mediation = test_mediation(rows, datasets)
+    if "r2_sep_only" in mediation:
+        print(f"  R2(sep only) = {mediation['r2_sep_only']:.3f}")
+        print(f"  R2(sep + objective) = {mediation['r2_sep_plus_objective']:.3f}")
+        print(f"  Delta R2 = {mediation['delta_r2']:.3f}")
+        print(f"  {mediation['interpretation']}")
+
     # Decision
     decision = make_decision(h1, h2, h3, h4)
     print(f"\n{'=' * 60}")
@@ -454,8 +600,10 @@ def main():
         "h2_pooled_effect": h2,
         "h3_mediation": h3,
         "h4_uniformity": h4,
+        "theory_q_vs_s": q_vs_s,
+        "theory_mediation": mediation,
         "decision": decision,
-        "n_conditions": len(conditions),
+        "n_conditions": len(rows),
         "datasets": datasets,
     }
 
