@@ -189,12 +189,48 @@ Same Q -> same error across Pythia, BGE, E5, Gemma?
   - Usually in terms of augmentation overlap, not geometric invariants
 - Our contribution: Q as the SUFFICIENT STATISTIC mediating all interventions
 
-## TODO (Priority Order)
-1. [ ] Compute Q for Week 2 data and test Q vs S as predictor
-2. [ ] Formal mediation test (Q absorbs objective effect)
-3. [ ] State and prove upper bound under sub-Gaussian + normalized assumptions
-4. [ ] State and prove lower bound via minimax/Fano
-5. [ ] Prove mediation theorem (Q is sufficient statistic)
-6. [ ] Prove controllability bound
-7. [ ] Test cross-architecture universality
-8. [ ] Extend to hierarchical/multi-scale Q
+## The Nobel Target Theorem (Codex-stated, Feb 16 2026)
+
+**Theorem (Geometric Universality and Causal Sufficiency):**
+For a broad class P of labeled representation distributions (sub-Gaussian,
+class-prior bounded, covariance regular, kappa >= kappa_0), define
+G(P) := kappa(P) * C * d * Q(P) / (C-1).
+
+Then there exist universal constants a_1,...,a_6 and universal function Psi_n
+such that for all P in P:
+
+1. a_1 exp(-a_2 G(P)) <= R*(P) <= a_3 exp(-a_4 G(P))
+   [matching upper/lower, ALL classifiers]
+
+2. |R_kNN,n(P) - R*(P)| <= a_5 sqrt(k/n) + a_6/k
+   [under stated regularity (A6): Lipschitz densities]
+
+3. Hence R_kNN,n(P) = Psi_n(G(P)) +/- o_n(1), and if two interventions
+   produce the same G, they produce the same asymptotic risk
+   [full mediation through geometry]
+
+### Status (Feb 16 2026):
+- Part 1 upper: PROVED (Theorem 1 in CGP_PROOF_UPPER_BOUND.md V3)
+- Part 1 lower: SKETCHED (Le Cam approach, needs explicit constants)
+- Part 2: REFERENCED (standard kNN theory)
+- Part 3: CONJECTURED (being tested empirically in Week 2)
+- Proof rigor: 7/10 (Codex V2 was 6.5/10, V3 fixes all identified issues)
+
+### What Codex Says Makes It Field-Creating (not just paper-worthy):
+1. Complete 49/49 grid with multi-seed inference
+2. Show causal mediation: intervention effect vanishes after conditioning on G
+3. Show universality collapse: risk vs G falls on ONE curve across architectures
+4. Prospective prediction: predict unseen condition accuracy from measured G
+5. Prove matching lower bound with explicit constants
+
+## TODO (Priority Order, UPDATED Feb 16)
+1. [x] State and prove upper bound (Theorem 1, V3, 7/10 rigor)
+2. [x] Add centroid regularity kappa and composite invariant G
+3. [ ] Complete Week 2 experiment (49/49) and run pre-registered analysis
+4. [ ] Test causal mediation: G absorbs ALL objective/lambda effect
+5. [ ] Formalize lower bound with explicit constants a_1, a_2
+6. [ ] Run Week 3 cross-architecture experiment (universality collapse)
+7. [ ] Run headline experiment (small+compiled > large+standard)
+8. [ ] Extend beyond homoscedastic/balanced assumptions
+9. [ ] Prospective prediction test (predict unseen from geometry alone)
+10. [ ] Extend to hierarchical/multi-scale G
