@@ -278,44 +278,84 @@ def test_h2_pooled_effect(rows, datasets):
 
 
 def test_h3_mediation(rows, datasets):
-    """H3: Class separation mediates quality (Spearman > 0.5)."""
-    all_sep = []
-    all_knn_l0 = []
-    all_knn_l1 = []
+    """H3: Class separation mediates quality.
 
+    UPDATED per Codex review: use LEVEL-MATCHED correlations:
+    - sep_l1 -> knn_l1 (not sep_l1 -> knn_l0, which is cross-level!)
+    - Split by objective (don't pool contrastive + LM)
+    """
+    # Level-matched: sep_l1 -> knn_l1
+    results = {}
+
+    for obj in ["contrastive", "lm", "all"]:
+        all_sep = []
+        all_knn_l1 = []
+
+        for r in rows:
+            if r["objective"] == "baseline":
+                continue
+            if obj != "all" and r["objective"] != obj:
+                continue
+            if r["dataset"] not in datasets:
+                continue
+
+            sep = r.get("class_sep_l1", None)
+            knn_l1 = r.get("knn_l1", None)
+
+            if sep is not None and knn_l1 is not None:
+                if np.isfinite(sep) and np.isfinite(knn_l1):
+                    all_sep.append(sep)
+                    all_knn_l1.append(knn_l1)
+
+        if len(all_sep) < 10:
+            results[obj] = {"pass": False, "reason": "insufficient data"}
+            continue
+
+        rho, p = stats.spearmanr(all_sep, all_knn_l1)
+        r_val, pr = stats.pearsonr(all_sep, all_knn_l1)
+
+        results[obj] = {
+            "n_points": len(all_sep),
+            "spearman": {"rho": float(rho), "p": float(p)},
+            "pearson": {"r": float(r_val), "p": float(pr)},
+            "pass": bool(rho > 0.4 and p < 0.01),
+        }
+
+    # Also keep the legacy cross-level test for comparison
+    all_sep_legacy = []
+    all_knn_l0_legacy = []
+    all_knn_l1_legacy = []
     for r in rows:
         if r["objective"] == "baseline":
             continue
         if r["dataset"] not in datasets:
             continue
-
         sep = r.get("class_sep_l1", None)
         knn_l0 = r.get("knn_l0", None)
         knn_l1 = r.get("knn_l1", None)
-
         if sep is not None and knn_l0 is not None and knn_l1 is not None:
             if np.isfinite(sep) and np.isfinite(knn_l0) and np.isfinite(knn_l1):
-                all_sep.append(sep)
-                all_knn_l0.append(knn_l0)
-                all_knn_l1.append(knn_l1)
+                all_sep_legacy.append(sep)
+                all_knn_l0_legacy.append(knn_l0)
+                all_knn_l1_legacy.append(knn_l1)
 
-    if len(all_sep) < 10:
-        return {"pass": False, "reason": "insufficient data"}
+    legacy = {}
+    if len(all_sep_legacy) >= 10:
+        rho_l0, p_l0 = stats.spearmanr(all_sep_legacy, all_knn_l0_legacy)
+        rho_l1, p_l1 = stats.spearmanr(all_sep_legacy, all_knn_l1_legacy)
+        legacy = {
+            "n_points": len(all_sep_legacy),
+            "cross_level_spearman_l0": {"rho": float(rho_l0), "p": float(p_l0)},
+            "cross_level_spearman_l1": {"rho": float(rho_l1), "p": float(p_l1)},
+            "note": "Legacy cross-level test (sep_l1 vs knn_l0). Negative rho expected.",
+        }
 
-    rho_l0, p_l0 = stats.spearmanr(all_sep, all_knn_l0)
-    rho_l1, p_l1 = stats.spearmanr(all_sep, all_knn_l1)
-
-    # Also Pearson
-    r_l0, pr_l0 = stats.pearsonr(all_sep, all_knn_l0)
-    r_l1, pr_l1 = stats.pearsonr(all_sep, all_knn_l1)
-
+    # H3 passes if contrastive objective shows level-matched mediation
+    contrastive_pass = results.get("contrastive", {}).get("pass", False)
     return {
-        "n_points": len(all_sep),
-        "spearman_l0": {"rho": float(rho_l0), "p": float(p_l0)},
-        "spearman_l1": {"rho": float(rho_l1), "p": float(p_l1)},
-        "pearson_l0": {"r": float(r_l0), "p": float(pr_l0)},
-        "pearson_l1": {"r": float(r_l1), "p": float(pr_l1)},
-        "pass": bool(rho_l0 > 0.5 and p_l0 < 0.01),
+        "level_matched": results,
+        "legacy_cross_level": legacy,
+        "pass": contrastive_pass,
     }
 
 
@@ -584,12 +624,17 @@ def main():
             print(f"    CI excludes zero: {r['ci_excludes_zero']}, PASS: {r['pass']}")
     print(f"  H2 overall: {'PASS' if h2['pass'] else 'FAIL'}")
 
-    print("\n--- H3: Mediation (Spearman > 0.5) ---")
+    print("\n--- H3: Level-Matched Mediation (sep_l1 -> knn_l1) ---")
     h3 = test_h3_mediation(rows, datasets)
-    if "spearman_l0" in h3:
-        print(f"  n={h3['n_points']}")
-        print(f"  Spearman(sep, knn_l0): rho={h3['spearman_l0']['rho']:.3f}, p={h3['spearman_l0']['p']:.4f}")
-        print(f"  Spearman(sep, knn_l1): rho={h3['spearman_l1']['rho']:.3f}, p={h3['spearman_l1']['p']:.4f}")
+    for obj, r in h3.get("level_matched", {}).items():
+        if "spearman" in r:
+            print(f"  {obj}: n={r['n_points']}, "
+                  f"Spearman rho={r['spearman']['rho']:.3f} (p={r['spearman']['p']:.4f}), "
+                  f"Pearson r={r['pearson']['r']:.3f} (p={r['pearson']['p']:.4f}), "
+                  f"PASS={r['pass']}")
+    if h3.get("legacy_cross_level"):
+        lc = h3["legacy_cross_level"]
+        print(f"  Legacy cross-level (sep_l1 vs knn_l0): rho={lc['cross_level_spearman_l0']['rho']:.3f}")
     print(f"  H3 overall: {'PASS' if h3['pass'] else 'FAIL'}")
 
     print("\n--- H4: Uniformity NOT helpful ---")

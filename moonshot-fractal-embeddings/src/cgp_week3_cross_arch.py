@@ -227,6 +227,32 @@ def compute_metrics(embeddings, l0_labels, l1_labels, k=5):
     knn_l1_preds = l1_neighbors.mode(dim=1).values
     knn_l1 = (knn_l1_preds == l1_t).float().mean().item()
 
+    # Class separation (L0 level)
+    unique_l0 = l0_t.unique()
+    centroids_l0 = []
+    intra_dists_l0 = []
+    for lbl in unique_l0:
+        mask = l0_t == lbl
+        cls_emb = emb[mask]
+        if len(cls_emb) < 2:
+            continue
+        centroid = cls_emb.mean(dim=0)
+        centroids_l0.append(centroid)
+        dists = torch.norm(cls_emb - centroid.unsqueeze(0), dim=-1)
+        intra_dists_l0.append(dists.mean().item())
+
+    if len(centroids_l0) >= 2:
+        cent_l0 = torch.stack(centroids_l0)
+        inter_l0 = torch.cdist(cent_l0.unsqueeze(0), cent_l0.unsqueeze(0)).squeeze(0)
+        triu_l0 = torch.triu(torch.ones_like(inter_l0), diagonal=1).bool()
+        mean_inter_l0 = inter_l0[triu_l0].mean().item()
+        mean_intra_l0 = np.mean(intra_dists_l0)
+        class_sep_l0 = mean_inter_l0 / (mean_intra_l0 + 1e-8)
+    else:
+        class_sep_l0 = 0.0
+        mean_inter_l0 = 0.0
+        mean_intra_l0 = 0.0
+
     # Class separation (L1 level)
     unique_l1 = l1_t.unique()
     centroids = []
@@ -304,6 +330,7 @@ def compute_metrics(embeddings, l0_labels, l1_labels, k=5):
     return {
         "knn_l0": knn_l0,
         "knn_l1": knn_l1,
+        "class_sep_l0": class_sep_l0,
         "class_sep_l1": class_sep,
         "fisher_q": fisher_q,
         "trace_between": trace_between,
@@ -363,6 +390,7 @@ def train_encoder_with_sep(model, tokenizer, texts, labels, device,
 
         optimizer.zero_grad()
         loss.backward()
+        torch.nn.utils.clip_grad_norm_(trainable_params, max_norm=1.0)
         optimizer.step()
 
         avg_primary += loss_primary.item()
@@ -405,7 +433,7 @@ def main():
 
             tokenizer = AutoTokenizer.from_pretrained(model_cfg["hf_path"])
             base_model = AutoModel.from_pretrained(
-                model_cfg["hf_path"], torch_dtype=torch.float16
+                model_cfg["hf_path"], torch_dtype=torch.float32
             ).to(device)
 
             if lam_sep == 0.0 and seed == SEEDS[0]:
@@ -441,8 +469,10 @@ def main():
 
                     print(f"    {ds_name}: knn_l0={metrics['knn_l0']:.3f} "
                           f"knn_l1={metrics['knn_l1']:.3f} "
-                          f"sep={metrics['class_sep_l1']:.3f} "
-                          f"Q={metrics['fisher_q']:.3f}")
+                          f"sep_l0={metrics['class_sep_l0']:.3f} "
+                          f"sep_l1={metrics['class_sep_l1']:.3f} "
+                          f"Q={metrics['fisher_q']:.3f} "
+                          f"G={metrics['composite_G']:.1f}")
                 except Exception as e:
                     print(f"    {ds_name}: ERROR - {e}")
                     eval_results[ds_name] = {"error": str(e)}
