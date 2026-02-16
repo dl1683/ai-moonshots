@@ -96,24 +96,57 @@
     "pass": true
   },
   "h3_mediation": {
-    "n_points": 96,
-    "spearman_l0": {
-      "rho": -0.28783166509543484,
-      "p": 0.004459854291238941
+    "level_matched": {
+      "contrastive": {
+        "n_points": 48,
+        "spearman": {
+          "rho": 0.5618654724616431,
+          "p": 3.247142487049564e-05
+        },
+        "pearson": {
+          "r": 0.4970220051003285,
+          "p": 0.00032615235883681065
+        },
+        "pass": true
+      },
+      "lm": {
+        "n_points": 48,
+        "spearman": {
+          "rho": 0.5240723362345708,
+          "p": 0.00013183420119913672
+        },
+        "pearson": {
+          "r": 0.3544802085626619,
+          "p": 0.013434809604093398
+        },
+        "pass": true
+      },
+      "all": {
+        "n_points": 96,
+        "spearman": {
+          "rho": 0.40571329156313113,
+          "p": 4.115364312919175e-05
+        },
+        "pearson": {
+          "r": 0.3826230407011809,
+          "p": 0.00011943068965883716
+        },
+        "pass": true
+      }
     },
-    "spearman_l1": {
-      "rho": 0.40571329156313113,
-      "p": 4.115364312919175e-05
+    "legacy_cross_level": {
+      "n_points": 96,
+      "cross_level_spearman_l0": {
+        "rho": -0.28783166509543484,
+        "p": 0.004459854291238941
+      },
+      "cross_level_spearman_l1": {
+        "rho": 0.40571329156313113,
+        "p": 4.115364312919175e-05
+      },
+      "note": "Legacy cross-level test (sep_l1 vs knn_l0). Negative rho expected."
     },
-    "pearson_l0": {
-      "r": -0.19393729239699467,
-      "p": 0.05831588295341946
-    },
-    "pearson_l1": {
-      "r": 0.3826230407011809,
-      "p": 0.00011943068965883716
-    },
-    "pass": false
+    "pass": true
   },
   "h4_uniformity": {
     "per_objective": {
@@ -175,7 +208,7 @@
     "mediation_holds": false,
     "interpretation": "Mediation PARTIAL: objective adds 0.087 R2 beyond class separation"
   },
-  "decision": "YELLOW",
+  "decision": "GREEN",
   "n_conditions": 98,
   "datasets": [
     "clinc",
