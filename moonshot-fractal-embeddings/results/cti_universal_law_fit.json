@@ -1,0 +1,919 @@
+{
+  "experiment": "CTI Universal Law Fit",
+  "metric": "knn_l1",
+  "n_observations": 720,
+  "models": [
+    "pythia-160m",
+    "pythia-1b"
+  ],
+  "datasets": [
+    "agnews",
+    "trec"
+  ],
+  "fit_gamma_fixed": {
+    "gamma": 1.0,
+    "alpha": 0.008143548696710518,
+    "beta": 1.3706531288249884,
+    "mu_0": 0.7222896507520563,
+    "mu_1": 0.0030541703255305293,
+    "b_d": {
+      "agnews": -0.3832054051773095,
+      "trec": 0.3029777432282799
+    },
+    "loss": 0.0038505395525804263,
+    "mae": 0.04714834125419592,
+    "rmse": 0.06205271591623066,
+    "r2": 0.7565195411052756,
+    "n_obs": 720,
+    "l_star_mae": 2.688250134984013,
+    "l_star_details": [
+      {
+        "model": "pythia-160m",
+        "step": 0,
+        "dataset": "agnews",
+        "actual_best_layer": 1,
+        "predicted_best_layer": 7.2,
+        "error_layers": 6.2,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 0,
+        "dataset": "trec",
+        "actual_best_layer": 9,
+        "predicted_best_layer": 7.2,
+        "error_layers": 1.8,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 1000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.52,
+        "error_layers": 2.48,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 1000,
+        "dataset": "trec",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.52,
+        "error_layers": 2.48,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 2000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.55,
+        "error_layers": 2.45,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 2000,
+        "dataset": "trec",
+        "actual_best_layer": 3,
+        "predicted_best_layer": 9.55,
+        "error_layers": 6.55,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 4000,
+        "dataset": "agnews",
+        "actual_best_layer": 10,
+        "predicted_best_layer": 9.57,
+        "error_layers": 0.43,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 4000,
+        "dataset": "trec",
+        "actual_best_layer": 11,
+        "predicted_best_layer": 9.57,
+        "error_layers": 1.43,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 8000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.6,
+        "error_layers": 2.4,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 8000,
+        "dataset": "trec",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.6,
+        "error_layers": 2.4,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 16000,
+        "dataset": "agnews",
+        "actual_best_layer": 11,
+        "predicted_best_layer": 9.62,
+        "error_layers": 1.38,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 16000,
+        "dataset": "trec",
+        "actual_best_layer": 10,
+        "predicted_best_layer": 9.62,
+        "error_layers": 0.38,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 32000,
+        "dataset": "agnews",
+        "actual_best_layer": 11,
+        "predicted_best_layer": 9.65,
+        "error_layers": 1.35,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 32000,
+        "dataset": "trec",
+        "actual_best_layer": 9,
+        "predicted_best_layer": 9.65,
+        "error_layers": 0.65,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 48000,
+        "dataset": "agnews",
+        "actual_best_layer": 11,
+        "predicted_best_layer": 9.66,
+        "error_layers": 1.34,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 48000,
+        "dataset": "trec",
+        "actual_best_layer": 7,
+        "predicted_best_layer": 9.66,
+        "error_layers": 2.66,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 64000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.67,
+        "error_layers": 2.33,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 64000,
+        "dataset": "trec",
+        "actual_best_layer": 8,
+        "predicted_best_layer": 9.67,
+        "error_layers": 1.67,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 96000,
+        "dataset": "agnews",
+        "actual_best_layer": 11,
+        "predicted_best_layer": 9.69,
+        "error_layers": 1.31,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 96000,
+        "dataset": "trec",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.69,
+        "error_layers": 2.31,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 128000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.7,
+        "error_layers": 2.3,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 128000,
+        "dataset": "trec",
+        "actual_best_layer": 9,
+        "predicted_best_layer": 9.7,
+        "error_layers": 0.7,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 143000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.7,
+        "error_layers": 2.3,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 143000,
+        "dataset": "trec",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.7,
+        "error_layers": 2.3,
+        "L": 12
+      },
+      {
+        "model": "pythia-1b",
+        "step": 0,
+        "dataset": "agnews",
+        "actual_best_layer": 1,
+        "predicted_best_layer": 9.6,
+        "error_layers": 8.6,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 0,
+        "dataset": "trec",
+        "actual_best_layer": 3,
+        "predicted_best_layer": 9.6,
+        "error_layers": 6.6,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 1000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.69,
+        "error_layers": 3.31,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 1000,
+        "dataset": "trec",
+        "actual_best_layer": 3,
+        "predicted_best_layer": 12.69,
+        "error_layers": 9.69,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 2000,
+        "dataset": "agnews",
+        "actual_best_layer": 15,
+        "predicted_best_layer": 12.73,
+        "error_layers": 2.27,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 2000,
+        "dataset": "trec",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.73,
+        "error_layers": 3.27,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 4000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.76,
+        "error_layers": 3.24,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 4000,
+        "dataset": "trec",
+        "actual_best_layer": 14,
+        "predicted_best_layer": 12.76,
+        "error_layers": 1.24,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 8000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.79,
+        "error_layers": 3.21,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 8000,
+        "dataset": "trec",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 12.79,
+        "error_layers": 0.79,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 16000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.83,
+        "error_layers": 3.17,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 16000,
+        "dataset": "trec",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.83,
+        "error_layers": 3.17,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 32000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.86,
+        "error_layers": 3.14,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 32000,
+        "dataset": "trec",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.86,
+        "error_layers": 3.14,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 48000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.88,
+        "error_layers": 3.12,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 48000,
+        "dataset": "trec",
+        "actual_best_layer": 13,
+        "predicted_best_layer": 12.88,
+        "error_layers": 0.12,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 64000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.9,
+        "error_layers": 3.1,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 64000,
+        "dataset": "trec",
+        "actual_best_layer": 13,
+        "predicted_best_layer": 12.9,
+        "error_layers": 0.1,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 96000,
+        "dataset": "agnews",
+        "actual_best_layer": 15,
+        "predicted_best_layer": 12.92,
+        "error_layers": 2.08,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 96000,
+        "dataset": "trec",
+        "actual_best_layer": 9,
+        "predicted_best_layer": 12.92,
+        "error_layers": 3.92,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 128000,
+        "dataset": "agnews",
+        "actual_best_layer": 15,
+        "predicted_best_layer": 12.93,
+        "error_layers": 2.07,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 128000,
+        "dataset": "trec",
+        "actual_best_layer": 14,
+        "predicted_best_layer": 12.93,
+        "error_layers": 1.07,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 143000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.94,
+        "error_layers": 3.06,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 143000,
+        "dataset": "trec",
+        "actual_best_layer": 9,
+        "predicted_best_layer": 12.94,
+        "error_layers": 3.94,
+        "L": 16
+      }
+    ],
+    "pass_mae": true,
+    "pass_lstar": false
+  },
+  "fit_gamma_free": {
+    "gamma": 0.5,
+    "alpha": 0.007105131230655133,
+    "beta": 1.3713768836258595,
+    "mu_0": 0.7076144491070822,
+    "mu_1": 0.002606523537834464,
+    "b_d": {
+      "agnews": -0.42677398279773354,
+      "trec": 0.25939034573393804
+    },
+    "loss": 0.0038427986381147634,
+    "mae": 0.04705805706901395,
+    "rmse": 0.06199031084060447,
+    "r2": 0.7570090209250846,
+    "n_obs": 720,
+    "l_star_mae": 2.6925587705321212,
+    "l_star_details": [
+      {
+        "model": "pythia-160m",
+        "step": 0,
+        "dataset": "agnews",
+        "actual_best_layer": 1,
+        "predicted_best_layer": 7.24,
+        "error_layers": 6.24,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 0,
+        "dataset": "trec",
+        "actual_best_layer": 9,
+        "predicted_best_layer": 7.24,
+        "error_layers": 1.76,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 1000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.51,
+        "error_layers": 2.49,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 1000,
+        "dataset": "trec",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.51,
+        "error_layers": 2.49,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 2000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.54,
+        "error_layers": 2.46,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 2000,
+        "dataset": "trec",
+        "actual_best_layer": 3,
+        "predicted_best_layer": 9.54,
+        "error_layers": 6.54,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 4000,
+        "dataset": "agnews",
+        "actual_best_layer": 10,
+        "predicted_best_layer": 9.56,
+        "error_layers": 0.44,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 4000,
+        "dataset": "trec",
+        "actual_best_layer": 11,
+        "predicted_best_layer": 9.56,
+        "error_layers": 1.44,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 8000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.58,
+        "error_layers": 2.42,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 8000,
+        "dataset": "trec",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.58,
+        "error_layers": 2.42,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 16000,
+        "dataset": "agnews",
+        "actual_best_layer": 11,
+        "predicted_best_layer": 9.6,
+        "error_layers": 1.4,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 16000,
+        "dataset": "trec",
+        "actual_best_layer": 10,
+        "predicted_best_layer": 9.6,
+        "error_layers": 0.4,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 32000,
+        "dataset": "agnews",
+        "actual_best_layer": 11,
+        "predicted_best_layer": 9.62,
+        "error_layers": 1.38,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 32000,
+        "dataset": "trec",
+        "actual_best_layer": 9,
+        "predicted_best_layer": 9.62,
+        "error_layers": 0.62,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 48000,
+        "dataset": "agnews",
+        "actual_best_layer": 11,
+        "predicted_best_layer": 9.64,
+        "error_layers": 1.36,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 48000,
+        "dataset": "trec",
+        "actual_best_layer": 7,
+        "predicted_best_layer": 9.64,
+        "error_layers": 2.64,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 64000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.64,
+        "error_layers": 2.36,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 64000,
+        "dataset": "trec",
+        "actual_best_layer": 8,
+        "predicted_best_layer": 9.64,
+        "error_layers": 1.64,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 96000,
+        "dataset": "agnews",
+        "actual_best_layer": 11,
+        "predicted_best_layer": 9.66,
+        "error_layers": 1.34,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 96000,
+        "dataset": "trec",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.66,
+        "error_layers": 2.34,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 128000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.67,
+        "error_layers": 2.33,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 128000,
+        "dataset": "trec",
+        "actual_best_layer": 9,
+        "predicted_best_layer": 9.67,
+        "error_layers": 0.67,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 143000,
+        "dataset": "agnews",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.67,
+        "error_layers": 2.33,
+        "L": 12
+      },
+      {
+        "model": "pythia-160m",
+        "step": 143000,
+        "dataset": "trec",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 9.67,
+        "error_layers": 2.33,
+        "L": 12
+      },
+      {
+        "model": "pythia-1b",
+        "step": 0,
+        "dataset": "agnews",
+        "actual_best_layer": 1,
+        "predicted_best_layer": 9.65,
+        "error_layers": 8.65,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 0,
+        "dataset": "trec",
+        "actual_best_layer": 3,
+        "predicted_best_layer": 9.65,
+        "error_layers": 6.65,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 1000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.72,
+        "error_layers": 3.28,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 1000,
+        "dataset": "trec",
+        "actual_best_layer": 3,
+        "predicted_best_layer": 12.72,
+        "error_layers": 9.72,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 2000,
+        "dataset": "agnews",
+        "actual_best_layer": 15,
+        "predicted_best_layer": 12.75,
+        "error_layers": 2.25,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 2000,
+        "dataset": "trec",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.75,
+        "error_layers": 3.25,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 4000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.78,
+        "error_layers": 3.22,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 4000,
+        "dataset": "trec",
+        "actual_best_layer": 14,
+        "predicted_best_layer": 12.78,
+        "error_layers": 1.22,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 8000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.81,
+        "error_layers": 3.19,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 8000,
+        "dataset": "trec",
+        "actual_best_layer": 12,
+        "predicted_best_layer": 12.81,
+        "error_layers": 0.81,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 16000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.84,
+        "error_layers": 3.16,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 16000,
+        "dataset": "trec",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.84,
+        "error_layers": 3.16,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 32000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.87,
+        "error_layers": 3.13,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 32000,
+        "dataset": "trec",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.87,
+        "error_layers": 3.13,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 48000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.89,
+        "error_layers": 3.11,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 48000,
+        "dataset": "trec",
+        "actual_best_layer": 13,
+        "predicted_best_layer": 12.89,
+        "error_layers": 0.11,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 64000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.9,
+        "error_layers": 3.1,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 64000,
+        "dataset": "trec",
+        "actual_best_layer": 13,
+        "predicted_best_layer": 12.9,
+        "error_layers": 0.1,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 96000,
+        "dataset": "agnews",
+        "actual_best_layer": 15,
+        "predicted_best_layer": 12.91,
+        "error_layers": 2.09,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 96000,
+        "dataset": "trec",
+        "actual_best_layer": 9,
+        "predicted_best_layer": 12.91,
+        "error_layers": 3.91,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 128000,
+        "dataset": "agnews",
+        "actual_best_layer": 15,
+        "predicted_best_layer": 12.93,
+        "error_layers": 2.07,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 128000,
+        "dataset": "trec",
+        "actual_best_layer": 14,
+        "predicted_best_layer": 12.93,
+        "error_layers": 1.07,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 143000,
+        "dataset": "agnews",
+        "actual_best_layer": 16,
+        "predicted_best_layer": 12.93,
+        "error_layers": 3.07,
+        "L": 16
+      },
+      {
+        "model": "pythia-1b",
+        "step": 143000,
+        "dataset": "trec",
+        "actual_best_layer": 9,
+        "predicted_best_layer": 12.93,
+        "error_layers": 3.93,
+        "L": 16
+      }
+    ],
+    "pass_mae": true,
+    "pass_lstar": false
+  }
+}
