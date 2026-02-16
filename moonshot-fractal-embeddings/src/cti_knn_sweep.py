@@ -55,13 +55,53 @@ def get_model_info(model_key: str) -> Dict[str, Any]:
 
     # Fallback for models not in pipeline
     EXTRA_MODELS = {
+        "pythia-70m": {
+            "name": "Pythia-70M", "hf_path": "EleutherAI/pythia-70m",
+            "hidden_dim": 512, "pooling": "last", "trust_remote_code": False,
+        },
         "pythia-160m": {
             "name": "Pythia-160M", "hf_path": "EleutherAI/pythia-160m",
             "hidden_dim": 768, "pooling": "last", "trust_remote_code": False,
         },
+        "pythia-1b": {
+            "name": "Pythia-1B", "hf_path": "EleutherAI/pythia-1b",
+            "hidden_dim": 2048, "pooling": "last", "trust_remote_code": False,
+        },
+        "pythia-1.4b": {
+            "name": "Pythia-1.4B", "hf_path": "EleutherAI/pythia-1.4b",
+            "hidden_dim": 2048, "pooling": "last", "trust_remote_code": False,
+        },
         "pythia-2.8b": {
             "name": "Pythia-2.8B", "hf_path": "EleutherAI/pythia-2.8b",
             "hidden_dim": 2560, "pooling": "last", "trust_remote_code": False,
+        },
+        "bert-L2": {
+            "name": "BERT-L2-H128", "hf_path": "google/bert_uncased_L-2_H-128_A-2",
+            "hidden_dim": 128, "pooling": "cls", "trust_remote_code": False,
+        },
+        "bert-L4": {
+            "name": "BERT-L4-H512", "hf_path": "google/bert_uncased_L-4_H-512_A-8",
+            "hidden_dim": 512, "pooling": "cls", "trust_remote_code": False,
+        },
+        "bert-L6": {
+            "name": "BERT-L6-H512", "hf_path": "google/bert_uncased_L-6_H-512_A-8",
+            "hidden_dim": 512, "pooling": "cls", "trust_remote_code": False,
+        },
+        "bert-L8": {
+            "name": "BERT-L8-H512", "hf_path": "google/bert_uncased_L-8_H-512_A-8",
+            "hidden_dim": 512, "pooling": "cls", "trust_remote_code": False,
+        },
+        "bert-L10": {
+            "name": "BERT-L10-H768", "hf_path": "google/bert_uncased_L-10_H-768_A-12",
+            "hidden_dim": 768, "pooling": "cls", "trust_remote_code": False,
+        },
+        "bert-L12": {
+            "name": "BERT-L12-H768", "hf_path": "google/bert_uncased_L-12_H-768_A-12",
+            "hidden_dim": 768, "pooling": "cls", "trust_remote_code": False,
+        },
+        "bert-large": {
+            "name": "BERT-Large", "hf_path": "google-bert/bert-large-uncased",
+            "hidden_dim": 1024, "pooling": "cls", "trust_remote_code": False,
         },
         "mamba-130m": {
             "name": "Mamba-130M", "hf_path": "state-spaces/mamba-130m-hf",

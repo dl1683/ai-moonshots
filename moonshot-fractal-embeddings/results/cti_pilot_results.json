@@ -1,0 +1,874 @@
+{
+  "meta": {
+    "created_at": "2026-02-16T01:41:58.292291+00:00",
+    "script": "cti_pilot.py",
+    "script_version": "1.0.0"
+  },
+  "config": {
+    "script": "cti_pilot.py",
+    "script_version": "1.0.0",
+    "models": [
+      "bge-base",
+      "e5-base",
+      "bge-small"
+    ],
+    "fit_datasets": [
+      "dbpedia_classes",
+      "clinc"
+    ],
+    "holdout_datasets": [
+      "agnews"
+    ],
+    "fit_layers": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "prospective_layers": [
+      3,
+      9
+    ],
+    "seeds": [
+      42,
+      123,
+      456
+    ],
+    "total_layers": 12,
+    "stage1_epochs": 5,
+    "batch_size": 32,
+    "eval_batch_size": 64,
+    "knn_k": 5,
+    "patience": 5,
+    "val_ratio": 0.15,
+    "max_train_samples": 10000,
+    "max_test_samples": 2000,
+    "max_eval_samples": 500,
+    "num_scales": 4,
+    "scale_dim": 64,
+    "device": "cuda"
+  },
+  "results": {
+    "bge-base": {
+      "dbpedia_classes": {
+        "2": {
+          "42": {
+            "status": "ok",
+            "model": "bge-base",
+            "dataset": "dbpedia_classes",
+            "layer": 2,
+            "seed": 42,
+            "train_size": 8533,
+            "val_size": 1467,
+            "test_size": 2000,
+            "backbone_hidden_dim": 768,
+            "backbone_layers": 12,
+            "prefix_accuracy": {
+              "j1_l0": 0.916,
+              "j1_l1": 0.532,
+              "j2_l0": 0.91,
+              "j2_l1": 0.524,
+              "j3_l0": 0.898,
+              "j3_l1": 0.54,
+              "j4_l0": 0.898,
+              "j4_l1": 0.544
+            },
+            "steerability": 0.030000000000000027,
+            "compute": {
+              "layer_count": 2,
+              "compute_proxy_relative": 0.16666666666666666,
+              "compute_proxy_absolute": 2.0
+            },
+            "history": [
+              {
+                "stage": 1,
+                "epoch": 1,
+                "loss": 10.121037594357828,
+                "loss_full": 7.151127894121902,
+                "loss_prefix": 4.949849282888541,
+                "l0_accuracy": 0.804,
+                "l1_accuracy": 0.437
+              },
+              {
+                "stage": 1,
+                "epoch": 2,
+                "loss": 8.244988979253554,
+                "loss_full": 5.684807958459496,
+                "loss_prefix": 4.266968244000485,
+                "l0_accuracy": 0.882,
+                "l1_accuracy": 0.602
+              },
+              {
+                "stage": 1,
+                "epoch": 3,
+                "loss": 7.124592257621593,
+                "loss_full": 4.802086014496653,
+                "loss_prefix": 3.8708435592794777,
+                "l0_accuracy": 0.899,
+                "l1_accuracy": 0.64
+              },
+              {
+                "stage": 1,
+                "epoch": 4,
+                "loss": 6.557375717880134,
+                "loss_full": 4.351906715479112,
+                "loss_prefix": 3.675781498277994,
+                "l0_accuracy": 0.915,
+                "l1_accuracy": 0.701
+              },
+              {
+                "stage": 1,
+                "epoch": 5,
+                "loss": 6.14391763407485,
+                "loss_full": 4.036856115312505,
+                "loss_prefix": 3.5117690608017424,
+                "l0_accuracy": 0.94,
+                "l1_accuracy": 0.732
+              }
+            ],
+            "runtime_sec": 476.21834060002584,
+            "finished_at": "2026-02-16T01:53:02.151369+00:00"
+          },
+          "123": {
+            "status": "ok",
+            "model": "bge-base",
+            "dataset": "dbpedia_classes",
+            "layer": 2,
+            "seed": 123,
+            "train_size": 8533,
+            "val_size": 1467,
+            "test_size": 2000,
+            "backbone_hidden_dim": 768,
+            "backbone_layers": 12,
+            "prefix_accuracy": {
+              "j1_l0": 0.884,
+              "j1_l1": 0.524,
+              "j2_l0": 0.89,
+              "j2_l1": 0.53,
+              "j3_l0": 0.902,
+              "j3_l1": 0.512,
+              "j4_l0": 0.902,
+              "j4_l1": 0.504
+            },
+            "steerability": -0.038000000000000034,
+            "compute": {
+              "layer_count": 2,
+              "compute_proxy_relative": 0.16666666666666666,
+              "compute_proxy_absolute": 2.0
+            },
+            "history": [
+              {
+                "stage": 1,
+                "epoch": 1,
+                "loss": 9.992115465321936,
+                "loss_full": 7.047449065330333,
+                "loss_prefix": 4.907777177660089,
+                "l0_accuracy": 0.794,
+                "l1_accuracy": 0.425
+              },
+              {
+                "stage": 1,
+                "epoch": 2,
+                "loss": 8.150161286045734,
+                "loss_full": 5.60763284496795,
+                "loss_prefix": 4.237547233588714,
+                "l0_accuracy": 0.879,
+                "l1_accuracy": 0.581
+              },
+              {
+                "stage": 1,
+                "epoch": 3,
+                "loss": 7.120149707435665,
+                "loss_full": 4.802660836313004,
+                "loss_prefix": 3.8624812839622784,
+                "l0_accuracy": 0.895,
+                "l1_accuracy": 0.665
+              },
+              {
+                "stage": 1,
+                "epoch": 4,
+                "loss": 6.591200098955541,
+                "loss_full": 4.380941996897073,
+                "loss_prefix": 3.683763359722338,
+                "l0_accuracy": 0.92,
+                "l1_accuracy": 0.711
+              },
+              {
+                "stage": 1,
+                "epoch": 5,
+                "loss": 6.11614653759433,
+                "loss_full": 4.013017175789166,
+                "loss_prefix": 3.505215447648127,
+                "l0_accuracy": 0.927,
+                "l1_accuracy": 0.734
+              }
+            ],
+            "runtime_sec": 480.4200561000034,
+            "finished_at": "2026-02-16T02:01:02.783699+00:00"
+          },
+          "456": {
+            "status": "ok",
+            "model": "bge-base",
+            "dataset": "dbpedia_classes",
+            "layer": 2,
+            "seed": 456,
+            "train_size": 8533,
+            "val_size": 1467,
+            "test_size": 2000,
+            "backbone_hidden_dim": 768,
+            "backbone_layers": 12,
+            "prefix_accuracy": {
+              "j1_l0": 0.88,
+              "j1_l1": 0.5,
+              "j2_l0": 0.874,
+              "j2_l1": 0.498,
+              "j3_l0": 0.88,
+              "j3_l1": 0.494,
+              "j4_l0": 0.882,
+              "j4_l1": 0.484
+            },
+            "steerability": -0.018000000000000016,
+            "compute": {
+              "layer_count": 2,
+              "compute_proxy_relative": 0.16666666666666666,
+              "compute_proxy_absolute": 2.0
+            },
+            "history": [
+              {
+                "stage": 1,
+                "epoch": 1,
+                "loss": 10.092873910315951,
+                "loss_full": 7.1269039318973855,
+                "loss_prefix": 4.943283158137386,
+                "l0_accuracy": 0.773,
+                "l1_accuracy": 0.454
+              },
+              {
+                "stage": 1,
+                "epoch": 2,
+                "loss": 8.29227081815103,
+                "loss_full": 5.728972596333439,
+                "loss_prefix": 4.2721635712716814,
+                "l0_accuracy": 0.852,
+                "l1_accuracy": 0.569
+              },
+              {
+                "stage": 1,
+                "epoch": 3,
+                "loss": 7.192821301912007,
+                "loss_full": 4.889736367347545,
+                "loss_prefix": 3.8384747057032764,
+                "l0_accuracy": 0.875,
+                "l1_accuracy": 0.637
+              },
+              {
+                "stage": 1,
+                "epoch": 4,
+                "loss": 6.700202877360179,
+                "loss_full": 4.477636467245288,
+                "loss_prefix": 3.704277169435544,
+                "l0_accuracy": 0.903,
+                "l1_accuracy": 0.688
+              },
+              {
+                "stage": 1,
+                "epoch": 5,
+                "loss": 6.2572852937798755,
+                "loss_full": 4.122251483730804,
+                "loss_prefix": 3.558389514012444,
+                "l0_accuracy": 0.919,
+                "l1_accuracy": 0.732
+              }
+            ],
+            "runtime_sec": 478.2558771999902,
+            "finished_at": "2026-02-16T02:09:01.276407+00:00"
+          }
+        },
+        "4": {
+          "42": {
+            "status": "ok",
+            "model": "bge-base",
+            "dataset": "dbpedia_classes",
+            "layer": 4,
+            "seed": 42,
+            "train_size": 8533,
+            "val_size": 1467,
+            "test_size": 2000,
+            "backbone_hidden_dim": 768,
+            "backbone_layers": 12,
+            "prefix_accuracy": {
+              "j1_l0": 0.95,
+              "j1_l1": 0.684,
+              "j2_l0": 0.956,
+              "j2_l1": 0.694,
+              "j3_l0": 0.958,
+              "j3_l1": 0.682,
+              "j4_l0": 0.956,
+              "j4_l1": 0.694
+            },
+            "steerability": 0.0039999999999998925,
+            "compute": {
+              "layer_count": 4,
+              "compute_proxy_relative": 0.3333333333333333,
+              "compute_proxy_absolute": 4.0
+            },
+            "history": [
+              {
+                "stage": 1,
+                "epoch": 1,
+                "loss": 7.271345382346246,
+                "loss_full": 4.898800017242145,
+                "loss_prefix": 3.954242101289276,
+                "l0_accuracy": 0.928,
+                "l1_accuracy": 0.742
+              },
+              {
+                "stage": 1,
+                "epoch": 2,
+                "loss": 5.346971578167794,
+                "loss_full": 3.3521774935543087,
+                "loss_prefix": 3.324656670254872,
+                "l0_accuracy": 0.952,
+                "l1_accuracy": 0.81
+              },
+              {
+                "stage": 1,
+                "epoch": 3,
+                "loss": 4.69720653214849,
+                "loss_full": 2.8145641200524523,
+                "loss_prefix": 3.137737191709361,
+                "l0_accuracy": 0.971,
+                "l1_accuracy": 0.838
+              },
+              {
+                "stage": 1,
+                "epoch": 4,
+                "loss": 4.299609513211071,
+                "loss_full": 2.490087906668957,
+                "loss_prefix": 3.015869215018767,
+                "l0_accuracy": 0.962,
+                "l1_accuracy": 0.837
+              },
+              {
+                "stage": 1,
+                "epoch": 5,
+                "loss": 4.037080764770508,
+                "loss_full": 2.2760832999881946,
+                "loss_prefix": 2.9349956611045322,
+                "l0_accuracy": 0.97,
+                "l1_accuracy": 0.866
+              }
+            ],
+            "runtime_sec": 480.2930819999892,
+            "finished_at": "2026-02-16T02:17:01.789224+00:00"
+          },
+          "123": {
+            "status": "ok",
+            "model": "bge-base",
+            "dataset": "dbpedia_classes",
+            "layer": 4,
+            "seed": 123,
+            "train_size": 8533,
+            "val_size": 1467,
+            "test_size": 2000,
+            "backbone_hidden_dim": 768,
+            "backbone_layers": 12,
+            "prefix_accuracy": {
+              "j1_l0": 0.954,
+              "j1_l1": 0.648,
+              "j2_l0": 0.954,
+              "j2_l1": 0.67,
+              "j3_l0": 0.958,
+              "j3_l1": 0.676,
+              "j4_l0": 0.956,
+              "j4_l1": 0.69
+            },
+            "steerability": 0.039999999999999925,
+            "compute": {
+              "layer_count": 4,
+              "compute_proxy_relative": 0.3333333333333333,
+              "compute_proxy_absolute": 4.0
+            },
+            "history": [
+              {
+                "stage": 1,
+                "epoch": 1,
+                "loss": 7.2194552977282305,
+                "loss_full": 4.881012241643174,
+                "loss_prefix": 3.897404949467881,
+                "l0_accuracy": 0.937,
+                "l1_accuracy": 0.757
+              },
+              {
+                "stage": 1,
+                "epoch": 2,
+                "loss": 5.350107969198012,
+                "loss_full": 3.37628524195879,
+                "loss_prefix": 3.289704391830846,
+                "l0_accuracy": 0.961,
+                "l1_accuracy": 0.824
+              },
+              {
+                "stage": 1,
+                "epoch": 3,
+                "loss": 4.691779219118276,
+                "loss_full": 2.8279730484897927,
+                "loss_prefix": 3.106343502388861,
+                "l0_accuracy": 0.961,
+                "l1_accuracy": 0.833
+              },
+              {
+                "stage": 1,
+                "epoch": 4,
+                "loss": 4.332202729425933,
+                "loss_full": 2.5124261858768033,
+                "loss_prefix": 3.032960795818415,
+                "l0_accuracy": 0.965,
+                "l1_accuracy": 0.859
+              },
+              {
+                "stage": 1,
+                "epoch": 5,
+                "loss": 4.029221817066795,
+                "loss_full": 2.2915551680371276,
+                "loss_prefix": 2.896110947867085,
+                "l0_accuracy": 0.961,
+                "l1_accuracy": 0.846
+              }
+            ],
+            "runtime_sec": 485.4229867000249,
+            "finished_at": "2026-02-16T02:25:07.408396+00:00"
+          },
+          "456": {
+            "status": "ok",
+            "model": "bge-base",
+            "dataset": "dbpedia_classes",
+            "layer": 4,
+            "seed": 456,
+            "train_size": 8533,
+            "val_size": 1467,
+            "test_size": 2000,
+            "backbone_hidden_dim": 768,
+            "backbone_layers": 12,
+            "prefix_accuracy": {
+              "j1_l0": 0.946,
+              "j1_l1": 0.656,
+              "j2_l0": 0.944,
+              "j2_l1": 0.68,
+              "j3_l0": 0.952,
+              "j3_l1": 0.696,
+              "j4_l0": 0.95,
+              "j4_l1": 0.682
+            },
+            "steerability": 0.02200000000000002,
+            "compute": {
+              "layer_count": 4,
+              "compute_proxy_relative": 0.3333333333333333,
+              "compute_proxy_absolute": 4.0
+            },
+            "history": [
+              {
+                "stage": 1,
+                "epoch": 1,
+                "loss": 7.271262332012779,
+                "loss_full": 4.913952632057936,
+                "loss_prefix": 3.9288493977453474,
+                "l0_accuracy": 0.938,
+                "l1_accuracy": 0.772
+              },
+              {
+                "stage": 1,
+                "epoch": 2,
+                "loss": 5.402950412348697,
+                "loss_full": 3.3955992576771212,
+                "loss_prefix": 3.34558511855907,
+                "l0_accuracy": 0.97,
+                "l1_accuracy": 0.848
+              },
+              {
+                "stage": 1,
+                "epoch": 3,
+                "loss": 4.735716850237739,
+                "loss_full": 2.85684407295141,
+                "loss_prefix": 3.1314544821144046,
+                "l0_accuracy": 0.968,
+                "l1_accuracy": 0.859
+              },
+              {
+                "stage": 1,
+                "epoch": 4,
+                "loss": 4.329671955646429,
+                "loss_full": 2.5308079083163038,
+                "loss_prefix": 2.998106623054447,
+                "l0_accuracy": 0.97,
+                "l1_accuracy": 0.87
+              },
+              {
+                "stage": 1,
+                "epoch": 5,
+                "loss": 4.0760581448562165,
+                "loss_full": 2.3137822877195546,
+                "loss_prefix": 2.9371263111444343,
+                "l0_accuracy": 0.969,
+                "l1_accuracy": 0.869
+              }
+            ],
+            "runtime_sec": 571.0257709000143,
+            "finished_at": "2026-02-16T02:34:38.628092+00:00"
+          }
+        },
+        "6": {
+          "42": {
+            "status": "ok",
+            "model": "bge-base",
+            "dataset": "dbpedia_classes",
+            "layer": 6,
+            "seed": 42,
+            "train_size": 8533,
+            "val_size": 1467,
+            "test_size": 2000,
+            "backbone_hidden_dim": 768,
+            "backbone_layers": 12,
+            "prefix_accuracy": {
+              "j1_l0": 0.946,
+              "j1_l1": 0.58,
+              "j2_l0": 0.944,
+              "j2_l1": 0.594,
+              "j3_l0": 0.946,
+              "j3_l1": 0.592,
+              "j4_l0": 0.94,
+              "j4_l1": 0.59
+            },
+            "steerability": 0.016000000000000014,
+            "compute": {
+              "layer_count": 6,
+              "compute_proxy_relative": 0.5,
+              "compute_proxy_absolute": 6.0
+            },
+            "history": [
+              {
+                "stage": 1,
+                "epoch": 1,
+                "loss": 6.980896600206992,
+                "loss_full": 4.726671191086447,
+                "loss_prefix": 3.757042200045478,
+                "l0_accuracy": 0.926,
+                "l1_accuracy": 0.695
+              },
+              {
+                "stage": 1,
+                "epoch": 2,
+                "loss": 5.435233725641007,
+                "loss_full": 3.4957097535742854,
+                "loss_prefix": 3.2325398097360942,
+                "l0_accuracy": 0.936,
+                "l1_accuracy": 0.77
+              },
+              {
+                "stage": 1,
+                "epoch": 3,
+                "loss": 4.877869114839941,
+                "loss_full": 3.0288259364608536,
+                "loss_prefix": 3.081738507837281,
+                "l0_accuracy": 0.937,
+                "l1_accuracy": 0.781
+              },
+              {
+                "stage": 1,
+                "epoch": 4,
+                "loss": 4.553840169332977,
+                "loss_full": 2.776472132905085,
+                "loss_prefix": 2.96227995345467,
+                "l0_accuracy": 0.955,
+                "l1_accuracy": 0.801
+              },
+              {
+                "stage": 1,
+                "epoch": 5,
+                "loss": 4.299530991037986,
+                "loss_full": 2.5637207739335253,
+                "loss_prefix": 2.8930169308095945,
+                "l0_accuracy": 0.945,
+                "l1_accuracy": 0.782
+              }
+            ],
+            "runtime_sec": 571.4194977000006,
+            "finished_at": "2026-02-16T02:44:10.264236+00:00"
+          },
+          "123": {
+            "status": "ok",
+            "model": "bge-base",
+            "dataset": "dbpedia_classes",
+            "layer": 6,
+            "seed": 123,
+            "train_size": 8533,
+            "val_size": 1467,
+            "test_size": 2000,
+            "backbone_hidden_dim": 768,
+            "backbone_layers": 12,
+            "prefix_accuracy": {
+              "j1_l0": 0.916,
+              "j1_l1": 0.552,
+              "j2_l0": 0.918,
+              "j2_l1": 0.574,
+              "j3_l0": 0.922,
+              "j3_l1": 0.576,
+              "j4_l0": 0.922,
+              "j4_l1": 0.59
+            },
+            "steerability": 0.03199999999999992,
+            "compute": {
+              "layer_count": 6,
+              "compute_proxy_relative": 0.5,
+              "compute_proxy_absolute": 6.0
+            },
+            "history": [
+              {
+                "stage": 1,
+                "epoch": 1,
+                "loss": 6.892064752435326,
+                "loss_full": 4.687225049599669,
+                "loss_prefix": 3.674732710185804,
+                "l0_accuracy": 0.939,
+                "l1_accuracy": 0.723
+              },
+              {
+                "stage": 1,
+                "epoch": 2,
+                "loss": 5.43724975370823,
+                "loss_full": 3.504084248291819,
+                "loss_prefix": 3.2219423620324386,
+                "l0_accuracy": 0.949,
+                "l1_accuracy": 0.763
+              },
+              {
+                "stage": 1,
+                "epoch": 3,
+                "loss": 4.860670439282754,
+                "loss_full": 3.029513242549466,
+                "loss_prefix": 3.051928516617395,
+                "l0_accuracy": 0.95,
+                "l1_accuracy": 0.764
+              },
+              {
+                "stage": 1,
+                "epoch": 4,
+                "loss": 4.531516978615208,
+                "loss_full": 2.745379658569967,
+                "loss_prefix": 2.9768954139006767,
+                "l0_accuracy": 0.947,
+                "l1_accuracy": 0.784
+              },
+              {
+                "stage": 1,
+                "epoch": 5,
+                "loss": 4.281127703817267,
+                "loss_full": 2.5566902416093007,
+                "loss_prefix": 2.8740623113804293,
+                "l0_accuracy": 0.946,
+                "l1_accuracy": 0.781
+              }
+            ],
+            "runtime_sec": 688.0869467999437,
+            "finished_at": "2026-02-16T02:55:38.530117+00:00"
+          },
+          "456": {
+            "status": "ok",
+            "model": "bge-base",
+            "dataset": "dbpedia_classes",
+            "layer": 6,
+            "seed": 456,
+            "train_size": 8533,
+            "val_size": 1467,
+            "test_size": 2000,
+            "backbone_hidden_dim": 768,
+            "backbone_layers": 12,
+            "prefix_accuracy": {
+              "j1_l0": 0.924,
+              "j1_l1": 0.604,
+              "j2_l0": 0.922,
+              "j2_l1": 0.586,
+              "j3_l0": 0.922,
+              "j3_l1": 0.592,
+              "j4_l0": 0.916,
+              "j4_l1": 0.59
+            },
+            "steerability": -0.006000000000000005,
+            "compute": {
+              "layer_count": 6,
+              "compute_proxy_relative": 0.5,
+              "compute_proxy_absolute": 6.0
+            },
+            "history": [
+              {
+                "stage": 1,
+                "epoch": 1,
+                "loss": 6.91126759428727,
+                "loss_full": 4.705048344189063,
+                "loss_prefix": 3.677031912301716,
+                "l0_accuracy": 0.937,
+                "l1_accuracy": 0.747
+              },
+              {
+                "stage": 1,
+                "epoch": 2,
+                "loss": 5.451732715269677,
+                "loss_full": 3.491674139983672,
+                "loss_prefix": 3.266764139770565,
+                "l0_accuracy": 0.951,
+                "l1_accuracy": 0.78
+              },
+              {
+                "stage": 1,
+                "epoch": 3,
+                "loss": 4.93387634592845,
+                "loss_full": 3.0841659890081647,
+                "loss_prefix": 3.082850477749244,
+                "l0_accuracy": 0.951,
+                "l1_accuracy": 0.788
+              },
+              {
+                "stage": 1,
+                "epoch": 4,
+                "loss": 4.529118982472814,
+                "loss_full": 2.7603490424335453,
+                "loss_prefix": 2.947949789520493,
+                "l0_accuracy": 0.957,
+                "l1_accuracy": 0.802
+              },
+              {
+                "stage": 1,
+                "epoch": 5,
+                "loss": 4.354469971549242,
+                "loss_full": 2.6095166112247266,
+                "loss_prefix": 2.9082555009010145,
+                "l0_accuracy": 0.957,
+                "l1_accuracy": 0.799
+              }
+            ],
+            "runtime_sec": 565.3027329000179,
+            "finished_at": "2026-02-16T03:05:04.017303+00:00"
+          }
+        },
+        "8": {
+          "42": {
+            "status": "ok",
+            "model": "bge-base",
+            "dataset": "dbpedia_classes",
+            "layer": 8,
+            "seed": 42,
+            "train_size": 8533,
+            "val_size": 1467,
+            "test_size": 2000,
+            "backbone_hidden_dim": 768,
+            "backbone_layers": 12,
+            "prefix_accuracy": {
+              "j1_l0": 0.888,
+              "j1_l1": 0.424,
+              "j2_l0": 0.886,
+              "j2_l1": 0.47,
+              "j3_l0": 0.88,
+              "j3_l1": 0.478,
+              "j4_l0": 0.872,
+              "j4_l1": 0.462
+            },
+            "steerability": 0.05400000000000005,
+            "compute": {
+              "layer_count": 8,
+              "compute_proxy_relative": 0.6666666666666666,
+              "compute_proxy_absolute": 8.0
+            },
+            "history": [
+              {
+                "stage": 1,
+                "epoch": 1,
+                "loss": 7.505895456873384,
+                "loss_full": 5.184918098879936,
+                "loss_prefix": 3.8682954401001894,
+                "l0_accuracy": 0.884,
+                "l1_accuracy": 0.602
+              },
+              {
+                "stage": 1,
+                "epoch": 2,
+                "loss": 5.995287936432917,
+                "loss_full": 3.9643627485834565,
+                "loss_prefix": 3.3848751765444764,
+                "l0_accuracy": 0.909,
+                "l1_accuracy": 0.637
+              },
+              {
+                "stage": 1,
+                "epoch": 3,
+                "loss": 5.396616084235055,
+                "loss_full": 3.471701284996549,
+                "loss_prefix": 3.2081912083733353,
+                "l0_accuracy": 0.915,
+                "l1_accuracy": 0.683
+              },
+              {
+                "stage": 1,
+                "epoch": 4,
+                "loss": 5.037005850246975,
+                "loss_full": 3.1755882143077994,
+                "loss_prefix": 3.102362595106426,
+                "l0_accuracy": 0.895,
+                "l1_accuracy": 0.684
+              },
+              {
+                "stage": 1,
+                "epoch": 5,
+                "loss": 4.792744646395059,
+                "loss_full": 2.975235695229437,
+                "loss_prefix": 3.029181478615094,
+                "l0_accuracy": 0.895,
+                "l1_accuracy": 0.657
+              }
+            ],
+            "runtime_sec": 621.709086100047,
+            "finished_at": "2026-02-16T03:15:25.898873+00:00"
+          }
+        }
+      }
+    }
+  },
+  "combo_progress": {
+    "calibration": {
+      "bge-base|dbpedia_classes|L2": {
+        "ok_count": 3,
+        "error_count": 0,
+        "completed_seeds": [
+          42,
+          123,
+          456
+        ],
+        "updated_at": "2026-02-16T02:09:01.494335+00:00"
+      },
+      "bge-base|dbpedia_classes|L4": {
+        "ok_count": 3,
+        "error_count": 0,
+        "completed_seeds": [
+          42,
+          123,
+          456
+        ],
+        "updated_at": "2026-02-16T02:34:38.842518+00:00"
+      },
+      "bge-base|dbpedia_classes|L6": {
+        "ok_count": 3,
+        "error_count": 0,
+        "completed_seeds": [
+          42,
+          123,
+          456
+        ],
+        "updated_at": "2026-02-16T03:05:04.187439+00:00"
+      }
+    }
+  },
+  "phase": {},
+  "analysis": {},
+  "updated_at": "2026-02-16T03:15:26.060348+00:00"
+}
