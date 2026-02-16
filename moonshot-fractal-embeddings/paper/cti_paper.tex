@@ -35,37 +35,37 @@
 \maketitle
 
 \begin{abstract}
-We discover a universal law governing how representation quality varies across layers in decoder-only language models. Our law, $\text{logit}(Q) = b_d + \alpha \log(C/N) - \beta(x - \mu(\log C/N))^2$, uses 8 parameters (4 physics + 4 dataset intercepts) to predict chance-normalized kNN accuracy $Q$ at normalized depth $x = \ell/L$ as a function of compute-to-parameter ratio $C/N$. Through leave-one-family-out cross-validation across 5 architecturally diverse families (Pythia, OLMo-2, Cerebras-GPT, OPT, GPT-2), we achieve $R^2 = 0.78$ with all folds significant at $p < 10^{-16}$. The Gaussian depth-profile shape parameter $\beta$ has a 95\% profile-likelihood CI of $[0.08, 2.09]$, confirming that the bell-shaped depth profile is a robust feature. A blind test on a 6th family (BLOOM---ALiBi attention, multilingual training) confirms \emph{shape} universality ($\rho = 0.78$) while revealing that absolute quality level requires minimal family calibration (4 dataset intercepts). We document universal late-training quality degradation across all 6 families: the final layer is systematically outperformed by earlier layers, particularly for fine-grained classification. Our findings suggest that depth-wise representation geometry follows architecture-independent regularities, with implications for layer selection in feature extraction.
+We propose a parametric law for how representation quality varies across layers in decoder-only language models. Our Gaussian-in-logit model uses 8 parameters (4 shared + 4 dataset intercepts) to predict chance-normalized kNN accuracy at any layer as a function of normalized depth and compute-to-parameter ratio. In leave-one-family-out cross-validation across 5 families (Pythia, OLMo-2, Cerebras-GPT, OPT, GPT-2; 5004 observations from 252 depth profiles), we achieve $R^2 = 0.78$, outperforming intercept-only ($R^2=0.51$), linear ($R^2=0.77$), and quadratic ($R^2=0.77$) baselines. A blind test on a 6th family (BLOOM---ALiBi attention, multilingual training) confirms \emph{shape} universality (Spearman $\rho = 0.78$) while showing that absolute quality levels require family-specific intercept calibration ($R^2 = -2.75$ zero-shot, $R^2 = 0.57$ after 4-parameter calibration). Across all 6 families, we observe that final-layer representations are systematically outperformed by earlier layers, particularly for fine-grained classification. We characterize our finding as a \emph{shape-universal, level-specific} regularity: depth profiles share a common bell-shaped form across architectures, but absolute quality depends on training data and model family.
 \end{abstract}
 
 \section{Introduction}
 
-Scaling laws~\citep{kaplan2020scaling, hoffmann2022training} have established that language model loss follows predictable power-law relationships with model size and training compute. These laws are invaluable for predicting performance and allocating training budgets, but they describe a single scalar---loss---and say nothing about the internal \emph{structure} of learned representations.
+Scaling laws~\citep{kaplan2020scaling, hoffmann2022training} have established that language model loss follows predictable power-law relationships with model size and training compute. However, these laws describe a single scalar---loss---and say nothing about the internal \emph{structure} of learned representations.
 
-Modern language models are not monolithic: each layer produces distinct representations that vary systematically in quality~\citep{tenney2019bert, liu2019linguistic}. Recent work has shown that intermediate layers often outperform the final layer for downstream tasks~\citep{gao2024layerwise}, yet no quantitative framework exists for predicting \emph{which} layer produces the best representations, \emph{how} quality varies with depth, or whether these patterns generalize across architectures.
+Each layer of a language model produces distinct representations that vary systematically in quality for downstream tasks~\citep{tenney2019bert, liu2019linguistic, ethayarajh2019contextual}. \citet{gao2024layerwise} showed that intermediate layers often outperform the final layer by up to 16\%, yet no quantitative framework predicts \emph{how} quality varies with depth or whether these patterns generalize across architectures.
 
-We address this gap by proposing a \emph{shape-universal} law for depth-wise representation quality. Our key contributions:
+We address this gap by proposing a \emph{shape-universal} law for depth-wise representation quality. Our contributions:
 
 \begin{enumerate}
-    \item \textbf{A parametric law} relating representation quality to normalized depth, compute, and parameters via an 8-parameter Gaussian-in-logit model (\S\ref{sec:method}).
-    \item \textbf{Cross-family validation} across 5 model families (16 models, $>$5000 layer-dataset observations) demonstrating shape universality (mean $\rho = 0.84$) and strong predictive accuracy (LOFO $R^2 = 0.78$) with all $p < 10^{-16}$ (\S\ref{sec:experiments}).
-    \item \textbf{A blind prediction test} on BLOOM (architecturally distinct: ALiBi attention, multilingual), confirming shape universality ($\rho = 0.78$) while honestly documenting that absolute quality requires family calibration (\S\ref{sec:bloom}).
-    \item \textbf{Universal late-training degradation}: all 6 families show final-layer quality below peak, with the effect strongest for fine-grained tasks (\S\ref{sec:degradation}).
+    \item \textbf{A parametric law} (8 parameters) predicting representation quality as a function of normalized depth and compute (\S\ref{sec:method}).
+    \item \textbf{Cross-family validation} across 5 model families demonstrating consistent shape prediction ($\rho = 0.84$, LOFO $R^2 = 0.78$) that outperforms all tested parametric alternatives (\S\ref{sec:experiments}).
+    \item \textbf{A blind test} on BLOOM confirming shape transfer ($\rho = 0.78$) while honestly documenting that absolute levels require calibration (\S\ref{sec:bloom}).
+    \item \textbf{Universal late-layer degradation} across all 6 architecturally diverse families (\S\ref{sec:degradation}).
 \end{enumerate}
 
-We emphasize what the law \emph{does not} do: it does not predict exact best-layer indices (recovery ratio $\approx 0$) and does not transfer absolute quality levels zero-shot across all architectures. We characterize it as a \emph{shape-universal, level-specific} law.
+We also document what the law does \emph{not} do: it does not predict exact best-layer indices and does not transfer absolute quality levels zero-shot to all architectures (\S\ref{sec:limitations}).
 
 \section{Related work}
 \label{sec:related}
 
 \paragraph{Neural scaling laws.}
-\citet{kaplan2020scaling} established power-law relationships between loss, model size, and data. \citet{hoffmann2022training} refined these for compute-optimal training. Recent extensions cover downstream tasks~\citep{wei2022emergent} and representation geometry~\citep{huh2024platonic}. Our work differs by modeling \emph{layer-wise} quality profiles rather than aggregate metrics.
+\citet{kaplan2020scaling} established power-law relationships between loss and compute. \citet{hoffmann2022training} refined these for compute-optimal training. Recent extensions cover representation geometry~\citep{huh2024platonic}. Our work extends the scaling law paradigm to \emph{layer-wise} representation quality.
 
-\paragraph{Probing and layer selection.}
-Linguistic information is distributed non-uniformly across layers~\citep{tenney2019bert, liu2019linguistic, belinkov2022probing}. \citet{gao2024layerwise} showed that mid-layer representations outperform final-layer ones by up to 16\%. We formalize these observations into a quantitative, predictive law.
+\paragraph{Layer-wise representation analysis.}
+Probing studies have shown that linguistic information is distributed non-uniformly across layers~\citep{tenney2019bert, liu2019linguistic, jawahar2019bert, rogers2020primer}. \citet{ethayarajh2019contextual} demonstrated increasing anisotropy with depth in contextual representations. Representation similarity methods such as CKA~\citep{kornblith2019similarity} have been used to compare layers across models. We build on these observations by fitting a quantitative, predictive law.
 
 \paragraph{Representation quality metrics.}
-kNN accuracy has been used as a probe-free quality measure~\citep{wu2018unsupervised, caron2021emerging}. We adopt chance-normalized kNN accuracy, avoiding confounds from classifier capacity or task difficulty.
+kNN accuracy serves as a probe-free quality measure in both vision~\citep{wu2018unsupervised, caron2021emerging} and NLP settings. We adopt chance-normalized kNN accuracy to avoid confounds from classifier capacity or task difficulty. Probing methodology debates~\citep{hewitt2019control, belinkov2022probing} motivate our choice of a non-parametric probe.
 
 \section{Method}
 \label{sec:method}
@@ -79,9 +79,9 @@ We use $k$-nearest-neighbor accuracy ($k=20$) on L2-normalized last-token repres
 \begin{equation}
     Q_{\text{norm}} = \frac{Q_{\text{kNN}} - 1/K}{1 - 1/K}
 \end{equation}
-where $K$ is the number of classes. This removes baseline difficulty from the metric, placing all tasks on a comparable scale.
+where $K$ is the number of classes. Each \emph{depth profile}---the vector $(Q_{\text{norm}}(\ell))_{\ell=1}^L$ for a fixed model, checkpoint, and dataset---constitutes one independent observational unit. Our dataset contains 252 such profiles (5004 layer-level observations) across 5 training families.
 
-\subsection{The universal law}
+\subsection{The Gaussian-in-logit law}
 
 We model quality in logit space as a Gaussian function of normalized depth $x = \ell / L$:
 \begin{equation}
@@ -90,36 +90,37 @@ We model quality in logit space as a Gaussian function of normalized depth $x = 
 \end{equation}
 where the peak depth $\mu(r) = \mu_0 + \mu_1 r$ depends on the compute-to-parameter ratio $r = \log(C/N)$.
 
-The model has 4 \emph{physics parameters}: $\alpha$ (quality--compute scaling), $\beta$ (depth-profile sharpness), $\mu_0, \mu_1$ (peak location and its training dependence). Additionally, 4 \emph{dataset intercepts} $b_d$ capture task-specific difficulty.
-
-\paragraph{Interpretation.}
-\begin{itemize}
-    \item $\beta > 0$: quality peaks at an intermediate depth and falls off as a Gaussian. This is the central claim---that depth profiles are bell-shaped, not monotonically increasing.
-    \item $\alpha > 0$: more compute improves quality, analogous to the scaling law exponent for loss.
-    \item $\mu_0 + \mu_1 r$: the optimal depth shifts with training, potentially later in the network for more-trained models.
-\end{itemize}
+The model has 4 \emph{shared parameters}: $\alpha$ (quality--compute coupling), $\beta$ (depth-profile curvature), $\mu_0, \mu_1$ (peak location and its training dependence). Additionally, 4 \emph{dataset intercepts} $b_d$ capture task-specific difficulty. When $\beta > 0$ the model predicts a bell-shaped depth profile peaking at an intermediate layer; when $\beta = 0$ it reduces to a compute-only model; when $\beta < 0$ it predicts a U-shaped profile.
 
 \subsection{Fitting procedure}
 
-We fit Eq.~\ref{eq:law} by minimizing mean squared error using L-BFGS-B with 20 random restarts. Parameters are bounded to physically meaningful ranges ($\beta > 0$, $|\alpha| \leq 1$, etc.).
+We fit Eq.~\ref{eq:law} by minimizing mean squared error using L-BFGS-B with 20 random restarts. We report results from both a \emph{constrained} fit ($\beta > 0$, motivated by the prior observation that quality peaks at intermediate layers) and an \emph{unconstrained} fit ($\beta \in [-50, 50]$) to avoid circular reasoning about the sign of $\beta$.
 
-\paragraph{Claim scope.}
-We claim \emph{shape universality}: the bell-shaped depth profile with parameters ($\alpha, \beta, \mu_0, \mu_1$) transfers across families. We do \emph{not} claim that absolute quality levels transfer without family-specific intercept calibration, as the BLOOM experiment demonstrates (\S\ref{sec:bloom}).
+\subsection{Alternative baselines}
+
+To evaluate whether the Gaussian formulation is justified, we compare against 4 simpler parametric alternatives in the same LOFO framework:
+\begin{itemize}
+    \item \textbf{Intercept-only} (4 params): $b_d$ per dataset, no depth or compute dependence.
+    \item \textbf{Linear-in-depth} (5 params): $b_d + c_1 x$, a single depth slope.
+    \item \textbf{Quadratic-in-depth} (6 params): $b_d + c_1 x + c_2 x^2$.
+    \item \textbf{Quadratic + compute} (7 params): $b_d + \alpha r + c_1 x + c_2 x^2$.
+\end{itemize}
+All models are fitted with L-BFGS-B (20 restarts) and evaluated using the same LOFO protocol.
 
 \section{Experimental setup}
 \label{sec:setup}
 
 \subsection{Model families}
 
-We evaluate 16 models across 6 architecturally diverse families (Table~\ref{tab:families}). Key differences: Pythia and OLMo-2 use RoPE~\citep{su2024roformer}; GPT-2~\citep{radford2019language} uses absolute positional encodings; BLOOM~\citep{workshop2022bloom} uses ALiBi~\citep{press2022alibi}; OPT~\citep{zhang2022opt} uses learned embeddings; Cerebras-GPT~\citep{dey2023cerebras} follows GPT-3 with Chinchilla-optimal training.
+We evaluate 16 models across 6 architecturally diverse families (Table~\ref{tab:families}). Key differences span positional encoding (RoPE, absolute, ALiBi, learned), training corpus (Pile, ROOTS), and training schedule (standard vs.\ Chinchilla-optimal).
 
 \begin{table}[t]
 \centering
-\caption{Model families and characteristics. Pythia, OLMo-2, and BLOOM provide training checkpoints; others provide only final weights.}
+\caption{Model families. Pythia, OLMo-2, and BLOOM provide intermediate checkpoints.}
 \label{tab:families}
 \begin{tabular}{lcccl}
 \toprule
-Family & Sizes & Layers & Ckpts & Pos.\ Encoding \\
+Family & Sizes & Layers & Ckpts & Pos.\ Enc. \\
 \midrule
 Pythia & 160M--1.4B & 12--24 & 12 ea. & RoPE \\
 OLMo-2 & 1B & 16 & 11 & RoPE \\
@@ -134,101 +135,125 @@ BLOOM (blind) & 560M--1.7B & 24 & 7--8 ea. & ALiBi \\
 
 \subsection{Evaluation datasets}
 
-We use 4 classification benchmarks spanning different granularities:
-\begin{itemize}
-    \item \textbf{CLINC-150}~\citep{larson2019clinc}: 150 intent classes, 10 domains
-    \item \textbf{DBPedia Classes}~\citep{lehmann2015dbpedia}: 68 fine-grained types, 9 categories
-    \item \textbf{AG News}: 18 sub-categories, 4 topics
-    \item \textbf{TREC}~\citep{voorhees2000trec}: 42 fine-grained types, 6 coarse categories
-\end{itemize}
+We use 4 classification benchmarks:
+\textbf{CLINC-150}~\citep{larson2019clinc} (150 classes),
+\textbf{DBPedia Classes}~\citep{lehmann2015dbpedia} (68 classes),
+\textbf{AG News}~\citep{zhang2015yahoo} (18 sub-categories),
+\textbf{TREC}~\citep{voorhees2000trec} (42 types).
+For each model and layer, we extract representations for up to 2000 test samples.
 
-For each model, layer, and dataset, we extract representations for up to 2000 test samples and compute kNN accuracy ($k=20$). This yields 5004 observations across the 5 training families and 2300 additional observations for BLOOM.
+\paragraph{Dependence structure.}
+Our 5004 layer-level observations come from 252 depth profiles (model $\times$ checkpoint $\times$ dataset), grouped into 63 model-checkpoint units across 5 families. Layers within a profile are correlated; we report profile-level shape correlations ($\rho$) as our primary independence-respecting metric and note that point-level $p$-values from $F$-tests are conservative upper bounds on significance when treating observations as independent.
 
 \section{Results}
 \label{sec:experiments}
 
 \subsection{Leave-one-family-out cross-validation}
 
-We fit the law on 4 families and predict the held-out 5th. Table~\ref{tab:lofo} summarizes results.
+We fit each model on 4 families and predict the held-out 5th (Table~\ref{tab:lofo}).
 
 \begin{table}[t]
 \centering
-\caption{Leave-one-family-out cross-validation. $R^2_\text{null}$: intercept-only baseline. Nested $F$ tests whether the 4 physics parameters improve over intercepts alone.}
+\caption{Leave-one-family-out cross-validation results. $\rho$: mean Spearman rank correlation between predicted and observed depth profiles (252 profiles total). The Gaussian law achieves the highest mean $R^2$ among all tested models.}
 \label{tab:lofo}
-\begin{tabular}{lccccc}
-\toprule
-Holdout & $R^2$ & MAE & $R^2_\text{null}$ & $F_\text{nested}$ & $p$ \\
-\midrule
-Cerebras-GPT & 0.730 & 0.049 & 0.514 & 45.6 & $<10^{-16}$ \\
-GPT-2 & 0.851 & 0.041 & 0.616 & 115.5 & $<10^{-16}$ \\
-OLMo-2 & 0.778 & 0.057 & 0.442 & 280.7 & $<10^{-16}$ \\
-OPT & 0.757 & 0.060 & 0.502 & 50.1 & $<10^{-16}$ \\
-Pythia & 0.781 & 0.046 & 0.494 & 1147.8 & $<10^{-16}$ \\
-\midrule
-\textbf{Mean} & \textbf{0.780} & \textbf{0.050} & \textbf{0.514} & -- & -- \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-All folds achieve $R^2 > 0.73$ with nested $F$-tests confirming that the 4 physics parameters ($\alpha, \beta, \mu_0, \mu_1$) substantially improve over dataset-specific intercepts alone ($\Delta R^2 \approx 0.27$). The improvement is highly significant across all folds ($p < 10^{-16}$).
-
-\paragraph{Shape universality.}
-The Spearman rank correlation between predicted and observed depth profiles averages $\rho = 0.84$ across all (model, dataset, checkpoint) groups, with 84\% of profiles exceeding $\rho > 0.7$. This confirms that the bell-shaped depth profile is an architecture-independent regularity.
-
-\subsection{Parameter stability and confidence intervals}
-
-The physics parameters are stable across LOFO folds (Table~\ref{tab:params}), indicating that no single family drives the fit.
-
-\begin{table}[t]
-\centering
-\caption{Physics parameter stability across LOFO folds and 95\% profile-likelihood CIs from the full dataset (5004 observations).}
-\label{tab:params}
 \begin{tabular}{lcccc}
 \toprule
-Param & LOFO Mean & LOFO SD & \multicolumn{2}{c}{Profile 95\% CI} \\
+Holdout & $R^2$ & MAE & Profiles & Shape $\rho$ \\
 \midrule
-$\alpha$ & 0.131 & 0.024 & $[-0.03$ & $0.20]$ \\
-$\beta$ & 0.665 & 0.104 & $[0.08$ & $2.09]$ \\
-$\mu_0$ & $-1.01$ & 0.32 & $[-2.00$ & $0.92]$ \\
-$\mu_1$ & 0.086 & 0.018 & $[-0.03$ & $0.30]$ \\
+Cerebras-GPT & 0.730 & 0.049 & 12 & 0.763 \\
+GPT-2 & 0.851 & 0.041 & 12 & 0.805 \\
+OLMo-2 & 0.778 & 0.057 & 44 & 0.904 \\
+OPT & 0.757 & 0.060 & 8 & 0.831 \\
+Pythia & 0.781 & 0.046 & 176 & 0.914 \\
+\midrule
+\textbf{Mean} & \textbf{0.780} & \textbf{0.050} & \textbf{252} & \textbf{0.843} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The profile-likelihood CIs confirm that $\beta > 0$ at the 95\% level---the Gaussian depth profile is a robust feature, not a fitting artifact. The CIs for $\alpha$ and $\mu_1$ individually include zero, which reflects parameter correlations rather than model failure: the joint $F$-test is overwhelmingly significant ($p < 10^{-16}$ in all folds), confirming that the 4 physics parameters \emph{collectively} carry strong signal. The wide CI for $\mu_0$ reflects practical identifiability limitations when fitting a nonlinear model to noisy data.
+All folds achieve $R^2 > 0.73$. The mean shape correlation $\rho = 0.84$ with 84\% of individual profiles above $\rho > 0.7$ confirms that the bell-shaped depth profile is a consistent cross-family pattern.
 
-\subsection{Comparison to nonparametric baselines}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../results/figures/cti/fig1_depth_profiles.pdf}
+\caption{Depth-wise representation quality across 5 model families (one representative model per family, latest checkpoint). The bell-shaped pattern---quality rising through early layers and declining near the final layer---is consistent across families and datasets.}
+\label{fig:depth_profiles}
+\end{figure}
 
-Within a single family (Pythia), a kNN regressor achieves $R^2 = 0.91$, outperforming our Gaussian law ($R^2 = 0.81$). However, the kNN baseline requires target-family data and cannot generalize cross-family. Our law's value is \emph{transferability}: 8 parameters fitted on one set of families predict unseen families with no additional fitting. Table~\ref{tab:lofo} demonstrates this advantage: no family-specific data is used at test time, yet $R^2 = 0.78$ is achieved.
+\subsection{Comparison to alternative baselines}
+
+Table~\ref{tab:baselines} compares our Gaussian law against 4 simpler alternatives, all evaluated with the same LOFO protocol.
+
+\begin{table}[t]
+\centering
+\caption{Cross-family LOFO comparison of parametric models. The Gaussian law achieves the best $R^2$ with a modest parameter budget.}
+\label{tab:baselines}
+\begin{tabular}{lccc}
+\toprule
+Model & Params & LOFO $R^2$ & LOFO MAE \\
+\midrule
+Intercept-only & 4 & 0.513 & 0.076 \\
+Linear-in-depth & 5 & 0.767 & 0.051 \\
+Quadratic-in-depth & 6 & 0.771 & 0.051 \\
+Quadratic + compute & 7 & 0.769 & 0.051 \\
+\textbf{Gaussian (ours)} & \textbf{8} & \textbf{0.780} & \textbf{0.050} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Gaussian law provides a modest but consistent improvement over all alternatives. Notably, the linear baseline (1 extra parameter over intercept) captures most of the depth-dependent variance ($\Delta R^2 = 0.254$), while the Gaussian adds a further $\Delta R^2 = 0.013$ with 3 additional parameters. The Gaussian's advantage lies in its interpretability (explicit peak location and compute dependence) and its ability to outperform the quadratic + compute model (7 params) despite their similar expressiveness, suggesting that the specific Gaussian-in-logit interaction between depth and compute captures structure that a generic polynomial misses.
+
+\subsection{Parameter stability}
+
+The shared parameters are stable across LOFO folds (Table~\ref{tab:params}), indicating that no single family drives the fit.
+
+\begin{table}[t]
+\centering
+\caption{Shared parameter stability across LOFO folds. Profile-likelihood CIs from the full dataset (unconstrained fit, $\beta$ allowed to be negative).}
+\label{tab:params}
+\begin{tabular}{lccc}
+\toprule
+Param & LOFO Mean $\pm$ SD & Unconstrained MLE & Profile 95\% CI \\
+\midrule
+$\alpha$ & $0.131 \pm 0.024$ & $0.123$ & $[-0.03, 0.20]$ \\
+$\beta$ & $0.665 \pm 0.104$ & $0.695$ & $[-0.48, 2.08]$ \\
+$\mu_0$ & $-1.01 \pm 0.32$ & $-0.92$ & $[-2.00, 0.92]$ \\
+$\mu_1$ & $0.086 \pm 0.018$ & $0.081$ & $[-0.03, 0.30]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The unconstrained MLE for $\beta$ is 0.695 (positive without any sign constraint), and $\beta$ is positive in all 5 LOFO folds. However, the profile-likelihood CI for $\beta$ is wide ($[-0.48, 2.08]$) and includes zero, reflecting correlations with other parameters. The consistent positive sign across folds and the model comparison evidence (Gaussian outperforming alternatives) together support the bell-shaped interpretation, though individual-parameter significance is limited by the nonlinear model structure.
 
 \section{Blind test: BLOOM}
 \label{sec:bloom}
 
-BLOOM~\citep{workshop2022bloom} is architecturally distinct from all training families: it uses ALiBi positional encoding~\citep{press2022alibi}, a 250K multilingual tokenizer, and was trained on ROOTS (a multilingual corpus) rather than English-only data. We treat it as a truly blind test---no BLOOM data was used in any fitting.
+BLOOM~\citep{workshop2022bloom} uses ALiBi positional encoding~\citep{press2022alibi} and was trained on the multilingual ROOTS corpus---architecturally and linguistically distinct from all training families. We evaluate 3 BLOOM sizes at multiple checkpoints (2300 observations) using parameters frozen from a Pythia-only fit.
 
-\paragraph{Setup.} We evaluate BLOOM-560M, 1.1B, and 1.7B at 7--8 training checkpoints each (2300 total observations) using parameters frozen from a Pythia-only fit.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../results/figures/cti/fig4_bloom_blind.pdf}
+\caption{BLOOM-1.7B blind test. Solid: observed BLOOM depth profiles. Dashed: frozen Pythia prediction (shape matches, level offset). Dotted: after 4-parameter $b_d$ calibration.}
+\label{fig:bloom}
+\end{figure}
 
 \paragraph{Results.}
 \begin{itemize}
-    \item \textbf{Shape transfer}: $\rho = 0.784$ (mean Spearman), with 84\% of profiles above $\rho > 0.7$. The bell-shaped depth profile is preserved.
-    \item \textbf{Absolute prediction}: $R^2 = -2.75$. The model \emph{fails} at predicting absolute quality levels---BLOOM representations are systematically weaker, likely due to multilingual training distributing capacity across languages.
-    \item \textbf{With $b_d$ calibration} (4 intercept parameters from a single checkpoint): $R^2 = 0.57$, MAE $= 0.046$.
+    \item \textbf{Shape transfer}: $\rho = 0.784$, with 84\% of profiles above $\rho > 0.7$.
+    \item \textbf{Zero-shot absolute}: $R^2 = -2.75$ (fails---BLOOM quality is systematically lower).
+    \item \textbf{Calibrated} (4 intercepts from one checkpoint): $R^2 = 0.57$, MAE $= 0.046$.
 \end{itemize}
 
-\paragraph{Interpretation.}
-The $b_d$ shift of $\approx -0.75$ in logit space is consistent across all 4 datasets, indicating a systematic quality reduction rather than task-specific effects. This is expected: a multilingual model allocates representational capacity across many languages, reducing per-language quality~\citep{workshop2022bloom}. The physics parameters ($\alpha, \beta, \mu_0, \mu_1$) are architecture-independent; dataset intercepts $b_d$ absorb family-level quality baselines.
+The $b_d$ shift of $\approx -0.75$ in logit space is consistent across datasets, suggesting a systematic quality reduction that we hypothesize results from multilingual capacity sharing. The shared parameters ($\alpha, \beta, \mu_0, \mu_1$) transfer; family-level baselines require calibration---analogous to how scaling law exponents transfer but proportionality constants differ.
 
-\paragraph{Honest framing.}
-We characterize the law as \emph{shape-universal, level-specific}: the depth profile shape transfers across architectures, but absolute quality levels require minimal calibration. This is analogous to how neural scaling laws for loss share exponents across architectures but differ in proportionality constants.
-
-\section{Universal late-training degradation}
+\section{Late-layer quality degradation}
 \label{sec:degradation}
 
-Across all 6 families, we observe that the final layer is \emph{not} the best layer for representation quality. Table~\ref{tab:degradation} shows the fraction of (model, dataset, checkpoint) profiles where quality peaks before the final layer.
+Across all 6 families, the final layer is not the best for kNN classification quality (Table~\ref{tab:degradation}, Figure~\ref{fig:degradation}).
 
 \begin{table}[t]
 \centering
-\caption{Late-training degradation rate: fraction of depth profiles where best layer $\neq$ final layer (with gap $> 0.01$ and best depth $< 0.95$).}
+\caption{Late-layer degradation: fraction of depth profiles where best layer occurs before the final layer (gap $> 0.01$, best depth $< 0.95$).}
 \label{tab:degradation}
 \begin{tabular}{lcc}
 \toprule
@@ -240,40 +265,38 @@ BLOOM & 50\% & 0.153 \\
 OPT & 38\% & 0.078 \\
 OLMo-2 & 23\% & 0.064 \\
 Pythia & 16\% & 0.045 \\
-\midrule
-Overall (5 train) & 22\% & -- \\
-Overall (incl.\ BLOOM) & 27\% & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\paragraph{Task dependence.}
-TREC (42 fine-grained classes) and CLINC (150 classes) show the highest degradation rates across families. This is consistent with the hypothesis that fine-grained classification places greater demands on intermediate representations, which specialize before the final layer collapses toward next-token prediction features.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../results/figures/cti/fig3_degradation.pdf}
+\caption{Quality gap (best layer $-$ final layer) across families and datasets. GPT-2 shows the largest degradation; TREC is most affected.}
+\label{fig:degradation}
+\end{figure}
 
-\paragraph{Is this an artifact?}
-We consider two alternative explanations: (1)~evaluation noise: degradation persists across multiple seeds and checkpoints, ruling out random fluctuation; (2)~checkpoint selection: degradation appears in both multi-checkpoint families (Pythia, OLMo-2, BLOOM) and final-only families (GPT-2, OPT, Cerebras-GPT), ruling out checkpoint-specific effects. The universality across 6 architecturally diverse families strengthens the case that this is a genuine property of decoder language models.
+The effect is robust across both multi-checkpoint families (Pythia, OLMo-2, BLOOM) and final-only families (GPT-2, OPT, Cerebras-GPT). Fine-grained tasks (TREC-42, CLINC-150) show higher degradation rates, consistent with the hypothesis that fine-grained classification relies on intermediate-layer features that are overwritten by next-token prediction specialization in later layers.
 
 \section{Discussion}
 
 \paragraph{Scope and limitations.}
-Our study covers decoder-only models up to 1.7B parameters. Extension to encoder-only models (BERT), encoder-decoder models (T5), and larger scales ($>$7B) is important future work. The law's practical utility for exact layer selection is limited (near-zero recovery ratio)---it predicts \emph{qualitative} depth profile shapes, not precise best-layer indices.
+\label{sec:limitations}
+Our study covers decoder-only models up to 1.7B parameters and 4 classification tasks. Extension to encoders (BERT), encoder-decoders (T5), larger models ($>$7B), and non-classification tasks is important future work. The law's practical utility for exact layer selection is limited: the predicted peak often defaults to the final layer for well-trained models (\S\ref{app:utility}). The modest $R^2$ advantage of the Gaussian over simpler baselines ($+0.013$ over linear) means the specific functional form is less important than the finding that depth profiles are \emph{predictably bell-shaped across architectures}.
 
-\paragraph{Why this law over a nonparametric model?}
-A nonparametric model (e.g., kNN on features) achieves higher in-distribution $R^2$ but requires target-family data. Our law's 8 parameters provide: (1) cross-family transfer without target data, (2) interpretable physics ($\alpha$ as quality--compute scaling, $\beta$ as profile sharpness), and (3) a framework for connecting depth-wise quality to theoretical analyses of information flow.
-
-\paragraph{Dataset reuse and overfitting.}
-All LOFO evaluations use held-out families with zero overlap. The BLOOM test is fully blind. We use only 4 evaluation datasets, which could limit generality; however, the 4 datasets span fine-grained (TREC-42, CLINC-150) to coarse (AG News-4) classification, and the law fits all simultaneously with shared physics parameters and separate intercepts.
+\paragraph{Statistical considerations.}
+Our 5004 observations come from 252 correlated depth profiles. Point-level $R^2$ values (the primary metric) are valid regardless of correlation structure, but associated $p$-values would be inflated if observations were treated as independent. We therefore focus on $R^2$, shape $\rho$, and cross-family transfer as our evidence, rather than emphasizing $p$-values.
 
 \paragraph{Connection to scaling laws.}
-Our law is analogous to neural scaling laws but operates on a different axis: depth rather than loss. The $\alpha$ parameter plays a role similar to the scaling exponent in $L \propto C^{-\alpha}$: it quantifies how compute improves representation quality. The $\beta$ parameter has no analog in standard scaling laws---it captures the uniquely depth-dependent structure of representations.
+Our law operates on a different axis---depth rather than loss---but shares the scaling law spirit of finding simple, predictive relationships in complex systems. The $\alpha$ parameter couples quality to compute; the $\beta$ parameter captures depth-dependent structure with no analog in standard scaling laws.
 
 \section{Conclusion}
 
-We present a shape-universal law for depth-wise representation quality in decoder language models. An 8-parameter Gaussian-in-logit model achieves $R^2 = 0.78$ in leave-one-family-out cross-validation across 5 families, with all nested $F$-tests significant at $p < 10^{-16}$. The depth-profile sharpness parameter $\beta$ has a profile-likelihood CI of $[0.08, 2.09]$, confirming that bell-shaped depth profiles are a robust regularity. A blind test on BLOOM confirms shape universality ($\rho = 0.78$) while honestly documenting that absolute quality levels require minimal family calibration. The discovery of universal late-training degradation across 6 architecturally diverse families provides evidence for architecture-independent regularities in representation geometry, complementing scaling laws for loss.
+We present a Gaussian-in-logit law for depth-wise representation quality in decoder language models. The law achieves $R^2 = 0.78$ in cross-family prediction, outperforming 4 simpler alternatives. A blind test on BLOOM confirms shape universality ($\rho = 0.78$) while showing that absolute levels require calibration. Late-layer quality degradation appears across all 6 tested families. Our results suggest that depth profiles follow architecture-independent regularities, complementing scaling laws that describe aggregate loss.
 
 \section*{Reproducibility statement}
 
-All experiments use publicly available models from HuggingFace: Pythia~\citep{biderman2023pythia}, OLMo-2~\citep{groeneveld2024olmo}, Cerebras-GPT~\citep{dey2023cerebras}, OPT~\citep{zhang2022opt}, GPT-2~\citep{radford2019language}, and BLOOM~\citep{workshop2022bloom}. Evaluation datasets are standard benchmarks. Our fitting procedure (L-BFGS-B with 20 random restarts) is deterministic given fixed random seeds. Code and all result files will be released upon publication.
+All models are publicly available: Pythia~\citep{biderman2023pythia}, OLMo-2~\citep{groeneveld2024olmo}, Cerebras-GPT~\citep{dey2023cerebras}, OPT~\citep{zhang2022opt}, GPT-2~\citep{radford2019language}, BLOOM~\citep{workshop2022bloom}. Evaluation datasets are standard benchmarks~\citep{larson2019clinc, lehmann2015dbpedia, voorhees2000trec, zhang2015yahoo}. Our fitting procedure (L-BFGS-B, 20 restarts) is deterministic given seeds. Code and results will be released.
 
 \bibliography{references}
 \bibliographystyle{colm2026_conference}
@@ -284,15 +307,15 @@ All experiments use publicly available models from HuggingFace: Pythia~\citep{bi
 \subsection{Pythia zero-shot transfer}
 \label{app:zeroshot}
 
-As a stronger test of universality, we fit the law on Pythia alone (3520 observations across 4 model sizes and 12 checkpoints) and predict all other families zero-shot. This yields $R^2 = 0.78$ (MAE = 0.054) on 1484 non-Pythia observations, with shape $\rho = 0.86$. Per-family results: Cerebras-GPT $R^2=0.73$, GPT-2 $R^2=0.84$, OLMo-2 $R^2=0.77$, OPT $R^2=0.75$.
+Fitting on Pythia alone (3520 observations, 4 sizes, 12 checkpoints) and predicting all other families zero-shot yields $R^2 = 0.78$ (MAE = 0.054) with shape $\rho = 0.86$.
 
 \subsection{Practical utility for layer selection}
 \label{app:utility}
 
-We test whether the law can predict the best extraction layer. For well-trained models (high $C/N$), the predicted peak $\mu_0 + \mu_1 \log(C/N)$ often exceeds 1.0, defaulting to the final layer. The recovery ratio (fraction of cases where predicted best layer matches actual best layer) is near zero. This is an honest negative result: the law captures shape but is too coarse for precise layer selection. Practitioners should still evaluate multiple layers empirically.
+The predicted peak $\mu_0 + \mu_1 \log(C/N)$ often exceeds 1.0 for well-trained models, defaulting to the final layer. The recovery ratio (predicted best layer = actual best layer) is near zero. The law captures qualitative shape, not precise layer indices.
 
-\subsection{Full profile-likelihood curves}
+\subsection{Profile-likelihood analysis}
 
-Profile-likelihood analysis fixes each physics parameter at a grid of values, re-optimizes all others, and identifies the 95\% CI where deviance $< \chi^2_1(0.95) = 3.84$. The key finding is that $\beta$ is the most individually identifiable parameter (CI excludes zero), while $\alpha$ and $\mu_1$ are correlated with $\mu_0$ and each other, leading to wider individual CIs despite joint significance.
+We compute profile-likelihood CIs by fixing each parameter at a grid of 30 values, re-optimizing all others (8 restarts each), and identifying the 95\% CI where deviance $< \chi^2_1(0.95) = 3.84$. All CIs are from the \emph{unconstrained} fit ($\beta$ allowed negative). The wide CIs reflect parameter correlations in the nonlinear model rather than lack of signal: LOFO $R^2 = 0.78$ across 5 independent family holdouts provides the strongest evidence for the law's predictive power.
 
 \end{document}
