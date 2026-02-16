@@ -79,29 +79,61 @@ def fit_model(func, c, d, p0=None, bounds=None):
 
 
 def extract_curves(state: Dict) -> List[Dict]:
-    """Extract (model, dataset, C[], D[]) curves from CTI state."""
+    """Extract (model, dataset, C[], D[]) curves from CTI state.
+
+    Handles nested format: results[model][dataset][layer_str][seed_str] = {...}
+    Also handles flat pipe-delimited keys as fallback.
+    """
     results = state.get("results", {})
     total_layers = state.get("config", {}).get("total_layers", 12)
 
     # Group by (model, dataset)
     grouped = {}
-    for key, val in results.items():
-        if val.get("status") != "ok":
+
+    # Try nested format first (results[model][dataset][layer][seed])
+    for model_key, model_val in results.items():
+        if not isinstance(model_val, dict):
             continue
-        parts = key.split("|")
-        if len(parts) < 4:
-            continue
-        model, dataset = parts[0], parts[1]
-        layer = int(parts[2].replace("L", ""))
-        seed = int(parts[3].replace("seed", ""))
-        gk = f"{model}|{dataset}"
-        if gk not in grouped:
-            grouped[gk] = {}
-        if layer not in grouped[gk]:
-            grouped[gk][layer] = []
-        s_val = val.get("steerability", val.get("S"))
-        if s_val is not None:
-            grouped[gk][layer].append(float(s_val))
+        for dataset_key, dataset_val in model_val.items():
+            if not isinstance(dataset_val, dict):
+                continue
+            for layer_key, layer_val in dataset_val.items():
+                if not isinstance(layer_val, dict):
+                    continue
+                try:
+                    layer = int(layer_key)
+                except (ValueError, TypeError):
+                    continue
+                for seed_key, run in layer_val.items():
+                    if not isinstance(run, dict) or run.get("status") != "ok":
+                        continue
+                    gk = f"{model_key}|{dataset_key}"
+                    if gk not in grouped:
+                        grouped[gk] = {}
+                    if layer not in grouped[gk]:
+                        grouped[gk][layer] = []
+                    s_val = run.get("steerability", run.get("S"))
+                    if s_val is not None:
+                        grouped[gk][layer].append(float(s_val))
+
+    # Fallback: flat pipe-delimited keys
+    if not grouped:
+        for key, val in results.items():
+            if not isinstance(val, dict) or val.get("status") != "ok":
+                continue
+            parts = key.split("|")
+            if len(parts) < 4:
+                continue
+            model, dataset = parts[0], parts[1]
+            layer = int(parts[2].replace("L", ""))
+            gk = f"{model}|{dataset}"
+            if gk not in grouped:
+                grouped[gk] = {}
+            if layer not in grouped[gk]:
+                grouped[gk][layer] = []
+            s_val = val.get("steerability", val.get("S"))
+            if s_val is not None:
+                grouped[gk][layer].append(float(s_val))
 
     curves = []
     for gk, layer_data in grouped.items():
