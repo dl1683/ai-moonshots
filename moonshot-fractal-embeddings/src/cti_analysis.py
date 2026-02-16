@@ -459,6 +459,14 @@ def main():
     print(f"\nCTI Pilot Evaluation")
     print(f"====================")
     print(f"Curves analyzed: {result['n_curves']}")
+
+    if result.get("status") == "no_data":
+        print(f"DECISION: {result['decision']}")
+        print(f"Reason: {result.get('reason', 'insufficient data')}")
+        print(f"\nNeed at least 3 layers per (model, dataset) curve.")
+        print(f"Saved to: {out_path}")
+        return
+
     print(f"Criteria passed: {result['n_pass']}/6")
     print(f"Falsified: {result['n_falsified']}")
     print(f"DECISION: {result['decision']}")
@@ -467,7 +475,6 @@ def main():
     for name, check in result.get("criteria", {}).items():
         status = "PASS" if check.get("pass") else ("FALSIFIED" if check.get("falsified") else "FAIL")
         print(f"  {name}: {status}")
-        # Print key metrics
         for k in ["median_adj_r2", "p25_adj_r2", "max_pairwise_diff", "pooled_mean_alpha",
                    "pooled_ci_width", "median_mape", "frac_pl_wins", "frac_sane",
                    "fraction_passing"]:
