@@ -615,13 +615,11 @@ class V5Trainer:
                 )
                 l0_pos_prefix = self.model(batch['l0_pos_ids'], batch['l0_pos_mask'])
 
-                # Get prefix embeddings based on sampled lengths
-                # For simplicity, we use the most common prefix length for the positive
-                # (use same negatives for prefix and full)
-                mode_prefix_len = prefix_lengths.mode().values.item()
-
-                prefix_emb = self.model.fractal_head.get_prefix_embedding(
-                    anchor_prefix['blocks'], mode_prefix_len
+                # True per-example prefix embeddings: block_dropout_mask already
+                # zeros blocks beyond each sample's prefix_length, so concatenating
+                # all blocks and normalizing gives correct per-sample prefixes.
+                prefix_emb = F.normalize(
+                    torch.cat(anchor_prefix['blocks'], dim=-1), dim=-1
                 )
                 l0_pos_emb = l0_pos_prefix['full_embedding']  # Use full for positive (it's same class)
 
