@@ -318,7 +318,11 @@ def test_h3_mediation(rows, datasets):
             "n_points": len(all_sep),
             "spearman": {"rho": float(rho), "p": float(p)},
             "pearson": {"r": float(r_val), "p": float(pr)},
-            "pass": bool(rho > 0.4 and p < 0.01),
+            # NOTE: prereg threshold was rho > 0.5. We lowered to 0.4 as a
+            # protocol deviation. Mark both for transparency.
+            "pass_prereg_threshold": bool(rho > 0.5 and p < 0.01),
+            "pass_relaxed_threshold": bool(rho > 0.4 and p < 0.01),
+            "pass": bool(rho > 0.5 and p < 0.01),  # Use prereg threshold
         }
 
     # Also keep the legacy cross-level test for comparison
@@ -350,12 +354,19 @@ def test_h3_mediation(rows, datasets):
             "note": "Legacy cross-level test (sep_l1 vs knn_l0). Negative rho expected.",
         }
 
-    # H3 passes if contrastive objective shows level-matched mediation
+    # H3 passes if contrastive objective passes at prereg threshold (rho > 0.5)
     contrastive_pass = results.get("contrastive", {}).get("pass", False)
+    contrastive_relaxed = results.get("contrastive", {}).get("pass_relaxed_threshold", False)
     return {
         "level_matched": results,
         "legacy_cross_level": legacy,
-        "pass": contrastive_pass,
+        "pass": contrastive_pass,  # Strict prereg threshold
+        "pass_relaxed": contrastive_relaxed,  # Exploratory
+        "protocol_deviation": (
+            "H3 was pre-registered as pooled rho>0.5. Analysis switched to "
+            "level-matched + objective split. Contrastive rho=0.562 passes "
+            "prereg threshold; pooled rho=0.406 fails it."
+        ),
     }
 
 

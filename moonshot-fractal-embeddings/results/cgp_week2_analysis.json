@@ -107,6 +107,8 @@
           "r": 0.4970220051003285,
           "p": 0.00032615235883681065
         },
+        "pass_prereg_threshold": true,
+        "pass_relaxed_threshold": true,
         "pass": true
       },
       "lm": {
@@ -119,6 +121,8 @@
           "r": 0.3544802085626619,
           "p": 0.013434809604093398
         },
+        "pass_prereg_threshold": true,
+        "pass_relaxed_threshold": true,
         "pass": true
       },
       "all": {
@@ -131,7 +135,9 @@
           "r": 0.3826230407011809,
           "p": 0.00011943068965883716
         },
-        "pass": true
+        "pass_prereg_threshold": false,
+        "pass_relaxed_threshold": true,
+        "pass": false
       }
     },
     "legacy_cross_level": {
@@ -146,7 +152,9 @@
       },
       "note": "Legacy cross-level test (sep_l1 vs knn_l0). Negative rho expected."
     },
-    "pass": true
+    "pass": true,
+    "pass_relaxed": true,
+    "protocol_deviation": "H3 was pre-registered as pooled rho>0.5. Analysis switched to level-matched + objective split. Contrastive rho=0.562 passes prereg threshold; pooled rho=0.406 fails it."
   },
   "h4_uniformity": {
     "per_objective": {
