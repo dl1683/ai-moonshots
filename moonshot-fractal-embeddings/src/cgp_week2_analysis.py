@@ -365,6 +365,47 @@ def test_h4_uniformity(rows, datasets):
     return {"per_objective": results, "pass": overall_pass}
 
 
+def compute_kappa_from_rows(rows, datasets):
+    """
+    Compute centroid regularity parameter kappa from the data.
+    kappa = min pairwise dist^2 / mean pairwise dist^2.
+    kappa = 1 means simplex (equidistant centroids), kappa << 1 means irregular.
+
+    Since we don't have raw embeddings, we estimate kappa from class_sep_l1
+    variation across conditions. This is a PROXY — full kappa computation
+    requires raw embeddings and will be done in Week 3.
+    """
+    # For now, report that kappa computation needs raw embeddings
+    # We can still estimate it from the sep_l1 variation
+    sep_by_condition = {}
+    for r in rows:
+        if r["objective"] == "baseline":
+            continue
+        if r["dataset"] not in datasets:
+            continue
+        key = (r["objective"], r["lambda_sep"], r["lambda_uni"], r["dataset"])
+        sep_by_condition[key] = r.get("class_sep_l1", 0)
+
+    if len(sep_by_condition) < 5:
+        return {"note": "insufficient data for kappa estimation"}
+
+    seps = [v for v in sep_by_condition.values() if np.isfinite(v) and v > 0]
+    if len(seps) < 5:
+        return {"note": "insufficient valid separation values"}
+
+    # kappa_proxy: min(S) / mean(S) — rough proxy
+    kappa_proxy = min(seps) / np.mean(seps) if np.mean(seps) > 0 else 0
+    return {
+        "kappa_proxy": float(kappa_proxy),
+        "min_sep": float(min(seps)),
+        "max_sep": float(max(seps)),
+        "mean_sep": float(np.mean(seps)),
+        "std_sep": float(np.std(seps)),
+        "n_conditions": len(seps),
+        "note": "Proxy only. Full kappa needs raw embeddings (Week 3).",
+    }
+
+
 def test_q_vs_s(rows, datasets):
     """
     Compute multivariate Fisher Q and compare predictive power to scalar S.
@@ -558,6 +599,16 @@ def main():
             print(f"  {obj}: uni_diff={r['mean_diff']:.4f}, helps={r['uniformity_helps']}")
     print(f"  H4 overall: {'PASS' if h4['pass'] else 'FAIL'}")
 
+    # Kappa estimation
+    print("\n--- Centroid Regularity (kappa proxy) ---")
+    kappa = compute_kappa_from_rows(rows, datasets)
+    if "kappa_proxy" in kappa:
+        print(f"  kappa_proxy = {kappa['kappa_proxy']:.3f}")
+        print(f"  sep range: [{kappa['min_sep']:.3f}, {kappa['max_sep']:.3f}]")
+        print(f"  sep mean = {kappa['mean_sep']:.3f} +/- {kappa['std_sep']:.3f}")
+    else:
+        print(f"  {kappa.get('note', 'N/A')}")
+
     # Theory tests
     print("\n--- Theory Test: Q vs S ---")
     q_vs_s = test_q_vs_s(rows, datasets)
@@ -600,6 +651,7 @@ def main():
         "h2_pooled_effect": h2,
         "h3_mediation": h3,
         "h4_uniformity": h4,
+        "kappa_estimation": kappa,
         "theory_q_vs_s": q_vs_s,
         "theory_mediation": mediation,
         "decision": decision,
