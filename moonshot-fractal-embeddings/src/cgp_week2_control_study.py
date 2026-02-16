@@ -38,6 +38,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from scipy import stats
 from torch.utils.data import DataLoader
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -521,22 +522,7 @@ def main():
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
-    # ── Analysis ─────────────────────────────────────────────────────
-    print(f"\n{'='*60}")
-    print("  ANALYSIS: Causal Mediation Tests")
-    print(f"{'='*60}")
-
-    analysis = analyze_control_study(all_results)
-
-    # Print key results
-    for test_name, test_result in analysis.items():
-        if isinstance(test_result, dict):
-            print(f"\n  {test_name}:")
-            for k, v in test_result.items():
-                if isinstance(v, (float, int, bool)):
-                    print(f"    {k}: {v}")
-
-    # ── Save ─────────────────────────────────────────────────────────
+    # ── Save raw results FIRST (before analysis, to avoid data loss) ──
     output = {
         "experiment": "CGP Week 2: Orthogonal Control Study",
         "model": MODEL_KEY,
@@ -549,14 +535,39 @@ def main():
             "eval_datasets": EVAL_DATASETS,
         },
         "conditions": all_results,
-        "analysis": analysis,
     }
 
     output_path = RESULTS_DIR / "cgp_week2_control_study.json"
     with open(output_path, "w") as f:
         json.dump(output, f, indent=2,
                   default=lambda o: float(o) if hasattr(o, 'item') else str(o))
-    print(f"\nSaved to {output_path}")
+    print(f"\nRaw results saved to {output_path}")
+
+    # ── Analysis ─────────────────────────────────────────────────────
+    print(f"\n{'='*60}")
+    print("  ANALYSIS: Causal Mediation Tests")
+    print(f"{'='*60}")
+
+    try:
+        analysis = analyze_control_study(all_results)
+
+        # Print key results
+        for test_name, test_result in analysis.items():
+            if isinstance(test_result, dict):
+                print(f"\n  {test_name}:")
+                for k, v in test_result.items():
+                    if isinstance(v, (float, int, bool)):
+                        print(f"    {k}: {v}")
+
+        # Re-save with analysis
+        output["analysis"] = analysis
+        with open(output_path, "w") as f:
+            json.dump(output, f, indent=2,
+                      default=lambda o: float(o) if hasattr(o, 'item') else str(o))
+        print(f"\nFull results (with analysis) saved to {output_path}")
+    except Exception as e:
+        print(f"\n  WARNING: Analysis failed: {e}")
+        print("  Raw results were already saved. Run cgp_week2_analysis.py instead.")
 
 
 def analyze_control_study(results: List[Dict]) -> Dict:

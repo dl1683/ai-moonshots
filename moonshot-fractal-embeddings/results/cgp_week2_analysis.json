@@ -1,0 +1,184 @@
+{
+  "h1_monotonic": {
+    "per_dataset": {
+      "clinc": {
+        "lambda_values": [
+          0.0,
+          0.1,
+          0.3,
+          1.0
+        ],
+        "sep_means": [
+          1.3056666666666665,
+          1.3499999999999999,
+          1.4146666666666665,
+          1.5010000000000001
+        ],
+        "knn_means": [
+          0.26666666666666666,
+          0.2993333333333333,
+          0.33166666666666667,
+          0.35566666666666663
+        ],
+        "sep_monotonic": true,
+        "knn_monotonic": true,
+        "jt_z_sep": 7.390958166994495,
+        "jt_p_sep": 7.294165271787278e-14,
+        "jt_z_knn": 6.111753868860832,
+        "jt_p_knn": 4.927104280127992e-10,
+        "pass": true
+      },
+      "dbpedia_classes": {
+        "lambda_values": [
+          0.0,
+          0.1,
+          0.3,
+          1.0
+        ],
+        "sep_means": [
+          0.9289999999999999,
+          1.008,
+          1.0136666666666667,
+          1.1013333333333335
+        ],
+        "knn_means": [
+          0.19133333333333336,
+          0.2793333333333333,
+          0.3153333333333333,
+          0.381
+        ],
+        "sep_monotonic": true,
+        "knn_monotonic": true,
+        "jt_z_sep": 5.969620057957092,
+        "jt_p_sep": 1.1890335382958028e-09,
+        "jt_z_knn": 6.253887679764573,
+        "jt_p_knn": 2.001795396111561e-10,
+        "pass": true
+      }
+    },
+    "pass": true
+  },
+  "h2_pooled_effect": {
+    "per_objective": {
+      "contrastive": {
+        "mean_baseline": 0.229,
+        "mean_treated": 0.32705555555555554,
+        "mean_diff": 0.09805555555555553,
+        "ci_95": [
+          0.05972222222222223,
+          0.13777916666666665
+        ],
+        "ci_excludes_zero": true,
+        "t_stat": 4.49499172492415,
+        "p_value": 0.0001800604102615307,
+        "cohens_d": 2.0458918538389863,
+        "n_baseline": 6,
+        "n_treated": 18,
+        "pass": true
+      },
+      "lm": {
+        "mean_baseline": 0.248,
+        "mean_treated": 0.2611666666666667,
+        "mean_diff": 0.013166666666666715,
+        "ci_95": [
+          -0.00377777777777777,
+          0.030666666666666675
+        ],
+        "ci_excludes_zero": false,
+        "t_stat": 1.517344443616599,
+        "p_value": 0.14341921960768547,
+        "cohens_d": 0.6906180982380858,
+        "n_baseline": 6,
+        "n_treated": 18,
+        "pass": false
+      }
+    },
+    "pass": true
+  },
+  "h3_mediation": {
+    "n_points": 96,
+    "spearman_l0": {
+      "rho": -0.28783166509543484,
+      "p": 0.004459854291238941
+    },
+    "spearman_l1": {
+      "rho": 0.40571329156313113,
+      "p": 4.115364312919175e-05
+    },
+    "pearson_l0": {
+      "r": -0.19393729239699467,
+      "p": 0.05831588295341946
+    },
+    "pearson_l1": {
+      "r": 0.3826230407011809,
+      "p": 0.00011943068965883716
+    },
+    "pass": false
+  },
+  "h4_uniformity": {
+    "per_objective": {
+      "contrastive": {
+        "mean_uni0": 0.30254166666666665,
+        "mean_uni03": 0.2187916666666667,
+        "mean_diff": -0.08374999999999996,
+        "t_stat": -5.273292172296852,
+        "p_value": 3.49442774756907e-06,
+        "uniformity_helps": false,
+        "pass": true
+      },
+      "lm": {
+        "mean_uni0": 0.257875,
+        "mean_uni03": 0.266,
+        "mean_diff": 0.008124999999999993,
+        "t_stat": 1.453839304095054,
+        "p_value": 0.15278004596960895,
+        "uniformity_helps": false,
+        "pass": true
+      }
+    },
+    "pass": true
+  },
+  "kappa_estimation": {
+    "kappa_proxy": 0.7055090053726026,
+    "min_sep": 0.792,
+    "max_sep": 1.62,
+    "mean_sep": 1.1225937499999998,
+    "std_sep": 0.23999334097207264,
+    "n_conditions": 32,
+    "note": "Proxy only. Full kappa needs raw embeddings (Week 3)."
+  },
+  "theory_q_vs_s": {
+    "n_points": 96,
+    "r2_S_only_l0": 0.037611673382277555,
+    "r2_S_only_l1": 0.1464003912754176,
+    "r2_all_features_l0": 0.05337694493916567,
+    "r2_all_features_l1": 0.3828284046716136,
+    "improvement_l0": 0.015765271556888116,
+    "improvement_l1": 0.236428013396196,
+    "feature_importances_l0": {
+      "class_sep_l1": 0.012741659039300551,
+      "alignment_l1": 0.0,
+      "uniformity": 0.0,
+      "anisotropy": 0.0,
+      "effective_rank": 0.0,
+      "hubness_skewness": 0.0,
+      "mean_local_margin": 0.007022899266048731,
+      "mean_neighborhood_entropy": 0.0
+    },
+    "s_is_sufficient": true
+  },
+  "theory_mediation": {
+    "n_points": 96,
+    "r2_sep_only": 0.037611673382277555,
+    "r2_sep_plus_objective": 0.12432185047753153,
+    "delta_r2": 0.08671017709525397,
+    "mediation_holds": false,
+    "interpretation": "Mediation PARTIAL: objective adds 0.087 R2 beyond class separation"
+  },
+  "decision": "YELLOW",
+  "n_conditions": 98,
+  "datasets": [
+    "clinc",
+    "dbpedia_classes"
+  ]
+}
