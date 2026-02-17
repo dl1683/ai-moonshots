@@ -1,0 +1,168 @@
+{
+  "experiment": "unseen_family_validation",
+  "hypothesis": "kappa universality classes predict hybrid architecture behavior",
+  "preregistered": {
+    "pooled_mae_threshold": 0.08,
+    "global_rho_threshold": 0.95
+  },
+  "hybrid_points": [
+    {
+      "model": "tiiuae/Falcon-H1-0.5B-Base",
+      "paradigm": "hybrid",
+      "n_layers": 36,
+      "n_params": 487800000,
+      "alpha": 0.0,
+      "knn": 0.082,
+      "kappa": 0.1479,
+      "eta": 0.0711,
+      "kappa_eta": 0.010514
+    },
+    {
+      "model": "tiiuae/Falcon-H1-0.5B-Base",
+      "paradigm": "hybrid",
+      "n_layers": 36,
+      "n_params": 487800000,
+      "alpha": 0.3,
+      "knn": 0.087,
+      "kappa": 0.1483,
+      "eta": 0.0807,
+      "kappa_eta": 0.011966
+    },
+    {
+      "model": "tiiuae/Falcon-H1-0.5B-Base",
+      "paradigm": "hybrid",
+      "n_layers": 36,
+      "n_params": 487800000,
+      "alpha": 0.5,
+      "knn": 0.098,
+      "kappa": 0.1599,
+      "eta": 0.0779,
+      "kappa_eta": 0.012456
+    },
+    {
+      "model": "tiiuae/Falcon-H1-0.5B-Base",
+      "paradigm": "hybrid",
+      "n_layers": 36,
+      "n_params": 487800000,
+      "alpha": 0.7,
+      "knn": 0.132,
+      "kappa": 0.1909,
+      "eta": 0.074,
+      "kappa_eta": 0.014127
+    },
+    {
+      "model": "tiiuae/Falcon-H1-0.5B-Base",
+      "paradigm": "hybrid",
+      "n_layers": 36,
+      "n_params": 487800000,
+      "alpha": 0.8,
+      "knn": 0.189,
+      "kappa": 0.2331,
+      "eta": 0.0883,
+      "kappa_eta": 0.020583
+    },
+    {
+      "model": "tiiuae/Falcon-H1-0.5B-Base",
+      "paradigm": "hybrid",
+      "n_layers": 36,
+      "n_params": 487800000,
+      "alpha": 0.85,
+      "knn": 0.237,
+      "kappa": 0.2852,
+      "eta": 0.0578,
+      "kappa_eta": 0.016485
+    },
+    {
+      "model": "tiiuae/Falcon-H1-0.5B-Base",
+      "paradigm": "hybrid",
+      "n_layers": 36,
+      "n_params": 487800000,
+      "alpha": 0.9,
+      "knn": 0.331,
+      "kappa": 0.3583,
+      "eta": 0.0457,
+      "kappa_eta": 0.016374
+    },
+    {
+      "model": "tiiuae/Falcon-H1-0.5B-Base",
+      "paradigm": "hybrid",
+      "n_layers": 36,
+      "n_params": 487800000,
+      "alpha": 0.95,
+      "knn": 0.538,
+      "kappa": 0.536,
+      "eta": 0.0491,
+      "kappa_eta": 0.026318
+    },
+    {
+      "model": "tiiuae/Falcon-H1-0.5B-Base",
+      "paradigm": "hybrid",
+      "n_layers": 36,
+      "n_params": 487800000,
+      "alpha": 1.0,
+      "knn": 0.579,
+      "kappa": 0.5933,
+      "eta": 0.0377,
+      "kappa_eta": 0.022367
+    }
+  ],
+  "prediction": {
+    "mae_1d_pooled": 0.025477602434847868,
+    "mae_2d_pooled": 0.02601089847185297,
+    "mae_1d_transformer": 0.060128601119086564,
+    "mae_1d_ssm": 0.012300966115268944,
+    "2d_beats_1d": false,
+    "closest_family": "SSM"
+  },
+  "geometry": {
+    "eta": {
+      "transformer_mean": 0.03820845402430802,
+      "ssm_mean": 0.07535774723548887,
+      "hybrid_mean": 0.0647,
+      "hybrid_between": true
+    },
+    "slope": {
+      "transformer": 0.6946150762454943,
+      "ssm": 1.126150014886223,
+      "hybrid": 1.1354589235415855,
+      "hybrid_between": false
+    }
+  },
+  "class_assignment": "ssm",
+  "global_correlation": {
+    "rho": 0.9640812914013765,
+    "r": 0.954575733829723,
+    "n_points": 72
+  },
+  "scorecard": {
+    "passes": 3,
+    "total": 5,
+    "details": [
+      {
+        "criterion": "1D MAE <= 0.08 (pooled model)",
+        "passed": true,
+        "value": "MAE=0.0255"
+      },
+      {
+        "criterion": "2D beats 1D on hybrids",
+        "passed": false,
+        "value": "2D=0.0260 vs 1D=0.0255"
+      },
+      {
+        "criterion": "Hybrid eta between T and SSM",
+        "passed": 1.0,
+        "value": "eta_h=0.0647, T=0.0382, S=0.0754"
+      },
+      {
+        "criterion": "Hybrid slope between T and SSM",
+        "passed": 0.0,
+        "value": "slope_h=1.1355, T=0.6946, S=1.1262"
+      },
+      {
+        "criterion": "Global rho >= 0.95 with hybrids",
+        "passed": 1.0,
+        "value": "rho=0.9641"
+      }
+    ]
+  }
+}
