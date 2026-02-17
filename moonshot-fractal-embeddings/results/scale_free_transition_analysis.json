@@ -1,0 +1,53 @@
+{
+  "analysis": "scale_independent_transition",
+  "depth_transition": [
+    {
+      "depth": 12,
+      "alpha_50": 0.5733864812535965,
+      "model": "EleutherAI/pythia-160m",
+      "family": "pythia"
+    },
+    {
+      "depth": 16,
+      "alpha_50": 0.6377583527437463,
+      "model": "EleutherAI/pythia-1b",
+      "family": "pythia"
+    },
+    {
+      "depth": 16,
+      "alpha_50": 0.6995548085838567,
+      "model": "allenai/OLMo-2-0425-1B",
+      "family": "olmo2"
+    },
+    {
+      "depth": 24,
+      "alpha_50": 0.7559082684255292,
+      "model": "EleutherAI/pythia-410m",
+      "family": "pythia"
+    },
+    {
+      "depth": 24,
+      "alpha_50": 0.7426103830405211,
+      "model": "EleutherAI/pythia-1.4b",
+      "family": "pythia"
+    },
+    {
+      "depth": 24,
+      "alpha_50": 0.3468828009706595,
+      "model": "HuggingFaceTB/SmolLM2-1.7B",
+      "family": "smollm2"
+    },
+    {
+      "depth": 28,
+      "alpha_50": 0.6570571554891745,
+      "model": "Qwen/Qwen3-0.6B",
+      "family": "qwen3"
+    },
+    {
+      "depth": 32,
+      "alpha_50": 0.818220013320085,
+      "model": "EleutherAI/pythia-2.8b",
+      "family": "pythia"
+    }
+  ]
+}
