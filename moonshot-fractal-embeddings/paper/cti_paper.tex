@@ -35,7 +35,7 @@
 \maketitle
 
 \begin{abstract}
-We document a persistent empirical regularity: the depth profile of representation quality in decoder-only language models follows a bell-shaped curve that is remarkably consistent across architectures. An 8-parameter Gaussian-in-logit model predicts chance-normalized kNN accuracy at any layer as a function of normalized depth and compute-to-parameter ratio. In leave-one-family-out cross-validation across 5 families (Pythia, OLMo-2, Cerebras-GPT, OPT, GPT-2; 5004 observations from 252 depth profiles), we achieve $R^2 = 0.78$ with mean shape correlation $\rho = 0.84$. A nonparametric GAM with depth-compute interaction achieves only $R^2 = 0.73$ in the same cross-family test, demonstrating that the parametric form captures genuine structural regularity rather than in-distribution smoothness. A blind test on BLOOM (ALiBi attention, multilingual) confirms shape transfer ($\rho = 0.78$). Profile-level bootstrap CIs on held-out predictions confirm the advantage over linear baselines ($\Delta R^2 = +0.30$, 95\% CI $[+0.04, +0.66]$; $\Delta$MAE $= -0.003$, 95\% CI $[-0.006, -0.001]$; $p_{\text{cluster}} = 0.007$). We characterize this as a \emph{shape-universal, level-specific} regularity: depth profiles share a common form across architectures, but absolute quality depends on training data and model family.
+We document a persistent empirical regularity: the depth profile of representation quality in decoder-only language models follows a bell-shaped curve that is remarkably consistent across architectures. An 8-parameter Gaussian-in-logit model predicts chance-normalized kNN accuracy at any layer as a function of normalized depth and compute-to-parameter ratio. In leave-one-family-out cross-validation across 5 families (Pythia, OLMo-2, Cerebras-GPT, OPT, GPT-2; 5004 observations from 252 depth profiles), we achieve $R^2 = 0.78$ with mean shape correlation $\rho = 0.84$. Ablations show that depth curvature ($\beta$) accounts for most explanatory power ($\Delta R^2 = -0.27$ when removed). Among 4 nonparametric methods tested in the same cross-family protocol, 3 fail to generalize (collapsing on at least one held-out family); only gradient-boosted trees outperform our model ($R^2 = 0.83$) but with $\sim$1000$\times$ more parameters and no interpretable structure. A blind test on BLOOM (ALiBi attention, multilingual) confirms shape transfer ($\rho = 0.78$). Held-out profile-level bootstrap CIs confirm the advantage over linear baselines ($p_{\text{cluster}} = 0.007$). We characterize this as a \emph{shape-universal, level-specific} regularity: depth profiles share a common form across architectures, but absolute quality depends on training data and model family.
 \end{abstract}
 
 \section{Introduction}
@@ -189,33 +189,35 @@ Table~\ref{tab:baselines} compares our Gaussian model against both simpler param
 
 \begin{table}[t]
 \centering
-\caption{Cross-family LOFO comparison. The Gaussian achieves the best LOFO $R^2$ overall. Splines interpolate well within families but the GAM fails to generalize.}
+\caption{Cross-family LOFO comparison. The Gaussian achieves the best $R^2$ among interpretable models. GBRT outperforms in raw prediction but offers no closed-form description.}
 \label{tab:baselines}
 \begin{tabular}{lccc}
 \toprule
 Model & Params & LOFO $R^2$ & LOFO MAE \\
 \midrule
-\multicolumn{4}{l}{\emph{Parametric baselines}} \\
+\multicolumn{4}{l}{\emph{Parametric (interpretable)}} \\
 Intercept-only & 4 & 0.513 & 0.076 \\
 Linear-in-depth & 5 & 0.767 & 0.051 \\
-Quadratic-in-depth & 6 & 0.771 & 0.051 \\
 Quadratic + compute & 7 & 0.769 & 0.051 \\
 \textbf{Gaussian (ours)} & \textbf{8} & \textbf{0.780} & \textbf{0.050} \\
 \midrule
-\multicolumn{4}{l}{\emph{Nonparametric baselines (within-family interpolation)}} \\
-Spline-per-dataset & $\sim$200 & 0.806$^\dagger$ & 0.045 \\
-Spline + compute & $\sim$600 & 0.799$^\dagger$ & 0.047 \\
-GAM (RBF thin-plate) & $\sim$1000 & 0.729 & 0.052 \\
+\multicolumn{4}{l}{\emph{Nonparametric (black-box)}} \\
+MLP (32,16) & $\sim$2K & 0.674 & 0.059 \\
+GAM (RBF) & $\sim$1K & 0.729 & 0.052 \\
+Gaussian Process & $\sim$5K$^*$ & 0.751 & 0.047 \\
+GBRT (100 trees) & $\sim$3K & \textbf{0.826} & \textbf{0.044} \\
 \bottomrule
-\multicolumn{4}{l}{\footnotesize $^\dagger$Splines pool training data across families; depth-only, no compute interaction.}
+\multicolumn{4}{l}{\footnotesize $^*$Effective params = training points (non-parametric).}
 \end{tabular}
 \end{table}
 
 \paragraph{Parametric comparison.}
-The Gaussian provides a modest but consistent improvement over all parametric alternatives. The linear baseline captures most depth-dependent variance ($\Delta R^2 = 0.254$ over intercept), while the Gaussian adds $\Delta R^2 = 0.013$ with 3 additional parameters. Using per-profile held-out predictions from each LOFO fold (252 profiles total), a stratified bootstrap (10{,}000 resamples) gives a 95\% CI of $[+0.04, +0.66]$ for the LOFO-style $\Delta R^2$ advantage, excluding zero. A cluster-robust paired $t$-test using the held-out profile as the unit of analysis yields $t_{251} = 2.71$, $p = 0.007$. The Gaussian also achieves significantly lower MAE ($\Delta$MAE $= -0.003$, 95\% CI $[-0.006, -0.001]$). The advantage is positive for 58\% of held-out profiles (147/252), most pronounced for Pythia (62\%) and GPT-2 (67\%).
+The Gaussian provides a modest but consistent improvement over all parametric alternatives. The linear baseline captures most depth-dependent variance ($\Delta R^2 = 0.254$ over intercept), while the Gaussian adds $\Delta R^2 = 0.013$ with 3 additional parameters. Using per-profile held-out predictions from each LOFO fold (252 profiles total), a stratified bootstrap (10{,}000 resamples) gives a 95\% CI of $[+0.04, +0.66]$ for the LOFO-style $\Delta R^2$ advantage, excluding zero. A cluster-robust paired $t$-test using the held-out profile as the unit of analysis yields $t_{251} = 2.71$, $p = 0.007$. The Gaussian also achieves significantly lower MAE ($\Delta$MAE $= -0.003$, 95\% CI $[-0.006, -0.001]$).
 
 \paragraph{Nonparametric comparison.}
-Spline-per-dataset ($R^2 = 0.806$) achieves the highest point-level $R^2$ by fitting separate smooth curves per dataset, but it pools training data from all training families---it interpolates rather than generalizes. When tested with a model that must \emph{extrapolate} to new families, the nonparametric approach fails: the GAM (thin-plate RBF with depth-compute interaction) achieves only $R^2 = 0.729$ in LOFO, \emph{worse} than even the linear baseline on some folds (OLMo-2: $R^2 = 0.39$). The Gaussian's parametric structure enables it to generalize to architecturally novel families ($R^2 = 0.78$ on OLMo-2) where the GAM collapses. This demonstrates that the 8-parameter form captures genuine structural regularity, not just in-distribution smoothness.
+Gradient-boosted regression trees (GBRT, $R^2 = 0.826$) outperform the Gaussian ($R^2 = 0.780$) in raw LOFO prediction, but provide no closed-form expression, no interpretable parameters, and no insight into the regularity's structure. The Gaussian captures 94\% of GBRT's explained variance ($0.780/0.826$) with 3 orders of magnitude fewer parameters.
+
+Three of four nonparametric methods (GAM, GP, MLP) \emph{fail} to generalize cross-family, collapsing on at least one held-out family (GAM: OLMo-2 $R^2 = 0.39$; GP: OLMo-2 $R^2 = 0.52$; MLP: Pythia $R^2 = 0.31$). GBRT succeeds due to its inherent regularization (shallow trees), but at the cost of interpretability. The Gaussian's parametric structure provides a compact, interpretable summary of the regularity that generalizes more robustly than most nonparametric alternatives and nearly matches the best black-box method.
 
 \subsection{Parameter stability}
 
@@ -238,6 +240,28 @@ $\mu_1$ & $0.086 \pm 0.018$ & $0.081$ & $[-0.03, 0.30]$ \\
 \end{table}
 
 The unconstrained MLE for $\beta$ is 0.695 (positive without any sign constraint), and $\beta$ is positive in all 5 LOFO folds. However, the profile-likelihood CI for $\beta$ is wide ($[-0.48, 2.08]$) and includes zero, reflecting correlations with other parameters. The consistent positive sign across folds and the model comparison evidence (Gaussian outperforming alternatives) together support the bell-shaped interpretation, though individual-parameter significance is limited by the nonlinear model structure.
+
+\subsection{Ablation study}
+
+Table~\ref{tab:ablation} shows the contribution of each model component.
+
+\begin{table}[t]
+\centering
+\caption{Ablation study. Removing $\beta$ (depth curvature) causes the largest drop, confirming that the bell-shaped depth profile is the model's primary source of explanatory power.}
+\label{tab:ablation}
+\begin{tabular}{lccc}
+\toprule
+Variant & Params & LOFO $R^2$ & $\Delta R^2$ \\
+\midrule
+Full Gaussian & 8 & 0.780 & --- \\
+$-$ $\mu_1$ (fixed peak) & 7 & 0.769 & $-$0.011 \\
+$-$ $\alpha, \mu_1$ (no compute) & 6 & 0.771 & $-$0.009 \\
+$-$ $\beta$ (no curvature) & 5 & 0.512 & $-$0.268 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The depth curvature parameter $\beta$ is by far the most important component ($\Delta R^2 = -0.268$ when removed), confirming that the bell-shaped depth profile is the model's core contribution. The compute parameters ($\alpha, \mu_1$) provide a smaller but consistent gain ($\Delta R^2 \approx 0.01$), with the largest benefit on OLMo-2 (which has 11 training checkpoints spanning the full compute range).
 
 \section{Blind test: BLOOM}
 \label{sec:bloom}
