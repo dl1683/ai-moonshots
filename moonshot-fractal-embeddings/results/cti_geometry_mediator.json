@@ -1,0 +1,793 @@
+{
+  "experiment": "architecture_geometry_mediator_collapse",
+  "hypothesis": "q = sigmoid(kappa * eta) collapses architecture slopes",
+  "eta_definition": "eta = tr(S_W)^2 / (d * tr(S_W^2))",
+  "preregistered": {
+    "slope_ratio_range": [
+      0.9,
+      1.1
+    ],
+    "dummy_p_threshold": 0.05,
+    "pooled_r2_threshold": 0.97,
+    "lomo_mae_threshold": 0.05
+  },
+  "all_points": [
+    {
+      "model": "HuggingFaceTB/SmolLM2-360M",
+      "paradigm": "transformer",
+      "n_layers": 32,
+      "alpha": 0.0,
+      "knn": 0.07404040404040403,
+      "kappa": 0.083523889364129,
+      "eta": 0.012543550636054892,
+      "kappa_eta": 0.0010476861355591986
+    },
+    {
+      "model": "HuggingFaceTB/SmolLM2-360M",
+      "paradigm": "transformer",
+      "n_layers": 32,
+      "alpha": 0.3,
+      "knn": 0.10828282828282829,
+      "kappa": 0.1450468140013163,
+      "eta": 0.025470873609072332,
+      "kappa_eta": 0.0036944690668261507
+    },
+    {
+      "model": "HuggingFaceTB/SmolLM2-360M",
+      "paradigm": "transformer",
+      "n_layers": 32,
+      "alpha": 0.5,
+      "knn": 0.11075757575757576,
+      "kappa": 0.15535387505200762,
+      "eta": 0.02926625964006014,
+      "kappa_eta": 0.004546626843361517
+    },
+    {
+      "model": "HuggingFaceTB/SmolLM2-360M",
+      "paradigm": "transformer",
+      "n_layers": 32,
+      "alpha": 0.7,
+      "knn": 0.13015151515151516,
+      "kappa": 0.1851563778858176,
+      "eta": 0.023859412352921383,
+      "kappa_eta": 0.004417722369751056
+    },
+    {
+      "model": "HuggingFaceTB/SmolLM2-360M",
+      "paradigm": "transformer",
+      "n_layers": 32,
+      "alpha": 0.8,
+      "knn": 0.17616161616161616,
+      "kappa": 0.2693235172517552,
+      "eta": 0.07104309023865922,
+      "kappa_eta": 0.019133574939509537
+    },
+    {
+      "model": "HuggingFaceTB/SmolLM2-360M",
+      "paradigm": "transformer",
+      "n_layers": 32,
+      "alpha": 0.85,
+      "knn": 0.21601010101010099,
+      "kappa": 0.3203489777696463,
+      "eta": 0.06983649143666933,
+      "kappa_eta": 0.022372048642755677
+    },
+    {
+      "model": "HuggingFaceTB/SmolLM2-360M",
+      "paradigm": "transformer",
+      "n_layers": 32,
+      "alpha": 0.9,
+      "knn": 0.28474747474747475,
+      "kappa": 0.43728644672771505,
+      "eta": 0.03153795844903498,
+      "kappa_eta": 0.013791121787224825
+    },
+    {
+      "model": "HuggingFaceTB/SmolLM2-360M",
+      "paradigm": "transformer",
+      "n_layers": 32,
+      "alpha": 0.95,
+      "knn": 0.4538383838383838,
+      "kappa": 0.6478869870013053,
+      "eta": 0.015479662131066576,
+      "kappa_eta": 0.010029071657894928
+    },
+    {
+      "model": "HuggingFaceTB/SmolLM2-360M",
+      "paradigm": "transformer",
+      "n_layers": 32,
+      "alpha": 1.0,
+      "knn": 0.5162626262626262,
+      "kappa": 0.7516089248001252,
+      "eta": 0.014590846120633862,
+      "kappa_eta": 0.010966610164653695
+    },
+    {
+      "model": "EleutherAI/pythia-410m",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.0,
+      "knn": 0.09820000000000001,
+      "kappa": 0.1374134032229417,
+      "eta": 0.013291528075933456,
+      "kappa_eta": 0.0018264341069472946
+    },
+    {
+      "model": "EleutherAI/pythia-410m",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.3,
+      "knn": 0.09833333333333334,
+      "kappa": 0.12896401954272985,
+      "eta": 0.013998245559632779,
+      "kappa_eta": 0.001805270013916413
+    },
+    {
+      "model": "EleutherAI/pythia-410m",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.5,
+      "knn": 0.09913333333333334,
+      "kappa": 0.11069325870082135,
+      "eta": 0.016263039447367192,
+      "kappa_eta": 0.0018002088328090793
+    },
+    {
+      "model": "EleutherAI/pythia-410m",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.7,
+      "knn": 0.13513333333333336,
+      "kappa": 0.14669911904003435,
+      "eta": 0.02252757489681244,
+      "kappa_eta": 0.0033047753914707775
+    },
+    {
+      "model": "EleutherAI/pythia-410m",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.8,
+      "knn": 0.16399999999999998,
+      "kappa": 0.18598434729391142,
+      "eta": 0.026150051057338714,
+      "kappa_eta": 0.004863500177601599
+    },
+    {
+      "model": "EleutherAI/pythia-410m",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.85,
+      "knn": 0.18793333333333334,
+      "kappa": 0.2112922154591596,
+      "eta": 0.024449814483523367,
+      "kappa_eta": 0.0051660554697891
+    },
+    {
+      "model": "EleutherAI/pythia-410m",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.9,
+      "knn": 0.21026666666666669,
+      "kappa": 0.2331332128154719,
+      "eta": 0.02327528990805149,
+      "kappa_eta": 0.005426243115475573
+    },
+    {
+      "model": "EleutherAI/pythia-410m",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.95,
+      "knn": 0.22699999999999998,
+      "kappa": 0.24712321320474895,
+      "eta": 0.022685095332562924,
+      "kappa_eta": 0.005606013650439003
+    },
+    {
+      "model": "EleutherAI/pythia-410m",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 1.0,
+      "knn": 0.23746666666666666,
+      "kappa": 0.25483369596005806,
+      "eta": 0.022340368889272214,
+      "kappa_eta": 0.005693078773164335
+    },
+    {
+      "model": "Qwen/Qwen2-0.5B",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.0,
+      "knn": 0.1036,
+      "kappa": 0.14165083588963628,
+      "eta": 0.013297154558822513,
+      "kappa_eta": 0.0018835530582108967
+    },
+    {
+      "model": "Qwen/Qwen2-0.5B",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.3,
+      "knn": 0.10973333333333332,
+      "kappa": 0.1544969334382038,
+      "eta": 0.015649595940485598,
+      "kappa_eta": 0.002417814582351988
+    },
+    {
+      "model": "Qwen/Qwen2-0.5B",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.5,
+      "knn": 0.15173333333333333,
+      "kappa": 0.22828826639727182,
+      "eta": 0.06494289797730744,
+      "kappa_eta": 0.014825701594054407
+    },
+    {
+      "model": "Qwen/Qwen2-0.5B",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.7,
+      "knn": 0.1784,
+      "kappa": 0.25958495219632655,
+      "eta": 0.09186540015041827,
+      "kappa_eta": 0.02384687550654274
+    },
+    {
+      "model": "Qwen/Qwen2-0.5B",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.8,
+      "knn": 0.223,
+      "kappa": 0.33156896344080666,
+      "eta": 0.07307594419457018,
+      "kappa_eta": 0.024229715069051867
+    },
+    {
+      "model": "Qwen/Qwen2-0.5B",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.85,
+      "knn": 0.2693333333333333,
+      "kappa": 0.3997922340704143,
+      "eta": 0.052851581051945686,
+      "kappa_eta": 0.021129651662910944
+    },
+    {
+      "model": "Qwen/Qwen2-0.5B",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.9,
+      "knn": 0.36719999999999997,
+      "kappa": 0.5227433109064376,
+      "eta": 0.028100665817037226,
+      "kappa_eta": 0.014689435087873393
+    },
+    {
+      "model": "Qwen/Qwen2-0.5B",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 0.95,
+      "knn": 0.44366666666666665,
+      "kappa": 0.6517001246806521,
+      "eta": 0.02275004661642015,
+      "kappa_eta": 0.01482620821641166
+    },
+    {
+      "model": "Qwen/Qwen2-0.5B",
+      "paradigm": "transformer",
+      "n_layers": 24,
+      "alpha": 1.0,
+      "knn": 0.4756666666666666,
+      "kappa": 0.6970669292876699,
+      "eta": 0.023329279981553555,
+      "kappa_eta": 0.016262069559233844
+    },
+    {
+      "model": "Qwen/Qwen3-0.6B",
+      "paradigm": "transformer",
+      "n_layers": 28,
+      "alpha": 0.0,
+      "knn": 0.13425287356321838,
+      "kappa": 0.21232801366940723,
+      "eta": 0.05078570814482097,
+      "kappa_eta": 0.010783228533184072
+    },
+    {
+      "model": "Qwen/Qwen3-0.6B",
+      "paradigm": "transformer",
+      "n_layers": 28,
+      "alpha": 0.3,
+      "knn": 0.13729885057471264,
+      "kappa": 0.1978533062392084,
+      "eta": 0.06989433121835363,
+      "kappa_eta": 0.013828824518929585
+    },
+    {
+      "model": "Qwen/Qwen3-0.6B",
+      "paradigm": "transformer",
+      "n_layers": 28,
+      "alpha": 0.5,
+      "knn": 0.14074712643678158,
+      "kappa": 0.20835636081665215,
+      "eta": 0.08465204689780186,
+      "kappa_eta": 0.017637792427306564
+    },
+    {
+      "model": "Qwen/Qwen3-0.6B",
+      "paradigm": "transformer",
+      "n_layers": 28,
+      "alpha": 0.7,
+      "knn": 0.15942528735632183,
+      "kappa": 0.2374132493634485,
+      "eta": 0.0994764444386137,
+      "kappa_eta": 0.02361702590929382
+    },
+    {
+      "model": "Qwen/Qwen3-0.6B",
+      "paradigm": "transformer",
+      "n_layers": 28,
+      "alpha": 0.8,
+      "knn": 0.19885057471264367,
+      "kappa": 0.295856905680513,
+      "eta": 0.07890593774359801,
+      "kappa_eta": 0.023344866580640108
+    },
+    {
+      "model": "Qwen/Qwen3-0.6B",
+      "paradigm": "transformer",
+      "n_layers": 28,
+      "alpha": 0.85,
+      "knn": 0.2497701149425288,
+      "kappa": 0.3710938441663139,
+      "eta": 0.05258404868173188,
+      "kappa_eta": 0.019513616767132477
+    },
+    {
+      "model": "Qwen/Qwen3-0.6B",
+      "paradigm": "transformer",
+      "n_layers": 28,
+      "alpha": 0.9,
+      "knn": 0.44856321839080465,
+      "kappa": 0.5513239284712357,
+      "eta": 0.02909656235113226,
+      "kappa_eta": 0.01604163106043449
+    },
+    {
+      "model": "Qwen/Qwen3-0.6B",
+      "paradigm": "transformer",
+      "n_layers": 28,
+      "alpha": 0.95,
+      "knn": 0.5310919540229885,
+      "kappa": 0.6923751128828005,
+      "eta": 0.023339613694055326,
+      "kappa_eta": 0.016159767666062513
+    },
+    {
+      "model": "Qwen/Qwen3-0.6B",
+      "paradigm": "transformer",
+      "n_layers": 28,
+      "alpha": 1.0,
+      "knn": 0.5472988505747127,
+      "kappa": 0.7411953059760009,
+      "eta": 0.022297933151752783,
+      "kappa_eta": 0.01652712338504582
+    },
+    {
+      "model": "state-spaces/mamba-130m-hf",
+      "paradigm": "ssm",
+      "n_layers": 24,
+      "alpha": 0.0,
+      "knn": 0.09173333333333333,
+      "kappa": 0.159066522001543,
+      "eta": 0.041736305858939886,
+      "kappa_eta": 0.006638849014174189
+    },
+    {
+      "model": "state-spaces/mamba-130m-hf",
+      "paradigm": "ssm",
+      "n_layers": 24,
+      "alpha": 0.3,
+      "knn": 0.11373333333333333,
+      "kappa": 0.16860240376020527,
+      "eta": 0.0636371036618948,
+      "kappa_eta": 0.010729368645732824
+    },
+    {
+      "model": "state-spaces/mamba-130m-hf",
+      "paradigm": "ssm",
+      "n_layers": 24,
+      "alpha": 0.5,
+      "knn": 0.14406666666666668,
+      "kappa": 0.19021121546361988,
+      "eta": 0.08390436418354512,
+      "kappa_eta": 0.015959551094054333
+    },
+    {
+      "model": "state-spaces/mamba-130m-hf",
+      "paradigm": "ssm",
+      "n_layers": 24,
+      "alpha": 0.7,
+      "knn": 0.20799999999999996,
+      "kappa": 0.23661777856375024,
+      "eta": 0.10822327053174377,
+      "kappa_eta": 0.025607549862124983
+    },
+    {
+      "model": "state-spaces/mamba-130m-hf",
+      "paradigm": "ssm",
+      "n_layers": 24,
+      "alpha": 0.8,
+      "knn": 0.3068666666666667,
+      "kappa": 0.3269473406202086,
+      "eta": 0.11252513450570405,
+      "kappa_eta": 0.03678979347957121
+    },
+    {
+      "model": "state-spaces/mamba-130m-hf",
+      "paradigm": "ssm",
+      "n_layers": 24,
+      "alpha": 0.85,
+      "knn": 0.40199999999999997,
+      "kappa": 0.4191765576264669,
+      "eta": 0.11270420929417015,
+      "kappa_eta": 0.047242962481943096
+    },
+    {
+      "model": "state-spaces/mamba-130m-hf",
+      "paradigm": "ssm",
+      "n_layers": 24,
+      "alpha": 0.9,
+      "knn": 0.5025333333333334,
+      "kappa": 0.5181815198095417,
+      "eta": 0.11106434065848589,
+      "kappa_eta": 0.0575514888390589
+    },
+    {
+      "model": "state-spaces/mamba-130m-hf",
+      "paradigm": "ssm",
+      "n_layers": 24,
+      "alpha": 0.95,
+      "knn": 0.5603333333333333,
+      "kappa": 0.5828441086755067,
+      "eta": 0.10564323937520385,
+      "kappa_eta": 0.061573539691233886
+    },
+    {
+      "model": "state-spaces/mamba-130m-hf",
+      "paradigm": "ssm",
+      "n_layers": 24,
+      "alpha": 1.0,
+      "knn": 0.5973333333333334,
+      "kappa": 0.6186140177740153,
+      "eta": 0.1042583841830492,
+      "kappa_eta": 0.06449569792610291
+    },
+    {
+      "model": "state-spaces/mamba-370m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.0,
+      "knn": 0.04340136054421767,
+      "kappa": 0.12600371682618336,
+      "eta": 0.024255059440905342,
+      "kappa_eta": 0.003056227641394082
+    },
+    {
+      "model": "state-spaces/mamba-370m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.3,
+      "knn": 0.05510204081632653,
+      "kappa": 0.12775284233858192,
+      "eta": 0.03387403530448827,
+      "kappa_eta": 0.004327504291625848
+    },
+    {
+      "model": "state-spaces/mamba-370m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.5,
+      "knn": 0.07989795918367347,
+      "kappa": 0.14123646021856268,
+      "eta": 0.049037347362395754,
+      "kappa_eta": 0.006925861359972848
+    },
+    {
+      "model": "state-spaces/mamba-370m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.7,
+      "knn": 0.12295918367346939,
+      "kappa": 0.16909274048050701,
+      "eta": 0.0840982889129343,
+      "kappa_eta": 0.0142204101420095
+    },
+    {
+      "model": "state-spaces/mamba-370m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.8,
+      "knn": 0.178843537414966,
+      "kappa": 0.21543451728884455,
+      "eta": 0.0825068844881441,
+      "kappa_eta": 0.01777483083270978
+    },
+    {
+      "model": "state-spaces/mamba-370m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.85,
+      "knn": 0.2398639455782313,
+      "kappa": 0.25582208451150773,
+      "eta": 0.08682078717998704,
+      "kappa_eta": 0.02221067475531427
+    },
+    {
+      "model": "state-spaces/mamba-370m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.9,
+      "knn": 0.3971768707482993,
+      "kappa": 0.3863136103806659,
+      "eta": 0.0996379985150938,
+      "kappa_eta": 0.038491514937469315
+    },
+    {
+      "model": "state-spaces/mamba-370m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.95,
+      "knn": 0.5926190476190476,
+      "kappa": 0.5848307085980666,
+      "eta": 0.1014365363219867,
+      "kappa_eta": 0.059323201414921
+    },
+    {
+      "model": "state-spaces/mamba-370m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 1.0,
+      "knn": 0.6352040816326531,
+      "kappa": 0.6468313347482608,
+      "eta": 0.0934482623100737,
+      "kappa_eta": 0.06044526423993056
+    },
+    {
+      "model": "state-spaces/mamba-790m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.0,
+      "knn": 0.03006802721088435,
+      "kappa": 0.11700193324898163,
+      "eta": 0.015586320835887929,
+      "kappa_eta": 0.001823629670037771
+    },
+    {
+      "model": "state-spaces/mamba-790m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.3,
+      "knn": 0.05102040816326531,
+      "kappa": 0.12658500489246,
+      "eta": 0.023157208782563707,
+      "kappa_eta": 0.0029313553870365444
+    },
+    {
+      "model": "state-spaces/mamba-790m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.5,
+      "knn": 0.07336734693877553,
+      "kappa": 0.14092549587679623,
+      "eta": 0.029800993770513,
+      "kappa_eta": 0.004199719824730859
+    },
+    {
+      "model": "state-spaces/mamba-790m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.7,
+      "knn": 0.13108843537414966,
+      "kappa": 0.1727771775351511,
+      "eta": 0.05564143299600299,
+      "kappa_eta": 0.009613569747060622
+    },
+    {
+      "model": "state-spaces/mamba-790m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.8,
+      "knn": 0.1856462585034013,
+      "kappa": 0.20643308850025177,
+      "eta": 0.08175107280305606,
+      "kappa_eta": 0.016876126446943796
+    },
+    {
+      "model": "state-spaces/mamba-790m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.85,
+      "knn": 0.23612244897959184,
+      "kappa": 0.24951116482733782,
+      "eta": 0.09012636675841498,
+      "kappa_eta": 0.02248753475154798
+    },
+    {
+      "model": "state-spaces/mamba-790m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.9,
+      "knn": 0.4290136054421769,
+      "kappa": 0.4099380275261129,
+      "eta": 0.08467576327752702,
+      "kappa_eta": 0.03471181537725749
+    },
+    {
+      "model": "state-spaces/mamba-790m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 0.95,
+      "knn": 0.599625850340136,
+      "kappa": 0.5822999093205247,
+      "eta": 0.0804747203127386,
+      "kappa_eta": 0.04686042234070227
+    },
+    {
+      "model": "state-spaces/mamba-790m-hf",
+      "paradigm": "ssm",
+      "n_layers": 48,
+      "alpha": 1.0,
+      "knn": 0.6528571428571428,
+      "kappa": 0.6519273481316588,
+      "eta": 0.0746337437327495,
+      "kappa_eta": 0.04865577863282919
+    }
+  ],
+  "baseline": {
+    "slope_transformer": 0.6946150762454943,
+    "slope_ssm": 1.126150014886223,
+    "ratio": 1.621257662550666
+  },
+  "mediator": {
+    "slope_transformer": 7.094525874347739,
+    "slope_ssm": 9.710339390455312,
+    "ratio": 1.3687087146395203,
+    "ratio_in_range": false
+  },
+  "dummy_test": {
+    "with_eta": {
+      "r2_with_dummy": 0.6468990958933845,
+      "r2_without_dummy": 0.5879165421541837,
+      "dummy_coeff": -0.09755529853676816,
+      "f_stat": 10.022498337425652,
+      "p_value": 0.0024302147922994344,
+      "non_significant": false
+    },
+    "kappa_only": {
+      "f_stat": 20.46493568055348,
+      "p_value": 2.924799102965725e-05
+    },
+    "eta_reduces_significance": true
+  },
+  "sigmoid_fit": {
+    "r2_kappa": 0.921604148166842,
+    "r2_kappa_eta": 0.5891781837627547,
+    "improvement": -0.33242596440408734
+  },
+  "lomo": {
+    "per_model": [
+      {
+        "model": "EleutherAI/pythia-410m",
+        "paradigm": "transformer",
+        "mae": 0.04146320041277117
+      },
+      {
+        "model": "HuggingFaceTB/SmolLM2-360M",
+        "paradigm": "transformer",
+        "mae": 0.09841989910294767
+      },
+      {
+        "model": "Qwen/Qwen2-0.5B",
+        "paradigm": "transformer",
+        "mae": 0.09974553023741632
+      },
+      {
+        "model": "Qwen/Qwen3-0.6B",
+        "paradigm": "transformer",
+        "mae": 0.1446853763178012
+      },
+      {
+        "model": "state-spaces/mamba-130m-hf",
+        "paradigm": "ssm",
+        "mae": 0.1014429993678532
+      },
+      {
+        "model": "state-spaces/mamba-370m-hf",
+        "paradigm": "ssm",
+        "mae": 0.07683532418108158
+      },
+      {
+        "model": "state-spaces/mamba-790m-hf",
+        "paradigm": "ssm",
+        "mae": 0.09207647333367881
+      }
+    ],
+    "mean_mae": 0.09352411470765,
+    "pass": false
+  },
+  "eta_distribution": {
+    "transformer": {
+      "mean": 0.03820845402430802,
+      "std": 0.025548529308577914,
+      "min": 0.012543550636054892,
+      "max": 0.0994764444386137
+    },
+    "ssm": {
+      "mean": 0.07535774723548887,
+      "std": 0.029962754330949925,
+      "min": 0.015586320835887929,
+      "max": 0.11270420929417015
+    }
+  },
+  "power_sweep": [
+    {
+      "p": 0.0,
+      "ratio": 1.621257662550666,
+      "sigmoid_r2": 0.9216041481557378
+    },
+    {
+      "p": 0.25,
+      "ratio": 1.1150336778096892,
+      "sigmoid_r2": 0.9594922677401984
+    },
+    {
+      "p": 0.5,
+      "ratio": 0.9293279304825784,
+      "sigmoid_r2": 0.8527376616478448
+    },
+    {
+      "p": 0.75,
+      "ratio": 1.0005274917914053,
+      "sigmoid_r2": 0.6976061375341789
+    },
+    {
+      "p": 1.0,
+      "ratio": 1.3687087146395203,
+      "sigmoid_r2": 0.5891781837627547
+    },
+    {
+      "p": 1.5,
+      "ratio": 5.454532256727712,
+      "sigmoid_r2": 0.47975304165179367
+    },
+    {
+      "p": 2.0,
+      "ratio": -6.249072638172676,
+      "sigmoid_r2": 0.4700956233921426
+    },
+    {
+      "p": 3.0,
+      "ratio": -1.8696007922025504,
+      "sigmoid_r2": 0.42335255514908177
+    }
+  ],
+  "best_power": {
+    "p": 0.75,
+    "deviation": 0.0005274917914053212
+  },
+  "global_correlations": {
+    "kappa": {
+      "spearman": 0.9648137480798772,
+      "pearson": 0.9525196930835418
+    },
+    "kappa_eta": {
+      "spearman": 0.7738575268817205,
+      "pearson": 0.7667571598323575
+    },
+    "eta": {
+      "spearman": 0.3875768049155146,
+      "pearson": 0.32997081266599854
+    }
+  },
+  "n_points": 63
+}
