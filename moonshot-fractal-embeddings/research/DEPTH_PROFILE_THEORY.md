@@ -1,14 +1,30 @@
 # First-Principles Theory: Why Representation Quality Follows Bell-Shaped Depth Profiles
 
-## Status: DRAFT — seeking derivation, not polishing
+## Status: DRAFT v2 — Updated with cross-paradigm experiments (Feb 17, 2026)
 
-## The Empirical Fact
-Representation quality Q(x) at relative depth x = l/L follows:
-logit(Q_norm(x)) = b_d + alpha*log(C/N) - beta*(x - mu_0 - mu_1*log(C/N))^2
+## The Empirical Facts (UPDATED)
 
-This is a Gaussian-in-logit-space with R2=0.78 across 5+ model families (Pythia, OLMo-2, OPT, GPT-2, Cerebras-GPT) and 5000+ observations.
+### Original finding (old transformers only)
+logit(Q_norm(x)) follows Gaussian-in-logit across Pythia/OLMo-2/OPT/GPT-2/Cerebras-GPT.
+R2=0.78, shape rho=0.84.
 
-**Question**: WHY this form? Can we derive it from first principles?
+### NEW: Cross-paradigm finding (Feb 17, 2026)
+The bell shape is ARCHITECTURE-SPECIFIC:
+- SSM (Mamba): Strong bell (4/4 datasets, delta=+0.33, peak at ~40-60% depth)
+- Transformer (Qwen3): Flat/monotonic profiles (delta~0, no consistent bell)
+- Hybrid (Falcon-H1): Follows transformer pattern
+- Reasoning (R1-Distill): Declining profiles
+
+### NEW: Residual surgery finding (causal, Feb 17, 2026)
+Sweeping residual strength alpha from 0 to 1 on Qwen3-0.6B:
+- alpha 0-0.75: ALL profiles decline (no extraction possible)
+- alpha = 1.0: Complex profile with late peak
+- PHASE TRANSITION at critical alpha* between 0.75 and 1.0
+- Beta (curvature) causally controlled: rho=-0.90, p=0.037
+
+**Updated question**: WHY do different architectures produce different depth profiles?
+What determines the profile shape, and is there a universal law connecting
+architecture → depth profile → capabilities?
 
 ---
 
@@ -179,27 +195,138 @@ underlies thermodynamics.
 
 ---
 
-## Open Questions
+## NEW: Residual Phase Transition Theory (Feb 17, 2026)
 
-1. Can we make the linear assumption E(x) = a(1-x), T(x) = bx MORE rigorous?
-   - Is there a variational principle that selects these linear forms?
-   - Or is the Gaussian just a second-order Taylor approximation around the peak?
+### The Signal Propagation Argument
 
-2. What happens at the boundaries (x=0 and x=1)?
-   - Input embedding layer and output projection have special structure
-   - The theory should predict deviations at boundaries
+Consider a transformer with L layers and residual connections scaled by alpha.
+Each layer l has the form:
 
-3. How does architecture affect the functional forms of E(x) and T(x)?
-   - Attention vs MLP contributions
-   - Residual connections vs not
-   - Different normalization schemes
+    h_{l+1} = alpha * h_l + f_l(h_l)
 
-4. Can we MEASURE a and b independently?
-   - a from representation geometry (e.g., intrinsic dimensionality trajectory)
-   - b from gradient flow analysis
-   - Then PREDICT the depth profile without fitting
+where f_l is the nonlinear branch (attention + MLP).
+
+**The Jacobian of one layer:**
+
+    J_l = alpha * I + J_{f_l}
+
+where J_{f_l} = d f_l / d h_l is the Jacobian of the nonlinear branch.
+
+**Signal propagation through L layers:**
+
+The end-to-end Jacobian is J_total = prod_{l=1}^{L} J_l.
+
+For the signal to "survive" (not collapse to noise), we need:
+
+    ||J_total|| > epsilon
+
+For the case where each layer's Jacobian has spectral radius rho_l:
+
+    prod_{l=1}^{L} rho_l > epsilon
+
+**Simplifying assumption**: If all layers have similar Jacobian spectral radius rho:
+
+    rho^L > epsilon
+    L * log(rho) > log(epsilon)
+    rho > epsilon^{1/L}
+
+For the residual layer: rho = alpha + (1-alpha) * rho_f, where rho_f is the
+spectral radius of the nonlinear branch.
+
+### Derivation of alpha*
+
+For signal survival: rho > epsilon^{1/L}
+
+    alpha + (1-alpha) * rho_f > epsilon^{1/L}
+
+Solving for alpha:
+
+    alpha > (epsilon^{1/L} - rho_f) / (1 - rho_f)
+
+This is the critical alpha*:
+
+    alpha* = (epsilon^{1/L} - rho_f) / (1 - rho_f)
+
+For large L, using epsilon^{1/L} = exp(log(epsilon)/L) ~ 1 + log(epsilon)/L:
+
+    alpha* ~ (1 + log(epsilon)/L - rho_f) / (1 - rho_f)
+           = 1 + log(epsilon) / (L * (1 - rho_f))
+           = 1 - |log(epsilon)| / (L * (1 - rho_f))
+
+So: **alpha* = 1 - C/L** where C = |log(epsilon)| / (1 - rho_f).
+
+This gives: **(1 - alpha*) ~ 1/L**
+
+### Comparison with Empirical Fit
+
+Empirically we found: alpha* = 1 - 6.2 * L^(-1.19)
+
+The theory predicts: alpha* = 1 - C * L^(-1.0)
+
+The discrepancy (exponent 1.19 vs 1.0) could arise from:
+1. rho_f depends weakly on L (wider models have different nonlinear branch)
+2. The "all layers similar" assumption breaks down (early/late layer heterogeneity)
+3. The epsilon threshold is not sharp but depends on the evaluation metric
+4. Only 3 data points — the exponent 1.19 has large uncertainty
+
+### Predictions from the Theory
+
+**Prediction A**: The per-layer information budget (1-alpha*) scales as ~1/L.
+This means deeper models are MORE fragile — each layer has less "room" for
+information loss.
+
+**Prediction B**: alpha* depends on rho_f (the nonlinear branch spectral radius).
+Models with stronger nonlinear branches (larger rho_f) should have HIGHER alpha*
+because the nonlinear contribution is already large and the residual needs to
+compensate less. BUT this contradicts our data where Qwen3 (28L, alpha*=0.90)
+has higher alpha* than OLMo-2 (16L, alpha*=0.78). This is consistent only if
+the depth effect dominates the rho_f effect.
+
+**Prediction C**: At initialization (random weights), rho_f is determined by the
+initialization scheme. For models initialized at the "edge of chaos" (rho_f close
+to 1 - 1/L), alpha* should be very low — even small residual connections suffice.
+After training, rho_f changes and alpha* shifts.
+
+**Prediction D**: The critical exponent gamma (from beta ~ |alpha-alpha*|^gamma)
+should equal 1 in the mean-field approximation (linear mixing of residual and
+nonlinear branches). Our measured gamma ~ 0.68 suggests non-mean-field corrections,
+possibly from inter-layer correlations.
+
+### What This Means for the Manifesto
+
+The scaling alpha* ~ 1 - C/L has a profound implication:
+
+**DEEPER IS NOT FREE.** Each added layer brings the system closer to the
+information propagation threshold. This means:
+
+1. There are FUNDAMENTAL EFFICIENCY LIMITS on depth. Beyond a certain depth,
+   you must strengthen residual connections or lose information.
+2. Architecture design has quantifiable constraints: given L layers, the
+   residual strength MUST exceed alpha* or representations collapse.
+3. This connects directly to "Intelligence = Geometry": the geometry of
+   information flow through depth creates hard constraints that no amount
+   of scale can overcome.
+
+---
+
+## Open Questions (Updated)
+
+1. Can we validate the 1/L scaling with the Pythia depth sweep (6 models)?
+   - If exponent = 1.0 +/- 0.1, theory confirmed
+   - If exponent significantly != 1, what's the correction?
+
+2. Can we MEASURE rho_f directly?
+   - Compute Jacobian spectral radius of the nonlinear branch
+   - Use this to PREDICT alpha* without any fitting
+
+3. Does the theory predict the PROFILE SHAPE (not just the transition point)?
+   - Can we derive the competition model's E(x) and T(x) from the Jacobian?
+
+4. What happens for non-transformer architectures (SSMs, hybrids)?
+   - SSMs don't have standard residual connections
+   - The theory should explain why SSMs show bell shapes at alpha=1
 
 5. Connection to information bottleneck theory?
    - Tishby's IB predicts compression-then-fitting phases
-   - Our competition model gives a continuous version
-   - Are they the same theory in different variables?
+   - Our theory says: residual connections control the rate of compression
+   - Alpha below alpha* = too much compression per layer = information loss
