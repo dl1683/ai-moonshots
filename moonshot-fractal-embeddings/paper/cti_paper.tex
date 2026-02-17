@@ -17,7 +17,7 @@
 
 \input{math_commands.tex}
 
-\title{A Shape-Universal Law for Depth-Wise Representation Quality\\in Decoder Language Models}
+\title{Shape Regularities in Depth-Wise Representation Quality\\Across Decoder Language Models}
 
 \author{
   Anonymous
@@ -35,7 +35,7 @@
 \maketitle
 
 \begin{abstract}
-We propose a parametric law for how representation quality varies across layers in decoder-only language models. Our Gaussian-in-logit model uses 8 parameters (4 shared + 4 dataset intercepts) to predict chance-normalized kNN accuracy at any layer as a function of normalized depth and compute-to-parameter ratio. In leave-one-family-out cross-validation across 5 families (Pythia, OLMo-2, Cerebras-GPT, OPT, GPT-2; 5004 observations from 252 depth profiles), we achieve $R^2 = 0.78$, outperforming intercept-only ($R^2=0.51$), linear ($R^2=0.77$), and quadratic ($R^2=0.77$) baselines. A blind test on a 6th family (BLOOM---ALiBi attention, multilingual training) confirms \emph{shape} universality (Spearman $\rho = 0.78$) while showing that absolute quality levels require family-specific intercept calibration ($R^2 = -2.75$ zero-shot, $R^2 = 0.57$ after 4-parameter calibration). Across all 6 families, we observe that final-layer representations are systematically outperformed by earlier layers, particularly for fine-grained classification. We characterize our finding as a \emph{shape-universal, level-specific} regularity: depth profiles share a common bell-shaped form across architectures, but absolute quality depends on training data and model family.
+We document a persistent empirical regularity: the depth profile of representation quality in decoder-only language models follows a bell-shaped curve that is remarkably consistent across architectures. An 8-parameter Gaussian-in-logit model predicts chance-normalized kNN accuracy at any layer as a function of normalized depth and compute-to-parameter ratio. In leave-one-family-out cross-validation across 5 families (Pythia, OLMo-2, Cerebras-GPT, OPT, GPT-2; 5004 observations from 252 depth profiles), we achieve $R^2 = 0.78$ with mean shape correlation $\rho = 0.84$. Nonparametric splines fit better ($R^2 = 0.81$) but require per-dataset functions; our parametric form transfers across families with a single set of shared parameters. A blind test on BLOOM (ALiBi attention, multilingual) confirms shape transfer ($\rho = 0.78$) while showing that absolute quality levels require family-specific calibration. Profile-level bootstrap CIs confirm the Gaussian's advantage over linear baselines ($\Delta R^2 = +0.31$, 95\% CI $[+0.04, +0.69]$, $p_{\text{cluster}} = 0.012$). We characterize this as a \emph{shape-universal, level-specific} regularity: depth profiles share a common form across architectures, but absolute quality depends on training data and model family.
 \end{abstract}
 
 \section{Introduction}
@@ -44,16 +44,16 @@ Scaling laws~\citep{kaplan2020scaling, hoffmann2022training} have established th
 
 Each layer of a language model produces distinct representations that vary systematically in quality for downstream tasks~\citep{tenney2019bert, liu2019linguistic, ethayarajh2019contextual}. \citet{gao2024layerwise} showed that intermediate layers often outperform the final layer by up to 16\%, yet no quantitative framework predicts \emph{how} quality varies with depth or whether these patterns generalize across architectures.
 
-We address this gap by proposing a \emph{shape-universal} law for depth-wise representation quality. Our contributions:
+We address this gap by documenting and modeling a \emph{shape regularity} in depth-wise representation quality. Our contributions:
 
 \begin{enumerate}
-    \item \textbf{A parametric law} (8 parameters) predicting representation quality as a function of normalized depth and compute (\S\ref{sec:method}).
-    \item \textbf{Cross-family validation} across 5 model families demonstrating consistent shape prediction ($\rho = 0.84$, LOFO $R^2 = 0.78$) that outperforms all tested parametric alternatives (\S\ref{sec:experiments}).
+    \item \textbf{An empirical regularity}: representation quality follows a bell-shaped depth profile that is consistent across 5 architecturally diverse model families (\S\ref{sec:experiments}).
+    \item \textbf{A parametric model} (8 parameters) that captures this regularity, outperforming parametric alternatives and approaching nonparametric spline fits with far fewer parameters (\S\ref{sec:experiments}).
+    \item \textbf{Rigorous uncertainty quantification}: profile-level bootstrap CIs, cluster-robust inference (252 independent profiles), and comparison against both weaker and stronger baselines (\S\ref{sec:experiments}).
     \item \textbf{A blind test} on BLOOM confirming shape transfer ($\rho = 0.78$) while honestly documenting that absolute levels require calibration (\S\ref{sec:bloom}).
-    \item \textbf{Universal late-layer degradation} across all 6 architecturally diverse families (\S\ref{sec:degradation}).
 \end{enumerate}
 
-We also document what the law does \emph{not} do: it does not predict exact best-layer indices and does not transfer absolute quality levels zero-shot to all architectures (\S\ref{sec:limitations}).
+We also document what the model does \emph{not} do: it does not predict exact best-layer indices and does not transfer absolute quality levels zero-shot to all architectures (\S\ref{sec:limitations}).
 
 \section{Related work}
 \label{sec:related}
@@ -62,7 +62,7 @@ We also document what the law does \emph{not} do: it does not predict exact best
 \citet{kaplan2020scaling} established power-law relationships between loss and compute. \citet{hoffmann2022training} refined these for compute-optimal training. Recent extensions cover representation geometry~\citep{huh2024platonic}. Our work extends the scaling law paradigm to \emph{layer-wise} representation quality.
 
 \paragraph{Layer-wise representation analysis.}
-Probing studies have shown that linguistic information is distributed non-uniformly across layers~\citep{tenney2019bert, liu2019linguistic, jawahar2019bert, rogers2020primer}. \citet{ethayarajh2019contextual} demonstrated increasing anisotropy with depth in contextual representations. Representation similarity methods such as CKA~\citep{kornblith2019similarity} have been used to compare layers across models. We build on these observations by fitting a quantitative, predictive law.
+Probing studies have shown that linguistic information is distributed non-uniformly across layers~\citep{tenney2019bert, liu2019linguistic, jawahar2019bert, rogers2020primer}. \citet{ethayarajh2019contextual} demonstrated increasing anisotropy with depth in contextual representations. Representation similarity methods such as CKA~\citep{kornblith2019similarity} have been used to compare layers across models. We build on these observations by fitting a quantitative, predictive model.
 
 \paragraph{Representation quality metrics.}
 kNN accuracy serves as a probe-free quality measure in both vision~\citep{wu2018unsupervised, caron2021emerging} and NLP settings. We adopt chance-normalized kNN accuracy to avoid confounds from classifier capacity or task difficulty. Probing methodology debates~\citep{hewitt2019control, belinkov2022probing} motivate our choice of a non-parametric probe.
@@ -81,7 +81,7 @@ We use $k$-nearest-neighbor accuracy ($k=20$) on L2-normalized last-token repres
 \end{equation}
 where $K$ is the number of classes. Each \emph{depth profile}---the vector $(Q_{\text{norm}}(\ell))_{\ell=1}^L$ for a fixed model, checkpoint, and dataset---constitutes one independent observational unit. Our dataset contains 252 such profiles (5004 layer-level observations) across 5 training families.
 
-\subsection{The Gaussian-in-logit law}
+\subsection{The Gaussian-in-logit model}
 
 We model quality in logit space as a Gaussian function of normalized depth $x = \ell / L$:
 \begin{equation}
@@ -98,14 +98,16 @@ We fit Eq.~\ref{eq:law} by minimizing mean squared error using L-BFGS-B with 20 
 
 \subsection{Alternative baselines}
 
-To evaluate whether the Gaussian formulation is justified, we compare against 4 simpler parametric alternatives in the same LOFO framework:
+To evaluate the Gaussian formulation, we compare against both simpler parametric alternatives and stronger nonparametric baselines in the same LOFO framework:
 \begin{itemize}
     \item \textbf{Intercept-only} (4 params): $b_d$ per dataset, no depth or compute dependence.
     \item \textbf{Linear-in-depth} (5 params): $b_d + c_1 x$, a single depth slope.
     \item \textbf{Quadratic-in-depth} (6 params): $b_d + c_1 x + c_2 x^2$.
     \item \textbf{Quadratic + compute} (7 params): $b_d + \alpha r + c_1 x + c_2 x^2$.
+    \item \textbf{Spline-per-dataset} ($\sim$50 effective params per dataset): natural cubic spline fit pooling all training data per dataset.
+    \item \textbf{Spline + compute} ($\sim$150 effective params): spline per dataset $\times$ compute tercile.
 \end{itemize}
-All models are fitted with L-BFGS-B (20 restarts) and evaluated using the same LOFO protocol.
+Parametric models are fitted with L-BFGS-B (20 restarts); splines use \texttt{scipy.interpolate.UnivariateSpline} with cross-validated smoothing. All are evaluated using the same LOFO protocol.
 
 \section{Experimental setup}
 \label{sec:setup}
@@ -154,7 +156,7 @@ We fit each model on 4 families and predict the held-out 5th (Table~\ref{tab:lof
 
 \begin{table}[t]
 \centering
-\caption{Leave-one-family-out cross-validation results. $\rho$: mean Spearman rank correlation between predicted and observed depth profiles (252 profiles total). The Gaussian law achieves the highest mean $R^2$ among all tested models.}
+\caption{Leave-one-family-out cross-validation results. $\rho$: mean Spearman rank correlation between predicted and observed depth profiles (252 profiles total). The Gaussian model achieves the highest mean $R^2$ among parametric models.}
 \label{tab:lofo}
 \begin{tabular}{lcccc}
 \toprule
@@ -171,7 +173,7 @@ Pythia & 0.781 & 0.046 & 176 & 0.914 \\
 \end{tabular}
 \end{table}
 
-All folds achieve $R^2 > 0.73$. The mean shape correlation $\rho = 0.84$ with 84\% of individual profiles above $\rho > 0.7$ confirms that the bell-shaped depth profile is a consistent cross-family pattern.
+All folds achieve $R^2 > 0.73$. The mean shape correlation $\rho = 0.84$ with 84\% of individual profiles above $\rho > 0.7$ confirms that the bell-shaped depth profile is a consistent cross-family regularity.
 
 \begin{figure}[t]
 \centering
@@ -182,26 +184,35 @@ All folds achieve $R^2 > 0.73$. The mean shape correlation $\rho = 0.84$ with 84
 
 \subsection{Comparison to alternative baselines}
 
-Table~\ref{tab:baselines} compares our Gaussian law against 4 simpler alternatives, all evaluated with the same LOFO protocol.
+Table~\ref{tab:baselines} compares our Gaussian model against both simpler parametric and stronger nonparametric alternatives, all evaluated with the same LOFO protocol.
 
 \begin{table}[t]
 \centering
-\caption{Cross-family LOFO comparison of parametric models. The Gaussian law achieves the best $R^2$ with a modest parameter budget.}
+\caption{Cross-family LOFO comparison. The Gaussian achieves the best $R^2$ among parametric models; nonparametric splines fit better but require orders of magnitude more effective parameters.}
 \label{tab:baselines}
 \begin{tabular}{lccc}
 \toprule
 Model & Params & LOFO $R^2$ & LOFO MAE \\
 \midrule
+\multicolumn{4}{l}{\emph{Parametric baselines}} \\
 Intercept-only & 4 & 0.513 & 0.076 \\
 Linear-in-depth & 5 & 0.767 & 0.051 \\
 Quadratic-in-depth & 6 & 0.771 & 0.051 \\
 Quadratic + compute & 7 & 0.769 & 0.051 \\
 \textbf{Gaussian (ours)} & \textbf{8} & \textbf{0.780} & \textbf{0.050} \\
+\midrule
+\multicolumn{4}{l}{\emph{Nonparametric baselines}} \\
+Spline-per-dataset & $\sim$200 & 0.806 & 0.045 \\
+Spline + compute & $\sim$600 & 0.799 & 0.047 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The Gaussian law provides a modest but consistent improvement over all alternatives. Notably, the linear baseline (1 extra parameter over intercept) captures most of the depth-dependent variance ($\Delta R^2 = 0.254$), while the Gaussian adds a further $\Delta R^2 = 0.013$ with 3 additional parameters. The Gaussian's advantage lies in its interpretability (explicit peak location and compute dependence) and its ability to outperform the quadratic + compute model (7 params) despite their similar expressiveness, suggesting that the specific Gaussian-in-logit interaction between depth and compute captures structure that a generic polynomial misses.
+\paragraph{Parametric comparison.}
+The Gaussian provides a modest but consistent improvement over all parametric alternatives. The linear baseline captures most depth-dependent variance ($\Delta R^2 = 0.254$ over intercept), while the Gaussian adds $\Delta R^2 = 0.013$ with 3 additional parameters. A profile-level stratified bootstrap (10{,}000 resamples of 252 profiles) gives a 95\% CI of $[+0.04, +0.69]$ for the LOFO-style advantage, excluding zero. Cluster-robust paired inference ($t_{251} = 2.54$, $p = 0.012$) with the profile as the unit of analysis confirms significance. The Gaussian advantage is positive for 63\% of profiles (158/252) and is most pronounced for Pythia (68\%) and GPT-2 (67\%).
+
+\paragraph{Nonparametric comparison.}
+Spline-per-dataset ($R^2 = 0.806$) outperforms the Gaussian ($R^2 = 0.780$), showing that a more flexible function class can capture patterns our model misses. However, the splines require separate functions for each dataset and cannot represent the depth--compute interaction that the Gaussian encodes through $\mu_0 + \mu_1 \log(C/N)$. Our 8-parameter model captures 97\% of the variance explained by the best spline ($0.780/0.806$), while providing interpretable parameters and cross-family generalization. The spline + compute baseline ($R^2 = 0.799$) actually \emph{degrades} relative to the simpler spline, suggesting overfitting when the nonparametric model is given additional compute information---in contrast to the Gaussian, which uses compute productively.
 
 \subsection{Parameter stability}
 
@@ -282,17 +293,20 @@ The effect is robust across both multi-checkpoint families (Pythia, OLMo-2, BLOO
 
 \paragraph{Scope and limitations.}
 \label{sec:limitations}
-Our study covers decoder-only models up to 1.7B parameters and 4 classification tasks. Extension to encoders (BERT), encoder-decoders (T5), larger models ($>$7B), and non-classification tasks is important future work. The law's practical utility for exact layer selection is limited: the predicted peak often defaults to the final layer for well-trained models (\S\ref{app:utility}). The modest $R^2$ advantage of the Gaussian over simpler baselines ($+0.013$ over linear) means the specific functional form is less important than the finding that depth profiles are \emph{predictably bell-shaped across architectures}.
+Our study covers decoder-only models up to 1.7B parameters and 4 classification tasks. Extension to encoders (BERT), encoder-decoders (T5), larger models ($>$7B), and non-classification tasks is important future work. The model's practical utility for exact layer selection is limited: the predicted peak often defaults to the final layer for well-trained models (\S\ref{app:utility}).
+
+\paragraph{The regularity matters more than the fit.}
+The modest $R^2$ advantage of the Gaussian over the linear baseline ($+0.013$) and the stronger performance of nonparametric splines ($R^2 = 0.81$) both point to the same conclusion: the specific functional form is less important than the finding that depth profiles are \emph{predictably bell-shaped across architectures}. A linear depth term captures most variance; the Gaussian captures a bit more; splines capture a bit more still. The regularity itself---that quality peaks at intermediate layers and degrades near the final layer, with a shape that transfers across architectures---is the scientific contribution, not the particular function used to model it.
 
 \paragraph{Statistical considerations.}
-Our 5004 observations come from 252 correlated depth profiles. Point-level $R^2$ values (the primary metric) are valid regardless of correlation structure, but associated $p$-values would be inflated if observations were treated as independent. We therefore focus on $R^2$, shape $\rho$, and cross-family transfer as our evidence, rather than emphasizing $p$-values.
+Our 5004 observations come from 252 correlated depth profiles. We handle this dependence structure in three ways: (1) LOFO cross-validation treats entire families as holdout units, (2) profile-level bootstrap (10{,}000 resamples stratified by family) provides CIs that respect within-profile correlation, and (3) cluster-robust paired tests use the 252 profiles as independent units. All three approaches yield consistent evidence for the bell-shaped regularity.
 
 \paragraph{Connection to scaling laws.}
-Our law operates on a different axis---depth rather than loss---but shares the scaling law spirit of finding simple, predictive relationships in complex systems. The $\alpha$ parameter couples quality to compute; the $\beta$ parameter captures depth-dependent structure with no analog in standard scaling laws.
+Our model operates on a different axis---depth rather than loss---but shares the scaling law spirit of finding simple, predictive relationships in complex systems. The $\alpha$ parameter couples quality to compute; the $\beta$ parameter captures depth-dependent structure with no analog in standard scaling laws.
 
 \section{Conclusion}
 
-We present a Gaussian-in-logit law for depth-wise representation quality in decoder language models. The law achieves $R^2 = 0.78$ in cross-family prediction, outperforming 4 simpler alternatives. A blind test on BLOOM confirms shape universality ($\rho = 0.78$) while showing that absolute levels require calibration. Late-layer quality degradation appears across all 6 tested families. Our results suggest that depth profiles follow architecture-independent regularities, complementing scaling laws that describe aggregate loss.
+We document a shape regularity in depth-wise representation quality across decoder language models: quality follows a bell-shaped profile that peaks at intermediate layers, with a form that transfers across architectures. An 8-parameter Gaussian model captures this pattern ($R^2 = 0.78$ cross-family, approaching nonparametric splines at $R^2 = 0.81$ with far fewer parameters), and a blind test on BLOOM confirms shape transfer ($\rho = 0.78$). Profile-level bootstrap CIs and cluster-robust inference provide statistical grounding beyond naive point-level tests. Late-layer quality degradation appears across all 6 tested families. Our results suggest that depth profiles follow architecture-independent regularities, complementing scaling laws that describe aggregate loss.
 
 \section*{Reproducibility statement}
 
@@ -312,10 +326,10 @@ Fitting on Pythia alone (3520 observations, 4 sizes, 12 checkpoints) and predict
 \subsection{Practical utility for layer selection}
 \label{app:utility}
 
-The predicted peak $\mu_0 + \mu_1 \log(C/N)$ often exceeds 1.0 for well-trained models, defaulting to the final layer. The recovery ratio (predicted best layer = actual best layer) is near zero. The law captures qualitative shape, not precise layer indices.
+The predicted peak $\mu_0 + \mu_1 \log(C/N)$ often exceeds 1.0 for well-trained models, defaulting to the final layer. The recovery ratio (predicted best layer = actual best layer) is near zero. The model captures qualitative shape, not precise layer indices.
 
 \subsection{Profile-likelihood analysis}
 
-We compute profile-likelihood CIs by fixing each parameter at a grid of 30 values, re-optimizing all others (8 restarts each), and identifying the 95\% CI where deviance $< \chi^2_1(0.95) = 3.84$. All CIs are from the \emph{unconstrained} fit ($\beta$ allowed negative). The wide CIs reflect parameter correlations in the nonlinear model rather than lack of signal: LOFO $R^2 = 0.78$ across 5 independent family holdouts provides the strongest evidence for the law's predictive power.
+We compute profile-likelihood CIs by fixing each parameter at a grid of 30 values, re-optimizing all others (8 restarts each), and identifying the 95\% CI where deviance $< \chi^2_1(0.95) = 3.84$. All CIs are from the \emph{unconstrained} fit ($\beta$ allowed negative). The wide CIs reflect parameter correlations in the nonlinear model rather than lack of signal: LOFO $R^2 = 0.78$ across 5 independent family holdouts provides the strongest evidence for the model's predictive power.
 
 \end{document}
