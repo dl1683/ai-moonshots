@@ -267,12 +267,12 @@ def main():
     print(f"    alpha < 0.85: Declining profiles (information collapse)")
     print(f"    alpha ~ {alpha_star_best:.2f}: PHASE TRANSITION")
     print(f"    alpha > 0.90: Complex/maintained profiles (information preserved)")
-    print(f"\n  PRE-REGISTERED PREDICTION for google/gemma-3-1b-it:")
+    print(f"\n  PRE-REGISTERED PREDICTION for HuggingFaceTB/SmolLM2-1.7B:")
     print(f"    H1: alpha* is UNIVERSAL across transformer architectures")
     print(f"    Predicted alpha* = {alpha_star_best:.2f} +/- 0.05")
     print(f"    H0 (null): alpha* differs by > 0.10 from Qwen3")
-    print(f"    Test: Run dense sweep on Gemma-3-1B, compute alpha* same way")
-    print(f"    Success criterion: |alpha*_gemma - {alpha_star_best:.2f}| < 0.10")
+    print(f"    Test: Run dense sweep on SmolLM2-1.7B, compute alpha* same way")
+    print(f"    Success criterion: |alpha*_smollm - {alpha_star_best:.2f}| < 0.10")
 
     # Save analysis
     analysis = {
