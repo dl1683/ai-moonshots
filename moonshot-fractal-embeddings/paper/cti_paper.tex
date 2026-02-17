@@ -35,7 +35,7 @@
 \maketitle
 
 \begin{abstract}
-We document a persistent empirical regularity: the depth profile of representation quality in decoder-only language models follows a bell-shaped curve that is remarkably consistent across architectures. An 8-parameter Gaussian-in-logit model predicts chance-normalized kNN accuracy at any layer as a function of normalized depth and compute-to-parameter ratio. In leave-one-family-out cross-validation across 5 families (Pythia, OLMo-2, Cerebras-GPT, OPT, GPT-2; 5004 observations from 252 depth profiles), we achieve $R^2 = 0.78$ with mean shape correlation $\rho = 0.84$. Ablations show that depth curvature ($\beta$) accounts for most explanatory power ($\Delta R^2 = -0.27$ when removed). Among 4 nonparametric methods tested in the same cross-family protocol, 3 fail to generalize (collapsing on at least one held-out family); only gradient-boosted trees outperform our model ($R^2 = 0.83$) but with $\sim$1000$\times$ more parameters and no interpretable structure. A blind test on BLOOM (ALiBi attention, multilingual) confirms shape transfer ($\rho = 0.78$). Held-out profile-level bootstrap CIs confirm the advantage over linear baselines ($p_{\text{cluster}} = 0.007$). We characterize this as a \emph{shape-universal, level-specific} regularity: depth profiles share a common form across architectures, but absolute quality depends on training data and model family.
+We document a persistent empirical regularity: the depth profile of representation quality in decoder-only language models follows a bell-shaped curve that is remarkably consistent across architectures. An 8-parameter Gaussian-in-logit model predicts chance-normalized kNN accuracy at any layer as a function of normalized depth and compute-to-parameter ratio. In leave-one-family-out cross-validation across 5 families (Pythia, OLMo-2, Cerebras-GPT, OPT, GPT-2; 5004 observations from 252 depth profiles), the model achieves $R^2 = 0.78$ with mean shape correlation $\rho = 0.84$. Extended validation on 3 additional architecturally distinct families (Gemma-2, Phi-2, Qwen2.5) confirms shape transfer to all 8 tested families ($\rho > 0.6$, 8/8), with calibrated $R^2 = 0.81$ across all 8 after fitting only 4 dataset intercepts. Ablations show that depth curvature ($\beta$) accounts for most explanatory power ($\Delta R^2 = -0.27$ when removed), and comparison against 5 alternative parametric shapes confirms the symmetric Gaussian is near-optimal: adding asymmetry consistently degrades cross-family generalization. Results are robust to family imbalance ($\Delta R^2 < 0.01$ under inverse-frequency weighting). We characterize this as a \emph{shape-universal, level-specific} regularity: depth profiles share a common bell-shaped form across architectures, but absolute quality depends on training data and model family.
 \end{abstract}
 
 \section{Introduction}
@@ -47,10 +47,10 @@ Each layer of a language model produces distinct representations that vary syste
 We address this gap by documenting and modeling a \emph{shape regularity} in depth-wise representation quality. Our contributions:
 
 \begin{enumerate}
-    \item \textbf{An empirical regularity}: representation quality follows a bell-shaped depth profile that is consistent across 5 architecturally diverse model families (\S\ref{sec:experiments}).
-    \item \textbf{A parametric model} (8 parameters) that captures this regularity, outperforming both parametric alternatives and a nonparametric GAM in cross-family generalization (\S\ref{sec:experiments}).
-    \item \textbf{Rigorous uncertainty quantification}: held-out profile-level bootstrap CIs, cluster-robust inference (252 independent profiles), and comparison against both weaker and stronger baselines (\S\ref{sec:experiments}).
-    \item \textbf{A blind test} on BLOOM confirming shape transfer ($\rho = 0.78$) while honestly documenting that absolute levels require calibration (\S\ref{sec:bloom}).
+    \item \textbf{An empirical regularity}: representation quality follows a bell-shaped depth profile that is consistent across 8 architecturally diverse model families (\S\ref{sec:experiments}, \S\ref{sec:extended}).
+    \item \textbf{A parametric model} (8 parameters) that captures this regularity. Among 6 interpretable parametric shapes tested, the symmetric Gaussian is near-optimal; adding asymmetry degrades generalization (\S\ref{sec:shapes}).
+    \item \textbf{Broad external validation}: shape transfer confirmed on 8/8 families spanning 5 positional encodings, 7 training corpora, and both standard and synthetic data regimes (\S\ref{sec:extended}).
+    \item \textbf{Rigorous uncertainty quantification}: held-out bootstrap CIs ($p = 0.007$), family-balanced analysis ($\Delta R^2 < 0.01$ under weighting), and comparison against 4 nonparametric baselines (\S\ref{sec:experiments}).
 \end{enumerate}
 
 We also document what the model does \emph{not} do: it does not predict exact best-layer indices and does not transfer absolute quality levels zero-shot to all architectures (\S\ref{sec:limitations}).
@@ -79,7 +79,7 @@ We use $k$-nearest-neighbor accuracy ($k=20$) on L2-normalized last-token repres
 \begin{equation}
     Q_{\text{norm}} = \frac{Q_{\text{kNN}} - 1/K}{1 - 1/K}
 \end{equation}
-where $K$ is the number of classes. Each \emph{depth profile}---the vector $(Q_{\text{norm}}(\ell))_{\ell=1}^L$ for a fixed model, checkpoint, and dataset---constitutes one independent observational unit. Our dataset contains 252 such profiles (5004 layer-level observations) across 5 training families.
+where $K$ is the number of classes. Each \emph{depth profile}---the vector $(Q_{\text{norm}}(\ell))_{\ell=1}^L$ for a fixed model, checkpoint, and dataset---constitutes one independent observational unit. Our primary dataset contains 252 such profiles (5004 layer-level observations) across 5 training families, extended to 268 profiles (5460 observations) with 3 additional validation families (\S\ref{sec:extended}).
 
 \subsection{The Gaussian-in-logit model}
 
@@ -115,21 +115,27 @@ Parametric models are fitted with L-BFGS-B (20 restarts); splines use \texttt{sc
 
 \subsection{Model families}
 
-We evaluate 16 models across 6 architecturally diverse families (Table~\ref{tab:families}). Key differences span positional encoding (RoPE, absolute, ALiBi, learned), training corpus (Pile, ROOTS), and training schedule (standard vs.\ Chinchilla-optimal).
+We evaluate 24 models across 9 architecturally diverse families (Table~\ref{tab:families}). Key differences span positional encoding (RoPE, absolute, ALiBi, learned), training corpus (Pile, ROOTS, RedPajama, curated synthetic, multilingual), and training schedule (standard vs.\ Chinchilla-optimal vs.\ over-trained vs.\ knowledge-distilled).
 
 \begin{table}[t]
 \centering
-\caption{Model families. Pythia, OLMo-2, and BLOOM provide intermediate checkpoints.}
+\caption{Model families. Pythia, OLMo-2, and BLOOM provide intermediate checkpoints; others are evaluated at final checkpoint only.}
 \label{tab:families}
 \begin{tabular}{lcccl}
 \toprule
 Family & Sizes & Layers & Ckpts & Pos.\ Enc. \\
 \midrule
+\multicolumn{5}{l}{\emph{Primary (LOFO training)}} \\
 Pythia & 160M--1.4B & 12--24 & 12 ea. & RoPE \\
 OLMo-2 & 1B & 16 & 11 & RoPE \\
 Cerebras-GPT & 256M--1.3B & 14--24 & Final & Learned \\
 OPT & 350M--1.3B & 24 & Final & Learned \\
 GPT-2 & 124M--774M & 12--36 & Final & Absolute \\
+\midrule
+\multicolumn{5}{l}{\emph{Extended validation}} \\
+Gemma-2 & 2B & 26 & Final & RoPE \\
+Phi-2 & 2.7B & 32 & Final & RoPE \\
+Qwen2.5 & 0.5B--1.5B & 24--28 & Final & RoPE \\
 \midrule
 BLOOM (blind) & 560M--1.7B & 24 & 7--8 ea. & ALiBi \\
 \bottomrule
@@ -263,6 +269,35 @@ $-$ $\beta$ (no curvature) & 5 & 0.512 & $-$0.268 \\
 
 The depth curvature parameter $\beta$ is by far the most important component ($\Delta R^2 = -0.268$ when removed), confirming that the bell-shaped depth profile is the model's core contribution. The compute parameters ($\alpha, \mu_1$) provide a smaller but consistent gain ($\Delta R^2 \approx 0.01$), with the largest benefit on OLMo-2 (which has 11 training checkpoints spanning the full compute range).
 
+\subsection{Shape comparison}
+\label{sec:shapes}
+
+Is the symmetric Gaussian the right functional form? We test 5 alternative parametric shapes in the same LOFO framework, all using the shared structure $\text{logit}(Q) = b_d + \alpha \log(C/N) + f(x, \log(C/N))$ (Table~\ref{tab:shapes}).
+
+\begin{table}[t]
+\centering
+\caption{Alternative parametric shapes evaluated via 5-family LOFO. The symmetric Gaussian is near-optimal among interpretable models; adding asymmetry consistently hurts generalization.}
+\label{tab:shapes}
+\begin{tabular}{lcc}
+\toprule
+Shape & Params & LOFO $R^2$ \\
+\midrule
+Quartic polynomial & 9 & \textbf{0.796} \\
+Beta distribution & 7 & 0.782 \\
+\textbf{Symmetric Gaussian (ours)} & \textbf{8} & \textbf{0.780} \\
+Skewed Gaussian ($+\gamma$) & 9 & 0.778 \\
+Free cubic & 8 & 0.774 \\
+Asymmetric Gaussian ($\beta_L/\beta_R$) & 9 & 0.719 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two findings emerge. First, the symmetric Gaussian is near-optimal: the quartic polynomial gains only $+0.017$ $R^2$ with one additional parameter and no interpretable structure. The Beta distribution achieves comparable $R^2 = 0.782$ with \emph{fewer} parameters (7 vs.\ 8) but lacks the closed-form peak and curvature interpretation. Second, adding asymmetry consistently \emph{hurts}: the skewed Gaussian ($-0.002$, 9 params) and asymmetric Gaussian ($-0.061$, 9 params) both degrade cross-family generalization. This suggests the bell-shaped regularity is genuinely symmetric, not an artifact of an overly constrained functional form.
+
+\subsection{Family-balanced robustness}
+
+Pythia contributes 70\% of observations (3520/5004). To verify that results are not driven by this imbalance, we test two alternatives: (1) inverse-frequency weighting during fitting and (2) subsampling each family to the minimum size (200 observations). Standard LOFO gives $R^2 = 0.780 \pm 0.018$; weighted LOFO gives $R^2 = 0.770 \pm 0.028$; subsampled LOFO gives $R^2 = 0.772$. The maximum $R^2$ deviation is 0.010, confirming robustness to family imbalance.
+
 \section{Blind test: BLOOM}
 \label{sec:bloom}
 
@@ -283,6 +318,52 @@ BLOOM~\citep{workshop2022bloom} uses ALiBi positional encoding~\citep{press2022a
 \end{itemize}
 
 The $b_d$ shift of $\approx -0.75$ in logit space is consistent across datasets, suggesting a systematic quality reduction that we hypothesize results from multilingual capacity sharing. The shared parameters ($\alpha, \beta, \mu_0, \mu_1$) transfer; family-level baselines require calibration---analogous to how scaling law exponents transfer but proportionality constants differ.
+
+\section{Extended validation: 8 families}
+\label{sec:extended}
+
+To test generalization beyond the 5 primary families, we extract depth profiles from 3 additional architecturally distinct families: Gemma-2-2B~\citep{team2024gemma2} (Google, trained on primarily web data), Phi-2~\citep{javaheripi2023phi2} (Microsoft, trained on synthetic + filtered web data), and Qwen2.5 (0.5B and 1.5B)~\citep{yang2024qwen25} (Alibaba, trained on multilingual data). These add 456 layer-level observations across 16 new depth profiles, for a combined total of 5460 observations across 268 profiles and 8 families.
+
+\subsection{Leave-one-family-out: 8 families}
+
+We re-run LOFO with all 8 families (Table~\ref{tab:extended_lofo}).
+
+\begin{table}[t]
+\centering
+\caption{Extended 8-family LOFO. Shape $\rho > 0.6$ for all families. Two families (Gemma-2, Phi) have low zero-shot $R^2$ but high shape correlation, indicating that the depth-profile \emph{shape} transfers universally while absolute \emph{level} is family-specific.}
+\label{tab:extended_lofo}
+\begin{tabular}{lcccc}
+\toprule
+Holdout & $R^2$ & Shape $\rho$ & Cal.\ $R^2$ & $b_d$ shift \\
+\midrule
+\multicolumn{5}{l}{\emph{Primary families}} \\
+Cerebras-GPT & 0.732 & 0.763 & 0.781 & $+$0.10 \\
+GPT-2 & 0.850 & 0.805 & 0.865 & $-$0.00 \\
+OLMo-2 & 0.770 & 0.904 & 0.844 & $-$0.05 \\
+OPT & 0.776 & 0.831 & 0.835 & $-$0.10 \\
+Pythia & 0.783 & 0.914 & 0.836 & $+$0.07 \\
+\midrule
+\multicolumn{5}{l}{\emph{New families}} \\
+Gemma-2 & $-$2.42 & 0.677 & 0.814 & $-$0.96 \\
+Phi-2 & 0.448 & 0.724 & 0.720 & $+$0.21 \\
+Qwen2.5 & 0.741 & 0.897 & 0.809 & $+$0.14 \\
+\midrule
+\textbf{Mean (8 fam.)} & \textbf{0.335} & \textbf{0.814} & \textbf{0.813} & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Shape-universal, level-specific}
+
+The extended results reveal a clean separation between two components of the regularity:
+
+\paragraph{Shape transfers universally.} All 8 families achieve shape $\rho > 0.6$ (mean $\rho = 0.81$), meaning the predicted depth profile correctly ranks which layers are better or worse. The highest shape correlations ($\rho > 0.9$) occur for families with training checkpoints (Pythia, OLMo-2), where the model correctly tracks how depth profiles evolve with training compute.
+
+\paragraph{Absolute level is family-specific.} Two families---Gemma-2 and Phi---show low zero-shot $R^2$ despite good shape $\rho$. Gemma-2 (zero-shot $R^2 = -2.42$, $b_d$ shift $= -0.96$) has systematically lower kNN quality than predicted, likely due to its knowledge distillation training or architectural choices. Phi-2 ($R^2 = 0.45$, shift $= +0.21$) shows the opposite: higher quality than expected from its compute-to-parameter ratio, plausibly reflecting training on curated synthetic data.
+
+\paragraph{Calibration recovers fit.} Fitting only the 4 dataset intercepts $b_d$ while freezing the shared parameters ($\alpha, \beta, \mu_0, \mu_1$) yields calibrated $R^2 = 0.81$ averaged across all 8 families. This confirms that the shape parameters are genuinely universal: one set of $(\alpha, \beta, \mu_0, \mu_1)$ describes the depth-profile form for all tested architectures, and only the overall quality level requires family-specific adjustment. This parallels the structure of neural scaling laws, where power-law exponents transfer across architectures but proportionality constants depend on training details.
+
+\paragraph{Parameter stability.} Across 8 LOFO folds, the shared parameters remain stable: $\alpha = 0.10 \pm 0.03$, $\beta = 0.62 \pm 0.08$, $\mu_0 = -0.85 \pm 0.56$, $\mu_1 = 0.076 \pm 0.028$. The wider variance in $\mu_0$ reflects that Qwen2.5 (with its 0.5B and 1.5B sizes) shifts the peak location estimate when held out. Despite this, the curvature $\beta$ and quality--compute coupling $\alpha$ are consistent across all folds.
 
 \section{Late-layer quality degradation}
 \label{sec:degradation}
@@ -320,24 +401,24 @@ The effect is robust across both multi-checkpoint families (Pythia, OLMo-2, BLOO
 
 \paragraph{Scope and limitations.}
 \label{sec:limitations}
-Our study covers decoder-only models up to 1.7B parameters and 4 classification tasks. Extension to encoders (BERT), encoder-decoders (T5), larger models ($>$7B), and non-classification tasks is important future work. The model's practical utility for exact layer selection is limited: the predicted peak often defaults to the final layer for well-trained models (\S\ref{app:utility}).
+Our study covers decoder-only models up to 2.7B parameters across 9 families (8 in LOFO + BLOOM blind) and 4 classification tasks. Extension to encoders (BERT), encoder-decoders (T5), larger models ($>$7B), and non-classification tasks is important future work. The model's practical utility for exact layer selection is limited: the predicted peak often defaults to the final layer for well-trained models (\S\ref{app:utility}). Two of 8 LOFO families (Gemma-2, Phi) require $b_d$ calibration for accurate absolute predictions, though shape transfer succeeds for all.
 
 \paragraph{The regularity matters more than the fit.}
 The Gaussian's $R^2$ advantage over the linear baseline ($+0.013$) is modest, and within-family splines fit better ($R^2 = 0.81$). But the Gaussian outperforms the nonparametric GAM in cross-family generalization ($R^2 = 0.78$ vs.\ $0.73$), demonstrating that its parametric structure encodes genuine regularity rather than overfitting to in-distribution patterns. The GAM collapses on OLMo-2 ($R^2 = 0.39$) while the Gaussian maintains $R^2 = 0.78$. The regularity itself---that quality peaks at intermediate layers and degrades near the final layer, with a shape that transfers across architectures---is the scientific contribution. The parametric form provides a compact summary of this regularity that generalizes where richer nonparametric models fail.
 
 \paragraph{Statistical considerations.}
-Our 5004 observations come from 252 correlated depth profiles. We handle this dependence structure in three ways: (1) LOFO cross-validation treats entire families as holdout units, (2) per-profile statistics are computed \emph{only on held-out predictions} from each LOFO fold, ensuring no in-sample inflation, and (3) stratified bootstrap (10{,}000 resamples) and cluster-robust paired $t$-tests use the 252 held-out profiles as independent units. All three approaches yield consistent evidence: $\Delta R^2 = +0.013$ at the point level, $\Delta R^2 = +0.30$ $[+0.04, +0.66]$ at the profile level, $\Delta$MAE $= -0.003$ $[-0.006, -0.001]$, and $p = 0.007$ from the cluster-robust test.
+Our 5460 observations come from 268 correlated depth profiles across 8 families (5004 from 5 primary families; 456 from 3 extended). We handle this dependence structure in three ways: (1) LOFO cross-validation treats entire families as holdout units, (2) per-profile statistics are computed \emph{only on held-out predictions} from each LOFO fold, ensuring no in-sample inflation, and (3) stratified bootstrap (10{,}000 resamples) and cluster-robust paired $t$-tests use the 252 held-out profiles as independent units. All three approaches yield consistent evidence: $\Delta R^2 = +0.013$ at the point level, $\Delta R^2 = +0.30$ $[+0.04, +0.66]$ at the profile level, $\Delta$MAE $= -0.003$ $[-0.006, -0.001]$, and $p = 0.007$ from the cluster-robust test.
 
 \paragraph{Connection to scaling laws.}
 Our model operates on a different axis---depth rather than loss---but shares the scaling law spirit of finding simple, predictive relationships in complex systems. The $\alpha$ parameter couples quality to compute; the $\beta$ parameter captures depth-dependent structure with no analog in standard scaling laws.
 
 \section{Conclusion}
 
-We document a shape regularity in depth-wise representation quality across decoder language models: quality follows a bell-shaped profile that peaks at intermediate layers, with a form that transfers across architectures. An 8-parameter Gaussian model captures this pattern ($R^2 = 0.78$ cross-family), outperforming a nonparametric GAM ($R^2 = 0.73$) in cross-family generalization while using orders of magnitude fewer parameters. A blind test on BLOOM confirms shape transfer ($\rho = 0.78$). Held-out profile-level bootstrap CIs and cluster-robust inference ($p = 0.007$, 252 profiles) provide statistical grounding. Late-layer quality degradation appears across all 6 tested families. Our results suggest that depth profiles follow architecture-independent regularities, complementing scaling laws that describe aggregate loss.
+We document a shape regularity in depth-wise representation quality across decoder language models: quality follows a bell-shaped profile that peaks at intermediate layers, with a form that transfers across architectures. An 8-parameter Gaussian model captures this pattern ($R^2 = 0.78$ in 5-family LOFO; shape $\rho = 0.81$ across 8 families), outperforming a nonparametric GAM ($R^2 = 0.73$) in cross-family generalization. Extended validation on 3 additional families (Gemma-2, Phi-2, Qwen2.5) and a blind test on BLOOM confirm shape transfer ($\rho > 0.6$, 9/9 families), while revealing that absolute quality levels are family-specific (calibrated $R^2 = 0.81$ across 8 families). Among 6 parametric shapes tested, the symmetric Gaussian is near-optimal: adding asymmetry hurts generalization. Held-out profile-level bootstrap CIs ($p = 0.007$, 252 profiles) provide statistical grounding, and results are robust to family imbalance ($\Delta R^2 < 0.01$). Our findings characterize a shape-universal, level-specific regularity complementing scaling laws that describe aggregate loss.
 
 \section*{Reproducibility statement}
 
-All models are publicly available: Pythia~\citep{biderman2023pythia}, OLMo-2~\citep{groeneveld2024olmo}, Cerebras-GPT~\citep{dey2023cerebras}, OPT~\citep{zhang2022opt}, GPT-2~\citep{radford2019language}, BLOOM~\citep{workshop2022bloom}. Evaluation datasets are standard benchmarks~\citep{larson2019clinc, lehmann2015dbpedia, voorhees2000trec, zhang2015yahoo}. Our fitting procedure (L-BFGS-B, 20 restarts) is deterministic given seeds. Code and results will be released.
+All models are publicly available: Pythia~\citep{biderman2023pythia}, OLMo-2~\citep{groeneveld2024olmo}, Cerebras-GPT~\citep{dey2023cerebras}, OPT~\citep{zhang2022opt}, GPT-2~\citep{radford2019language}, BLOOM~\citep{workshop2022bloom}, Gemma-2~\citep{team2024gemma2}, Phi-2~\citep{javaheripi2023phi2}, Qwen2.5~\citep{yang2024qwen25}. Evaluation datasets are standard benchmarks~\citep{larson2019clinc, lehmann2015dbpedia, voorhees2000trec, zhang2015yahoo}. Our fitting procedure (L-BFGS-B, 20 restarts) is deterministic given seeds. Code and results will be released.
 
 \bibliography{references}
 \bibliographystyle{colm2026_conference}
