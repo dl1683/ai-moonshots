@@ -1,0 +1,318 @@
+{
+  "experiment": "causal_do_ID",
+  "model_id": "Qwen/Qwen2-0.5B",
+  "alphas": [
+    0.0,
+    0.3,
+    0.5,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1.0
+  ],
+  "preregistered_criterion": "compress shifts kNN LEFT by >0.02, expand shifts RIGHT by >0.02",
+  "results": {
+    "0.0": {
+      "natural": {
+        "knn_acc": 0.1036,
+        "intrinsic_dim": 10.751529664993287
+      },
+      "compress_50pct": {
+        "knn_acc": 0.05746666666666666,
+        "intrinsic_dim": 3.4849202537536623
+      },
+      "compress_30pct": {
+        "knn_acc": 0.02613333333333333,
+        "intrinsic_dim": 1.90587140083313
+      },
+      "expand_0.3": {
+        "knn_acc": 0.0168,
+        "intrinsic_dim": 92.85154838463971
+      },
+      "expand_0.5": {
+        "knn_acc": 0.0046,
+        "intrinsic_dim": 90.15344824194145
+      }
+    },
+    "0.3": {
+      "natural": {
+        "knn_acc": 0.10973333333333332,
+        "intrinsic_dim": 12.155337228775025
+      },
+      "compress_50pct": {
+        "knn_acc": 0.06026666666666667,
+        "intrinsic_dim": 3.7968928718566897
+      },
+      "compress_30pct": {
+        "knn_acc": 0.02853333333333333,
+        "intrinsic_dim": 2.005393285751343
+      },
+      "expand_0.3": {
+        "knn_acc": 0.01893333333333333,
+        "intrinsic_dim": 116.57719404416726
+      },
+      "expand_0.5": {
+        "knn_acc": 0.006000000000000001,
+        "intrinsic_dim": 113.62545140371651
+      }
+    },
+    "0.5": {
+      "natural": {
+        "knn_acc": 0.15173333333333333,
+        "intrinsic_dim": 49.4371524143219
+      },
+      "compress_50pct": {
+        "knn_acc": 0.09586666666666668,
+        "intrinsic_dim": 14.314825839996338
+      },
+      "compress_30pct": {
+        "knn_acc": 0.046799999999999994,
+        "intrinsic_dim": 6.103081078529358
+      },
+      "expand_0.3": {
+        "knn_acc": 0.022333333333333334,
+        "intrinsic_dim": 276.1070470129635
+      },
+      "expand_0.5": {
+        "knn_acc": 0.008666666666666666,
+        "intrinsic_dim": 265.6236465787551
+      }
+    },
+    "0.6": {
+      "natural": {
+        "knn_acc": 0.14786666666666667,
+        "intrinsic_dim": 22.77265983581543
+      },
+      "compress_50pct": {
+        "knn_acc": 0.08826666666666666,
+        "intrinsic_dim": 6.66683247089386
+      },
+      "compress_30pct": {
+        "knn_acc": 0.04,
+        "intrinsic_dim": 2.928699321746826
+      },
+      "expand_0.3": {
+        "knn_acc": 0.0184,
+        "intrinsic_dim": 191.85998653854725
+      },
+      "expand_0.5": {
+        "knn_acc": 0.007733333333333333,
+        "intrinsic_dim": 184.05253078501278
+      }
+    },
+    "0.65": {
+      "natural": {
+        "knn_acc": 0.17213333333333336,
+        "intrinsic_dim": 55.08173104286194
+      },
+      "compress_50pct": {
+        "knn_acc": 0.10926666666666666,
+        "intrinsic_dim": 15.430392084121705
+      },
+      "compress_30pct": {
+        "knn_acc": 0.05086666666666667,
+        "intrinsic_dim": 6.362927522659302
+      },
+      "expand_0.3": {
+        "knn_acc": 0.020733333333333333,
+        "intrinsic_dim": 281.2586648377396
+      },
+      "expand_0.5": {
+        "knn_acc": 0.009066666666666666,
+        "intrinsic_dim": 271.8363338257588
+      }
+    },
+    "0.7": {
+      "natural": {
+        "knn_acc": 0.1784,
+        "intrinsic_dim": 71.23419826507569
+      },
+      "compress_50pct": {
+        "knn_acc": 0.11359999999999999,
+        "intrinsic_dim": 20.473973169326783
+      },
+      "compress_30pct": {
+        "knn_acc": 0.051866666666666665,
+        "intrinsic_dim": 8.676397981643676
+      },
+      "expand_0.3": {
+        "knn_acc": 0.022,
+        "intrinsic_dim": 285.90321121101215
+      },
+      "expand_0.5": {
+        "knn_acc": 0.008733333333333333,
+        "intrinsic_dim": 276.9878129958039
+      }
+    },
+    "0.75": {
+      "natural": {
+        "knn_acc": 0.20033333333333336,
+        "intrinsic_dim": 71.66959732055665
+      },
+      "compress_50pct": {
+        "knn_acc": 0.13019999999999998,
+        "intrinsic_dim": 20.6501828956604
+      },
+      "compress_30pct": {
+        "knn_acc": 0.0542,
+        "intrinsic_dim": 8.617163701057434
+      },
+      "expand_0.3": {
+        "knn_acc": 0.02246666666666667,
+        "intrinsic_dim": 285.01175721087566
+      },
+      "expand_0.5": {
+        "knn_acc": 0.009466666666666668,
+        "intrinsic_dim": 277.9669681500934
+      }
+    },
+    "0.8": {
+      "natural": {
+        "knn_acc": 0.223,
+        "intrinsic_dim": 42.4608434677124
+      },
+      "compress_50pct": {
+        "knn_acc": 0.14166666666666664,
+        "intrinsic_dim": 11.682021532058716
+      },
+      "compress_30pct": {
+        "knn_acc": 0.0524,
+        "intrinsic_dim": 4.720687398910522
+      },
+      "expand_0.3": {
+        "knn_acc": 0.021133333333333334,
+        "intrinsic_dim": 279.2574216352769
+      },
+      "expand_0.5": {
+        "knn_acc": 0.0096,
+        "intrinsic_dim": 274.2617144213515
+      }
+    },
+    "0.85": {
+      "natural": {
+        "knn_acc": 0.2693333333333333,
+        "intrinsic_dim": 27.82217734336853
+      },
+      "compress_50pct": {
+        "knn_acc": 0.16273333333333334,
+        "intrinsic_dim": 7.492732939720153
+      },
+      "compress_30pct": {
+        "knn_acc": 0.05513333333333334,
+        "intrinsic_dim": 3.03256609916687
+      },
+      "expand_0.3": {
+        "knn_acc": 0.0206,
+        "intrinsic_dim": 269.22733709129136
+      },
+      "expand_0.5": {
+        "knn_acc": 0.008333333333333333,
+        "intrinsic_dim": 265.60317204373086
+      }
+    },
+    "0.9": {
+      "natural": {
+        "knn_acc": 0.36719999999999997,
+        "intrinsic_dim": 18.022937564849855
+      },
+      "compress_50pct": {
+        "knn_acc": 0.20579999999999998,
+        "intrinsic_dim": 4.931311073303223
+      },
+      "compress_30pct": {
+        "knn_acc": 0.04739999999999999,
+        "intrinsic_dim": 2.1033217239379884
+      },
+      "expand_0.3": {
+        "knn_acc": 0.020133333333333336,
+        "intrinsic_dim": 251.25180570599164
+      },
+      "expand_0.5": {
+        "knn_acc": 0.008799999999999999,
+        "intrinsic_dim": 248.0866899221803
+      }
+    },
+    "0.95": {
+      "natural": {
+        "knn_acc": 0.44366666666666665,
+        "intrinsic_dim": 16.193265714645385
+      },
+      "compress_50pct": {
+        "knn_acc": 0.1882,
+        "intrinsic_dim": 4.446765689849854
+      },
+      "compress_30pct": {
+        "knn_acc": 0.04333333333333333,
+        "intrinsic_dim": 1.9705829095840455
+      },
+      "expand_0.3": {
+        "knn_acc": 0.019666666666666666,
+        "intrinsic_dim": 234.41428084929572
+      },
+      "expand_0.5": {
+        "knn_acc": 0.008866666666666667,
+        "intrinsic_dim": 231.6400813291185
+      }
+    },
+    "1.0": {
+      "natural": {
+        "knn_acc": 0.4756666666666666,
+        "intrinsic_dim": 17.23419345855713
+      },
+      "compress_50pct": {
+        "knn_acc": 0.19646666666666668,
+        "intrinsic_dim": 4.748991584777832
+      },
+      "compress_30pct": {
+        "knn_acc": 0.052066666666666664,
+        "intrinsic_dim": 2.138622179031372
+      },
+      "expand_0.3": {
+        "knn_acc": 0.02033333333333333,
+        "intrinsic_dim": 222.82608259903816
+      },
+      "expand_0.5": {
+        "knn_acc": 0.008266666666666667,
+        "intrinsic_dim": 220.36960982707635
+      }
+    }
+  },
+  "transitions": {
+    "natural": {
+      "alpha_knn": 0.8603712534059945,
+      "alpha_id_peak": 0.75,
+      "peak_id": 71.66959732055665,
+      "knn_at_1": 0.4756666666666666
+    },
+    "compress_50pct": {
+      "alpha_knn": 0.7562500000000001,
+      "alpha_id_peak": 0.75,
+      "peak_id": 20.6501828956604,
+      "knn_at_1": 0.19646666666666668
+    },
+    "compress_30pct": {
+      "alpha_knn": 0.4324817518248176,
+      "alpha_id_peak": 0.7,
+      "peak_id": 8.676397981643676,
+      "knn_at_1": 0.052066666666666664
+    },
+    "expand_0.3": {
+      "alpha_knn": null,
+      "alpha_id_peak": 0.7,
+      "peak_id": 285.90321121101215,
+      "knn_at_1": 0.02033333333333333
+    },
+    "expand_0.5": {
+      "alpha_knn": null,
+      "alpha_id_peak": 0.75,
+      "peak_id": 277.9669681500934,
+      "knn_at_1": 0.008266666666666667
+    }
+  },
+  "mean_compress_shift": -0.26600537749358566
+}
