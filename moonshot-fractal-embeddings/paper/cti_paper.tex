@@ -49,7 +49,7 @@ We address this gap by documenting and modeling a \emph{shape regularity} in dep
 \begin{enumerate}
     \item \textbf{An empirical regularity}: representation quality follows a bell-shaped depth profile that is consistent across 8 architecturally diverse model families (\S\ref{sec:experiments}, \S\ref{sec:extended}).
     \item \textbf{A parametric model} (8 parameters) that captures this regularity. Among 6 interpretable parametric shapes tested, the symmetric Gaussian is near-optimal; adding asymmetry degrades generalization (\S\ref{sec:shapes}).
-    \item \textbf{Broad external validation}: shape transfer confirmed on 8/8 families spanning 5 positional encodings, 7 training corpora, and both standard and synthetic data regimes (\S\ref{sec:extended}).
+    \item \textbf{Broad external validation}: shape transfer confirmed on 8/8 families spanning 4 positional encoding types, 7 training corpora, and both standard and synthetic data regimes (\S\ref{sec:extended}).
     \item \textbf{Rigorous uncertainty quantification}: held-out bootstrap CIs ($p = 0.007$), family-balanced analysis ($\Delta R^2 < 0.01$ under weighting), and comparison against 4 nonparametric baselines (\S\ref{sec:experiments}).
 \end{enumerate}
 
@@ -152,7 +152,7 @@ We use 4 classification benchmarks:
 For each model and layer, we extract representations for up to 2000 test samples.
 
 \paragraph{Dependence structure.}
-Our 5004 layer-level observations come from 252 depth profiles (model $\times$ checkpoint $\times$ dataset), grouped into 63 model-checkpoint units across 5 families. Layers within a profile are correlated; we report profile-level shape correlations ($\rho$) as our primary independence-respecting metric and note that point-level $p$-values from $F$-tests are conservative upper bounds on significance when treating observations as independent.
+Our 5004 layer-level observations come from 252 depth profiles (model $\times$ checkpoint $\times$ dataset), grouped into 63 model-checkpoint units across 5 families. Layers within a profile are correlated; we report profile-level shape correlations ($\rho$) as our primary independence-respecting metric and caution that point-level $R^2$ values treat correlated layers as independent, inflating effective sample size.
 
 \section{Results}
 \label{sec:experiments}
@@ -237,15 +237,15 @@ The shared parameters are stable across LOFO folds (Table~\ref{tab:params}), ind
 \toprule
 Param & LOFO Mean $\pm$ SD & Unconstrained MLE & Profile 95\% CI \\
 \midrule
-$\alpha$ & $0.131 \pm 0.024$ & $0.123$ & $[-0.03, 0.20]$ \\
-$\beta$ & $0.665 \pm 0.104$ & $0.695$ & $[-0.48, 2.08]$ \\
-$\mu_0$ & $-1.01 \pm 0.32$ & $-0.92$ & $[-2.00, 0.92]$ \\
+$\alpha$ & $0.131 \pm 0.024$ & $0.123$ & $[-0.03, 0.18]$ \\
+$\beta$ & $0.665 \pm 0.104$ & $0.695$ & $[0.08, 2.22]$ \\
+$\mu_0$ & $-1.01 \pm 0.32$ & $-0.92$ & $[-2.00, 1.94]$ \\
 $\mu_1$ & $0.086 \pm 0.018$ & $0.081$ & $[-0.03, 0.30]$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The unconstrained MLE for $\beta$ is 0.695 (positive without any sign constraint), and $\beta$ is positive in all 5 LOFO folds. However, the profile-likelihood CI for $\beta$ is wide ($[-0.48, 2.08]$) and includes zero, reflecting correlations with other parameters. The consistent positive sign across folds and the model comparison evidence (Gaussian outperforming alternatives) together support the bell-shaped interpretation, though individual-parameter significance is limited by the nonlinear model structure.
+The unconstrained MLE for $\beta$ is 0.695 (positive without any sign constraint), and $\beta$ is positive in all 5 LOFO folds. The profile-likelihood CI for $\beta$ is $[0.08, 2.22]$, excluding zero, though wide due to correlations with other parameters. The consistent positive sign across folds, the profile-likelihood exclusion of zero, and the model comparison evidence (Gaussian outperforming alternatives) together support the bell-shaped interpretation.
 
 \subsection{Ablation study}
 
@@ -357,7 +357,7 @@ Qwen2.5 & 0.741 & 0.897 & 0.809 & $+$0.14 \\
 
 The extended results reveal a clean separation between two components of the regularity:
 
-\paragraph{Shape transfers universally.} All 8 families achieve shape $\rho > 0.6$ (mean $\rho = 0.81$), meaning the predicted depth profile correctly ranks which layers are better or worse. The highest shape correlations ($\rho > 0.9$) occur for families with training checkpoints (Pythia, OLMo-2), where the model correctly tracks how depth profiles evolve with training compute.
+\paragraph{Shape transfers across all tested families.} All 8 families achieve shape $\rho > 0.6$ (mean $\rho = 0.81$), meaning the predicted depth profile correctly ranks which layers are better or worse. The highest shape correlations ($\rho > 0.9$) occur for families with training checkpoints (Pythia, OLMo-2), where the model correctly tracks how depth profiles evolve with training compute.
 
 \paragraph{Absolute level is family-specific.} Two families---Gemma-2 and Phi---show low zero-shot $R^2$ despite good shape $\rho$. Gemma-2 (zero-shot $R^2 = -2.42$, $b_d$ shift $= -0.96$) has systematically lower kNN quality than predicted, likely due to its knowledge distillation training or architectural choices. Phi-2 ($R^2 = 0.45$, shift $= +0.21$) shows the opposite: higher quality than expected from its compute-to-parameter ratio, plausibly reflecting training on curated synthetic data.
 
@@ -368,7 +368,7 @@ The extended results reveal a clean separation between two components of the reg
 \section{Late-layer quality degradation}
 \label{sec:degradation}
 
-Across all 6 families, the final layer is not the best for kNN classification quality (Table~\ref{tab:degradation}, Figure~\ref{fig:degradation}).
+Across all tested families, the final layer is not the best for kNN classification quality (Table~\ref{tab:degradation}, Figure~\ref{fig:degradation}).
 
 \begin{table}[t]
 \centering
@@ -407,7 +407,13 @@ Our study covers decoder-only models up to 2.7B parameters across 9 families (8 
 The Gaussian's $R^2$ advantage over the linear baseline ($+0.013$) is modest, and within-family splines fit better ($R^2 = 0.81$). But the Gaussian outperforms the nonparametric GAM in cross-family generalization ($R^2 = 0.78$ vs.\ $0.73$), demonstrating that its parametric structure encodes genuine regularity rather than overfitting to in-distribution patterns. The GAM collapses on OLMo-2 ($R^2 = 0.39$) while the Gaussian maintains $R^2 = 0.78$. The regularity itself---that quality peaks at intermediate layers and degrades near the final layer, with a shape that transfers across architectures---is the scientific contribution. The parametric form provides a compact summary of this regularity that generalizes where richer nonparametric models fail.
 
 \paragraph{Statistical considerations.}
-Our 5460 observations come from 268 correlated depth profiles across 8 families (5004 from 5 primary families; 456 from 3 extended). We handle this dependence structure in three ways: (1) LOFO cross-validation treats entire families as holdout units, (2) per-profile statistics are computed \emph{only on held-out predictions} from each LOFO fold, ensuring no in-sample inflation, and (3) stratified bootstrap (10{,}000 resamples) and cluster-robust paired $t$-tests use the 252 held-out profiles as independent units. All three approaches yield consistent evidence: $\Delta R^2 = +0.013$ at the point level, $\Delta R^2 = +0.30$ $[+0.04, +0.66]$ at the profile level, $\Delta$MAE $= -0.003$ $[-0.006, -0.001]$, and $p = 0.007$ from the cluster-robust test.
+Our 5460 observations come from 268 correlated depth profiles across 8 families (5004 from 5 primary families; 456 from 3 extended). We report inference at three levels of conservatism:
+
+\emph{Profile-level} (252 units): Stratified bootstrap (10{,}000 resamples) and cluster-robust paired $t$-tests using the 252 held-out profiles as independent units yield $\Delta R^2 = +0.30$ $[+0.04, +0.66]$, $p = 0.007$ for the Gaussian advantage over the linear baseline.
+
+\emph{Family-level} (5 units): Block bootstrap resampling families with replacement gives $R^2$ 95\% CI $[0.75, 0.82]$ and shape $\rho$ 95\% CI $[0.79, 0.89]$---both well above chance. However, the Gaussian-vs-linear $\Delta R^2$ CI is $[-0.02, +0.05]$, including zero ($p = 0.26$). With only 5 families, the test has limited power to distinguish parametric alternatives; the shape regularity itself is well-supported, but the specific Gaussian form's advantage over simpler alternatives is not statistically distinguishable at the family level.
+
+This transparency is important: the \emph{regularity} (bell-shaped, $\rho > 0.79$) is robust at all inference levels, while the \emph{parametric form's advantage} depends on the granularity of the independence assumption.
 
 \paragraph{Connection to scaling laws.}
 Our model operates on a different axis---depth rather than loss---but shares the scaling law spirit of finding simple, predictive relationships in complex systems. The $\alpha$ parameter couples quality to compute; the $\beta$ parameter captures depth-dependent structure with no analog in standard scaling laws.
@@ -438,6 +444,6 @@ The predicted peak $\mu_0 + \mu_1 \log(C/N)$ often exceeds 1.0 for well-trained 
 
 \subsection{Profile-likelihood analysis}
 
-We compute profile-likelihood CIs by fixing each parameter at a grid of 30 values, re-optimizing all others (8 restarts each), and identifying the 95\% CI where deviance $< \chi^2_1(0.95) = 3.84$. All CIs are from the \emph{unconstrained} fit ($\beta$ allowed negative). The wide CIs reflect parameter correlations in the nonlinear model rather than lack of signal: LOFO $R^2 = 0.78$ across 5 independent family holdouts provides the strongest evidence for the model's predictive power.
+We compute profile-likelihood CIs by fixing each parameter at a grid of 30 values, re-optimizing all others (8 restarts each), and identifying the 95\% CI where deviance $< \chi^2_1(0.95) = 3.84$. All CIs are from the \emph{unconstrained} fit ($\beta$ allowed negative). The $\beta$ CI $[0.08, 2.22]$ excludes zero, supporting the bell-shaped interpretation. The wide CIs for other parameters reflect correlations in the nonlinear model; LOFO $R^2 = 0.78$ across 5 independent family holdouts provides the strongest evidence for the model's predictive power.
 
 \end{document}
