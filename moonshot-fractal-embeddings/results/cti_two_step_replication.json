@@ -1,0 +1,228 @@
+{
+  "experiment": "cross_model_two_step_replication",
+  "preregistered_criterion": "gap > 0.05",
+  "alphas": [
+    0.0,
+    0.3,
+    0.5,
+    0.7,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1.0
+  ],
+  "results": {
+    "HuggingFaceTB/SmolLM2-360M": {
+      "n_layers": 32,
+      "n_params": 361821120,
+      "observables": {
+        "0.0": {
+          "knn_acc": 0.07404040404040403,
+          "intrinsic_dim": 10.832375381932113,
+          "effective_rank": 59.1937607273911,
+          "alignment": NaN
+        },
+        "0.3": {
+          "knn_acc": 0.10828282828282829,
+          "intrinsic_dim": 21.619981426181216,
+          "effective_rank": 43.14694153178822,
+          "alignment": NaN
+        },
+        "0.5": {
+          "knn_acc": 0.11075757575757576,
+          "intrinsic_dim": 23.618668122725055,
+          "effective_rank": 46.45278875755541,
+          "alignment": NaN
+        },
+        "0.7": {
+          "knn_acc": 0.13015151515151516,
+          "intrinsic_dim": 17.57381361181086,
+          "effective_rank": 59.12731731299198,
+          "alignment": 0.4995535612106323
+        },
+        "0.8": {
+          "knn_acc": 0.17616161616161616,
+          "intrinsic_dim": 59.11380452820749,
+          "effective_rank": 65.1134827931722,
+          "alignment": 0.31412771344184875
+        },
+        "0.85": {
+          "knn_acc": 0.21601010101010099,
+          "intrinsic_dim": 55.85110227989428,
+          "effective_rank": 60.055380098747484,
+          "alignment": 0.23676420748233795
+        },
+        "0.9": {
+          "knn_acc": 0.28474747474747475,
+          "intrinsic_dim": 21.74859371329799,
+          "effective_rank": 41.39486740574692,
+          "alignment": 0.1004173681139946
+        },
+        "0.95": {
+          "knn_acc": 0.4538383838383838,
+          "intrinsic_dim": 12.184364506692598,
+          "effective_rank": 31.53299129370487,
+          "alignment": NaN
+        },
+        "1.0": {
+          "knn_acc": 0.5162626262626262,
+          "intrinsic_dim": 12.047289862777248,
+          "effective_rank": 28.8759708404541,
+          "alignment": 0.04504700377583504
+        }
+      },
+      "two_step": {
+        "alpha_id_peak": 0.8,
+        "id_at_peak": 59.11380452820749,
+        "id_at_0": 10.832375381932113,
+        "id_at_1": 12.047289862777248,
+        "alpha_knn": 0.9030764635603346,
+        "gap": 0.10307646356033451
+      }
+    },
+    "EleutherAI/pythia-410m": {
+      "n_layers": 24,
+      "n_params": 353822720,
+      "observables": {
+        "0.0": {
+          "knn_acc": 0.09820000000000001,
+          "intrinsic_dim": 12.41978874206543,
+          "effective_rank": 28.186088104248046,
+          "alignment": NaN
+        },
+        "0.3": {
+          "knn_acc": 0.09833333333333334,
+          "intrinsic_dim": 13.090326480865478,
+          "effective_rank": 32.22548694610596,
+          "alignment": NaN
+        },
+        "0.5": {
+          "knn_acc": 0.09913333333333334,
+          "intrinsic_dim": 15.265800704956055,
+          "effective_rank": 34.81004287719727,
+          "alignment": NaN
+        },
+        "0.7": {
+          "knn_acc": 0.13513333333333336,
+          "intrinsic_dim": 21.177525787353517,
+          "effective_rank": 55.57090942382813,
+          "alignment": NaN
+        },
+        "0.8": {
+          "knn_acc": 0.16399999999999998,
+          "intrinsic_dim": 21.734585800170898,
+          "effective_rank": 54.52867691040039,
+          "alignment": NaN
+        },
+        "0.85": {
+          "knn_acc": 0.18793333333333334,
+          "intrinsic_dim": 20.626886558532714,
+          "effective_rank": 50.07951126098633,
+          "alignment": NaN
+        },
+        "0.9": {
+          "knn_acc": 0.21026666666666669,
+          "intrinsic_dim": 20.07861572265625,
+          "effective_rank": 47.22917556762695,
+          "alignment": NaN
+        },
+        "0.95": {
+          "knn_acc": 0.22699999999999998,
+          "intrinsic_dim": 19.877405586242677,
+          "effective_rank": 46.003167419433595,
+          "alignment": NaN
+        },
+        "1.0": {
+          "knn_acc": 0.23746666666666666,
+          "intrinsic_dim": 19.804161529541016,
+          "effective_rank": 45.26232147216797,
+          "alignment": NaN
+        }
+      },
+      "two_step": {
+        "alpha_id_peak": 0.8,
+        "id_at_peak": 21.734585800170898,
+        "id_at_0": 12.41978874206543,
+        "id_at_1": 19.804161529541016,
+        "alpha_knn": 0.808008356545961,
+        "gap": 0.008008356545960993
+      }
+    },
+    "Qwen/Qwen2-0.5B": {
+      "n_layers": 24,
+      "n_params": 494032768,
+      "observables": {
+        "0.0": {
+          "knn_acc": 0.1036,
+          "intrinsic_dim": 10.111529664993286,
+          "effective_rank": 44.84274925231934,
+          "alignment": NaN
+        },
+        "0.3": {
+          "knn_acc": 0.10973333333333332,
+          "intrinsic_dim": 11.595337228775024,
+          "effective_rank": 47.745483322143556,
+          "alignment": NaN
+        },
+        "0.5": {
+          "knn_acc": 0.15173333333333333,
+          "intrinsic_dim": 49.3971524143219,
+          "effective_rank": 62.45985412597656,
+          "alignment": NaN
+        },
+        "0.7": {
+          "knn_acc": 0.1784,
+          "intrinsic_dim": 71.19419826507568,
+          "effective_rank": 74.22016036987304,
+          "alignment": NaN
+        },
+        "0.8": {
+          "knn_acc": 0.223,
+          "intrinsic_dim": 42.4208434677124,
+          "effective_rank": 55.507341842651364,
+          "alignment": NaN
+        },
+        "0.85": {
+          "knn_acc": 0.2693333333333333,
+          "intrinsic_dim": 27.78217734336853,
+          "effective_rank": 47.980263748168944,
+          "alignment": NaN
+        },
+        "0.9": {
+          "knn_acc": 0.36719999999999997,
+          "intrinsic_dim": 17.982937564849852,
+          "effective_rank": 39.00279411315918,
+          "alignment": NaN
+        },
+        "0.95": {
+          "knn_acc": 0.44366666666666665,
+          "intrinsic_dim": 16.153265714645386,
+          "effective_rank": 34.92909965515137,
+          "alignment": NaN
+        },
+        "1.0": {
+          "knn_acc": 0.4756666666666666,
+          "intrinsic_dim": 17.19419345855713,
+          "effective_rank": 36.79301506042481,
+          "alignment": NaN
+        }
+      },
+      "two_step": {
+        "alpha_id_peak": 0.7,
+        "id_at_peak": 71.19419826507568,
+        "id_at_0": 10.111529664993286,
+        "id_at_1": 17.19419345855713,
+        "alpha_knn": 0.8603712534059945,
+        "gap": 0.16037125340599456
+      }
+    }
+  },
+  "pooled_gaps": [
+    0.17288956345764672,
+    0.10307646356033451,
+    0.008008356545960993,
+    0.16037125340599456
+  ],
+  "mean_gap": 0.1110864092424842
+}
