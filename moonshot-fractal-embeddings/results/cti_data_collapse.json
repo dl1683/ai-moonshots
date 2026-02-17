@@ -1,0 +1,213 @@
+{
+  "analysis": "finite_size_scaling_v2",
+  "sigmoid_fits": {
+    "EleutherAI/pythia-70m|clinc": {
+      "L": 6,
+      "family": "pythia",
+      "d_model": 512,
+      "n_params": 44670976,
+      "x0": 0.6230330242493289,
+      "k": 5.968635050594294,
+      "k_err": 0.713326008885741,
+      "width": 0.7362569695453043,
+      "r2": 0.9964043345429012,
+      "direction": "increasing",
+      "range": 0.05374459602463788
+    },
+    "EleutherAI/pythia-70m|trec": {
+      "L": 6,
+      "family": "pythia",
+      "d_model": 512,
+      "n_params": 44670976,
+      "x0": 0.618212115723113,
+      "k": 6.580637189293472,
+      "k_err": 2.678397171917387,
+      "width": 0.6677847491458875,
+      "r2": 0.9549410052227502,
+      "direction": "increasing",
+      "range": 0.022907475796873078
+    },
+    "EleutherAI/pythia-160m|clinc": {
+      "L": 12,
+      "family": "pythia",
+      "d_model": 768,
+      "n_params": 123689472,
+      "x0": 0.589830911910151,
+      "k": 5.6347443727644535,
+      "k_err": 0.24325537255407406,
+      "width": 0.779884385867266,
+      "r2": 0.9995597324744778,
+      "direction": "increasing",
+      "range": 0.26868734145821255
+    },
+    "EleutherAI/pythia-160m|trec": {
+      "L": 12,
+      "family": "pythia",
+      "d_model": 768,
+      "n_params": 123689472,
+      "x0": 0.51740616740058,
+      "k": 10.798268493462846,
+      "k_err": 1.3853175811241236,
+      "width": 0.4069586857682591,
+      "r2": 0.9937761259722655,
+      "direction": "increasing",
+      "range": 0.05939707425590485
+    },
+    "EleutherAI/pythia-410m|clinc": {
+      "L": 24,
+      "family": "pythia",
+      "d_model": 1024,
+      "n_params": 353822720,
+      "x0": 0.79254328878933,
+      "k": 8.0122844393814,
+      "k_err": 0.4133186198614694,
+      "width": 0.5484639478190716,
+      "r2": 0.999220392420138,
+      "direction": "increasing",
+      "range": 0.8375051752622186
+    },
+    "EleutherAI/pythia-410m|trec": {
+      "L": 24,
+      "family": "pythia",
+      "d_model": 1024,
+      "n_params": 353822720,
+      "x0": 0.6169529299554019,
+      "k": 11.503899389315077,
+      "k_err": 2.2973299603515343,
+      "width": 0.3819964871001951,
+      "r2": 0.9860479918794158,
+      "direction": "increasing",
+      "range": 0.2097513982842743
+    },
+    "EleutherAI/pythia-1b|clinc": {
+      "L": 16,
+      "family": "pythia",
+      "d_model": 2048,
+      "n_params": 908759040,
+      "x0": 1.1609361999152859e-10,
+      "k": 0.10000000000000002,
+      "k_err": 3388836.7721281997,
+      "width": 43.944491546724386,
+      "r2": -0.00033458928243690345,
+      "direction": "decreasing",
+      "range": 6.21274011804438
+    },
+    "EleutherAI/pythia-1b|trec": {
+      "L": 16,
+      "family": "pythia",
+      "d_model": 2048,
+      "n_params": 908759040,
+      "x0": 1.5679965659718147e-10,
+      "k": 0.10000000000000002,
+      "k_err": 68925.10392321426,
+      "width": 43.944491546724386,
+      "r2": -0.004756091793479245,
+      "direction": "decreasing",
+      "range": 0.34251543436592274
+    },
+    "EleutherAI/pythia-1.4b|clinc": {
+      "L": 24,
+      "family": "pythia",
+      "d_model": 2048,
+      "n_params": 1311625216,
+      "x0": 0.7466393343692421,
+      "k": 11.394021135205692,
+      "k_err": 0.8451042804083663,
+      "width": 0.3856802706021229,
+      "r2": 0.9980475854328501,
+      "direction": "increasing",
+      "range": 0.6622227128776038
+    },
+    "EleutherAI/pythia-1.4b|trec": {
+      "L": 24,
+      "family": "pythia",
+      "d_model": 2048,
+      "n_params": 1311625216,
+      "x0": 0.6845265778395719,
+      "k": 11.31295638679453,
+      "k_err": 2.43271807552467,
+      "width": 0.3884439225631616,
+      "r2": 0.9838839589305435,
+      "direction": "increasing",
+      "range": 0.2509427417954537
+    },
+    "EleutherAI/pythia-2.8b|clinc": {
+      "L": 32,
+      "family": "pythia",
+      "d_model": 2560,
+      "n_params": 2646430720,
+      "x0": 0.8204166509541418,
+      "k": 17.614502491697863,
+      "k_err": 1.071665596414504,
+      "width": 0.24947903903295868,
+      "r2": 0.9988779004658209,
+      "direction": "increasing",
+      "range": 0.688139924972372
+    },
+    "EleutherAI/pythia-2.8b|trec": {
+      "L": 32,
+      "family": "pythia",
+      "d_model": 2560,
+      "n_params": 2646430720,
+      "x0": 0.8142745356539446,
+      "k": 4.14977054073784,
+      "k_err": 1.4865284698010677,
+      "width": 1.058961962241675,
+      "r2": 0.9849275246424113,
+      "direction": "increasing",
+      "range": 0.2987422274397902
+    },
+    "Qwen/Qwen3-0.6B|clinc": {
+      "L": 28,
+      "family": "qwen3",
+      "d_model": null,
+      "n_params": 596049920,
+      "x0": 3.703115133823619e-09,
+      "k": 0.10000000000000003,
+      "k_err": 628984.627481589,
+      "width": 43.94449154672438,
+      "r2": -0.001056208390404656,
+      "direction": "decreasing",
+      "range": 10.850952095782434
+    },
+    "HuggingFaceTB/SmolLM2-1.7B|clinc": {
+      "L": 24,
+      "family": "smollm2",
+      "d_model": null,
+      "n_params": 1711376384,
+      "x0": 0.9999999999961771,
+      "k": 0.10000000000000002,
+      "k_err": 37614.46165917659,
+      "width": 43.944491546724386,
+      "r2": -0.0037815248454620143,
+      "direction": "increasing",
+      "range": 2.8499101897495795
+    },
+    "allenai/OLMo-2-0425-1B|clinc": {
+      "L": 16,
+      "family": "olmo2",
+      "d_model": null,
+      "n_params": 1279395840,
+      "x0": 3.912844234651135e-14,
+      "k": 0.10000000000000002,
+      "k_err": 204078.91346962264,
+      "width": 43.944491546724386,
+      "r2": -0.0029099580556715132,
+      "direction": "decreasing",
+      "range": 3.7948236624417184
+    }
+  },
+  "scaling_law": {
+    "k_vs_L": {
+      "exponent_1_over_nu": 1.9534999094478176,
+      "nu": 0.5119017385993445,
+      "r2": 0.6442256275798588
+    }
+  },
+  "multi_dataset": {},
+  "data_collapse": {
+    "nu_optimal": 1.9000000000000026,
+    "quality": 0.9908955790293061,
+    "permutation_p": 0.006
+  }
+}
