@@ -273,35 +273,6 @@ def main():
         pass
 
     # ============================================================
-    # SAVE
-    # ============================================================
-    out = {
-        "m_vals": m_vals,
-        "A_vals": A_vals,
-        "d": d,
-        "K": K,
-        "models": {
-            "evt_quantile": {
-                "C": float(C_fit),
-                "pearson_r": float(r_evt),
-                "description": "A(m) = C * (z_m - z_{(K-1)*m})",
-            },
-            "log_model": {
-                "a": float(popt_log[0]),
-                "b": float(popt_log[1]),
-                "pearson_r": float(r_log),
-                "description": "A(m) = a + b*log(m)",
-            },
-        },
-        "z_quantiles": {str(m): float(z_quantile(m)) for m in m_vals},
-        "A_inf_estimate": float(popt_conv[0]) if 'popt_conv' in dir() else None,
-    }
-    out_path = RESULTS_DIR / "cti_nonasymptotic_Am.json"
-    with open(out_path, "w") as f:
-        json.dump(out, f, indent=2)
-    print(f"\nSaved to {out_path}")
-
-    # ============================================================
     # TEST 5: sqrt(d*log(m)) model — derived from EVT Mills ratio
     # ============================================================
     print(f"\n{'='*70}")
@@ -379,6 +350,41 @@ def main():
 
   This provides a provable bound for the Observable Order-Parameter Theorem.
 """)
+
+    # ============================================================
+    # SAVE (after all tests)
+    # ============================================================
+    out = {
+        "m_vals": m_vals,
+        "A_vals": A_vals,
+        "d": d,
+        "K": K,
+        "models": {
+            "evt_quantile": {
+                "C": float(C_fit),
+                "pearson_r": float(r_evt),
+                "description": "A(m) = C * (z_m - z_{(K-1)*m})",
+            },
+            "log_model": {
+                "a": float(popt_log[0]),
+                "b": float(popt_log[1]),
+                "pearson_r": float(r_log),
+                "description": "A(m) = a + b*log(m)",
+            },
+            "sqrt_dlogm": {
+                "C_corr": float(C_sqrt),
+                "C_corr_large_m": float(C_large_m),
+                "pearson_r": float(r_sqrt),
+                "description": "A(m) = C_corr * sqrt(d*log(m))  [EVT leading term]",
+            },
+        },
+        "z_quantiles": {str(m): float(z_quantile(m)) for m in m_vals},
+        "A_inf_estimate": float(popt_conv[0]) if 'popt_conv' in dir() else None,
+    }
+    out_path = RESULTS_DIR / "cti_nonasymptotic_Am.json"
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"\nSaved to {out_path}")
 
 
 

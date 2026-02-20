@@ -28,6 +28,12 @@
       "b": 3.9881042137516687,
       "pearson_r": 0.9943932814093173,
       "description": "A(m) = a + b*log(m)"
+    },
+    "sqrt_dlogm": {
+      "C_corr": 1.1098542118409405,
+      "C_corr_large_m": 1.0753621694374507,
+      "pearson_r": 0.9926659187439582,
+      "description": "A(m) = C_corr * sqrt(d*log(m))  [EVT leading term]"
     }
   },
   "z_quantiles": {
