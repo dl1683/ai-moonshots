@@ -535,18 +535,26 @@ logit(q) = A * kappa (no approximation). The only approximation is the
 dist_ratio-kappa relationship (Step 2). The linearity of logit(q) in
 (dist_ratio-1) is exact for any regime where dist_ratio is linear in kappa.
 
-**Connection to Linear Response Theory (Phase Transition)**: The point
-dist_ratio = 1 is the CRITICAL POINT (phase transition) of classification:
+**Connection to Crossover Theory (NOT a phase transition)**: The point
+dist_ratio = 1 is the CROSSOVER POINT of classification:
 - dist_ratio < 1: inter-class distances SMALLER than intra → below-chance (q < 0)
 - dist_ratio > 1: inter-class distances LARGER than intra → above-chance (q > 0)
-- dist_ratio = 1: TRANSITION POINT (q = 0, pure noise)
+- dist_ratio = 1: CROSSOVER POINT (q = 0, pure noise)
 
-Near the critical point, linear response theory gives: logit(q) ~ A * (dist_ratio - 1).
-The slope A is the "susceptibility" of the representation.
+IMPORTANT: Binder cumulant test (Feb 21 2026) shows NO true thermodynamic phase
+transition. The U4 cumulant stays near 2/3 across all K values (no crossing),
+and chi_max ~ K^{-0.147} DECREASES (not diverges). This is a CROSSOVER (smooth
+mean-field response), not a true second-order phase transition.
 
-This connects CTI to statistical physics: our law is the LINEAR RESPONSE LAW
-for kNN classification, with dist_ratio playing the role of the control parameter
-and logit(q) playing the role of the order parameter.
+Physical analog: the magnetization in a ferromagnet WITH external field (not at
+the critical field where the phase transition occurs at h=0, T=Tc). Our
+dist_ratio plays the role of h (external field), kappa plays the role of T-Tc,
+and q plays the role of magnetization. The law is:
+  q = f(dist_ratio) ~ tanh(dist_ratio - 1) [crossover, not phase transition]
+
+Terminological clarification: We call dist_ratio = 1 a "critical point" only
+loosely (it is where q=0 and the classifier is at chance). There is no
+diverging correlation length or susceptibility at this point.
 
 **Range of validity**: Empirically, the law works for dist_ratio in [0.5, 2.0]
 (roughly). Outside this range (extreme kappa), the quadratic corrections matter.
@@ -565,6 +573,62 @@ before the quadratic correction matters empirically).
 - Cross-model R2 = 0.964 (CLINC, Pythia x5, SmolLM2, Qwen2, Qwen3)
 - Training dynamics rho = 0.985 (CIFAR-100, linear throughout training)
 - Synthetic Gaussian R2 = 0.972 (validated the linearization Step 2)
+
+---
+
+## Neural Collapse Connection (Discovered Feb 21 2026)
+
+**Key theoretical insight**: kappa_nearest is a PROXIMITY-TO-NEURAL-COLLAPSE metric.
+
+**Neural Collapse (Papyan, Han, Donoho 2020, PNAS)**: At the terminal phase of training,
+representations converge to a highly structured geometry:
+1. Within-class covariance collapses to zero (NC1)
+2. Class means converge to an Equiangular Tight Frame (ETF) — maximally equidistant simplex (NC2)
+3. Classifiers align with class means (NC3)
+4. kappa_nearest = kappa_spec AT NEURAL COLLAPSE (NC4, consequence)
+
+**Connection to our law**:
+- Far from NC: kappa_nearest << kappa_spec (kappa_spec is biased; nearest class is much closer)
+- Near NC: kappa_nearest ≈ kappa_spec (all classes equidistant)
+- AT NC: kappa_nearest = kappa_spec = max (representations maximally separated)
+
+**Therefore**: kappa_nearest measures HOW CLOSE the representation is to Neural Collapse geometry.
+And q = sigmoid(kappa_nearest/sqrt(K)) is the UNIVERSAL QUALITY LAW connecting NC proximity to
+kNN classification quality.
+
+**Why kappa_nearest, not kappa_spec**:
+- kappa_spec = global Fisher ratio = responds to bulk separation (all K classes)
+- kappa_nearest = bottleneck metric = responds to the NEAREST (hardest) class pair
+- Neural Collapse theory shows the ETF structure equalizes ALL pairwise distances
+- Pre-NC, the nearest class pair bottlenecks classification → kappa_nearest is the right metric
+- Post-NC, all pairs equalized → kappa_nearest = kappa_spec
+
+**kappa_nearest is NOT just the leading LDA eigenvalue**:
+- Leading LDA eigenvalue = easiest/global discriminant direction
+- kappa_nearest = bottleneck pairwise quantity (nearest class)
+- Equivalent only in binary case or near-NC geometry (shared covariance + ETF means)
+- This explains why kappa_spec can be biased away from NC but kappa_nearest aligns
+
+**Nobel-track interpretation**:
+  "q = f(kappa_nearest) is the law that connects training geometry to capability,
+   with kappa_nearest measuring the fundamental bottleneck: the hardest class pair.
+   Optimizing training to maximize kappa_nearest efficiently is the path to
+   intelligence-per-FLOP — the manifesto in equation form."
+
+**Binder cumulant result (Feb 21 2026)**:
+- The sigmoid law is a CROSSOVER (not a true phase transition)
+- U4 Binder cumulant does not cross between K values (no universal fixed point)
+- kappa_c/sqrt(K) is NOT universal (CV=0.56)
+- This means: the law q = sigmoid(kappa/sqrt(K)) describes a SMOOTH RESPONSE,
+  analogous to magnetization in an external field (not ferromagnetic phase transition)
+- Implication: the theorem is more robust (works at all scales, not just near criticality)
+  but less dramatic (no spontaneous symmetry breaking or diverging susceptibility)
+
+**Critical path to Nobel**:
+1. Derive q = sigmoid(kappa_nearest/sqrt(K)) from Neural Collapse theory (first principles)
+2. Show causal control: directly raising kappa_nearest increases q at fixed compute
+3. Show universality: the law holds across tasks, modalities, architectures
+4. Connect to efficiency: kappa_nearest-per-FLOP is the manifesto metric
 
 ---
 
