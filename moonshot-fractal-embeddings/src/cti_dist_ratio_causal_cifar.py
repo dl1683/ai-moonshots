@@ -108,27 +108,20 @@ def get_cifar100_coarse(train=True):
         root=str(REPO_ROOT / "data" / "cifar100"),
         train=train, download=True, transform=transform,
     )
-    # Replace fine labels with coarse labels
-    ds.targets = [ds.coarse_labels[fine] for fine in ds.targets
-                  if hasattr(ds, 'coarse_labels')]
-
-    # Fallback: CIFAR-100 coarse label mapping (fine->coarse)
-    if not hasattr(ds, 'coarse_labels'):
-        # Standard CIFAR-100 coarse label map
-        fine_to_coarse = [
-            4,  1,  14,  8,  0,  6,  7,  7,  18, 3,
-            3,  14,  9,  18, 7, 11, 3, 9, 7, 11,
-            6, 11, 5, 10,  7,  6,  13, 15,  3,  15,
-            0, 11,  1,  10, 12, 14,  16, 9, 11,  5,
-            5, 19,  8,  8, 15, 13, 14, 17, 18, 10,
-            16, 4, 17,  4,  2,  0, 17,  4, 18, 17,
-            10, 3,  2,  12, 12, 16, 12,  1,  9, 19,
-            2, 10,  0,  1,  16, 12,  9, 13, 15, 13,
-            16, 19,  2,  4,  6, 19,  5,  5,  8, 19,
-            18,  1,  2, 15,  6,  0, 17,  8, 14, 13,
-        ]
-        ds.targets = [fine_to_coarse[t] for t in ds.targets]
-
+    # Standard CIFAR-100 coarse label map (fine index -> coarse index 0-19)
+    fine_to_coarse = [
+        4,  1,  14,  8,  0,  6,  7,  7,  18, 3,
+        3,  14,  9,  18, 7, 11,  3,  9,  7, 11,
+        6,  11,  5, 10,  7,  6, 13, 15,  3, 15,
+        0,  11,  1, 10, 12, 14, 16,  9, 11,  5,
+        5,  19,  8,  8, 15, 13, 14, 17, 18, 10,
+        16,  4, 17,  4,  2,  0, 17,  4, 18, 17,
+        10,  3,  2, 12, 12, 16, 12,  1,  9, 19,
+        2,  10,  0,  1, 16, 12,  9, 13, 15, 13,
+        16, 19,  2,  4,  6, 19,  5,  5,  8, 19,
+        18,  1,  2, 15,  6,  0, 17,  8, 14, 13,
+    ]
+    ds.targets = [fine_to_coarse[t] for t in ds.targets]
     return ds
 
 
@@ -242,11 +235,11 @@ def train_one_seed(seed, arm, train_ds, test_ds):
     model = SmallCNN(embed_dim=EMBED_DIM, num_classes=20).to(DEVICE)
 
     train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True,
-                              num_workers=4, pin_memory=True, drop_last=True)
+                              num_workers=0, pin_memory=True, drop_last=True)
     eval_train_loader = DataLoader(train_ds, batch_size=512, shuffle=False,
-                                   num_workers=4, pin_memory=True)
+                                   num_workers=0, pin_memory=True)
     test_loader = DataLoader(test_ds, batch_size=512, shuffle=False,
-                             num_workers=4, pin_memory=True)
+                             num_workers=0, pin_memory=True)
 
     optimizer = torch.optim.SGD(model.parameters(), lr=LR_BASE,
                                 momentum=0.9, weight_decay=WEIGHT_DECAY)
