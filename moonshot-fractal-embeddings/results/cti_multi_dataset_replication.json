@@ -1,0 +1,148 @@
+{
+  "experiment": "multi_dataset_replication",
+  "hypothesis": "Architecture universality classes replicate across datasets",
+  "n_datasets": 3,
+  "n_total_points": 189,
+  "datasets_used": [
+    "agnews",
+    "clinc",
+    "dbpedia_classes"
+  ],
+  "global_correlation": {
+    "rho": 0.6856289660321017,
+    "r": 0.7661268023748992,
+    "p": 1.380123307916509e-27
+  },
+  "pooled_sigmoid": {
+    "r2": 0.6107168414584891,
+    "mae": 0.09448052296234999
+  },
+  "architecture_dummy": {
+    "f_stat": 3.2610029038363018,
+    "p_value": 0.07256254101830772,
+    "dummy_coeff": 0.031159554921145527
+  },
+  "per_dataset_slopes": {
+    "agnews": {
+      "transformer": 1.9301852599921796,
+      "ssm": 1.904844008950745
+    },
+    "clinc": {
+      "transformer": 0.6946150762454943,
+      "ssm": 1.126150014886223
+    },
+    "dbpedia_classes": {
+      "transformer": 1.2967614012833406,
+      "ssm": 1.2529564372279398
+    }
+  },
+  "slope_ratio_stats": {
+    "ratios": [
+      0.9868710783536202,
+      1.621257662550666,
+      0.9662197193623675
+    ],
+    "mean": 1.1914494867555512,
+    "std": 0.30403719141171925,
+    "consistent": false
+  },
+  "lodo": {
+    "agnews": {
+      "mae": 0.10712617531457128,
+      "rho": 0.9502208141321044,
+      "n_points": 63
+    },
+    "clinc": {
+      "mae": 0.244690287167538,
+      "rho": 0.9648137480798772,
+      "n_points": 63
+    },
+    "dbpedia_classes": {
+      "mae": 0.1188789249974079,
+      "rho": 0.981182795698925,
+      "n_points": 63
+    }
+  },
+  "lodo_mean_mae": 0.1568984624931724,
+  "scorecard": {
+    "passes": 0,
+    "total": 5,
+    "details": [
+      {
+        "criterion": "Global rho >= 0.90",
+        "passed": false,
+        "value": "rho=0.6856"
+      },
+      {
+        "criterion": "Slope ratio consistent (std<0.3)",
+        "passed": false,
+        "value": "std=0.3040"
+      },
+      {
+        "criterion": "LODO MAE <= 0.06",
+        "passed": false,
+        "value": "MAE=0.1569"
+      },
+      {
+        "criterion": "SSM slope > T slope in all datasets",
+        "passed": false,
+        "value": "ratios=['0.99', '1.62', '0.97']"
+      },
+      {
+        "criterion": "Pooled sigmoid R^2 >= 0.90",
+        "passed": false,
+        "value": "R^2=0.6107"
+      }
+    ]
+  },
+  "per_dataset": {
+    "clinc": {
+      "dataset": "clinc",
+      "n_points": 63,
+      "slope_transformer": 0.6946150762454943,
+      "rho_transformer": 0.9680823680823682,
+      "slope_ssm": 1.126150014886223,
+      "rho_ssm": 0.995115995115995,
+      "slope_ratio": 1.621257662550666,
+      "sigmoid_r2": 0.9216041482258166,
+      "global_rho": 0.9648137480798772,
+      "global_rho_p": 4.297544592977166e-37,
+      "eta_mean_transformer": 0.03820845402430802,
+      "eta_std_transformer": 0.025548529308577914,
+      "eta_mean_ssm": 0.07535774723548887,
+      "eta_std_ssm": 0.029962754330949925
+    },
+    "agnews": {
+      "dataset": "agnews",
+      "n_points": 63,
+      "slope_transformer": 1.9301852599921796,
+      "rho_transformer": 0.9178893178893179,
+      "slope_ssm": 1.904844008950745,
+      "rho_ssm": 0.9755799755799756,
+      "slope_ratio": 0.9868710783536202,
+      "sigmoid_r2": 0.9594035097941681,
+      "global_rho": 0.9502208141321044,
+      "global_rho_p": 1.3691332470050923e-32,
+      "eta_mean_transformer": 0.03622299169099642,
+      "eta_std_transformer": 0.018058775591659956,
+      "eta_mean_ssm": 0.05864039426014807,
+      "eta_std_ssm": 0.02847910336022044
+    },
+    "dbpedia_classes": {
+      "dataset": "dbpedia_classes",
+      "n_points": 63,
+      "slope_transformer": 1.2967614012833406,
+      "rho_transformer": 0.9740025740025742,
+      "slope_ssm": 1.2529564372279398,
+      "rho_ssm": 0.967032967032967,
+      "slope_ratio": 0.9662197193623675,
+      "sigmoid_r2": 0.9781681650355253,
+      "global_rho": 0.981182795698925,
+      "global_rho_p": 2.7900251548174735e-45,
+      "eta_mean_transformer": 0.026973350419833383,
+      "eta_std_transformer": 0.015720960922558303,
+      "eta_mean_ssm": 0.04686417220381756,
+      "eta_std_ssm": 0.021818827394277103
+    }
+  }
+}
