@@ -141,12 +141,14 @@ def dist_ratio_reg(emb, labels, wrong_sign=False):
     # Squared L2 distances via cosine: ||a-b||^2 = 2 - 2*cos(a,b)
     D = (2 - 2 * (z @ z.T)).clamp_min(0)     # [B, B]
 
-    same = labels.unsqueeze(1).eq(labels.unsqueeze(0))  # [B, B]
-    same.fill_diagonal_(False)
+    same = labels.unsqueeze(1).eq(labels.unsqueeze(0))  # [B, B], same[i,i]=True
+    same_intra = same.clone()
+    same_intra.fill_diagonal_(False)  # exclude self from intra-class pool
 
-    # Nearest intra-class and inter-class distances
-    d_intra = D.masked_fill(~same, 1e9).min(1).values    # [B]
-    d_inter = D.masked_fill(same, 1e9).min(1).values     # [B]
+    # Nearest intra-class: exclude self via same_intra[i,i]=False
+    d_intra = D.masked_fill(~same_intra, 1e9).min(1).values   # [B]
+    # Nearest inter-class: same[i,i]=True -> D[i,i] masked -> self excluded correctly
+    d_inter = D.masked_fill(same, 1e9).min(1).values          # [B]
 
     valid = (d_intra < 1e8) & (d_inter < 1e8)
     if valid.sum() < 2:
