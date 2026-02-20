@@ -248,7 +248,14 @@ def run_model_dataset(model_id, dataset_name):
     data = load_hierarchical_dataset(dataset_name)
     all_samples = data.samples[:MAX_SAMPLES]
     texts = [s.text for s in all_samples]
-    labels = np.array([s.level1_label for s in all_samples])
+    # Use fine labels; fall back to coarse if too sparse for stratified split
+    fine_labels = np.array([s.level1_label for s in all_samples])
+    class_counts = np.bincount(fine_labels)
+    if len(class_counts) == 0 or np.min(class_counts[class_counts > 0]) < 3:
+        labels = np.array([s.level0_label for s in all_samples])
+        print(f"  Using coarse labels (fine labels too sparse)")
+    else:
+        labels = fine_labels
 
     K = len(np.unique(labels))
     print(f"  n={len(texts)}, K={K}", flush=True)
@@ -264,6 +271,7 @@ def run_model_dataset(model_id, dataset_name):
     rows = []
     for layer_idx in range(n_layers):
         X = layer_reps[layer_idx]
+        X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
 
         # kNN quality — 80/20 stratified split
         from sklearn.model_selection import StratifiedShuffleSplit

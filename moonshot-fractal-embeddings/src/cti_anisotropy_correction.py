@@ -87,8 +87,8 @@ def compute_within_scatter_spectrum(X, labels):
     # For d > n: use X_w X_w^T (n x n) and trace relation
 
     if d <= min(2000, n):
-        SwSw = (X_w.T @ X_w) / n    # [d, d]
-        tr_sw2 = float(np.sum(SwSw ** 2)) / n   # tr(S_W^2) = ||S_W||_F^2
+        SwSw = (X_w.T @ X_w) / n    # [d, d] = S_W
+        tr_sw2 = float(np.sum(SwSw ** 2))   # tr(S_W^2) = ||S_W||_F^2 (no extra /n)
     else:
         # Gram matrix: G = X_w X_w^T / n, tr(G^2) = tr(S_W^2) (same eigenvalues)
         # But G is n x n — too large. Use SVD instead.
@@ -180,7 +180,14 @@ def main():
         data = load_hierarchical_dataset(dataset_name)
         all_samples = data.samples[:MAX_SAMPLES]
         texts = [s.text for s in all_samples]
-        labels = np.array([s.level1_label for s in all_samples])
+        # Use fine labels but fall back to coarse if too few samples per class
+        fine_labels = np.array([s.level1_label for s in all_samples])
+        class_counts = np.bincount(fine_labels)
+        if np.min(class_counts[class_counts > 0]) < 5:
+            labels = np.array([s.level0_label for s in all_samples])
+            print(f"  Using coarse labels (fine labels too sparse)")
+        else:
+            labels = fine_labels
         K = len(np.unique(labels))
         n = len(texts)
         m = n // K   # approx samples per class
@@ -197,6 +204,7 @@ def main():
         rows = []
         for layer_idx in range(n_layers):
             X = layer_reps[layer_idx]
+            X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
             d = X.shape[1]
 
             # kNN quality
