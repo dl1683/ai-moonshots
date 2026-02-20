@@ -1,0 +1,89 @@
+{
+  "experiment": "derive_kappac",
+  "theory": "kappa_c = (c_- - c_+) / (sqrt(d) - c_-) where c_pm = 2*sqrt(log(n_pm))",
+  "empirical_kappac": {
+    "agnews": {
+      "K": 18,
+      "n": 2000,
+      "kappa_c_empirical": 0.0575898924297734
+    },
+    "arxiv": {
+      "K": 115,
+      "n": 2000,
+      "kappa_c_empirical": 0.1856944594099406
+    },
+    "clinc": {
+      "K": 150,
+      "n": 2000,
+      "kappa_c_empirical": 0.3401324019346923
+    },
+    "dbpedia_classes": {
+      "K": 68,
+      "n": 2000,
+      "kappa_c_empirical": 0.14929571221219715
+    },
+    "yahoo": {
+      "K": 10,
+      "n": 2000,
+      "kappa_c_empirical": -0.016898300364048584
+    }
+  },
+  "fitted_d": 8525.709450072944,
+  "fitted_scale": 17.893468132746264,
+  "fitted_offset": -0.19803221323709974,
+  "theory_fit": {
+    "rho": 0.9999999999999999,
+    "r": 0.9396419360139157,
+    "mae": 0.03414776367379351
+  },
+  "simple_models": {
+    "log_K": {
+      "a": 0.10694522208815259,
+      "b": -0.26682305426274,
+      "r2": 0.8701696336864582
+    },
+    "sqrt_K": {
+      "a": 0.03271242362178993,
+      "b": -0.1095235216439056,
+      "r2": 0.9112497044634205
+    },
+    "linear_K": {
+      "a": 0.002156034744841414,
+      "b": -0.012502875453039044,
+      "r2": 0.9291683338112809
+    },
+    "theory_term": {
+      "a": 0.2948451350994756,
+      "b": -0.26682305426274,
+      "r2": 0.8701696336864582
+    }
+  },
+  "best_simple_model": "a*K+b",
+  "loo_mae": 0.05837857245352031,
+  "scorecard": {
+    "passes": 2,
+    "total": 4,
+    "details": [
+      {
+        "criterion": "Theory kappa_c rank-correlates with K (rho>0.9)",
+        "passed": true,
+        "value": "rho=1.0000"
+      },
+      {
+        "criterion": "Theory + fit MAE < 0.05",
+        "passed": true,
+        "value": "MAE=0.0341"
+      },
+      {
+        "criterion": "Simple log(K) model R^2 > 0.90",
+        "passed": false,
+        "value": "R^2=0.8702"
+      },
+      {
+        "criterion": "LOO prediction MAE < 0.05",
+        "passed": false,
+        "value": "MAE=0.0584"
+      }
+    ]
+  }
+}
