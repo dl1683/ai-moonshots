@@ -242,7 +242,7 @@ def run_model_dataset(model_id, dataset_name):
     """Run all metrics for one model x dataset combination."""
     print(f"\n  Loading {model_id} on {dataset_name}...", flush=True)
 
-    model, tokenizer = load_model(model_id, device=DEVICE)
+    model, tokenizer, _, _ = load_model(model_id, device=DEVICE)
     model.eval()
 
     data = load_hierarchical_dataset(dataset_name)

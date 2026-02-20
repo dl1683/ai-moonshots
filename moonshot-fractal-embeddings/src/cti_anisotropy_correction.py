@@ -169,7 +169,7 @@ def main():
     print("=" * 70)
 
     print(f"\nLoading {MODEL_ID}...", flush=True)
-    model, tokenizer = load_model(MODEL_ID, device=DEVICE)
+    model, tokenizer, _, _ = load_model(MODEL_ID, device=DEVICE)
     model.eval()
 
     all_results = {}
