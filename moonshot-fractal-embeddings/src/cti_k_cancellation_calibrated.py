@@ -131,29 +131,35 @@ def compute_stats(X, y, means, sigma):
     }
 
 
-def find_target_kappa(K, n_per, d, q_target=0.5, n_mc=5, rng_seed=0):
-    """Binary search for kappa giving q ~ q_target."""
-    rng = np.random.default_rng(rng_seed)
-    lo, hi = 0.1, 20.0
+def compute_q_raw(K, n_per, d, kappa, rng_seed):
+    """Compute raw q (no validity filter) for calibration use only."""
+    X, y, means, sigma = generate_gaussian_clusters(K, n_per, d, kappa,
+                                                     np.random.default_rng(rng_seed))
+    from sklearn.model_selection import StratifiedShuffleSplit
+    sss = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+    try:
+        train_idx, test_idx = next(sss.split(X, y))
+    except ValueError:
+        return 0.0
+    knn = KNeighborsClassifier(n_neighbors=1, metric="euclidean", n_jobs=-1)
+    knn.fit(X[train_idx], y[train_idx])
+    acc = float(knn.score(X[test_idx], y[test_idx]))
+    return (acc - 1.0/K) / (1.0 - 1.0/K)
 
-    for _ in range(15):  # binary search iterations
+
+def find_target_kappa(K, n_per, d, q_target=0.5, n_mc=3, rng_seed=0):
+    """Binary search for kappa giving q ~ q_target using raw q (no filter)."""
+    lo, hi = 0.05, 5.0
+
+    for _ in range(20):  # binary search iterations
         mid = (lo + hi) / 2.0
-        qs = []
-        for trial in range(n_mc):
-            X, y, means, sigma = generate_gaussian_clusters(K, n_per, d, mid,
-                                                             np.random.default_rng(rng_seed + trial))
-            res = compute_stats(X, y, means, sigma)
-            if res is not None:
-                qs.append(res["q"])
-        if not qs:
-            lo = mid
-            continue
+        qs = [compute_q_raw(K, n_per, d, mid, rng_seed + trial) for trial in range(n_mc)]
         q_mean = np.mean(qs)
         if q_mean > q_target:
             hi = mid
         else:
             lo = mid
-        if hi - lo < 0.05:
+        if hi - lo < 0.02:
             break
 
     return (lo + hi) / 2.0
