@@ -1,0 +1,148 @@
+{
+  "experiment": "cross_dataset_analysis_with_normalization",
+  "n_points": 189,
+  "normalization_comparison": {
+    "raw kappa": {
+      "rho": 0.7660872038251658,
+      "r": 0.8011268704263843
+    },
+    "kappa/sqrt(K)": {
+      "rho": 0.9243498817966903,
+      "r": 0.9424291897172247
+    },
+    "kappa/K": {
+      "rho": 0.8851223804191329,
+      "r": 0.743896130196819
+    },
+    "kappa/log(K)": {
+      "rho": 0.8555751079827228,
+      "r": 0.8891300087889817
+    },
+    "kappa*sqrt(K)": {
+      "rho": 0.5988801791713326,
+      "r": 0.6271359269075598
+    }
+  },
+  "global_sigmoid_kappa_sqrtK": {
+    "r2": 0.8898602352184988,
+    "mae": 0.05062114984215543,
+    "rho": 0.9243498817966903
+  },
+  "per_dataset": {
+    "agnews": {
+      "rho": 0.9502208141321044,
+      "r2": 0.9594035097939623
+    },
+    "clinc": {
+      "rho": 0.9648137480798772,
+      "r2": 0.9216041482163011
+    },
+    "dbpedia_classes": {
+      "rho": 0.981182795698925,
+      "r2": 0.9781681650328194
+    }
+  },
+  "architecture_analysis": {
+    "agnews": {
+      "transformer": {
+        "slope": 8.67079325405725,
+        "rho": 0.9178893178893179,
+        "eta_mean": 0.03622299169099642
+      },
+      "ssm": {
+        "slope": 8.556955088812773,
+        "rho": 0.9755799755799756,
+        "eta_mean": 0.05864039426014807
+      },
+      "ratio": 0.9868710783536201
+    },
+    "clinc": {
+      "transformer": {
+        "slope": 8.56435824385517,
+        "rho": 0.9680823680823682,
+        "eta_mean": 0.03820845402430802
+      },
+      "ssm": {
+        "slope": 13.88503142767916,
+        "rho": 0.995115995115995,
+        "eta_mean": 0.07535774723548887
+      },
+      "ratio": 1.621257662550666
+    },
+    "dbpedia_classes": {
+      "transformer": {
+        "slope": 10.85297097172037,
+        "rho": 0.9740025740025742,
+        "eta_mean": 0.026973350419833383
+      },
+      "ssm": {
+        "slope": 10.486354566543579,
+        "rho": 0.967032967032967,
+        "eta_mean": 0.04686417220381756
+      },
+      "ratio": 0.9662197193623676
+    }
+  },
+  "lodo": {
+    "agnews": {
+      "mae": 0.04651029913471997,
+      "r2": 0.8162119270479484,
+      "rho": 0.9502208141321044
+    },
+    "clinc": {
+      "mae": 0.08322021577230695,
+      "r2": 0.7295972869546525,
+      "rho": 0.9648137480798772
+    },
+    "dbpedia_classes": {
+      "mae": 0.0886783499333599,
+      "r2": 0.7631924920784374,
+      "rho": 0.981182795698925
+    }
+  },
+  "lodo_mean_mae": 0.0728029549467956,
+  "architecture_dummy": {
+    "raw": {
+      "f_stat": 2.4937189055026114,
+      "p": 0.11600046945339026
+    },
+    "controlling_dataset": {
+      "f_stat": 4.045619561231269,
+      "p": 0.04574539069825667,
+      "r2_without_arch": 0.9293142939248406,
+      "r2_with_arch": 0.9308350284990591
+    }
+  },
+  "scorecard": {
+    "passes": 4,
+    "total": 5,
+    "details": [
+      {
+        "criterion": "kappa/sqrt(K) sigmoid R^2 >= 0.85",
+        "passed": true,
+        "value": "R^2=0.8899"
+      },
+      {
+        "criterion": "Per-dataset rho >= 0.95 all",
+        "passed": true,
+        "value": "agnews=0.950, clinc=0.965, dbpedia_classes=0.981"
+      },
+      {
+        "criterion": "LODO MAE <= 0.08 (normalized q)",
+        "passed": true,
+        "value": "MAE=0.0728"
+      },
+      {
+        "criterion": "Arch NOT significant after dataset control",
+        "passed": false,
+        "value": "p=0.0457"
+      },
+      {
+        "criterion": "kappa predicts within each dataset (R^2>0.90 each)",
+        "passed": true,
+        "value": "agnews=0.959, clinc=0.922, dbpedia_classes=0.978"
+      }
+    ]
+  },
+  "key_finding": "kappa is a universal order parameter for representation quality within each dataset (rho>0.95 everywhere). The architecture split (SSM slope > transformer slope) is CLINC-specific (ratio=1.62), not universal (AGNews=0.99, DBPedia=0.97). After normalizing by sqrt(K), a global sigmoid explains most variance."
+}
