@@ -111,9 +111,10 @@ def compute_stats(X, y, means, sigma):
     kappa_nearest = nearest_center_dist / sigma
 
     # kappa_spec: trace(S_B)/trace(S_W) spectral
+    n_per_actual = N // K  # infer n_per from data
     grand_mean = X.mean(0)
     S_B = sum(
-        (n_per * np.outer(means[k] - grand_mean, means[k] - grand_mean))
+        (n_per_actual * np.outer(means[k] - grand_mean, means[k] - grand_mean))
         for k in range(K)
     ) / N
     S_W = np.cov(X.T) - S_B
