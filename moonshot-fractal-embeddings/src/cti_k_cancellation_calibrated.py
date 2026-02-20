@@ -39,12 +39,12 @@ def generate_gaussian_clusters(K, n_per, d, kappa, rng):
     # Simple: random means scaled so RMS inter-cluster distance ~ kappa
     # For d large, ||mu_i - mu_j||^2 ~ 2*||mu||^2 for random mu_i, mu_j
     # Target ||mu||^2 = kappa^2/2 * d (so ||mu_i||=kappa/sqrt(2) in L2)
-    means = rng.randn(K, d) * (kappa / np.sqrt(2.0 * d)) * np.sqrt(d)
+    means = rng.standard_normal((K, d)) * (kappa / np.sqrt(2.0 * d)) * np.sqrt(d)
     # Scale: ||mu|| ~ kappa/sqrt(2), ||mu_i - mu_j|| ~ kappa (on average)
 
     X_list, y_list = [], []
     for k in range(K):
-        samples = means[k] + sigma * rng.randn(n_per, d)
+        samples = means[k] + sigma * rng.standard_normal((n_per, d))
         X_list.append(samples)
         y_list.extend([k] * n_per)
     X = np.concatenate(X_list, axis=0)
