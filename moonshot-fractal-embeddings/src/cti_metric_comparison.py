@@ -246,8 +246,9 @@ def run_model_dataset(model_id, dataset_name):
     model.eval()
 
     data = load_hierarchical_dataset(dataset_name)
-    texts = data["texts"][:MAX_SAMPLES]
-    labels = np.array(data["fine_labels"][:MAX_SAMPLES])
+    all_samples = data.samples[:MAX_SAMPLES]
+    texts = [s.text for s in all_samples]
+    labels = np.array([s.level1_label for s in all_samples])
 
     K = len(np.unique(labels))
     print(f"  n={len(texts)}, K={K}", flush=True)

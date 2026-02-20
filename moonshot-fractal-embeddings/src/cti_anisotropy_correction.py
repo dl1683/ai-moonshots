@@ -178,8 +178,9 @@ def main():
         print(f"\n{'='*70}\nDataset: {dataset_name}\n{'='*70}", flush=True)
 
         data = load_hierarchical_dataset(dataset_name)
-        texts = data["texts"][:MAX_SAMPLES]
-        labels = np.array(data["fine_labels"][:MAX_SAMPLES])
+        all_samples = data.samples[:MAX_SAMPLES]
+        texts = [s.text for s in all_samples]
+        labels = np.array([s.level1_label for s in all_samples])
         K = len(np.unique(labels))
         n = len(texts)
         m = n // K   # approx samples per class
