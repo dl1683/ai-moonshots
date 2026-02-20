@@ -1,0 +1,20 @@
+{
+  "experiment": "probit_proof_verification",
+  "kappa_linearity_r2": 0.9997797415073758,
+  "probit_mae": 0.01008438452314377,
+  "probit_r": 0.9998625122094523,
+  "mu_d_exponent": 2.367989118114081,
+  "sigma_d_exponent": 0.5985468847156338,
+  "mu_K_exponent": -0.9316779564880576,
+  "sigma_K_exponent": -0.13411597361379451,
+  "best_K_gamma": 0.24144415221221394,
+  "best_d_delta": 0.59557988242677,
+  "model_fits": {
+    "kd_sqrtK": 0.9467882117725656,
+    "kd_logK": 0.9628517307341996,
+    "k_sqrtd_sqrtK": 0.9751340644315856,
+    "k_sqrtd_logK": 0.9906856105563595,
+    "kd_K_gamma": 0.9627282583065464,
+    "k_d_delta_K_gamma": 0.999013828566022
+  }
+}
