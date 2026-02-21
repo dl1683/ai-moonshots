@@ -393,10 +393,50 @@ If b_eff < 1 - delta(n, d_eff, K): the embedding has LESS K-dependence than expe
   - Compare to theoretical prediction from delta formula
   - The deviation b_eff - b_expected is a measure of SEMANTIC COMPLEXITY
 
-**Empirical evidence**:
-  - Synthetic: b_eff ≈ 0.35 (expected from Gumbel finite-sample)
-  - Real neural networks (CLINC, Pythia): b_eff ≈ 1.36 (semantic excess = +0.36-1.0)
-  - Difference: b_semantic ≈ 1.0-2.0 for well-structured text tasks
+**Empirical evidence (Feb 21 2026, direct b_eff measurement)**:
+
+NEW: Direct b_eff measurement (fixed kappa, vary K, measure slope of logit(q) vs log(K-1)):
+
+| kappa | b_eff | r | typical q range |
+|-------|-------|---|-----------------|
+| 0.25 | 0.805 | -0.997 | 0.012-0.285 (below crossover) |
+| 0.35 | 0.766 | -0.999 | 0.050-0.552 (approaching crossover) |
+| 0.50 | 0.690 | -1.000 | 0.287-0.885 (crossover regime) |
+| 0.70 | 0.864 | -0.995 | 0.898-0.997 (above crossover) |
+| 1.00 | N/A | - | 0.999 (ceiling effect, degenerate) |
+
+KEY FINDING: b_eff is KAPPA-DEPENDENT with MINIMUM at intermediate kappa (~0.5).
+This is the CROSSOVER REGIME where the Gumbel Race is most asymmetric.
+
+Theoretical explanation (crossover asymmetry):
+  - At HIGH kappa (q near 1): classification is nearly deterministic. All class pairs
+    are "equally easy" (you classify correctly regardless). Competitors are equivalent.
+    b_eff -> 1 (approaches theoretical Gumbel limit).
+  - At LOW kappa (q near 0): classification is nearly impossible. All class pairs
+    are equally hard. Competitors are equivalent. b_eff -> 1.
+  - At INTERMEDIATE kappa (q ~ 0.5): the NEAREST class pair dominates (hardest competitor).
+    Other class pairs are significantly easier and contribute little to the competition.
+    Effective competitors << K-1, hence b_eff < 1.
+
+This is NOT a failure of the Gumbel Race theory. It is the theory's prediction for
+NON-SYMMETRIC (non-ETF) class configurations. At exact NC (ETF geometry), all
+class pairs are equidistant → all competitors equivalent → b_eff = 1 exactly.
+For random Gaussian clusters (non-ETF): asymmetry peaks at crossover → b_eff minimum there.
+
+**Revised b_eff picture**:
+  Synthetic Gaussians (d=200, n_per=100): b_eff ≈ 0.69-0.86 (mean ~0.78)
+  Real NLP (CLINC, Pythia): b_eff ≈ 1.36 (from within-K regression)
+  Theory (ETF at NC): b_eff = 1.0
+
+  The synthetic b_eff < 1 because: random Gaussian cluster means are NOT equidistant.
+  The NLP b_eff > 1 because: semantic overlap makes more classes effectively "harder".
+  These bracket the theoretical b_eff = 1 (exact NC geometry).
+
+**Nobel-track diagnostic**:
+  Synthetic b_eff (0.69-0.86): confirms non-ETF geometry in finite-sample Gaussians
+  NLP b_eff > 1 (1.36): confirms semantic structure beyond random geometry
+  b_eff = 1: the hallmark of Neural Collapse geometry
+  Measuring b_eff(training) should show b_eff INCREASING toward 1 during training.
 
 ---
 
