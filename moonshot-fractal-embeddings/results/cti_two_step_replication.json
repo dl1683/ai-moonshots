@@ -13,216 +13,216 @@
     1.0
   ],
   "results": {
-    "HuggingFaceTB/SmolLM2-360M": {
-      "n_layers": 32,
-      "n_params": 361821120,
-      "observables": {
-        "0.0": {
-          "knn_acc": 0.07404040404040403,
-          "intrinsic_dim": 10.832375381932113,
-          "effective_rank": 59.1937607273911,
-          "alignment": NaN
-        },
-        "0.3": {
-          "knn_acc": 0.10828282828282829,
-          "intrinsic_dim": 21.619981426181216,
-          "effective_rank": 43.14694153178822,
-          "alignment": NaN
-        },
-        "0.5": {
-          "knn_acc": 0.11075757575757576,
-          "intrinsic_dim": 23.618668122725055,
-          "effective_rank": 46.45278875755541,
-          "alignment": NaN
-        },
-        "0.7": {
-          "knn_acc": 0.13015151515151516,
-          "intrinsic_dim": 17.57381361181086,
-          "effective_rank": 59.12731731299198,
-          "alignment": 0.4995535612106323
-        },
-        "0.8": {
-          "knn_acc": 0.17616161616161616,
-          "intrinsic_dim": 59.11380452820749,
-          "effective_rank": 65.1134827931722,
-          "alignment": 0.31412771344184875
-        },
-        "0.85": {
-          "knn_acc": 0.21601010101010099,
-          "intrinsic_dim": 55.85110227989428,
-          "effective_rank": 60.055380098747484,
-          "alignment": 0.23676420748233795
-        },
-        "0.9": {
-          "knn_acc": 0.28474747474747475,
-          "intrinsic_dim": 21.74859371329799,
-          "effective_rank": 41.39486740574692,
-          "alignment": 0.1004173681139946
-        },
-        "0.95": {
-          "knn_acc": 0.4538383838383838,
-          "intrinsic_dim": 12.184364506692598,
-          "effective_rank": 31.53299129370487,
-          "alignment": NaN
-        },
-        "1.0": {
-          "knn_acc": 0.5162626262626262,
-          "intrinsic_dim": 12.047289862777248,
-          "effective_rank": 28.8759708404541,
-          "alignment": 0.04504700377583504
-        }
-      },
-      "two_step": {
-        "alpha_id_peak": 0.8,
-        "id_at_peak": 59.11380452820749,
-        "id_at_0": 10.832375381932113,
-        "id_at_1": 12.047289862777248,
-        "alpha_knn": 0.9030764635603346,
-        "gap": 0.10307646356033451
-      }
-    },
-    "EleutherAI/pythia-410m": {
+    "HuggingFaceTB/SmolLM2-1.7B": {
       "n_layers": 24,
-      "n_params": 353822720,
+      "n_params": 1711376384,
       "observables": {
         "0.0": {
-          "knn_acc": 0.09820000000000001,
-          "intrinsic_dim": 12.41978874206543,
-          "effective_rank": 28.186088104248046,
+          "knn_acc": 0.0848,
+          "intrinsic_dim": 8.61395203590393,
+          "effective_rank": 41.238770713806154,
           "alignment": NaN
         },
         "0.3": {
-          "knn_acc": 0.09833333333333334,
-          "intrinsic_dim": 13.090326480865478,
-          "effective_rank": 32.22548694610596,
+          "knn_acc": 0.10093333333333333,
+          "intrinsic_dim": 8.393733911514282,
+          "effective_rank": 29.25019348144531,
           "alignment": NaN
         },
         "0.5": {
-          "knn_acc": 0.09913333333333334,
-          "intrinsic_dim": 15.265800704956055,
-          "effective_rank": 34.81004287719727,
+          "knn_acc": 0.11373333333333333,
+          "intrinsic_dim": 8.27226080417633,
+          "effective_rank": 28.179977149963378,
           "alignment": NaN
         },
         "0.7": {
-          "knn_acc": 0.13513333333333336,
-          "intrinsic_dim": 21.177525787353517,
-          "effective_rank": 55.57090942382813,
-          "alignment": NaN
+          "knn_acc": 0.1801333333333333,
+          "intrinsic_dim": 37.110772933959964,
+          "effective_rank": 62.98859066009521,
+          "alignment": 0.4210469126701355
         },
         "0.8": {
-          "knn_acc": 0.16399999999999998,
-          "intrinsic_dim": 21.734585800170898,
-          "effective_rank": 54.52867691040039,
+          "knn_acc": 0.21539999999999998,
+          "intrinsic_dim": 24.993282623291016,
+          "effective_rank": 56.491955299377445,
           "alignment": NaN
         },
         "0.85": {
-          "knn_acc": 0.18793333333333334,
-          "intrinsic_dim": 20.626886558532714,
-          "effective_rank": 50.07951126098633,
+          "knn_acc": 0.2653333333333333,
+          "intrinsic_dim": 10.067419977188111,
+          "effective_rank": 37.23750389099121,
           "alignment": NaN
         },
         "0.9": {
-          "knn_acc": 0.21026666666666669,
-          "intrinsic_dim": 20.07861572265625,
-          "effective_rank": 47.22917556762695,
+          "knn_acc": 0.3728666666666666,
+          "intrinsic_dim": 8.609450817108154,
+          "effective_rank": 31.78477088928223,
           "alignment": NaN
         },
         "0.95": {
-          "knn_acc": 0.22699999999999998,
-          "intrinsic_dim": 19.877405586242677,
-          "effective_rank": 46.003167419433595,
+          "knn_acc": 0.4209333333333333,
+          "intrinsic_dim": 8.399030733108521,
+          "effective_rank": 29.784937934875487,
           "alignment": NaN
         },
         "1.0": {
-          "knn_acc": 0.23746666666666666,
-          "intrinsic_dim": 19.804161529541016,
-          "effective_rank": 45.26232147216797,
-          "alignment": NaN
-        }
-      },
-      "two_step": {
-        "alpha_id_peak": 0.8,
-        "id_at_peak": 21.734585800170898,
-        "id_at_0": 12.41978874206543,
-        "id_at_1": 19.804161529541016,
-        "alpha_knn": 0.808008356545961,
-        "gap": 0.008008356545960993
-      }
-    },
-    "Qwen/Qwen2-0.5B": {
-      "n_layers": 24,
-      "n_params": 494032768,
-      "observables": {
-        "0.0": {
-          "knn_acc": 0.1036,
-          "intrinsic_dim": 10.111529664993286,
-          "effective_rank": 44.84274925231934,
-          "alignment": NaN
-        },
-        "0.3": {
-          "knn_acc": 0.10973333333333332,
-          "intrinsic_dim": 11.595337228775024,
-          "effective_rank": 47.745483322143556,
-          "alignment": NaN
-        },
-        "0.5": {
-          "knn_acc": 0.15173333333333333,
-          "intrinsic_dim": 49.3971524143219,
-          "effective_rank": 62.45985412597656,
-          "alignment": NaN
-        },
-        "0.7": {
-          "knn_acc": 0.1784,
-          "intrinsic_dim": 71.19419826507568,
-          "effective_rank": 74.22016036987304,
-          "alignment": NaN
-        },
-        "0.8": {
-          "knn_acc": 0.223,
-          "intrinsic_dim": 42.4208434677124,
-          "effective_rank": 55.507341842651364,
-          "alignment": NaN
-        },
-        "0.85": {
-          "knn_acc": 0.2693333333333333,
-          "intrinsic_dim": 27.78217734336853,
-          "effective_rank": 47.980263748168944,
-          "alignment": NaN
-        },
-        "0.9": {
-          "knn_acc": 0.36719999999999997,
-          "intrinsic_dim": 17.982937564849852,
-          "effective_rank": 39.00279411315918,
-          "alignment": NaN
-        },
-        "0.95": {
-          "knn_acc": 0.44366666666666665,
-          "intrinsic_dim": 16.153265714645386,
-          "effective_rank": 34.92909965515137,
-          "alignment": NaN
-        },
-        "1.0": {
-          "knn_acc": 0.4756666666666666,
-          "intrinsic_dim": 17.19419345855713,
-          "effective_rank": 36.79301506042481,
+          "knn_acc": 0.4372,
+          "intrinsic_dim": 8.161101417541504,
+          "effective_rank": 28.268276557922363,
           "alignment": NaN
         }
       },
       "two_step": {
         "alpha_id_peak": 0.7,
-        "id_at_peak": 71.19419826507568,
-        "id_at_0": 10.111529664993286,
-        "id_at_1": 17.19419345855713,
-        "alpha_knn": 0.8603712534059945,
-        "gap": 0.16037125340599456
+        "id_at_peak": 37.110772933959964,
+        "id_at_0": 8.61395203590393,
+        "id_at_1": 8.161101417541504,
+        "alpha_knn": 0.8456608811748999,
+        "gap": 0.14566088117489995
+      }
+    },
+    "allenai/OLMo-2-0425-1B": {
+      "n_layers": 16,
+      "n_params": 1279395840,
+      "observables": {
+        "0.0": {
+          "knn_acc": 0.1547058823529412,
+          "intrinsic_dim": 38.02181760002585,
+          "effective_rank": 85.77455857220818,
+          "alignment": NaN
+        },
+        "0.3": {
+          "knn_acc": 0.19705882352941173,
+          "intrinsic_dim": 66.18532472498276,
+          "effective_rank": 94.55108283547794,
+          "alignment": 0.895962119102478
+        },
+        "0.5": {
+          "knn_acc": 0.2153921568627451,
+          "intrinsic_dim": 76.7224349975586,
+          "effective_rank": 100.64255972469554,
+          "alignment": 0.7402725219726562
+        },
+        "0.7": {
+          "knn_acc": 0.2991176470588235,
+          "intrinsic_dim": 101.08038958381204,
+          "effective_rank": 113.42925172693589,
+          "alignment": 0.5473023653030396
+        },
+        "0.8": {
+          "knn_acc": 0.45696078431372544,
+          "intrinsic_dim": 75.79763681748334,
+          "effective_rank": 98.991138233858,
+          "alignment": 0.4005030393600464
+        },
+        "0.85": {
+          "knn_acc": 0.5616666666666668,
+          "intrinsic_dim": 71.0777275983025,
+          "effective_rank": 94.307165258071,
+          "alignment": 0.3797942101955414
+        },
+        "0.9": {
+          "knn_acc": 0.5990196078431372,
+          "intrinsic_dim": 70.69739038803998,
+          "effective_rank": 93.20353766048656,
+          "alignment": 0.37613722681999207
+        },
+        "0.95": {
+          "knn_acc": 0.6237254901960785,
+          "intrinsic_dim": 71.82885102664723,
+          "effective_rank": 93.59055238611558,
+          "alignment": 0.3758132755756378
+        },
+        "1.0": {
+          "knn_acc": 0.6375490196078433,
+          "intrinsic_dim": 74.13937265732709,
+          "effective_rank": 94.88509189381318,
+          "alignment": 0.3792405128479004
+        }
+      },
+      "two_step": {
+        "alpha_id_peak": 0.7,
+        "id_at_peak": 101.08038958381204,
+        "id_at_0": 38.02181760002585,
+        "id_at_1": 74.13937265732709,
+        "alpha_knn": 0.7614596273291926,
+        "gap": 0.061459627329192634
+      }
+    },
+    "EleutherAI/pythia-2.8b": {
+      "n_layers": 32,
+      "n_params": 2646430720,
+      "observables": {
+        "0.0": {
+          "knn_acc": 0.057373737373737375,
+          "intrinsic_dim": 8.69167287421949,
+          "effective_rank": 81.8678427031546,
+          "alignment": NaN
+        },
+        "0.3": {
+          "knn_acc": 0.0701010101010101,
+          "intrinsic_dim": 11.696342424912887,
+          "effective_rank": 36.02957378734242,
+          "alignment": NaN
+        },
+        "0.5": {
+          "knn_acc": 0.07601010101010101,
+          "intrinsic_dim": 13.113837704514012,
+          "effective_rank": 47.06014852812796,
+          "alignment": NaN
+        },
+        "0.7": {
+          "knn_acc": 0.091010101010101,
+          "intrinsic_dim": 17.315079746824324,
+          "effective_rank": 58.30673090616862,
+          "alignment": NaN
+        },
+        "0.8": {
+          "knn_acc": 0.11585858585858586,
+          "intrinsic_dim": 21.00799205086448,
+          "effective_rank": 83.83631712017637,
+          "alignment": NaN
+        },
+        "0.85": {
+          "knn_acc": 0.13959595959595958,
+          "intrinsic_dim": 22.612232150453508,
+          "effective_rank": 102.06893874659683,
+          "alignment": NaN
+        },
+        "0.9": {
+          "knn_acc": 0.16070707070707071,
+          "intrinsic_dim": 20.221553311203465,
+          "effective_rank": 92.0479902787642,
+          "alignment": NaN
+        },
+        "0.95": {
+          "knn_acc": 0.2055050505050505,
+          "intrinsic_dim": 21.812630133195356,
+          "effective_rank": 84.65135377826113,
+          "alignment": NaN
+        },
+        "1.0": {
+          "knn_acc": 0.21313131313131314,
+          "intrinsic_dim": 19.701191439773098,
+          "effective_rank": 76.35034064090613,
+          "alignment": NaN
+        }
+      },
+      "two_step": {
+        "alpha_id_peak": 0.85,
+        "id_at_peak": 22.612232150453508,
+        "id_at_0": 8.69167287421949,
+        "id_at_1": 19.701191439773098,
+        "alpha_knn": 0.8408510638297872,
+        "gap": -0.00914893617021273
       }
     }
   },
   "pooled_gaps": [
     0.17288956345764672,
-    0.10307646356033451,
-    0.008008356545960993,
-    0.16037125340599456
+    0.14566088117489995,
+    0.061459627329192634,
+    -0.00914893617021273
   ],
-  "mean_gap": 0.1110864092424842
+  "mean_gap": 0.09271528394788164
 }
