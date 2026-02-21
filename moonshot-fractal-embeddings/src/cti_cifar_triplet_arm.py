@@ -82,6 +82,11 @@ def get_model():
 # ================================================================
 # DATA
 # ================================================================
+def _coarse_label(x):
+    """Convert CIFAR-100 fine label to coarse (20 classes)."""
+    return x // 5
+
+
 def get_cifar_coarse():
     """CIFAR-100 with coarse labels (20 classes)."""
     transform_train = transforms.Compose([
@@ -98,11 +103,11 @@ def get_cifar_coarse():
     ])
     train_ds = torchvision.datasets.CIFAR100(
         root="data", train=True, download=True, transform=transform_train,
-        target_transform=lambda x: x // 5  # coarse label
+        target_transform=_coarse_label  # coarse label (picklable for Windows multiprocessing)
     )
     test_ds = torchvision.datasets.CIFAR100(
-        root="data", train=False, download=True, transform=transform_test,
-        target_transform=lambda x: x // 5
+        root="data", train=False, download=False, transform=transform_test,
+        target_transform=_coarse_label
     )
     return train_ds, test_ds
 
@@ -248,11 +253,11 @@ def run_triplet_arm(seed):
     train_ds, test_ds = get_cifar_coarse()
     train_loader = torch.utils.data.DataLoader(
         train_ds, batch_size=BATCH_SIZE, shuffle=True,
-        num_workers=2, pin_memory=True
+        num_workers=0, pin_memory=True  # num_workers=0 for Windows (avoids lambda pickling)
     )
     eval_loader = torch.utils.data.DataLoader(
         test_ds, batch_size=256, shuffle=True,
-        num_workers=2
+        num_workers=0
     )
 
     model = get_model()
