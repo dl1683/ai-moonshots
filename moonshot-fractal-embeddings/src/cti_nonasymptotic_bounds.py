@@ -94,15 +94,17 @@ def theoretical_epsilon(d_eff, m, K, C1=2.0, C2=1.0, C3=1.0):
 # ================================================================
 # MONTE CARLO VALIDATION
 # ================================================================
-def generate_clusters(K, d, kappa, m, sigma, rng):
-    """Generate K balanced Gaussian clusters with given kappa_spec."""
-    # Random class means with given pairwise distance
-    # kappa_spec = tr(S_B)/tr(S_W) ~ delta^2 / sigma^2 for large K
-    delta = kappa * sigma * np.sqrt(d) / np.sqrt(K - 1)  # approx relationship
-
-    rand_matrix = rng.standard_normal((d, K))
+def generate_clusters(K, d, delta_scale, m, sigma, rng):
+    """
+    Generate K balanced Gaussian clusters with random means scaled by delta_scale.
+    delta_scale controls the between-class separation; we measure kappa empirically.
+    """
+    # Ensure d >= K so QR gives full K columns
+    d_qr = max(d, K + 2)
+    rand_matrix = rng.standard_normal((d_qr, K))
     Q, _ = np.linalg.qr(rand_matrix)
-    means = Q[:, :K].T * delta  # (K, d)
+    means_full = Q[:, :K].T * delta_scale  # (K, d_qr)
+    means = means_full[:, :d]  # trim to d
 
     data = []
     labels = []
@@ -110,9 +112,9 @@ def generate_clusters(K, d, kappa, m, sigma, rng):
         X = rng.standard_normal((m, d)) * sigma + means[k]
         data.append(X)
         labels.append(np.full(m, k))
-    X = np.vstack(data)
-    y = np.concatenate(labels)
-    return X, y, means
+    X_all = np.vstack(data)
+    y_all = np.concatenate(labels)
+    return X_all, y_all, means[:, :d]
 
 
 def compute_q_empirical(X_train, y_train, X_test, y_test, K, n_subsample=500):
@@ -178,8 +180,8 @@ def run_monte_carlo(d_eff_vals, m_vals, K_vals, n_mc=50, sigma=1.0):
     # First: fit A, C on a training distribution (d=200, m=100, K=10)
     print("  Fitting A, C on training distribution...", flush=True)
     train_pairs = []
-    for _ in range(20):
-        X, y, _ = generate_clusters(K=10, d=200, kappa=0.4, m=100, sigma=sigma, rng=rng)
+    for delta_s in np.linspace(0.05, 1.5, 20):
+        X, y, _ = generate_clusters(K=10, d=200, delta_scale=delta_s, m=100, sigma=sigma, rng=rng)
         train_pairs.append((X, y))
     A_train, C_train = fit_law_two_point([p[0] for p in train_pairs],
                                           [p[1] for p in train_pairs])
@@ -194,9 +196,9 @@ def run_monte_carlo(d_eff_vals, m_vals, K_vals, n_mc=50, sigma=1.0):
 
                 errors = []
                 for trial in range(n_mc):
-                    kappa = rng.uniform(0.15, 0.65)
+                    delta_scale = rng.uniform(0.02, 1.0) * sigma
 
-                    X, y, means = generate_clusters(K, d, kappa, m, sigma, rng)
+                    X, y, means = generate_clusters(K, d, delta_scale, m, sigma, rng)
 
                     # Split train/test
                     m_train = m * 3 // 4

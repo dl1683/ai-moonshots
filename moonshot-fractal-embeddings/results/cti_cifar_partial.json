@@ -1,0 +1,14 @@
+{
+  "note": "Partial results - dist_ratio arm seeds 42,123,456 done; stopped to run triplet arm",
+  "baseline": {
+    "42": 0.7073, "123": 0.7071, "456": 0.7047, "789": 0.7105, "1024": 0.7087,
+    "mean": 0.7077
+  },
+  "dist_ratio_partial": {
+    "42": 0.7112, "123": 0.7086, "456": 0.7098,
+    "delta_42": 0.0039, "delta_123": 0.0015, "delta_456": 0.0051,
+    "mean_delta_3seeds": 0.0035,
+    "threshold": 0.02,
+    "verdict": "FAIL - well below +0.02 threshold with 3/5 seeds"
+  }
+}
