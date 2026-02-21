@@ -1,0 +1,305 @@
+======================================================================
+MULTI-DATASET REPLICATION OF ARCHITECTURE UNIVERSALITY
+======================================================================
+
+######################################################################
+# DATASET: agnews
+######################################################################
+  Loaded 9 cached points
+Loading AG News...
+Loaded 2000 samples
+Hierarchy: 4 L0 -> 18 L1
+  2000 samples, 18 classes
+
+  SmolLM2-360M: ALL CACHED, skipping
+
+============================================================
+  MODEL: pythia-410m (transformer)
+============================================================
+Loading EleutherAI/pythia-410m...
+`torch_dtype` is deprecated! Use `dtype` instead!
+  Params: 353.8M, Layers: 24
+    alpha=0.00  Installed residual scaling hooks (alpha=0.0) on 24 layers
+  kNN=0.126  kappa=0.0266  eta=0.0203  (8.5s)
+    alpha=0.30  Installed residual scaling hooks (alpha=0.3) on 24 layers
+  kNN=0.122  kappa=0.0251  eta=0.0203  (8.2s)
+    alpha=0.50  Installed residual scaling hooks (alpha=0.5) on 24 layers
+  kNN=0.120  kappa=0.0277  eta=0.0186  (7.0s)
+    alpha=0.70  Installed residual scaling hooks (alpha=0.7) on 24 layers
+  kNN=0.134  kappa=0.0407  eta=0.0253  (7.0s)
+    alpha=0.80  Installed residual scaling hooks (alpha=0.8) on 24 layers
+  kNN=0.179  kappa=0.0524  eta=0.0297  (8.1s)
+    alpha=0.85  Installed residual scaling hooks (alpha=0.85) on 24 layers
+  kNN=0.187  kappa=0.0582  eta=0.0293  (8.0s)
+    alpha=0.90  Installed residual scaling hooks (alpha=0.9) on 24 layers
+  kNN=0.193  kappa=0.0633  eta=0.0288  (7.9s)
+    alpha=0.95  Installed residual scaling hooks (alpha=0.95) on 24 layers
+  kNN=0.196  kappa=0.0662  eta=0.0285  (7.9s)
+    alpha=1.00  kNN=0.199  kappa=0.0675  eta=0.0285  (7.8s)
+  Saved 18 points to cache
+
+============================================================
+  MODEL: Qwen2-0.5B (transformer)
+============================================================
+Loading Qwen/Qwen2-0.5B...
+  Params: 494.0M, Layers: 24
+    alpha=0.00  Installed residual scaling hooks (alpha=0.0) on 24 layers
+  kNN=0.106  kappa=0.0223  eta=0.0124  (7.8s)
+    alpha=0.30  Installed residual scaling hooks (alpha=0.3) on 24 layers
+  kNN=0.120  kappa=0.0256  eta=0.0139  (7.6s)
+    alpha=0.50  Installed residual scaling hooks (alpha=0.5) on 24 layers
+  kNN=0.186  kappa=0.0363  eta=0.0441  (11.7s)
+    alpha=0.70  Installed residual scaling hooks (alpha=0.7) on 24 layers
+  kNN=0.207  kappa=0.0446  eta=0.0446  (11.7s)
+    alpha=0.80  Installed residual scaling hooks (alpha=0.8) on 24 layers
+  kNN=0.264  kappa=0.0643  eta=0.0488  (11.9s)
+    alpha=0.85  Installed residual scaling hooks (alpha=0.85) on 24 layers
+  kNN=0.358  kappa=0.0937  eta=0.0600  (11.9s)
+    alpha=0.90  Installed residual scaling hooks (alpha=0.9) on 24 layers
+  kNN=0.425  kappa=0.1729  eta=0.0390  (11.8s)
+    alpha=0.95  Installed residual scaling hooks (alpha=0.95) on 24 layers
+  kNN=0.434  kappa=0.1927  eta=0.0376  (11.8s)
+    alpha=1.00  kNN=0.430  kappa=0.1950  eta=0.0342  (12.0s)
+  Saved 27 points to cache
+
+============================================================
+  MODEL: Qwen3-0.6B (transformer)
+============================================================
+Loading Qwen/Qwen3-0.6B...
+  Params: 596.0M, Layers: 28
+    alpha=0.00  Installed residual scaling hooks (alpha=0.0) on 28 layers
+  kNN=0.165  kappa=0.0215  eta=0.0550  (17.5s)
+    alpha=0.30  Installed residual scaling hooks (alpha=0.3) on 28 layers
+  kNN=0.168  kappa=0.0261  eta=0.0633  (17.8s)
+    alpha=0.50  Installed residual scaling hooks (alpha=0.5) on 28 layers
+  kNN=0.176  kappa=0.0275  eta=0.0717  (17.7s)
+    alpha=0.70  Installed residual scaling hooks (alpha=0.7) on 28 layers
+  kNN=0.190  kappa=0.0324  eta=0.0912  (17.5s)
+    alpha=0.80  Installed residual scaling hooks (alpha=0.8) on 28 layers
+  kNN=0.232  kappa=0.0449  eta=0.0677  (17.9s)
+    alpha=0.85  Installed residual scaling hooks (alpha=0.85) on 28 layers
+  kNN=0.297  kappa=0.0659  eta=0.0528  (17.5s)
+    alpha=0.90  Installed residual scaling hooks (alpha=0.9) on 28 layers
+  kNN=0.411  kappa=0.1304  eta=0.0438  (17.8s)
+    alpha=0.95  Installed residual scaling hooks (alpha=0.95) on 28 layers
+  kNN=0.438  kappa=0.1724  eta=0.0358  (17.9s)
+    alpha=1.00  kNN=0.443  kappa=0.1826  eta=0.0323  (17.8s)
+  Saved 36 points to cache
+
+============================================================
+  MODEL: mamba-130m-hf (ssm)
+============================================================
+Loading state-spaces/mamba-130m-hf...
+The fast path is not available because one of `(selective_state_update, selective_scan_fn, causal_conv1d_fn, causal_conv1d_update, mamba_inner_fn)` is None. Falling back to the sequential implementation of Mamba, as use_mambapy is set to False. To install follow https://github.com/state-spaces/mamba/#installation and https://github.com/Dao-AILab/causal-conv1d. For the mamba.py backend, follow https://github.com/alxndrTL/mamba.py.
+  Params: 129.1M, Layers: 24
+    alpha=0.00  Installed residual scaling hooks (alpha=0.0) on 24 layers
+  kNN=0.131  kappa=0.0174  eta=0.0303  (31.0s)
+    alpha=0.30  Installed residual scaling hooks (alpha=0.3) on 24 layers
+  kNN=0.146  kappa=0.0219  eta=0.0402  (26.0s)
+    alpha=0.50  Installed residual scaling hooks (alpha=0.5) on 24 layers
+  kNN=0.184  kappa=0.0375  eta=0.0527  (25.5s)
+    alpha=0.70  Installed residual scaling hooks (alpha=0.7) on 24 layers
+  kNN=0.232  kappa=0.0543  eta=0.0700  (25.4s)
+    alpha=0.80  Installed residual scaling hooks (alpha=0.8) on 24 layers
+  kNN=0.328  kappa=0.0880  eta=0.0946  (25.5s)
+    alpha=0.85  Installed residual scaling hooks (alpha=0.85) on 24 layers
+  kNN=0.415  kappa=0.1509  eta=0.1023  (25.8s)
+    alpha=0.90  Installed residual scaling hooks (alpha=0.9) on 24 layers
+  kNN=0.451  kappa=0.1903  eta=0.0964  (25.8s)
+    alpha=0.95  Installed residual scaling hooks (alpha=0.95) on 24 layers
+  kNN=0.460  kappa=0.2070  eta=0.0953  (25.5s)
+    alpha=1.00  kNN=0.464  kappa=0.2148  eta=0.0965  (25.4s)
+  Saved 45 points to cache
+
+============================================================
+  MODEL: mamba-370m-hf (ssm)
+============================================================
+Loading state-spaces/mamba-370m-hf...
+  Params: 371.5M, Layers: 48
+    alpha=0.00  Installed residual scaling hooks (alpha=0.0) on 48 layers
+  kNN=0.114  kappa=0.0124  eta=0.0146  (69.7s)
+    alpha=0.30  Installed residual scaling hooks (alpha=0.3) on 48 layers
+  kNN=0.118  kappa=0.0137  eta=0.0224  (62.9s)
+    alpha=0.50  Installed residual scaling hooks (alpha=0.5) on 48 layers
+  kNN=0.143  kappa=0.0230  eta=0.0254  (64.0s)
+    alpha=0.70  Installed residual scaling hooks (alpha=0.7) on 48 layers
+  kNN=0.164  kappa=0.0375  eta=0.0274  (64.0s)
+    alpha=0.80  Installed residual scaling hooks (alpha=0.8) on 48 layers
+  kNN=0.213  kappa=0.0496  eta=0.0577  (63.5s)
+    alpha=0.85  Installed residual scaling hooks (alpha=0.85) on 48 layers
+  kNN=0.253  kappa=0.0622  eta=0.0607  (63.2s)
+    alpha=0.90  Installed residual scaling hooks (alpha=0.9) on 48 layers
+  kNN=0.385  kappa=0.1131  eta=0.0779  (63.6s)
+    alpha=0.95  Installed residual scaling hooks (alpha=0.95) on 48 layers
+  kNN=0.458  kappa=0.1851  eta=0.0845  (62.7s)
+    alpha=1.00  kNN=0.469  kappa=0.2005  eta=0.0804  (62.9s)
+  Saved 54 points to cache
+
+============================================================
+  MODEL: mamba-790m-hf (ssm)
+============================================================
+Loading state-spaces/mamba-790m-hf...
+  Params: 793.2M, Layers: 48
+    alpha=0.00  Installed residual scaling hooks (alpha=0.0) on 48 layers
+  kNN=0.106  kappa=0.0109  eta=0.0108  (97.3s)
+    alpha=0.30  Installed residual scaling hooks (alpha=0.3) on 48 layers
+  kNN=0.113  kappa=0.0130  eta=0.0194  (91.6s)
+    alpha=0.50  Installed residual scaling hooks (alpha=0.5) on 48 layers
+  kNN=0.130  kappa=0.0165  eta=0.0246  (91.1s)
+    alpha=0.70  Installed residual scaling hooks (alpha=0.7) on 48 layers
+  kNN=0.174  kappa=0.0339  eta=0.0389  (91.7s)
+    alpha=0.80  Installed residual scaling hooks (alpha=0.8) on 48 layers
+  kNN=0.205  kappa=0.0416  eta=0.0676  (92.6s)
+    alpha=0.85  Installed residual scaling hooks (alpha=0.85) on 48 layers
+  kNN=0.247  kappa=0.0531  eta=0.0737  (92.2s)
+    alpha=0.90  Installed residual scaling hooks (alpha=0.9) on 48 layers
+  kNN=0.418  kappa=0.1254  eta=0.0771  (91.8s)
+    alpha=0.95  Installed residual scaling hooks (alpha=0.95) on 48 layers
+  kNN=0.466  kappa=0.1665  eta=0.0728  (92.5s)
+    alpha=1.00  kNN=0.477  kappa=0.1780  eta=0.0690  (93.3s)
+  Saved 63 points to cache
+
+######################################################################
+# DATASET: dbpedia_classes
+######################################################################
+Loading DBPedia Classes...
+Loaded 2000 samples
+Hierarchy: 9 L0 -> 68 L1
+  2000 samples, 68 classes
+
+============================================================
+  MODEL: SmolLM2-360M (transformer)
+============================================================
+Loading HuggingFaceTB/SmolLM2-360M...
+  Params: 361.8M, Layers: 32
+    alpha=0.00  Installed residual scaling hooks (alpha=0.0) on 32 layers
+  kNN=0.088  kappa=0.0437  eta=0.0105  (8.7s)
+    alpha=0.30  Installed residual scaling hooks (alpha=0.3) on 32 layers
+  kNN=0.139  kappa=0.0811  eta=0.0176  (12.8s)
+    alpha=0.50  Installed residual scaling hooks (alpha=0.5) on 32 layers
+  kNN=0.180  kappa=0.0897  eta=0.0377  (16.7s)
+    alpha=0.70  Installed residual scaling hooks (alpha=0.7) on 32 layers
+  kNN=0.196  kappa=0.0896  eta=0.0523  (17.1s)
+    alpha=0.80  Installed residual scaling hooks (alpha=0.8) on 32 layers
+  kNN=0.232  kappa=0.1037  eta=0.0284  (17.1s)
+    alpha=0.85  Installed residual scaling hooks (alpha=0.85) on 32 layers
+  kNN=0.270  kappa=0.1178  eta=0.0195  (17.0s)
+    alpha=0.90  Installed residual scaling hooks (alpha=0.9) on 32 layers
+  kNN=0.364  kappa=0.1652  eta=0.0152  (16.9s)
+    alpha=0.95  Installed residual scaling hooks (alpha=0.95) on 32 layers
+  kNN=0.568  kappa=0.3522  eta=0.0170  (16.1s)
+    alpha=1.00  kNN=0.613  kappa=0.4186  eta=0.0149  (16.5s)
+  Saved 9 points to cache
+
+============================================================
+  MODEL: pythia-410m (transformer)
+============================================================
+Loading EleutherAI/pythia-410m...
+  Params: 353.8M, Layers: 24
+    alpha=0.00  Installed residual scaling hooks (alpha=0.0) on 24 layers
+  kNN=0.176  kappa=0.0965  eta=0.0176  (8.7s)
+    alpha=0.30  Installed residual scaling hooks (alpha=0.3) on 24 layers
+  kNN=0.178  kappa=0.0971  eta=0.0168  (9.0s)
+    alpha=0.50  Installed residual scaling hooks (alpha=0.5) on 24 layers
+  kNN=0.182  kappa=0.0950  eta=0.0148  (8.0s)
+    alpha=0.70  Installed residual scaling hooks (alpha=0.7) on 24 layers
+  kNN=0.255  kappa=0.1525  eta=0.0208  (9.2s)
+    alpha=0.80  Installed residual scaling hooks (alpha=0.8) on 24 layers
+  kNN=0.276  kappa=0.1669  eta=0.0201  (9.2s)
+    alpha=0.85  Installed residual scaling hooks (alpha=0.85) on 24 layers
+  kNN=0.290  kappa=0.1754  eta=0.0197  (8.7s)
+    alpha=0.90  Installed residual scaling hooks (alpha=0.9) on 24 layers
+  kNN=0.293  kappa=0.1824  eta=0.0194  (8.6s)
+    alpha=0.95  Installed residual scaling hooks (alpha=0.95) on 24 layers
+  kNN=0.294  kappa=0.1853  eta=0.0192  (31.3s)
+    alpha=1.00  kNN=0.293  kappa=0.1851  eta=0.0192  (18277.8s)
+  Saved 18 points to cache
+
+============================================================
+  MODEL: Qwen2-0.5B (transformer)
+============================================================
+Loading Qwen/Qwen2-0.5B...
+'(MaxRetryError('HTTPSConnectionPool(host=\'huggingface.co\', port=443): Max retries exceeded with url: /Qwen/Qwen2-0.5B/resolve/main/tokenizer_config.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000238403756A0>: Failed to resolve \'huggingface.co\' ([Errno 11001] getaddrinfo failed)"))'), '(Request ID: 9119e284-97cd-41ec-947b-0b4605011082)')' thrown while requesting HEAD https://huggingface.co/Qwen/Qwen2-0.5B/resolve/main/tokenizer_config.json
+Retrying in 1s [Retry 1/5].
+'(MaxRetryError('HTTPSConnectionPool(host=\'huggingface.co\', port=443): Max retries exceeded with url: /Qwen/Qwen2-0.5B/resolve/main/tokenizer_config.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000238417C07D0>: Failed to resolve \'huggingface.co\' ([Errno 11001] getaddrinfo failed)"))'), '(Request ID: 6134d462-a797-4fe5-a2f8-5ec441ab90ab)')' thrown while requesting HEAD https://huggingface.co/Qwen/Qwen2-0.5B/resolve/main/tokenizer_config.json
+Retrying in 2s [Retry 2/5].
+'(MaxRetryError('HTTPSConnectionPool(host=\'huggingface.co\', port=443): Max retries exceeded with url: /Qwen/Qwen2-0.5B/resolve/main/tokenizer_config.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000238417C1D10>: Failed to resolve \'huggingface.co\' ([Errno 11001] getaddrinfo failed)"))'), '(Request ID: 8910ae19-bbe9-4a6e-a251-bbcc052b07c4)')' thrown while requesting HEAD https://huggingface.co/Qwen/Qwen2-0.5B/resolve/main/tokenizer_config.json
+Retrying in 4s [Retry 3/5].
+'(MaxRetryError('HTTPSConnectionPool(host=\'huggingface.co\', port=443): Max retries exceeded with url: /Qwen/Qwen2-0.5B/resolve/main/tokenizer_config.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000238417C20D0>: Failed to resolve \'huggingface.co\' ([Errno 11001] getaddrinfo failed)"))'), '(Request ID: 3dbb69b1-e3fe-46b9-ab88-631f1c240bc5)')' thrown while requesting HEAD https://huggingface.co/Qwen/Qwen2-0.5B/resolve/main/tokenizer_config.json
+Retrying in 8s [Retry 4/5].
+  Params: 494.0M, Layers: 24
+    alpha=0.00  Installed residual scaling hooks (alpha=0.0) on 24 layers
+  kNN=0.154  kappa=0.0825  eta=0.0078  (84.2s)
+    alpha=0.30  Installed residual scaling hooks (alpha=0.3) on 24 layers
+  kNN=0.167  kappa=0.0782  eta=0.0084  (60.3s)
+    alpha=0.50  Installed residual scaling hooks (alpha=0.5) on 24 layers
+  kNN=0.224  kappa=0.1116  eta=0.0359  (94.8s)
+    alpha=0.70  Installed residual scaling hooks (alpha=0.7) on 24 layers
+  kNN=0.259  kappa=0.1289  eta=0.0309  (93.1s)
+    alpha=0.80  Installed residual scaling hooks (alpha=0.8) on 24 layers
+  kNN=0.357  kappa=0.1771  eta=0.0199  (96.2s)
+    alpha=0.85  Installed residual scaling hooks (alpha=0.85) on 24 layers
+  kNN=0.499  kappa=0.2410  eta=0.0291  (92.9s)
+    alpha=0.90  Installed residual scaling hooks (alpha=0.9) on 24 layers
+  kNN=0.627  kappa=0.3922  eta=0.0225  (96.5s)
+    alpha=0.95  Installed residual scaling hooks (alpha=0.95) on 24 layers
+  kNN=0.647  kappa=0.4627  eta=0.0211  (104.5s)
+    alpha=1.00  kNN=0.642  kappa=0.4719  eta=0.0183  (101.2s)
+  Saved 27 points to cache
+
+============================================================
+  MODEL: Qwen3-0.6B (transformer)
+============================================================
+Loading Qwen/Qwen3-0.6B...
+  Params: 596.0M, Layers: 28
+    alpha=0.00  Installed residual scaling hooks (alpha=0.0) on 28 layers
+  kNN=0.216  kappa=0.1046  eta=0.0541  (168.3s)
+    alpha=0.30  Installed residual scaling hooks (alpha=0.3) on 28 layers
+  kNN=0.217  kappa=0.1007  eta=0.0562  (164.7s)
+    alpha=0.50  Installed residual scaling hooks (alpha=0.5) on 28 layers
+  kNN=0.216  kappa=0.0974  eta=0.0677  (311.5s)
+    alpha=0.70  Installed residual scaling hooks (alpha=0.7) on 28 layers
+  kNN=0.235  kappa=0.1046  eta=0.0722  (235.0s)
+    alpha=0.80  Installed residual scaling hooks (alpha=0.8) on 28 layers
+  kNN=0.301  kappa=0.1343  eta=0.0444  (271.1s)
+    alpha=0.85  Installed residual scaling hooks (alpha=0.85) on 28 layers
+  kNN=0.415  kappa=0.1859  eta=0.0306  (306.9s)
+    alpha=0.90  Installed residual scaling hooks (alpha=0.9) on 28 layers
+  ERROR: CUDA error: unknown error
+Search for `cudaErrorUnknown' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+    alpha=0.95  Installed residual scaling hooks (alpha=0.95) on 28 layers
+  ERROR: CUDA error: unknown error
+Search for `cudaErrorUnknown' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+    alpha=1.00  ERROR: CUDA error: unknown error
+Search for `cudaErrorUnknown' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+  Saved 33 points to cache
+Traceback (most recent call last):
+  File "C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_multi_dataset_replication.py", line 604, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_multi_dataset_replication.py", line 551, in main
+    ds_points = extract_dataset(ds_name, device)
+  File "C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_multi_dataset_replication.py", line 282, in extract_dataset
+    torch.cuda.empty_cache()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\cuda\memory.py", line 224, in empty_cache
+    torch._C._cuda_emptyCache()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+torch.AcceleratorError: CUDA error: unknown error
+Search for `cudaErrorUnknown' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
