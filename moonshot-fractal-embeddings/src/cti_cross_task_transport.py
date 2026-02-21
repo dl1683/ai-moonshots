@@ -497,21 +497,33 @@ def main():
                   f"[{'PASS' if control_geometry_ok else 'FAIL'}]", flush=True)
 
             # OVERALL PASS/FAIL for this condition
-            r_nearest = analysis_nearest.get("r") or 0.0
+            r_nearest   = analysis_nearest.get("r")  # None if NaN
+            if r_nearest is None:
+                r_nearest = 0.0
             dev_nearest = analysis_nearest.get("deviation_from_reference", 1.0)
-            r_farthest  = analysis_farthest.get("r") or 1.0
-            if r_farthest is None:
-                r_farthest = 1.0
 
-            c1 = r_nearest > PRE_REG_R
-            c2 = dev_nearest < PRE_REG_ALPHA_TOL
-            c3 = r_farthest < PRE_REG_CONTROL_R or not np.isfinite(r_farthest)
+            # Control criterion: either (a) farthest kappa literally never changes
+            # (control_geometry_ok = perfect, strongest evidence), or (b) farthest r < 0.30
+            r_farthest_raw = analysis_farthest.get("r")  # None if NaN (kappa flat)
+            if control_geometry_ok:
+                # Farthest pair has ZERO effect on kappa_nearest -> perfect specificity
+                c3 = True
+                ctrl_r_str = "N/A (kappa flat, perfect control)"
+            elif r_farthest_raw is None:
+                c3 = True
+                ctrl_r_str = "NaN (kappa flat)"
+            else:
+                c3 = float(r_farthest_raw) < PRE_REG_CONTROL_R
+                ctrl_r_str = f"{r_farthest_raw:.4f}"
+
+            c1 = float(r_nearest) > PRE_REG_R
+            c2 = float(dev_nearest) < PRE_REG_ALPHA_TOL
             cond_pass = c1 and c2 and c3
 
             print(f"\n  CONDITION {key}: {'PASS' if cond_pass else 'FAIL'}", flush=True)
             print(f"    C1 r={r_nearest:.4f} > {PRE_REG_R}: {'PASS' if c1 else 'FAIL'}", flush=True)
             print(f"    C2 dev={dev_nearest:.1%} < {PRE_REG_ALPHA_TOL:.0%}: {'PASS' if c2 else 'FAIL'}", flush=True)
-            print(f"    C3 ctrl_r={r_farthest:.4f} < {PRE_REG_CONTROL_R}: {'PASS' if c3 else 'FAIL'}", flush=True)
+            print(f"    C3 ctrl={ctrl_r_str} < {PRE_REG_CONTROL_R}: {'PASS' if c3 else 'FAIL'}", flush=True)
 
             cond_result["nearest"]          = {"points": pts_nearest, "analysis": analysis_nearest}
             cond_result["farthest"]         = {"points": pts_farthest, "analysis": analysis_farthest}
