@@ -269,12 +269,21 @@ def main():
             cache_path = os.path.join(CACHE_DIR, f"kappa_near_cache_{dataset_name}_{model_short}.json")
 
             if os.path.exists(cache_path):
-                print(f"    Loading from cache: {cache_path}")
-                with open(cache_path) as f:
-                    model_data = json.load(f)
-                for pt in model_data:
-                    all_points.append(pt)
-                continue
+                try:
+                    with open(cache_path) as f:
+                        content = f.read().strip()
+                    if not content:
+                        print(f"    Cache empty, regenerating: {cache_path}")
+                        os.remove(cache_path)
+                    else:
+                        model_data = json.loads(content)
+                        print(f"    Loaded from cache: {cache_path} ({len(model_data)} pts)")
+                        for pt in model_data:
+                            all_points.append(pt)
+                        continue
+                except Exception as e:
+                    print(f"    Cache corrupt ({e}), regenerating")
+                    os.remove(cache_path)
 
             try:
                 layer_embs, y = get_embeddings_at_layers(
