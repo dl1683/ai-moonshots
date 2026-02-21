@@ -68,7 +68,7 @@ def get_cifar_coarse():
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
     testset = torchvision.datasets.CIFAR100(
-        root="/tmp/cifar100", train=False, download=True, transform=transform
+        root="data", train=False, download=True, transform=transform
     )
     testset.targets = [_coarse_label(t) for t in testset.targets]
     return testset
@@ -179,7 +179,7 @@ def train_and_eval_law(seed, testloader):
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
     trainset = torchvision.datasets.CIFAR100(
-        root="/tmp/cifar100", train=True, download=True, transform=transform_train
+        root="data", train=True, download=True, transform=transform_train
     )
     trainset.targets = [_coarse_label(t) for t in trainset.targets]
     trainloader = torch.utils.data.DataLoader(
