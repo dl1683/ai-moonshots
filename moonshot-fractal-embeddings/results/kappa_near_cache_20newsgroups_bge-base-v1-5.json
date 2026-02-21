@@ -1,0 +1,54 @@
+[
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "20newsgroups",
+    "layer": 4,
+    "K": 20,
+    "q": 0.2842105263157895,
+    "kappa_nearest": 0.34018825538866526,
+    "kappa_min": 0.26439097485800006,
+    "logit_q": -0.9236708391717774,
+    "q_pred_task": 0.5438594622803612,
+    "error_task": 0.25964893596457167
+  },
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "20newsgroups",
+    "layer": 8,
+    "K": 20,
+    "q": 0.26842105263157895,
+    "kappa_nearest": 0.3422106821832472,
+    "kappa_min": 0.2750243037415345,
+    "logit_q": -1.002648300406366,
+    "q_pred_task": 0.5446319991545779,
+    "error_task": 0.276210946522999
+  },
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "20newsgroups",
+    "layer": 10,
+    "K": 20,
+    "q": 0.2947368421052632,
+    "kappa_nearest": 0.3820151879522663,
+    "kappa_min": 0.29610797941273326,
+    "logit_q": -0.872488109215762,
+    "q_pred_task": 0.5597884134719875,
+    "error_task": 0.2650515713667243
+  },
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "20newsgroups",
+    "layer": 12,
+    "K": 20,
+    "q": 0.5947368421052631,
+    "kappa_nearest": 0.4689477865778152,
+    "kappa_min": 0.35739931218605275,
+    "logit_q": 0.3835823968586565,
+    "q_pred_task": 0.592468527669559,
+    "error_task": 0.0022683144357040774
+  }
+]

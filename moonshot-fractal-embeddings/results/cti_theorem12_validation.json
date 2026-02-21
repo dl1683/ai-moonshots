@@ -1,0 +1,136 @@
+{
+  "experiment": "theorem12_d_eff_cls_validation",
+  "theorem12": {
+    "statement": "alpha = sqrt(8/pi) * sqrt(d_eff_cls)",
+    "prediction": "d_eff_cls ~= 1-2 for CE-trained models in valid regime",
+    "alpha_empirical": 1.7171310821389285,
+    "alpha_theory": 1.5957691216057308
+  },
+  "per_model": [
+    {
+      "model": "OLMo-1B-hf",
+      "alpha": 1.5428052059250312,
+      "r_within_task": 0.9055341711820606,
+      "d_eff_cls": 0.9347211658920302,
+      "mean_kappa": 0.2971429782008653,
+      "n_valid_regime": 4
+    },
+    {
+      "model": "Qwen2.5-0.5B",
+      "alpha": 1.626362580355413,
+      "r_within_task": 0.940078707331012,
+      "d_eff_cls": 1.0387107648822262,
+      "mean_kappa": 0.3598850247252564,
+      "n_valid_regime": 5
+    },
+    {
+      "model": "TinyLlama-1.1B-intermediate-step-1431k-3T",
+      "alpha": 2.0468218571775,
+      "r_within_task": 0.8985913615305063,
+      "d_eff_cls": 1.64520483688361,
+      "mean_kappa": 0.3634861356799089,
+      "n_valid_regime": 8
+    },
+    {
+      "model": "bert-base-uncased",
+      "alpha": 0.1713938070153114,
+      "r_within_task": 0.03888025594949024,
+      "d_eff_cls": 0.011535864246704677,
+      "mean_kappa": 0.4973726939531357,
+      "n_valid_regime": 16
+    },
+    {
+      "model": "bge-base-v1.5",
+      "alpha": 4.763849477532193,
+      "r_within_task": 0.6565116718007803,
+      "d_eff_cls": 8.912015786198431,
+      "mean_kappa": 0.4601150108561621,
+      "n_valid_regime": 16
+    },
+    {
+      "model": "deberta-base",
+      "alpha": 1.874371629504693,
+      "r_within_task": 0.23918969662236067,
+      "d_eff_cls": 1.379657512217329,
+      "mean_kappa": 0.4895040639681939,
+      "n_valid_regime": 16
+    },
+    {
+      "model": "electra-small",
+      "alpha": 6.203603559911417,
+      "r_within_task": 0.8217464208664159,
+      "d_eff_cls": 15.112905221833385,
+      "mean_kappa": 0.38298487685429355,
+      "n_valid_regime": 12
+    },
+    {
+      "model": "gpt-neo-125m",
+      "alpha": 2.4443968154179094,
+      "r_within_task": 0.9036214215100522,
+      "d_eff_cls": 2.3464067762944203,
+      "mean_kappa": 0.3335595326869252,
+      "n_valid_regime": 5
+    },
+    {
+      "model": "gpt2",
+      "alpha": -1.9194629824355247,
+      "r_within_task": -0.3536736854921217,
+      "d_eff_cls": 1.4468362046148322,
+      "mean_kappa": 0.30385700339185595,
+      "n_valid_regime": 6
+    },
+    {
+      "model": "mamba-130m",
+      "alpha": -110.64294376409357,
+      "r_within_task": -0.969470612050954,
+      "d_eff_cls": 4807.367574862244,
+      "mean_kappa": 0.15571346951546627,
+      "n_valid_regime": 0
+    },
+    {
+      "model": "phi2",
+      "alpha": 0.3020950459252456,
+      "r_within_task": 0.13813036890625932,
+      "d_eff_cls": 0.035838274561115234,
+      "mean_kappa": 0.4230467175950251,
+      "n_valid_regime": 10
+    },
+    {
+      "model": "pythia-160m",
+      "alpha": 1.775280462606293,
+      "r_within_task": 0.7438993117371663,
+      "d_eff_cls": 1.2376385629646618,
+      "mean_kappa": 0.3312923752852021,
+      "n_valid_regime": 9
+    },
+    {
+      "model": "pythia-1b",
+      "alpha": 1.053520603502085,
+      "r_within_task": 0.5345532784739391,
+      "d_eff_cls": 0.4358589342409486,
+      "mean_kappa": 0.35217271952182877,
+      "n_valid_regime": 6
+    },
+    {
+      "model": "pythia-410m",
+      "alpha": 1.1791571762530304,
+      "r_within_task": 0.7819152617433284,
+      "d_eff_cls": 0.5460133766887635,
+      "mean_kappa": 0.3218719832888164,
+      "n_valid_regime": 7
+    }
+  ],
+  "loao": {
+    "alpha_mean": 1.7171310821389285,
+    "alpha_std": 0.0911803527289154,
+    "alpha_cv": 0.053100403153460735,
+    "d_eff_cls_mean": 1.161153461733868,
+    "d_eff_cls_std": 0.12189342823546258
+  },
+  "training_set_summary": {
+    "alpha_mean": 1.1022528362018944,
+    "d_eff_cls_mean": 1.0714362763009109,
+    "d_eff_cls_std": 0.6621922420095278,
+    "fraction_in_1_to_3": 0.7777777777777778
+  }
+}

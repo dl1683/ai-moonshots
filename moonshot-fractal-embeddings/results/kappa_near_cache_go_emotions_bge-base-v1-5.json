@@ -1,0 +1,54 @@
+[
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "go_emotions",
+    "layer": 4,
+    "K": 28,
+    "q": 0.19920000000000002,
+    "kappa_nearest": 0.4136328077912867,
+    "kappa_min": 0.25306317526759053,
+    "logit_q": -1.3913018828505128,
+    "q_pred_task": 0.3967547554683041,
+    "error_task": 0.19755475546830406
+  },
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "go_emotions",
+    "layer": 8,
+    "K": 28,
+    "q": 0.2824,
+    "kappa_nearest": 0.42958400215348025,
+    "kappa_min": 0.2761293006077803,
+    "logit_q": -0.9325878051254993,
+    "q_pred_task": 0.4026487664395703,
+    "error_task": 0.12024876643957033
+  },
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "go_emotions",
+    "layer": 10,
+    "K": 28,
+    "q": 0.22,
+    "kappa_nearest": 0.4430447263169404,
+    "kappa_min": 0.2993506013654591,
+    "logit_q": -1.2656663733312759,
+    "q_pred_task": 0.40764458907484963,
+    "error_task": 0.18764458907484963
+  },
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "go_emotions",
+    "layer": 12,
+    "K": 28,
+    "q": 0.25120000000000003,
+    "kappa_nearest": 0.4278743168382863,
+    "kappa_min": 0.28679299481658127,
+    "logit_q": -1.0922224905693385,
+    "q_pred_task": 0.4020156530677474,
+    "error_task": 0.15081565306774736
+  }
+]

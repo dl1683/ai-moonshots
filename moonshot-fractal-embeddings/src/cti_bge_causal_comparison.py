@@ -59,13 +59,13 @@ MODELS = {
     "bert-base-uncased": {
         "hf_name": "bert-base-uncased",
         "d": 768,
-        "layers": [3, 6, 9, 12],
+        "layers": [4, 8, 10, 12],   # match existing BERT cache (layers from kappa_nearest_extended)
         "type": "MLM (no class training)",
     },
     "bge-base-v1.5": {
         "hf_name": "BAAI/bge-base-en-v1.5",
         "d": 768,
-        "layers": [3, 6, 9, 12],
+        "layers": [4, 8, 10, 12],   # same as BERT for fair comparison
         "type": "Contrastive fine-tuned (InfoNCE)",
     },
 }
@@ -365,9 +365,15 @@ def main():
     print(f"{'Dataset':15s} {'Layer':5s} {'q_BERT':8s} {'q_BGE':8s} {'Dq':8s} {'k_BERT':8s} {'k_BGE':8s} {'Dk':8s}")
     print("-" * 70)
 
+    # Get common layers from data (not hardcoded)
+    bert_layers = sorted(set(p['layer'] for p in bert_pts))
+    bge_layers = sorted(set(p['layer'] for p in bge_pts))
+    common_layers = sorted(set(bert_layers) & set(bge_layers))
+    print(f"BERT layers: {bert_layers}, BGE layers: {bge_layers}, common: {common_layers}")
+
     comparison_pts = []
     for ds in ['agnews', 'dbpedia', '20newsgroups', 'go_emotions']:
-        for layer in [3, 6, 9, 12]:
+        for layer in common_layers:
             b_pt = next((p for p in bert_pts if p['dataset'] == ds and p['layer'] == layer), None)
             g_pt = next((p for p in bge_pts if p['dataset'] == ds and p['layer'] == layer), None)
             if b_pt is None or g_pt is None:
@@ -420,7 +426,7 @@ def main():
     print(f"Theory: delta_logit_q = alpha * delta_kappa  (alpha=1.54)")
     for ds in ['agnews', 'dbpedia', '20newsgroups']:
         pts_ds = [p for p in comparison_pts if p['dataset'] == ds]
-        for p in pts_ds:
+        for p in sorted(pts_ds, key=lambda x: x['layer']):
             # logit of BERT and BGE
             b_logit = float(np.log(max(p['q_bert'], 1e-4) / max(1-p['q_bert'], 1e-4)))
             g_logit = float(np.log(max(p['q_bge'], 1e-4) / max(1-p['q_bge'], 1e-4)))

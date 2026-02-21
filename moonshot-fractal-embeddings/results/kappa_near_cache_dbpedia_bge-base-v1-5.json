@@ -1,0 +1,54 @@
+[
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "dbpedia",
+    "layer": 4,
+    "K": 14,
+    "q": 0.8438461538461538,
+    "kappa_nearest": 0.6050561386828315,
+    "kappa_min": 0.45938965014424926,
+    "logit_q": 1.6871284812334426,
+    "q_pred_task": 0.9133930680498973,
+    "error_task": 0.06954691420374348
+  },
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "dbpedia",
+    "layer": 8,
+    "K": 14,
+    "q": 0.8546153846153847,
+    "kappa_nearest": 0.606687524463914,
+    "kappa_min": 0.5135611799834688,
+    "logit_q": 1.771268774579988,
+    "q_pred_task": 0.9135916028827408,
+    "error_task": 0.058976218267356106
+  },
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "dbpedia",
+    "layer": 10,
+    "K": 14,
+    "q": 0.8653846153846154,
+    "kappa_nearest": 0.6514950171817974,
+    "kappa_min": 0.5177591678883428,
+    "logit_q": 1.8607523407150068,
+    "q_pred_task": 0.9188856893609967,
+    "error_task": 0.053501073976381264
+  },
+  {
+    "model": "bge-base-v1.5",
+    "model_type": "Contrastive fine-tuned (InfoNCE)",
+    "dataset": "dbpedia",
+    "layer": 12,
+    "K": 14,
+    "q": 0.7738461538461539,
+    "kappa_nearest": 0.4571430750075408,
+    "kappa_min": 0.37602951463267764,
+    "logit_q": 1.230157583321003,
+    "q_pred_task": 0.8935950239040085,
+    "error_task": 0.11974887005785462
+  }
+]
