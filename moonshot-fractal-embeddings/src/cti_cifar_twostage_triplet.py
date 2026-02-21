@@ -401,6 +401,15 @@ def main():
         model, s1_q, s1_kappa = run_stage1_ce(seed, train_ds, test_ds)
         stage1_qs.append(s1_q)
 
+        # Save Stage 1 embeddings for do-intervention analysis
+        test_loader_save = torch.utils.data.DataLoader(
+            test_ds, batch_size=256, shuffle=False, num_workers=0
+        )
+        s1_embs, s1_labels = get_embeddings(model, test_loader_save, n_max=2000)
+        np.savez(f"results/do_intervention_embs_seed{seed}.npz",
+                 X=s1_embs, y=s1_labels)
+        print(f"  [Seed {seed}] Saved Stage 1 embeddings for do-intervention analysis", flush=True)
+
         # Stage 2: Centroid-triplet fine-tuning
         per_epoch = run_stage2_triplet(seed, model, train_ds, test_ds, s1_q, s1_kappa)
 
