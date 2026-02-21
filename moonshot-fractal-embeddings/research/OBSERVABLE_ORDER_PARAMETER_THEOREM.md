@@ -18,7 +18,11 @@ The final formula:
 
   **logit(q) = A(d,n) * (dist_ratio - 1) + C(d,n) + o(1)**
 
-Cross-model R2 = 0.964. Synthetic R2 = 0.972. Training dynamics rho = 0.985.
+Cross-model R2 = 0.964 (within-task: CLINC, 9 models).
+Cross-task R2 = 0.836 (multi-dataset: CLINC+DBpedia+TREC, 5 metrics compared).
+Synthetic R2 = 0.972. Training dynamics rho = 0.985.
+NOTE: Cross-task R2 is lower because A varies with task geometry (d_eff differs).
+Shape of law (ranking) is universal (rho=0.87 cross-task); A scale requires d_eff correction.
 
 ---
 
@@ -143,16 +147,22 @@ the K-dependence correctly.
 
 ---
 
-## Corollary: Critical Phase Transition
+## Corollary: Critical Crossover (NOT a thermodynamic phase transition)
 
-From Theorem 4, q transitions from ~0 to ~1 when:
+From Theorem 4, q transitions smoothly from ~0 to ~1 when:
   dist_ratio crosses 1 from below
 
 This occurs at:
   kappa_spec ~ kappa_c(K,n,d) ~ (log(K) + C) / alpha_{d,n}
 
-The phase transition sharpens as d increases (more concentrated order statistics).
-For large d, the transition width scales as ~ 1/sqrt(d).
+The crossover sharpens as d increases (more concentrated order statistics).
+For large d, the crossover width scales as ~ 1/sqrt(d).
+
+IMPORTANT (Binder cumulant test, Feb 21 2026): The sigmoid law describes a smooth
+CROSSOVER, not a thermodynamic phase transition. The Binder cumulant U4 does not
+cross for different K values (no universal fixed point), and chi_max ~ K^{-0.147}
+DECREASES (not diverges). This is analogous to a paramagnet-to-ferromagnet crossover
+in a finite field, not a true second-order phase transition.
 
 ---
 
@@ -171,6 +181,16 @@ only the constants alpha', C' depend on F.
 
 **Verified**: Gaussian, Uniform, t(10), Laplace all give R2 > 0.9
 with consistent B ~ 1.0 coefficient on log(K-1).
+
+**NOTE on B coefficient**: Two different B values appear in this document and
+are NOT contradictory -- they correspond to different predictor variables:
+- B = 1.0: When using kappa as predictor (Theorem 1/5 coordinate system)
+  logit(q) = alpha * kappa - 1.0 * log(K-1) + C
+- B ~ 0.018: When using dist_ratio as predictor (cross-model fits, Theorem 4)
+  logit(q) = A * (dist_ratio - 1) + (-0.018) * log(K-1) + C
+  The log(K-1) term VANISHES because dist_ratio algebraically absorbs K-dependence
+  via the pool-size effect (Theorem 7.5). B=0 in dist_ratio space IS B=1 in
+  kappa space, just expressed in the coordinate system where K is already absorbed.
 
 ---
 
