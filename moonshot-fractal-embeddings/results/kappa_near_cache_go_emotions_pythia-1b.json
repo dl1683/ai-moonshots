@@ -1,0 +1,46 @@
+[
+  {
+    "model": "pythia-1b",
+    "dataset": "go_emotions",
+    "layer": 3,
+    "K": 28,
+    "q": 0.1368,
+    "kappa_nearest": 0.36652809130644576,
+    "kappa_min": 0.22000128135995126,
+    "logit_q": -1.8421264087554747,
+    "logKm1": 3.295836866004329
+  },
+  {
+    "model": "pythia-1b",
+    "dataset": "go_emotions",
+    "layer": 6,
+    "K": 28,
+    "q": 0.1472,
+    "kappa_nearest": 0.08920761718606572,
+    "kappa_min": 0.04197017634372285,
+    "logit_q": -1.7567328471168042,
+    "logKm1": 3.295836866004329
+  },
+  {
+    "model": "pythia-1b",
+    "dataset": "go_emotions",
+    "layer": 9,
+    "K": 28,
+    "q": 0.11079999999999998,
+    "kappa_nearest": 0.06662651829590333,
+    "kappa_min": 0.03823060582778156,
+    "logit_q": -2.082595407776858,
+    "logKm1": 3.295836866004329
+  },
+  {
+    "model": "pythia-1b",
+    "dataset": "go_emotions",
+    "layer": 12,
+    "K": 28,
+    "q": 0.12119999999999999,
+    "kappa_nearest": 0.08008317256012834,
+    "kappa_min": 0.05619292594813185,
+    "logit_q": -1.9811152668752412,
+    "logKm1": 3.295836866004329
+  }
+]

@@ -51,7 +51,7 @@ DATASETS = {
     "dbpedia":      {"hf_name": "fancyzhx/dbpedia_14", "text_col": "content", "label_col": "label",       "K": 14, "n_sample": 1000},
     "20newsgroups": {"hf_name": "SetFit/20_newsgroups", "text_col": "text",   "label_col": "label_text",  "K": 20, "n_sample": 1000},
     "go_emotions":  {"hf_name": "google-research-datasets/go_emotions", "hf_cfg": "simplified",
-                     "text_col": "text", "label_col": "labels", "K": 28, "n_sample": 1000, "multilabel": True},
+                     "text_col": "text", "label_col": "labels", "K": 28, "n_sample": 5000, "multilabel": True},
 }
 LAYERS_TO_EVAL = [3, 6, 9, 12]  # representative layers
 BATCH_SIZE = 64
@@ -188,7 +188,24 @@ def compute_knn_q(embeddings, labels, K, subsample=1000):
     from sklearn.neighbors import KNeighborsClassifier
     from sklearn.model_selection import StratifiedShuffleSplit
 
-    X, y = embeddings[:subsample], labels[:subsample]
+    # Random subsample (not just first N, to avoid ordering bias)
+    if len(embeddings) > subsample:
+        rng = np.random.default_rng(42)
+        idx = rng.choice(len(embeddings), subsample, replace=False)
+        X, y = embeddings[idx], labels[idx]
+    else:
+        X, y = embeddings, labels
+
+    # Filter out rare classes (need >= 2 for StratifiedShuffleSplit)
+    from collections import Counter
+    counts = Counter(y.tolist())
+    valid_set = {lbl for lbl, cnt in counts.items() if cnt >= 2}
+    if len(valid_set) < 2:
+        return None
+    mask = np.array([l in valid_set for l in y])
+    X, y = X[mask], y[mask]
+    K_eff = len(valid_set)  # use actual number of valid classes
+
     try:
         sss = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
         train_idx, test_idx = next(sss.split(X, y))
@@ -198,7 +215,7 @@ def compute_knn_q(embeddings, labels, K, subsample=1000):
     knn = KNeighborsClassifier(n_neighbors=1, metric="euclidean", n_jobs=-1)
     knn.fit(X[train_idx], y[train_idx])
     acc = float(knn.score(X[test_idx], y[test_idx]))
-    q = (acc - 1.0/K) / (1.0 - 1.0/K)
+    q = (acc - 1.0/K_eff) / (1.0 - 1.0/K_eff)
     return float(q)
 
 
@@ -306,8 +323,19 @@ def main():
                 if embs is None:
                     continue
 
-                q = compute_knn_q(embs, y, K)
-                kappa_near, kappa_min = compute_kappa_nearest(embs, y, K)
+                # Filter NaN/Inf embeddings (some HF datasets produce these)
+                valid_mask = np.isfinite(embs).all(axis=1)
+                n_invalid = (~valid_mask).sum()
+                if n_invalid > 0:
+                    print(f"    Layer {layer}: filtering {n_invalid} NaN/Inf rows", flush=True)
+                embs = embs[valid_mask]
+                y_layer = y[valid_mask]
+                if len(embs) < 20:
+                    print(f"    Layer {layer}: too few valid embeddings ({len(embs)}), skipping", flush=True)
+                    continue
+
+                q = compute_knn_q(embs, y_layer, K)
+                kappa_near, kappa_min = compute_kappa_nearest(embs, y_layer, K)
 
                 if q is None or kappa_near is None:
                     continue
