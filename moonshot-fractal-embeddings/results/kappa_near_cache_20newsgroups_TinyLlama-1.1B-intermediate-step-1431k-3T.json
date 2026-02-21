@@ -1,0 +1,46 @@
+[
+  {
+    "model": "TinyLlama-1.1B-intermediate-step-1431k-3T",
+    "dataset": "20newsgroups",
+    "layer": 5,
+    "K": 20,
+    "q": 0.18947368421052632,
+    "kappa_nearest": 0.013787447820194204,
+    "kappa_min": 0.006269368660717032,
+    "logit_q": -1.4534336639575192,
+    "logKm1": 2.9444389791664403
+  },
+  {
+    "model": "TinyLlama-1.1B-intermediate-step-1431k-3T",
+    "dataset": "20newsgroups",
+    "layer": 11,
+    "K": 20,
+    "q": 0.2736842105263158,
+    "kappa_nearest": 0.04479826764622822,
+    "kappa_min": 0.021578219476851644,
+    "logit_q": -0.9760099665757773,
+    "logKm1": 2.9444389791664403
+  },
+  {
+    "model": "TinyLlama-1.1B-intermediate-step-1431k-3T",
+    "dataset": "20newsgroups",
+    "layer": 16,
+    "K": 20,
+    "q": 0.3157894736842105,
+    "kappa_nearest": 0.059598814142361324,
+    "kappa_min": 0.041255864625284494,
+    "logit_q": -0.7731898882334818,
+    "logKm1": 2.9444389791664403
+  },
+  {
+    "model": "TinyLlama-1.1B-intermediate-step-1431k-3T",
+    "dataset": "20newsgroups",
+    "layer": 22,
+    "K": 20,
+    "q": 0.37368421052631584,
+    "kappa_nearest": 0.3963141464567926,
+    "kappa_min": 0.29693271223873025,
+    "logit_q": -0.5164436160702138,
+    "logKm1": 2.9444389791664403
+  }
+]

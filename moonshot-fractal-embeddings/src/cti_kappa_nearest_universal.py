@@ -49,6 +49,7 @@ MODELS = [
     "EleutherAI/gpt-neo-125m",       # GPT-Neo family (different arch from Pythia)
     "Qwen/Qwen2.5-0.5B",             # Qwen2.5 family (totally different arch/training)
     "allenai/OLMo-1B-hf",            # OLMo family (Allen AI, yet another arch)
+    "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",  # LLaMA family (5th arch)
 ]
 
 # Per-model layer indices (proportional depth: 25%, 50%, 75%, 100%)
@@ -59,6 +60,7 @@ MODEL_LAYERS = {
     "gpt-neo-125m": [3, 6, 9, 12],  # 12 total layers
     "Qwen2.5-0.5B": [6, 12, 18, 24],  # 28 total layers
     "OLMo-1B-hf": [4, 8, 12, 16],  # 16 total layers
+    "TinyLlama-1.1B-intermediate-step-1431k-3T": [5, 11, 16, 22],  # 22 total layers
 }
 
 DATASETS = {
