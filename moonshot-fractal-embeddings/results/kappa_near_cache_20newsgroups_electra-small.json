@@ -1,0 +1,62 @@
+[
+  {
+    "model": "electra-small",
+    "dataset": "20newsgroups",
+    "layer": 3,
+    "K": 20,
+    "q": 0.2631578947368421,
+    "kappa_nearest": 0.2912385760980115,
+    "kappa_min": 0.20820803059125242,
+    "logit_q": -1.0296194171811583,
+    "logKm1": 2.9444389791664403,
+    "q_pred_global": 0.39271986729879094,
+    "q_pred_task": 0.5251057210685016,
+    "error_global": 0.12956197256194885,
+    "error_task": 0.26194782633165953
+  },
+  {
+    "model": "electra-small",
+    "dataset": "20newsgroups",
+    "layer": 6,
+    "K": 20,
+    "q": 0.17894736842105263,
+    "kappa_nearest": 0.27359067045168556,
+    "kappa_min": 0.22446608635589307,
+    "logit_q": -1.5234954826333758,
+    "logKm1": 2.9444389791664403,
+    "q_pred_global": 0.37987643996289133,
+    "q_pred_task": 0.5183241977332379,
+    "error_global": 0.2009290715418387,
+    "error_task": 0.33937682931218527
+  },
+  {
+    "model": "electra-small",
+    "dataset": "20newsgroups",
+    "layer": 9,
+    "K": 20,
+    "q": 0.1473684210526316,
+    "kappa_nearest": 0.24677362103744813,
+    "kappa_min": 0.20339829905167095,
+    "logit_q": -1.75539182505718,
+    "logKm1": 2.9444389791664403,
+    "q_pred_global": 0.36068298025437895,
+    "q_pred_task": 0.508007159492933,
+    "error_global": 0.21331455920174736,
+    "error_task": 0.36063873844030137
+  },
+  {
+    "model": "electra-small",
+    "dataset": "20newsgroups",
+    "layer": 12,
+    "K": 20,
+    "q": 0.12105263157894738,
+    "kappa_nearest": 0.23509544727463152,
+    "kappa_min": 0.2035216000675315,
+    "logit_q": -1.982499596487605,
+    "logKm1": 2.9444389791664403,
+    "q_pred_global": 0.35245780560415907,
+    "q_pred_task": 0.5035116894576589,
+    "error_global": 0.23140517402521169,
+    "error_task": 0.3824590578787115
+  }
+]
