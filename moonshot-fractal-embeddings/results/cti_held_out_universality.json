@@ -1,0 +1,50 @@
+{
+  "pre_registered_criteria": {
+    "mae_threshold": 0.1,
+    "r2_threshold": 0.8
+  },
+  "training": {
+    "models": [
+      "EleutherAI/pythia-160m",
+      "EleutherAI/pythia-410m"
+    ],
+    "datasets": [
+      "clinc_oos",
+      "agnews"
+    ],
+    "n_points": 32,
+    "A": 6.124411001446546,
+    "C": 0.11083905403192496,
+    "r2": 0.8445841358808355,
+    "mae": 0.02930048810096791
+  },
+  "held_out_splits": {
+    "A_new_model_size": {
+      "models": [
+        "EleutherAI/pythia-1b"
+      ],
+      "datasets": [
+        "clinc_oos",
+        "agnews"
+      ],
+      "n_points": 16,
+      "mae_q": 0.03688760478468989,
+      "r2": 0.7207009489895488,
+      "rho": 0.8352941176470589,
+      "passed": false
+    },
+    "B_new_dataset": {
+      "n_points": 0,
+      "error": "too_few_points"
+    },
+    "C_both_new": {
+      "n_points": 0,
+      "error": "too_few_points"
+    }
+  },
+  "scorecard": {
+    "passed": 0,
+    "total": 1,
+    "overall_pass": false
+  }
+}
