@@ -55,8 +55,8 @@ MOMENTUM = 0.9
 WEIGHT_DECAY = 1e-4
 N_EVAL_SUBSAMPLE = 1000
 
-TRIPLET_MARGIN = 0.5
-TRIPLET_LAMBDA = 0.5      # anti-triplet weight (same magnitude as positive arm)
+TRIPLET_MARGIN = 0.3      # cosine margin on L2-normalized features
+TRIPLET_LAMBDA = 0.1      # same lambda as +arm for symmetry; L2-norm prevents collapse
 
 BASELINE_Q = {
     42: 0.7073, 123: 0.7071, 456: 0.7047, 789: 0.7105, 1024: 0.7087,
@@ -123,8 +123,10 @@ class AntiTripletLoss(nn.Module):
         self.margin = margin
 
     def forward(self, embeddings, labels):
+        # L2 normalize to prevent collapse (same as +triplet arm)
+        embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
         B = embeddings.shape[0]
-        dists = torch.cdist(embeddings, embeddings)  # (B, B)
+        dists = torch.cdist(embeddings, embeddings)  # (B, B) on unit sphere
 
         labels = labels.view(-1, 1)
         same_class = (labels == labels.t()).float()

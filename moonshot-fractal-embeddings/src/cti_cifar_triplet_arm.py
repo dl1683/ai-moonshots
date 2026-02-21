@@ -51,8 +51,11 @@ WEIGHT_DECAY = 1e-4
 N_EVAL_SUBSAMPLE = 1000   # for kNN evaluation
 
 # Triplet loss hyperparameter
-TRIPLET_MARGIN = 0.5
-TRIPLET_LAMBDA = 0.5      # weight of triplet loss relative to CE
+# NOTE: lambda=0.5 caused representation collapse (all embeddings -> 0).
+# Fix: reduce lambda to 0.1 and L2-normalize features before triplet loss.
+# Features are L2-normalized ONLY for triplet computation; CE uses raw logits.
+TRIPLET_MARGIN = 0.3      # cosine margin (features on unit sphere)
+TRIPLET_LAMBDA = 0.1      # weight of triplet loss relative to CE (reduced from 0.5)
 
 PRE_REGISTERED_IMPROVEMENT = 0.02  # +2pp q gain over baseline
 
@@ -127,14 +130,16 @@ class HardNegativeTripletLoss(nn.Module):
     def forward(self, embeddings, labels):
         """
         Args:
-            embeddings: (B, d) float tensor
+            embeddings: (B, d) float tensor (will be L2-normalized inside)
             labels: (B,) int tensor with class indices
 
         Returns:
             triplet_loss: scalar (mean over valid triplets)
         """
+        # L2 normalize to prevent representation collapse
+        embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
         B = embeddings.shape[0]
-        # Pairwise distances
+        # Pairwise distances on unit sphere
         dists = torch.cdist(embeddings, embeddings)  # (B, B)
 
         labels = labels.view(-1, 1)  # (B, 1)
@@ -332,7 +337,8 @@ def main():
     print("=" * 70)
     print("CIFAR-100 ARM: CE + Hard-Negative Triplet Loss")
     print(f"Theory prediction: +{PRE_REGISTERED_IMPROVEMENT:.2f} q over baseline")
-    print(f"  margin={TRIPLET_MARGIN}, lambda={TRIPLET_LAMBDA}")
+    print(f"  margin={TRIPLET_MARGIN}, lambda={TRIPLET_LAMBDA} (L2-normalized features)")
+    print(f"  Fix: lambda 0.5->0.1, L2-norm before triplet to prevent collapse")
     print(f"  Baseline q (mean 5 seeds): {BASELINE_Q_MEAN:.4f}")
     print("=" * 70)
 
