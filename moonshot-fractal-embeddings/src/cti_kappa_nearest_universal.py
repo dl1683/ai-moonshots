@@ -40,12 +40,25 @@ print(f"Device: {DEVICE}", flush=True)
 # ================================================================
 # CONFIG
 # ================================================================
-# Use models from MODEL_DIRECTORY.md (Pythia series)
+# Multi-family models: Pythia (GPT-NeoX), GPT-Neo, Qwen2.5
+# Tests CROSS-ARCHITECTURE universality of kappa_nearest law
 MODELS = [
     "EleutherAI/pythia-160m",
     "EleutherAI/pythia-410m",
     "EleutherAI/pythia-1b",
+    "EleutherAI/gpt-neo-125m",       # GPT-Neo family (different arch from Pythia)
+    "Qwen/Qwen2.5-0.5B",             # Qwen2.5 family (totally different arch/training)
 ]
+
+# Per-model layer indices (proportional depth: 25%, 50%, 75%, 100%)
+MODEL_LAYERS = {
+    "pythia-160m": [3, 6, 9, 12],   # 12 total layers
+    "pythia-410m": [3, 6, 9, 12],   # 12 total layers
+    "pythia-1b":   [4, 8, 12, 16],  # 16 total layers
+    "gpt-neo-125m": [3, 6, 9, 12],  # 12 total layers
+    "Qwen2.5-0.5B": [6, 12, 18, 24],  # 28 total layers
+}
+
 DATASETS = {
     "agnews":       {"hf_name": "fancyzhx/ag_news",    "text_col": "text",    "label_col": "label",       "K": 4,  "n_sample": 1000},
     "dbpedia":      {"hf_name": "fancyzhx/dbpedia_14", "text_col": "content", "label_col": "label",       "K": 14, "n_sample": 1000},
@@ -53,7 +66,7 @@ DATASETS = {
     "go_emotions":  {"hf_name": "google-research-datasets/go_emotions", "hf_cfg": "simplified",
                      "text_col": "text", "label_col": "labels", "K": 28, "n_sample": 5000, "multilabel": True},
 }
-LAYERS_TO_EVAL = [3, 6, 9, 12]  # representative layers
+LAYERS_TO_EVAL = [3, 6, 9, 12]  # default layers (overridden per-model by MODEL_LAYERS)
 BATCH_SIZE = 64
 CACHE_DIR = "results"
 
@@ -309,16 +322,18 @@ def main():
                     print(f"    Cache corrupt ({e}), regenerating")
                     os.remove(cache_path)
 
+            # Per-model layer selection (proportional depth)
+            layers_for_model = MODEL_LAYERS.get(model_short, LAYERS_TO_EVAL)
             try:
                 layer_embs, y = get_embeddings_at_layers(
-                    model_name, texts, labels, LAYERS_TO_EVAL, BATCH_SIZE
+                    model_name, texts, labels, layers_for_model, BATCH_SIZE
                 )
             except Exception as e:
                 print(f"    Error: {e}", flush=True)
                 continue
 
             model_points = []
-            for layer in LAYERS_TO_EVAL:
+            for layer in layers_for_model:
                 embs = layer_embs.get(layer)
                 if embs is None:
                     continue
