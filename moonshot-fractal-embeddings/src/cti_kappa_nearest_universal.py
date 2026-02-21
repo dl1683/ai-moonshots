@@ -47,10 +47,11 @@ MODELS = [
     "EleutherAI/pythia-1b",
 ]
 DATASETS = {
-    "agnews":   {"hf_name": "fancyzhx/ag_news",    "text_col": "text", "label_col": "label", "K": 4,   "n_sample": 1000},
-    "dbpedia":  {"hf_name": "fancyzhx/dbpedia_14", "text_col": "content", "label_col": "label", "K": 14,  "n_sample": 1000},
-    "trec":     {"hf_name": "CogComp/trec",         "text_col": "text", "label_col": "coarse_label", "K": 6,   "n_sample": 500},
-    "clinc":    {"hf_name": "clinc_oos",             "text_col": "text", "label_col": "intent", "K": 150, "n_sample": 1000},
+    "agnews":       {"hf_name": "fancyzhx/ag_news",    "text_col": "text",    "label_col": "label",       "K": 4,  "n_sample": 1000},
+    "dbpedia":      {"hf_name": "fancyzhx/dbpedia_14", "text_col": "content", "label_col": "label",       "K": 14, "n_sample": 1000},
+    "20newsgroups": {"hf_name": "SetFit/20_newsgroups", "text_col": "text",   "label_col": "label_text",  "K": 20, "n_sample": 1000},
+    "go_emotions":  {"hf_name": "google-research-datasets/go_emotions", "hf_cfg": "simplified",
+                     "text_col": "text", "label_col": "labels", "K": 28, "n_sample": 1000, "multilabel": True},
 }
 LAYERS_TO_EVAL = [3, 6, 9, 12]  # representative layers
 BATCH_SIZE = 64
@@ -211,9 +212,11 @@ def load_dataset_texts_labels(dataset_name, config):
     label_col = config["label_col"]
     n_sample = config["n_sample"]
 
+    hf_cfg = config.get("hf_cfg")
+    multilabel = config.get("multilabel", False)
     try:
-        if hf_name == "clinc_oos":
-            ds = load_dataset(hf_name, "small", split="test")
+        if hf_cfg:
+            ds = load_dataset(hf_name, hf_cfg, split="test")
         else:
             ds = load_dataset(hf_name, split="test")
 
@@ -222,6 +225,10 @@ def load_dataset_texts_labels(dataset_name, config):
     except Exception as e:
         print(f"  Error loading {hf_name}: {e}", flush=True)
         return None, None
+
+    # Handle multilabel: take first label
+    if multilabel:
+        labels_raw = [l[0] if isinstance(l, list) and l else 0 for l in labels_raw]
 
     # Encode labels
     le = LabelEncoder()
