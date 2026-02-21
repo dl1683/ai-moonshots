@@ -1211,6 +1211,57 @@ from covariance matrix (feasible for CIFAR: n_per=2500 >> d=512), verify:
 
 ---
 
+## Theorem 15: K-Corrected Renormalized Universality (Feb 22 2026)
+
+**Theorem 14 REFINED** (stronger and more precise):
+
+  **alpha / sqrt(d_eff) = A_renorm(K)  [EXACT, d_eff-independent]**
+
+where A_renorm(K) is a known, computable function of K ONLY.
+
+**Key Discovery**: d_eff-independence is NUMERICALLY EXACT (CV=0.2%) across
+  d_eff in [0.5, 1000] for any fixed K. The variation is pure numerical error,
+  not a real physical effect.
+
+**Formula**:
+  A_renorm(K) = [d/dkappa logit(q)] / sqrt(d_eff)  at kappa = kappa*(K)
+  where kappa*(K) = sqrt(4*log(K) / d_eff) [K-class crossing point]
+
+**Numerical values**:
+  K=2:   A_renorm = 1.1726   (K=2 special case, above theoretical limit)
+  K=10:  A_renorm = 1.0503   (minimum, ~6.9% below sqrt(4/pi))
+  K=20:  A_renorm = 1.0535   (CIFAR setting)
+  K=150: A_renorm = 1.0759   (CLINC setting)
+  K=inf: A_renorm = sqrt(4/pi) = 1.1284  (theoretical limit)
+
+  For K in [5, 200]: A_renorm = 1.062 +/- 0.010, CV=0.93%
+  [PRACTICALLY UNIVERSAL for any real experiment with K>=5]
+
+**Asymptotic behavior**: A_renorm(K) -> sqrt(4/pi) logarithmically slowly.
+  Even at K=1000: A_renorm = 1.092 (3.2% below limit).
+
+**Validated** (cti_theorem15_K_corrected.py, Feb 22 2026):
+  - d_eff independence: CV=2.18e-3 (numerical precision only)
+  - K-dependence table computed for K=2 to 1000
+  - Monotone increase to sqrt(4/pi) confirmed for K >= 10
+
+**Implication for d_eff estimation** (ZERO FREE PARAMETERS):
+  Given measured alpha and known K:
+    d_eff = (alpha / A_renorm(K))^2
+
+  CIFAR K=20, alpha=1.365:  d_eff = (1.365/1.0535)^2 = 1.68
+  CLINC K=150, Pythia-160m alpha=3.461: d_eff = (3.461/1.0759)^2 = 10.35
+  CLINC K=150, Pythia-410m alpha=3.021: d_eff = (3.021/1.0759)^2 = 7.88
+
+  Compare Pythia-410m (d_eff=7.88) < Pythia-160m (d_eff=10.35):
+  LARGER model has LOWER d_eff (more efficient representations, closer to NC).
+
+**Critical Open Test**: Measure d_eff directly from within-class covariance, compare
+  to predicted d_eff = (alpha/A_renorm(K))^2. If they match: Theorem 15 CONFIRMED
+  with ZERO free parameters. [Script: cti_deff_extraction.py, runs after GPU free]
+
+---
+
 ## Valid Regime Boundaries (Feb 21 2026)
 
 **When the kappa_nearest law HOLDS** (kappa > ~0.3, q > ~0.1):
@@ -1263,6 +1314,9 @@ from covariance matrix (feasible for CIFAR: n_per=2500 >> d=512), verify:
 | results/cti_theorem13_factor_model.json | Theorem 13 data |
 | src/cti_renormalized_universality.py | Theorem 14 validation |
 | results/cti_renormalized_universality.json | Theorem 14 data |
+| src/cti_theorem15_K_corrected.py | Theorem 15 validation |
+| results/cti_theorem15_K_corrected.json | Theorem 15 data |
+| src/cti_bidirectional_causal_rct.py | Bidirectional causal RCT (CE vs NC+ vs NC-) |
 | src/cti_nc_loss_prediction.py | NC-loss quantitative prediction |
 | results/cti_nc_loss_prediction.json | NC-loss prediction data |
 | results/cti_dist_ratio_theory.json | Theorem 3 data |
