@@ -1,0 +1,167 @@
+{
+  "loao_alpha": 1.549,
+  "training_alpha": 1.601,
+  "pre_registered": {
+    "r_threshold": 0.9,
+    "alpha_tol": 0.25,
+    "control_r_threshold": 0.3,
+    "margin_threshold": 4.0,
+    "ceiling_q": 0.92
+  },
+  "n_pass": 0,
+  "n_clean_pass": 0,
+  "results": [
+    {
+      "name": "ELECTRA-small/dbpedia-L3",
+      "model": "google/electra-small-discriminator",
+      "layer": 3,
+      "dataset": "dbpedia_14",
+      "notes": "ELECTRA-small d=256, discriminative, L3 has kappa=0.534 (higher than L12)",
+      "geometry": {
+        "kappa": 0.3246177990749811,
+        "margin_ratio": 3.4827562172451136,
+        "d2_ratio": 1.193924802150741,
+        "q0": 0.7953846153846155,
+        "nearest_pair": [
+          9,
+          10
+        ],
+        "farthest_pair": [
+          8,
+          11
+        ]
+      },
+      "intervention": {
+        "alpha": 0.8105401479828769,
+        "r": 0.793373535202593
+      },
+      "control": {
+        "alpha": 0.44961548481026553,
+        "r": 0.382117357922867
+      },
+      "criteria": {
+        "c1_r": false,
+        "c2_alpha_dev": false,
+        "c3_control": false,
+        "c4_ceiling": true,
+        "margin_clean": false
+      },
+      "overall_pass": false,
+      "margin_ok": false
+    },
+    {
+      "name": "GPT-2/dbpedia-L9",
+      "model": "openai-community/gpt2",
+      "layer": 9,
+      "dataset": "dbpedia_14",
+      "notes": "GPT-2 L9 kappa=0.365, q=0.752; L12 is boundary (high kappa, low q)",
+      "geometry": {
+        "kappa": 0.22716076184800776,
+        "margin_ratio": 3.682954333586945,
+        "d2_ratio": 1.1150866483141093,
+        "q0": 0.8546153846153847,
+        "nearest_pair": [
+          9,
+          10
+        ],
+        "farthest_pair": [
+          6,
+          9
+        ]
+      },
+      "intervention": {
+        "alpha": 1.4421509372941064,
+        "r": 0.8251186121967877
+      },
+      "control": {
+        "alpha": 1.0084261783332122,
+        "r": 0.4791470997147868
+      },
+      "criteria": {
+        "c1_r": false,
+        "c2_alpha_dev": true,
+        "c3_control": false,
+        "c4_ceiling": true,
+        "margin_clean": false
+      },
+      "overall_pass": false,
+      "margin_ok": false
+    },
+    {
+      "name": "GPT-2/dbpedia-L12",
+      "model": "openai-community/gpt2",
+      "layer": 12,
+      "dataset": "dbpedia_14",
+      "notes": "GPT-2 L12 boundary: kappa=0.477 but q=0.499 (violation). Expect low r.",
+      "geometry": {
+        "kappa": 0.2537051352650083,
+        "margin_ratio": 6.763397132937518,
+        "d2_ratio": 1.300773074928234,
+        "q0": 0.662923076923077,
+        "nearest_pair": [
+          9,
+          10
+        ],
+        "farthest_pair": [
+          3,
+          10
+        ]
+      },
+      "intervention": {
+        "alpha": 1.220188309614509,
+        "r": 0.8407834114215643
+      },
+      "control": {
+        "alpha": 1.0695140781229795,
+        "r": 0.4623057916527212
+      },
+      "criteria": {
+        "c1_r": false,
+        "c2_alpha_dev": true,
+        "c3_control": false,
+        "c4_ceiling": true,
+        "margin_clean": true
+      },
+      "overall_pass": false,
+      "margin_ok": true
+    },
+    {
+      "name": "GPT-Neo-125m/dbpedia-L12",
+      "model": "EleutherAI/gpt-neo-125m",
+      "layer": 12,
+      "dataset": "dbpedia_14",
+      "notes": "GPT-Neo-125m borderline margin_ratio=3.60x. Expect attenuated alpha.",
+      "geometry": {
+        "kappa": 0.5587314556783577,
+        "margin_ratio": 3.598383519868261,
+        "d2_ratio": 1.1720081407416416,
+        "q0": 0.8707692307692307,
+        "nearest_pair": [
+          9,
+          10
+        ],
+        "farthest_pair": [
+          5,
+          10
+        ]
+      },
+      "intervention": {
+        "alpha": 0.5471183961624904,
+        "r": 0.9201765030608613
+      },
+      "control": {
+        "alpha": 0.4018524312473211,
+        "r": 0.6868841437554832
+      },
+      "criteria": {
+        "c1_r": true,
+        "c2_alpha_dev": false,
+        "c3_control": false,
+        "c4_ceiling": true,
+        "margin_clean": false
+      },
+      "overall_pass": false,
+      "margin_ok": false
+    }
+  ]
+}
