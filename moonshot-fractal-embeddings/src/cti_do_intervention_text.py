@@ -63,10 +63,13 @@ DATASETS = {
     "agnews":  {"hf_name": "fancyzhx/ag_news", "text_col": "text",    "label_col": "label",  "K": 4},
     "dbpedia": {"hf_name": "fancyzhx/dbpedia_14", "text_col": "content", "label_col": "label", "K": 14},
 }
-N_SAMPLE  = 1000  # samples per dataset
+N_SAMPLE  = 5000  # samples per dataset (more = finer q resolution for dose-response)
 BATCH_SIZE = 64
 
-DELTA_RANGE = np.linspace(-0.4, 0.4, 21)  # broader range for text (kappa~0.3-0.7)
+# Delta range: must be large enough to shift kappa visibly.
+# For text models: sigma_W * sqrt(d) ~ 14-31, so delta in [-3, +3] gives delta_kappa ~ +/-0.1 to 0.2
+# This spans ~30% of the kappa range (0.3 to 0.7), enough for a clear dose-response.
+DELTA_RANGE = np.linspace(-3.0, 3.0, 21)  # [-3, +3] in embedding units
 
 # PRE-REGISTERED CRITERIA
 LOAO_ALPHA             = 1.549
