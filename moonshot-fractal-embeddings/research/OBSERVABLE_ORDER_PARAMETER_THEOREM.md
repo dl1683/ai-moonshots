@@ -757,6 +757,81 @@ The scale: potentially covers ALL finite-dimensional classification representati
 
 ---
 
+---
+
+## Theorem 11 (Causal Decoupling: kappa_nearest as Causal Driver, Feb 21 2026)
+
+**Core question**: Is kappa_nearest or kappa_spec the TRUE causal driver of kNN quality?
+
+**Experimental design** (synthetic, two variants):
+
+**v1 (Bottleneck star)**:
+  - K=6 classes; classes 0..K-2 at orthogonal positions (distance = delta*sqrt(2))
+  - Class K-1 at distance epsilon from class 0 (bottleneck pair)
+  - kappa_spec decreases 14% as epsilon -> 0
+  - kappa_nearest decreases 99% as epsilon -> 0 (15.4x more variation)
+  - q drops from 0.998 (epsilon=delta) to 0.791 (epsilon=0.01*delta)
+
+**v2 (Hierarchical clusters, cleaner design)**:
+  - K=4 classes; 2 groups of 2 classes each
+  - Group A: classes 0,1 at +Delta with within-group distance epsilon
+  - Group B: classes 2,3 at -Delta with within-group distance epsilon
+  - Between-group distance: 2*Delta >> epsilon (fixed)
+  - kappa_spec: constant at ~0.34 for epsilon < 0.3*Delta (only 2% variation)
+  - kappa_nearest: varies from 0.579 to 0.003 as epsilon varies (365% variation)
+  - q drops from 0.997 to 0.339 over the full range
+
+**Key result (v2 flat-kappa_spec regime, eps < 0.3*Delta)**:
+  - kappa_spec variation: 2% (essentially constant)
+  - kappa_nearest variation: 365%
+  - q variation: 0.659 (from 0.997 to 0.339)
+  - => q varies substantially while kappa_spec is flat -> kappa_spec is NOT causal
+  - => kappa_nearest explains the full q variation
+
+**Quantitative comparison**:
+  | Metric | R2 (q vs metric) | CV | Decoupling ratio |
+  |--------|-------------------|-----|------------------|
+  | kappa_nearest | 0.959 | 3.66 | 15.5x |
+  | kappa_spec | 0.824 | 0.24 | 1.0x (reference) |
+  | dist_ratio | 0.834 | 0.08 | - |
+  | Law fit: logit(q)=A*(DR-1)+C | R2=0.997 | - | - |
+
+**Critical observation**: In the regime where kappa_spec is FLAT (< 2% variation),
+quality varies by 38-66% with epsilon. A kappa_spec model cannot explain this
+variation (kappa_spec barely changes). kappa_nearest explains it fully.
+
+**Why kappa_spec fails**: kappa_spec = tr(S_B)/tr(S_W) is a GLOBAL metric
+(average over all K class pairs). When one class pair is much closer than
+the others (bottleneck), kappa_spec is dominated by the K(K-1)/2 - 1 EASY pairs
+and misses the hard pair that actually determines kNN quality.
+
+**Why kappa_nearest succeeds**: kappa_nearest is the BOTTLENECK metric.
+It measures the minimum pairwise class distance, which is the hardest
+classification problem. The 1-NN competition is determined by this bottleneck,
+not by the average pair.
+
+**Status**: Experimentally verified (synthetic Gaussians). Extension to real NNs:
+the empirical advantage of dist_ratio over kappa_spec across models (R2 0.836 vs 0.311)
+is consistent with this interpretation: dist_ratio uses actual distance distributions
+(capturing bottleneck geometry), while kappa_spec uses scatter matrix traces (global averages).
+
+**Connection to CIFAR negative result (Feb 21 2026)**:
+  - dist_ratio regularizer on CIFAR-100: +0.003 gain (vs +0.02 pre-registered threshold)
+  - FAIL on pre-registration: dist_ratio regularization does NOT improve kNN quality
+  - Interpretation: optimizing mean distances (dist_ratio) is NOT the right causal lever
+  - The correct lever is kappa_nearest (minimum inter-class distance) = MARGIN MAXIMIZATION
+  - dist_ratio = DIAGNOSTIC metric (tells you quality), not TRAINING metric (moves quality)
+  - This is analogous to: measuring temperature does not heat the room
+
+**Implication for training objectives**:
+  - Our law logit(q) = A*(dist_ratio-1) + C tells you WHAT to measure, not WHAT to optimize
+  - The causal lever is: maximize min_{i<j} ||mu_i - mu_j|| while minimizing within-class spread
+  - This is equivalent to maximizing kappa_nearest, which is a MARGIN-BASED objective
+  - CE loss implicitly does this, but in a "soft" way using all class pairs
+  - A "hard" margin loss (SVM-style on class means) would be the principled training objective
+
+---
+
 ## Key Files
 
 | File | Content |
@@ -767,7 +842,10 @@ The scale: potentially covers ALL finite-dimensional classification representati
 | src/cti_within_dataset_K_test.py | log(K) vs sqrt(K) within-dataset |
 | src/cti_dist_ratio_theory.py | Theorem 3 (pool-size, dist_ratio) |
 | src/cti_observable_order_parameter.py | Theorem 4 (main) |
-| src/cti_dist_ratio_causal_cifar.py | Causal payoff (Codex design) |
+| src/cti_dist_ratio_causal_cifar.py | Causal payoff (CIFAR, FAIL) |
+| src/cti_kappa_nearest_causal.py | Causal decoupling v1 (bottleneck) |
+| src/cti_kappa_nearest_causal_v2.py | Causal decoupling v2 (hierarchical, PASS) |
 | results/cti_observable_order_parameter.json | Theorem 4 data |
 | results/cti_dist_ratio_theory.json | Theorem 3 data |
-| results/cti_within_dataset_K.json | log vs sqrt K data |
+| results/cti_kappa_nearest_causal.json | Causal decoupling v1 data |
+| results/cti_kappa_nearest_causal_v2.json | Causal decoupling v2 data |
