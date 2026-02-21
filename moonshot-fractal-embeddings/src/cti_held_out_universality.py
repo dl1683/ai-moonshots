@@ -96,8 +96,14 @@ def load_dataset_texts_labels(dataset_name, n_samples=1000):
         labels = np.array(ds["label"])[:n_samples]
     elif dataset_name == "dbpedia_14":
         ds = load_dataset("dbpedia_14", split="train")
-        texts = list(ds["content"])[:n_samples]
-        labels = np.array(ds["label"])[:n_samples]
+        # DBpedia is sorted by class - must shuffle before sampling
+        import random
+        random.seed(42)
+        indices = list(range(len(ds)))
+        random.shuffle(indices)
+        indices = indices[:n_samples]
+        texts = [ds["content"][i] for i in indices]
+        labels = np.array([ds["label"][i] for i in indices])
     else:
         raise ValueError(f"Unknown dataset: {dataset_name}")
     return texts, labels

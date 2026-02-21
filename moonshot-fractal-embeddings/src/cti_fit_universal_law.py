@@ -52,9 +52,9 @@ def extract_observations(data, metric="knn_l0"):
             continue
         model = result["model"]
         step = result["step"]
-        N = result["N_params"]
-        C = result["C_flops"]
-        L = result["num_layers"]
+        N = float(result["N_params"])
+        C = float(result["C_flops"])
+        L = int(result["num_layers"])
 
         if C <= 0:
             # step 0: use a small epsilon to avoid log(0)
