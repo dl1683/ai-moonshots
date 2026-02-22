@@ -47,9 +47,11 @@ MODELS = [
     "EleutherAI/pythia-410m",
     "EleutherAI/pythia-1b",
     "EleutherAI/gpt-neo-125m",       # GPT-Neo family (different arch from Pythia)
-    "Qwen/Qwen2.5-0.5B",             # Qwen2.5 family (totally different arch/training)
-    "allenai/OLMo-1B-hf",            # OLMo family (Allen AI, yet another arch)
-    "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",  # LLaMA family (5th arch)
+    "Qwen/Qwen2.5-0.5B",             # Qwen2.5 family
+    "allenai/OLMo-1B-hf",            # OLMo family (Allen AI)
+    "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",  # LLaMA family
+    # ── Modern 2025 models ────────────────────────────────────────────────────
+    "Qwen/Qwen3-0.6B",               # Qwen3 2025 SOTA: RoPE, GQA, SwiGLU, 36T tokens
 ]
 
 # Per-model layer indices (proportional depth: 25%, 50%, 75%, 100%)
@@ -58,9 +60,10 @@ MODEL_LAYERS = {
     "pythia-410m": [3, 6, 9, 12],   # 12 total layers
     "pythia-1b":   [4, 8, 12, 16],  # 16 total layers
     "gpt-neo-125m": [3, 6, 9, 12],  # 12 total layers
-    "Qwen2.5-0.5B": [6, 12, 18, 24],  # 28 total layers
+    "Qwen2.5-0.5B": [7, 14, 21, 28],  # 28 total layers
     "OLMo-1B-hf": [4, 8, 12, 16],  # 16 total layers
     "TinyLlama-1.1B-intermediate-step-1431k-3T": [5, 11, 16, 22],  # 22 total layers
+    "Qwen3-0.6B": [7, 14, 21, 28],  # 28 total layers, hidden_dim=1024, GQA
 }
 
 DATASETS = {
