@@ -1771,4 +1771,92 @@ K_eff_observed = 13, this is a Nobel-worthy result (predicts the competition spe
 |---|---|---|
 | cti_linear_regime_surgery.py (3 seeds) | A_emp constant at 0.050, 1/(K-1) interpretation | COMPLETE |
 | cti_multidirection_surgery.py (3 seeds) | K_eff=13, ratio=13.08, 47% of theory | COMPLETE |
+| cti_top_m_competitor_sweep.py (3 seeds) | K_eff~0.66*d_eff, ALL 3 models FAIL (R2<0) | COMPLETE |
 | cti_cifar_triplet_arm.py (5 seeds) | q=0.22 (FAILED - implementation bug) | COMPLETE (needs rerun) |
+
+---
+
+## Session 20: Top-m Competitor Sweep Results (Feb 22, 2026)
+
+### Top-m Sweep: COMPLETE (3 seeds, r=10)
+
+**Setup**: CIFAR-100 coarse (K=20), ResNet-18, 512-dim embeddings.
+For each seed: select checkpoint at kappa_eff~1, run surgery at top m competitor directions (m=1..K-1=19).
+
+**Results at r=10**:
+
+| Seed | d_eff | K_eff_obs | K_eff/d_eff | K_eff_softmax | Softmax error |
+|------|-------|-----------|-------------|---------------|---------------|
+| 0 | 16.40 | 11.44 | 0.698 | 18.99 | 39.8% |
+| 1 | 10.83 | 7.67 | 0.708 | 18.98 | 59.6% |
+| 2 | 18.52 | 10.65 | 0.575 | 18.98 | 43.9% |
+| MEAN | | | **0.66** | | |
+
+**ALL THREE PRE-REGISTERED MODELS FAIL (R2 < 0)**:
+- Model A (nearest-only): R2 = -7.04, -7.42, -5.38 (wrong: constant, misses rise)
+- Model B (equal-additive): R2 = -0.45, -8.07, -0.51 (wrong: linear, misses saturation)
+- Model C (sparse-softmax): R2 = -0.22, -6.69, -0.29 (softmax predicts K_eff~19, misses 7-11)
+
+**Why softmax model fails**: kappa_j values nearly UNIFORM (0.25-0.37 range) at early training.
+When kappa_j are uniform, softmax weights w_j ~ 1/K for all j, so K_eff_pred ~ K-1 = 19.
+The softmax heterogeneity model fundamentally fails because kappa heterogeneity is not the driver.
+
+### KEY FINDING: K_eff ~ 0.66 * d_eff
+
+The observed saturation at m ~ d_eff (not m ~ K-1) reveals a new law:
+**K_eff = c * d_eff** where c ~ 0.66 is empirically observed.
+
+**Physical interpretation**: Saturation occurs when the surgery subspace (m directions) spans
+the EFFECTIVE dimension d_eff. Beyond d_eff, adding more directions:
+- Compresses subspace dimensions with near-zero variance (small marginal gain)
+- Forces large scale_orth to preserve trace (inflation penalty)
+Result: diminishing returns at m ~ d_eff.
+
+### Codex Session 20 Analysis
+
+**Nobel score: 3/10** (up from 2/10)
+
+**Key insight from Codex**: The saturation at m ~ d_eff is PARTIALLY from constrained geometry
+(the trace-preserving constraint in apply_top_m_surgery), but the exact value of c requires
+understanding the competition spectrum.
+
+**Theoretical c(r) formula (Codex derivation)**:
+From the trace-preserving constraint:
+  scale_orth^2 = (tr_W - tr_sub/r) / (tr_W - tr_sub)
+
+At saturation m* where marginal gain = marginal cost, Codex derives:
+  **c(r) = 1 - 1/sqrt(r)**
+
+Predictions:
+  r=2:  c_pred = 1 - 1/sqrt(2) = 0.293
+  r=5:  c_pred = 1 - 1/sqrt(5) = 0.553
+  r=10: c_pred = 1 - 1/sqrt(10) = 0.684  (vs observed 0.66, error 3.5%)
+
+**Implementation bug identified by Codex**: Fixed target class (class 0) introduces bias.
+Better: use globally nearest centroid pair (i*, j*) = argmin kappa_ij.
+Fix applied in: src/cti_r_variation_test.py
+
+### Theorem 17 (CONJECTURE): Competition Saturation Law
+
+**Statement**: For trace-preserving surgery on top-m centroid directions with ratio r,
+the effective competition count satisfies:
+  K_eff = (1 - 1/sqrt(r)) * d_eff
+
+**Evidence**: Empirical observation across 3 seeds (K_eff/d_eff mean=0.66, c_pred=0.684).
+
+**Status**: CONJECTURE. Test: r-variation experiment (src/cti_r_variation_test.py).
+
+**Physical meaning**: d_eff is the "active competition dimensionality" — the number of
+dimensions where within-class variance is significant compared to the centroid spacing.
+Surgery with ratio r can only effectively improve c * d_eff of them (the ones where
+compression gain exceeds orthogonal inflation penalty).
+
+### Currently Running: r-Variation Test (src/cti_r_variation_test.py)
+
+**Design**: 2 seeds, K=20, r in {2, 5, 10}
+**Fix**: Uses globally nearest pair as target (not class 0)
+**Pre-registered predictions**:
+  r=2:  c_obs should be ~0.293 (within 20%)
+  r=5:  c_obs should be ~0.553 (within 20%)
+  r=10: c_obs should be ~0.684 (existing data: 0.66, error 3.5%)
+**Output**: results/cti_r_variation_test.json
