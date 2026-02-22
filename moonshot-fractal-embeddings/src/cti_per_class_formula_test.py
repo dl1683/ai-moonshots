@@ -399,8 +399,10 @@ def main():
 
                 log(f"  [ep={epoch:3d}] loss={loss:.4f}, kappa={min_kappa:.4f}, q={q_ep:.4f}")
 
-                # Target: kappa in 1.0-3.0 range
-                if 1.0 <= min_kappa <= 3.0 and (best_kappa is None or abs(min_kappa - 2.0) < abs(best_kappa - 2.0)):
+                # Target: kappa in 0.3-1.0 range (BEFORE ETF convergence)
+                # At kappa > 1.5, Neural Collapse makes all per-class kappas uniform
+                # -> K_eff_kappa = K-1 = constant, no variation to test
+                if 0.3 <= min_kappa <= 1.0 and (best_kappa is None or abs(min_kappa - 0.7) < abs(best_kappa - 0.7)):
                     best_kappa = min_kappa
                     best_X_tr  = X_tr_ep.copy()
                     best_y_tr  = y_tr_ep.copy()
@@ -408,7 +410,7 @@ def main():
                     best_y_te  = y_te_ep.copy()
 
         if best_X_tr is None:
-            log(f"  No kappa in [1,3] range — using last epoch")
+            log(f"  No kappa in [0.3,1.0] range — using last epoch")
             best_X_tr, best_y_tr = extract(model, tr_loader)
             best_X_te, best_y_te = extract(model, te_loader)
 
