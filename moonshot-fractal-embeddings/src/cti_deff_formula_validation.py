@@ -310,7 +310,7 @@ def train_one_arm(seed, arm, train_ds, test_ds):
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=N_EPOCHS)
     ce_loss_fn = nn.CrossEntropyLoss()
     train_loader = torch.utils.data.DataLoader(
-        train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=2, pin_memory=True)
+        train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=0, pin_memory=False)
 
     class_means = F.normalize(torch.randn(K, PROJ_DIM, device=DEVICE), dim=1)
     checkpoints = []

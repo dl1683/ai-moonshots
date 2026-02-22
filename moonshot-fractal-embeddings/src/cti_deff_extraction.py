@@ -162,7 +162,7 @@ def main():
 
     train_ds, test_ds = get_cifar_coarse()
     train_loader = torch.utils.data.DataLoader(
-        train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=2, pin_memory=True)
+        train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=0, pin_memory=False)
 
     results = []
     rng = np.random.default_rng(42)

@@ -161,7 +161,7 @@ def train_seed(seed, train_ds, test_ds):
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=N_EPOCHS)
     criterion = nn.CrossEntropyLoss()
     train_loader = torch.utils.data.DataLoader(
-        train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=2, pin_memory=True)
+        train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=0, pin_memory=False)
 
     checkpoints = []
 

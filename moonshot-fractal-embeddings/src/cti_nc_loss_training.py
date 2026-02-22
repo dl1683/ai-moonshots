@@ -281,7 +281,7 @@ def train_one_arm(seed, arm, train_ds, test_ds):
     ce_loss_fn = nn.CrossEntropyLoss()
 
     train_loader = torch.utils.data.DataLoader(
-        train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=2, pin_memory=True
+        train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=0, pin_memory=False
     )
 
     # Fixed class permutation for shuffled_nc control
