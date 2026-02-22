@@ -36,6 +36,8 @@ Where:
 | ViT orthogonal factorial | Arm A r=0.943, Arm B r=0.945 (2-layer), Arm C FAIL (dense regime) | DONE |
 | Rank-spectrum factorial | r=0.459 p<0.0001 (directional pass, pre-reg threshold 0.85 not met) | DONE |
 | Checkpoint phase diagram | B_j2_r geometrically driven (step512 B=0.831) | DONE |
+| DBpedia NC-loss head intervention (Session 37) | FAIL (specificity): shuffled_nc=nc_full, pythia-410m ceiling | DONE |
+| Multi-arch frozen do-intervention (Session 37) | PARTIAL: r>0.87 all 5 models (direction PASS), alpha=0.701 avg (quantitative FAIL) | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
@@ -57,10 +59,17 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
 
 4. **Practical utility demo:** predict class difficulty from geometry alone
 
+5. **Renormalized Universality Theorem verification (next):**
+   - Theorem: A/sqrt(d_eff_formula) = sqrt(4/pi) = 1.128 universally
+   - NLP check: 1.477/sqrt(1.71) = 1.129 (1.477 back-calculated — need direct d_eff measurement)
+   - ViT next: predict d_eff_ViT = A_ViT^2/(4/pi) = 7.5^2/1.273 = 44, measure actual d_eff_formula
+   - Prediction: A/sqrt(measured_d_eff) = 1.128 for both modalities
+
 ## Failed Causal Interventions (logged for paper)
 
 All failed: joint CE+triplet, two-stage CE+centroid-triplet, anti-triplet, dist_ratio regularizer,
-NC-loss at 60 epochs, cross-task do-intervention.
+NC-loss at 60 epochs, cross-task do-intervention, DBpedia NC-loss head (specificity failure, shuffled==nc),
+multi-arch frozen do-intervention (direction confirmed but alpha ~0.47x predicted — K-1 competitive geometry issue).
 ONLY PASS: pythia-160m/dbpedia frozen do-intervention (isolated pair, alpha=1.601 r=0.974).
 
 ## Active Paper
@@ -83,6 +92,8 @@ ONLY PASS: pythia-160m/dbpedia frozen do-intervention (isolated pair, alpha=1.60
 | `src/cti_two_step_analysis.py` | Two-step causal test |
 | `src/cti_fit_universal_law.py` | Law fitting utilities |
 | `src/cti_held_out_universality.py` | Held-out architecture test |
+| `src/cti_dbpedia_nc_intervention.py` | NC-loss head intervention (frozen backbone) |
+| `src/cti_do_intervention_multi_arch.py` | Multi-arch frozen do-intervention (5 models) |
 | `src/hierarchical_datasets.py` | Dataset loading utility |
 | `src/multi_model_pipeline.py` | Multi-model embedding pipeline |
 | `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md` | Master theory document |

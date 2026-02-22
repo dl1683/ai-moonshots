@@ -44,6 +44,7 @@ checkpoints/
 
 # Logs
 *.log
+*_log.txt
 logs/
 
 # OS
