@@ -465,9 +465,10 @@ def main():
                 "f_sub": float(g["f_sub"]),
             }
             all_records.append(rec)
+            q_str = f"{q_i:.4f}" if q_i is not None else "N/A"
+            logit_str = f"{logit_q_val:.4f}" if logit_q_val is not None else "N/A"
             log(f"  cls {target_cls}: kappa={g['kappa_nearest']:.4f}, d_eff={g['d_eff']:.2f}, "
-                f"K_eff_in={g['K_eff_in']:.2f}, q_i={q_i:.4f if q_i else 'N/A'}, "
-                f"logit={logit_q_val:.4f if logit_q_val else 'N/A'}")
+                f"K_eff_in={g['K_eff_in']:.2f}, q_i={q_str}, logit={logit_str}")
 
         # Per-seed analysis
         seed_recs = [r for r in all_records if r["seed"] == seed]
