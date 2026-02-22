@@ -59,7 +59,7 @@ The key conceptual point: Eq.~\ref{eq:cti-law}'s structure is derived from first
 
 \paragraph{Contributions.}
 \begin{enumerate}
-\item \textbf{Theorem-level derivation}: EVT and Gumbel race competition require the logit-linear form of Eq.~\ref{eq:cti-law}.
+\item \textbf{Conditional derivation}: Under Gaussian/sub-Gaussian class conditionals and Gumbel domain-of-attraction (Assumptions A1--A3), EVT and Gumbel race competition require the logit-linear form of Eq.~\ref{eq:cti-law}.
 \item \textbf{12-architecture LOAO test} (pre-registered): LOAO $\mathrm{CV}_\alpha=0.023$ (per-dataset, $R^2=0.955$) and $0.019$ (single-intercept), spanning diverse model families 2021--2025 and 125M--7B parameters. Includes first test of pure linear RNN (RWKV-4) architecture.
 \item \textbf{Cross-modal validation}: ViT-Large reaches $R^2=0.964$ with same functional form; ResNet50 CNN on CIFAR-100 ($K=100$) shows $r=0.749$, matching ViT-Base at same $K$ ($r=0.773$).
 \item \textbf{K-regime analysis}: Monte Carlo noise-floor simulation shows K=100 attenuation is expected ($E[r]\approx0.875$); both architectures fall in the same range, confirming form universality across attention and convolutional families.
@@ -87,10 +87,11 @@ The chance-normalized accuracy is
 \begin{equation}
 q_{\mathrm{norm}}=\frac{\mathrm{acc}_{1\mathrm{NN}}-\tfrac{1}{K}}{1-\tfrac{1}{K}}.
 \end{equation}
-For class centroids $\{\mu_k\}_{k=1}^K$ and pooled within-class scale $\sigma_W$:
+For class centroids $\{\mu_k\}_{k=1}^K$, pooled within-class per-dimension std $\sigma_W=\sqrt{\mathbb{E}_k[\mathbb{E}_j\mathrm{Var}(X_{kj}]]}$, and embedding dimension $d$:
 \begin{equation}
-\kappa_{\mathrm{nearest}}(k)=\min_{j\neq k}\frac{\|\mu_j-\mu_k\|}{\sigma_W}.
+\kappa_{\mathrm{nearest}}(k)=\min_{j\neq k}\frac{\|\mu_j-\mu_k\|}{\sigma_W\sqrt{d}}.
 \end{equation}
+The denominator $\sigma_W\sqrt{d}$ equals the expected within-class L2 radius under the null (each dimension independent), making $\kappa_{\mathrm{nearest}}$ a dimensionless signal-to-noise ratio.
 
 \subsection{Gumbel race mechanism}
 Consider a query $x$ from class $k$. Let
@@ -313,13 +314,13 @@ Four claims are strongly supported:
 \paragraph{Two-level universality picture and honest scope.}
 \emph{Form} universality (the logit-linear relationship) is the strong and primary claim. \emph{Constant} universality (shared $\alpha$) holds within the NLP decoder family (CV$=0.019$/$0.023$ single-intercept/per-dataset) but not across modalities: $\alpha_\mathrm{NLP}=1.48$, $\alpha_\mathrm{ViT}\approx0.63$, $\alpha_\mathrm{CNN}\approx4.4$. This mirrors how power-law scaling \emph{exponents} are more universal than \emph{prefactors}. We explicitly caution against the reading that a single constant governs all modalities; such a claim would not be supported by current evidence.
 
-Among 19 tested model families, BERT and GPT-2 do not follow the law (BERT's CLS token is not class-separable without fine-tuning; GPT-2's final layer degenerates for classification). The law applies to the class of modern autoregressive NLP decoders and, in functional form, to attention and convolutional vision architectures.
+Among 19 tested model variants (detailed results in \texttt{results/cti\_all\_models\_fit.json}), BERT ($r=0.16$) and GPT-2 ($r=-0.07$, negative $\alpha$) do not follow the law: BERT's CLS token is not class-separable without fine-tuning; GPT-2's final layer degenerates for classification. The law applies to modern autoregressive NLP decoders; in functional form, it also holds for ViT and CNN architectures.
 
 \paragraph{Interpretation of $\beta$.}
 Asymptotically, Gumbel race predicts unit coefficient on $\log(K-1)$. Empirical $\beta\approx0.746$ reflects finite-sample and anisotropy renormalization consistent with the derivation.
 
 \paragraph{Connection to physics.}
-The Gumbel race mechanism is the same as the mechanism underlying extreme-value statistics in physics (e.g., maxima of random fields). The universal constant $\alpha$ reflects the effective dimensionality of the within-class distribution, analogous to a correlation length in statistical mechanics.
+The Gumbel race mechanism is the same as the mechanism underlying extreme-value statistics in physics (e.g., maxima of random fields). Within the NLP decoder family, $\alpha$ is stable across architectures; whether it plays a role analogous to a universal constant or correlation length across all modalities remains to be shown given the modality-dependent values ($\alpha_\mathrm{NLP}=1.48$, $\alpha_\mathrm{ViT}=0.63$, $\alpha_\mathrm{CNN}=4.4$).
 
 \section{Limitations}
 \label{sec:limitations}
