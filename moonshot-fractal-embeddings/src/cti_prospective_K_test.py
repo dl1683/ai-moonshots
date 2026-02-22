@@ -78,8 +78,10 @@ DATASETS = {
 MODELS = [
     "EleutherAI/pythia-160m",
     "EleutherAI/pythia-410m",
+    "EleutherAI/pythia-1b",
     "Qwen/Qwen3-0.6B",
-    "tiiuae/falcon-h1-0.5b-base",
+    "Qwen/Qwen3-1.7B",
+    # falcon-h1 excluded: naive SSM path too slow on Windows
 ]
 
 TRUST_REMOTE_CODE_MODELS = {"falcon-h1-0.5b-base"}
