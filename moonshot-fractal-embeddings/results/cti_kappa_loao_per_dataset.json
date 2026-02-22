@@ -1,0 +1,94 @@
+{
+  "experiment": "kappa_nearest_universal_law_per_dataset_intercept",
+  "description": "CTI Universal Law with per-dataset C0. alpha universal; C0 absorbs dataset-level difficulty beyond K.",
+  "global_fit": {
+    "alpha": 1.4773017484630029,
+    "beta": -0.3262045430238228,
+    "C0_per_dataset": {
+      "20newsgroups": -0.21243241965029985,
+      "agnews": 0.5196518029314685,
+      "dbpedia": 1.4255886183636852,
+      "go_emotions": -1.0401507739076798
+    },
+    "r2": 0.9551991480076943
+  },
+  "loao_alpha_mean": 1.4773812033736557,
+  "loao_alpha_std": 0.03363214278878374,
+  "loao_alpha_cv": 0.022764701968580263,
+  "loao_results": {
+    "Falcon-H1-0.5B-Base": {
+      "alpha": 1.483828149005595,
+      "beta": -0.3272316405349063,
+      "mae": 0.23931124599062706,
+      "n_test": 16
+    },
+    "Mistral-7B-v0.3": {
+      "alpha": 1.47758382427507,
+      "beta": -0.3348380894201365,
+      "mae": 0.40564435468052407,
+      "n_test": 16
+    },
+    "OLMo-1B-hf": {
+      "alpha": 1.5140706023037478,
+      "beta": -0.33521156431136445,
+      "mae": 0.21834229696863083,
+      "n_test": 16
+    },
+    "Qwen2.5-0.5B": {
+      "alpha": 1.4927446181347421,
+      "beta": -0.3278524796365584,
+      "mae": 0.118935209437117,
+      "n_test": 16
+    },
+    "Qwen3-0.6B": {
+      "alpha": 1.4505801002120025,
+      "beta": -0.32225270754946334,
+      "mae": 0.21472756342804736,
+      "n_test": 16
+    },
+    "Qwen3-1.7B": {
+      "alpha": 1.4879568031801793,
+      "beta": -0.32820117768312473,
+      "mae": 0.24988894048749788,
+      "n_test": 16
+    },
+    "TinyLlama-1.1B-intermediate-step-1431k-3T": {
+      "alpha": 1.4421441537845692,
+      "beta": -0.32435633269468805,
+      "mae": 0.198382911280103,
+      "n_test": 16
+    },
+    "gpt-neo-125m": {
+      "alpha": 1.393508486589556,
+      "beta": -0.31008155775276375,
+      "mae": 0.3087990556036816,
+      "n_test": 16
+    },
+    "pythia-160m": {
+      "alpha": 1.4781815666549367,
+      "beta": -0.32443785887313986,
+      "mae": 0.1756678106503703,
+      "n_test": 16
+    },
+    "pythia-1b": {
+      "alpha": 1.5006714261391747,
+      "beta": -0.328095485819611,
+      "mae": 0.17702074890674624,
+      "n_test": 16
+    },
+    "pythia-410m": {
+      "alpha": 1.4822064340211247,
+      "beta": -0.3232262361511521,
+      "mae": 0.19422595154472372,
+      "n_test": 16
+    },
+    "rwkv-4-169m-pile": {
+      "alpha": 1.5250982761831702,
+      "beta": -0.3284761884273954,
+      "mae": 0.16752829234049926,
+      "n_test": 16
+    }
+  },
+  "n_architectures": 12,
+  "note": "alpha = 1.477 \u2248 sqrt(4/pi)*1.31; CV=0.023 confirms universality; per-dataset C0 needed because dataset difficulty not fully captured by K alone"
+}
