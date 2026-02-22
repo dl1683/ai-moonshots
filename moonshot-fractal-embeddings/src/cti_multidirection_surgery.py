@@ -241,10 +241,12 @@ def apply_multi_surgery(X, y, r, centroids, tr_W, Sigma_W, K_classes=K):
 
     # Scale to preserve tr(Sigma_W):
     # (1/r) * tr_sub + scale_orth^2 * tr_orth = tr_W
-    if tr_orth > 1e-12:
-        scale_orth = np.sqrt((tr_W - tr_sub / r) / tr_orth)
-    else:
-        scale_orth = 1.0
+    # When r < tr_sub/tr_W (compressing sub below what total budget allows),
+    # numerator < 0 -> return None to signal infeasible surgery
+    numerator = tr_W - tr_sub / r
+    if tr_orth < 1e-12 or numerator < 0:
+        return None  # infeasible: tr-preservation cannot be satisfied
+    scale_orth = np.sqrt(numerator / tr_orth)
     scale_sub = 1.0 / np.sqrt(r)
 
     X_new = X.copy()
@@ -387,8 +389,32 @@ def main():
             # -- MULTI DIRECTION --
             X_multi = apply_multi_surgery(saved_X, saved_y, r, saved_centroids,
                                           saved_trW, saved_SigmaW, K_classes=K)
+            if X_multi is None:
+                # Infeasible: compressing K-1 dims below variance budget
+                log(f"  [r={r:.2f}] single: q={q_single:.4f}, logit={logit_single:.4f} | "
+                    f"multi: INFEASIBLE (tr_sub/tr_W > r)")
+                multi_deltas.append(np.nan)
+                result = {
+                    "seed": seed, "r": r, "best_epoch": best_epoch,
+                    "kappa_base": float(saved_kappa), "d_eff_base": float(saved_deff),
+                    "kappa_eff_base": float(saved_kappa_eff), "q_base": float(saved_q),
+                    "logit_base": float(logit_base),
+                    "q_single": float(q_single), "logit_single": float(logit_single),
+                    "kappa_chg_single": float(kappa_chg_single),
+                    "delta_single": float(delta_single), "logit_pred": float(logit_pred),
+                    "calib_single": float(calib_single),
+                    "q_multi": None, "logit_multi": None,
+                    "kappa_chg_multi": None, "delta_multi": None, "ratio_multi_single": None,
+                    "multi_infeasible": True,
+                }
+                all_results.append(result)
+                continue
             X_multi_te = apply_multi_surgery(saved_X_te, saved_y_te, r, saved_centroids,
                                              saved_trW, saved_SigmaW, K_classes=K)
+            if X_multi_te is None:
+                log(f"  [r={r:.2f}] multi test surgery infeasible, skipping")
+                multi_deltas.append(np.nan)
+                continue
             kappa_multi, _, _, _, _, _, _, _, _ = compute_kappa_and_deff(X_multi, saved_y)
             kappa_chg_multi = abs(kappa_multi - saved_kappa) / (abs(saved_kappa) + 1e-12) * 100
             q_multi = compute_q(X_multi, saved_y, X_multi_te, saved_y_te)
@@ -417,18 +443,20 @@ def main():
             }
             all_results.append(result)
 
-        # Summary for this seed
-        # At r=10 (last level):
+        # Summary for this seed — use r=10 (SURGERY_LEVELS[-1])
         r10_single = single_deltas[-1]
-        r10_multi = multi_deltas[-1]
-        r10_ratio = r10_multi / r10_single if abs(r10_single) > 1e-6 else np.nan
+        r10_multi = multi_deltas[-1]  # may be nan if infeasible at r=10 (unlikely)
+        r10_ratio = (r10_multi / r10_single
+                     if (abs(r10_single) > 1e-6 and not np.isnan(r10_multi)) else np.nan)
         r10_theory = A_RENORM_K20 * saved_kappa_eff * (np.sqrt(10) - 1)
         log(f"\n  SEED {seed} SUMMARY at r=10:")
         log(f"    delta_single = {r10_single:.4f}")
-        log(f"    delta_multi  = {r10_multi:.4f}")
-        log(f"    ratio = {r10_ratio:.2f}  (predicted K-1={K-1})")
+        log(f"    delta_multi  = {r10_multi:.4f}" if not np.isnan(r10_multi) else "    delta_multi  = N/A (infeasible)")
+        if not np.isnan(r10_ratio):
+            log(f"    ratio = {r10_ratio:.2f}  (predicted K-1={K-1})")
         log(f"    theory (A_renorm) delta = {r10_theory:.4f}")
-        log(f"    delta_multi / theory = {r10_multi/r10_theory:.3f}  (ideal 1.0)")
+        if not np.isnan(r10_multi):
+            log(f"    delta_multi / theory = {r10_multi/r10_theory:.3f}  (ideal 1.0)")
         seed_summary[seed] = {"single": r10_single, "multi": r10_multi, "ratio": r10_ratio,
                               "theory": r10_theory}
 
@@ -439,24 +467,28 @@ def main():
 
     seeds_done = list(seed_summary.keys())
     if seeds_done:
-        ratios = [seed_summary[s]["ratio"] for s in seeds_done if seed_summary[s]["ratio"] is not None]
+        ratios = [seed_summary[s]["ratio"] for s in seeds_done
+                  if seed_summary[s]["ratio"] is not None and not np.isnan(seed_summary[s]["ratio"])]
         singles = [seed_summary[s]["single"] for s in seeds_done]
-        multis = [seed_summary[s]["multi"] for s in seeds_done]
+        multis = [seed_summary[s]["multi"] for s in seeds_done
+                  if seed_summary[s]["multi"] is not None and not np.isnan(seed_summary[s]["multi"])]
         theories = [seed_summary[s]["theory"] for s in seeds_done]
-        mean_ratio = np.mean(ratios)
-        mean_single = np.mean(singles)
-        mean_multi = np.mean(multis)
-        mean_theory = np.mean(theories)
+        mean_single = float(np.mean(singles))
+        mean_theory = float(np.mean(theories))
         log(f"\nMean delta_single(r=10) = {mean_single:.4f}")
-        log(f"Mean delta_multi(r=10)  = {mean_multi:.4f}")
-        log(f"Mean ratio multi/single = {mean_ratio:.2f}  (expected K-1={K-1})")
-        log(f"Mean theory delta       = {mean_theory:.4f}")
-        log(f"Mean delta_multi / theory = {mean_multi/mean_theory:.3f}  (ideal 1.0)")
-        log(f"\nPASS CRITERIA:")
-        log(f"  PRIMARY: ratio in [0.7*(K-1), 1.3*(K-1)] = [{0.7*(K-1):.1f}, {1.3*(K-1):.1f}]")
-        log(f"    -> {mean_ratio:.2f} {'PASS' if 0.7*(K-1) <= mean_ratio <= 1.3*(K-1) else 'FAIL'}")
-        log(f"  SECONDARY: delta_multi / theory in [0.7, 1.3]")
-        log(f"    -> {mean_multi/mean_theory:.3f} {'PASS' if 0.7 <= mean_multi/mean_theory <= 1.3 else 'FAIL'}")
+        if multis:
+            mean_multi = float(np.mean(multis))
+            log(f"Mean delta_multi(r=10)  = {mean_multi:.4f}")
+            log(f"Mean delta_multi / theory = {mean_multi/mean_theory:.3f}  (ideal 1.0)")
+        if ratios:
+            mean_ratio = float(np.mean(ratios))
+            log(f"Mean ratio multi/single = {mean_ratio:.2f}  (expected K-1={K-1})")
+            log(f"\nPASS CRITERIA:")
+            log(f"  PRIMARY: ratio in [0.7*(K-1), 1.3*(K-1)] = [{0.7*(K-1):.1f}, {1.3*(K-1):.1f}]")
+            log(f"    -> {mean_ratio:.2f} {'PASS' if 0.7*(K-1) <= mean_ratio <= 1.3*(K-1) else 'FAIL'}")
+        if multis:
+            log(f"  SECONDARY: delta_multi / theory in [0.7, 1.3]")
+            log(f"    -> {mean_multi/mean_theory:.3f} {'PASS' if 0.7 <= mean_multi/mean_theory <= 1.3 else 'FAIL'}")
 
     with open(RESULT_PATH, "w", encoding="ascii", errors="replace") as f:
         json.dump(all_results, f, indent=2)
