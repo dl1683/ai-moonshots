@@ -250,20 +250,32 @@ def extract_text_embeddings(arch_key, cfg, texts, labels):
     return X[valid], np.array(labels)[valid]
 
 
-def load_dbpedia_texts(n_sample, seed):
-    """Sample n_sample texts from dbpedia14 (K=14)."""
+def load_dbpedia_texts(n_per_class=1000):
+    """Load n_per_class stratified texts from dbpedia14 test set (K=14).
+    Returns texts, integer labels. Stratified to avoid class imbalance."""
     from datasets import load_dataset
-    from sklearn.preprocessing import LabelEncoder
     import random
 
     ds = load_dataset("fancyzhx/dbpedia_14", split="test")
-    rng = random.Random(seed)
-    indices = rng.sample(range(len(ds)), min(n_sample, len(ds)))
-    texts = [ds["content"][i] for i in indices]
-    raw_labels = [ds["label"][i] for i in indices]
-    le = LabelEncoder()
-    labels = le.fit_transform(raw_labels)
-    return texts, labels, 14
+    rng = random.Random(0)  # fixed seed for cache consistency
+
+    # Collect indices per class
+    from collections import defaultdict
+    by_class = defaultdict(list)
+    for i, lbl in enumerate(ds["label"]):
+        by_class[lbl].append(i)
+
+    selected_idx = []
+    selected_lbl = []
+    for lbl in sorted(by_class.keys()):
+        indices = by_class[lbl]
+        chosen = rng.sample(indices, min(n_per_class, len(indices)))
+        selected_idx.extend(chosen)
+        selected_lbl.extend([lbl] * len(chosen))
+
+    texts = [ds["content"][i] for i in selected_idx]
+    labels = np.array(selected_lbl)
+    return texts, labels
 
 
 # ================================================================
@@ -567,13 +579,14 @@ def main():
         emb_cache = f"results/dose_response_embs_{arch_key}_dbpedia.npz"
 
         if os.path.exists(emb_cache):
-            d = np.load(emb_cache)
-            X_full, y_full = d["X"], d["y"]
+            npz = np.load(emb_cache)
+            X_full, y_full = npz["X"], npz["y"]
+            npz.close()
             print(f"  Loaded embedding cache: {X_full.shape}", flush=True)
         else:
             print(f"  Extracting embeddings for {arch_key} on dbpedia14...", flush=True)
-            # Use seed 0 to get all data; subsample per actual seed below
-            texts, y_full, K = load_dbpedia_texts(n_sample=min(15000, 560000), seed=0)
+            # Stratified 1000/class = 14000 total; subsample per seed below
+            texts, y_full = load_dbpedia_texts(n_per_class=1000)
             X_full, y_full = extract_text_embeddings(arch_key, cfg, texts, y_full)
             np.savez(emb_cache, X=X_full, y=y_full)
             print(f"  Saved embedding cache: {X_full.shape}", flush=True)
