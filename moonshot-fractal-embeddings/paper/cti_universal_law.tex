@@ -258,6 +258,13 @@ At $K=100$ (CIFAR-100), both ViT-Base ($r=0.773$) and ResNet50 CNN ($r=0.749$) y
 \label{fig:law-main}
 \end{figure}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../results/figures/fig_cti_multimodal_summary.png}
+\caption{Multi-modality evidence summary. (A) LOAO $\alpha$ for 12 NLP architectures (CV=0.019). (B) Alpha by family on log-scale: NLP decoders are tightly clustered; ViT and CNN values differ but follow the same functional form. (C) Pearson $r$ vs. $K$: ViT and ResNet50 CNN yield comparable $r\approx0.75$ at $K=100$, confirming architecture-independence of the $K=100$ regime effect. (D) Quantitative evidence summary.}
+\label{fig:multimodal}
+\end{figure}
+
 \subsection{Causal evidence}
 \paragraph{Frozen do-interventions.}
 Mean nearest-arm $r=0.899$; mean farthest-arm $r=0.569$. Nearest-pair interventions consistently track logit changes better than farthest controls, supporting nearest-class geometry as the dominant causal driver.
