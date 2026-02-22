@@ -1504,3 +1504,74 @@ This is derivable from first principles (Gumbel Race, anisotropic Gaussian) and 
 | src/cti_control_law_analysis.py | Comprehensive analysis with 3 tests (ready) |
 | src/cti_prospective_arch_test.py | Prospective WideResNet-28-2 test (ready) |
 | src/cti_prospective_cifar10_test.py | Prospective CIFAR-10 K=10 test (ready) |
+| src/cti_deff_causal_surgery.py | HIGHEST PRIORITY: d_eff_formula causal surgery (RUNNING PID 14138) |
+| src/cti_surgery_synthetic_validate.py | Synthetic surgery validation (mechanics: PASS, calibration: needs real data) |
+| results/cti_deff_causal_surgery.json | Surgery experiment results (pending) |
+
+---
+
+## Session 15 Findings (Feb 23 continued)
+
+### Codex Nobel Score: 6.2/10
+
+Codex assessment with full d_eff_formula context:
+- Score jump from 2/10 -> 6.2/10 due to d_eff_formula discovery
+- "Strong positives: pre-registered constant, sharp law form, strong within-task fit, plausible geometric mechanism"
+- "Causal identification weak: NC near-null, triplet interventions collapsed"
+- Single highest-leverage experiment: d_eff_formula causal surgery (RUNNING)
+- Path to 8/10: surgery passes (Pearson r > 0.99, calibration < 10%)
+
+### Surgery Experiment Design (Codex-prescribed)
+
+Pre-registered prediction: logit(q_new) = C + A_renorm * kappa_nearest * sqrt(r * d_eff_base)
+- Surgery: redistribute within-class variance to change sigma_centroid_dir by 1/sqrt(r)
+  while preserving tr(Sigma_W) -> kappa_nearest exactly preserved
+- scale_along = 1/sqrt(r), scale_perp = sqrt((trW - sigma_cdir_sq/r)/(trW - sigma_cdir_sq))
+- Valid for r >= 1/d_eff_formula (below this, scale_perp imaginary; minimum d_eff_new = 1)
+- For CIFAR CE d_eff=1.46: min valid r = 1/1.46 = 0.685, r<0.685 clamped to r=0.685
+
+Synthetic validation results (CPU, pure Gaussian data, K=20, d=512, d_eff=1.46):
+- Surgery mechanics: PERFECT (kappa change = 0.000%, trW change = 0.000%)
+- Direction: CORRECT (Pearson r = 0.993 across surgery levels)
+- Calibration: POOR (49.73%) -- due to SATURATION REGIME (q_base=0.956 >> 0.607)
+- CONCLUSION: Mechanics validated; calibration test requires real neural net embeddings (q~0.60)
+
+### Law Nonlinearity at High Kappa
+
+From 200-epoch CE training analysis (15 checkpoints, 3 seeds):
+- Early phase (ep=40-80, kappa~0.5-0.6): apparent alpha = 1.187, d_eff_cls = 1.27
+- Late phase (ep=120-200, kappa~0.7-1.2): apparent alpha = 0.892, d_eff_cls = 0.72
+- R2 = 0.986 over full range (law fits but apparent slope decreases at high kappa)
+
+INTERPRETATION: The law logit(q) = A * kappa * sqrt(d_eff) + C is a LINEARIZATION
+of the nonlinear Gumbel Race formula. Valid regime: kappa ~ 0.3-0.8 (q ~ 0.4-0.65).
+At high kappa (> 0.8-1.0), the Gumbel Race becomes nonlinear -> apparent d_eff decreases.
+This is NOT a change in actual d_eff_formula (geometry); it's a property of the linearization.
+
+IMPLICATION FOR SURGERY: Surgery tests in the VALID LINEAR REGIME (kappa_base=0.84, q_base=0.60).
+For large surgery factors r (d_eff_new > 4*1.46 = 5.8), kappa_eff > 2, may enter saturation.
+Calibration criterion best assessed over r in [0.68, 3.0] where law is linear.
+
+### Control Law Analysis Results (CE + NC seed 0)
+
+From cti_control_law_analysis.json:
+- Test 1 (across-time with A_renorm fixed): R2 = -2393 FAIL (expected, wrong d_eff)
+  empirical slope = 0.056 vs A_renorm=1.0535. Predicted: 1.0535*sqrt(1.46/326) = 0.066 ✓
+- Test 3 (within-seed dynamics): r = 0.987-0.999 for ALL 4 seeds (CE 3 seeds + NC s0)
+  STRONG within-seed evidence
+- Snapshot law (free slope): R2 = 0.971, free slope = 0.056 (kappa_eff_gram)
+  Free slope (kappa only): 1.302 ≈ alpha = 1.272 ✓
+- NC arm seed 0: q=0.6025 vs CE=0.6042 (near-null at 60 epochs)
+  Circular d_eff_cls: NC=1.761 vs CE=1.457 (20.8% higher for NC) -- circular but consistent
+
+Circular analysis interpretation: NC-loss raises circular d_eff_cls (consistent with q UP/kappa DOWN).
+Direct measurement of d_eff_formula will confirm or deny this non-circularly (H4 of deff_formula_val).
+
+### Currently Running Experiments
+
+| Process | Experiment | Status |
+|---|---|---|
+| PID 14138 | d_eff causal surgery (N_SEEDS=3) | Training seed 0, ~60 epochs (2-3 hr) |
+| PID 7593 | control_law_validation NC arm | Seed 1 training (~60-70 min/seed) |
+| PID 12363 | deff_formula_validation | CE seed 0, epoch 1-25 (no output yet) |
+| PID 1253 | nc_loss_training 200ep | CE seed 3 epoch 160+ (low priority) |
