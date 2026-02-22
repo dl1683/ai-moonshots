@@ -1,0 +1,21 @@
+{
+  "source": "results/cti_nc_loss_training.json",
+  "per_arm_alpha": {
+    "ce": {
+      "alpha": 0.8948147339478049,
+      "C": -0.4760040073982668,
+      "r2": 0.9938585378229995,
+      "d_eff_cls": 0.721434942120142,
+      "n_points": 10
+    },
+    "nc": {},
+    "shuffled_nc": {}
+  },
+  "cross_arm_pairs": [],
+  "tests": {
+    "alpha_nc_gt_ce": false,
+    "alpha_anti_lt_ce": false,
+    "d_eff_cls_ce": 0.721434942120142,
+    "d_eff_cls_nc": null
+  }
+}
