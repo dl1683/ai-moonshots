@@ -1,0 +1,21 @@
+{
+  "source": "results/cti_control_law_validation.json",
+  "per_arm_alpha": {
+    "anti_nc": {},
+    "ce": {
+      "alpha": 1.2716460508596448,
+      "C": -0.644691225934065,
+      "r2": 0.9651547264931387,
+      "d_eff_cls": 1.457012956938512,
+      "n_points": 9
+    },
+    "nc": {}
+  },
+  "cross_arm_pairs": [],
+  "tests": {
+    "alpha_nc_gt_ce": false,
+    "alpha_anti_lt_ce": false,
+    "d_eff_cls_ce": 1.457012956938512,
+    "d_eff_cls_nc": null
+  }
+}

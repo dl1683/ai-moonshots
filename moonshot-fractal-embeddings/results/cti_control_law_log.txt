@@ -1,0 +1,39 @@
+Control Law Validation: Delta logit(q) = A_renorm(K) * Delta(kappa_eff)
+======================================================================
+Device: cuda
+A_renorm(K=20) = 1.0535 (pre-registered from Theorem 15)
+Arms: CE, NC+ (maximize kappa_eff), NC- (minimize kappa_eff)
+
+NOTE: Extracts FULL TRAIN EMBEDDINGS at each checkpoint (expensive)
+       Adds ~10-20 min per seed vs NC quick pilot
+
+
+=== ARM: ce ===
+
+--- seed=0 ---
+  [seed=0 arm=ce epoch=25] q=0.4965 kappa=0.4811 lam=0.000 extracting train embs... d_eff=203.726 kappa_eff=6.8663
+  [seed=0 arm=ce epoch=40] q=0.5340 kappa=0.6558 lam=0.000 extracting train embs... d_eff=267.844 kappa_eff=10.7336
+  [seed=0 arm=ce epoch=60] q=0.6070 kappa=0.8388 lam=0.000 extracting train embs... d_eff=326.061 kappa_eff=15.1456
+  DONE: q=0.6070 kappa=0.8388 d_eff=326.061 kappa_eff=15.1456
+
+--- seed=1 ---
+  [seed=1 arm=ce epoch=25] q=0.4768 kappa=0.4788 lam=0.000 extracting train embs... d_eff=192.631 kappa_eff=6.6457
+  [seed=1 arm=ce epoch=40] q=0.5449 kappa=0.6454 lam=0.000 extracting train embs... d_eff=278.526 kappa_eff=10.7716
+  [seed=1 arm=ce epoch=60] q=0.6056 kappa=0.8292 lam=0.000 extracting train embs... d_eff=328.856 kappa_eff=15.0370
+  DONE: q=0.6056 kappa=0.8292 d_eff=328.856 kappa_eff=15.0370
+
+--- seed=2 ---
+  [seed=2 arm=ce epoch=25] q=0.4937 kappa=0.4591 lam=0.000 extracting train embs... d_eff=190.025 kappa_eff=6.3289
+  [seed=2 arm=ce epoch=40] q=0.5646 kappa=0.6711 lam=0.000 extracting train embs... d_eff=268.945 kappa_eff=11.0062
+  [seed=2 arm=ce epoch=60] q=0.6000 kappa=0.8507 lam=0.000 extracting train embs... d_eff=324.966 kappa_eff=15.3363
+  DONE: q=0.6000 kappa=0.8507 d_eff=324.966 kappa_eff=15.3363
+
+=== ARM: nc ===
+
+--- seed=0 ---
+  [seed=0 arm=nc epoch=25] q=0.4789 kappa=0.4746 lam=0.000 extracting train embs... d_eff=209.957 kappa_eff=6.8773
+  [seed=0 arm=nc epoch=40] q=0.5418 kappa=0.6483 lam=0.090 extracting train embs... d_eff=260.307 kappa_eff=10.4592
+  [seed=0 arm=nc epoch=60] q=0.6025 kappa=0.8324 lam=0.150 extracting train embs... d_eff=329.030 kappa_eff=15.0998
+  DONE: q=0.6025 kappa=0.8324 d_eff=329.030 kappa_eff=15.0998
+
+--- seed=1 ---
