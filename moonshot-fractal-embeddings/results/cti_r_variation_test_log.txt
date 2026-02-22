@@ -1,0 +1,290 @@
+R-Variation Collapse Test
+K=20, N_EPOCHS=60, SEEDS=[0, 1]
+R_VALUES=[2.0, 5.0, 10.0]
+M_VALUES=1..19
+============================================================
+PRE-REGISTERED PREDICTIONS (c_pred(r) = 1 - 1/sqrt(r)):
+  r=2.0: c_pred = 0.2929
+  r=5.0: c_pred = 0.5528
+  r=10.0: c_pred = 0.6838
+PASS CRITERION: |c_obs - c_pred| / c_pred < 0.20 for each r
+============================================================
+
+============================================================
+SEED 0
+============================================================
+  [ep= 1] kappa_eff=0.3713, d_eff=17.437, kappa=0.0889, target_cls=6, q=0.0732
+  [ep= 2] kappa_eff=0.6109, d_eff=19.232, kappa=0.1393, target_cls=2, q=0.1000
+  [ep= 3] kappa_eff=0.9451, d_eff=69.408, kappa=0.1134, target_cls=5, q=0.1308
+  [ep= 4] kappa_eff=0.9702, d_eff=19.071, kappa=0.2222, target_cls=6, q=0.1629
+  [ep= 5] kappa_eff=1.1861, d_eff=30.559, kappa=0.2146, target_cls=5, q=0.2067
+  [ep= 6] kappa_eff=1.1521, d_eff=18.779, kappa=0.2659, target_cls=2, q=0.2389
+  [ep= 7] kappa_eff=1.7331, d_eff=51.140, kappa=0.2423, target_cls=5, q=0.2687
+  [ep= 8] kappa_eff=1.5980, d_eff=27.600, kappa=0.3042, target_cls=2, q=0.3077
+  [ep= 9] kappa_eff=2.3425, d_eff=49.551, kappa=0.3328, target_cls=5, q=0.3282
+  [ep=10] kappa_eff=1.6778, d_eff=25.194, kappa=0.3343, target_cls=6, q=0.3489
+  [seed=0 epoch=10] training in progress
+  [ep=11] kappa_eff=2.0174, d_eff=26.597, kappa=0.3912, target_cls=6, q=0.3763
+  [ep=12] kappa_eff=2.6760, d_eff=46.384, kappa=0.3929, target_cls=5, q=0.3997
+  [ep=13] kappa_eff=2.6447, d_eff=37.998, kappa=0.4290, target_cls=2, q=0.4197
+  [ep=14] kappa_eff=2.3028, d_eff=30.774, kappa=0.4151, target_cls=6, q=0.4345
+  [ep=15] kappa_eff=2.4976, d_eff=39.870, kappa=0.3955, target_cls=6, q=0.4397
+  [ep=20] kappa_eff=2.9974, d_eff=44.145, kappa=0.4511, target_cls=6, q=0.4935
+  [seed=0 epoch=20] training in progress
+  [ep=25] kappa_eff=3.1276, d_eff=38.383, kappa=0.5048, target_cls=6, q=0.5139
+  [ep=30] kappa_eff=3.0739, d_eff=41.316, kappa=0.4782, target_cls=6, q=0.5264
+  [seed=0 epoch=30] training in progress
+  [ep=35] kappa_eff=4.7353, d_eff=60.619, kappa=0.6082, target_cls=6, q=0.6133
+  [ep=40] kappa_eff=5.2690, d_eff=64.378, kappa=0.6567, target_cls=6, q=0.6208
+  [seed=0 epoch=40] training in progress
+  [ep=45] kappa_eff=5.4011, d_eff=66.414, kappa=0.6628, target_cls=6, q=0.6271
+  [ep=50] kappa_eff=5.5571, d_eff=64.445, kappa=0.6922, target_cls=6, q=0.6301
+  [seed=0 epoch=50] training in progress
+  [ep=55] kappa_eff=5.4050, d_eff=67.059, kappa=0.6600, target_cls=6, q=0.6296
+  [ep=60] kappa_eff=5.4424, d_eff=64.886, kappa=0.6756, target_cls=6, q=0.6288
+  [seed=0 epoch=60] training in progress
+
+  Selected checkpoint: epoch=4, kappa_eff=0.9702
+  Baseline: d_eff=19.071, kappa=0.2222, target_cls=6, q=0.1629
+
+  Starting r sweep on saved embeddings...
+
+  --- r=2.0 ---
+  [r=2.0 m= 1] delta=0.0207
+  [r=2.0 m= 2] delta=0.0396
+  [r=2.0 m= 3] delta=0.0686
+  [r=2.0 m= 4] delta=0.0694
+  [r=2.0 m= 5] delta=0.0862
+  [r=2.0 m= 6] delta=0.1244
+  [r=2.0 m= 7] delta=0.1644
+  [r=2.0 m= 8] delta=0.1871
+  [r=2.0 m= 9] delta=0.2383
+  [r=2.0 m=10] delta=0.2685
+  [r=2.0 m=11] delta=0.2698
+  [r=2.0 m=12] delta=0.2956
+  [r=2.0 m=13] delta=0.2956
+  [r=2.0 m=14] delta=0.3248
+  [r=2.0 m=15] delta=0.3267
+  [r=2.0 m=16] delta=0.3204
+  [r=2.0 m=17] delta=0.3423
+  [r=2.0 m=18] delta=0.3548
+  [r=2.0 m=19] delta=0.3591
+
+  r=2.0 SUMMARY (seed=0):
+    delta_1 = 0.0207
+    delta_max = 0.3591
+    K_eff_obs = 17.354
+    d_eff = 19.071
+    c_obs = 0.9100
+    c_pred = 0.2929
+    rel_error = 2.107  FAIL (threshold 0.20)
+
+  --- r=5.0 ---
+  [r=5.0 m= 1] delta=0.0723
+  [r=5.0 m= 2] delta=0.1279
+  [r=5.0 m= 3] delta=0.2102
+  [r=5.0 m= 4] delta=0.2488
+  [r=5.0 m= 5] delta=0.2873
+  [r=5.0 m= 6] delta=0.3548
+  [r=5.0 m= 7] delta=0.4459
+  [r=5.0 m= 8] delta=0.5215
+  [r=5.0 m= 9] delta=0.6365
+  [r=5.0 m=10] delta=0.6546
+  [r=5.0 m=11] delta=0.7061
+  [r=5.0 m=12] delta=0.7303
+  [r=5.0 m=13] delta=0.7625
+  [r=5.0 m=14] delta=0.7887
+  [r=5.0 m=15] delta=0.7801
+  [r=5.0 m=16] delta=0.7811
+  [r=5.0 m=17] delta=0.7967
+  [r=5.0 m=18] delta=0.8121
+  [r=5.0 m=19] delta=0.8047
+
+  r=5.0 SUMMARY (seed=0):
+    delta_1 = 0.0723
+    delta_max = 0.8121
+    K_eff_obs = 11.230
+    d_eff = 19.071
+    c_obs = 0.5889
+    c_pred = 0.5528
+    rel_error = 0.065  PASS (threshold 0.20)
+
+  --- r=10.0 ---
+  [r=10.0 m= 1] delta=0.1108
+  [r=10.0 m= 2] delta=0.1980
+  [r=10.0 m= 3] delta=0.2879
+  [r=10.0 m= 4] delta=0.3560
+  [r=10.0 m= 5] delta=0.4376
+  [r=10.0 m= 6] delta=0.5096
+  [r=10.0 m= 7] delta=0.6301
+  [r=10.0 m= 8] delta=0.7436
+  [r=10.0 m= 9] delta=0.8986
+  [r=10.0 m=10] delta=0.9383
+  [r=10.0 m=11] delta=0.9937
+  [r=10.0 m=12] delta=1.0294
+  [r=10.0 m=13] delta=1.0916
+  [r=10.0 m=14] delta=1.1308
+  [r=10.0 m=15] delta=1.0857
+  [r=10.0 m=16] delta=1.0798
+  [r=10.0 m=17] delta=1.0920
+  [r=10.0 m=18] delta=1.1169
+  [r=10.0 m=19] delta=1.1060
+
+  r=10.0 SUMMARY (seed=0):
+    delta_1 = 0.1108
+    delta_max = 1.1308
+    K_eff_obs = 10.205
+    d_eff = 19.071
+    c_obs = 0.5351
+    c_pred = 0.6838
+    rel_error = 0.217  FAIL (threshold 0.20)
+
+============================================================
+SEED 1
+============================================================
+  [ep= 1] kappa_eff=0.3892, d_eff=23.030, kappa=0.0811, target_cls=2, q=0.0623
+  [ep= 2] kappa_eff=0.6650, d_eff=19.153, kappa=0.1519, target_cls=1, q=0.0886
+  [ep= 3] kappa_eff=0.7731, d_eff=19.909, kappa=0.1733, target_cls=5, q=0.1132
+  [ep= 4] kappa_eff=0.8042, d_eff=15.696, kappa=0.2030, target_cls=6, q=0.1356
+  [ep= 5] kappa_eff=1.0391, d_eff=20.306, kappa=0.2306, target_cls=6, q=0.1767
+  [ep= 6] kappa_eff=1.1248, d_eff=22.338, kappa=0.2380, target_cls=5, q=0.1829
+  [ep= 7] kappa_eff=1.2170, d_eff=27.844, kappa=0.2306, target_cls=1, q=0.2045
+  [ep= 8] kappa_eff=2.0733, d_eff=40.457, kappa=0.3260, target_cls=12, q=0.2672
+  [ep= 9] kappa_eff=1.6844, d_eff=24.796, kappa=0.3383, target_cls=2, q=0.3079
+  [ep=10] kappa_eff=2.0918, d_eff=43.100, kappa=0.3186, target_cls=5, q=0.3272
+  [seed=1 epoch=10] training in progress
+  [ep=11] kappa_eff=1.7896, d_eff=27.936, kappa=0.3386, target_cls=6, q=0.3547
+  [ep=12] kappa_eff=2.0291, d_eff=26.479, kappa=0.3943, target_cls=6, q=0.3592
+  [ep=13] kappa_eff=2.1147, d_eff=30.441, kappa=0.3833, target_cls=6, q=0.4008
+  [ep=14] kappa_eff=2.6070, d_eff=40.925, kappa=0.4075, target_cls=6, q=0.4243
+  [ep=15] kappa_eff=2.2801, d_eff=33.872, kappa=0.3918, target_cls=6, q=0.4372
+  [ep=20] kappa_eff=2.9083, d_eff=42.624, kappa=0.4455, target_cls=6, q=0.4937
+  [seed=1 epoch=20] training in progress
+  [ep=25] kappa_eff=3.5219, d_eff=56.823, kappa=0.4672, target_cls=6, q=0.5280
+  [ep=30] kappa_eff=3.6267, d_eff=51.521, kappa=0.5053, target_cls=6, q=0.5339
+  [seed=1 epoch=30] training in progress
+  [ep=35] kappa_eff=5.3803, d_eff=72.982, kappa=0.6298, target_cls=2, q=0.6059
+  [ep=40] kappa_eff=5.3037, d_eff=64.237, kappa=0.6617, target_cls=6, q=0.6145
+  [seed=1 epoch=40] training in progress
+  [ep=45] kappa_eff=5.3667, d_eff=63.334, kappa=0.6744, target_cls=6, q=0.6233
+  [ep=50] kappa_eff=5.3658, d_eff=57.328, kappa=0.7087, target_cls=7, q=0.6243
+  [seed=1 epoch=50] training in progress
+  [ep=55] kappa_eff=5.4844, d_eff=64.494, kappa=0.6829, target_cls=6, q=0.6278
+  [ep=60] kappa_eff=5.1444, d_eff=52.838, kappa=0.7077, target_cls=9, q=0.6245
+  [seed=1 epoch=60] training in progress
+
+  Selected checkpoint: epoch=5, kappa_eff=1.0391
+  Baseline: d_eff=20.306, kappa=0.2306, target_cls=6, q=0.1767
+
+  Starting r sweep on saved embeddings...
+
+  --- r=2.0 ---
+  [r=2.0 m= 1] delta=0.0208
+  [r=2.0 m= 2] delta=0.0547
+  [r=2.0 m= 3] delta=0.0749
+  [r=2.0 m= 4] delta=0.0954
+  [r=2.0 m= 5] delta=0.1358
+  [r=2.0 m= 6] delta=0.1628
+  [r=2.0 m= 7] delta=0.1830
+  [r=2.0 m= 8] delta=0.1862
+  [r=2.0 m= 9] delta=0.2035
+  [r=2.0 m=10] delta=0.2131
+  [r=2.0 m=11] delta=0.2307
+  [r=2.0 m=12] delta=0.2600
+  [r=2.0 m=13] delta=0.2852
+  [r=2.0 m=14] delta=0.2833
+  [r=2.0 m=15] delta=0.3058
+  [r=2.0 m=16] delta=0.3028
+  [r=2.0 m=17] delta=0.3160
+  [r=2.0 m=18] delta=0.3112
+  [r=2.0 m=19] delta=0.3172
+
+  r=2.0 SUMMARY (seed=1):
+    delta_1 = 0.0208
+    delta_max = 0.3172
+    K_eff_obs = 15.220
+    d_eff = 20.306
+    c_obs = 0.7495
+    c_pred = 0.2929
+    rel_error = 1.559  FAIL (threshold 0.20)
+
+  --- r=5.0 ---
+  [r=5.0 m= 1] delta=0.0498
+  [r=5.0 m= 2] delta=0.1700
+  [r=5.0 m= 3] delta=0.2105
+  [r=5.0 m= 4] delta=0.2821
+  [r=5.0 m= 5] delta=0.3563
+  [r=5.0 m= 6] delta=0.4168
+  [r=5.0 m= 7] delta=0.4745
+  [r=5.0 m= 8] delta=0.5402
+  [r=5.0 m= 9] delta=0.5605
+  [r=5.0 m=10] delta=0.5753
+  [r=5.0 m=11] delta=0.6144
+  [r=5.0 m=12] delta=0.6412
+  [r=5.0 m=13] delta=0.6878
+  [r=5.0 m=14] delta=0.7187
+  [r=5.0 m=15] delta=0.7355
+  [r=5.0 m=16] delta=0.7281
+  [r=5.0 m=17] delta=0.7454
+  [r=5.0 m=18] delta=0.7493
+  [r=5.0 m=19] delta=0.7217
+
+  r=5.0 SUMMARY (seed=1):
+    delta_1 = 0.0498
+    delta_max = 0.7493
+    K_eff_obs = 15.035
+    d_eff = 20.306
+    c_obs = 0.7404
+    c_pred = 0.5528
+    rel_error = 0.339  FAIL (threshold 0.20)
+
+  --- r=10.0 ---
+  [r=10.0 m= 1] delta=0.0714
+  [r=10.0 m= 2] delta=0.2544
+  [r=10.0 m= 3] delta=0.3142
+  [r=10.0 m= 4] delta=0.3905
+  [r=10.0 m= 5] delta=0.4866
+  [r=10.0 m= 6] delta=0.5568
+  [r=10.0 m= 7] delta=0.6350
+  [r=10.0 m= 8] delta=0.7390
+  [r=10.0 m= 9] delta=0.7747
+  [r=10.0 m=10] delta=0.8041
+  [r=10.0 m=11] delta=0.8541
+  [r=10.0 m=12] delta=0.8940
+  [r=10.0 m=13] delta=0.9422
+  [r=10.0 m=14] delta=0.9897
+  [r=10.0 m=15] delta=0.9960
+  [r=10.0 m=16] delta=1.0199
+  [r=10.0 m=17] delta=1.0356
+  [r=10.0 m=18] delta=1.0383
+  [r=10.0 m=19] delta=0.9946
+
+  r=10.0 SUMMARY (seed=1):
+    delta_1 = 0.0714
+    delta_max = 1.0383
+    K_eff_obs = 14.540
+    d_eff = 20.306
+    c_obs = 0.7160
+    c_pred = 0.6838
+    rel_error = 0.047  PASS (threshold 0.20)
+
+============================================================
+FINAL ANALYSIS: c(r) = K_eff/d_eff vs predicted 1 - 1/sqrt(r)
+============================================================
+
+     r   c_pred | seed 0 c_obs   err%  pass | seed 1 c_obs   err%  pass
+---------------------------------------------------------------------------
+   2.0   0.2929 |       0.9100 210.7%  FAIL |       0.7495 155.9%  FAIL
+   5.0   0.5528 |       0.5889   6.5%  PASS |       0.7404  33.9%  FAIL
+  10.0   0.6838 |       0.5351  21.7%  FAIL |       0.7160   4.7%  PASS
+
+OVERALL: FAIL -- c(r) = 1 - 1/sqrt(r) theory
+
+============================================================
+CURVE COLLAPSE CHECK: delta(m)/delta_max vs m/d_eff
+============================================================
+If curves collapse: all (r, seed) combinations show same shape
+Expected shape: linear for m < K_eff, then saturation
+
+Results saved to results/cti_r_variation_test.json
+on_test.json
