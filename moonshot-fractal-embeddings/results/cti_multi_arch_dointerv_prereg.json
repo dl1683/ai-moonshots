@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-02-22T22:55:55.322032+00:00",
+  "experiment": "do_intervention_multi_arch_dbpedia",
+  "alpha_prereg": 1.477,
+  "K": 14,
+  "models": [
+    "pythia-160m/L12",
+    "pythia-410m/L3",
+    "electra-small/L3",
+    "rwkv-4-169m/L12",
+    "bert-base-uncased/L10"
+  ],
+  "pass_per_model": "r_nearest > 0.90 AND |alpha - 1.477|/1.477 < 0.30 AND r_farthest < 0.50",
+  "pass_aggregate": "n_pass >= 4/5",
+  "note": "Extends single clean causal result to 5 diverse architectures"
+}
