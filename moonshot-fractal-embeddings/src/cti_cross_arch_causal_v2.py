@@ -3,14 +3,16 @@
 cti_cross_arch_causal_v2.py
 
 Cross-architecture causal intervention v2.
-Extends the 4-architecture causal law to Mamba-130m and DeBERTa-base.
+Extends the 4-architecture causal law to DeBERTa-base, OLMo-1B, and Mamba-130m.
 
 PREREGISTERED FORMULA (locked from 4-architecture fit):
   Causal_A = 3.23 + 34.51 * kappa_CE  (R2=0.97 on pythia-160m, gpt-neo-125m, BERT-base)
 
-PRE-REGISTERED PREDICTIONS (from kappa_near_cache_20newsgroups_*.json):
-  Mamba-130m L23:    kappa_CE=0.1144 -> Causal_A_predicted = 3.23 + 34.51*0.1144 = 7.18
+PRE-REGISTERED PREDICTIONS (from kappa_near_cache files, raw kappa at last layer):
   DeBERTa-base L12:  kappa_CE=0.3574 -> Causal_A_predicted = 3.23 + 34.51*0.3574 = 15.56
+  OLMo-1B L16:       kappa_CE=0.4402 -> Causal_A_predicted = 3.23 + 34.51*0.4402 = 18.45
+  Mamba-130m L23:    kappa_CE=0.1860 -> (go_emotions K=28) Causal_A_predicted = 3.23 + 34.51*0.1860 = 9.65
+    NOTE: Mamba on 20newsgroups K=20 hits ceiling (q_CE=0.98); using go_emotions K=28 instead.
 
 PASS CRITERIA (pre-registered):
   1. delta_q >= 0.02 (triplet improves q by at least 2pp)
@@ -42,9 +44,10 @@ MODELS = {
         "hf_path": "state-spaces/mamba-130m-hf",
         "hidden_dim": 768,
         "pooling": "last",
-        "target_layer": 23,  # last layer
+        "target_layer": 23,
         "trust_remote_code": True,
-        "kappa_ce_prereg": 0.1144,
+        "kappa_ce_prereg": 0.1860,  # go_emotions raw kappa; 20newsgroups hits ceiling q=0.98
+        "dataset": "go_emotions",   # harder task (K=28 fine-grained emotions)
     },
     "deberta-base": {
         "hf_path": "microsoft/deberta-base",
@@ -53,6 +56,15 @@ MODELS = {
         "target_layer": 12,
         "trust_remote_code": False,
         "kappa_ce_prereg": 0.3574,
+        "force_fp32": True,  # DeBERTa disentangled attention requires float32
+    },
+    "olmo-1b": {
+        "hf_path": "allenai/OLMo-1B-hf",
+        "hidden_dim": 2048,
+        "pooling": "last",
+        "target_layer": 16,
+        "trust_remote_code": False,
+        "kappa_ce_prereg": 0.4402,  # from kappa_near_cache_20newsgroups_OLMo-1B-hf.json
     },
 }
 
@@ -68,6 +80,33 @@ def load_20newsgroups(n_samples: int = 5000):
     return texts, labels
 
 
+def load_go_emotions(n_samples: int = 5000):
+    """GoEmotions: 28 fine-grained emotion classes, harder than 20newsgroups."""
+    from datasets import load_dataset
+    ds = load_dataset("go_emotions", "simplified", split="train")
+    texts, labels = [], []
+    for ex in ds:
+        if len(ex["labels"]) == 1:  # keep single-label examples only
+            texts.append(ex["text"])
+            labels.append(ex["labels"][0])
+    rng = np.random.default_rng(42)
+    idx = rng.choice(len(texts), size=min(n_samples, len(texts)), replace=False)
+    texts = [texts[i] for i in idx]
+    labels_raw = [labels[i] for i in idx]
+    le = LabelEncoder()
+    labels_enc = le.fit_transform(labels_raw)
+    return texts, labels_enc
+
+
+def load_dataset_for_model(model_key: str, n_samples: int = 5000):
+    info = MODELS[model_key]
+    dataset = info.get("dataset", "20newsgroups")
+    if dataset == "go_emotions":
+        return load_go_emotions(n_samples), "go_emotions"
+    else:
+        return load_20newsgroups(n_samples), "20newsgroups"
+
+
 # ── Embedding extraction ──────────────────────────────────────────────────────
 @torch.no_grad()
 def extract_embeddings(model_key: str, texts, device: str = "cuda"):
@@ -81,10 +120,11 @@ def extract_embeddings(model_key: str, texts, device: str = "cuda"):
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
 
+    dtype = torch.float32 if info.get("force_fp32") else torch.float16
     model = AutoModel.from_pretrained(
         info["hf_path"],
         trust_remote_code=info.get("trust_remote_code", False),
-        torch_dtype=torch.float16,
+        dtype=dtype,
         output_hidden_states=True,
     ).to(device).eval()
 
@@ -228,13 +268,13 @@ def run_model(model_key: str, n_seeds: int = 5, n_epochs: int = 100):
     print(f"Pre-registered Causal_A: {causal_A_predicted:.2f}")
     print(f"{'='*60}")
 
-    # Load data
-    texts, labels = load_20newsgroups()
+    # Load data (model-specific dataset)
+    (texts, labels), dataset_name = load_dataset_for_model(model_key)
     K = len(np.unique(labels))
-    print(f"Dataset: 20newsgroups, K={K}, n={len(texts)}")
+    print(f"Dataset: {dataset_name}, K={K}, n={len(texts)}")
 
-    # Extract or load embeddings
-    emb_path = f"results/do_int_embs_{model_key}_20newsgroups.npz"
+    # Extract or load embeddings (cache is dataset-specific)
+    emb_path = f"results/causal_v2_embs_{model_key}_{dataset_name}.npz"
     if os.path.exists(emb_path):
         print(f"Loading embeddings from {emb_path}")
         data = np.load(emb_path)
@@ -308,6 +348,7 @@ def run_model(model_key: str, n_seeds: int = 5, n_epochs: int = 100):
 
     result = {
         "model": model_key,
+        "dataset": dataset_name,
         "preregistered": {
             "causal_A_intercept": CAUSAL_A_INTERCEPT,
             "causal_A_slope": CAUSAL_A_SLOPE,
@@ -339,7 +380,7 @@ def run_model(model_key: str, n_seeds: int = 5, n_epochs: int = 100):
         },
     }
 
-    out_path = f"results/cti_causal_{model_key.replace('-', '_')}.json"
+    out_path = f"results/cti_causal_{model_key.replace('-', '_')}_{dataset_name}.json"
     with open(out_path, "w") as f:
         json.dump(result, f, indent=2)
     print(f"\nSaved to {out_path}")
