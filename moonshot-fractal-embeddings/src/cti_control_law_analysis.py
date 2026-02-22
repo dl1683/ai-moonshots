@@ -221,9 +221,13 @@ def analyze_control_law_cross_arm(all_results, A_renorm=A_RENORM_K20):
         if arm_pairs:
             sign_correct = sum(
                 1 for p in arm_pairs
-                if (arm == 'nc' and p['delta_q'] > 0 and p['delta_kappa_eff'] > 0) or
-                   (arm == 'nc' and p['delta_q'] > 0) or
+                if (arm == 'nc' and p['delta_q'] > 0) or
                    (arm == 'anti_nc' and p['delta_q'] < 0)
+            )
+            sign_both_correct = sum(
+                1 for p in arm_pairs
+                if (arm == 'nc' and p['delta_q'] > 0 and p['delta_kappa_eff'] > 0) or
+                   (arm == 'anti_nc' and p['delta_q'] < 0 and p['delta_kappa_eff'] < 0)
             )
             per_arm[arm] = {
                 'n_pairs': len(arm_pairs),
@@ -232,7 +236,8 @@ def analyze_control_law_cross_arm(all_results, A_renorm=A_RENORM_K20):
                 'mean_delta_kappa': float(np.mean([p['delta_kappa'] for p in arm_pairs])),
                 'mean_delta_d_eff': float(np.mean([p['delta_d_eff'] for p in arm_pairs])),
                 'mean_residual': float(np.mean([p['residual_kappa_eff'] for p in arm_pairs])),
-                'sign_consistent': int(sign_correct),
+                'sign_q_correct': int(sign_correct),
+                'sign_both_correct': int(sign_both_correct),
             }
 
     return {

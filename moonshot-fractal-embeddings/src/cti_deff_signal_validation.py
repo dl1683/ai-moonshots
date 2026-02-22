@@ -133,7 +133,15 @@ def compute_d_eff_sig(X, y):
     This is the KEY independent measurement (no circularity with alpha slope).
 
     Signal subspace: first K-1 principal directions of class centroid matrix.
-    d_eff_sig = tr(P_B Sigma_W P_B.T)^2 / tr((P_B Sigma_W P_B.T)^2)
+    d_eff_sig = tr(W_sig)^2 / tr(W_sig^2)
+    where W_sig = P_B * Sigma_W * P_B.T is the POOLED within-class covariance
+    projected onto the signal subspace.
+
+    FIX (Feb 22 2026): Correct tr(W_sig^2) computation.
+    The pooled covariance W_sig = sum_c p_c Sigma_c_sig.
+    tr(W_sig^2) != sum_c p_c^2 tr(Sigma_c_sig^2) -- that omits cross-class terms.
+    Correct: accumulate Sigma_c_sig as (n_sig x n_sig) matrices, sum to W_sig, then
+    compute tr(W_sig^2) = ||W_sig||_F^2 directly. This includes all cross terms.
     """
     classes = np.unique(y)
     K_actual = len(classes)
@@ -146,35 +154,36 @@ def compute_d_eff_sig(X, y):
     centroids_centered = centroids - grand_mean  # (K, d)
 
     # SVD to get signal subspace basis
-    # P_B: rows are orthonormal directions spanning the centroid space
+    # Use exactly K-1 dimensions (theoretical definition of signal subspace)
     U, S, Vt = np.linalg.svd(centroids_centered, full_matrices=False)
-    # n_sig = rank of centroid matrix (at most K-1)
-    # Keep directions with significant singular values (> 1% of max)
-    s_thresh = 0.01 * S[0] if len(S) > 0 else 0
-    n_sig = int(np.sum(S > s_thresh))
-    n_sig = max(1, min(n_sig, K_actual - 1, d))
+    n_sig = min(K_actual - 1, d, len(S))
+    n_sig = max(1, n_sig)
     P_B = Vt[:n_sig, :]  # (n_sig, d) orthonormal basis for signal subspace
 
-    # Step 2: Project within-class covariance onto signal subspace
+    # Step 2: Accumulate per-class projected covariance matrices (n_sig x n_sig)
+    # W_sig = sum_c (n_c/N) * Sigma_c_sig  where  Sigma_c_sig = P_B @ Sigma_c @ P_B.T
+    W_sig = np.zeros((n_sig, n_sig), dtype=np.float64)
     trW_sig = 0.0
-    trW2_sig = 0.0
 
     for c in classes:
         Xc = X[y == c]
         n_c = len(Xc)
-        Xc_centered = Xc - Xc.mean(0)
+        Xc_centered = (Xc - Xc.mean(0)).astype(np.float64)
 
         # Project centered points onto signal subspace: shape (n_c, n_sig)
         Xc_proj = Xc_centered @ P_B.T  # (n_c, n_sig)
 
-        # tr(Sigma_k_sig) = sum of projected variances
-        trSigma_k_sig = float(np.sum(Xc_proj ** 2)) / n_c
-        trW_sig += n_c * trSigma_k_sig / N
+        # Per-class covariance in signal subspace: (n_sig, n_sig)
+        Sigma_c_sig = (Xc_proj.T @ Xc_proj) / n_c  # exact, no Gram matrix needed
 
-        # tr(Sigma_k_sig^2) via Gram matrix of projected deviations
-        G_sig = (Xc_proj @ Xc_proj.T) / n_c  # (n_c, n_c)
-        trSigma_k2_sig = float(np.sum(G_sig ** 2))
-        trW2_sig += (n_c / N) ** 2 * trSigma_k2_sig
+        # Accumulate pooled covariance
+        W_sig += (n_c / N) * Sigma_c_sig
+
+        # tr(W_sig) = sum_c (n_c/N) * tr(Sigma_c_sig) [exact]
+        trW_sig += (n_c / N) * float(np.trace(Sigma_c_sig))
+
+    # tr(W_sig^2) = ||W_sig||_F^2 (includes all cross-class terms)
+    trW2_sig = float(np.sum(W_sig ** 2))
 
     d_eff_sig = float(trW_sig ** 2 / (trW2_sig + 1e-12))
     return d_eff_sig, float(trW_sig), int(n_sig)
@@ -195,9 +204,7 @@ def compute_d_eff_noise(X, y):
     centroids_centered = centroids - grand_mean
 
     U, S, Vt = np.linalg.svd(centroids_centered, full_matrices=False)
-    s_thresh = 0.01 * S[0] if len(S) > 0 else 0
-    n_sig = int(np.sum(S > s_thresh))
-    n_sig = max(1, min(n_sig, K_actual - 1, d))
+    n_sig = max(1, min(K_actual - 1, d, len(S)))
     P_B = Vt[:n_sig, :]  # (n_sig, d) signal subspace
 
     # Noise subspace: project out signal subspace from data
