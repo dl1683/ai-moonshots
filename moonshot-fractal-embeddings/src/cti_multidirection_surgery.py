@@ -145,10 +145,10 @@ def extract_embeddings(model, loader, subsample=None):
     return X, y
 
 
-def compute_q(X, y, K_classes=K):
+def compute_q(X_tr, y_tr, X_te, y_te, K_classes=K):
     knn = KNeighborsClassifier(n_neighbors=1, metric="euclidean", n_jobs=-1)
-    knn.fit(X, y)
-    acc = knn.score(X, y)
+    knn.fit(X_tr, y_tr)
+    acc = float(knn.score(X_te, y_te))
     return (acc - 1.0 / K_classes) / (1.0 - 1.0 / K_classes)
 
 
@@ -231,15 +231,12 @@ def apply_multi_surgery(X, y, r, centroids, tr_W, Sigma_W, K_classes=K):
     classes = np.unique(y)
     d = X.shape[1]
 
-    # Get centroid subspace (K-1 directions)
+    # Get centroid subspace (K-1 directions): U_sub (d, K-1)
     U_sub = compute_centroid_subspace(centroids, K_classes)  # (d, K-1)
 
-    # Variance in centroid subspace
-    P_sub = U_sub @ U_sub.T  # projection onto centroid subspace
-    P_orth = np.eye(d) - P_sub
-
-    # tr(Sigma_W in subspace)
-    tr_sub = np.trace(P_sub @ Sigma_W @ P_sub)  # approx tr(U_sub^T Sigma_W U_sub)
+    # Efficient tr(Sigma_W in subspace): tr(U_sub^T Sigma_W U_sub) without forming P_sub
+    # Shape: U_sub^T (K-1, d) @ Sigma_W (d, d) @ U_sub (d, K-1) -> (K-1, K-1)
+    tr_sub = float(np.trace(U_sub.T @ Sigma_W @ U_sub))
     tr_orth = tr_W - tr_sub
 
     # Scale to preserve tr(Sigma_W):
@@ -254,8 +251,10 @@ def apply_multi_surgery(X, y, r, centroids, tr_W, Sigma_W, K_classes=K):
     for i, c in enumerate(classes):
         mask = (y == c)
         x_c = X[mask] - centroids[i]  # (n_c, d)
-        comp_sub = x_c @ U_sub @ U_sub.T   # project onto centroid subspace
-        comp_orth = x_c - comp_sub
+        # Efficient projection: coords (n_c, K-1) then back to d-space
+        coords_sub = x_c @ U_sub            # (n_c, K-1)
+        comp_sub = coords_sub @ U_sub.T      # (n_c, d) - projection onto centroid subspace
+        comp_orth = x_c - comp_sub           # (n_c, d) - orthogonal complement
         X_new[mask] = centroids[i] + scale_sub * comp_sub + scale_orth * comp_orth
 
     return X_new
@@ -309,6 +308,8 @@ def main():
         best_dist = np.inf
         saved_X = None
         saved_y = None
+        saved_X_te = None
+        saved_y_te = None
 
         for epoch in range(1, N_EPOCHS + 1):
             model.train()
@@ -327,9 +328,10 @@ def main():
             if epoch in CHECKPOINT_EPOCHS:
                 np.random.seed(seed * 1000 + epoch)
                 X_tr, y_tr = extract_embeddings(model, train_ld, N_EVAL_SUBSAMPLE)
+                X_te, y_te = extract_embeddings(model, test_ld)
                 kappa, d_eff, kappa_eff, sigma_W, tr_W, Sigma_W, centroids, np_pair, Delta_hat = \
                     compute_kappa_and_deff(X_tr, y_tr)
-                q = compute_q(X_tr, y_tr)
+                q = compute_q(X_tr, y_tr, X_te, y_te)
                 log(f"  [ep={epoch:2d}] kappa_eff={kappa_eff:.4f}, d_eff={d_eff:.3f}, kappa={kappa:.4f}, q={q:.4f}")
 
                 if KAPPA_EFF_MIN <= kappa_eff <= KAPPA_EFF_MAX:
@@ -339,6 +341,8 @@ def main():
                         best_epoch = epoch
                         saved_X = X_tr.copy()
                         saved_y = y_tr.copy()
+                        saved_X_te = X_te.copy()
+                        saved_y_te = y_te.copy()
                         saved_kappa = kappa
                         saved_deff = d_eff
                         saved_kappa_eff = kappa_eff
@@ -356,9 +360,9 @@ def main():
             log(f"  WARNING: No linear regime checkpoint found for seed={seed}")
             continue
 
-        logit_base = np.log(saved_q / (1 - saved_q))
+        logit_base = np.log(saved_q / (1 - saved_q + 1e-10) + 1e-10)
         log(f"\n  Selected checkpoint: epoch={best_epoch}, kappa_eff={saved_kappa_eff:.4f}")
-        log(f"  Baseline: d_eff={saved_deff:.3f}, kappa={saved_kappa:.4f}, kappa_eff={saved_kappa_eff:.4f}, q={saved_q:.4f}")
+        log(f"  Baseline: d_eff={saved_deff:.3f}, kappa={saved_kappa:.4f}, kappa_eff={saved_kappa_eff:.4f}, q={saved_q:.4f} [TEST SET]")
 
         C_fitted = logit_base - A_RENORM_K20 * saved_kappa_eff
 
@@ -369,9 +373,11 @@ def main():
             # -- SINGLE DIRECTION --
             X_single = apply_single_surgery(saved_X, saved_y, r, saved_centroids,
                                             saved_pair, saved_Delta_hat, saved_trW, saved_SigmaW)
+            X_single_te = apply_single_surgery(saved_X_te, saved_y_te, r, saved_centroids,
+                                               saved_pair, saved_Delta_hat, saved_trW, saved_SigmaW)
             kappa_single, _, _, _, _, _, _, _, _ = compute_kappa_and_deff(X_single, saved_y)
             kappa_chg_single = abs(kappa_single - saved_kappa) / (abs(saved_kappa) + 1e-12) * 100
-            q_single = compute_q(X_single, saved_y)
+            q_single = compute_q(X_single, saved_y, X_single_te, saved_y_te)
             logit_single = np.log(q_single / (1 - q_single)) if 0 < q_single < 1 else np.nan
             logit_pred = C_fitted + A_RENORM_K20 * saved_kappa * np.sqrt(r * saved_deff)
             calib_single = abs(logit_single - logit_pred) / (abs(logit_pred - logit_base) + 1e-8)
@@ -381,9 +387,11 @@ def main():
             # -- MULTI DIRECTION --
             X_multi = apply_multi_surgery(saved_X, saved_y, r, saved_centroids,
                                           saved_trW, saved_SigmaW, K_classes=K)
+            X_multi_te = apply_multi_surgery(saved_X_te, saved_y_te, r, saved_centroids,
+                                             saved_trW, saved_SigmaW, K_classes=K)
             kappa_multi, _, _, _, _, _, _, _, _ = compute_kappa_and_deff(X_multi, saved_y)
             kappa_chg_multi = abs(kappa_multi - saved_kappa) / (abs(saved_kappa) + 1e-12) * 100
-            q_multi = compute_q(X_multi, saved_y)
+            q_multi = compute_q(X_multi, saved_y, X_multi_te, saved_y_te)
             logit_multi = np.log(q_multi / (1 - q_multi)) if 0 < q_multi < 1 else np.nan
             delta_multi = logit_multi - logit_base
             multi_deltas.append(delta_multi)
