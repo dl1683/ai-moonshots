@@ -1,0 +1,133 @@
+{
+  "experiment": "dbpedia_nc_head_intervention",
+  "prereg_timestamp": "2026-02-22T22:44:44.960825+00:00",
+  "alpha_prereg": 1.477,
+  "K": 14,
+  "primary_pass": false,
+  "summary_rows": [
+    {
+      "model": "pythia-160m",
+      "arm": "nc_full",
+      "ce_q": 0.8153846153846155,
+      "ce_kappa": 1.0479489062729892,
+      "arm_q": 0.8779487179487179,
+      "arm_kappa": 1.5624835260161494,
+      "delta_q": 0.06256410256410239,
+      "delta_kappa": 0.5145346197431602,
+      "delta_logit_q": 0.48776161926608963,
+      "ratio_delta_logit_delta_kappa": 0.947966571247558,
+      "in_alpha_band": false
+    },
+    {
+      "model": "pythia-160m",
+      "arm": "nc_within",
+      "ce_q": 0.8153846153846155,
+      "ce_kappa": 1.0479489062729892,
+      "arm_q": 0.7982051282051282,
+      "arm_kappa": 1.0024881077354337,
+      "delta_q": -0.01717948717948725,
+      "delta_kappa": -0.04546079853755547,
+      "delta_logit_q": -0.11027134173991726,
+      "ratio_delta_logit_delta_kappa": 2.4256358288300053,
+      "in_alpha_band": false
+    },
+    {
+      "model": "pythia-160m",
+      "arm": "shuffled_nc",
+      "ce_q": 0.8153846153846155,
+      "ce_kappa": 1.0479489062729892,
+      "arm_q": 0.8766666666666666,
+      "arm_kappa": 1.621098693314457,
+      "delta_q": 0.06128205128205111,
+      "delta_kappa": 0.5731497870414679,
+      "delta_logit_q": 0.4758508557694172,
+      "ratio_delta_logit_delta_kappa": 0.8302382143866852,
+      "in_alpha_band": false
+    },
+    {
+      "model": "pythia-410m",
+      "arm": "nc_full",
+      "ce_q": 0.9987179487179487,
+      "ce_kappa": 3.09427176192591,
+      "arm_q": 1.0,
+      "arm_kappa": 7.195745030285148,
+      "delta_q": 0.0012820512820512775,
+      "delta_kappa": 4.101473268359238,
+      "delta_logit_q": 0.0,
+      "ratio_delta_logit_delta_kappa": 0.0,
+      "in_alpha_band": false
+    },
+    {
+      "model": "pythia-410m",
+      "arm": "nc_within",
+      "ce_q": 0.9987179487179487,
+      "ce_kappa": 3.09427176192591,
+      "arm_q": 1.0,
+      "arm_kappa": 7.888993713212671,
+      "delta_q": 0.0012820512820512775,
+      "delta_kappa": 4.794721951286761,
+      "delta_logit_q": 0.0,
+      "ratio_delta_logit_delta_kappa": 0.0,
+      "in_alpha_band": false
+    },
+    {
+      "model": "pythia-410m",
+      "arm": "shuffled_nc",
+      "ce_q": 0.9987179487179487,
+      "ce_kappa": 3.09427176192591,
+      "arm_q": 1.0,
+      "arm_kappa": 7.195277397684182,
+      "delta_q": 0.0012820512820512775,
+      "delta_kappa": 4.1010056357582725,
+      "delta_logit_q": 0.0,
+      "ratio_delta_logit_delta_kappa": 0.0,
+      "in_alpha_band": false
+    }
+  ],
+  "model_results": {
+    "pythia-160m": {
+      "backbone_kappa": 0.5527904386774665,
+      "backbone_q": 0.9023076923076923,
+      "arm_stats": {
+        "ce": {
+          "mean_q": 0.8153846153846155,
+          "mean_kappa": 1.0479489062729892
+        },
+        "nc_full": {
+          "mean_q": 0.8779487179487179,
+          "mean_kappa": 1.5624835260161494
+        },
+        "nc_within": {
+          "mean_q": 0.7982051282051282,
+          "mean_kappa": 1.0024881077354337
+        },
+        "shuffled_nc": {
+          "mean_q": 0.8766666666666666,
+          "mean_kappa": 1.621098693314457
+        }
+      }
+    },
+    "pythia-410m": {
+      "backbone_kappa": 0.2741068123761249,
+      "backbone_q": 0.8907692307692308,
+      "arm_stats": {
+        "ce": {
+          "mean_q": 0.9987179487179487,
+          "mean_kappa": 3.09427176192591
+        },
+        "nc_full": {
+          "mean_q": 1.0,
+          "mean_kappa": 7.195745030285148
+        },
+        "nc_within": {
+          "mean_q": 1.0,
+          "mean_kappa": 7.888993713212671
+        },
+        "shuffled_nc": {
+          "mean_q": 1.0,
+          "mean_kappa": 7.195277397684182
+        }
+      }
+    }
+  }
+}
