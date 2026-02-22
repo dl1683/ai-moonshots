@@ -38,7 +38,9 @@ from sklearn.neighbors import KNeighborsClassifier
 # ==================== CONFIGURATION ====================
 K = 20
 N_EPOCHS = 60
-CHECKPOINT_EVERY = 5   # Save embeddings every N epochs
+# Dense checkpoints at early epochs (kappa_eff may hit ~1 as early as epoch 1-5)
+# Then sparser for later epochs
+CHECKPOINT_EPOCHS = list(range(1, 16)) + list(range(20, 65, 5))  # 1,2,...,15,20,25,...,60
 BATCH_SIZE = 256
 LR = 0.1
 WEIGHT_DECAY = 5e-4
@@ -255,7 +257,7 @@ def main():
     log(f"K={K}, N_EPOCHS={N_EPOCHS}, N_SEEDS={N_SEEDS}")
     log(f"A_renorm(K=20) = {A_RENORM_K20} (pre-registered)")
     log(f"Linear regime target: kappa_eff in [{KAPPA_EFF_MIN}, {KAPPA_EFF_MAX}]")
-    log(f"Checkpoints every {CHECKPOINT_EVERY} epochs")
+    log(f"Checkpoint epochs: {CHECKPOINT_EPOCHS}")
     log(f"Surgery levels r: {SURGERY_LEVELS}")
 
     train_ds, test_ds = get_cifar_coarse()
@@ -290,7 +292,7 @@ def main():
                 log(f"  [seed={seed} epoch={epoch}] loss={loss:.4f}")
 
             # Save checkpoint
-            if epoch % CHECKPOINT_EVERY == 0:
+            if epoch in CHECKPOINT_EPOCHS:
                 X_tr, y_tr = extract_embeddings(model, train_ds)
                 X_te, y_te = extract_embeddings(model, test_ds)
                 geo = compute_geometry(X_tr, y_tr)
