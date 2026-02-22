@@ -52,7 +52,8 @@ MODELS = [
     "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",  # LLaMA family
     # ── Modern 2025 models ────────────────────────────────────────────────────
     "Qwen/Qwen3-0.6B",               # Qwen3 2025: RoPE, GQA, SwiGLU, 36T tokens
-    "google/gemma-3-4b",             # Gemma-3 2025: sliding-window+global attention hybrid, Google
+    "Qwen/Qwen3-1.7B",               # Qwen3 1.7B 2025: same arch as 0.6B, 3x scale
+    "mistralai/Mistral-7B-v0.3",     # Mistral-7B 2023: sliding-window attention, different family
 ]
 
 # Per-model layer indices (proportional depth: 25%, 50%, 75%, 100%)
@@ -65,7 +66,8 @@ MODEL_LAYERS = {
     "OLMo-1B-hf": [4, 8, 12, 16],  # 16 total layers
     "TinyLlama-1.1B-intermediate-step-1431k-3T": [5, 11, 16, 22],  # 22 total layers
     "Qwen3-0.6B": [7, 14, 21, 28],  # 28 total layers, hidden_dim=1024, GQA
-    "gemma-3-4b": [9, 18, 27, 34],  # 34 total layers, sliding-window + global attn
+    "Qwen3-1.7B": [7, 14, 21, 28],  # 28 total layers, hidden_dim=2048, same arch 3x scale
+    "Mistral-7B-v0.3": [8, 16, 24, 32],  # 32 total layers, sliding-window attn, 4096 hidden
 }
 
 DATASETS = {

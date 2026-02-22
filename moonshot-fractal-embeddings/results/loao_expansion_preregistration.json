@@ -1,0 +1,19 @@
+{
+  "preregistration_timestamp": "2026-02-22T11:26:53.751872",
+  "status": "LOCKED_BEFORE_DATA",
+  "frozen_alpha": 2.8646,
+  "frozen_beta": -0.7509,
+  "frozen_C": 0.8349,
+  "models_to_test": [
+    "Qwen/Qwen3-1.7B",
+    "mistralai/Mistral-7B-v0.3"
+  ],
+  "prediction": {
+    "loao_alpha_range": [
+      2.43491,
+      3.2942899999999997
+    ],
+    "loao_cv_threshold": 0.25,
+    "rationale": "Law is architecture-universal. Qwen3-1.7B (same family, 3x scale) and Mistral-7B (sliding window attention, different family) should have held-out alpha within 15% of 2.8646. If LOAO CV stays < 0.25 after adding both, universality is confirmed to 10 architectures across 2021-2025."
+  }
+}
