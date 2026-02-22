@@ -375,9 +375,23 @@ def main():
         "model_results": {k: {kk: vv for kk, vv in v.items() if kk not in ['nearest', 'farthest']}
                           for k, v in all_results.items()},
     }
+    # Convert numpy types for JSON serialization
+    def np_clean(obj):
+        if isinstance(obj, dict):
+            return {k: np_clean(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [np_clean(v) for v in obj]
+        if isinstance(obj, (np.integer,)):
+            return int(obj)
+        if isinstance(obj, (np.floating,)):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return obj
+
     out_path = RESULTS_DIR / "cti_do_intervention_multi_arch.json"
     with open(out_path, "w") as f:
-        json.dump(out, f, indent=2)
+        json.dump(np_clean(out), f, indent=2)
     print(f"\nResults saved to {out_path.name}")
     print(f"PRIMARY PASS (>=4/5 models): {'PASS' if primary_pass else 'FAIL'}")
 
