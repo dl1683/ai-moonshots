@@ -160,7 +160,8 @@ The functional structure (logistic in $\kappa_{\mathrm{nearest}}$ and $\log(K-1)
 \end{theorem}
 
 \paragraph{Connection to theory.}
-The empirical constant $\alpha\approx1.477$ (with per-dataset intercepts) is consistent with the theoretical prediction $\alpha_{\mathrm{theory}}=\sqrt{4/\pi}\cdot\sqrt{d_{\mathrm{eff}}}\approx1.128\times1.308\approx1.476$, where $d_{\mathrm{eff}}\approx1.71$ is the effective dimensionality of the within-class distribution. The asymptotic prediction $\beta_\infty=1.0$ is renormalized to $\beta\approx0.746$ by finite-sample effects and anisotropic geometry (single-intercept fit; per-dataset fit gives $\hat\beta=0.326$).
+The empirical constant $\alpha\approx1.477$ (with per-dataset intercepts) is consistent with the theoretical prediction $\alpha_{\mathrm{theory}}=\sqrt{4/\pi}\cdot\sqrt{d_{\mathrm{eff}}}$, where the effective dimensionality $d_{\mathrm{eff}}\approx1.71$ is \emph{inferred from the empirical $\alpha$} via $d_{\mathrm{eff}}=(\alpha/\sqrt{4/\pi})^2$, not measured independently. This is post-hoc consistency, not independent corroboration: the theoretical structure predicts the functional form and the $\sqrt{d_{\mathrm{eff}}}$ scaling, while $d_{\mathrm{eff}}$ itself is a derived interpretive quantity. The asymptotic prediction $\beta_\infty=1.0$ is renormalized to $\beta\approx0.746$ by finite-sample effects and anisotropic geometry (single-intercept fit; per-dataset fit gives $\hat\beta=0.326$).
+\textbf{Gumbel approximation quality}: KS test for Gumbel fit to same-class minimum distances fails at $d=200$ ($p<0.001$), but the logistic-distributed margin (difference of two Gumbels) passes ($p=0.265$), supporting the final logit-linear form as an asymptotic result rather than an exact distributional identity.
 
 \section{Experimental Design}
 \subsection{Primary 12-architecture LOAO test}
