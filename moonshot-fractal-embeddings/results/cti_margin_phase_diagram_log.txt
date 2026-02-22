@@ -1,0 +1,213 @@
+======================================================================
+MARGIN PHASE DIAGRAM: When Does j2 Matter?
+======================================================================
+d=100, N_per_class=400, K=3, N_CV=10, N_seeds=5
+Margin range: [1.01 1.05 1.1  1.2  1.3  1.5  1.75 2.   2.5  3.  ]
+Kappa levels: {'kappa_low': 0.3, 'kappa_mid': 0.6, 'kappa_high': 1.0}
+======================================================================
+THEORY: B_j2_r should decay from ~1.0 at margin=1.0 toward 0 at margin>1.5
+
+============================================================
+KAPPA LEVEL: kappa_low (kappa_j1=0.3)
+============================================================
+
+  margin=1.01 (kappa_j2=0.303)
+    B_j2_r = 0.962 +/- 0.013 (seeds: ['0.94', '0.97', '0.96', '0.96', '0.97'])
+    baseline q_0 = 0.393, theory_weight = 0.969
+
+  margin=1.05 (kappa_j2=0.315)
+    B_j2_r = 0.957 +/- 0.019 (seeds: ['0.93', '0.98', '0.94', '0.95', '0.97'])
+    baseline q_0 = 0.409, theory_weight = 0.854
+
+  margin=1.10 (kappa_j2=0.330)
+    B_j2_r = 0.951 +/- 0.021 (seeds: ['0.91', '0.97', '0.94', '0.95', '0.97'])
+    baseline q_0 = 0.423, theory_weight = 0.729
+
+  margin=1.20 (kappa_j2=0.360)
+    B_j2_r = 0.923 +/- 0.037 (seeds: ['0.85', '0.96', '0.93', '0.92', '0.93'])
+    baseline q_0 = 0.452, theory_weight = 0.531
+
+  margin=1.30 (kappa_j2=0.390)
+    B_j2_r = 0.906 +/- 0.060 (seeds: ['0.79', '0.94', '0.96', '0.88', '0.88'])
+    baseline q_0 = 0.475, theory_weight = 0.387
+
+  margin=1.50 (kappa_j2=0.450)
+    B_j2_r = 0.859 +/- 0.089 (seeds: ['0.68', '0.88', '0.95', '0.84', '0.83'])
+    baseline q_0 = 0.515, theory_weight = 0.206
+
+  margin=1.75 (kappa_j2=0.525)
+    B_j2_r = 0.869 +/- 0.083 (seeds: ['0.86', '0.96', '0.88', '0.74', '0.76'])
+    baseline q_0 = 0.558, theory_weight = 0.093
+
+  margin=2.00 (kappa_j2=0.600)
+    B_j2_r = 0.827 +/- 0.073 (seeds: ['0.92', '0.87', '0.74', '0.73', '0.80'])
+    baseline q_0 = 0.573, theory_weight = 0.042
+
+  margin=2.50 (kappa_j2=0.750)
+    B_j2_r = 0.310 +/- 0.328 (seeds: ['0.46', '0.00', '0.00', '0.80', '0.00'])
+    baseline q_0 = 0.584, theory_weight = 0.009
+
+  margin=3.00 (kappa_j2=0.900)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 0.585, theory_weight = 0.002
+
+  SUMMARY for kappa_low:
+    Margin |   B_j2_r |      q_0 |   Theory_w
+  ---------------------------------------------
+      1.01 |    0.962 |    0.393 |      0.969
+      1.05 |    0.957 |    0.409 |      0.854
+      1.10 |    0.951 |    0.423 |      0.729
+      1.20 |    0.923 |    0.452 |      0.531
+      1.30 |    0.906 |    0.475 |      0.387
+      1.50 |    0.859 |    0.515 |      0.206
+      1.75 |    0.869 |    0.558 |      0.093
+      2.00 |    0.827 |    0.573 |      0.042
+      2.50 |    0.310 |    0.584 |      0.009
+      3.00 |    0.000 |    0.585 |      0.002
+
+============================================================
+KAPPA LEVEL: kappa_mid (kappa_j1=0.6)
+============================================================
+
+  margin=1.01 (kappa_j2=0.606)
+    B_j2_r = 0.904 +/- 0.076 (seeds: ['0.92', '0.93', '0.78', '0.97', '0.80'])
+    baseline q_0 = 0.917, theory_weight = 0.939
+
+  margin=1.05 (kappa_j2=0.630)
+    B_j2_r = 0.880 +/- 0.094 (seeds: ['0.88', '0.90', '0.75', '0.97', '0.73'])
+    baseline q_0 = 0.926, theory_weight = 0.729
+
+  margin=1.10 (kappa_j2=0.660)
+    B_j2_r = 0.804 +/- 0.113 (seeds: ['0.73', '0.85', '0.73', '0.94', '0.61'])
+    baseline q_0 = 0.935, theory_weight = 0.531
+
+  margin=1.20 (kappa_j2=0.720)
+    B_j2_r = 0.561 +/- 0.384 (seeds: ['0.63', '0.84', '0.00', '0.84', '0.00'])
+    baseline q_0 = 0.943, theory_weight = 0.282
+
+  margin=1.30 (kappa_j2=0.780)
+    B_j2_r = 0.404 +/- 0.385 (seeds: ['0.00', '0.85', '0.00', '0.72', '0.00'])
+    baseline q_0 = 0.948, theory_weight = 0.150
+
+  margin=1.50 (kappa_j2=0.900)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 0.950, theory_weight = 0.042
+
+  margin=1.75 (kappa_j2=1.050)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 0.950, theory_weight = 0.009
+
+  margin=2.00 (kappa_j2=1.200)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 0.950, theory_weight = 0.002
+
+  margin=2.50 (kappa_j2=1.500)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 0.950, theory_weight = 0.000
+
+  margin=3.00 (kappa_j2=1.800)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 0.950, theory_weight = 0.000
+
+  SUMMARY for kappa_mid:
+    Margin |   B_j2_r |      q_0 |   Theory_w
+  ---------------------------------------------
+      1.01 |    0.904 |    0.917 |      0.939
+      1.05 |    0.880 |    0.926 |      0.729
+      1.10 |    0.804 |    0.935 |      0.531
+      1.20 |    0.561 |    0.943 |      0.282
+      1.30 |    0.404 |    0.948 |      0.150
+      1.50 |    0.000 |    0.950 |      0.042
+      1.75 |    0.000 |    0.950 |      0.009
+      2.00 |    0.000 |    0.950 |      0.002
+      2.50 |    0.000 |    0.950 |      0.000
+      3.00 |    0.000 |    0.950 |      0.000
+
+============================================================
+KAPPA LEVEL: kappa_high (kappa_j1=1.0)
+============================================================
+
+  margin=1.01 (kappa_j2=1.010)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 1.000, theory_weight = 0.900
+
+  margin=1.05 (kappa_j2=1.050)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 1.000, theory_weight = 0.590
+
+  margin=1.10 (kappa_j2=1.100)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 1.000, theory_weight = 0.349
+
+  margin=1.20 (kappa_j2=1.200)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 1.000, theory_weight = 0.121
+
+  margin=1.30 (kappa_j2=1.300)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 1.000, theory_weight = 0.042
+
+  margin=1.50 (kappa_j2=1.500)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 1.000, theory_weight = 0.005
+
+  margin=1.75 (kappa_j2=1.750)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 1.000, theory_weight = 0.000
+
+  margin=2.00 (kappa_j2=2.000)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 1.000, theory_weight = 0.000
+
+  margin=2.50 (kappa_j2=2.500)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 1.000, theory_weight = 0.000
+
+  margin=3.00 (kappa_j2=3.000)
+    B_j2_r = 0.000 +/- 0.000 (seeds: ['0.00', '0.00', '0.00', '0.00', '0.00'])
+    baseline q_0 = 1.000, theory_weight = 0.000
+
+  SUMMARY for kappa_high:
+    Margin |   B_j2_r |      q_0 |   Theory_w
+  ---------------------------------------------
+      1.01 |    0.000 |    1.000 |      0.900
+      1.05 |    0.000 |    1.000 |      0.590
+      1.10 |    0.000 |    1.000 |      0.349
+      1.20 |    0.000 |    1.000 |      0.121
+      1.30 |    0.000 |    1.000 |      0.042
+      1.50 |    0.000 |    1.000 |      0.005
+      1.75 |    0.000 |    1.000 |      0.000
+      2.00 |    0.000 |    1.000 |      0.000
+      2.50 |    0.000 |    1.000 |      0.000
+      3.00 |    0.000 |    1.000 |      0.000
+
+======================================================================
+PHASE DIAGRAM VERDICT
+======================================================================
+
+kappa_low: Spearman r(margin, B_j2_r) = -0.988 p=0.0000
+  Expected: negative (B_j2_r decreases as margin increases)
+  B_j2_r at margin=1.01: 0.962
+  B_j2_r at margin=3.00: 0.000
+  PASS: monotonic decay confirmed -> Gumbel Race theory correct
+
+kappa_mid: Spearman r(margin, B_j2_r) = -0.937 p=0.0001
+  Expected: negative (B_j2_r decreases as margin increases)
+  B_j2_r at margin=1.01: 0.904
+  B_j2_r at margin=3.00: 0.000
+  PASS: monotonic decay confirmed -> Gumbel Race theory correct
+
+kappa_high: Spearman r(margin, B_j2_r) = nan p=nan
+  Expected: negative (B_j2_r decreases as margin increases)
+  B_j2_r at margin=1.01: 0.000
+  B_j2_r at margin=3.00: 0.000
+  FAIL: expected monotonic decay not confirmed
+
+Saved to results/cti_margin_phase_diagram.json
+ r(margin, B_j2_r) = nan p=nan
+  Expected: negative (B_j2_r decreases as margin increases)
+  B_j2_r at margin=1.01: 0.000
+  B_j2_r at margin=3.00: 0.000
+  FAIL: expected monotonic decay not confirmed
+
+Saved to results/cti_margin_phase_diagram.json
