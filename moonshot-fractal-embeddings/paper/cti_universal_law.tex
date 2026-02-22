@@ -330,6 +330,7 @@ The Gumbel race mechanism is the same as the mechanism underlying extreme-value 
 \item \textbf{Large-K regime.} Both ViT and CNN at $K=100$ show $r\approx0.75$, below the Monte Carlo noise floor of $E[r]=0.875$. CIFAR-100's hierarchical superclass structure creates non-ideal kappa geometry; a richer model accounting for class density is needed for large-K settings.
 \item \textbf{Assumption dependence.} The proof relies on concentration and shared-scale Gumbel approximations; tighter non-asymptotic bounds remain open.
 \item \textbf{External replication.} Results are internal to the present pipeline and should be independently reproduced.
+\item \textbf{Biological neurons.} A pilot test on two-photon calcium imaging data (DANDI:000039, Allen Institute, mouse V1, $N=15$ neurons) yielded inconclusive results: the specific session had only 22 imaging epochs within the recording window (out of 720 total), and the DANDI:000039 protocol is designed for contrast tuning (not orientation tuning), so class separability in orientation space was near chance. A proper biological test requires full-session recordings, $N\geq50$ neurons, and a dedicated orientation-tuning protocol. If the CTI law holds for biological populations, it would suggest that the same EVT-derived geometry governs both silicon and carbon neural codes.
 \end{enumerate}
 
 \section{Conclusion}
