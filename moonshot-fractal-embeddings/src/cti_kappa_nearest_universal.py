@@ -51,7 +51,8 @@ MODELS = [
     "allenai/OLMo-1B-hf",            # OLMo family (Allen AI)
     "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",  # LLaMA family
     # ── Modern 2025 models ────────────────────────────────────────────────────
-    "Qwen/Qwen3-0.6B",               # Qwen3 2025 SOTA: RoPE, GQA, SwiGLU, 36T tokens
+    "Qwen/Qwen3-0.6B",               # Qwen3 2025: RoPE, GQA, SwiGLU, 36T tokens
+    "google/gemma-3-4b",             # Gemma-3 2025: sliding-window+global attention hybrid, Google
 ]
 
 # Per-model layer indices (proportional depth: 25%, 50%, 75%, 100%)
@@ -64,6 +65,7 @@ MODEL_LAYERS = {
     "OLMo-1B-hf": [4, 8, 12, 16],  # 16 total layers
     "TinyLlama-1.1B-intermediate-step-1431k-3T": [5, 11, 16, 22],  # 22 total layers
     "Qwen3-0.6B": [7, 14, 21, 28],  # 28 total layers, hidden_dim=1024, GQA
+    "gemma-3-4b": [9, 18, 27, 34],  # 34 total layers, sliding-window + global attn
 }
 
 DATASETS = {
