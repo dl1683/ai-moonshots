@@ -1,0 +1,73 @@
+{
+  "experiment": "CTI Dose-Response Causal Test (Pre-Registration)",
+  "description": "Pre-registered, blinded, multi-strength causal dose-response on unseen architectures across text + vision. Frozen alpha prediction before training.",
+  "timestamp": "2026-02-22T22:00:00 UTC",
+  "design_hash": "7bb675204eed1da5943ee519dd89fad8afa0970082f2aa6b9408013d7003fe54",
+  "designed_by": "Codex (gpt-5.3-codex, xhigh reasoning), Session 33",
+
+  "frozen_alpha": 1.4773,
+  "note_on_alpha": "alpha* fixed from LOAO-12 per-dataset intercept fit. NO refit allowed during this experiment.",
+
+  "architectures_text": [
+    "google/gemma-2-2b",
+    "microsoft/phi-2",
+    "state-spaces/mamba-130m"
+  ],
+  "architectures_vision": [
+    "google/vit-base-patch16-224",
+    "google/vit-large-patch16-224",
+    "torchvision/resnet50"
+  ],
+  "note_unseen": "All 6 architectures are outside the 12-arch LOAO training set (Pythia/GPT-Neo/Qwen/OLMo/TinyLlama/Mistral/Falcon-H1/RWKV).",
+
+  "lambdas": [-0.10, -0.06, -0.03, 0.0, 0.03, 0.06, 0.10],
+  "lambda_meaning": "negative = anti-triplet (pushes nearest class closer), positive = triplet (pushes nearest class apart), 0 = neutral (CE only)",
+  "seeds": [11, 23, 47],
+  "dataset_text": "dbpedia14",
+  "dataset_vision": "cifar10",
+  "total_runs": 126,
+
+  "prediction_formula": {
+    "step1": "Measure pre-training kappa_nearest for each (arch, seed, lambda) condition via frozen do-surgery",
+    "step2": "delta_kappa_pre = kappa_nearest(lambda) - kappa_nearest(lambda=0)",
+    "step3": "delta_z_pred = alpha* * delta_kappa_pre  (alpha* = 1.4773, no refit)",
+    "step4": "q_pred = sigmoid(logit(q_baseline) + delta_z_pred)",
+    "step5": "Train with CE + lambda*triplet_loss, measure actual q_obs and kappa_obs",
+    "step6": "Compare delta_q_pred vs delta_q_obs"
+  },
+
+  "pass_criteria": {
+    "directional": "At least 5/6 architectures: mean_delta_q(lambda<0) < 0 AND mean_delta_q(lambda>0) > 0",
+    "quantitative_r": "Pooled Pearson r(delta_q_pred, delta_q_obs) >= 0.90 across all nonzero doses and 6 architectures",
+    "quantitative_mae": "Pooled MAE(delta_q_pred, delta_q_obs) <= 0.03",
+    "text_modality_r": "Text-only pooled r >= 0.85",
+    "vision_modality_r": "Vision-only pooled r >= 0.85",
+    "neutral_control": "|delta_q(lambda=0)| <= 0.01 pooled",
+    "blinding": "Predictions file SHA-256 hash matches pre-registered design_hash before unblinding"
+  },
+
+  "fail_definition": "ANY pass criterion not met = FAIL (no partial credit)",
+
+  "estimated_runtime": {
+    "text_block": "30-35 GPU-hours",
+    "vision_block": "18-22 GPU-hours",
+    "overhead": "10-15 GPU-hours",
+    "total": "60-75 GPU-hours",
+    "wall_clock_days": "3-4 days on RTX 5090"
+  },
+
+  "score_impact": {
+    "current_score": "4.0/10 (Nobel)",
+    "if_pass": "5.0-6.0/10 (Nobel) - meaningful causal boost with quantitative cross-modal evidence",
+    "if_fail": "Still publishable as honest negative result; informs theory gaps"
+  },
+
+  "prior_causal_results_summary": {
+    "frozen_do_intervention_text": "r=0.974, alpha=1.601 PASS (pythia-160m/dbpedia, frozen embeddings)",
+    "orthogonal_factorial_nlp": "Arm A r=0.899, Arm C r=0.000 PASS",
+    "vit_orthogonal_factorial": "Arm A r=0.943 PASS",
+    "cifar_triplet_arm_warning": "Prior training-based triplet on CIFAR-100 showed kappa collapse (gradient conflict). Use L2-norm + small lambda to mitigate."
+  },
+
+  "critical_warning": "Prior CIFAR training with triplet loss caused kappa collapse. Use: L2-normalized embeddings, lambda <= 0.10, evaluate kappa change at each epoch to detect collapse early."
+}
