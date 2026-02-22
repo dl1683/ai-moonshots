@@ -1,0 +1,231 @@
+======================================================================
+CHECKPOINT PHASE DIAGRAM: B_j2 vs Training Progress
+======================================================================
+Model: EleutherAI/pythia-160m
+Checkpoints: ['step512', 'step2000', 'step16000', 'step48000', 'step143000']
+Dataset: DBpedia K=14, N=1000
+Layer: 12, Focus classes: 0..5
+PRE-REGISTERED: Spearman r(step, mean_B_j2_r) < 0
+======================================================================
+
+============================================================
+CHECKPOINT: step512
+============================================================
+  Embedded: shape=(1000, 768), K=14, sigma_W=0.3133
+  Mean kappa_nearest (focus classes): 0.4362
+    ci=0: kappa_j1=0.491 j2=13 kappa_j2=0.532 margin=1.08x q_ci=0.3323
+      Arm A: r(kappa_j1, logit)=0.962 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.783 p=0.0126)
+    ci=1: kappa_j1=0.460 j2=0 kappa_j2=0.491 margin=1.07x q_ci=0.5015
+      Arm A: r(kappa_j1, logit)=0.954 p=0.0001
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.934 p=0.0002)
+    ci=2: kappa_j1=0.361 j2=12 kappa_j2=0.439 margin=1.22x q_ci=0.4369
+      Arm A: r(kappa_j1, logit)=0.944 p=0.0001
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.707 p=0.0331)
+    ci=3: kappa_j1=0.361 j2=4 kappa_j2=0.498 margin=1.38x q_ci=0.6564
+      Arm A: r(kappa_j1, logit)=0.959 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.726 p=0.0267)
+    ci=4: kappa_j1=0.498 j2=2 kappa_j2=0.549 margin=1.10x q_ci=0.6995
+      Arm A: r(kappa_j1, logit)=0.983 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.895 p=0.0011)
+    ci=5: kappa_j1=0.446 j2=12 kappa_j2=0.668 margin=1.50x q_ci=0.6062
+      Arm A: r(kappa_j1, logit)=0.993 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.822 p=0.0066)
+
+  CHECKPOINT SUMMARY (step512):
+    mean kappa_j1 = 0.4362
+    mean Arm A r(kappa, logit) = 0.972
+    mean Arm B r(kappa_j2, logit) = 0.831
+    per-class B_j2_r: ['0.78', '0.93', '0.71', '0.73', '0.89', '0.82']
+
+============================================================
+CHECKPOINT: step2000
+============================================================
+  Embedded: shape=(1000, 768), K=14, sigma_W=0.4077
+  Mean kappa_nearest (focus classes): 0.7444
+    ci=0: kappa_j1=0.789 j2=13 kappa_j2=0.847 margin=1.07x q_ci=0.5456
+      Arm A: r(kappa_j1, logit)=0.840 p=0.0046
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=1: kappa_j1=0.819 j2=0 kappa_j2=0.876 margin=1.07x q_ci=0.8626
+      Arm A: r(kappa_j1, logit)=0.933 p=0.0002
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=2: kappa_j1=0.554 j2=13 kappa_j2=0.666 margin=1.20x q_ci=0.6031
+      Arm A: r(kappa_j1, logit)=0.987 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.897 p=0.0011)
+    ci=3: kappa_j1=0.782 j2=4 kappa_j2=0.797 margin=1.02x q_ci=0.9415
+      Arm A: r(kappa_j1, logit)=0.964 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=4: kappa_j1=0.733 j2=3 kappa_j2=0.797 margin=1.09x q_ci=0.8328
+      Arm A: r(kappa_j1, logit)=0.985 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=5: kappa_j1=0.789 j2=2 kappa_j2=0.973 margin=1.23x q_ci=0.9231
+      Arm A: r(kappa_j1, logit)=0.548 p=0.1269
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+
+  CHECKPOINT SUMMARY (step2000):
+    mean kappa_j1 = 0.7444
+    mean Arm A r(kappa, logit) = 0.940
+    mean Arm B r(kappa_j2, logit) = 0.238
+    per-class B_j2_r: ['0.00', '0.00', '0.90', '0.00', '0.00', '0.00']
+
+============================================================
+CHECKPOINT: step16000
+============================================================
+  Embedded: shape=(1000, 768), K=14, sigma_W=0.5066
+  Mean kappa_nearest (focus classes): 0.7959
+    ci=0: kappa_j1=0.798 j2=1 kappa_j2=0.837 margin=1.05x q_ci=0.6226
+      Arm A: r(kappa_j1, logit)=0.793 p=0.0108
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=1: kappa_j1=0.837 j2=6 kappa_j2=0.840 margin=1.00x q_ci=0.9087
+      Arm A: r(kappa_j1, logit)=0.532 p=0.1407
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.548 p=0.1269)
+    ci=2: kappa_j1=0.602 j2=13 kappa_j2=0.658 margin=1.09x q_ci=0.6492
+      Arm A: r(kappa_j1, logit)=0.927 p=0.0003
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.893 p=0.0012)
+    ci=3: kappa_j1=0.857 j2=2 kappa_j2=0.864 margin=1.01x q_ci=0.9118
+      Arm A: r(kappa_j1, logit)=0.963 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.725 p=0.0272)
+    ci=4: kappa_j1=0.760 j2=3 kappa_j2=0.857 margin=1.13x q_ci=0.8626
+      Arm A: r(kappa_j1, logit)=0.871 p=0.0022
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=5: kappa_j1=0.922 j2=6 kappa_j2=1.043 margin=1.13x q_ci=0.9538
+      Arm A: r(kappa_j1, logit)=0.723 p=0.0278
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+
+  CHECKPOINT SUMMARY (step16000):
+    mean kappa_j1 = 0.7959
+    mean Arm A r(kappa, logit) = 0.850
+    mean Arm B r(kappa_j2, logit) = 0.458
+    per-class B_j2_r: ['0.00', '0.55', '0.89', '0.72', '0.00', '0.00']
+
+============================================================
+CHECKPOINT: step48000
+============================================================
+  Embedded: shape=(1000, 768), K=14, sigma_W=0.5841
+  Mean kappa_nearest (focus classes): 0.7685
+    ci=0: kappa_j1=0.792 j2=1 kappa_j2=0.825 margin=1.04x q_ci=0.6533
+      Arm A: r(kappa_j1, logit)=0.838 p=0.0048
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.725 p=0.0272)
+    ci=1: kappa_j1=0.817 j2=0 kappa_j2=0.825 margin=1.01x q_ci=0.9241
+      Arm A: r(kappa_j1, logit)=0.000 p=1.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=2: kappa_j1=0.584 j2=13 kappa_j2=0.637 margin=1.09x q_ci=0.6338
+      Arm A: r(kappa_j1, logit)=0.966 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.711 p=0.0318)
+    ci=3: kappa_j1=0.814 j2=4 kappa_j2=0.842 margin=1.03x q_ci=0.9108
+      Arm A: r(kappa_j1, logit)=0.606 p=0.0839
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.894 p=0.0012)
+    ci=4: kappa_j1=0.730 j2=3 kappa_j2=0.842 margin=1.15x q_ci=0.8779
+      Arm A: r(kappa_j1, logit)=0.548 p=0.1269
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=5: kappa_j1=0.874 j2=6 kappa_j2=1.000 margin=1.14x q_ci=0.9395
+      Arm A: r(kappa_j1, logit)=0.548 p=0.1269
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+
+  CHECKPOINT SUMMARY (step48000):
+    mean kappa_j1 = 0.7685
+    mean Arm A r(kappa, logit) = 0.698
+    mean Arm B r(kappa_j2, logit) = 0.494
+    per-class B_j2_r: ['0.72', '0.00', '0.71', '0.89', '0.00', '0.00']
+
+============================================================
+CHECKPOINT: step143000
+============================================================
+  Embedded: shape=(1000, 768), K=14, sigma_W=0.7342
+  Mean kappa_nearest (focus classes): 0.5070
+    ci=0: kappa_j1=0.512 j2=13 kappa_j2=0.540 margin=1.06x q_ci=0.6072
+      Arm A: r(kappa_j1, logit)=0.895 p=0.0011
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=1: kappa_j1=0.523 j2=0 kappa_j2=0.552 margin=1.06x q_ci=0.9231
+      Arm A: r(kappa_j1, logit)=0.609 p=0.0819
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=2: kappa_j1=0.426 j2=13 kappa_j2=0.440 margin=1.03x q_ci=0.5887
+      Arm A: r(kappa_j1, logit)=0.956 p=0.0001
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.866 p=0.0025)
+    ci=3: kappa_j1=0.509 j2=4 kappa_j2=0.539 margin=1.06x q_ci=0.8974
+      Arm A: r(kappa_j1, logit)=0.967 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.725 p=0.0272)
+    ci=4: kappa_j1=0.459 j2=3 kappa_j2=0.539 margin=1.17x q_ci=0.8174
+      Arm A: r(kappa_j1, logit)=0.898 p=0.0010
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=5: kappa_j1=0.613 j2=13 kappa_j2=0.646 margin=1.05x q_ci=0.9385
+      Arm A: r(kappa_j1, logit)=0.468 p=0.2036
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+
+  CHECKPOINT SUMMARY (step143000):
+    mean kappa_j1 = 0.5070
+    mean Arm A r(kappa, logit) = 0.873
+    mean Arm B r(kappa_j2, logit) = 0.356
+    per-class B_j2_r: ['0.00', '0.00', '0.87', '0.72', '0.00', '0.00']
+
+======================================================================
+PHASE DIAGRAM VERDICT
+======================================================================
+
+Phase diagram table:
+          Step |   kappa_j1 |   Arm A r |   Arm B r
+  --------------------------------------------------
+       step512 |     0.4362 |     0.972 |     0.831
+      step2000 |     0.7444 |     0.940 |     0.238
+     step16000 |     0.7959 |     0.850 |     0.458
+     step48000 |     0.7685 |     0.698 |     0.494
+    step143000 |     0.5070 |     0.873 |     0.356
+
+Spearman r(step, B_j2_r)  = -0.300 p=0.6238
+Spearman r(kappa, B_j2_r) = -0.200 p=0.7471
+Pre-reg: both should be NEGATIVE
+
+FAIL: B_j2_r does not decrease with training step
+FAIL: B_j2_r does not decrease with kappa
+
+Saved to results/cti_checkpoint_phase_diagram.json
+uet.
+  [EXTRACT] Encoding 1000 samples at layer 12...
+  Embedded: shape=(1000, 768), K=14, sigma_W=0.7342
+  Mean kappa_nearest (focus classes): 0.5070
+    ci=0: kappa_j1=0.512 j2=13 kappa_j2=0.540 margin=1.06x q_ci=0.6072
+      Arm A: r(kappa_j1, logit)=0.895 p=0.0011
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=1: kappa_j1=0.523 j2=0 kappa_j2=0.552 margin=1.06x q_ci=0.9231
+      Arm A: r(kappa_j1, logit)=0.609 p=0.0819
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=2: kappa_j1=0.426 j2=13 kappa_j2=0.440 margin=1.03x q_ci=0.5887
+      Arm A: r(kappa_j1, logit)=0.956 p=0.0001
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.866 p=0.0025)
+    ci=3: kappa_j1=0.509 j2=4 kappa_j2=0.539 margin=1.06x q_ci=0.8974
+      Arm A: r(kappa_j1, logit)=0.967 p=0.0000
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.725 p=0.0272)
+    ci=4: kappa_j1=0.459 j2=3 kappa_j2=0.539 margin=1.17x q_ci=0.8174
+      Arm A: r(kappa_j1, logit)=0.898 p=0.0010
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+    ci=5: kappa_j1=0.613 j2=13 kappa_j2=0.646 margin=1.05x q_ci=0.9385
+      Arm A: r(kappa_j1, logit)=0.468 p=0.2036
+      Arm B: r(kappa_j1_unchanged=0.000) r(kappa_j2=0.000 p=1.0000)
+
+  CHECKPOINT SUMMARY (step143000):
+    mean kappa_j1 = 0.5070
+    mean Arm A r(kappa, logit) = 0.873
+    mean Arm B r(kappa_j2, logit) = 0.356
+    per-class B_j2_r: ['0.00', '0.00', '0.87', '0.72', '0.00', '0.00']
+
+======================================================================
+PHASE DIAGRAM VERDICT
+======================================================================
+
+Phase diagram table:
+          Step |   kappa_j1 |   Arm A r |   Arm B r
+  --------------------------------------------------
+       step512 |     0.4362 |     0.972 |     0.831
+      step2000 |     0.7444 |     0.940 |     0.238
+     step16000 |     0.7959 |     0.850 |     0.458
+     step48000 |     0.7685 |     0.698 |     0.494
+    step143000 |     0.5070 |     0.873 |     0.356
+
+Spearman r(step, B_j2_r)  = -0.300 p=0.6238
+Spearman r(kappa, B_j2_r) = -0.200 p=0.7471
+Pre-reg: both should be NEGATIVE
+
+FAIL: B_j2_r does not decrease with training step
+FAIL: B_j2_r does not decrease with kappa
+
+Saved to results/cti_checkpoint_phase_diagram.json
