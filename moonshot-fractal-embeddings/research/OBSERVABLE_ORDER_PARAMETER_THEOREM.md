@@ -1397,15 +1397,23 @@ across ALL arms. Also tests ISO-kappa_eff_sig invariance: matched pairs from dif
 arms with same sqrt(d_eff_sig)*kappa should have same logit(q).
 
 **Experimental Status** (Feb 22-23 2026):
-- Control law validation (RUNNING): CE seeds 0+1+2 (partial) done.
-  Theorem 16 CONFIRMED: d_eff_gram = 193-329 vs d_eff_cls = 1.69 (RATIO: 157x).
+- Control law validation (RUNNING): CE arm DONE (3 seeds). NC+ arm now running.
+  Theorem 16 CONFIRMED: d_eff_gram = 326.6+-1.6 vs d_eff_cls = 1.457 (RATIO: 224x).
+  NOTE: Earlier reports of 157x used quick-pilot data (d_eff_gram=193, single seed).
+  Full CE arm (3 seeds, epoch 60): d_eff_gram=326.6, d_eff_cls=1.457 => 224x ratio.
   Pre-registered Test 1 FAILS as predicted: R2 = -3449 (slope 1.0535 completely wrong).
-  Free-slope fit on kappa_eff_gram: slope=0.0584 (5.5% of A_renorm), R2=0.985.
-  Free-slope fit on kappa_nearest: alpha=1.3700, R2=0.9783, d_eff_cls=1.691.
-  NC+/anti_nc arms: running next.
-- Per-arm alpha: CE alpha=1.17, NC+ alpha=1.36 (d_eff_cls: 1.23 -> 1.65 PASS)
-- cti_deff_signal_validation.py: READY — runs after GPU frees (bug fixed)
-- cti_2x2_factorial.py: READY — runs after d_eff_sig validation (strongest test)
+  Free-slope fit on kappa_eff_gram: slope=0.0546 (5.2% of A_renorm), R2=0.967.
+  Free-slope fit on kappa_nearest: alpha=1.2716, R2=0.965, d_eff_cls=1.457 (CIRCULAR).
+  CE baseline: q=0.6042+-0.0030, kappa=0.8396+-0.0088.
+  NC+/anti_nc arms: running (started Feb 23 2026).
+- Per-arm alpha: CE alpha=1.17 (quick), CE alpha=1.27 (full 3-seed).
+  d_eff_cls (quick pilot): CE=1.23, NC+=1.65 (34% increase)
+- cti_deff_signal_validation.py: RUNNING (Feb 23 2026) — breaks circularity
+  Pre-registered: d_eff_sig should match d_eff_cls ~1.46 if theory is correct
+  Codex (Feb 23): if H1-H4 confirmed, Nobel 3.5 -> 5.5/10
+- cti_2x2_factorial.py: QUEUED — runs after d_eff_sig validation (strongest test)
+- NEXT PRIORITY (Codex Feb 23): Orthogonal Intervention + Rescue Study
+  (pre-registered, zero free params, highest Nobel-impact experiment)
 
 **Nobel-track importance**: 8/10. This clarifies WHERE the complexity of the law lies:
 not in d_eff_gram but in d_eff_cls = the neural network's "intrinsic classification
