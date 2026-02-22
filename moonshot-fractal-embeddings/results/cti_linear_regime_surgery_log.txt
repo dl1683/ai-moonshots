@@ -192,3 +192,96 @@ SEED 2
     [checkpoint ep=13] kappa_eff=2.3127, d_eff=34.180, kappa=0.3956, q=0.4808
     [checkpoint ep=14] kappa_eff=3.1771, d_eff=61.324, kappa=0.4057, q=0.4879
     [checkpoint ep=15] kappa_eff=2.5012, d_eff=34.662, kappa=0.4248, q=0.5017
+  [seed=2 epoch=20] loss=0.9293
+    [checkpoint ep=20] kappa_eff=3.7511, d_eff=56.978, kappa=0.4969, q=0.5613
+    [checkpoint ep=25] kappa_eff=3.7987, d_eff=43.081, kappa=0.5788, q=0.5895
+  [seed=2 epoch=30] loss=0.5407
+    [checkpoint ep=30] kappa_eff=3.9506, d_eff=39.260, kappa=0.6305, q=0.6078
+    [checkpoint ep=35] kappa_eff=4.5315, d_eff=36.003, kappa=0.7552, q=0.6340
+  [seed=2 epoch=40] loss=0.1662
+    [checkpoint ep=40] kappa_eff=5.6732, d_eff=40.032, kappa=0.8967, q=0.6609
+    [checkpoint ep=45] kappa_eff=7.0033, d_eff=36.766, kappa=1.1550, q=0.6872
+  [seed=2 epoch=50] loss=0.0165
+    [checkpoint ep=50] kappa_eff=8.4430, d_eff=40.210, kappa=1.3315, q=0.7020
+    [checkpoint ep=55] kappa_eff=8.7393, d_eff=39.243, kappa=1.3951, q=0.7102
+  [seed=2 epoch=60] loss=0.0083
+    [checkpoint ep=60] kappa_eff=8.8881, d_eff=39.816, kappa=1.4086, q=0.7067
+
+  Training trajectory (kappa_eff over epochs):
+    epoch=  1: kappa_eff=0.3288, d_eff=9.092, q=0.0971
+    epoch=  2: kappa_eff=0.5766, d_eff=15.961, q=0.1396 <-- LINEAR REGIME
+    epoch=  3: kappa_eff=0.6636, d_eff=13.403, q=0.1574 <-- LINEAR REGIME
+    epoch=  4: kappa_eff=0.9409, d_eff=18.603, q=0.2063 <-- LINEAR REGIME
+    epoch=  5: kappa_eff=1.0515, d_eff=23.757, q=0.2559 <-- LINEAR REGIME
+    epoch=  6: kappa_eff=1.5120, d_eff=30.108, q=0.2908 <-- LINEAR REGIME
+    epoch=  7: kappa_eff=1.2336, d_eff=16.697, q=0.3487 <-- LINEAR REGIME
+    epoch=  8: kappa_eff=1.5110, d_eff=25.378, q=0.3609 <-- LINEAR REGIME
+    epoch=  9: kappa_eff=1.7751, d_eff=25.431, q=0.3972 <-- LINEAR REGIME
+    epoch= 10: kappa_eff=1.8410, d_eff=25.793, q=0.4295 <-- LINEAR REGIME
+    epoch= 11: kappa_eff=2.0864, d_eff=26.599, q=0.4580
+    epoch= 12: kappa_eff=2.0343, d_eff=25.674, q=0.4753
+    epoch= 13: kappa_eff=2.3127, d_eff=34.180, q=0.4808
+    epoch= 14: kappa_eff=3.1771, d_eff=61.324, q=0.4879
+    epoch= 15: kappa_eff=2.5012, d_eff=34.662, q=0.5017
+    epoch= 20: kappa_eff=3.7511, d_eff=56.978, q=0.5613
+    epoch= 25: kappa_eff=3.7987, d_eff=43.081, q=0.5895
+    epoch= 30: kappa_eff=3.9506, d_eff=39.260, q=0.6078
+    epoch= 35: kappa_eff=4.5315, d_eff=36.003, q=0.6340
+    epoch= 40: kappa_eff=5.6732, d_eff=40.032, q=0.6609
+    epoch= 45: kappa_eff=7.0033, d_eff=36.766, q=0.6872
+    epoch= 50: kappa_eff=8.4430, d_eff=40.210, q=0.7020
+    epoch= 55: kappa_eff=8.7393, d_eff=39.243, q=0.7102
+    epoch= 60: kappa_eff=8.8881, d_eff=39.816, q=0.7067
+
+  Selected checkpoint: epoch=5, kappa_eff=1.0515
+
+  --- SURGERY at epoch=5, kappa_eff=1.0515 ---
+  Baseline: d_eff=23.7569, kappa=0.2157, kappa_eff=1.0515, q=0.2559
+  C_fitted = -2.1752 (pre-registered formula: logit=A*kappa_eff+C)
+  [r=0.500] d_eff_new=11.878, kappa_chg=0.0000%, q=0.2591, logit_act=-1.0509, logit_pred=-1.3919, calib=1.0509
+  [r=0.600] d_eff_new=14.254, kappa_chg=0.0001%, q=0.2577, logit_act=-1.0580, logit_pred=-1.3171, calib=1.0375
+  [r=0.700] d_eff_new=16.630, kappa_chg=0.0000%, q=0.2571, logit_act=-1.0613, logit_pred=-1.2484, calib=1.0336
+  [r=0.800] d_eff_new=19.006, kappa_chg=0.0000%, q=0.2563, logit_act=-1.0652, logit_pred=-1.1844, calib=1.0189
+  [r=0.900] d_eff_new=21.381, kappa_chg=0.0000%, q=0.2564, logit_act=-1.0647, logit_pred=-1.1243, calib=1.0486
+  [r=1.000] d_eff_new=23.757, kappa_chg=0.0000%, q=0.2559, logit_act=-1.0674, logit_pred=-1.0674, calib=0.0000
+  [r=1.250] d_eff_new=29.696, kappa_chg=0.0000%, q=0.2559, logit_act=-1.0674, logit_pred=-0.9367, calib=1.0000
+  [r=1.500] d_eff_new=35.635, kappa_chg=0.0000%, q=0.2566, logit_act=-1.0636, logit_pred=-0.8185, calib=0.9845
+  [r=2.000] d_eff_new=47.514, kappa_chg=0.0000%, q=0.2585, logit_act=-1.0536, logit_pred=-0.6086, calib=0.9700
+  [r=3.000] d_eff_new=71.271, kappa_chg=0.0000%, q=0.2614, logit_act=-1.0389, logit_pred=-0.2565, calib=0.9648
+  [r=5.000] d_eff_new=118.785, kappa_chg=0.0000%, q=0.2655, logit_act=-1.0177, logit_pred=0.3018, calib=0.9637
+  [r=10.000] d_eff_new=237.569, kappa_chg=0.0000%, q=0.2698, logit_act=-0.9957, logit_pred=1.3278, calib=0.9701
+
+  SEED 2 RESULT: Pearson r=0.9294, calib=1.0039, kappa_chg=0.000062%
+  STATUS: FAIL (PRIMARY: FAIL, SECONDARY: FAIL)
+
+======================================================================
+FINAL ANALYSIS
+======================================================================
+  Seed 0: epoch=4, kappa_eff=1.0288
+  Seed 1: epoch=4, kappa_eff=1.0590
+  Seed 2: epoch=5, kappa_eff=1.0515
+
+PRIMARY  (Pearson r > 0.99):    r=0.4353  FAIL
+SECONDARY (calib < 10%):         calib=0.9606  FAIL
+TERTIARY  (kappa_chg < 0.1%):    max=0.000080%  PASS
+A_empirical = 0.0498 vs A_renorm = 1.0535 (error = 95.3%)
+
+OVERALL: FAIL
+CONCLUSION: Surgery shows wrong functional form. Theory needs revision.
+
+Per-r summary (pooled over 3 seeds):
+     r d_eff_base d_eff_new  kappa_eff   q_base   q_new  logit_act  logit_pred   calib
+  0.50     23.475    11.738     1.0464   0.2263  0.2272    -1.2296     -1.5568  1.0134
+  0.60     23.475    14.085     1.0464   0.2263  0.2263    -1.2345     -1.4823  0.9972
+  0.70     23.475    16.433     1.0464   0.2263  0.2256    -1.2385     -1.4139  0.9740
+  0.80     23.475    18.780     1.0464   0.2263  0.2256    -1.2381     -1.3502  0.9631
+  0.90     23.475    21.128     1.0464   0.2263  0.2258    -1.2371     -1.2904  0.9419
+  1.00     23.475    23.475     1.0464   0.2263  0.2263    -1.2339     -1.2339  0.0000
+  1.25     23.475    29.344     1.0464   0.2263  0.2272    -1.2284     -1.1037  0.9587
+  1.50     23.475    35.213     1.0464   0.2263  0.2282    -1.2223     -0.9861  0.9536
+  2.00     23.475    46.950     1.0464   0.2263  0.2312    -1.2052     -0.7772  0.9372
+  3.00     23.475    70.425     1.0464   0.2263  0.2353    -1.1823     -0.4268  0.9361
+  5.00     23.475   117.376     1.0464   0.2263  0.2406    -1.1522      0.1288  0.9401
+ 10.00     23.475   234.751     1.0464   0.2263  0.2467    -1.1190      1.1499  0.9518
+
+Results saved to results/cti_linear_regime_surgery.json
