@@ -160,7 +160,7 @@ The functional structure (logistic in $\kappa_{\mathrm{nearest}}$ and $\log(K-1)
 \end{theorem}
 
 \paragraph{Connection to theory.}
-The empirical constant $\alpha\approx1.477$ (with per-dataset intercepts) is consistent with the theoretical prediction $\alpha_{\mathrm{theory}}=\sqrt{4/\pi}\cdot\sqrt{d_{\mathrm{eff}}}\approx1.128\times1.308\approx1.476$, where $d_{\mathrm{eff}}\approx1.71$ is the effective dimensionality of the within-class distribution. The asymptotic prediction $\beta_\infty=1.0$ is renormalized to $\beta\approx0.746$ by finite-sample effects and anisotropic geometry.
+The empirical constant $\alpha\approx1.477$ (with per-dataset intercepts) is consistent with the theoretical prediction $\alpha_{\mathrm{theory}}=\sqrt{4/\pi}\cdot\sqrt{d_{\mathrm{eff}}}\approx1.128\times1.308\approx1.476$, where $d_{\mathrm{eff}}\approx1.71$ is the effective dimensionality of the within-class distribution. The asymptotic prediction $\beta_\infty=1.0$ is renormalized to $\beta\approx0.746$ by finite-sample effects and anisotropic geometry (single-intercept fit; per-dataset fit gives $\hat\beta=0.326$).
 
 \section{Experimental Design}
 \subsection{Primary 12-architecture LOAO test}
@@ -177,7 +177,7 @@ The 12 architectures span four years (2021--2025) and multiple families:
 \end{itemize}
 
 \subsection{Pre-registration}
-Pre-registered thresholds: $\mathrm{CV}_\alpha<0.25$, $\mathrm{CV}_\beta<0.25$ for the 12-architecture LOAO test. RWKV boundary criteria pre-registered separately: acceptance range $[2.43, 3.29]$ derived from 11-architecture prior mean $2.889\pm0.054$ (timestamp: 2026-02-22T18:06:17 UTC).
+Pre-registered thresholds: $\mathrm{CV}_\alpha<0.25$, $\mathrm{CV}_\beta<0.25$ for the 12-architecture LOAO test. RWKV boundary criteria pre-registered separately: acceptance range $[2.43, 3.29]$ (conservative bound centered on 11-architecture prior mean $2.889$; wider than $\pm3\sigma$ to account for potential distribution shift; timestamp: 2026-02-22T18:06:17 UTC).
 
 \subsection{Cross-modal and causal experiments}
 Cross-modal ViT results use \texttt{cti\_vit\_cross\_modality.json} (CIFAR-10, $K=10$, ViT-Base and ViT-Large \citep{dosovitskiy2021}).
@@ -267,7 +267,7 @@ At $K=100$ (CIFAR-100), both ViT-Base ($r=0.773$) and ResNet50 CNN ($r=0.749$) y
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{../results/figures/fig_cti_multimodal_summary.png}
-\caption{Multi-modality evidence summary. (A) LOAO $\alpha$ for 12 NLP architectures (CV=0.019). (B) Alpha by family on log-scale: NLP decoders are tightly clustered; ViT and CNN values differ but follow the same functional form. (C) Pearson $r$ vs. $K$: ViT and ResNet50 CNN yield comparable $r\approx0.75$ at $K=100$, confirming architecture-independence of the $K=100$ regime effect. (D) Quantitative evidence summary.}
+\caption{Multi-modality evidence summary. (A) LOAO $\alpha$ for 12 NLP architectures (CV=0.019, single-$C_0$ fit; CV=0.023 per-dataset). (B) Alpha by family on log-scale: NLP decoders are tightly clustered; ViT and CNN values differ but follow the same functional form. (C) Pearson $r$ vs. $K$: ViT and ResNet50 CNN yield comparable $r\approx0.75$ at $K=100$, confirming architecture-independence of the $K=100$ regime effect. (D) Quantitative evidence summary.}
 \label{fig:multimodal}
 \end{figure}
 
@@ -342,7 +342,7 @@ We present the CTI Universal Law
 derived from extreme-value theory and validated across 12 NLP architectures (LOAO $\mathrm{CV}_\alpha=0.019$/$0.023$ single/per-dataset intercepts), spanning transformers, SSM hybrids, and pure linear RNNs (RWKV). Cross-modal tests confirm the same functional form in ViT ($R^2=0.964$, $K=10$), and both ViT and ResNet50 CNN show consistent $r\approx0.75$ at $K=100$, isolating the large-$K$ regime as the limiting factor rather than architecture family. The next step is a renormalization theory for how constants transform across tasks, modalities, and $K$ regimes.
 
 \section*{Reproducibility Statement}
-All numerical claims are taken directly from repository artifacts: \texttt{results/cti\_kappa\_nearest\_universal.json}, \texttt{results/rwkv\_preregistration.json}, \texttt{results/cti\_kappa\_loao\_per\_dataset.json}, \texttt{results/cti\_vit\_cross\_modality.json}, \texttt{results/cti\_resnet50\_cifar100.json}, \texttt{results/cti\_vit\_cifar100.json}, \texttt{results/cti\_noisefloor\_analysis.json}, \texttt{results/cti\_do\_intervention\_text.json}, \texttt{results/cti\_orthogonal\_factorial.json}. Pre-registration timestamps are verifiable via git log. Code is available at [repository URL].
+All numerical claims are taken directly from repository artifacts: \texttt{results/cti\_kappa\_nearest\_universal.json}, \texttt{results/rwkv\_preregistration.json}, \texttt{results/cti\_kappa\_loao\_per\_dataset.json}, \texttt{results/cti\_vit\_cross\_modality.json}, \texttt{results/cti\_resnet50\_cifar100.json}, \texttt{results/cti\_vit\_cifar100.json}, \texttt{results/cti\_noisefloor\_analysis.json}, \texttt{results/cti\_do\_intervention\_text.json}, \texttt{results/cti\_orthogonal\_factorial.json}, \texttt{results/cti\_checkpoint\_sweep.json}. Pre-registration timestamps are verifiable via git log. Code is available at [repository URL].
 
 \appendix
 \section{Derivation Details}
