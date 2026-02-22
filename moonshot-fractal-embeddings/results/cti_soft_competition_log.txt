@@ -1,0 +1,266 @@
+======================================================================
+Soft Competition Law Test
+======================================================================
+Device: cuda
+K=20, N_EPOCHS=60, SEEDS=[0, 1, 2]
+TAU_VALUES=[0.1, 0.2, 0.5, 1.0, 2.0, 5.0, inf]
+PRE-REGISTERED: Spearman rho(K_eff_obs, K_eff_kappa) > 0.5
+======================================================================
+
+============================================================
+SEED 0
+============================================================
+  [ep=  1] loss=2.6138, kappa=0.0982, q=0.2184
+  [ep=  2] loss=2.1741, kappa=0.1192, q=0.2939
+  [ep=  3] loss=1.8874, kappa=0.2114, q=0.3798
+  [ep=  4] loss=1.6211, kappa=0.2215, q=0.4387
+  [ep=  5] loss=1.4257, kappa=0.2645, q=0.5007
+  [ep=  6] loss=1.2706, kappa=0.3212, q=0.5346
+  [ep=  7] loss=1.1606, kappa=0.3490, q=0.5653
+  [ep=  8] loss=1.0622, kappa=0.4019, q=0.5987
+  [ep=  9] loss=0.9782, kappa=0.3580, q=0.6040
+  [ep= 10] loss=0.9098, kappa=0.4093, q=0.6294
+  [ep= 11] loss=0.8566, kappa=0.4838, q=0.6473
+  [ep= 12] loss=0.8111, kappa=0.4672, q=0.6515
+  [ep= 13] loss=0.7645, kappa=0.5326, q=0.6699
+  [ep= 14] loss=0.7358, kappa=0.5423, q=0.6635
+  [ep= 15] loss=0.7028, kappa=0.4945, q=0.6693
+  [ep= 20] loss=0.5774, kappa=0.6221, q=0.6864
+  [ep= 25] loss=0.4509, kappa=0.7063, q=0.7055
+  [ep= 30] loss=0.3373, kappa=0.8534, q=0.7441
+  [ep= 35] loss=0.2370, kappa=0.9445, q=0.7496
+  [ep= 40] loss=0.1150, kappa=1.2518, q=0.7928
+  [ep= 45] loss=0.0332, kappa=1.7013, q=0.8128
+  [ep= 50] loss=0.0114, kappa=1.9353, q=0.8204
+  [ep= 55] loss=0.0065, kappa=2.0349, q=0.8246
+  [ep= 60] loss=0.0064, kappa=2.0736, q=0.8283
+
+  Computing full geometry at selected checkpoint...
+  sigma_W=0.1507, tr_W=11.63
+
+  Per-class geometry:
+   cls  kappa_near  K_eff_kappa    d_eff  Phi_tau0.5
+     0      2.1311      18.9320    24.83      2.3828
+     1      2.1311      18.9623    24.83      2.3758
+     2      2.2411      18.9704    33.56      2.4517
+     3      2.2515      18.9658    28.73      2.4433
+     4      2.2220      18.9735    29.28      2.4073
+     5      2.2515      18.9772    28.73      2.4357
+     6      2.2604      18.9806    29.47      2.4590
+     7      2.1310      18.9614    26.86      2.4239
+     8      2.1399      18.9498    31.73      2.3934
+     9      2.2459      18.9663    34.52      2.4665
+    10      2.1853      18.9749    37.54      2.4221
+    11      2.1617      18.9670    27.13      2.4119
+    12      2.1352      18.9419    27.81      2.4030
+    13      2.0349      18.9622    25.31      2.3087
+    14      2.2850      18.9828    31.18      2.3805
+    15      2.0349      18.9481    25.31      2.3525
+    16      2.1352      18.9385    27.81      2.3950
+    17      2.1853      18.9701    37.54      2.4665
+    18      2.1352      18.9714    29.90      2.4326
+    19      2.1352      18.9646    29.90      2.4476
+
+  Running K_eff_obs for all 20 classes (r=5.0)...
+  Global q_base = 0.8246
+  class 0: K_eff_obs=3.005, K_eff_kappa=18.932, kappa_near=2.1311, c_obs=0.1210
+  class 1: K_eff_obs=2.283, K_eff_kappa=18.962, kappa_near=2.1311, c_obs=0.0919
+  class 2: K_eff_obs=2.426, K_eff_kappa=18.970, kappa_near=2.2411, c_obs=0.0723
+  class 3: K_eff_obs=2.113, K_eff_kappa=18.966, kappa_near=2.2515, c_obs=0.0735
+  class 4: K_eff_obs=2.810, K_eff_kappa=18.973, kappa_near=2.2220, c_obs=0.0960
+  class 5: K_eff_obs=1.943, K_eff_kappa=18.977, kappa_near=2.2515, c_obs=0.0676
+  class 6: K_eff_obs=2.223, K_eff_kappa=18.981, kappa_near=2.2604, c_obs=0.0754
+  class 7: K_eff_obs=1.950, K_eff_kappa=18.961, kappa_near=2.1310, c_obs=0.0726
+  class 8: K_eff_obs=2.703, K_eff_kappa=18.950, kappa_near=2.1399, c_obs=0.0852
+  class 9: K_eff_obs=2.213, K_eff_kappa=18.966, kappa_near=2.2459, c_obs=0.0641
+  class 10: K_eff_obs=2.168, K_eff_kappa=18.975, kappa_near=2.1853, c_obs=0.0577
+  class 11: K_eff_obs=2.621, K_eff_kappa=18.967, kappa_near=2.1617, c_obs=0.0966
+  class 12: K_eff_obs=2.337, K_eff_kappa=18.942, kappa_near=2.1352, c_obs=0.0840
+  class 13: K_eff_obs=2.603, K_eff_kappa=18.962, kappa_near=2.0349, c_obs=0.1028
+  class 14: K_eff_obs=1.892, K_eff_kappa=18.983, kappa_near=2.2850, c_obs=0.0607
+  class 15: K_eff_obs=2.538, K_eff_kappa=18.948, kappa_near=2.0349, c_obs=0.1003
+  class 16: K_eff_obs=3.081, K_eff_kappa=18.939, kappa_near=2.1352, c_obs=0.1108
+  class 17: K_eff_obs=1.768, K_eff_kappa=18.970, kappa_near=2.1853, c_obs=0.0471
+  class 18: K_eff_obs=1.911, K_eff_kappa=18.971, kappa_near=2.1352, c_obs=0.0639
+  class 19: K_eff_obs=1.622, K_eff_kappa=18.965, kappa_near=2.1352, c_obs=0.0543
+
+============================================================
+SEED 1
+============================================================
+  [ep=  1] loss=2.5987, kappa=0.1050, q=0.2167
+  [ep=  2] loss=2.1954, kappa=0.1457, q=0.2869
+  [ep=  3] loss=1.9428, kappa=0.2510, q=0.3585
+  [ep=  4] loss=1.6936, kappa=0.2763, q=0.4331
+  [ep=  5] loss=1.4787, kappa=0.2347, q=0.4881
+  [ep=  6] loss=1.3113, kappa=0.2984, q=0.5281
+  [ep=  7] loss=1.1846, kappa=0.3330, q=0.5531
+  [ep=  8] loss=1.0758, kappa=0.3968, q=0.5831
+  [ep=  9] loss=0.9971, kappa=0.4077, q=0.6128
+  [ep= 10] loss=0.9204, kappa=0.4526, q=0.6301
+  [ep= 11] loss=0.8663, kappa=0.4475, q=0.6289
+  [ep= 12] loss=0.8182, kappa=0.4741, q=0.6509
+  [ep= 13] loss=0.7822, kappa=0.4618, q=0.6532
+  [ep= 14] loss=0.7438, kappa=0.5336, q=0.6639
+  [ep= 15] loss=0.7054, kappa=0.5468, q=0.6746
+  [ep= 20] loss=0.5817, kappa=0.5602, q=0.6967
+  [ep= 25] loss=0.4561, kappa=0.6174, q=0.7078
+  [ep= 30] loss=0.3471, kappa=0.7920, q=0.7338
+  [ep= 35] loss=0.2255, kappa=0.9496, q=0.7520
+  [ep= 40] loss=0.1161, kappa=1.1858, q=0.7913
+  [ep= 45] loss=0.0363, kappa=1.6182, q=0.8072
+  [ep= 50] loss=0.0111, kappa=1.8125, q=0.8185
+  [ep= 55] loss=0.0068, kappa=1.9140, q=0.8228
+  [ep= 60] loss=0.0061, kappa=1.9453, q=0.8233
+
+  Computing full geometry at selected checkpoint...
+  sigma_W=0.1532, tr_W=12.02
+
+  Per-class geometry:
+   cls  kappa_near  K_eff_kappa    d_eff  Phi_tau0.5
+     0      2.1105      18.9317    24.56      2.3494
+     1      2.1105      18.9599    24.56      2.3194
+     2      2.2072      18.9636    33.13      2.4255
+     3      2.1565      18.9635    29.49      2.4049
+     4      2.2072      18.9711    33.13      2.3577
+     5      2.1270      18.9749    30.23      2.3334
+     6      2.1270      18.9746    30.23      2.3822
+     7      2.1024      18.9642    27.24      2.3566
+     8      2.0654      18.9399    28.52      2.3313
+     9      2.2180      18.9650    34.53      2.4408
+    10      2.1563      18.9773    38.52      2.3830
+    11      2.0654      18.9499    28.52      2.3655
+    12      2.0339      18.9430    28.73      2.3190
+    13      1.9453      18.9500    25.95      2.2793
+    14      2.2531      18.9799    30.87      2.3484
+    15      1.9453      18.9385    25.95      2.2908
+    16      2.0339      18.9366    28.73      2.3118
+    17      2.1563      18.9750    38.52      2.4152
+    18      2.0456      18.9676    30.42      2.3715
+    19      2.0456      18.9621    30.42      2.3698
+
+  Running K_eff_obs for all 20 classes (r=5.0)...
+  Global q_base = 0.8233
+  class 0: K_eff_obs=3.625, K_eff_kappa=18.932, kappa_near=2.1105, c_obs=0.1476
+  class 1: K_eff_obs=2.688, K_eff_kappa=18.960, kappa_near=2.1105, c_obs=0.1094
+  class 2: K_eff_obs=2.309, K_eff_kappa=18.964, kappa_near=2.2072, c_obs=0.0697
+  class 3: K_eff_obs=2.068, K_eff_kappa=18.964, kappa_near=2.1565, c_obs=0.0701
+  class 4: K_eff_obs=2.658, K_eff_kappa=18.971, kappa_near=2.2072, c_obs=0.0802
+  class 5: K_eff_obs=2.564, K_eff_kappa=18.975, kappa_near=2.1270, c_obs=0.0848
+  class 6: K_eff_obs=1.964, K_eff_kappa=18.975, kappa_near=2.1270, c_obs=0.0650
+  class 7: K_eff_obs=2.347, K_eff_kappa=18.964, kappa_near=2.1024, c_obs=0.0861
+  class 8: K_eff_obs=3.068, K_eff_kappa=18.940, kappa_near=2.0654, c_obs=0.1075
+  class 9: K_eff_obs=2.346, K_eff_kappa=18.965, kappa_near=2.2180, c_obs=0.0679
+  class 10: K_eff_obs=1.968, K_eff_kappa=18.977, kappa_near=2.1563, c_obs=0.0511
+  class 11: K_eff_obs=2.683, K_eff_kappa=18.950, kappa_near=2.0654, c_obs=0.0941
+  class 12: K_eff_obs=2.095, K_eff_kappa=18.943, kappa_near=2.0339, c_obs=0.0729
+  class 13: K_eff_obs=3.003, K_eff_kappa=18.950, kappa_near=1.9453, c_obs=0.1157
+  class 14: K_eff_obs=2.671, K_eff_kappa=18.980, kappa_near=2.2531, c_obs=0.0865
+  class 15: K_eff_obs=3.200, K_eff_kappa=18.939, kappa_near=1.9453, c_obs=0.1233
+  class 16: K_eff_obs=2.610, K_eff_kappa=18.937, kappa_near=2.0339, c_obs=0.0909
+  class 17: K_eff_obs=1.967, K_eff_kappa=18.975, kappa_near=2.1563, c_obs=0.0511
+  class 18: K_eff_obs=1.816, K_eff_kappa=18.968, kappa_near=2.0456, c_obs=0.0597
+  class 19: K_eff_obs=1.805, K_eff_kappa=18.962, kappa_near=2.0456, c_obs=0.0593
+
+============================================================
+SEED 2
+============================================================
+  [ep=  1] loss=2.6106, kappa=0.0879, q=0.2158
+  [ep=  2] loss=2.1735, kappa=0.1397, q=0.2976
+  [ep=  3] loss=1.9166, kappa=0.2389, q=0.3679
+  [ep=  4] loss=1.6737, kappa=0.2388, q=0.4264
+  [ep=  5] loss=1.4638, kappa=0.2466, q=0.4842
+  [ep=  6] loss=1.2984, kappa=0.2688, q=0.5331
+  [ep=  7] loss=1.1719, kappa=0.3347, q=0.5675
+  [ep=  8] loss=1.0756, kappa=0.3251, q=0.5916
+  [ep=  9] loss=0.9973, kappa=0.4200, q=0.6136
+  [ep= 10] loss=0.9145, kappa=0.4185, q=0.6253
+  [ep= 11] loss=0.8786, kappa=0.4431, q=0.6323
+  [ep= 12] loss=0.8195, kappa=0.5010, q=0.6497
+  [ep= 13] loss=0.7807, kappa=0.5021, q=0.6543
+  [ep= 14] loss=0.7483, kappa=0.5392, q=0.6713
+  [ep= 15] loss=0.7064, kappa=0.4889, q=0.6675
+  [ep= 20] loss=0.5786, kappa=0.6444, q=0.6999
+  [ep= 25] loss=0.4651, kappa=0.6485, q=0.7146
+  [ep= 30] loss=0.3498, kappa=0.7705, q=0.7363
+  [ep= 35] loss=0.2284, kappa=0.9914, q=0.7605
+  [ep= 40] loss=0.1225, kappa=1.2511, q=0.7806
+  [ep= 45] loss=0.0354, kappa=1.6542, q=0.8029
+  [ep= 50] loss=0.0116, kappa=1.8607, q=0.8219
+  [ep= 55] loss=0.0079, kappa=1.9572, q=0.8221
+  [ep= 60] loss=0.0062, kappa=1.9589, q=0.8244
+
+  Computing full geometry at selected checkpoint...
+  sigma_W=0.1537, tr_W=12.10
+
+  Per-class geometry:
+   cls  kappa_near  K_eff_kappa    d_eff  Phi_tau0.5
+     0      2.1145      18.9216    23.37      2.3360
+     1      2.0550      18.9482    26.20      2.3300
+     2      2.2061      18.9611    34.93      2.4287
+     3      2.1513      18.9627    29.47      2.3864
+     4      2.2061      18.9686    34.93      2.3662
+     5      2.1242      18.9700    32.06      2.3467
+     6      2.1242      18.9696    32.06      2.3865
+     7      2.0501      18.9584    27.80      2.3219
+     8      2.1324      18.9371    26.75      2.3725
+     9      2.1825      18.9699    35.38      2.4188
+    10      2.1476      18.9759    39.84      2.3754
+    11      2.1324      18.9598    26.75      2.3776
+    12      2.0653      18.9381    27.44      2.3624
+    13      1.9589      18.9439    26.16      2.2876
+    14      2.2559      18.9806    30.58      2.3545
+    15      1.9589      18.9372    26.16      2.2653
+    16      2.0653      18.9302    27.44      2.3074
+    17      2.1476      18.9735    39.84      2.4539
+    18      2.1453      18.9683    28.25      2.4431
+    19      2.1453      18.9700    28.25      2.4055
+
+  Running K_eff_obs for all 20 classes (r=5.0)...
+  Global q_base = 0.8244
+  class 0: K_eff_obs=3.001, K_eff_kappa=18.922, kappa_near=2.1145, c_obs=0.1284
+  class 1: K_eff_obs=2.551, K_eff_kappa=18.948, kappa_near=2.0550, c_obs=0.0974
+  class 2: K_eff_obs=2.139, K_eff_kappa=18.961, kappa_near=2.2061, c_obs=0.0612
+  class 3: K_eff_obs=1.857, K_eff_kappa=18.963, kappa_near=2.1513, c_obs=0.0630
+  class 4: K_eff_obs=2.304, K_eff_kappa=18.969, kappa_near=2.2061, c_obs=0.0660
+  class 5: K_eff_obs=2.504, K_eff_kappa=18.970, kappa_near=2.1242, c_obs=0.0781
+  class 6: K_eff_obs=2.135, K_eff_kappa=18.970, kappa_near=2.1242, c_obs=0.0666
+  class 7: K_eff_obs=1.811, K_eff_kappa=18.958, kappa_near=2.0501, c_obs=0.0651
+  class 8: K_eff_obs=2.703, K_eff_kappa=18.937, kappa_near=2.1324, c_obs=0.1010
+  class 9: K_eff_obs=2.147, K_eff_kappa=18.970, kappa_near=2.1825, c_obs=0.0607
+  class 10: K_eff_obs=2.761, K_eff_kappa=18.976, kappa_near=2.1476, c_obs=0.0693
+  class 11: K_eff_obs=2.298, K_eff_kappa=18.960, kappa_near=2.1324, c_obs=0.0859
+  class 12: K_eff_obs=2.135, K_eff_kappa=18.938, kappa_near=2.0653, c_obs=0.0778
+  class 13: K_eff_obs=2.394, K_eff_kappa=18.944, kappa_near=1.9589, c_obs=0.0915
+  class 14: K_eff_obs=2.876, K_eff_kappa=18.981, kappa_near=2.2559, c_obs=0.0940
+  class 15: K_eff_obs=3.254, K_eff_kappa=18.937, kappa_near=1.9589, c_obs=0.1244
+  class 16: K_eff_obs=3.162, K_eff_kappa=18.930, kappa_near=2.0653, c_obs=0.1152
+  class 17: K_eff_obs=1.658, K_eff_kappa=18.973, kappa_near=2.1476, c_obs=0.0416
+  class 18: K_eff_obs=1.715, K_eff_kappa=18.968, kappa_near=2.1453, c_obs=0.0607
+  class 19: K_eff_obs=1.713, K_eff_kappa=18.970, kappa_near=2.1453, c_obs=0.0606
+
+============================================================
+FINAL ANALYSIS
+============================================================
+
+PRE-REGISTERED: Spearman rho(K_eff_obs, K_eff_kappa):
+  rho = -0.4435  FAIL  (threshold 0.5)
+
+OBSERVED: Spearman rho(K_eff_obs, kappa_nearest):
+  rho = -0.2387  (expect ~-0.5)
+
+Phi comparison (Spearman with K_eff_obs):
+  tau=0.10: Spearman rho(K_eff_obs, Phi) = -0.5274
+  tau=0.20: Spearman rho(K_eff_obs, Phi) = -0.5780
+  tau=0.50: Spearman rho(K_eff_obs, Phi) = -0.5513
+  tau=1.00: Spearman rho(K_eff_obs, Phi) = -0.5420
+  tau=2.00: Spearman rho(K_eff_obs, Phi) = -0.5379
+  tau=5.00: Spearman rho(K_eff_obs, Phi) = -0.5320
+  tau=inf: Spearman rho(K_eff_obs, Phi) = -0.5306
+
+  Best tau = 0.20 (rho = -0.5780)
+
+Saved to results/cti_soft_competition.json
+
+  Best tau = 0.20 (rho = -0.5780)
+
+Saved to results/cti_soft_competition.json
