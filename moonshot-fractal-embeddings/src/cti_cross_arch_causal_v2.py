@@ -66,6 +66,31 @@ MODELS = {
         "trust_remote_code": False,
         "kappa_ce_prereg": 0.4402,  # from kappa_near_cache_20newsgroups_OLMo-1B-hf.json
     },
+    # ── MODERN MODELS (2024-2025) ──────────────────────────────────────────────
+    "qwen3-0.6b": {
+        "hf_path": "Qwen/Qwen3-0.6B",
+        "hidden_dim": 1024,
+        "pooling": "last",
+        "target_layer": 28,  # 28 layers total
+        "trust_remote_code": False,
+        "kappa_ce_prereg": 0.40,  # estimated from Qwen2.5-0.5B cache (kappa=0.4002)
+    },
+    "llama-3.2-3b": {
+        "hf_path": "meta-llama/Llama-3.2-3B",
+        "hidden_dim": 3072,
+        "pooling": "last",
+        "target_layer": 28,  # 28 layers total
+        "trust_remote_code": False,
+        "kappa_ce_prereg": 0.40,  # estimated; will adjust from actual embeddings
+    },
+    "mamba2-130m": {
+        "hf_path": "state-spaces/mamba2-130m",
+        "hidden_dim": 768,
+        "pooling": "last",
+        "target_layer": 23,
+        "trust_remote_code": True,
+        "kappa_ce_prereg": 0.15,  # estimated; Mamba2 improved over Mamba1
+    },
 }
 
 # ── Data ──────────────────────────────────────────────────────────────────────
