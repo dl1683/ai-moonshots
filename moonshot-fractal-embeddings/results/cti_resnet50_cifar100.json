@@ -1,0 +1,73 @@
+{
+  "experiment": "cti_resnet50_cifar100",
+  "description": "CTI Law per-class test: ResNet50 (CNN, no attention), CIFAR-100, K=100",
+  "architecture": "ResNet50",
+  "family": "CNN",
+  "dataset": "CIFAR-100",
+  "K": 100,
+  "N_per_class": 500,
+  "reference_alpha_NLP": 1.477,
+  "reference_alpha_ViT": 0.63,
+  "layers": [
+    {
+      "layer": "layer1",
+      "d": 256,
+      "K": 100,
+      "sigma_W": 0.04130089655518532,
+      "kappa_mean": 0.23821997335337852,
+      "kappa_min": 0.09422614643325555,
+      "kappa_max": 0.6935926725365231,
+      "per_class_acc_mean": 0.19080000000000003,
+      "alpha": 3.372973834894571,
+      "intercept": -2.4350084110684427,
+      "pearson_r": 0.5368240824347806,
+      "pearson_r2": 0.2881800954819442,
+      "p_value": 8.538427710363396e-09
+    },
+    {
+      "layer": "layer2",
+      "d": 512,
+      "K": 100,
+      "sigma_W": 0.02990027889609337,
+      "kappa_mean": 0.2863180783464916,
+      "kappa_min": 0.15269736305904047,
+      "kappa_max": 0.5719124001579572,
+      "per_class_acc_mean": 0.30970000000000003,
+      "alpha": 3.7707206545776955,
+      "intercept": -1.9833860704131703,
+      "pearson_r": 0.5993828885887341,
+      "pearson_r2": 0.3592598471329749,
+      "p_value": 4.4411560875691363e-11
+    },
+    {
+      "layer": "layer3",
+      "d": 1024,
+      "K": 100,
+      "sigma_W": 0.023350626230239868,
+      "kappa_mean": 0.3483611082044222,
+      "kappa_min": 0.16941605216464922,
+      "kappa_max": 0.8390193840091891,
+      "per_class_acc_mean": 0.5241,
+      "alpha": 4.418388280753122,
+      "intercept": -1.4450787522315827,
+      "pearson_r": 0.7492411274976016,
+      "pearson_r2": 0.5613622671338774,
+      "p_value": 3.093569851176573e-19
+    },
+    {
+      "layer": "layer4",
+      "d": 2048,
+      "K": 100,
+      "sigma_W": 0.3300890028476715,
+      "kappa_mean": 0.4224374829051159,
+      "kappa_min": 0.18008968384063553,
+      "kappa_max": 0.7426751005460221,
+      "per_class_acc_mean": 0.6240000000000001,
+      "alpha": 4.54311816548306,
+      "intercept": -1.3621472704335655,
+      "pearson_r": 0.736106567757556,
+      "pearson_r2": 0.5418528790958094,
+      "p_value": 2.6541316590663266e-18
+    }
+  ]
+}
