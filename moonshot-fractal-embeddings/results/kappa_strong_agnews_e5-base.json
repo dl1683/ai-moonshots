@@ -1,0 +1,16 @@
+{
+  "model": "e5-base",
+  "model_name": "intfloat/e5-base-v2",
+  "dataset": "agnews",
+  "K": 4,
+  "d_embed": 768,
+  "n": 1000,
+  "kappa_nearest": 0.3325141417308111,
+  "d_eff_formula": 113.04009033512666,
+  "q": 0.8133333333333334,
+  "logit_q": 1.4718165345580527,
+  "kappa_eff": 3.5353007746302074,
+  "pred_logit_zero_C": 3.724439366072924,
+  "tr_W": 0.24897660315036774,
+  "sigma_W": 0.018005229389042542
+}

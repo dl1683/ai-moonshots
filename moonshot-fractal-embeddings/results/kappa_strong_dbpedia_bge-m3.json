@@ -1,0 +1,16 @@
+{
+  "model": "bge-m3",
+  "model_name": "BAAI/bge-m3",
+  "dataset": "dbpedia",
+  "K": 14,
+  "d_embed": 1024,
+  "n": 1000,
+  "kappa_nearest": Infinity,
+  "d_eff_formula": 1024.0,
+  "q": 1.0,
+  "logit_q": 13.815509557935018,
+  "kappa_eff": Infinity,
+  "pred_logit_zero_C": Infinity,
+  "tr_W": 0.6526709794998169,
+  "sigma_W": 0.025246267118482883
+}

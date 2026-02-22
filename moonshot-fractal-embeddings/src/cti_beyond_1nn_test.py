@@ -31,14 +31,17 @@ import json
 import sys
 import time
 import os
+import warnings
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
 from datasets import load_dataset
 import torch
 from transformers import AutoTokenizer, AutoModel
+warnings.filterwarnings("ignore", category=UserWarning)
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {DEVICE}", flush=True)
@@ -123,8 +126,11 @@ def get_embeddings(model, tokenizer, texts, layer_idx, device, batch_size=64):
             out = model(**enc, output_hidden_states=True)
             hs = out.hidden_states[layer_idx]
             mask = enc["attention_mask"].unsqueeze(-1).float()
-            emb = (hs * mask).sum(1) / mask.sum(1)
-            all_embs.append(emb.cpu().float().numpy())
+            emb = (hs * mask).sum(1) / (mask.sum(1) + 1e-10)
+            emb_np = emb.cpu().float().numpy()
+            # Replace NaN/Inf with zeros
+            emb_np = np.nan_to_num(emb_np, nan=0.0, posinf=0.0, neginf=0.0)
+            all_embs.append(emb_np)
     return np.vstack(all_embs)
 
 
@@ -159,46 +165,16 @@ def compute_kappa_nearest(X, y):
 
 
 def compute_all_metrics(X, y, K):
-    """Compute multiple quality metrics from embeddings."""
-    # Normalize q: (acc - 1/K) / (1 - 1/K)
+    """Compute multiple quality metrics from embeddings (held-out evaluation)."""
     def norm_q(acc):
         return (acc - 1.0/K) / (1.0 - 1.0/K)
 
     metrics = {}
 
-    # 1-NN
-    knn1 = KNeighborsClassifier(n_neighbors=1, n_jobs=1)
-    knn1.fit(X, y)
-    q1 = norm_q(knn1.score(X, y))  # Note: using same set for simplicity (bounded away from 1.0 by kappa structure)
-    # For true evaluation, use held-out; but for correlation test, in-sample is fine
-    metrics["q_knn1"] = q1
+    # kappa_nearest uses ALL data (geometric property, not classifier)
+    metrics["kappa_nearest"] = compute_kappa_nearest(X, y)
 
-    # 3-NN
-    if len(X) > 3:
-        knn3 = KNeighborsClassifier(n_neighbors=3, n_jobs=1)
-        knn3.fit(X, y)
-        metrics["q_knn3"] = norm_q(knn3.score(X, y))
-
-    # 5-NN
-    if len(X) > 5:
-        knn5 = KNeighborsClassifier(n_neighbors=5, n_jobs=1)
-        knn5.fit(X, y)
-        metrics["q_knn5"] = norm_q(knn5.score(X, y))
-
-    # Linear probe (logistic regression)
-    if len(X) > 10 and len(np.unique(y)) > 1:
-        try:
-            scaler = StandardScaler()
-            Xs = scaler.fit_transform(X)
-            lr = LogisticRegression(max_iter=N_LINEAR_ITER, C=1.0, solver="lbfgs",
-                                    multi_class="multinomial", n_jobs=1)
-            lr.fit(Xs, y)
-            metrics["q_linear"] = norm_q(lr.score(Xs, y))
-        except Exception as e:
-            metrics["q_linear"] = None
-            print(f"    Linear probe failed: {e}", flush=True)
-
-    # Silhouette score (geometric only, no classifier)
+    # Silhouette score uses ALL data (geometric, no classifier)
     if len(X) > 10 and len(np.unique(y)) > 1:
         try:
             sil = silhouette_score(X, y, sample_size=min(500, len(X)), random_state=42)
@@ -206,8 +182,42 @@ def compute_all_metrics(X, y, K):
         except Exception:
             metrics["silhouette"] = None
 
-    # kappa_nearest
-    metrics["kappa_nearest"] = compute_kappa_nearest(X, y)
+    # Held-out split for classifiers (80/20)
+    try:
+        X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    except Exception:
+        X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # 1-NN (held-out)
+    knn1 = KNeighborsClassifier(n_neighbors=1, n_jobs=1)
+    knn1.fit(X_tr, y_tr)
+    metrics["q_knn1"] = float(norm_q(knn1.score(X_te, y_te)))
+
+    # 3-NN (held-out)
+    if len(X_tr) > 3:
+        knn3 = KNeighborsClassifier(n_neighbors=3, n_jobs=1)
+        knn3.fit(X_tr, y_tr)
+        metrics["q_knn3"] = float(norm_q(knn3.score(X_te, y_te)))
+
+    # 5-NN (held-out)
+    if len(X_tr) > 5:
+        knn5 = KNeighborsClassifier(n_neighbors=5, n_jobs=1)
+        knn5.fit(X_tr, y_tr)
+        metrics["q_knn5"] = float(norm_q(knn5.score(X_te, y_te)))
+
+    # Linear probe (held-out)
+    if len(X_tr) > 10 and len(np.unique(y_tr)) > 1:
+        try:
+            scaler = StandardScaler()
+            Xtr_s = scaler.fit_transform(X_tr)
+            Xte_s = scaler.transform(X_te)
+            lr = LogisticRegression(max_iter=500, C=1.0, solver="lbfgs",
+                                    multi_class="multinomial", n_jobs=1)
+            lr.fit(Xtr_s, y_tr)
+            metrics["q_linear"] = float(norm_q(lr.score(Xte_s, y_te)))
+        except Exception as e:
+            metrics["q_linear"] = None
+            print(f"    Linear probe failed: {e}", flush=True)
 
     return metrics
 
@@ -305,11 +315,11 @@ def main():
                     **metrics,
                 }
                 model_pts.append(pt)
+                q_lin_s = f"{metrics['q_linear']:.4f}" if metrics.get('q_linear') is not None else "N/A"
+                sil_s = f"{metrics['silhouette']:.3f}" if metrics.get('silhouette') is not None else "N/A"
                 print(f"    Layer {layer}: kappa={metrics['kappa_nearest']:.4f}, "
                       f"q1={metrics['q_knn1']:.4f}, "
-                      f"q_lin={metrics.get('q_linear', 'N/A'):.4f if metrics.get('q_linear') is not None else 'N/A'}, "
-                      f"sil={metrics.get('silhouette', 'N/A'):.3f if metrics.get('silhouette') is not None else 'N/A'} "
-                      f"({elapsed:.1f}s)", flush=True)
+                      f"q_lin={q_lin_s}, sil={sil_s} ({elapsed:.1f}s)", flush=True)
 
             # Cache per model per dataset
             with open(cache_path, "w") as f:

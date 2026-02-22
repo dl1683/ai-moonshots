@@ -1,0 +1,16 @@
+{
+  "model": "bge-small",
+  "model_name": "BAAI/bge-small-en-v1.5",
+  "dataset": "dbpedia",
+  "K": 14,
+  "d_embed": 384,
+  "n": 1000,
+  "kappa_nearest": Infinity,
+  "d_eff_formula": 384.0,
+  "q": 1.0,
+  "logit_q": 13.815509557935018,
+  "kappa_eff": Infinity,
+  "pred_logit_zero_C": Infinity,
+  "tr_W": 0.49485403299331665,
+  "sigma_W": 0.035898222485058535
+}

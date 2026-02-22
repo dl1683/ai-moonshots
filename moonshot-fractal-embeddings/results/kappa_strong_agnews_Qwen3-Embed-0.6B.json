@@ -1,0 +1,16 @@
+{
+  "model": "Qwen3-Embed-0.6B",
+  "model_name": "Qwen/Qwen3-Embedding-0.6B",
+  "dataset": "agnews",
+  "K": 4,
+  "d_embed": 1024,
+  "n": 1000,
+  "kappa_nearest": 0.32409320535054886,
+  "d_eff_formula": 108.7490873802156,
+  "q": 0.8079999999999999,
+  "logit_q": 1.4370666864933135,
+  "kappa_eff": 3.3797356801217853,
+  "pred_logit_zero_C": 3.560551539008301,
+  "tr_W": 0.7242962121963501,
+  "sigma_W": 0.02659549811007491
+}
