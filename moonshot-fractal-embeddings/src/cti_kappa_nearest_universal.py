@@ -75,7 +75,7 @@ DATASETS = {
     "dbpedia":      {"hf_name": "fancyzhx/dbpedia_14", "text_col": "content", "label_col": "label",       "K": 14, "n_sample": 1000},
     "20newsgroups": {"hf_name": "SetFit/20_newsgroups", "text_col": "text",   "label_col": "label_text",  "K": 20, "n_sample": 1000},
     "go_emotions":  {"hf_name": "google-research-datasets/go_emotions", "hf_cfg": "simplified",
-                     "text_col": "text", "label_col": "labels", "K": 28, "n_sample": 5000, "multilabel": True},
+                     "text_col": "text", "label_col": "labels", "K": 28, "n_sample": 1000, "multilabel": True},
 }
 LAYERS_TO_EVAL = [3, 6, 9, 12]  # default layers (overridden per-model by MODEL_LAYERS)
 BATCH_SIZE = 64
@@ -236,7 +236,7 @@ def compute_knn_q(embeddings, labels, K, subsample=1000):
     except ValueError:
         return None
 
-    knn = KNeighborsClassifier(n_neighbors=1, metric="euclidean", n_jobs=-1)
+    knn = KNeighborsClassifier(n_neighbors=1, metric="euclidean", n_jobs=1)  # n_jobs=1: avoids CUDA+multiprocessing conflict on Windows
     knn.fit(X[train_idx], y[train_idx])
     acc = float(knn.score(X[test_idx], y[test_idx]))
     q = (acc - 1.0/K_eff) / (1.0 - 1.0/K_eff)
