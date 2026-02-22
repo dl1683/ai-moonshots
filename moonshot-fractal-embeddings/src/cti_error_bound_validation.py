@@ -84,16 +84,18 @@ def make_etf_centroids(K, D, delta_norm):
     return centroids
 
 
-def compute_q_theory_etf(kappa, K, A=None):
+def compute_q_theory_etf(kappa, K, D, A=None):
     """
     Theoretical q from Gumbel race model (ETF geometry).
-    For ETF with all kappa_ij = kappa:
-    logit(q) = A * kappa - log(K-1) + C
-    -> q = sigma(A * kappa - log(K-1))
+    CORRECT FORMULA: logit(q) = A * kappa * sqrt(D) - log(K-1) + C
+    For isotropic Gaussian: d_eff = D, so kappa_eff = kappa * sqrt(D).
+    For K=2 exact: acc = Phi(kappa * sqrt(D) / 2).
     """
     if A is None:
         A = A_RENORM
-    logit_q = A * kappa - np.log(K - 1)
+    # Correct: use kappa * sqrt(D) since d_eff = D for isotropic Gaussian
+    kappa_eff = kappa * np.sqrt(D)
+    logit_q = A * kappa_eff - np.log(K - 1)
     return float(1.0 / (1.0 + np.exp(-logit_q)))
 
 
@@ -157,36 +159,43 @@ def run_one(D, kappa_target, trial_seed):
 
     # Verify kappa
     kappa_actual = compute_kappa_nearest(centroids, sigma_W, D)
+    kappa_eff = kappa_actual * np.sqrt(D)  # kappa * sqrt(d_eff) for isotropic (d_eff=D)
 
     # Sample data
     X = np.vstack([rng.randn(N_PER_CLASS, D) * sigma_W + centroids[c]
                    for c in range(K)])
     y = np.repeat(np.arange(K), N_PER_CLASS)
 
-    # Compute d_eff from data
-    d_eff = compute_d_eff(X, y)
-
-    # Empirical q
+    # Empirical q (K classes)
     q_actual = compute_q_empirical(X, y, K)
     q_actual = float(np.clip(q_actual, 1e-6, 1 - 1e-6))
     logit_q_actual = float(np.log(q_actual / (1 - q_actual)))
 
-    # Theoretical q (Gumbel race, ETF)
-    q_theory = compute_q_theory_etf(kappa_actual, K)
+    # K=2 nearest-only approximation (tests: does q_K -> q_K2 as D -> inf?)
+    # For K=2 isotropic Gaussian: acc = Phi(kappa*sqrt(D)/2), q = 2*acc - 1 (exact)
+    from scipy.stats import norm as _norm
+    q_k2_exact = float(2 * _norm.cdf(kappa_actual * np.sqrt(D) / 2) - 1)
+    q_k2_exact = float(np.clip(q_k2_exact, 1e-6, 1 - 1e-6))
+    logit_k2_exact = float(np.log(q_k2_exact / (1 - q_k2_exact)))
+
+    # Error: deviation of K-class q from K=2 nearest-only (should vanish as D->inf)
+    error_logit = float(abs(logit_q_actual - logit_k2_exact))
+
+    # Also use law-based prediction for comparison
+    q_theory = compute_q_theory_etf(kappa_actual, K, D)
     q_theory = float(np.clip(q_theory, 1e-6, 1 - 1e-6))
     logit_q_theory = float(np.log(q_theory / (1 - q_theory)))
-
-    # Error
-    error_logit = float(abs(logit_q_actual - logit_q_theory))
 
     return {
         'D': D,
         'kappa_target': kappa_target,
         'kappa_actual': float(kappa_actual),
+        'kappa_eff': float(kappa_eff),
         'trial': trial_seed,
-        'd_eff': float(d_eff),
         'q_actual': float(q_actual),
         'logit_q_actual': float(logit_q_actual),
+        'q_k2_exact': float(q_k2_exact),
+        'logit_k2_exact': float(logit_k2_exact),
         'q_theory': float(q_theory),
         'logit_q_theory': float(logit_q_theory),
         'error_logit': float(error_logit),
