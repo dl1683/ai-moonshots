@@ -142,6 +142,17 @@ def run_arm(X, y, centroids, focus_class, target_class, K, deltas=None):
 
     if len(kappas) < 3:
         return float('nan'), kappas, q_cis
+    # If kappas are all the same (arm_C bounded: jK never approaches j1, kappa_nearest unchanged)
+    # then r is undefined from kappa perspective, but q_ci variation = f(delta) is informative
+    # Return r between delta VALUES and q_ci (tests if jK movement itself changes q)
+    if np.std(kappas) < 1e-6:
+        # kappa doesn't change -> check if q changes with delta
+        delta_arr = np.array(deltas[:len(q_cis)])
+        if len(delta_arr) >= 3 and np.std(q_cis) > 1e-6:
+            r_delta, _ = pearsonr(delta_arr, q_cis)
+            # Negative control passes if |r_delta| < 0.2 (q_ci unaffected by jK movement)
+            return float(r_delta), kappas, q_cis
+        return 0.0, kappas, q_cis  # No kappa change, no q change -> perfect negative control
     r, _ = pearsonr(kappas, q_cis)
     return float(r), kappas, q_cis
 
