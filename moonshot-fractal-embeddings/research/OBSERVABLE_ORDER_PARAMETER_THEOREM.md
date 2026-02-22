@@ -1357,15 +1357,61 @@ where alpha ≈ A_renorm(K) * sqrt(d_eff_cls) ≈ 1.21 for CE-trained models (K=
 Note: if NC-loss changes d_eff_cls across arms (as suggested by NC pilot),
 then the per-arm alpha values will differ, which is the correct signal to measure.
 
+**Corrected d_eff_sig Formula** (Codex code review, Feb 22 2026):
+
+The CORRECT formula for d_eff in the signal subspace uses the POOLED covariance:
+  W_sig = sum_c (n_c/N) * Sigma_c_sig   [K-class weighted sum, (n_sig x n_sig) matrix]
+  d_eff_sig = tr(W_sig)^2 / tr(W_sig^2) = tr(W_sig)^2 / ||W_sig||_F^2
+
+CRITICAL BUG FIXED: Previous code computed:
+  trW2_sig = sum_c (n_c/N)^2 * tr(Sigma_c_sig^2)  [ONLY SELF-TERMS]
+This omits cross-class terms sum_{c!=c'} (n_c/N)(n_{c'}/N) tr(Sigma_c_sig Sigma_{c'}_sig).
+For K=20 balanced classes with similar within-class covariance in signal subspace,
+this INFLATES d_eff_sig by factor ~K=20.
+
+FIX: Accumulate W_sig = sum_c p_c Sigma_c_sig as an (n_sig x n_sig) matrix, then
+compute trW2_sig = np.sum(W_sig**2) = ||W_sig||_F^2. This includes all cross terms.
+
+For the isotropic case (Sigma_c_sig = sigma^2 I_{K-1}):
+  W_sig = sigma^2 I_{K-1}
+  tr(W_sig) = sigma^2 * (K-1)
+  tr(W_sig^2) = sigma^4 * (K-1)
+  d_eff_sig = (K-1)  [CORRECT: equals number of signal dimensions]
+  Old formula gives: K * (K-1)  [WRONG: 20x inflated for K=20]
+
+For K=20, n_sig=19: the bug inflates d_eff_sig from ~1 to ~20. After the fix,
+d_eff_sig should be in the range 1-5, consistent with d_eff_cls inferred from alpha.
+
+**The non-circular validation plan** (d_eff_sig vs d_eff_cls):
+- d_eff_cls = (alpha/A_renorm)^2 = inferred from slope of logit_q vs kappa [CIRCULAR]
+- d_eff_sig = computed from signal-subspace participation ratio [INDEPENDENT]
+- If d_eff_sig ≈ d_eff_cls: breaks circularity, confirms the law structure
+
+**2x2 Causal Factorial** (cti_2x2_factorial.py, Feb 22 2026):
+The strongest causal test per Codex (Nobel 4.5→6/10 if passes):
+- Factor A (L_margin only): changes kappa_nearest, preserves d_eff_sig structure
+- Factor B (L_ETF only): restructures signal subspace, changes d_eff_sig, minimal kappa effect
+- Full NC+: both factors applied
+Pre-registered: logit(q) = A_renorm * sqrt(d_eff_sig) * kappa + C with SAME slope 1.0535
+across ALL arms. Also tests ISO-kappa_eff_sig invariance: matched pairs from different
+arms with same sqrt(d_eff_sig)*kappa should have same logit(q).
+
 **Experimental Status** (Feb 22 2026):
-- cti_control_law_validation.py (RUNNING): will show Test 1 FAIL (d_eff_gram wrong),
-  Test 2 (cross-arm) might reveal between-arm d_eff_cls differences.
-- Key follow-up: compute alpha per arm (NC+ vs CE) from the validation data.
+- Control law validation (RUNNING): CE seeds 0+1 done (d_eff 203->328, confirms
+  d_eff_gram INCREASES — Theorem 16 validated empirically). NC+/anti_nc next.
+  Pre-registered Test 1 WILL FAIL as predicted (~27x slope error).
+- Per-arm alpha: CE alpha=1.17, NC+ alpha=1.36 (d_eff_cls: 1.23 -> 1.65 PASS)
+- cti_deff_signal_validation.py: READY — runs after GPU frees (bug fixed)
+- cti_2x2_factorial.py: READY — runs after d_eff_sig validation (strongest test)
 
 **Nobel-track importance**: 8/10. This clarifies WHERE the complexity of the law lies:
 not in d_eff_gram but in d_eff_cls = the neural network's "intrinsic classification
 dimensionality". This connects to NC theory: NC predicts d_eff_cls → 1 as training
 progresses, which explains the universality of alpha ≈ 1.2-1.5 across architectures.
+
+The 2x2 factorial, if successful, would provide the FIRST CLEAN CAUSAL DECOUPLING of
+the two components (kappa_nearest and d_eff_sig) of the law, establishing their
+substitutability and the product form as a fundamental causal structure.
 
 ---
 
@@ -1391,6 +1437,13 @@ progresses, which explains the universality of alpha ≈ 1.2-1.5 across architec
 | results/cti_theorem15_K_corrected.json | Theorem 15 data |
 | src/cti_bidirectional_causal_rct.py | Bidirectional causal RCT (CE vs NC+ vs NC-) |
 | src/cti_nc_loss_prediction.py | NC-loss quantitative prediction |
+| src/cti_control_law_validation.py | Control law RCT: CE/NC+/anti_nc (RUNNING) |
+| src/cti_control_law_analysis.py | 3-test framework for control law results |
+| src/cti_alpha_arm_analysis.py | Per-arm alpha slopes; d_eff_cls = (alpha/A_renorm)^2 |
+| src/cti_deff_signal_validation.py | Theorem 16 validation: d_eff_sig vs d_eff_gram (READY) |
+| src/cti_2x2_factorial.py | 2x2 causal factorial: L_margin vs L_ETF decoupling (READY) |
+| results/cti_control_law_validation.json | Control law validation data (RUNNING) |
+| results/cti_alpha_arm_analysis_cti_nc_loss_quick.json | Per-arm alpha: CE=1.17, NC+=1.36 |
 | results/cti_nc_loss_prediction.json | NC-loss prediction data |
 | results/cti_dist_ratio_theory.json | Theorem 3 data |
 | results/cti_kappa_nearest_causal.json | Causal decoupling v1 data |
