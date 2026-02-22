@@ -1396,10 +1396,13 @@ Pre-registered: logit(q) = A_renorm * sqrt(d_eff_sig) * kappa + C with SAME slop
 across ALL arms. Also tests ISO-kappa_eff_sig invariance: matched pairs from different
 arms with same sqrt(d_eff_sig)*kappa should have same logit(q).
 
-**Experimental Status** (Feb 22 2026):
-- Control law validation (RUNNING): CE seeds 0+1 done (d_eff 203->328, confirms
-  d_eff_gram INCREASES — Theorem 16 validated empirically). NC+/anti_nc next.
-  Pre-registered Test 1 WILL FAIL as predicted (~27x slope error).
+**Experimental Status** (Feb 22-23 2026):
+- Control law validation (RUNNING): CE seeds 0+1+2 (partial) done.
+  Theorem 16 CONFIRMED: d_eff_gram = 193-329 vs d_eff_cls = 1.69 (RATIO: 157x).
+  Pre-registered Test 1 FAILS as predicted: R2 = -3449 (slope 1.0535 completely wrong).
+  Free-slope fit on kappa_eff_gram: slope=0.0584 (5.5% of A_renorm), R2=0.985.
+  Free-slope fit on kappa_nearest: alpha=1.3700, R2=0.9783, d_eff_cls=1.691.
+  NC+/anti_nc arms: running next.
 - Per-arm alpha: CE alpha=1.17, NC+ alpha=1.36 (d_eff_cls: 1.23 -> 1.65 PASS)
 - cti_deff_signal_validation.py: READY — runs after GPU frees (bug fixed)
 - cti_2x2_factorial.py: READY — runs after d_eff_sig validation (strongest test)
