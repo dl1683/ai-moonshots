@@ -1691,8 +1691,84 @@ PRE-REGISTERED: Multi-direction surgery test (src/cti_multidirection_surgery.py)
 - PASS criterion: ratio delta_multi/delta_single in [0.7*(K-1), 1.3*(K-1)] = [13.3, 24.7]
 - PASS criterion: delta_multi/theory in [0.7, 1.3]
 
-### Currently Running Experiments
+## Session 19: Multi-Direction Surgery Results (Feb 22, 2026)
 
-| Process | Experiment | Status |
+### Multi-Direction Surgery: COMPLETE (3 seeds)
+
+**Setup**: Same as single-direction but compress ALL K-1=19 centroid directions simultaneously.
+Surgery preserves kappa_nearest AND tr(Sigma_W). Evaluation on TEST set (NOT train set).
+
+**Results at r=10**:
+
+| Seed | kappa_eff | delta_single | delta_multi | ratio | multi/theory |
+|------|-----------|-------------|-------------|-------|-------------|
+| 0 | 1.0017 | 0.0706 | 1.0282 | 14.56 | 0.451 |
+| 1 | 1.0017 | 0.0760 | 1.0526 | 13.86 | 0.461 |
+| 2 | 0.9366 | 0.0982 | 1.0642 | 10.83 | 0.499 |
+| MEAN | ~1.00 | 0.082 | 1.048 | 13.08 | 0.470 |
+
+**Pre-registered**: ratio in [13.3, 24.7] = FAIL (mean 13.08, just below lower bound)
+**Secondary**: delta_multi/theory in [0.7,1.3] = FAIL (0.470)
+
+### KEY FINDING: K_eff ≈ 13 (vs K-1=19)
+
+The ratio delta_multi/delta_single ≈ 13 reveals the **effective competition count** K_eff.
+- K-1 = 19 actual competitor classes
+- K_eff ≈ 13 effective competitors (those that actually contribute to error)
+- Discrepancy from K-1: not all pairs are equally hard, some dominate more than others
+
+**Physical interpretation (Codex Feb 22)**:
+Multiclass error is governed by a **sparse competitive subset** of rivals, not all rivals equally
+and not just the single nearest pair. The right object is a COMPETITION SPECTRUM with weights w_j.
+
+### REVISED FORMULA (Codex recommendation)
+
+**Short-term patch**:
+logit(q) = A * kappa_nearest * sqrt(d_eff) * K_eff/(K-1) + C
+
+**Long-term correct form**:
+logit(q) = A * sqrt(d_eff) * sum_{j!=y} w_j * kappa_j + C
+
+where: K_eff = 1/sum(w_j^2) (effective rivals)
+
+**Key constraint**: w_j must be PREDICTED from geometry (not fitted) for this to be a LAW.
+Proposed: w_j proportional to softmax(-kappa_j^2 / (2*d_eff)) [derived from Gumbel Race]
+
+**Zero-parameter prediction**: If K_eff_predicted (from w_j = softmax(-kappa_j^2)) matches
+K_eff_observed = 13, this is a Nobel-worthy result (predicts the competition spectrum from geometry).
+
+### Codex Nobel Assessment (Feb 22)
+
+**Score: 2/10** (unchanged from Feb 21)
+- Causal evidence is promising but n=3 seeds is thin
+- Universality not established (only CIFAR-100/ResNet-18)
+- One prereg arm failed (triplet), one had implementation bug
+- Need: first-principles derivation, pre-registered causal wins across datasets, independent replication
+
+### HIGHEST LEVERAGE NEXT EXPERIMENT: Top-m Competitor Sweep
+
+**Design**:
+- Rank K-1 competitor directions by kappa_j (distance to each class centroid)
+- Apply surgery to top m directions (m=1,2,3,...,K-1)
+- Pre-register predicted delta_logit(m,r) curves for 3 models:
+  a. Nearest-only: delta(m) = delta(1) for all m > 1
+  b. Equal-additive: delta(m) = m * delta(1)
+  c. Sparse-effective: delta(m) = sum_{j=1}^m w_j * delta(j) with w_j from softmax
+- Measure actual delta(m) and find which model fits
+- Repeat across K=10,20,50,100 and 2 datasets
+
+**Why this is the most important experiment**:
+- Directly identifies the functional form (nearest-only vs additive vs sparse)
+- If w_j = softmax(-kappa_j^2) matches observation: DERIVES K_eff from geometry (zero parameters)
+- If stable across K: universal law with computable K_eff
+- Enables revision of the formula from empirical to first-principles
+
+**File**: src/cti_top_m_competitor_sweep.py [TO BE CREATED]
+
+### Currently Completed Experiments
+
+| Experiment | Result | Status |
 |---|---|---|
-| cti_linear_regime_surgery.py | Linear-regime surgery (N_SEEDS=3) | Seed 0 DONE (FAIL), Seed 1 training epoch 50, Seed 2 pending |
+| cti_linear_regime_surgery.py (3 seeds) | A_emp constant at 0.050, 1/(K-1) interpretation | COMPLETE |
+| cti_multidirection_surgery.py (3 seeds) | K_eff=13, ratio=13.08, 47% of theory | COMPLETE |
+| cti_cifar_triplet_arm.py (5 seeds) | q=0.22 (FAILED - implementation bug) | COMPLETE (needs rerun) |
