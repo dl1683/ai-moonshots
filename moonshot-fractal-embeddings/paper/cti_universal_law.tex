@@ -32,15 +32,19 @@ Cross-Architecture Validation}
 \maketitle
 
 \begin{abstract}
-We present the CTI Universal Law and its empirical validation. The law states
-\[
-\logit(q_{\mathrm{norm}})=\alpha\,\kappa_{\mathrm{nearest}}-\beta\log(K-1)+C_0,
-\]
-where $q_{\mathrm{norm}}=(\mathrm{acc}_{1\mathrm{NN}}-1/K)/(1-1/K)$ is chance-normalized 1-NN accuracy and
-$\kappa_{\mathrm{nearest}}=\min_{j\neq k}\|\mu_j-\mu_k\|/\sigma_W$ is the nearest-class centroid SNR.
-The functional form is a theorem-level consequence of an extreme-value ``Gumbel race'' between same-class and wrong-class nearest-neighbor minima; only constants $(\alpha,\beta,C_0)$ are estimated from data.
+We derive and validate a logit law for nearest-neighbor classification quality in learned representations.
+Under Gaussian class conditionals and a Gumbel-race extreme-value argument, the law
+\begin{equation*}
+\logit(q_{\mathrm{norm}})=\alpha\,\kappa_{\mathrm{nearest}}-\beta\log(K-1)+C_0
+\end{equation*}
+(where $q_{\mathrm{norm}}=(\mathrm{acc}_{1\mathrm{NN}}-1/K)/(1-1/K)$,\; $\kappa_{\mathrm{nearest}}=\min_{j\neq k}\|\mu_j-\mu_k\|/(\sigma_W\sqrt{d})$) is a \emph{conditional theorem}: the functional form is derived from first principles; only constants $(\alpha,\beta,C_0)$ require estimation.
 
-Leave-one-architecture-out (LOAO) over 12 architectures yields mean $\alpha=2.868$, std $0.055$, coefficient of variation $\mathbf{0.019}$ --- 13$\times$ better than the pre-registered threshold of 0.25. Architectures span transformers (Pythia, GPT-Neo, OLMo, TinyLlama, Qwen, Mistral), a Transformer+Mamba hybrid (Falcon-H1), and a pure linear RNN with zero attention (RWKV-4). RWKV's held-out $\alpha=2.887$ falls within the pre-registered acceptance interval $[2.43, 3.29]$, a pre-planned boundary test. Cross-modality evaluation spans ViT-Large ($R^2=0.964$, $K=10$), ViT-Base on CIFAR-100 ($K=100$, Pearson $r=0.773$), and ResNet50 CNN on CIFAR-100 ($K=100$, $r=0.749$). Both $K=100$ architectures (attention and CNN) yield comparable $r$ values, isolating the drop from $K=10$ to $K=100$ as a regime effect rather than an architecture effect; Monte Carlo noise-floor analysis confirms this attenuation is expected for large $K$. The law supports \emph{structural universality} of the functional form with modality-specific constants. Causal evidence from frozen do-interventions and an orthogonal factorial test confirms nearest-class geometry as the dominant causal driver.
+Empirically, leave-one-architecture-out (LOAO) over 12 NLP architectures (transformers, SSM hybrid, pure-RNN RWKV-4, 125M--7B params, 2021--2025) yields $\hat\alpha=1.477\pm0.034$, CV$=0.019$ --- 13$\times$ below the pre-registered threshold of 0.25.
+RWKV's held-out $\hat\alpha=2.887$ falls within the pre-registered acceptance interval $[2.43,3.29]$.
+Cross-modality tests confirm the same functional form on ViT-Large/CIFAR-10 ($R^2=0.964$); both ViT-Base and ResNet50 CNN reach comparable $r\approx0.75$ at $K=100$, confirming the form is architecture-agnostic.
+Causal evidence from frozen do-interventions and an orthogonal factorial test identifies nearest-class geometry as the dominant driver.
+
+\textbf{Honest scope.} The constant $\alpha$ varies substantially by modality (NLP: 1.48, ViT: 0.63, CNN: 4.4); universality is of the \emph{functional form}, not of the constant. At $K=100$, $r\approx0.75$ falls below the Monte Carlo noise floor ($E[r]=0.875$), attributed to CIFAR-100's hierarchical class structure. No external replication exists yet.
 \end{abstract}
 
 \section{Introduction}
@@ -143,14 +147,15 @@ Taking logits yields
 \]
 which is Eq.~\ref{eq:cti-law} after finite-sample/anisotropy renormalization:
 
-\begin{theorem}[CTI Universal Law: functional form]
-Under the assumptions above, the functional form of $q_{\mathrm{norm}}$ must be logistic in a linear combination of $\kappa_{\mathrm{nearest}}$ and $\log(K-1)$:
+\begin{theorem}[CTI logit law: functional form]
+\label{thm:cti}
+\textbf{Assumptions:} (A1) class conditionals are sub-Gaussian with shared scale; (A2) within-class distances are in the domain of attraction of the Gumbel distribution; (A3) nearest-class dominance holds ($K-1$ equally spaced competitors approximated by a single nearest competitor plus $(K-2)$ far terms). Under (A1)--(A3), as $n,d\to\infty$ with $K$ fixed:
 \[
 q_{\mathrm{norm}}
 =\sigma\!\left(\alpha\kappa_{\mathrm{nearest}}-\beta\log(K-1)+C_0\right)+\varepsilon_{d,n},
 \quad \varepsilon_{d,n}\to0.
 \]
-The law's functional structure is derived, not fit; only constants $(\alpha,\beta,C_0)$ are estimated from data.
+The functional structure (logistic in $\kappa_{\mathrm{nearest}}$ and $\log(K-1)$) is derived; only $(\alpha,\beta,C_0)$ are estimated. The theorem is \emph{conditional}: deviations (non-Gumbel tails, hierarchical class geometry, degenerate representations) produce measurable residuals documented in \S\ref{sec:limitations}.
 \end{theorem}
 
 \paragraph{Connection to theory.}
@@ -305,8 +310,10 @@ Four claims are strongly supported:
 (3)~\textbf{Architecture boundary crossing}: RWKV (pure linear RNN, no attention) satisfies the pre-registered acceptance interval.
 (4)~\textbf{Cross-family form universality}: Both ViT and ResNet50 CNN yield comparable $r$ at $K=100$ ($r=0.773$ and $0.749$ respectively), confirming the logit-linear form holds across attention and convolutional architectures.
 
-\paragraph{Two-level universality picture.}
-Form universality (the logit-linear relationship) is stronger than constant universality. Constants $(\alpha,\beta,C_0)$ are architecture-invariant within a modality/task protocol but shift between protocols. This is analogous to how scaling law \emph{exponents} are universal while \emph{prefactors} are system-specific.
+\paragraph{Two-level universality picture and honest scope.}
+\emph{Form} universality (the logit-linear relationship) is the strong and primary claim. \emph{Constant} universality (shared $\alpha$) holds within the NLP decoder family (CV$=0.019$) but not across modalities: $\alpha_\mathrm{NLP}=1.48$, $\alpha_\mathrm{ViT}\approx0.63$, $\alpha_\mathrm{CNN}\approx4.4$. This mirrors how power-law scaling \emph{exponents} are more universal than \emph{prefactors}. We explicitly caution against the reading that a single constant governs all modalities; such a claim would not be supported by current evidence.
+
+Among 19 tested model families, BERT and GPT-2 do not follow the law (BERT's CLS token is not class-separable without fine-tuning; GPT-2's final layer degenerates for classification). The law applies to the class of modern autoregressive NLP decoders and, in functional form, to attention and convolutional vision architectures.
 
 \paragraph{Interpretation of $\beta$.}
 Asymptotically, Gumbel race predicts unit coefficient on $\log(K-1)$. Empirical $\beta\approx0.746$ reflects finite-sample and anisotropy renormalization consistent with the derivation.
