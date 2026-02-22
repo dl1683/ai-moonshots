@@ -1,0 +1,249 @@
+Top-m Competitor Sweep Experiment
+K=20, N_EPOCHS=60, SEEDS=[0, 1, 2], r=10.0
+M_VALUES=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+============================================================
+THREE COMPETING MODELS:
+  A. Nearest-only:     delta(m) = delta(1) for all m
+  B. Equal-additive:   delta(m) = m * delta(1)
+  C. Sparse-effective: delta(m) uses softmax weights w_j ~ exp(-kappa_j^2/2)
+============================================================
+
+============================================================
+SEED 0
+============================================================
+  [ep= 1] kappa_eff=0.4620, d_eff=6.918, kappa=0.1757, q=0.0652
+  [ep= 2] kappa_eff=0.6029, d_eff=11.890, kappa=0.1748, q=0.1043
+  [ep= 3] kappa_eff=1.0193, d_eff=16.398, kappa=0.2517, q=0.1295
+  [ep= 4] kappa_eff=1.2145, d_eff=13.299, kappa=0.3330, q=0.1752
+  [ep= 5] kappa_eff=1.4984, d_eff=19.846, kappa=0.3363, q=0.2087
+  [ep= 6] kappa_eff=1.6380, d_eff=20.697, kappa=0.3600, q=0.2448
+  [ep= 7] kappa_eff=1.8860, d_eff=20.294, kappa=0.4187, q=0.2831
+  [ep= 8] kappa_eff=2.0298, d_eff=29.111, kappa=0.3762, q=0.3133
+  [ep= 9] kappa_eff=1.9045, d_eff=20.573, kappa=0.4199, q=0.3212
+  [ep=10] kappa_eff=1.9881, d_eff=22.917, kappa=0.4153, q=0.3498
+  [seed=0 epoch=10] training in progress
+  [ep=11] kappa_eff=2.4443, d_eff=22.941, kappa=0.5103, q=0.3852
+  [ep=12] kappa_eff=2.5439, d_eff=25.146, kappa=0.5073, q=0.4096
+  [ep=13] kappa_eff=2.4755, d_eff=30.631, kappa=0.4473, q=0.4225
+  [ep=14] kappa_eff=2.9576, d_eff=31.269, kappa=0.5289, q=0.4301
+  [ep=15] kappa_eff=2.8516, d_eff=38.937, kappa=0.4570, q=0.4414
+  [ep=20] kappa_eff=3.8511, d_eff=49.039, kappa=0.5499, q=0.4974
+  [seed=0 epoch=20] training in progress
+  [ep=25] kappa_eff=3.8840, d_eff=53.991, kappa=0.5286, q=0.5317
+  [ep=30] kappa_eff=3.4396, d_eff=36.817, kappa=0.5669, q=0.5332
+  [seed=0 epoch=30] training in progress
+  [ep=35] kappa_eff=5.2060, d_eff=56.720, kappa=0.6913, q=0.6093
+  [ep=40] kappa_eff=5.7458, d_eff=63.675, kappa=0.7201, q=0.6274
+  [seed=0 epoch=40] training in progress
+  [ep=45] kappa_eff=5.2236, d_eff=52.635, kappa=0.7200, q=0.6247
+  [ep=50] kappa_eff=5.5353, d_eff=52.934, kappa=0.7608, q=0.6261
+  [seed=0 epoch=50] training in progress
+  [ep=55] kappa_eff=5.0948, d_eff=46.235, kappa=0.7493, q=0.6244
+  [ep=60] kappa_eff=5.4893, d_eff=53.524, kappa=0.7503, q=0.6307
+  [seed=0 epoch=60] training in progress
+
+  Selected checkpoint: epoch=3, kappa_eff=1.0193
+  Baseline: d_eff=16.398, kappa=0.2517, q=0.1295
+
+  Competitor kappa values (sorted ascending, nearest first):
+    rank=1: kappa=0.2517, w_softmax=0.0548
+    rank=2: kappa=0.3177, w_softmax=0.0538
+    rank=3: kappa=0.3233, w_softmax=0.0537
+    rank=4: kappa=0.3250, w_softmax=0.0537
+    rank=5: kappa=0.3328, w_softmax=0.0536
+    ...
+  K_eff_predicted (from softmax) = 18.99
+
+  Starting top-m sweep at r=10.0...
+  [m= 1] delta=0.1060 | A=0.1060 | B=0.1060 | C=0.1060
+  [m= 2] delta=0.3757 | A=0.1060 | B=0.2120 | C=0.2100
+  [m= 3] delta=0.5121 | A=0.1060 | B=0.3179 | C=0.3138
+  [m= 4] delta=0.6528 | A=0.1060 | B=0.4239 | C=0.4176
+  [m= 5] delta=0.7321 | A=0.1060 | B=0.5299 | C=0.5211
+  [m= 6] delta=0.8126 | A=0.1060 | B=0.6359 | C=0.6244
+  [m= 7] delta=0.8847 | A=0.1060 | B=0.7419 | C=0.7277
+  [m= 8] delta=0.9301 | A=0.1060 | B=0.8478 | C=0.8307
+  [m= 9] delta=0.9984 | A=0.1060 | B=0.9538 | C=0.9337
+  [m=10] delta=1.0588 | A=0.1060 | B=1.0598 | C=1.0366
+  [m=11] delta=1.0852 | A=0.1060 | B=1.1658 | C=1.1389
+  [m=12] delta=1.1422 | A=0.1060 | B=1.2717 | C=1.2407
+  [m=13] delta=1.1596 | A=0.1060 | B=1.3777 | C=1.3423
+  [m=14] delta=1.1764 | A=0.1060 | B=1.4837 | C=1.4433
+  [m=15] delta=1.1946 | A=0.1060 | B=1.5897 | C=1.5438
+  [m=16] delta=1.2084 | A=0.1060 | B=1.6957 | C=1.6431
+  [m=17] delta=1.2122 | A=0.1060 | B=1.8016 | C=1.7419
+  [m=18] delta=1.1153 | A=0.1060 | B=1.9076 | C=1.8381
+  [m=19] delta=1.0961 | A=0.1060 | B=2.0136 | C=1.9326
+
+  SEED 0 SUMMARY:
+    delta_1 (m=1): 0.1060
+    delta_K-1 (m=19): 1.2122
+    K_eff_observed  = 11.44
+    K_eff_predicted = 18.99  (from softmax weights)
+    Model A R2 = -7.0358  (nearest-only, should be ~0)
+    Model B R2 = -0.4547  (equal-additive)
+    Model C R2 = -0.2180  (sparse-effective, should be ~1)
+    K_eff match: |obs-pred|/pred = 39.8%  (pass if < 25%)
+
+============================================================
+SEED 1
+============================================================
+  [ep= 1] kappa_eff=0.6956, d_eff=20.986, kappa=0.1518, q=0.0694
+  [ep= 2] kappa_eff=0.5562, d_eff=12.107, kappa=0.1599, q=0.0938
+  [ep= 3] kappa_eff=0.9982, d_eff=10.831, kappa=0.3033, q=0.1153
+  [ep= 4] kappa_eff=1.1250, d_eff=14.420, kappa=0.2962, q=0.1504
+  [ep= 5] kappa_eff=1.3479, d_eff=17.691, kappa=0.3205, q=0.1748
+  [ep= 6] kappa_eff=1.2958, d_eff=23.198, kappa=0.2690, q=0.1981
+  [ep= 7] kappa_eff=1.7791, d_eff=20.748, kappa=0.3906, q=0.2344
+  [ep= 8] kappa_eff=1.7860, d_eff=21.218, kappa=0.3877, q=0.2748
+  [ep= 9] kappa_eff=1.6940, d_eff=20.156, kappa=0.3773, q=0.3005
+  [ep=10] kappa_eff=2.3875, d_eff=29.573, kappa=0.4390, q=0.3238
+  [seed=1 epoch=10] training in progress
+  [ep=11] kappa_eff=2.1839, d_eff=22.080, kappa=0.4648, q=0.3560
+  [ep=12] kappa_eff=2.2261, d_eff=25.457, kappa=0.4412, q=0.3775
+  [ep=13] kappa_eff=2.3085, d_eff=27.800, kappa=0.4378, q=0.3836
+  [ep=14] kappa_eff=2.6133, d_eff=32.662, kappa=0.4573, q=0.4216
+  [ep=15] kappa_eff=3.1775, d_eff=40.411, kappa=0.4998, q=0.4241
+  [ep=20] kappa_eff=3.0280, d_eff=34.474, kappa=0.5157, q=0.4881
+  [seed=1 epoch=20] training in progress
+  [ep=25] kappa_eff=3.4497, d_eff=42.555, kappa=0.5288, q=0.5283
+  [ep=30] kappa_eff=4.0378, d_eff=54.153, kappa=0.5487, q=0.5440
+  [seed=1 epoch=30] training in progress
+  [ep=35] kappa_eff=4.8324, d_eff=54.428, kappa=0.6550, q=0.6040
+  [ep=40] kappa_eff=5.0948, d_eff=53.803, kappa=0.6946, q=0.6089
+  [seed=1 epoch=40] training in progress
+  [ep=45] kappa_eff=5.5133, d_eff=61.448, kappa=0.7033, q=0.6178
+  [ep=50] kappa_eff=5.3286, d_eff=55.246, kappa=0.7169, q=0.6204
+  [seed=1 epoch=50] training in progress
+  [ep=55] kappa_eff=5.2847, d_eff=52.597, kappa=0.7287, q=0.6161
+  [ep=60] kappa_eff=5.6701, d_eff=59.601, kappa=0.7344, q=0.6193
+  [seed=1 epoch=60] training in progress
+
+  Selected checkpoint: epoch=3, kappa_eff=0.9982
+  Baseline: d_eff=10.831, kappa=0.3033, q=0.1153
+
+  Competitor kappa values (sorted ascending, nearest first):
+    rank=1: kappa=0.3033, w_softmax=0.0555
+    rank=2: kappa=0.3484, w_softmax=0.0547
+    rank=3: kappa=0.3661, w_softmax=0.0543
+    rank=4: kappa=0.3705, w_softmax=0.0542
+    rank=5: kappa=0.3730, w_softmax=0.0542
+    ...
+  K_eff_predicted (from softmax) = 18.98
+
+  Starting top-m sweep at r=10.0...
+  [m= 1] delta=0.1584 | A=0.1584 | B=0.1584 | C=0.1584
+  [m= 2] delta=0.4147 | A=0.1584 | B=0.3167 | C=0.3144
+  [m= 3] delta=0.6491 | A=0.1584 | B=0.4751 | C=0.4695
+  [m= 4] delta=0.6940 | A=0.1584 | B=0.6334 | C=0.6243
+  [m= 5] delta=0.7601 | A=0.1584 | B=0.7918 | C=0.7789
+  [m= 6] delta=0.8154 | A=0.1584 | B=0.9501 | C=0.9314
+  [m= 7] delta=0.9406 | A=0.1584 | B=1.1085 | C=1.0836
+  [m= 8] delta=1.0139 | A=0.1584 | B=1.2668 | C=1.2356
+  [m= 9] delta=1.0658 | A=0.1584 | B=1.4252 | C=1.3869
+  [m=10] delta=1.1103 | A=0.1584 | B=1.5835 | C=1.5379
+  [m=11] delta=1.1324 | A=0.1584 | B=1.7419 | C=1.6889
+  [m=12] delta=1.1923 | A=0.1584 | B=1.9002 | C=1.8388
+  [m=13] delta=1.2152 | A=0.1584 | B=2.0586 | C=1.9885
+  [m=14] delta=1.2053 | A=0.1584 | B=2.2169 | C=2.1378
+  [m=15] delta=1.2018 | A=0.1584 | B=2.3753 | C=2.2861
+  [m=16] delta=1.1958 | A=0.1584 | B=2.5336 | C=2.4316
+  [m=17] delta=1.1747 | A=0.1584 | B=2.6920 | C=2.5760
+  [m=18] delta=1.1442 | A=0.1584 | B=2.8503 | C=2.7201
+  [m=19] delta=1.1544 | A=0.1584 | B=3.0087 | C=2.8543
+
+  SEED 1 SUMMARY:
+    delta_1 (m=1): 0.1584
+    delta_K-1 (m=19): 1.2152
+    K_eff_observed  = 7.67
+    K_eff_predicted = 18.98  (from softmax weights)
+    Model A R2 = -7.4157  (nearest-only, should be ~0)
+    Model B R2 = -8.0719  (equal-additive)
+    Model C R2 = -6.6856  (sparse-effective, should be ~1)
+    K_eff match: |obs-pred|/pred = 59.6%  (pass if < 25%)
+
+============================================================
+SEED 2
+============================================================
+  [ep= 1] kappa_eff=0.2912, d_eff=6.380, kappa=0.1153, q=0.0837
+  [ep= 2] kappa_eff=0.6410, d_eff=8.862, kappa=0.2153, q=0.1102
+  [ep= 3] kappa_eff=1.2403, d_eff=18.520, kappa=0.2882, q=0.1378
+  [ep= 4] kappa_eff=1.3465, d_eff=18.046, kappa=0.3170, q=0.1725
+  [ep= 5] kappa_eff=1.3117, d_eff=14.277, kappa=0.3471, q=0.2143
+  [ep= 6] kappa_eff=1.8949, d_eff=24.034, kappa=0.3865, q=0.2428
+  [ep= 7] kappa_eff=1.8760, d_eff=22.493, kappa=0.3956, q=0.2796
+  [ep= 8] kappa_eff=2.0604, d_eff=29.375, kappa=0.3802, q=0.3164
+  [ep= 9] kappa_eff=2.0285, d_eff=24.065, kappa=0.4135, q=0.3220
+  [ep=10] kappa_eff=2.4725, d_eff=24.650, kappa=0.4980, q=0.3596
+  [seed=2 epoch=10] training in progress
+  [ep=11] kappa_eff=2.5033, d_eff=34.660, kappa=0.4252, q=0.3693
+  [ep=12] kappa_eff=2.5800, d_eff=28.202, kappa=0.4858, q=0.3969
+  [ep=13] kappa_eff=2.7324, d_eff=30.354, kappa=0.4959, q=0.4240
+  [ep=14] kappa_eff=2.7486, d_eff=31.777, kappa=0.4876, q=0.4404
+  [ep=15] kappa_eff=2.5507, d_eff=29.812, kappa=0.4672, q=0.4528
+  [ep=20] kappa_eff=3.4952, d_eff=38.403, kappa=0.5640, q=0.5022
+  [seed=2 epoch=20] training in progress
+  [ep=25] kappa_eff=4.4115, d_eff=55.875, kappa=0.5902, q=0.5242
+  [ep=30] kappa_eff=4.0015, d_eff=47.116, kappa=0.5830, q=0.5414
+  [seed=2 epoch=30] training in progress
+  [ep=35] kappa_eff=5.2919, d_eff=59.009, kappa=0.6889, q=0.6159
+  [ep=40] kappa_eff=5.5223, d_eff=56.361, kappa=0.7356, q=0.6199
+  [seed=2 epoch=40] training in progress
+  [ep=45] kappa_eff=5.8824, d_eff=62.577, kappa=0.7436, q=0.6222
+  [ep=50] kappa_eff=5.9995, d_eff=61.326, kappa=0.7661, q=0.6293
+  [seed=2 epoch=50] training in progress
+  [ep=55] kappa_eff=5.7078, d_eff=58.204, kappa=0.7482, q=0.6333
+  [ep=60] kappa_eff=6.0044, d_eff=60.994, kappa=0.7688, q=0.6249
+  [seed=2 epoch=60] training in progress
+
+  Selected checkpoint: epoch=3, kappa_eff=1.2403
+  Baseline: d_eff=18.520, kappa=0.2882, q=0.1378
+
+  Competitor kappa values (sorted ascending, nearest first):
+    rank=1: kappa=0.2882, w_softmax=0.0545
+    rank=2: kappa=0.2918, w_softmax=0.0545
+    rank=3: kappa=0.2925, w_softmax=0.0544
+    rank=4: kappa=0.3120, w_softmax=0.0541
+    rank=5: kappa=0.3433, w_softmax=0.0536
+    ...
+  K_eff_predicted (from softmax) = 18.98
+
+  Starting top-m sweep at r=10.0...
+  [m= 1] delta=0.1115 | A=0.1115 | B=0.1115 | C=0.1115
+  [m= 2] delta=0.2843 | A=0.1115 | B=0.2230 | C=0.2229
+  [m= 3] delta=0.3645 | A=0.1115 | B=0.3345 | C=0.3343
+  [m= 4] delta=0.5403 | A=0.1115 | B=0.4460 | C=0.4450
+  [m= 5] delta=0.6201 | A=0.1115 | B=0.5575 | C=0.5545
+  [m= 6] delta=0.7380 | A=0.1115 | B=0.6690 | C=0.6641
+  [m= 7] delta=0.8620 | A=0.1115 | B=0.7805 | C=0.7733
+  [m= 8] delta=0.9486 | A=0.1115 | B=0.8920 | C=0.8819
+  [m= 9] delta=0.9975 | A=0.1115 | B=1.0035 | C=0.9903
+  [m=10] delta=1.0351 | A=0.1115 | B=1.1150 | C=1.0987
+  [m=11] delta=1.0844 | A=0.1115 | B=1.2265 | C=1.2068
+  [m=12] delta=1.1327 | A=0.1115 | B=1.3380 | C=1.3144
+  [m=13] delta=1.1455 | A=0.1115 | B=1.4495 | C=1.4219
+  [m=14] delta=1.1625 | A=0.1115 | B=1.5610 | C=1.5279
+  [m=15] delta=1.1705 | A=0.1115 | B=1.6725 | C=1.6336
+  [m=16] delta=1.1784 | A=0.1115 | B=1.7840 | C=1.7391
+  [m=17] delta=1.1845 | A=0.1115 | B=1.8955 | C=1.8442
+  [m=18] delta=1.1873 | A=0.1115 | B=2.0070 | C=1.9462
+  [m=19] delta=1.0950 | A=0.1115 | B=2.1185 | C=2.0454
+
+  SEED 2 SUMMARY:
+    delta_1 (m=1): 0.1115
+    delta_K-1 (m=19): 1.1873
+    K_eff_observed  = 10.65
+    K_eff_predicted = 18.98  (from softmax weights)
+    Model A R2 = -5.3843  (nearest-only, should be ~0)
+    Model B R2 = -0.5081  (equal-additive)
+    Model C R2 = -0.2933  (sparse-effective, should be ~1)
+    K_eff match: |obs-pred|/pred = 43.9%  (pass if < 25%)
+
+============================================================
+FINAL SUMMARY
+============================================================
+Best model = Model with highest R2 across seeds
+Nobel-track result if: K_eff_predicted matches K_eff_observed within 25%
+
+Results saved to results/cti_top_m_sweep.json
+m_sweep.json
