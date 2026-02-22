@@ -53,3 +53,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Large binary embedding caches
+*.npz
+*.npy
