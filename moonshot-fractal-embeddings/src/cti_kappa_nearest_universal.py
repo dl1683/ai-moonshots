@@ -54,6 +54,9 @@ MODELS = [
     "Qwen/Qwen3-0.6B",               # Qwen3 2025: RoPE, GQA, SwiGLU, 36T tokens
     "Qwen/Qwen3-1.7B",               # Qwen3 1.7B 2025: same arch as 0.6B, 3x scale
     "mistralai/Mistral-7B-v0.3",     # Mistral-7B 2023: sliding-window attention, different family
+    # ── Non-transformer / SSM boundary test (pre-registered Feb 22 2026) ─────
+    "state-spaces/mamba2-370m",      # Mamba2 pure SSM: structured state-space, NO attention
+    "tiiuae/falcon-h1-0.5b",         # Falcon-H1: Transformer+Mamba hybrid (TII 2025)
 ]
 
 # Per-model layer indices (proportional depth: 25%, 50%, 75%, 100%)
@@ -68,6 +71,8 @@ MODEL_LAYERS = {
     "Qwen3-0.6B": [7, 14, 21, 28],  # 28 total layers, hidden_dim=1024, GQA
     "Qwen3-1.7B": [7, 14, 21, 28],  # 28 total layers, hidden_dim=2048, same arch 3x scale
     "Mistral-7B-v0.3": [8, 16, 24, 32],  # 32 total layers, sliding-window attn, 4096 hidden
+    "mamba2-370m": [12, 24, 36, 48],   # 48 total layers, pure SSM no attention
+    "falcon-h1-0.5b": [4, 8, 12, 16], # 16 total layers, Transformer+Mamba hybrid
 }
 
 DATASETS = {
@@ -84,15 +89,21 @@ CACHE_DIR = "results"
 PRE_REG_CV_ALPHA = 0.25   # alpha CV threshold (across datasets)
 PRE_REG_CV_BEFF  = 0.25   # b_eff CV threshold
 
+# Models requiring trust_remote_code=True (SSM/hybrid)
+TRUST_REMOTE_CODE_MODELS = {"mamba2-370m", "falcon-h1-0.5b"}
+
 # ================================================================
 # EMBEDDING EXTRACTION
 # ================================================================
 @torch.no_grad()
 def get_embeddings_at_layers(model_name, texts, labels, layers, batch_size=64):
     """Extract embeddings at specified layers."""
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model_short = model_name.split("/")[-1]
+    trust_remote = model_short in TRUST_REMOTE_CODE_MODELS
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=trust_remote)
     model = AutoModel.from_pretrained(
-        model_name, output_hidden_states=True, torch_dtype=torch.float16
+        model_name, output_hidden_states=True, torch_dtype=torch.float16,
+        trust_remote_code=trust_remote,
     ).to(DEVICE).eval()
 
     if tokenizer.pad_token is None:
