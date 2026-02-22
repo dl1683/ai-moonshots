@@ -1,0 +1,180 @@
+======================================================================
+2-Layer CTI Synthetic Validation
+======================================================================
+K=20, d=512, n_per_class=500
+Kappa range: [0.3, 0.5, 0.8, 1.0, 1.5, 2.0, 3.0]
+K_eff levels: [0.0, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+A_preregistered = 1.1284
+
+  kappa=0.3, keff_lv=0.0, K_eff=1.0, q=0.937, logit=2.700, pred_2L=0.339
+  kappa=0.3, keff_lv=0.0, K_eff=1.0, q=0.953, logit=3.015, pred_2L=0.339
+  kappa=0.3, keff_lv=0.0, K_eff=1.0, q=0.927, logit=2.547, pred_2L=0.339
+  kappa=0.3, keff_lv=0.1, K_eff=1.2, q=0.933, logit=2.628, pred_2L=0.374
+  kappa=0.3, keff_lv=0.1, K_eff=1.2, q=0.951, logit=2.965, pred_2L=0.374
+  kappa=0.3, keff_lv=0.1, K_eff=1.2, q=0.927, logit=2.547, pred_2L=0.374
+  kappa=0.3, keff_lv=0.2, K_eff=1.5, q=0.926, logit=2.525, pred_2L=0.417
+  kappa=0.3, keff_lv=0.2, K_eff=1.5, q=0.944, logit=2.821, pred_2L=0.417
+  kappa=0.3, keff_lv=0.2, K_eff=1.5, q=0.920, logit=2.439, pred_2L=0.417
+  kappa=0.3, keff_lv=0.4, K_eff=2.5, q=0.895, logit=2.140, pred_2L=0.540
+  kappa=0.3, keff_lv=0.4, K_eff=2.5, q=0.900, logit=2.200, pred_2L=0.540
+  kappa=0.3, keff_lv=0.4, K_eff=2.5, q=0.884, logit=2.033, pred_2L=0.540
+  kappa=0.3, keff_lv=0.6, K_eff=4.9, q=0.841, logit=1.663, pred_2L=0.749
+  kappa=0.3, keff_lv=0.6, K_eff=4.9, q=0.832, logit=1.603, pred_2L=0.749
+  kappa=0.3, keff_lv=0.6, K_eff=4.9, q=0.829, logit=1.576, pred_2L=0.749
+  kappa=0.3, keff_lv=0.8, K_eff=11.0, q=0.765, logit=1.179, pred_2L=1.125
+  kappa=0.3, keff_lv=0.8, K_eff=11.0, q=0.764, logit=1.174, pred_2L=1.125
+  kappa=0.3, keff_lv=0.8, K_eff=11.0, q=0.756, logit=1.129, pred_2L=1.125
+  kappa=0.3, keff_lv=1.0, K_eff=19.0, q=0.703, logit=0.859, pred_2L=1.476
+  kappa=0.3, keff_lv=1.0, K_eff=19.0, q=0.696, logit=0.828, pred_2L=1.476
+  kappa=0.3, keff_lv=1.0, K_eff=19.0, q=0.681, logit=0.761, pred_2L=1.476
+  kappa=0.5, keff_lv=0.0, K_eff=1.0, q=0.999, logit=7.079, pred_2L=0.564
+  kappa=0.5, keff_lv=0.0, K_eff=1.0, q=1.000, logit=8.466, pred_2L=0.564
+  kappa=0.5, keff_lv=0.0, K_eff=1.0, q=1.000, logit=8.466, pred_2L=0.564
+  kappa=0.5, keff_lv=0.1, K_eff=1.2, q=0.999, logit=7.367, pred_2L=0.623
+  kappa=0.5, keff_lv=0.1, K_eff=1.2, q=1.000, logit=8.466, pred_2L=0.623
+  kappa=0.5, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=0.623
+  kappa=0.5, keff_lv=0.2, K_eff=1.5, q=0.999, logit=6.855, pred_2L=0.695
+  kappa=0.5, keff_lv=0.2, K_eff=1.5, q=0.999, logit=7.367, pred_2L=0.695
+  kappa=0.5, keff_lv=0.2, K_eff=1.5, q=1.000, logit=7.772, pred_2L=0.695
+  kappa=0.5, keff_lv=0.4, K_eff=2.5, q=0.998, logit=6.267, pred_2L=0.899
+  kappa=0.5, keff_lv=0.4, K_eff=2.5, q=0.999, logit=6.519, pred_2L=0.899
+  kappa=0.5, keff_lv=0.4, K_eff=2.5, q=0.998, logit=6.385, pred_2L=0.899
+  kappa=0.5, keff_lv=0.6, K_eff=4.9, q=0.992, logit=4.769, pred_2L=1.248
+  kappa=0.5, keff_lv=0.6, K_eff=4.9, q=0.992, logit=4.794, pred_2L=1.248
+  kappa=0.5, keff_lv=0.6, K_eff=4.9, q=0.993, logit=4.903, pred_2L=1.248
+  kappa=0.5, keff_lv=0.8, K_eff=11.0, q=0.979, logit=3.829, pred_2L=1.875
+  kappa=0.5, keff_lv=0.8, K_eff=11.0, q=0.977, logit=3.761, pred_2L=1.875
+  kappa=0.5, keff_lv=0.8, K_eff=11.0, q=0.978, logit=3.780, pred_2L=1.875
+  kappa=0.5, keff_lv=1.0, K_eff=19.0, q=0.960, logit=3.184, pred_2L=2.459
+  kappa=0.5, keff_lv=1.0, K_eff=19.0, q=0.957, logit=3.094, pred_2L=2.459
+  kappa=0.5, keff_lv=1.0, K_eff=19.0, q=0.955, logit=3.049, pred_2L=2.459
+  kappa=0.8, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=0.903
+  kappa=0.8, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=0.903
+  kappa=0.8, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=0.903
+  kappa=0.8, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=0.997
+  kappa=0.8, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=0.997
+  kappa=0.8, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=0.997
+  kappa=0.8, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=1.112
+  kappa=0.8, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=1.112
+  kappa=0.8, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=1.112
+  kappa=0.8, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=1.439
+  kappa=0.8, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=1.439
+  kappa=0.8, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=1.439
+  kappa=0.8, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=1.998
+  kappa=0.8, keff_lv=0.6, K_eff=4.9, q=1.000, logit=8.466, pred_2L=1.998
+  kappa=0.8, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=1.998
+  kappa=0.8, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=3.000
+  kappa=0.8, keff_lv=0.8, K_eff=11.0, q=1.000, logit=7.772, pred_2L=3.000
+  kappa=0.8, keff_lv=0.8, K_eff=11.0, q=1.000, logit=8.466, pred_2L=3.000
+  kappa=0.8, keff_lv=1.0, K_eff=19.0, q=1.000, logit=7.772, pred_2L=3.935
+  kappa=0.8, keff_lv=1.0, K_eff=19.0, q=0.999, logit=6.855, pred_2L=3.935
+  kappa=0.8, keff_lv=1.0, K_eff=19.0, q=1.000, logit=8.466, pred_2L=3.935
+  kappa=1.0, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=1.128
+  kappa=1.0, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=1.128
+  kappa=1.0, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=1.128
+  kappa=1.0, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=1.246
+  kappa=1.0, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=1.246
+  kappa=1.0, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=1.246
+  kappa=1.0, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=1.390
+  kappa=1.0, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=1.390
+  kappa=1.0, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=1.390
+  kappa=1.0, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=1.798
+  kappa=1.0, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=1.798
+  kappa=1.0, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=1.798
+  kappa=1.0, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=2.497
+  kappa=1.0, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=2.497
+  kappa=1.0, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=2.497
+  kappa=1.0, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=3.750
+  kappa=1.0, keff_lv=0.8, K_eff=11.0, q=1.000, logit=8.466, pred_2L=3.750
+  kappa=1.0, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=3.750
+  kappa=1.0, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=4.918
+  kappa=1.0, keff_lv=1.0, K_eff=19.0, q=1.000, logit=8.466, pred_2L=4.918
+  kappa=1.0, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=4.918
+  kappa=1.5, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=1.693
+  kappa=1.5, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=1.693
+  kappa=1.5, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=1.693
+  kappa=1.5, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=1.869
+  kappa=1.5, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=1.869
+  kappa=1.5, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=1.869
+  kappa=1.5, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=2.085
+  kappa=1.5, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=2.085
+  kappa=1.5, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=2.085
+  kappa=1.5, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=2.698
+  kappa=1.5, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=2.698
+  kappa=1.5, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=2.698
+  kappa=1.5, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=3.745
+  kappa=1.5, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=3.745
+  kappa=1.5, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=3.745
+  kappa=1.5, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=5.625
+  kappa=1.5, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=5.625
+  kappa=1.5, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=5.625
+  kappa=1.5, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=7.378
+  kappa=1.5, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=7.378
+  kappa=1.5, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=7.378
+  kappa=2.0, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=2.257
+  kappa=2.0, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=2.257
+  kappa=2.0, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=2.257
+  kappa=2.0, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=2.492
+  kappa=2.0, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=2.492
+  kappa=2.0, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=2.492
+  kappa=2.0, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=2.780
+  kappa=2.0, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=2.780
+  kappa=2.0, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=2.780
+  kappa=2.0, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=3.597
+  kappa=2.0, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=3.597
+  kappa=2.0, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=3.597
+  kappa=2.0, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=4.994
+  kappa=2.0, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=4.994
+  kappa=2.0, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=4.994
+  kappa=2.0, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=7.501
+  kappa=2.0, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=7.501
+  kappa=2.0, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=7.501
+  kappa=2.0, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=9.837
+  kappa=2.0, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=9.837
+  kappa=2.0, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=9.837
+  kappa=3.0, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=3.385
+  kappa=3.0, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=3.385
+  kappa=3.0, keff_lv=0.0, K_eff=1.0, q=1.000, logit=13.816, pred_2L=3.385
+  kappa=3.0, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=3.738
+  kappa=3.0, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=3.738
+  kappa=3.0, keff_lv=0.1, K_eff=1.2, q=1.000, logit=13.816, pred_2L=3.738
+  kappa=3.0, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=4.170
+  kappa=3.0, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=4.170
+  kappa=3.0, keff_lv=0.2, K_eff=1.5, q=1.000, logit=13.816, pred_2L=4.170
+  kappa=3.0, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=5.395
+  kappa=3.0, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=5.395
+  kappa=3.0, keff_lv=0.4, K_eff=2.5, q=1.000, logit=13.816, pred_2L=5.395
+  kappa=3.0, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=7.491
+  kappa=3.0, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=7.491
+  kappa=3.0, keff_lv=0.6, K_eff=4.9, q=1.000, logit=13.816, pred_2L=7.491
+  kappa=3.0, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=11.251
+  kappa=3.0, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=11.251
+  kappa=3.0, keff_lv=0.8, K_eff=11.0, q=1.000, logit=13.816, pred_2L=11.251
+  kappa=3.0, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=14.755
+  kappa=3.0, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=14.755
+  kappa=3.0, keff_lv=1.0, K_eff=19.0, q=1.000, logit=13.816, pred_2L=14.755
+
+======================================================================
+ANALYSIS
+======================================================================
+
+2-layer model (logit = A*kappa*sqrt(K_eff) + C):
+  R2 = 0.1250
+  Pearson r = 0.4173
+  Fitted C = 7.6153
+
+1-layer model (logit = A*kappa*sqrt(d_eff) + C):
+  R2 = -0.2603
+  Pearson r = 0.3912
+  Fitted C = 5.9993
+
+--- K_eff variation at kappa=1.0 ---
+  Pearson r(K_eff, logit_q) at kappa=1.0: -0.4724
+
+--- kappa variation at keff_level=0.5 ---
+
+SUMMARY:
+  2-layer R2 = 0.1250 vs 1-layer R2 = -0.2603
+  2-layer WINS
+
+Saved to results/cti_2layer_synthetic.json

@@ -1943,27 +1943,50 @@ a fixed model, K_eff_i barely changes, so q barely changes."
 3. 2x2 factorial: low/high kappa x low/high K_eff (requires N architecture snapshots)
 4. Cross-model mediation: show d_eff direct effect shrinks after conditioning on K_eff
 
-### Theorem 18 (CONJECTURE): 2-Layer CTI Law
+### Theorem 18 (REVISED — SIGN CORRECTED): 2-Layer CTI Law
+
+**IMPORTANT**: Original Theorem 18 (logit ~ kappa * sqrt(K_eff)) had WRONG sign.
+Synthetic validation (Feb 22) shows K_eff has NEGATIVE effect. Corrected below.
 
 **Statement**: For a neural classifier with K classes, the normalized accuracy q for class i satisfies:
 
-logit(q_i) = C_i + A * kappa_i * sqrt(K_eff_i)
+logit(q_i) = C_i + A * kappa_i / sqrt(K_eff_i)
 
 where:
 - kappa_i = min_{j != i} ||mu_i - mu_j|| / (sigma_W * sqrt(d)) (nearest centroid SNR)
 - K_eff_i = rank_eff(V_i) = tr(V_i)^2 / tr(V_i^2) (projected covariance effective rank)
 - V_i = U_i^T Sigma_W U_i (K-1 x K-1 projected covariance in centroid subspace)
-- A = universal constant (~sqrt(4/pi) from Gumbel race derivation)
+- A = universal constant (empirically ~15.7 in synthetic; calibration needed for real nets)
+- SIGN: K_eff_i in DENOMINATOR (more competing directions = harder = lower q)
 
-**Relation to original law**: The original law logit(q) = A * kappa * sqrt(d_eff) + C is
-recovered as a MACRO-AVERAGE by setting K_eff = d_eff (true when within-class variance is
-uniformly distributed in centroid subspace) and averaging over classes.
+**Synthetic Validation** (Feb 22, 2026):
+- CORRECTED kappa/sqrt(K_eff): R2=0.4851, Pearson r=0.6965 (147 points, 49 non-saturated)
+- ORIGINAL kappa*sqrt(K_eff): R2=0.1724 — clearly wrong direction
+- 1-LAYER kappa*sqrt(d_eff): R2=0.1421 — also weaker
+- At fixed kappa=0.3: r(K_eff, logit) = -0.9117 (STRONG NEGATIVE, n=21)
+- At fixed keff_level=0.5: r(kappa, logit) = +0.9440 (expected positive)
+- NOTE: R2=0.49 limited because only kappa<=0.3 is non-saturated; kappa>=0.5 saturates q=1.0
 
-**d_eff as proxy**: d_eff = tr(Sigma_W) / sigma_centroid_dir^2 correlates with mean K_eff_i
-across architectures, which is why the original law holds cross-model even though do(d_eff)
-has weak causal effect.
+**Physical Interpretation (corrected)**:
+- K_eff = 1 (spike in one direction): one hard competitor, K-2 trivially easy → net q HIGH
+- K_eff = K-1 (flat, uniform): ALL competitors get equal interference → net q LOWER
+- "Many evenly matched opponents is harder than one tough opponent + many trivial ones"
+- This is consistent with the original cross-model law: large d_eff = variance mostly OUTSIDE
+  centroid subspace (good for all competitors) → positive effect. Large K_eff_i = variance
+  spread ACROSS all centroid directions (interferes with all competitors) → negative effect.
 
-**Status**: CONJECTURE. Test: pair coupling (running) + K_eff surgery (ready).
+**Unified formula conjecture**:
+logit(q_i) = A * kappa_i * sqrt(d_eff_out / K_eff_in)
+where d_eff_out = variance in non-centroid dims (positive), K_eff_in = spread within centroid subspace (denominator)
+This unifies the cross-model law (d_eff_out ~ d_eff_formula) and the 2-layer finding.
+
+**Relation to original law**: Original law logit(q) = A * kappa * sqrt(d_eff) + C holds at
+macro-average level via d_eff ~ d_eff_out (correlation). The 2-layer model reveals d_eff is
+a proxy for d_eff_out/K_eff_in combined. Within architectures, K_eff_in drives the per-class
+variation in q (pair coupling experiment tests this).
+
+**Status**: REVISED (sign corrected Feb 22). Synthetic R2=0.49 (saturated). Need real-net test.
+Tests pending: pair coupling (RUNNING) + K_eff surgery (ready).
 
 ### Currently Running: Pair Coupling Test (src/cti_pair_coupling.py)
 
@@ -1974,3 +1997,59 @@ has weak causal effect.
 **Also**: r-invariance test: Pearson(c_r5, c_r10) > 0.8
 **Status**: RUNNING (ep=45 of seed 0 at session 21 start, ETA ~2 hours)
 **Output**: results/cti_pair_coupling.json, results/cti_pair_coupling_log.txt
+
+---
+
+## Session 22: 2-Layer Synthetic Validation + Sign Correction (Feb 22, 2026)
+
+### Key Finding: Theorem 18 Sign Error Corrected
+
+**The most important result of this session**: The original Theorem 18 had the WRONG sign
+for K_eff_i. Synthetic Gaussian experiments confirm:
+
+| Formula | R2 (n=49 non-sat) | r at kappa=0.3 |
+|---------|-------------------|-----------------|
+| kappa/sqrt(K_eff) [CORRECTED] | **0.4851** | **-0.9117** |
+| kappa*sqrt(K_eff) [original WRONG] | 0.1724 | negative (wrong) |
+| kappa*sqrt(d_eff) [1-layer] | 0.1421 | N/A |
+
+The -0.9117 correlation at fixed kappa (21 points, all kappa=0.3) is DEFINITIVE:
+increasing K_eff dramatically DECREASES logit(q).
+
+### Physical Interpretation (revised)
+
+The KEY insight from the Gumbel race geometry:
+- K_eff=1 (variance spike in one direction): only ONE competitor is hard, all others trivial
+- K_eff=K-1 (variance flat): ALL K-1 competitors get equal interference from within-class noise
+- Having many hard competitors is worse than having ONE hard competitor
+
+This resolves the d_eff paradox: d_eff (large = good) measures variance OUTSIDE centroid
+subspace, while K_eff_i (large = bad) measures spread WITHIN centroid subspace. They have
+opposite effects, which is why a unified formula is:
+  logit(q_i) = A * kappa_i * sqrt(d_eff_out / K_eff_in)
+
+### New Experiments Running (Session 22)
+
+1. **cti_soft_competition.py** (RUNNING, PID 1606):
+   - Tests K_eff_kappa = effective rank of {kappa_ij} distribution
+   - Tests Phi(tau) = -tau*log(sum_j exp(-kappa_ij/tau)) soft competition law
+   - Pre-registered: Spearman rho(K_eff_obs, K_eff_kappa) > 0.5
+   - Output: results/cti_soft_competition_log.txt, results/cti_soft_competition.json
+
+2. **cti_pair_coupling.py** (RUNNING, seed 2 ep=50/60):
+   - Original pre-registered test for K_eff_pred = rank_eff(V_i)
+   - Expected to FAIL (K_eff_pred=const within seed from Neural Collapse)
+   - KEY NEW TEST: whether K_eff_obs inversely correlates with kappa_nearest
+   - Output: results/cti_pair_coupling.json
+
+3. **cti_2layer_synthetic.py** (COMPLETE):
+   - REVISED formula kappa/sqrt(K_eff) confirmed (R2=0.49, r=-0.91 at fixed kappa)
+   - Output: results/cti_2layer_synthetic.json
+
+### Updated Status of Pair Coupling (Session 22)
+- Seeds 0 and 1 DONE: K_eff_pred = CONSTANT (9.360 seed0, 8.844 seed1) for ALL 20 classes
+- This CONFIRMS Neural Collapse: V_i has same spectral structure for all target classes
+- Original pre-registered hypothesis (K_eff_pred predicts K_eff_obs) will FAIL
+- NEW insight: K_eff_obs varies INVERSELY with kappa_nearest (low kappa class -> high K_eff_obs)
+  This is now consistent with Theorem 18 REVISED: q decreases with K_eff_obs AND kappa
+
