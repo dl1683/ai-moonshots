@@ -1,0 +1,452 @@
+Pair Coupling Analysis
+K=20, N_EPOCHS=60, SEEDS=[0, 1, 2]
+R_VALUES=[5.0, 10.0]
+============================================================
+PRE-REGISTERED HYPOTHESIS: c_pair(i) = f_sub(i) = tr(V_i)/tr(W)
+  K_eff_pred(i) = rank_eff(V_i) = tr(V_i)^2/tr(V_i^2)
+PASS: R2(K_eff_obs vs K_eff_pred) > 0.5 AND Spearman rho > 0.5
+============================================================
+
+============================================================
+SEED 0
+============================================================
+  [ep= 1] kappa_eff=0.4711, d_eff=19.685, q=0.0738
+  [ep= 2] kappa_eff=0.5895, d_eff=12.152, q=0.1077
+  [ep= 3] kappa_eff=0.8993, d_eff=27.486, q=0.1371
+  [ep= 4] kappa_eff=1.0077, d_eff=23.641, q=0.1625
+  [ep= 5] kappa_eff=1.7567, d_eff=43.995, q=0.1989
+  [ep= 6] kappa_eff=1.6335, d_eff=29.758, q=0.2383
+  [ep= 7] kappa_eff=1.8659, d_eff=38.433, q=0.2752
+  [ep= 8] kappa_eff=1.6499, d_eff=24.369, q=0.3162
+  [ep= 9] kappa_eff=2.1488, d_eff=38.024, q=0.3318
+  [ep=10] kappa_eff=1.6910, d_eff=30.480, q=0.3545
+  [seed=0 epoch=10] training in progress
+  [ep=11] kappa_eff=1.9807, d_eff=24.207, q=0.3792
+  [ep=12] kappa_eff=2.4719, d_eff=42.027, q=0.4139
+  [ep=13] kappa_eff=2.5356, d_eff=38.772, q=0.4211
+  [ep=14] kappa_eff=2.3999, d_eff=35.358, q=0.4454
+  [ep=15] kappa_eff=2.3574, d_eff=31.310, q=0.4540
+  [ep=20] kappa_eff=2.9947, d_eff=41.089, q=0.4987
+  [seed=0 epoch=20] training in progress
+  [ep=25] kappa_eff=3.0905, d_eff=45.612, q=0.5367
+  [ep=30] kappa_eff=3.7170, d_eff=59.621, q=0.5338
+  [seed=0 epoch=30] training in progress
+  [ep=35] kappa_eff=4.7400, d_eff=60.773, q=0.6124
+  [ep=40] kappa_eff=5.0860, d_eff=62.870, q=0.6183
+  [seed=0 epoch=40] training in progress
+  [ep=45] kappa_eff=5.4066, d_eff=68.013, q=0.6203
+  [ep=50] kappa_eff=5.3653, d_eff=62.818, q=0.6261
+  [seed=0 epoch=50] training in progress
+  [ep=55] kappa_eff=5.2724, d_eff=65.513, q=0.6249
+  [ep=60] kappa_eff=5.2632, d_eff=63.005, q=0.6246
+  [seed=0 epoch=60] training in progress
+
+  Selected checkpoint: epoch=4, kappa_eff=1.0077, q=0.1625
+  Running pair coupling analysis for all 20 target classes...
+
+  Target class 0:
+    d_eff=16.464, kappa=0.3505, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=9.022, K_eff_pred=9.360, c_obs=0.5480, match_err=0.036
+    r=10: K_eff_obs=8.109, K_eff_pred=9.360, c_obs=0.4925, match_err=0.134
+
+  Target class 1:
+    d_eff=23.751, kappa=0.2462, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=12.916, K_eff_pred=9.360, c_obs=0.5438, match_err=0.380
+    r=10: K_eff_obs=12.164, K_eff_pred=9.360, c_obs=0.5122, match_err=0.300
+
+  Target class 2:
+    d_eff=17.720, kappa=0.2968, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=10.115, K_eff_pred=9.360, c_obs=0.5709, match_err=0.081
+    r=10: K_eff_obs=10.046, K_eff_pred=9.360, c_obs=0.5669, match_err=0.073
+
+  Target class 3:
+    d_eff=11.723, kappa=0.3429, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=10.600, K_eff_pred=9.360, c_obs=0.9042, match_err=0.132
+    r=10: K_eff_obs=9.437, K_eff_pred=9.360, c_obs=0.8050, match_err=0.008
+
+  Target class 4:
+    d_eff=11.709, kappa=0.3893, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=6.413, K_eff_pred=9.360, c_obs=0.5477, match_err=0.315
+    r=10: K_eff_obs=6.631, K_eff_pred=9.360, c_obs=0.5663, match_err=0.292
+
+  Target class 5:
+    d_eff=31.437, kappa=0.2080, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=16.166, K_eff_pred=9.360, c_obs=0.5142, match_err=0.727
+    r=10: K_eff_obs=17.444, K_eff_pred=9.360, c_obs=0.5549, match_err=0.864
+
+  Target class 6:
+    d_eff=23.641, kappa=0.2073, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=12.869, K_eff_pred=9.360, c_obs=0.5444, match_err=0.375
+    r=10: K_eff_obs=14.709, K_eff_pred=9.360, c_obs=0.6222, match_err=0.571
+
+  Target class 7:
+    d_eff=31.437, kappa=0.2080, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=16.166, K_eff_pred=9.360, c_obs=0.5142, match_err=0.727
+    r=10: K_eff_obs=17.409, K_eff_pred=9.360, c_obs=0.5538, match_err=0.860
+
+  Target class 8:
+    d_eff=17.925, kappa=0.2244, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=17.209, K_eff_pred=9.360, c_obs=0.9600, match_err=0.839
+    r=10: K_eff_obs=15.179, K_eff_pred=9.360, c_obs=0.8468, match_err=0.622
+
+  Target class 9:
+    d_eff=13.857, kappa=0.3478, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=9.469, K_eff_pred=9.360, c_obs=0.6834, match_err=0.012
+    r=10: K_eff_obs=8.367, K_eff_pred=9.360, c_obs=0.6038, match_err=0.106
+
+  Target class 10:
+    d_eff=10.926, kappa=0.4335, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=7.807, K_eff_pred=9.360, c_obs=0.7145, match_err=0.166
+    r=10: K_eff_obs=7.569, K_eff_pred=9.360, c_obs=0.6928, match_err=0.191
+
+  Target class 11:
+    d_eff=13.857, kappa=0.3478, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=9.440, K_eff_pred=9.360, c_obs=0.6813, match_err=0.009
+    r=10: K_eff_obs=8.239, K_eff_pred=9.360, c_obs=0.5946, match_err=0.120
+
+  Target class 12:
+    d_eff=14.523, kappa=0.4091, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=11.378, K_eff_pred=9.360, c_obs=0.7834, match_err=0.216
+    r=10: K_eff_obs=10.787, K_eff_pred=9.360, c_obs=0.7427, match_err=0.152
+
+  Target class 13:
+    d_eff=17.338, kappa=0.3882, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=10.946, K_eff_pred=9.360, c_obs=0.6313, match_err=0.169
+    r=10: K_eff_obs=9.064, K_eff_pred=9.360, c_obs=0.5228, match_err=0.032
+
+  Target class 14:
+    d_eff=17.338, kappa=0.3882, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=10.811, K_eff_pred=9.360, c_obs=0.6235, match_err=0.155
+    r=10: K_eff_obs=8.935, K_eff_pred=9.360, c_obs=0.5154, match_err=0.045
+
+  Target class 15:
+    d_eff=19.661, kappa=0.2879, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=16.114, K_eff_pred=9.360, c_obs=0.8196, match_err=0.722
+    r=10: K_eff_obs=14.650, K_eff_pred=9.360, c_obs=0.7451, match_err=0.565
+
+  Target class 16:
+    d_eff=13.427, kappa=0.2996, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=8.871, K_eff_pred=9.360, c_obs=0.6607, match_err=0.052
+    r=10: K_eff_obs=8.322, K_eff_pred=9.360, c_obs=0.6198, match_err=0.111
+
+  Target class 17:
+    d_eff=15.232, kappa=0.2983, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=8.844, K_eff_pred=9.360, c_obs=0.5806, match_err=0.055
+    r=10: K_eff_obs=8.585, K_eff_pred=9.360, c_obs=0.5636, match_err=0.083
+
+  Target class 18:
+    d_eff=17.720, kappa=0.2968, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=9.834, K_eff_pred=9.360, c_obs=0.5550, match_err=0.051
+    r=10: K_eff_obs=9.895, K_eff_pred=9.360, c_obs=0.5584, match_err=0.057
+
+  Target class 19:
+    d_eff=23.641, kappa=0.2073, f_sub=0.7606, K_eff_pred=9.360
+    r=5: K_eff_obs=12.869, K_eff_pred=9.360, c_obs=0.5444, match_err=0.375
+    r=10: K_eff_obs=14.709, K_eff_pred=9.360, c_obs=0.6222, match_err=0.571
+
+============================================================
+SEED 1
+============================================================
+  [ep= 1] kappa_eff=0.2639, d_eff=11.120, q=0.0713
+  [ep= 2] kappa_eff=0.4777, d_eff=12.114, q=0.0939
+  [ep= 3] kappa_eff=0.9647, d_eff=21.884, q=0.1212
+  [ep= 4] kappa_eff=0.9058, d_eff=20.051, q=0.1614
+  [ep= 5] kappa_eff=1.0478, d_eff=24.240, q=0.1855
+  [ep= 6] kappa_eff=1.5670, d_eff=26.284, q=0.2319
+  [ep= 7] kappa_eff=1.9557, d_eff=31.295, q=0.2638
+  [ep= 8] kappa_eff=2.0185, d_eff=35.604, q=0.3081
+  [ep= 9] kappa_eff=1.8319, d_eff=28.147, q=0.3298
+  [ep=10] kappa_eff=2.1651, d_eff=44.954, q=0.3319
+  [seed=1 epoch=10] training in progress
+  [ep=11] kappa_eff=2.4091, d_eff=38.812, q=0.3781
+  [ep=12] kappa_eff=2.0540, d_eff=25.320, q=0.3864
+  [ep=13] kappa_eff=2.1127, d_eff=27.824, q=0.4063
+  [ep=14] kappa_eff=2.5419, d_eff=38.963, q=0.4329
+  [ep=15] kappa_eff=2.5412, d_eff=38.378, q=0.4379
+  [ep=20] kappa_eff=2.7897, d_eff=35.568, q=0.4921
+  [seed=1 epoch=20] training in progress
+  [ep=25] kappa_eff=3.4330, d_eff=61.447, q=0.5240
+  [ep=30] kappa_eff=4.0212, d_eff=58.501, q=0.5518
+  [seed=1 epoch=30] training in progress
+  [ep=35] kappa_eff=4.7198, d_eff=59.495, q=0.6096
+  [ep=40] kappa_eff=5.0134, d_eff=62.604, q=0.6162
+  [seed=1 epoch=40] training in progress
+  [ep=45] kappa_eff=5.1860, d_eff=63.964, q=0.6277
+  [ep=50] kappa_eff=5.4151, d_eff=60.518, q=0.6252
+  [seed=1 epoch=50] training in progress
+  [ep=55] kappa_eff=5.2000, d_eff=60.678, q=0.6251
+  [ep=60] kappa_eff=5.5393, d_eff=65.829, q=0.6240
+  [seed=1 epoch=60] training in progress
+
+  Selected checkpoint: epoch=3, kappa_eff=0.9647, q=0.1212
+  Running pair coupling analysis for all 20 target classes...
+
+  Target class 0:
+    d_eff=9.558, kappa=0.3352, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=12.072, K_eff_pred=8.844, c_obs=1.2630, match_err=0.365
+    r=10: K_eff_obs=9.586, K_eff_pred=8.844, c_obs=1.0029, match_err=0.084
+
+  Target class 1:
+    d_eff=21.102, kappa=0.2327, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=12.423, K_eff_pred=8.844, c_obs=0.5887, match_err=0.405
+    r=10: K_eff_obs=9.967, K_eff_pred=8.844, c_obs=0.4723, match_err=0.127
+
+  Target class 2:
+    d_eff=12.642, kappa=0.2155, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=6.660, K_eff_pred=8.844, c_obs=0.5268, match_err=0.247
+    r=10: K_eff_obs=6.173, K_eff_pred=8.844, c_obs=0.4883, match_err=0.302
+
+  Target class 3:
+    d_eff=14.943, kappa=0.2776, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=15.600, K_eff_pred=8.844, c_obs=1.0440, match_err=0.764
+    r=10: K_eff_obs=11.452, K_eff_pred=8.844, c_obs=0.7664, match_err=0.295
+
+  Target class 4:
+    d_eff=9.193, kappa=0.3239, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=6.919, K_eff_pred=8.844, c_obs=0.7526, match_err=0.218
+    r=10: K_eff_obs=6.108, K_eff_pred=8.844, c_obs=0.6644, match_err=0.309
+
+  Target class 5:
+    d_eff=21.884, kappa=0.2062, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=16.309, K_eff_pred=8.844, c_obs=0.7452, match_err=0.844
+    r=10: K_eff_obs=12.608, K_eff_pred=8.844, c_obs=0.5761, match_err=0.426
+
+  Target class 6:
+    d_eff=11.414, kappa=0.2172, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=8.193, K_eff_pred=8.844, c_obs=0.7178, match_err=0.074
+    r=10: K_eff_obs=7.058, K_eff_pred=8.844, c_obs=0.6183, match_err=0.202
+
+  Target class 7:
+    d_eff=18.328, kappa=0.2344, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=14.044, K_eff_pred=8.844, c_obs=0.7662, match_err=0.588
+    r=10: K_eff_obs=12.777, K_eff_pred=8.844, c_obs=0.6971, match_err=0.445
+
+  Target class 8:
+    d_eff=21.884, kappa=0.2062, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=16.342, K_eff_pred=8.844, c_obs=0.7468, match_err=0.848
+    r=10: K_eff_obs=12.647, K_eff_pred=8.844, c_obs=0.5779, match_err=0.430
+
+  Target class 9:
+    d_eff=17.732, kappa=0.2832, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=9.160, K_eff_pred=8.844, c_obs=0.5166, match_err=0.036
+    r=10: K_eff_obs=8.085, K_eff_pred=8.844, c_obs=0.4560, match_err=0.086
+
+  Target class 10:
+    d_eff=13.071, kappa=0.3608, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=9.543, K_eff_pred=8.844, c_obs=0.7300, match_err=0.079
+    r=10: K_eff_obs=7.689, K_eff_pred=8.844, c_obs=0.5882, match_err=0.131
+
+  Target class 11:
+    d_eff=17.732, kappa=0.2832, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=9.575, K_eff_pred=8.844, c_obs=0.5400, match_err=0.083
+    r=10: K_eff_obs=8.330, K_eff_pred=8.844, c_obs=0.4698, match_err=0.058
+
+  Target class 12:
+    d_eff=18.424, kappa=0.3948, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=7.337, K_eff_pred=8.844, c_obs=0.3983, match_err=0.170
+    r=10: K_eff_obs=7.135, K_eff_pred=8.844, c_obs=0.3873, match_err=0.193
+
+  Target class 13:
+    d_eff=14.131, kappa=0.3260, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=6.550, K_eff_pred=8.844, c_obs=0.4635, match_err=0.259
+    r=10: K_eff_obs=5.521, K_eff_pred=8.844, c_obs=0.3907, match_err=0.376
+
+  Target class 14:
+    d_eff=11.593, kappa=0.3717, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=6.984, K_eff_pred=8.844, c_obs=0.6024, match_err=0.210
+    r=10: K_eff_obs=6.274, K_eff_pred=8.844, c_obs=0.5412, match_err=0.291
+
+  Target class 15:
+    d_eff=18.328, kappa=0.2344, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=14.206, K_eff_pred=8.844, c_obs=0.7751, match_err=0.606
+    r=10: K_eff_obs=12.982, K_eff_pred=8.844, c_obs=0.7083, match_err=0.468
+
+  Target class 16:
+    d_eff=9.351, kappa=0.2752, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=4.608, K_eff_pred=8.844, c_obs=0.4928, match_err=0.479
+    r=10: K_eff_obs=4.481, K_eff_pred=8.844, c_obs=0.4792, match_err=0.493
+
+  Target class 17:
+    d_eff=12.642, kappa=0.2155, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=6.581, K_eff_pred=8.844, c_obs=0.5205, match_err=0.256
+    r=10: K_eff_obs=6.136, K_eff_pred=8.844, c_obs=0.4854, match_err=0.306
+
+  Target class 18:
+    d_eff=22.204, kappa=0.3023, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=12.814, K_eff_pred=8.844, c_obs=0.5771, match_err=0.449
+    r=10: K_eff_obs=11.925, K_eff_pred=8.844, c_obs=0.5371, match_err=0.348
+
+  Target class 19:
+    d_eff=11.414, kappa=0.2172, f_sub=0.8070, K_eff_pred=8.844
+    r=5: K_eff_obs=8.324, K_eff_pred=8.844, c_obs=0.7293, match_err=0.059
+    r=10: K_eff_obs=7.082, K_eff_pred=8.844, c_obs=0.6205, match_err=0.199
+
+============================================================
+SEED 2
+============================================================
+  [ep= 1] kappa_eff=0.3681, d_eff=14.591, q=0.0738
+  [ep= 2] kappa_eff=0.9701, d_eff=23.453, q=0.1101
+  [ep= 3] kappa_eff=0.9369, d_eff=29.279, q=0.1268
+  [ep= 4] kappa_eff=0.9414, d_eff=15.832, q=0.1685
+  [ep= 5] kappa_eff=1.2659, d_eff=20.914, q=0.2004
+  [ep= 6] kappa_eff=1.3187, d_eff=17.076, q=0.2355
+  [ep= 7] kappa_eff=1.5925, d_eff=24.219, q=0.2832
+  [ep= 8] kappa_eff=1.8189, d_eff=29.358, q=0.3027
+  [ep= 9] kappa_eff=2.4035, d_eff=52.149, q=0.3271
+  [ep=10] kappa_eff=2.3644, d_eff=40.254, q=0.3592
+  [seed=2 epoch=10] training in progress
+  [ep=11] kappa_eff=2.2961, d_eff=45.649, q=0.3879
+  [ep=12] kappa_eff=2.0929, d_eff=34.106, q=0.4033
+  [ep=13] kappa_eff=2.5090, d_eff=35.470, q=0.4133
+  [ep=14] kappa_eff=2.4242, d_eff=38.821, q=0.4347
+  [ep=15] kappa_eff=2.7938, d_eff=39.384, q=0.4528
+  [ep=20] kappa_eff=3.4033, d_eff=50.901, q=0.5021
+  [seed=2 epoch=20] training in progress
+  [ep=25] kappa_eff=3.1043, d_eff=35.555, q=0.5140
+  [ep=30] kappa_eff=3.8281, d_eff=52.222, q=0.5346
+  [seed=2 epoch=30] training in progress
+  [ep=35] kappa_eff=4.8487, d_eff=58.165, q=0.6112
+  [ep=40] kappa_eff=5.1033, d_eff=60.514, q=0.6216
+  [seed=2 epoch=40] training in progress
+  [ep=45] kappa_eff=5.1766, d_eff=56.815, q=0.6261
+  [ep=50] kappa_eff=5.5291, d_eff=62.251, q=0.6300
+  [seed=2 epoch=50] training in progress
+  [ep=55] kappa_eff=5.4699, d_eff=58.942, q=0.6313
+  [ep=60] kappa_eff=5.2757, d_eff=55.606, q=0.6275
+  [seed=2 epoch=60] training in progress
+
+  Selected checkpoint: epoch=2, kappa_eff=0.9701, q=0.1101
+  Running pair coupling analysis for all 20 target classes...
+
+  Target class 0:
+    d_eff=13.585, kappa=0.2070, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=17.925, K_eff_pred=8.583, c_obs=1.3195, match_err=1.089
+    r=10: K_eff_obs=14.889, K_eff_pred=8.583, c_obs=1.0960, match_err=0.735
+
+  Target class 1:
+    d_eff=11.075, kappa=0.2578, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=8.814, K_eff_pred=8.583, c_obs=0.7959, match_err=0.027
+    r=10: K_eff_obs=8.077, K_eff_pred=8.583, c_obs=0.7293, match_err=0.059
+
+  Target class 2:
+    d_eff=10.180, kappa=0.2209, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=5.828, K_eff_pred=8.583, c_obs=0.5725, match_err=0.321
+    r=10: K_eff_obs=5.474, K_eff_pred=8.583, c_obs=0.5377, match_err=0.362
+
+  Target class 3:
+    d_eff=12.181, kappa=0.2448, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=9.049, K_eff_pred=8.583, c_obs=0.7429, match_err=0.054
+    r=10: K_eff_obs=8.219, K_eff_pred=8.583, c_obs=0.6747, match_err=0.042
+
+  Target class 4:
+    d_eff=11.133, kappa=0.3376, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=6.213, K_eff_pred=8.583, c_obs=0.5581, match_err=0.276
+    r=10: K_eff_obs=5.445, K_eff_pred=8.583, c_obs=0.4891, match_err=0.366
+
+  Target class 5:
+    d_eff=23.453, kappa=0.2003, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=21.167, K_eff_pred=8.583, c_obs=0.9025, match_err=1.466
+    r=10: K_eff_obs=17.479, K_eff_pred=8.583, c_obs=0.7453, match_err=1.037
+
+  Target class 6:
+    d_eff=13.040, kappa=0.2165, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=6.819, K_eff_pred=8.583, c_obs=0.5230, match_err=0.205
+    r=10: K_eff_obs=5.896, K_eff_pred=8.583, c_obs=0.4521, match_err=0.313
+
+  Target class 7:
+    d_eff=23.453, kappa=0.2003, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=20.919, K_eff_pred=8.583, c_obs=0.8920, match_err=1.437
+    r=10: K_eff_obs=17.424, K_eff_pred=8.583, c_obs=0.7429, match_err=1.030
+
+  Target class 8:
+    d_eff=21.910, kappa=0.2110, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=7.889, K_eff_pred=8.583, c_obs=0.3601, match_err=0.081
+    r=10: K_eff_obs=7.581, K_eff_pred=8.583, c_obs=0.3460, match_err=0.117
+
+  Target class 9:
+    d_eff=20.826, kappa=0.2141, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=14.640, K_eff_pred=8.583, c_obs=0.7030, match_err=0.706
+    r=10: K_eff_obs=13.725, K_eff_pred=8.583, c_obs=0.6590, match_err=0.599
+
+  Target class 10:
+    d_eff=10.042, kappa=0.3931, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=4.349, K_eff_pred=8.583, c_obs=0.4330, match_err=0.493
+    r=10: K_eff_obs=4.020, K_eff_pred=8.583, c_obs=0.4003, match_err=0.532
+
+  Target class 11:
+    d_eff=20.826, kappa=0.2141, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=14.534, K_eff_pred=8.583, c_obs=0.6979, match_err=0.693
+    r=10: K_eff_obs=13.514, K_eff_pred=8.583, c_obs=0.6489, match_err=0.575
+
+  Target class 12:
+    d_eff=14.587, kappa=0.3388, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=6.711, K_eff_pred=8.583, c_obs=0.4601, match_err=0.218
+    r=10: K_eff_obs=6.282, K_eff_pred=8.583, c_obs=0.4307, match_err=0.268
+
+  Target class 13:
+    d_eff=22.317, kappa=0.2292, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=14.865, K_eff_pred=8.583, c_obs=0.6661, match_err=0.732
+    r=10: K_eff_obs=12.699, K_eff_pred=8.583, c_obs=0.5690, match_err=0.480
+
+  Target class 14:
+    d_eff=14.280, kappa=0.2960, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=5.726, K_eff_pred=8.583, c_obs=0.4010, match_err=0.333
+    r=10: K_eff_obs=5.712, K_eff_pred=8.583, c_obs=0.4000, match_err=0.335
+
+  Target class 15:
+    d_eff=13.040, kappa=0.2165, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=6.678, K_eff_pred=8.583, c_obs=0.5121, match_err=0.222
+    r=10: K_eff_obs=5.714, K_eff_pred=8.583, c_obs=0.4382, match_err=0.334
+
+  Target class 16:
+    d_eff=9.101, kappa=0.3418, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=5.737, K_eff_pred=8.583, c_obs=0.6303, match_err=0.332
+    r=10: K_eff_obs=5.233, K_eff_pred=8.583, c_obs=0.5749, match_err=0.390
+
+  Target class 17:
+    d_eff=10.180, kappa=0.2209, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=5.952, K_eff_pred=8.583, c_obs=0.5847, match_err=0.307
+    r=10: K_eff_obs=5.602, K_eff_pred=8.583, c_obs=0.5504, match_err=0.347
+
+  Target class 18:
+    d_eff=13.585, kappa=0.2070, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=17.858, K_eff_pred=8.583, c_obs=1.3146, match_err=1.081
+    r=10: K_eff_obs=14.883, K_eff_pred=8.583, c_obs=1.0956, match_err=0.734
+
+  Target class 19:
+    d_eff=10.343, kappa=0.2386, f_sub=0.8146, K_eff_pred=8.583
+    r=5: K_eff_obs=8.092, K_eff_pred=8.583, c_obs=0.7823, match_err=0.057
+    r=10: K_eff_obs=7.326, K_eff_pred=8.583, c_obs=0.7083, match_err=0.146
+
+============================================================
+FINAL ANALYSIS: K_eff_pred vs K_eff_obs
+============================================================
+
+  r=5 (60 pairs):
+    R2(K_eff_obs vs K_eff_pred) = -0.1706  FAIL
+    Pearson r = 0.1025
+    Spearman rho = 0.2059  FAIL
+    Pearson(c_obs, f_sub) = 0.0913
+    Mean c_obs = 0.6712 +/- 0.2021
+    Mean K_eff_obs = 10.698 +/- 4.164
+    Mean K_eff_pred = 8.929 +/- 0.323
+    Overall FAIL (R2>0.5 AND rho>0.5)
+
+  r=10 (60 pairs):
+    R2(K_eff_obs vs K_eff_pred) = -0.0073  FAIL
+    Pearson r = 0.2247
+    Spearman rho = 0.2647  FAIL
+    Pearson(c_obs, f_sub) = -0.0467
+    Mean c_obs = 0.6020 +/- 0.1538
+    Mean K_eff_obs = 9.658 +/- 3.689
+    Mean K_eff_pred = 8.929 +/- 0.323
+    Overall FAIL (R2>0.5 AND rho>0.5)
+
+============================================================
+R-INVARIANCE TEST: Is c approximately constant in r?
+  Pearson r(c_r5, c_r10) = 0.9587  (1.0=perfectly r-invariant)
+  Mean |c_r5 - c_r10| = 0.0779
+  R-invariance PASS
+
+Results saved to results/cti_pair_coupling.json
+oupling.json
