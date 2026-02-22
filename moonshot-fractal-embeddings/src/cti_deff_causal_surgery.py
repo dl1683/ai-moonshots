@@ -315,7 +315,7 @@ def train_and_save_embeddings(seed, train_ds, test_ds):
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=N_EPOCHS)
 
     loader = torch.utils.data.DataLoader(
-        train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=2, pin_memory=True)
+        train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=0, pin_memory=False)
 
     log(f"  Training seed={seed}...")
     for epoch in range(1, N_EPOCHS + 1):
