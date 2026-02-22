@@ -1,0 +1,800 @@
+======================================================================
+ORTHOGONAL CAUSAL FACTORIAL
+======================================================================
+Embeddings: results/do_int_embs_pythia-160m_dbpedia.npz
+PRE-REGISTERED:
+  Arm A: r(delta_kappa_j1, delta_logit_q) > 0.9
+  Arm B: r(delta_j2_dist, delta_logit_q) > 0.5 -> 2-layer supported
+         r(delta_j2_dist, delta_logit_q) < 0.5 -> 1-layer supported
+  Arm C: |r(delta_jK_dist, delta_logit_q)| < 0.2 [neg control]
+======================================================================
+
+Loaded: N=1000, d=768, K=14
+Baseline sigma_W=0.6391
+
+[BASELINE GEOMETRY]
+  class 0: j1=13 (kappa=0.549), j2=2 (kappa=0.624), jK=8 (kappa=1.759), margin=1.14x
+  class 1: j1=6 (kappa=0.567), j2=0 (kappa=0.657), jK=8 (kappa=1.825), margin=1.16x
+  class 2: j1=13 (kappa=0.488), j2=4 (kappa=0.560), jK=8 (kappa=1.797), margin=1.15x
+  class 3: j1=2 (kappa=0.574), j2=4 (kappa=0.610), jK=8 (kappa=1.734), margin=1.06x
+  class 4: j1=2 (kappa=0.560), j2=3 (kappa=0.610), jK=8 (kappa=1.670), margin=1.09x
+  class 5: j1=0 (kappa=0.724), j2=13 (kappa=0.780), jK=8 (kappa=1.921), margin=1.08x
+  class 6: j1=1 (kappa=0.567), j2=0 (kappa=0.634), jK=8 (kappa=1.818), margin=1.12x
+  class 7: j1=6 (kappa=0.688), j2=0 (kappa=0.743), jK=8 (kappa=1.743), margin=1.08x
+  class 8: j1=12 (kappa=1.616), j2=4 (kappa=1.670), jK=11 (kappa=2.006), margin=1.03x
+  class 9: j1=10 (kappa=0.516), j2=7 (kappa=0.901), jK=8 (kappa=1.844), margin=1.74x
+  class 10: j1=9 (kappa=0.516), j2=7 (kappa=0.849), jK=8 (kappa=1.927), margin=1.64x
+  class 11: j1=2 (kappa=0.586), j2=13 (kappa=0.669), jK=8 (kappa=2.006), margin=1.14x
+  class 12: j1=13 (kappa=0.520), j2=2 (kappa=0.569), jK=8 (kappa=1.616), margin=1.09x
+  class 13: j1=2 (kappa=0.488), j2=12 (kappa=0.520), jK=8 (kappa=1.793), margin=1.07x
+
+[BASELINE q_ci]
+  class 0: q_ci=0.6769, logit_q=0.7397
+  class 1: q_ci=0.9038, logit_q=2.2407
+  class 2: q_ci=0.6808, logit_q=0.7573
+  class 3: q_ci=0.8846, logit_q=2.0369
+  class 4: q_ci=0.8718, logit_q=1.9169
+  class 5: q_ci=0.9692, logit_q=3.4500
+  class 6: q_ci=0.8444, logit_q=1.6917
+  class 7: q_ci=0.9088, logit_q=2.2986
+  class 8: q_ci=0.9385, logit_q=2.7246
+  class 9: q_ci=0.9128, logit_q=2.3486
+  class 10: q_ci=0.9308, logit_q=2.5986
+  class 11: q_ci=0.9626, logit_q=3.2482
+  class 12: q_ci=0.8096, logit_q=1.4475
+  class 13: q_ci=0.6518, logit_q=0.6269
+
+============================================================
+FOCUS CLASS 0 | j1=13 j2=2 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=0 <-> j1=13)
+    [A ci=0] delta=-3.00: kappa_j1=0.380 (orig=0.549), K_eff=11.12, q_ci=0.6051
+    [A ci=0] delta=-2.50: kappa_j1=0.408 (orig=0.549), K_eff=11.18, q_ci=0.6051
+    [A ci=0] delta=-2.00: kappa_j1=0.436 (orig=0.549), K_eff=11.23, q_ci=0.6410
+    [A ci=0] delta=-1.50: kappa_j1=0.464 (orig=0.549), K_eff=11.29, q_ci=0.6410
+    [A ci=0] delta=-1.00: kappa_j1=0.492 (orig=0.549), K_eff=11.34, q_ci=0.6410
+    [A ci=0] delta=-0.50: kappa_j1=0.521 (orig=0.549), K_eff=11.39, q_ci=0.6769
+    [A ci=0] delta=+0.00: kappa_j1=0.549 (orig=0.549), K_eff=11.44, q_ci=0.6769
+    [A ci=0] delta=+0.50: kappa_j1=0.577 (orig=0.549), K_eff=11.49, q_ci=0.6949
+    [A ci=0] delta=+1.00: kappa_j1=0.605 (orig=0.549), K_eff=11.54, q_ci=0.6949
+    [A ci=0] delta=+1.50: kappa_j1=0.634 (orig=0.549), K_eff=11.58, q_ci=0.7128
+    [A ci=0] delta=+2.00: kappa_j1=0.654 (orig=0.549), K_eff=11.63, q_ci=0.7128
+    [A ci=0] delta=+2.50: kappa_j1=0.660 (orig=0.549), K_eff=11.67, q_ci=0.7128
+    [A ci=0] delta=+3.00: kappa_j1=0.666 (orig=0.549), K_eff=11.71, q_ci=0.7128
+  ARM A: r(kappa_j1, logit_q)=0.980 p=0.0000 | r(K_eff, logit_q)=0.972 p=0.0000
+
+  [ARM B] K_eff intervention (ONLY j2=2 moves, ci=0 fixed)
+    [B ci=0] delta=+0.00: kappa_j1=0.549 (orig=0.549), K_eff=11.44, q_ci=0.6769
+    [B ci=0] delta=+0.42: kappa_j1=0.549 (orig=0.549), K_eff=11.46, q_ci=0.6769
+    [B ci=0] delta=+0.83: kappa_j1=0.549 (orig=0.549), K_eff=11.47, q_ci=0.6769
+    [B ci=0] delta=+1.25: kappa_j1=0.549 (orig=0.549), K_eff=11.49, q_ci=0.6769
+    [B ci=0] delta=+1.67: kappa_j1=0.549 (orig=0.549), K_eff=11.50, q_ci=0.6769
+    [B ci=0] delta=+2.08: kappa_j1=0.549 (orig=0.549), K_eff=11.51, q_ci=0.6769
+    [B ci=0] delta=+2.50: kappa_j1=0.549 (orig=0.549), K_eff=11.52, q_ci=0.6769
+    [B ci=0] delta=+2.92: kappa_j1=0.549 (orig=0.549), K_eff=11.53, q_ci=0.6769
+    [B ci=0] delta=+3.33: kappa_j1=0.549 (orig=0.549), K_eff=11.54, q_ci=0.6769
+    [B ci=0] delta=+3.75: kappa_j1=0.549 (orig=0.549), K_eff=11.54, q_ci=0.6769
+    [B ci=0] delta=+4.17: kappa_j1=0.549 (orig=0.549), K_eff=11.55, q_ci=0.6769
+    [B ci=0] delta=+4.58: kappa_j1=0.549 (orig=0.549), K_eff=11.55, q_ci=0.6769
+    [B ci=0] delta=+5.00: kappa_j1=0.549 (orig=0.549), K_eff=11.55, q_ci=0.6769
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_j2, logit_q)=0.000 p=1.0000
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=0 fixed)
+    [C ci=0] delta=+0.00: kappa_j1=0.549 (orig=0.549), K_eff=11.44, q_ci=0.6769
+    [C ci=0] delta=+0.42: kappa_j1=0.549 (orig=0.549), K_eff=11.40, q_ci=0.6769
+    [C ci=0] delta=+0.83: kappa_j1=0.549 (orig=0.549), K_eff=11.35, q_ci=0.6769
+    [C ci=0] delta=+1.25: kappa_j1=0.549 (orig=0.549), K_eff=11.31, q_ci=0.6769
+    [C ci=0] delta=+1.67: kappa_j1=0.549 (orig=0.549), K_eff=11.26, q_ci=0.6769
+    [C ci=0] delta=+2.08: kappa_j1=0.549 (orig=0.549), K_eff=11.21, q_ci=0.6769
+    [C ci=0] delta=+2.50: kappa_j1=0.549 (orig=0.549), K_eff=11.16, q_ci=0.6769
+    [C ci=0] delta=+2.92: kappa_j1=0.549 (orig=0.549), K_eff=11.12, q_ci=0.6769
+    [C ci=0] delta=+3.33: kappa_j1=0.549 (orig=0.549), K_eff=11.07, q_ci=0.6769
+    [C ci=0] delta=+3.75: kappa_j1=0.549 (orig=0.549), K_eff=11.02, q_ci=0.6769
+    [C ci=0] delta=+4.17: kappa_j1=0.549 (orig=0.549), K_eff=10.97, q_ci=0.6769
+    [C ci=0] delta=+4.58: kappa_j1=0.549 (orig=0.549), K_eff=10.93, q_ci=0.6769
+    [C ci=0] delta=+5.00: kappa_j1=0.549 (orig=0.549), K_eff=10.88, q_ci=0.6769
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 1 | j1=6 j2=0 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=1 <-> j1=6)
+    [A ci=1] delta=-3.00: kappa_j1=0.397 (orig=0.567), K_eff=11.37, q_ci=0.8769
+    [A ci=1] delta=-2.50: kappa_j1=0.425 (orig=0.567), K_eff=11.42, q_ci=0.8769
+    [A ci=1] delta=-2.00: kappa_j1=0.454 (orig=0.567), K_eff=11.47, q_ci=0.8769
+    [A ci=1] delta=-1.50: kappa_j1=0.482 (orig=0.567), K_eff=11.51, q_ci=0.8769
+    [A ci=1] delta=-1.00: kappa_j1=0.510 (orig=0.567), K_eff=11.56, q_ci=0.8769
+    [A ci=1] delta=-0.50: kappa_j1=0.538 (orig=0.567), K_eff=11.61, q_ci=0.9038
+    [A ci=1] delta=+0.00: kappa_j1=0.567 (orig=0.567), K_eff=11.65, q_ci=0.9038
+    [A ci=1] delta=+0.50: kappa_j1=0.595 (orig=0.567), K_eff=11.69, q_ci=0.9462
+    [A ci=1] delta=+1.00: kappa_j1=0.623 (orig=0.567), K_eff=11.73, q_ci=0.9462
+    [A ci=1] delta=+1.50: kappa_j1=0.651 (orig=0.567), K_eff=11.77, q_ci=0.9462
+    [A ci=1] delta=+2.00: kappa_j1=0.679 (orig=0.567), K_eff=11.81, q_ci=0.9462
+    [A ci=1] delta=+2.50: kappa_j1=0.693 (orig=0.567), K_eff=11.85, q_ci=0.9462
+    [A ci=1] delta=+3.00: kappa_j1=0.701 (orig=0.567), K_eff=11.88, q_ci=0.9462
+  ARM A: r(kappa_j1, logit_q)=0.923 p=0.0000 | r(K_eff, logit_q)=0.913 p=0.0000
+
+  [ARM B] K_eff intervention (ONLY j2=0 moves, ci=1 fixed)
+    [B ci=1] delta=+0.00: kappa_j1=0.567 (orig=0.567), K_eff=11.65, q_ci=0.9038
+    [B ci=1] delta=+0.42: kappa_j1=0.567 (orig=0.567), K_eff=11.66, q_ci=0.9038
+    [B ci=1] delta=+0.83: kappa_j1=0.567 (orig=0.567), K_eff=11.68, q_ci=0.9038
+    [B ci=1] delta=+1.25: kappa_j1=0.567 (orig=0.567), K_eff=11.69, q_ci=0.9173
+    [B ci=1] delta=+1.67: kappa_j1=0.567 (orig=0.567), K_eff=11.70, q_ci=0.9173
+    [B ci=1] delta=+2.08: kappa_j1=0.567 (orig=0.567), K_eff=11.72, q_ci=0.9173
+    [B ci=1] delta=+2.50: kappa_j1=0.567 (orig=0.567), K_eff=11.73, q_ci=0.9173
+    [B ci=1] delta=+2.92: kappa_j1=0.567 (orig=0.567), K_eff=11.74, q_ci=0.9173
+    [B ci=1] delta=+3.33: kappa_j1=0.567 (orig=0.567), K_eff=11.74, q_ci=0.9173
+    [B ci=1] delta=+3.75: kappa_j1=0.567 (orig=0.567), K_eff=11.75, q_ci=0.9173
+    [B ci=1] delta=+4.17: kappa_j1=0.567 (orig=0.567), K_eff=11.76, q_ci=0.9173
+    [B ci=1] delta=+4.58: kappa_j1=0.567 (orig=0.567), K_eff=11.76, q_ci=0.9173
+    [B ci=1] delta=+5.00: kappa_j1=0.567 (orig=0.567), K_eff=11.77, q_ci=0.9173
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.811 p=0.0008 | r(kappa_j2, logit_q)=0.732 p=0.0045
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=1 fixed)
+    [C ci=1] delta=+0.00: kappa_j1=0.567 (orig=0.567), K_eff=11.65, q_ci=0.9038
+    [C ci=1] delta=+0.42: kappa_j1=0.567 (orig=0.567), K_eff=11.61, q_ci=0.9038
+    [C ci=1] delta=+0.83: kappa_j1=0.567 (orig=0.567), K_eff=11.57, q_ci=0.9038
+    [C ci=1] delta=+1.25: kappa_j1=0.567 (orig=0.567), K_eff=11.53, q_ci=0.9038
+    [C ci=1] delta=+1.67: kappa_j1=0.567 (orig=0.567), K_eff=11.49, q_ci=0.9038
+    [C ci=1] delta=+2.08: kappa_j1=0.567 (orig=0.567), K_eff=11.45, q_ci=0.9038
+    [C ci=1] delta=+2.50: kappa_j1=0.567 (orig=0.567), K_eff=11.41, q_ci=0.9038
+    [C ci=1] delta=+2.92: kappa_j1=0.567 (orig=0.567), K_eff=11.37, q_ci=0.9038
+    [C ci=1] delta=+3.33: kappa_j1=0.567 (orig=0.567), K_eff=11.33, q_ci=0.9038
+    [C ci=1] delta=+3.75: kappa_j1=0.567 (orig=0.567), K_eff=11.29, q_ci=0.9038
+    [C ci=1] delta=+4.17: kappa_j1=0.567 (orig=0.567), K_eff=11.25, q_ci=0.9038
+    [C ci=1] delta=+4.58: kappa_j1=0.567 (orig=0.567), K_eff=11.21, q_ci=0.9038
+    [C ci=1] delta=+5.00: kappa_j1=0.567 (orig=0.567), K_eff=11.16, q_ci=0.9038
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 2 | j1=13 j2=4 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=2 <-> j1=13)
+    [A ci=2] delta=-3.00: kappa_j1=0.318 (orig=0.488), K_eff=10.75, q_ci=0.6654
+    [A ci=2] delta=-2.50: kappa_j1=0.347 (orig=0.488), K_eff=10.80, q_ci=0.6500
+    [A ci=2] delta=-2.00: kappa_j1=0.375 (orig=0.488), K_eff=10.85, q_ci=0.6808
+    [A ci=2] delta=-1.50: kappa_j1=0.403 (orig=0.488), K_eff=10.90, q_ci=0.6808
+    [A ci=2] delta=-1.00: kappa_j1=0.431 (orig=0.488), K_eff=10.95, q_ci=0.6808
+    [A ci=2] delta=-0.50: kappa_j1=0.460 (orig=0.488), K_eff=11.00, q_ci=0.6808
+    [A ci=2] delta=+0.00: kappa_j1=0.488 (orig=0.488), K_eff=11.05, q_ci=0.6808
+    [A ci=2] delta=+0.50: kappa_j1=0.516 (orig=0.488), K_eff=11.10, q_ci=0.6808
+    [A ci=2] delta=+1.00: kappa_j1=0.544 (orig=0.488), K_eff=11.14, q_ci=0.6808
+    [A ci=2] delta=+1.50: kappa_j1=0.569 (orig=0.488), K_eff=11.19, q_ci=0.6962
+    [A ci=2] delta=+2.00: kappa_j1=0.573 (orig=0.488), K_eff=11.23, q_ci=0.6962
+    [A ci=2] delta=+2.50: kappa_j1=0.577 (orig=0.488), K_eff=11.28, q_ci=0.7115
+    [A ci=2] delta=+3.00: kappa_j1=0.581 (orig=0.488), K_eff=11.32, q_ci=0.7115
+  ARM A: r(kappa_j1, logit_q)=0.831 p=0.0004 | r(K_eff, logit_q)=0.879 p=0.0001
+
+  [ARM B] K_eff intervention (ONLY j2=4 moves, ci=2 fixed)
+    [B ci=2] delta=+0.00: kappa_j1=0.488 (orig=0.488), K_eff=11.05, q_ci=0.6808
+    [B ci=2] delta=+0.42: kappa_j1=0.488 (orig=0.488), K_eff=11.07, q_ci=0.6808
+    [B ci=2] delta=+0.83: kappa_j1=0.488 (orig=0.488), K_eff=11.09, q_ci=0.6808
+    [B ci=2] delta=+1.25: kappa_j1=0.488 (orig=0.488), K_eff=11.10, q_ci=0.6962
+    [B ci=2] delta=+1.67: kappa_j1=0.488 (orig=0.488), K_eff=11.12, q_ci=0.6962
+    [B ci=2] delta=+2.08: kappa_j1=0.488 (orig=0.488), K_eff=11.13, q_ci=0.6962
+    [B ci=2] delta=+2.50: kappa_j1=0.488 (orig=0.488), K_eff=11.15, q_ci=0.6962
+    [B ci=2] delta=+2.92: kappa_j1=0.488 (orig=0.488), K_eff=11.16, q_ci=0.6962
+    [B ci=2] delta=+3.33: kappa_j1=0.488 (orig=0.488), K_eff=11.17, q_ci=0.6962
+    [B ci=2] delta=+3.75: kappa_j1=0.488 (orig=0.488), K_eff=11.18, q_ci=0.6962
+    [B ci=2] delta=+4.17: kappa_j1=0.488 (orig=0.488), K_eff=11.19, q_ci=0.6962
+    [B ci=2] delta=+4.58: kappa_j1=0.488 (orig=0.488), K_eff=11.19, q_ci=0.6962
+    [B ci=2] delta=+5.00: kappa_j1=0.488 (orig=0.488), K_eff=11.20, q_ci=0.6962
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.808 p=0.0008 | r(kappa_j2, logit_q)=0.732 p=0.0045
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=2 fixed)
+    [C ci=2] delta=+0.00: kappa_j1=0.488 (orig=0.488), K_eff=11.05, q_ci=0.6808
+    [C ci=2] delta=+0.42: kappa_j1=0.488 (orig=0.488), K_eff=11.00, q_ci=0.6808
+    [C ci=2] delta=+0.83: kappa_j1=0.488 (orig=0.488), K_eff=10.95, q_ci=0.6808
+    [C ci=2] delta=+1.25: kappa_j1=0.488 (orig=0.488), K_eff=10.90, q_ci=0.6808
+    [C ci=2] delta=+1.67: kappa_j1=0.488 (orig=0.488), K_eff=10.85, q_ci=0.6808
+    [C ci=2] delta=+2.08: kappa_j1=0.488 (orig=0.488), K_eff=10.80, q_ci=0.6808
+    [C ci=2] delta=+2.50: kappa_j1=0.488 (orig=0.488), K_eff=10.75, q_ci=0.6808
+    [C ci=2] delta=+2.92: kappa_j1=0.488 (orig=0.488), K_eff=10.70, q_ci=0.6808
+    [C ci=2] delta=+3.33: kappa_j1=0.488 (orig=0.488), K_eff=10.65, q_ci=0.6808
+    [C ci=2] delta=+3.75: kappa_j1=0.488 (orig=0.488), K_eff=10.60, q_ci=0.6808
+    [C ci=2] delta=+4.17: kappa_j1=0.488 (orig=0.488), K_eff=10.55, q_ci=0.6808
+    [C ci=2] delta=+4.58: kappa_j1=0.488 (orig=0.488), K_eff=10.50, q_ci=0.6808
+    [C ci=2] delta=+5.00: kappa_j1=0.488 (orig=0.488), K_eff=10.45, q_ci=0.6808
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 3 | j1=2 j2=4 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=3 <-> j1=2)
+    [A ci=3] delta=-3.00: kappa_j1=0.405 (orig=0.574), K_eff=11.47, q_ci=0.8846
+    [A ci=3] delta=-2.50: kappa_j1=0.433 (orig=0.574), K_eff=11.54, q_ci=0.8846
+    [A ci=3] delta=-2.00: kappa_j1=0.461 (orig=0.574), K_eff=11.59, q_ci=0.8846
+    [A ci=3] delta=-1.50: kappa_j1=0.489 (orig=0.574), K_eff=11.65, q_ci=0.8846
+    [A ci=3] delta=-1.00: kappa_j1=0.518 (orig=0.574), K_eff=11.71, q_ci=0.8846
+    [A ci=3] delta=-0.50: kappa_j1=0.546 (orig=0.574), K_eff=11.76, q_ci=0.8846
+    [A ci=3] delta=+0.00: kappa_j1=0.574 (orig=0.574), K_eff=11.81, q_ci=0.8846
+    [A ci=3] delta=+0.50: kappa_j1=0.602 (orig=0.574), K_eff=11.86, q_ci=0.8846
+    [A ci=3] delta=+1.00: kappa_j1=0.627 (orig=0.574), K_eff=11.90, q_ci=0.9000
+    [A ci=3] delta=+1.50: kappa_j1=0.635 (orig=0.574), K_eff=11.95, q_ci=0.9000
+    [A ci=3] delta=+2.00: kappa_j1=0.643 (orig=0.574), K_eff=11.99, q_ci=0.9000
+    [A ci=3] delta=+2.50: kappa_j1=0.652 (orig=0.574), K_eff=12.03, q_ci=0.9000
+    [A ci=3] delta=+3.00: kappa_j1=0.661 (orig=0.574), K_eff=12.07, q_ci=0.9000
+  ARM A: r(kappa_j1, logit_q)=0.799 p=0.0011 | r(K_eff, logit_q)=0.827 p=0.0005
+
+  [ARM B] K_eff intervention (ONLY j2=4 moves, ci=3 fixed)
+    [B ci=3] delta=+0.00: kappa_j1=0.574 (orig=0.574), K_eff=11.81, q_ci=0.8846
+    [B ci=3] delta=+0.42: kappa_j1=0.574 (orig=0.574), K_eff=11.83, q_ci=0.8846
+    [B ci=3] delta=+0.83: kappa_j1=0.574 (orig=0.574), K_eff=11.84, q_ci=0.8846
+    [B ci=3] delta=+1.25: kappa_j1=0.574 (orig=0.574), K_eff=11.86, q_ci=0.8846
+    [B ci=3] delta=+1.67: kappa_j1=0.574 (orig=0.574), K_eff=11.87, q_ci=0.8846
+    [B ci=3] delta=+2.08: kappa_j1=0.574 (orig=0.574), K_eff=11.88, q_ci=0.8846
+    [B ci=3] delta=+2.50: kappa_j1=0.574 (orig=0.574), K_eff=11.90, q_ci=0.8846
+    [B ci=3] delta=+2.92: kappa_j1=0.574 (orig=0.574), K_eff=11.91, q_ci=0.8846
+    [B ci=3] delta=+3.33: kappa_j1=0.574 (orig=0.574), K_eff=11.92, q_ci=0.8846
+    [B ci=3] delta=+3.75: kappa_j1=0.574 (orig=0.574), K_eff=11.93, q_ci=0.8846
+    [B ci=3] delta=+4.17: kappa_j1=0.574 (orig=0.574), K_eff=11.93, q_ci=0.8846
+    [B ci=3] delta=+4.58: kappa_j1=0.574 (orig=0.574), K_eff=11.94, q_ci=0.8846
+    [B ci=3] delta=+5.00: kappa_j1=0.574 (orig=0.574), K_eff=11.95, q_ci=0.8846
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_j2, logit_q)=0.000 p=1.0000
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=3 fixed)
+    [C ci=3] delta=+0.00: kappa_j1=0.574 (orig=0.574), K_eff=11.81, q_ci=0.8846
+    [C ci=3] delta=+0.42: kappa_j1=0.574 (orig=0.574), K_eff=11.77, q_ci=0.8846
+    [C ci=3] delta=+0.83: kappa_j1=0.574 (orig=0.574), K_eff=11.73, q_ci=0.8846
+    [C ci=3] delta=+1.25: kappa_j1=0.574 (orig=0.574), K_eff=11.70, q_ci=0.8846
+    [C ci=3] delta=+1.67: kappa_j1=0.574 (orig=0.574), K_eff=11.66, q_ci=0.8846
+    [C ci=3] delta=+2.08: kappa_j1=0.574 (orig=0.574), K_eff=11.62, q_ci=0.8846
+    [C ci=3] delta=+2.50: kappa_j1=0.574 (orig=0.574), K_eff=11.58, q_ci=0.8846
+    [C ci=3] delta=+2.92: kappa_j1=0.574 (orig=0.574), K_eff=11.54, q_ci=0.8846
+    [C ci=3] delta=+3.33: kappa_j1=0.574 (orig=0.574), K_eff=11.50, q_ci=0.8846
+    [C ci=3] delta=+3.75: kappa_j1=0.574 (orig=0.574), K_eff=11.46, q_ci=0.8846
+    [C ci=3] delta=+4.17: kappa_j1=0.574 (orig=0.574), K_eff=11.42, q_ci=0.8846
+    [C ci=3] delta=+4.58: kappa_j1=0.574 (orig=0.574), K_eff=11.38, q_ci=0.8846
+    [C ci=3] delta=+5.00: kappa_j1=0.574 (orig=0.574), K_eff=11.34, q_ci=0.8846
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 4 | j1=2 j2=3 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=4 <-> j1=2)
+    [A ci=4] delta=-3.00: kappa_j1=0.390 (orig=0.560), K_eff=11.33, q_ci=0.8051
+    [A ci=4] delta=-2.50: kappa_j1=0.419 (orig=0.560), K_eff=11.39, q_ci=0.8051
+    [A ci=4] delta=-2.00: kappa_j1=0.447 (orig=0.560), K_eff=11.45, q_ci=0.8051
+    [A ci=4] delta=-1.50: kappa_j1=0.475 (orig=0.560), K_eff=11.51, q_ci=0.8231
+    [A ci=4] delta=-1.00: kappa_j1=0.503 (orig=0.560), K_eff=11.57, q_ci=0.8231
+    [A ci=4] delta=-0.50: kappa_j1=0.532 (orig=0.560), K_eff=11.62, q_ci=0.8385
+    [A ci=4] delta=+0.00: kappa_j1=0.560 (orig=0.560), K_eff=11.67, q_ci=0.8718
+    [A ci=4] delta=+0.50: kappa_j1=0.588 (orig=0.560), K_eff=11.72, q_ci=0.8718
+    [A ci=4] delta=+1.00: kappa_j1=0.616 (orig=0.560), K_eff=11.77, q_ci=0.8872
+    [A ci=4] delta=+1.50: kappa_j1=0.634 (orig=0.560), K_eff=11.82, q_ci=0.9026
+    [A ci=4] delta=+2.00: kappa_j1=0.642 (orig=0.560), K_eff=11.87, q_ci=0.9026
+    [A ci=4] delta=+2.50: kappa_j1=0.650 (orig=0.560), K_eff=11.91, q_ci=0.9026
+    [A ci=4] delta=+3.00: kappa_j1=0.659 (orig=0.560), K_eff=11.95, q_ci=0.9026
+  ARM A: r(kappa_j1, logit_q)=0.971 p=0.0000 | r(K_eff, logit_q)=0.966 p=0.0000
+
+  [ARM B] K_eff intervention (ONLY j2=3 moves, ci=4 fixed)
+    [B ci=4] delta=+0.00: kappa_j1=0.560 (orig=0.560), K_eff=11.67, q_ci=0.8718
+    [B ci=4] delta=+0.42: kappa_j1=0.560 (orig=0.560), K_eff=11.69, q_ci=0.8872
+    [B ci=4] delta=+0.83: kappa_j1=0.560 (orig=0.560), K_eff=11.71, q_ci=0.8872
+    [B ci=4] delta=+1.25: kappa_j1=0.560 (orig=0.560), K_eff=11.72, q_ci=0.8872
+    [B ci=4] delta=+1.67: kappa_j1=0.560 (orig=0.560), K_eff=11.73, q_ci=0.8872
+    [B ci=4] delta=+2.08: kappa_j1=0.560 (orig=0.560), K_eff=11.75, q_ci=0.9026
+    [B ci=4] delta=+2.50: kappa_j1=0.560 (orig=0.560), K_eff=11.76, q_ci=0.9205
+    [B ci=4] delta=+2.92: kappa_j1=0.560 (orig=0.560), K_eff=11.77, q_ci=0.9205
+    [B ci=4] delta=+3.33: kappa_j1=0.560 (orig=0.560), K_eff=11.77, q_ci=0.9205
+    [B ci=4] delta=+3.75: kappa_j1=0.560 (orig=0.560), K_eff=11.78, q_ci=0.9205
+    [B ci=4] delta=+4.17: kappa_j1=0.560 (orig=0.560), K_eff=11.79, q_ci=0.9205
+    [B ci=4] delta=+4.58: kappa_j1=0.560 (orig=0.560), K_eff=11.79, q_ci=0.9205
+    [B ci=4] delta=+5.00: kappa_j1=0.560 (orig=0.560), K_eff=11.80, q_ci=0.9205
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.935 p=0.0000 | r(kappa_j2, logit_q)=0.905 p=0.0000
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=4 fixed)
+    [C ci=4] delta=+0.00: kappa_j1=0.560 (orig=0.560), K_eff=11.67, q_ci=0.8718
+    [C ci=4] delta=+0.42: kappa_j1=0.560 (orig=0.560), K_eff=11.63, q_ci=0.8718
+    [C ci=4] delta=+0.83: kappa_j1=0.560 (orig=0.560), K_eff=11.59, q_ci=0.8718
+    [C ci=4] delta=+1.25: kappa_j1=0.560 (orig=0.560), K_eff=11.55, q_ci=0.8718
+    [C ci=4] delta=+1.67: kappa_j1=0.560 (orig=0.560), K_eff=11.51, q_ci=0.8718
+    [C ci=4] delta=+2.08: kappa_j1=0.560 (orig=0.560), K_eff=11.47, q_ci=0.8718
+    [C ci=4] delta=+2.50: kappa_j1=0.560 (orig=0.560), K_eff=11.43, q_ci=0.8718
+    [C ci=4] delta=+2.92: kappa_j1=0.560 (orig=0.560), K_eff=11.39, q_ci=0.8718
+    [C ci=4] delta=+3.33: kappa_j1=0.560 (orig=0.560), K_eff=11.34, q_ci=0.8718
+    [C ci=4] delta=+3.75: kappa_j1=0.560 (orig=0.560), K_eff=11.30, q_ci=0.8718
+    [C ci=4] delta=+4.17: kappa_j1=0.560 (orig=0.560), K_eff=11.26, q_ci=0.8718
+    [C ci=4] delta=+4.58: kappa_j1=0.560 (orig=0.560), K_eff=11.21, q_ci=0.8718
+    [C ci=4] delta=+5.00: kappa_j1=0.560 (orig=0.560), K_eff=11.17, q_ci=0.8718
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 5 | j1=0 j2=13 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=5 <-> j1=0)
+    [A ci=5] delta=-3.00: kappa_j1=0.554 (orig=0.724), K_eff=11.61, q_ci=0.9538
+    [A ci=5] delta=-2.50: kappa_j1=0.583 (orig=0.724), K_eff=11.66, q_ci=0.9538
+    [A ci=5] delta=-2.00: kappa_j1=0.611 (orig=0.724), K_eff=11.70, q_ci=0.9538
+    [A ci=5] delta=-1.50: kappa_j1=0.639 (orig=0.724), K_eff=11.74, q_ci=0.9538
+    [A ci=5] delta=-1.00: kappa_j1=0.667 (orig=0.724), K_eff=11.78, q_ci=0.9692
+    [A ci=5] delta=-0.50: kappa_j1=0.696 (orig=0.724), K_eff=11.82, q_ci=0.9692
+    [A ci=5] delta=+0.00: kappa_j1=0.724 (orig=0.724), K_eff=11.86, q_ci=0.9692
+    [A ci=5] delta=+0.50: kappa_j1=0.752 (orig=0.724), K_eff=11.90, q_ci=0.9692
+    [A ci=5] delta=+1.00: kappa_j1=0.780 (orig=0.724), K_eff=11.93, q_ci=0.9692
+    [A ci=5] delta=+1.50: kappa_j1=0.808 (orig=0.724), K_eff=11.96, q_ci=0.9692
+    [A ci=5] delta=+2.00: kappa_j1=0.822 (orig=0.724), K_eff=12.00, q_ci=0.9692
+    [A ci=5] delta=+2.50: kappa_j1=0.833 (orig=0.724), K_eff=12.03, q_ci=0.9692
+    [A ci=5] delta=+3.00: kappa_j1=0.843 (orig=0.724), K_eff=12.06, q_ci=0.9692
+  ARM A: r(kappa_j1, logit_q)=0.834 p=0.0004 | r(K_eff, logit_q)=0.826 p=0.0005
+
+  [ARM B] K_eff intervention (ONLY j2=13 moves, ci=5 fixed)
+    [B ci=5] delta=+0.00: kappa_j1=0.724 (orig=0.724), K_eff=11.86, q_ci=0.9692
+    [B ci=5] delta=+0.42: kappa_j1=0.724 (orig=0.724), K_eff=11.87, q_ci=0.9692
+    [B ci=5] delta=+0.83: kappa_j1=0.724 (orig=0.724), K_eff=11.88, q_ci=0.9692
+    [B ci=5] delta=+1.25: kappa_j1=0.724 (orig=0.724), K_eff=11.89, q_ci=0.9692
+    [B ci=5] delta=+1.67: kappa_j1=0.724 (orig=0.724), K_eff=11.90, q_ci=0.9692
+    [B ci=5] delta=+2.08: kappa_j1=0.724 (orig=0.724), K_eff=11.91, q_ci=0.9692
+    [B ci=5] delta=+2.50: kappa_j1=0.724 (orig=0.724), K_eff=11.91, q_ci=0.9692
+    [B ci=5] delta=+2.92: kappa_j1=0.724 (orig=0.724), K_eff=11.92, q_ci=0.9692
+    [B ci=5] delta=+3.33: kappa_j1=0.724 (orig=0.724), K_eff=11.92, q_ci=0.9692
+    [B ci=5] delta=+3.75: kappa_j1=0.724 (orig=0.724), K_eff=11.93, q_ci=0.9692
+    [B ci=5] delta=+4.17: kappa_j1=0.724 (orig=0.724), K_eff=11.93, q_ci=0.9692
+    [B ci=5] delta=+4.58: kappa_j1=0.724 (orig=0.724), K_eff=11.93, q_ci=0.9692
+    [B ci=5] delta=+5.00: kappa_j1=0.724 (orig=0.724), K_eff=11.93, q_ci=0.9692
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_j2, logit_q)=0.000 p=1.0000
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=5 fixed)
+    [C ci=5] delta=+0.00: kappa_j1=0.724 (orig=0.724), K_eff=11.86, q_ci=0.9692
+    [C ci=5] delta=+0.42: kappa_j1=0.724 (orig=0.724), K_eff=11.82, q_ci=0.9692
+    [C ci=5] delta=+0.83: kappa_j1=0.724 (orig=0.724), K_eff=11.79, q_ci=0.9692
+    [C ci=5] delta=+1.25: kappa_j1=0.724 (orig=0.724), K_eff=11.75, q_ci=0.9692
+    [C ci=5] delta=+1.67: kappa_j1=0.724 (orig=0.724), K_eff=11.71, q_ci=0.9692
+    [C ci=5] delta=+2.08: kappa_j1=0.724 (orig=0.724), K_eff=11.67, q_ci=0.9692
+    [C ci=5] delta=+2.50: kappa_j1=0.724 (orig=0.724), K_eff=11.63, q_ci=0.9692
+    [C ci=5] delta=+2.92: kappa_j1=0.724 (orig=0.724), K_eff=11.59, q_ci=0.9692
+    [C ci=5] delta=+3.33: kappa_j1=0.724 (orig=0.724), K_eff=11.55, q_ci=0.9692
+    [C ci=5] delta=+3.75: kappa_j1=0.724 (orig=0.724), K_eff=11.51, q_ci=0.9692
+    [C ci=5] delta=+4.17: kappa_j1=0.724 (orig=0.724), K_eff=11.47, q_ci=0.9692
+    [C ci=5] delta=+4.58: kappa_j1=0.724 (orig=0.724), K_eff=11.43, q_ci=0.9692
+    [C ci=5] delta=+5.00: kappa_j1=0.724 (orig=0.724), K_eff=11.39, q_ci=0.9692
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 6 | j1=1 j2=0 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=6 <-> j1=1)
+    [A ci=6] delta=-3.00: kappa_j1=0.397 (orig=0.567), K_eff=11.26, q_ci=0.8097
+    [A ci=6] delta=-2.50: kappa_j1=0.425 (orig=0.567), K_eff=11.30, q_ci=0.8217
+    [A ci=6] delta=-2.00: kappa_j1=0.454 (orig=0.567), K_eff=11.35, q_ci=0.8217
+    [A ci=6] delta=-1.50: kappa_j1=0.482 (orig=0.567), K_eff=11.39, q_ci=0.8217
+    [A ci=6] delta=-1.00: kappa_j1=0.510 (orig=0.567), K_eff=11.43, q_ci=0.8217
+    [A ci=6] delta=-0.50: kappa_j1=0.538 (orig=0.567), K_eff=11.47, q_ci=0.8444
+    [A ci=6] delta=+0.00: kappa_j1=0.567 (orig=0.567), K_eff=11.51, q_ci=0.8444
+    [A ci=6] delta=+0.50: kappa_j1=0.595 (orig=0.567), K_eff=11.55, q_ci=0.8552
+    [A ci=6] delta=+1.00: kappa_j1=0.623 (orig=0.567), K_eff=11.59, q_ci=0.8552
+    [A ci=6] delta=+1.50: kappa_j1=0.651 (orig=0.567), K_eff=11.62, q_ci=0.8660
+    [A ci=6] delta=+2.00: kappa_j1=0.658 (orig=0.567), K_eff=11.66, q_ci=0.8660
+    [A ci=6] delta=+2.50: kappa_j1=0.665 (orig=0.567), K_eff=11.69, q_ci=0.8779
+    [A ci=6] delta=+3.00: kappa_j1=0.672 (orig=0.567), K_eff=11.73, q_ci=0.8887
+  ARM A: r(kappa_j1, logit_q)=0.946 p=0.0000 | r(K_eff, logit_q)=0.968 p=0.0000
+
+  [ARM B] K_eff intervention (ONLY j2=0 moves, ci=6 fixed)
+    [B ci=6] delta=+0.00: kappa_j1=0.567 (orig=0.567), K_eff=11.51, q_ci=0.8444
+    [B ci=6] delta=+0.42: kappa_j1=0.567 (orig=0.567), K_eff=11.53, q_ci=0.8444
+    [B ci=6] delta=+0.83: kappa_j1=0.567 (orig=0.567), K_eff=11.54, q_ci=0.8444
+    [B ci=6] delta=+1.25: kappa_j1=0.567 (orig=0.567), K_eff=11.56, q_ci=0.8444
+    [B ci=6] delta=+1.67: kappa_j1=0.567 (orig=0.567), K_eff=11.57, q_ci=0.8444
+    [B ci=6] delta=+2.08: kappa_j1=0.567 (orig=0.567), K_eff=11.58, q_ci=0.8444
+    [B ci=6] delta=+2.50: kappa_j1=0.567 (orig=0.567), K_eff=11.59, q_ci=0.8444
+    [B ci=6] delta=+2.92: kappa_j1=0.567 (orig=0.567), K_eff=11.60, q_ci=0.8444
+    [B ci=6] delta=+3.33: kappa_j1=0.567 (orig=0.567), K_eff=11.61, q_ci=0.8444
+    [B ci=6] delta=+3.75: kappa_j1=0.567 (orig=0.567), K_eff=11.62, q_ci=0.8444
+    [B ci=6] delta=+4.17: kappa_j1=0.567 (orig=0.567), K_eff=11.62, q_ci=0.8444
+    [B ci=6] delta=+4.58: kappa_j1=0.567 (orig=0.567), K_eff=11.63, q_ci=0.8444
+    [B ci=6] delta=+5.00: kappa_j1=0.567 (orig=0.567), K_eff=11.63, q_ci=0.8444
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_j2, logit_q)=0.000 p=1.0000
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=6 fixed)
+    [C ci=6] delta=+0.00: kappa_j1=0.567 (orig=0.567), K_eff=11.51, q_ci=0.8444
+    [C ci=6] delta=+0.42: kappa_j1=0.567 (orig=0.567), K_eff=11.47, q_ci=0.8444
+    [C ci=6] delta=+0.83: kappa_j1=0.567 (orig=0.567), K_eff=11.43, q_ci=0.8444
+    [C ci=6] delta=+1.25: kappa_j1=0.567 (orig=0.567), K_eff=11.38, q_ci=0.8444
+    [C ci=6] delta=+1.67: kappa_j1=0.567 (orig=0.567), K_eff=11.34, q_ci=0.8444
+    [C ci=6] delta=+2.08: kappa_j1=0.567 (orig=0.567), K_eff=11.30, q_ci=0.8444
+    [C ci=6] delta=+2.50: kappa_j1=0.567 (orig=0.567), K_eff=11.25, q_ci=0.8444
+    [C ci=6] delta=+2.92: kappa_j1=0.567 (orig=0.567), K_eff=11.21, q_ci=0.8444
+    [C ci=6] delta=+3.33: kappa_j1=0.567 (orig=0.567), K_eff=11.16, q_ci=0.8444
+    [C ci=6] delta=+3.75: kappa_j1=0.567 (orig=0.567), K_eff=11.12, q_ci=0.8444
+    [C ci=6] delta=+4.17: kappa_j1=0.567 (orig=0.567), K_eff=11.08, q_ci=0.8444
+    [C ci=6] delta=+4.58: kappa_j1=0.567 (orig=0.567), K_eff=11.03, q_ci=0.8444
+    [C ci=6] delta=+5.00: kappa_j1=0.567 (orig=0.567), K_eff=10.99, q_ci=0.8444
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 7 | j1=6 j2=0 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=7 <-> j1=6)
+    [A ci=7] delta=-3.00: kappa_j1=0.519 (orig=0.688), K_eff=11.71, q_ci=0.8953
+    [A ci=7] delta=-2.50: kappa_j1=0.547 (orig=0.688), K_eff=11.76, q_ci=0.8953
+    [A ci=7] delta=-2.00: kappa_j1=0.575 (orig=0.688), K_eff=11.80, q_ci=0.9088
+    [A ci=7] delta=-1.50: kappa_j1=0.603 (orig=0.688), K_eff=11.85, q_ci=0.9088
+    [A ci=7] delta=-1.00: kappa_j1=0.632 (orig=0.688), K_eff=11.89, q_ci=0.9088
+    [A ci=7] delta=-0.50: kappa_j1=0.660 (orig=0.688), K_eff=11.93, q_ci=0.9088
+    [A ci=7] delta=+0.00: kappa_j1=0.688 (orig=0.688), K_eff=11.97, q_ci=0.9088
+    [A ci=7] delta=+0.50: kappa_j1=0.716 (orig=0.688), K_eff=12.01, q_ci=0.9207
+    [A ci=7] delta=+1.00: kappa_j1=0.744 (orig=0.688), K_eff=12.04, q_ci=0.9207
+    [A ci=7] delta=+1.50: kappa_j1=0.770 (orig=0.688), K_eff=12.08, q_ci=0.9207
+    [A ci=7] delta=+2.00: kappa_j1=0.778 (orig=0.688), K_eff=12.11, q_ci=0.9207
+    [A ci=7] delta=+2.50: kappa_j1=0.786 (orig=0.688), K_eff=12.14, q_ci=0.9207
+    [A ci=7] delta=+3.00: kappa_j1=0.794 (orig=0.688), K_eff=12.17, q_ci=0.9207
+  ARM A: r(kappa_j1, logit_q)=0.937 p=0.0000 | r(K_eff, logit_q)=0.926 p=0.0000
+
+  [ARM B] K_eff intervention (ONLY j2=0 moves, ci=7 fixed)
+    [B ci=7] delta=+0.00: kappa_j1=0.688 (orig=0.688), K_eff=11.97, q_ci=0.9088
+    [B ci=7] delta=+0.42: kappa_j1=0.688 (orig=0.688), K_eff=11.98, q_ci=0.9088
+    [B ci=7] delta=+0.83: kappa_j1=0.688 (orig=0.688), K_eff=11.99, q_ci=0.9088
+    [B ci=7] delta=+1.25: kappa_j1=0.688 (orig=0.688), K_eff=12.00, q_ci=0.9088
+    [B ci=7] delta=+1.67: kappa_j1=0.688 (orig=0.688), K_eff=12.00, q_ci=0.9088
+    [B ci=7] delta=+2.08: kappa_j1=0.688 (orig=0.688), K_eff=12.01, q_ci=0.9088
+    [B ci=7] delta=+2.50: kappa_j1=0.688 (orig=0.688), K_eff=12.01, q_ci=0.9088
+    [B ci=7] delta=+2.92: kappa_j1=0.688 (orig=0.688), K_eff=12.02, q_ci=0.9088
+    [B ci=7] delta=+3.33: kappa_j1=0.688 (orig=0.688), K_eff=12.02, q_ci=0.9088
+    [B ci=7] delta=+3.75: kappa_j1=0.688 (orig=0.688), K_eff=12.02, q_ci=0.9088
+    [B ci=7] delta=+4.17: kappa_j1=0.688 (orig=0.688), K_eff=12.02, q_ci=0.9088
+    [B ci=7] delta=+4.58: kappa_j1=0.688 (orig=0.688), K_eff=12.02, q_ci=0.9088
+    [B ci=7] delta=+5.00: kappa_j1=0.688 (orig=0.688), K_eff=12.02, q_ci=0.9088
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_j2, logit_q)=0.000 p=1.0000
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=7 fixed)
+    [C ci=7] delta=+0.00: kappa_j1=0.688 (orig=0.688), K_eff=11.97, q_ci=0.9088
+    [C ci=7] delta=+0.42: kappa_j1=0.688 (orig=0.688), K_eff=11.93, q_ci=0.9088
+    [C ci=7] delta=+0.83: kappa_j1=0.688 (orig=0.688), K_eff=11.89, q_ci=0.9088
+    [C ci=7] delta=+1.25: kappa_j1=0.688 (orig=0.688), K_eff=11.85, q_ci=0.9088
+    [C ci=7] delta=+1.67: kappa_j1=0.688 (orig=0.688), K_eff=11.80, q_ci=0.9088
+    [C ci=7] delta=+2.08: kappa_j1=0.688 (orig=0.688), K_eff=11.76, q_ci=0.9088
+    [C ci=7] delta=+2.50: kappa_j1=0.688 (orig=0.688), K_eff=11.72, q_ci=0.9088
+    [C ci=7] delta=+2.92: kappa_j1=0.688 (orig=0.688), K_eff=11.67, q_ci=0.9088
+    [C ci=7] delta=+3.33: kappa_j1=0.688 (orig=0.688), K_eff=11.63, q_ci=0.9088
+    [C ci=7] delta=+3.75: kappa_j1=0.688 (orig=0.688), K_eff=11.59, q_ci=0.9088
+    [C ci=7] delta=+4.17: kappa_j1=0.688 (orig=0.688), K_eff=11.54, q_ci=0.9088
+    [C ci=7] delta=+4.58: kappa_j1=0.688 (orig=0.688), K_eff=11.50, q_ci=0.9088
+    [C ci=7] delta=+5.00: kappa_j1=0.688 (orig=0.688), K_eff=11.45, q_ci=0.9088
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 8 | j1=12 j2=4 jK=11
+============================================================
+
+  [ARM A] kappa intervention (ci=8 <-> j1=12)
+    [A ci=8] delta=-3.00: kappa_j1=1.447 (orig=1.616), K_eff=12.94, q_ci=0.9250
+    [A ci=8] delta=-2.50: kappa_j1=1.475 (orig=1.616), K_eff=12.94, q_ci=0.9250
+    [A ci=8] delta=-2.00: kappa_j1=1.503 (orig=1.616), K_eff=12.95, q_ci=0.9250
+    [A ci=8] delta=-1.50: kappa_j1=1.532 (orig=1.616), K_eff=12.95, q_ci=0.9250
+    [A ci=8] delta=-1.00: kappa_j1=1.560 (orig=1.616), K_eff=12.95, q_ci=0.9250
+    [A ci=8] delta=-0.50: kappa_j1=1.588 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [A ci=8] delta=+0.00: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [A ci=8] delta=+0.50: kappa_j1=1.644 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [A ci=8] delta=+1.00: kappa_j1=1.673 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [A ci=8] delta=+1.50: kappa_j1=1.701 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [A ci=8] delta=+2.00: kappa_j1=1.721 (orig=1.616), K_eff=12.97, q_ci=0.9385
+    [A ci=8] delta=+2.50: kappa_j1=1.734 (orig=1.616), K_eff=12.97, q_ci=0.9385
+    [A ci=8] delta=+3.00: kappa_j1=1.747 (orig=1.616), K_eff=12.97, q_ci=0.9385
+  ARM A: r(kappa_j1, logit_q)=0.866 p=0.0001 | r(K_eff, logit_q)=0.871 p=0.0001
+
+  [ARM B] K_eff intervention (ONLY j2=4 moves, ci=8 fixed)
+    [B ci=8] delta=+0.00: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+0.42: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+0.83: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+1.25: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+1.67: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+2.08: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+2.50: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+2.92: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+3.33: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+3.75: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+4.17: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+4.58: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [B ci=8] delta=+5.00: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_j2, logit_q)=0.000 p=1.0000
+
+  [ARM C] Neg control (ONLY jK=11 moves, ci=8 fixed)
+    [C ci=8] delta=+0.00: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [C ci=8] delta=+0.42: kappa_j1=1.616 (orig=1.616), K_eff=12.96, q_ci=0.9385
+    [C ci=8] delta=+0.83: kappa_j1=1.616 (orig=1.616), K_eff=12.95, q_ci=0.9385
+    [C ci=8] delta=+1.25: kappa_j1=1.616 (orig=1.616), K_eff=12.95, q_ci=0.9385
+    [C ci=8] delta=+1.67: kappa_j1=1.616 (orig=1.616), K_eff=12.94, q_ci=0.9385
+    [C ci=8] delta=+2.08: kappa_j1=1.616 (orig=1.616), K_eff=12.94, q_ci=0.9385
+    [C ci=8] delta=+2.50: kappa_j1=1.616 (orig=1.616), K_eff=12.94, q_ci=0.9385
+    [C ci=8] delta=+2.92: kappa_j1=1.616 (orig=1.616), K_eff=12.93, q_ci=0.9385
+    [C ci=8] delta=+3.33: kappa_j1=1.616 (orig=1.616), K_eff=12.93, q_ci=0.9385
+    [C ci=8] delta=+3.75: kappa_j1=1.616 (orig=1.616), K_eff=12.92, q_ci=0.9385
+    [C ci=8] delta=+4.17: kappa_j1=1.616 (orig=1.616), K_eff=12.92, q_ci=0.9385
+    [C ci=8] delta=+4.58: kappa_j1=1.616 (orig=1.616), K_eff=12.91, q_ci=0.9385
+    [C ci=8] delta=+5.00: kappa_j1=1.616 (orig=1.616), K_eff=12.90, q_ci=0.9385
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 9 | j1=10 j2=7 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=9 <-> j1=10)
+    [A ci=9] delta=-3.00: kappa_j1=0.347 (orig=0.516), K_eff=11.99, q_ci=0.7769
+    [A ci=9] delta=-2.50: kappa_j1=0.375 (orig=0.516), K_eff=12.03, q_ci=0.7949
+    [A ci=9] delta=-2.00: kappa_j1=0.403 (orig=0.516), K_eff=12.07, q_ci=0.8462
+    [A ci=9] delta=-1.50: kappa_j1=0.432 (orig=0.516), K_eff=12.10, q_ci=0.8795
+    [A ci=9] delta=-1.00: kappa_j1=0.460 (orig=0.516), K_eff=12.14, q_ci=0.8795
+    [A ci=9] delta=-0.50: kappa_j1=0.488 (orig=0.516), K_eff=12.18, q_ci=0.8949
+    [A ci=9] delta=+0.00: kappa_j1=0.516 (orig=0.516), K_eff=12.21, q_ci=0.9128
+    [A ci=9] delta=+0.50: kappa_j1=0.545 (orig=0.516), K_eff=12.25, q_ci=0.9308
+    [A ci=9] delta=+1.00: kappa_j1=0.573 (orig=0.516), K_eff=12.28, q_ci=0.9641
+    [A ci=9] delta=+1.50: kappa_j1=0.601 (orig=0.516), K_eff=12.31, q_ci=0.9641
+    [A ci=9] delta=+2.00: kappa_j1=0.629 (orig=0.516), K_eff=12.34, q_ci=0.9821
+    [A ci=9] delta=+2.50: kappa_j1=0.657 (orig=0.516), K_eff=12.37, q_ci=0.9821
+    [A ci=9] delta=+3.00: kappa_j1=0.686 (orig=0.516), K_eff=12.40, q_ci=1.0000
+  ARM A: r(kappa_j1, logit_q)=0.732 p=0.0045 | r(K_eff, logit_q)=0.705 p=0.0071
+
+  [ARM B] K_eff intervention (ONLY j2=7 moves, ci=9 fixed)
+    [B ci=9] delta=+0.00: kappa_j1=0.516 (orig=0.516), K_eff=12.21, q_ci=0.9128
+    [B ci=9] delta=+0.42: kappa_j1=0.516 (orig=0.516), K_eff=12.22, q_ci=0.9128
+    [B ci=9] delta=+0.83: kappa_j1=0.516 (orig=0.516), K_eff=12.23, q_ci=0.9128
+    [B ci=9] delta=+1.25: kappa_j1=0.516 (orig=0.516), K_eff=12.24, q_ci=0.9128
+    [B ci=9] delta=+1.67: kappa_j1=0.516 (orig=0.516), K_eff=12.24, q_ci=0.9128
+    [B ci=9] delta=+2.08: kappa_j1=0.516 (orig=0.516), K_eff=12.25, q_ci=0.9128
+    [B ci=9] delta=+2.50: kappa_j1=0.516 (orig=0.516), K_eff=12.25, q_ci=0.9128
+    [B ci=9] delta=+2.92: kappa_j1=0.516 (orig=0.516), K_eff=12.25, q_ci=0.9128
+    [B ci=9] delta=+3.33: kappa_j1=0.516 (orig=0.516), K_eff=12.26, q_ci=0.9128
+    [B ci=9] delta=+3.75: kappa_j1=0.516 (orig=0.516), K_eff=12.26, q_ci=0.9128
+    [B ci=9] delta=+4.17: kappa_j1=0.516 (orig=0.516), K_eff=12.26, q_ci=0.9128
+    [B ci=9] delta=+4.58: kappa_j1=0.516 (orig=0.516), K_eff=12.26, q_ci=0.9128
+    [B ci=9] delta=+5.00: kappa_j1=0.516 (orig=0.516), K_eff=12.26, q_ci=0.9128
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_j2, logit_q)=0.000 p=1.0000
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=9 fixed)
+    [C ci=9] delta=+0.00: kappa_j1=0.516 (orig=0.516), K_eff=12.21, q_ci=0.9128
+    [C ci=9] delta=+0.42: kappa_j1=0.516 (orig=0.516), K_eff=12.19, q_ci=0.9128
+    [C ci=9] delta=+0.83: kappa_j1=0.516 (orig=0.516), K_eff=12.16, q_ci=0.9128
+    [C ci=9] delta=+1.25: kappa_j1=0.516 (orig=0.516), K_eff=12.13, q_ci=0.9128
+    [C ci=9] delta=+1.67: kappa_j1=0.516 (orig=0.516), K_eff=12.11, q_ci=0.9128
+    [C ci=9] delta=+2.08: kappa_j1=0.516 (orig=0.516), K_eff=12.08, q_ci=0.9128
+    [C ci=9] delta=+2.50: kappa_j1=0.516 (orig=0.516), K_eff=12.05, q_ci=0.9128
+    [C ci=9] delta=+2.92: kappa_j1=0.516 (orig=0.516), K_eff=12.02, q_ci=0.9128
+    [C ci=9] delta=+3.33: kappa_j1=0.516 (orig=0.516), K_eff=11.99, q_ci=0.9128
+    [C ci=9] delta=+3.75: kappa_j1=0.516 (orig=0.516), K_eff=11.97, q_ci=0.9128
+    [C ci=9] delta=+4.17: kappa_j1=0.516 (orig=0.516), K_eff=11.94, q_ci=0.9128
+    [C ci=9] delta=+4.58: kappa_j1=0.516 (orig=0.516), K_eff=11.91, q_ci=0.9128
+    [C ci=9] delta=+5.00: kappa_j1=0.516 (orig=0.516), K_eff=11.88, q_ci=0.9128
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 10 | j1=9 j2=7 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=10 <-> j1=9)
+    [A ci=10] delta=-3.00: kappa_j1=0.347 (orig=0.516), K_eff=11.88, q_ci=0.9333
+    [A ci=10] delta=-2.50: kappa_j1=0.375 (orig=0.516), K_eff=11.91, q_ci=0.9487
+    [A ci=10] delta=-2.00: kappa_j1=0.403 (orig=0.516), K_eff=11.94, q_ci=0.9308
+    [A ci=10] delta=-1.50: kappa_j1=0.432 (orig=0.516), K_eff=11.97, q_ci=0.9308
+    [A ci=10] delta=-1.00: kappa_j1=0.460 (orig=0.516), K_eff=12.00, q_ci=0.9308
+    [A ci=10] delta=-0.50: kappa_j1=0.488 (orig=0.516), K_eff=12.03, q_ci=0.9308
+    [A ci=10] delta=+0.00: kappa_j1=0.516 (orig=0.516), K_eff=12.06, q_ci=0.9308
+    [A ci=10] delta=+0.50: kappa_j1=0.545 (orig=0.516), K_eff=12.09, q_ci=0.9308
+    [A ci=10] delta=+1.00: kappa_j1=0.573 (orig=0.516), K_eff=12.11, q_ci=0.9462
+    [A ci=10] delta=+1.50: kappa_j1=0.601 (orig=0.516), K_eff=12.14, q_ci=0.9641
+    [A ci=10] delta=+2.00: kappa_j1=0.629 (orig=0.516), K_eff=12.16, q_ci=0.9641
+    [A ci=10] delta=+2.50: kappa_j1=0.657 (orig=0.516), K_eff=12.18, q_ci=0.9641
+    [A ci=10] delta=+3.00: kappa_j1=0.686 (orig=0.516), K_eff=12.20, q_ci=0.9641
+  ARM A: r(kappa_j1, logit_q)=0.753 p=0.0029 | r(K_eff, logit_q)=0.724 p=0.0051
+
+  [ARM B] K_eff intervention (ONLY j2=7 moves, ci=10 fixed)
+    [B ci=10] delta=+0.00: kappa_j1=0.516 (orig=0.516), K_eff=12.06, q_ci=0.9308
+    [B ci=10] delta=+0.42: kappa_j1=0.516 (orig=0.516), K_eff=12.07, q_ci=0.9308
+    [B ci=10] delta=+0.83: kappa_j1=0.516 (orig=0.516), K_eff=12.08, q_ci=0.9308
+    [B ci=10] delta=+1.25: kappa_j1=0.516 (orig=0.516), K_eff=12.09, q_ci=0.9308
+    [B ci=10] delta=+1.67: kappa_j1=0.516 (orig=0.516), K_eff=12.09, q_ci=0.9308
+    [B ci=10] delta=+2.08: kappa_j1=0.516 (orig=0.516), K_eff=12.10, q_ci=0.9308
+    [B ci=10] delta=+2.50: kappa_j1=0.516 (orig=0.516), K_eff=12.11, q_ci=0.9308
+    [B ci=10] delta=+2.92: kappa_j1=0.516 (orig=0.516), K_eff=12.11, q_ci=0.9308
+    [B ci=10] delta=+3.33: kappa_j1=0.516 (orig=0.516), K_eff=12.12, q_ci=0.9308
+    [B ci=10] delta=+3.75: kappa_j1=0.516 (orig=0.516), K_eff=12.12, q_ci=0.9308
+    [B ci=10] delta=+4.17: kappa_j1=0.516 (orig=0.516), K_eff=12.12, q_ci=0.9308
+    [B ci=10] delta=+4.58: kappa_j1=0.516 (orig=0.516), K_eff=12.12, q_ci=0.9308
+    [B ci=10] delta=+5.00: kappa_j1=0.516 (orig=0.516), K_eff=12.12, q_ci=0.9308
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_j2, logit_q)=0.000 p=1.0000
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=10 fixed)
+    [C ci=10] delta=+0.00: kappa_j1=0.516 (orig=0.516), K_eff=12.06, q_ci=0.9308
+    [C ci=10] delta=+0.42: kappa_j1=0.516 (orig=0.516), K_eff=12.03, q_ci=0.9308
+    [C ci=10] delta=+0.83: kappa_j1=0.516 (orig=0.516), K_eff=12.00, q_ci=0.9308
+    [C ci=10] delta=+1.25: kappa_j1=0.516 (orig=0.516), K_eff=11.97, q_ci=0.9308
+    [C ci=10] delta=+1.67: kappa_j1=0.516 (orig=0.516), K_eff=11.94, q_ci=0.9308
+    [C ci=10] delta=+2.08: kappa_j1=0.516 (orig=0.516), K_eff=11.91, q_ci=0.9308
+    [C ci=10] delta=+2.50: kappa_j1=0.516 (orig=0.516), K_eff=11.88, q_ci=0.9308
+    [C ci=10] delta=+2.92: kappa_j1=0.516 (orig=0.516), K_eff=11.85, q_ci=0.9308
+    [C ci=10] delta=+3.33: kappa_j1=0.516 (orig=0.516), K_eff=11.81, q_ci=0.9308
+    [C ci=10] delta=+3.75: kappa_j1=0.516 (orig=0.516), K_eff=11.78, q_ci=0.9308
+    [C ci=10] delta=+4.17: kappa_j1=0.516 (orig=0.516), K_eff=11.75, q_ci=0.9308
+    [C ci=10] delta=+4.58: kappa_j1=0.516 (orig=0.516), K_eff=11.72, q_ci=0.9308
+    [C ci=10] delta=+5.00: kappa_j1=0.516 (orig=0.516), K_eff=11.68, q_ci=0.9308
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 11 | j1=2 j2=13 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=11 <-> j1=2)
+    [A ci=11] delta=-3.00: kappa_j1=0.417 (orig=0.586), K_eff=11.29, q_ci=0.9357
+    [A ci=11] delta=-2.50: kappa_j1=0.445 (orig=0.586), K_eff=11.35, q_ci=0.9237
+    [A ci=11] delta=-2.00: kappa_j1=0.473 (orig=0.586), K_eff=11.40, q_ci=0.9372
+    [A ci=11] delta=-1.50: kappa_j1=0.502 (orig=0.586), K_eff=11.45, q_ci=0.9372
+    [A ci=11] delta=-1.00: kappa_j1=0.530 (orig=0.586), K_eff=11.50, q_ci=0.9626
+    [A ci=11] delta=-0.50: kappa_j1=0.558 (orig=0.586), K_eff=11.55, q_ci=0.9626
+    [A ci=11] delta=+0.00: kappa_j1=0.586 (orig=0.586), K_eff=11.59, q_ci=0.9626
+    [A ci=11] delta=+0.50: kappa_j1=0.614 (orig=0.586), K_eff=11.64, q_ci=0.9746
+    [A ci=11] delta=+1.00: kappa_j1=0.643 (orig=0.586), K_eff=11.68, q_ci=0.9746
+    [A ci=11] delta=+1.50: kappa_j1=0.671 (orig=0.586), K_eff=11.72, q_ci=0.9746
+    [A ci=11] delta=+2.00: kappa_j1=0.699 (orig=0.586), K_eff=11.76, q_ci=0.9865
+    [A ci=11] delta=+2.50: kappa_j1=0.721 (orig=0.586), K_eff=11.80, q_ci=1.0000
+    [A ci=11] delta=+3.00: kappa_j1=0.731 (orig=0.586), K_eff=11.83, q_ci=1.0000
+  ARM A: r(kappa_j1, logit_q)=0.709 p=0.0067 | r(K_eff, logit_q)=0.707 p=0.0069
+
+  [ARM B] K_eff intervention (ONLY j2=13 moves, ci=11 fixed)
+    [B ci=11] delta=+0.00: kappa_j1=0.586 (orig=0.586), K_eff=11.59, q_ci=0.9626
+    [B ci=11] delta=+0.42: kappa_j1=0.586 (orig=0.586), K_eff=11.61, q_ci=0.9746
+    [B ci=11] delta=+0.83: kappa_j1=0.586 (orig=0.586), K_eff=11.62, q_ci=0.9746
+    [B ci=11] delta=+1.25: kappa_j1=0.586 (orig=0.586), K_eff=11.64, q_ci=0.9746
+    [B ci=11] delta=+1.67: kappa_j1=0.586 (orig=0.586), K_eff=11.65, q_ci=0.9746
+    [B ci=11] delta=+2.08: kappa_j1=0.586 (orig=0.586), K_eff=11.66, q_ci=0.9746
+    [B ci=11] delta=+2.50: kappa_j1=0.586 (orig=0.586), K_eff=11.67, q_ci=0.9746
+    [B ci=11] delta=+2.92: kappa_j1=0.586 (orig=0.586), K_eff=11.68, q_ci=0.9746
+    [B ci=11] delta=+3.33: kappa_j1=0.586 (orig=0.586), K_eff=11.69, q_ci=0.9746
+    [B ci=11] delta=+3.75: kappa_j1=0.586 (orig=0.586), K_eff=11.70, q_ci=0.9746
+    [B ci=11] delta=+4.17: kappa_j1=0.586 (orig=0.586), K_eff=11.71, q_ci=0.9746
+    [B ci=11] delta=+4.58: kappa_j1=0.586 (orig=0.586), K_eff=11.72, q_ci=0.9746
+    [B ci=11] delta=+5.00: kappa_j1=0.586 (orig=0.586), K_eff=11.72, q_ci=0.9746
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.530 p=0.0627 | r(kappa_j2, logit_q)=0.463 p=0.1112
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=11 fixed)
+    [C ci=11] delta=+0.00: kappa_j1=0.586 (orig=0.586), K_eff=11.59, q_ci=0.9626
+    [C ci=11] delta=+0.42: kappa_j1=0.586 (orig=0.586), K_eff=11.55, q_ci=0.9626
+    [C ci=11] delta=+0.83: kappa_j1=0.586 (orig=0.586), K_eff=11.52, q_ci=0.9626
+    [C ci=11] delta=+1.25: kappa_j1=0.586 (orig=0.586), K_eff=11.48, q_ci=0.9626
+    [C ci=11] delta=+1.67: kappa_j1=0.586 (orig=0.586), K_eff=11.44, q_ci=0.9626
+    [C ci=11] delta=+2.08: kappa_j1=0.586 (orig=0.586), K_eff=11.40, q_ci=0.9626
+    [C ci=11] delta=+2.50: kappa_j1=0.586 (orig=0.586), K_eff=11.36, q_ci=0.9626
+    [C ci=11] delta=+2.92: kappa_j1=0.586 (orig=0.586), K_eff=11.32, q_ci=0.9626
+    [C ci=11] delta=+3.33: kappa_j1=0.586 (orig=0.586), K_eff=11.28, q_ci=0.9626
+    [C ci=11] delta=+3.75: kappa_j1=0.586 (orig=0.586), K_eff=11.24, q_ci=0.9626
+    [C ci=11] delta=+4.17: kappa_j1=0.586 (orig=0.586), K_eff=11.20, q_ci=0.9626
+    [C ci=11] delta=+4.58: kappa_j1=0.586 (orig=0.586), K_eff=11.16, q_ci=0.9626
+    [C ci=11] delta=+5.00: kappa_j1=0.586 (orig=0.586), K_eff=11.12, q_ci=0.9626
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 12 | j1=13 j2=2 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=12 <-> j1=13)
+    [A ci=12] delta=-3.00: kappa_j1=0.350 (orig=0.520), K_eff=11.51, q_ci=0.7673
+    [A ci=12] delta=-2.50: kappa_j1=0.378 (orig=0.520), K_eff=11.58, q_ci=0.7673
+    [A ci=12] delta=-2.00: kappa_j1=0.407 (orig=0.520), K_eff=11.64, q_ci=0.7808
+    [A ci=12] delta=-1.50: kappa_j1=0.435 (orig=0.520), K_eff=11.70, q_ci=0.7808
+    [A ci=12] delta=-1.00: kappa_j1=0.463 (orig=0.520), K_eff=11.76, q_ci=0.7962
+    [A ci=12] delta=-0.50: kappa_j1=0.491 (orig=0.520), K_eff=11.82, q_ci=0.8096
+    [A ci=12] delta=+0.00: kappa_j1=0.520 (orig=0.520), K_eff=11.87, q_ci=0.8096
+    [A ci=12] delta=+0.50: kappa_j1=0.548 (orig=0.520), K_eff=11.93, q_ci=0.8096
+    [A ci=12] delta=+1.00: kappa_j1=0.576 (orig=0.520), K_eff=11.98, q_ci=0.8231
+    [A ci=12] delta=+1.50: kappa_j1=0.595 (orig=0.520), K_eff=12.03, q_ci=0.8385
+    [A ci=12] delta=+2.00: kappa_j1=0.604 (orig=0.520), K_eff=12.07, q_ci=0.8519
+    [A ci=12] delta=+2.50: kappa_j1=0.614 (orig=0.520), K_eff=12.12, q_ci=0.8654
+    [A ci=12] delta=+3.00: kappa_j1=0.623 (orig=0.520), K_eff=12.16, q_ci=0.8654
+  ARM A: r(kappa_j1, logit_q)=0.944 p=0.0000 | r(K_eff, logit_q)=0.966 p=0.0000
+
+  [ARM B] K_eff intervention (ONLY j2=2 moves, ci=12 fixed)
+    [B ci=12] delta=+0.00: kappa_j1=0.520 (orig=0.520), K_eff=11.87, q_ci=0.8096
+    [B ci=12] delta=+0.42: kappa_j1=0.520 (orig=0.520), K_eff=11.89, q_ci=0.8096
+    [B ci=12] delta=+0.83: kappa_j1=0.520 (orig=0.520), K_eff=11.91, q_ci=0.8096
+    [B ci=12] delta=+1.25: kappa_j1=0.520 (orig=0.520), K_eff=11.93, q_ci=0.8096
+    [B ci=12] delta=+1.67: kappa_j1=0.520 (orig=0.520), K_eff=11.94, q_ci=0.8096
+    [B ci=12] delta=+2.08: kappa_j1=0.520 (orig=0.520), K_eff=11.96, q_ci=0.8096
+    [B ci=12] delta=+2.50: kappa_j1=0.520 (orig=0.520), K_eff=11.97, q_ci=0.8096
+    [B ci=12] delta=+2.92: kappa_j1=0.520 (orig=0.520), K_eff=11.98, q_ci=0.8096
+    [B ci=12] delta=+3.33: kappa_j1=0.520 (orig=0.520), K_eff=11.99, q_ci=0.8096
+    [B ci=12] delta=+3.75: kappa_j1=0.520 (orig=0.520), K_eff=12.00, q_ci=0.8096
+    [B ci=12] delta=+4.17: kappa_j1=0.520 (orig=0.520), K_eff=12.01, q_ci=0.8231
+    [B ci=12] delta=+4.58: kappa_j1=0.520 (orig=0.520), K_eff=12.02, q_ci=0.8231
+    [B ci=12] delta=+5.00: kappa_j1=0.520 (orig=0.520), K_eff=12.02, q_ci=0.8231
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.640 p=0.0185 | r(kappa_j2, logit_q)=0.732 p=0.0045
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=12 fixed)
+    [C ci=12] delta=+0.00: kappa_j1=0.520 (orig=0.520), K_eff=11.87, q_ci=0.8096
+    [C ci=12] delta=+0.42: kappa_j1=0.520 (orig=0.520), K_eff=11.84, q_ci=0.8096
+    [C ci=12] delta=+0.83: kappa_j1=0.520 (orig=0.520), K_eff=11.80, q_ci=0.8096
+    [C ci=12] delta=+1.25: kappa_j1=0.520 (orig=0.520), K_eff=11.76, q_ci=0.8096
+    [C ci=12] delta=+1.67: kappa_j1=0.520 (orig=0.520), K_eff=11.72, q_ci=0.8096
+    [C ci=12] delta=+2.08: kappa_j1=0.520 (orig=0.520), K_eff=11.69, q_ci=0.8096
+    [C ci=12] delta=+2.50: kappa_j1=0.520 (orig=0.520), K_eff=11.65, q_ci=0.8096
+    [C ci=12] delta=+2.92: kappa_j1=0.520 (orig=0.520), K_eff=11.61, q_ci=0.8096
+    [C ci=12] delta=+3.33: kappa_j1=0.520 (orig=0.520), K_eff=11.57, q_ci=0.8096
+    [C ci=12] delta=+3.75: kappa_j1=0.520 (orig=0.520), K_eff=11.53, q_ci=0.8096
+    [C ci=12] delta=+4.17: kappa_j1=0.520 (orig=0.520), K_eff=11.49, q_ci=0.8096
+    [C ci=12] delta=+4.58: kappa_j1=0.520 (orig=0.520), K_eff=11.44, q_ci=0.8096
+    [C ci=12] delta=+5.00: kappa_j1=0.520 (orig=0.520), K_eff=11.40, q_ci=0.8096
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 13 | j1=2 j2=12 jK=8
+============================================================
+
+  [ARM A] kappa intervention (ci=13 <-> j1=2)
+    [A ci=13] delta=-3.00: kappa_j1=0.318 (orig=0.488), K_eff=10.84, q_ci=0.5944
+    [A ci=13] delta=-2.50: kappa_j1=0.347 (orig=0.488), K_eff=10.90, q_ci=0.5728
+    [A ci=13] delta=-2.00: kappa_j1=0.375 (orig=0.488), K_eff=10.96, q_ci=0.6087
+    [A ci=13] delta=-1.50: kappa_j1=0.403 (orig=0.488), K_eff=11.02, q_ci=0.6303
+    [A ci=13] delta=-1.00: kappa_j1=0.431 (orig=0.488), K_eff=11.08, q_ci=0.6518
+    [A ci=13] delta=-0.50: kappa_j1=0.460 (orig=0.488), K_eff=11.13, q_ci=0.6518
+    [A ci=13] delta=+0.00: kappa_j1=0.488 (orig=0.488), K_eff=11.18, q_ci=0.6518
+    [A ci=13] delta=+0.50: kappa_j1=0.516 (orig=0.488), K_eff=11.24, q_ci=0.6518
+    [A ci=13] delta=+1.00: kappa_j1=0.530 (orig=0.488), K_eff=11.29, q_ci=0.6518
+    [A ci=13] delta=+1.50: kappa_j1=0.536 (orig=0.488), K_eff=11.34, q_ci=0.6913
+    [A ci=13] delta=+2.00: kappa_j1=0.543 (orig=0.488), K_eff=11.39, q_ci=0.6913
+    [A ci=13] delta=+2.50: kappa_j1=0.549 (orig=0.488), K_eff=11.43, q_ci=0.6913
+    [A ci=13] delta=+3.00: kappa_j1=0.556 (orig=0.488), K_eff=11.48, q_ci=0.6913
+  ARM A: r(kappa_j1, logit_q)=0.930 p=0.0000 | r(K_eff, logit_q)=0.942 p=0.0000
+
+  [ARM B] K_eff intervention (ONLY j2=12 moves, ci=13 fixed)
+    [B ci=13] delta=+0.00: kappa_j1=0.488 (orig=0.488), K_eff=11.18, q_ci=0.6518
+    [B ci=13] delta=+0.42: kappa_j1=0.488 (orig=0.488), K_eff=11.21, q_ci=0.6518
+    [B ci=13] delta=+0.83: kappa_j1=0.488 (orig=0.488), K_eff=11.23, q_ci=0.6518
+    [B ci=13] delta=+1.25: kappa_j1=0.488 (orig=0.488), K_eff=11.25, q_ci=0.6518
+    [B ci=13] delta=+1.67: kappa_j1=0.488 (orig=0.488), K_eff=11.26, q_ci=0.6697
+    [B ci=13] delta=+2.08: kappa_j1=0.488 (orig=0.488), K_eff=11.28, q_ci=0.6697
+    [B ci=13] delta=+2.50: kappa_j1=0.488 (orig=0.488), K_eff=11.29, q_ci=0.6697
+    [B ci=13] delta=+2.92: kappa_j1=0.488 (orig=0.488), K_eff=11.31, q_ci=0.6913
+    [B ci=13] delta=+3.33: kappa_j1=0.488 (orig=0.488), K_eff=11.32, q_ci=0.6913
+    [B ci=13] delta=+3.75: kappa_j1=0.488 (orig=0.488), K_eff=11.33, q_ci=0.6913
+    [B ci=13] delta=+4.17: kappa_j1=0.488 (orig=0.488), K_eff=11.34, q_ci=0.6913
+    [B ci=13] delta=+4.58: kappa_j1=0.488 (orig=0.488), K_eff=11.35, q_ci=0.7092
+    [B ci=13] delta=+5.00: kappa_j1=0.488 (orig=0.488), K_eff=11.36, q_ci=0.7092
+  ARM B: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.944 p=0.0000 | r(kappa_j2, logit_q)=0.964 p=0.0000
+
+  [ARM C] Neg control (ONLY jK=8 moves, ci=13 fixed)
+    [C ci=13] delta=+0.00: kappa_j1=0.488 (orig=0.488), K_eff=11.18, q_ci=0.6518
+    [C ci=13] delta=+0.42: kappa_j1=0.488 (orig=0.488), K_eff=11.14, q_ci=0.6518
+    [C ci=13] delta=+0.83: kappa_j1=0.488 (orig=0.488), K_eff=11.09, q_ci=0.6518
+    [C ci=13] delta=+1.25: kappa_j1=0.488 (orig=0.488), K_eff=11.04, q_ci=0.6518
+    [C ci=13] delta=+1.67: kappa_j1=0.488 (orig=0.488), K_eff=10.99, q_ci=0.6518
+    [C ci=13] delta=+2.08: kappa_j1=0.488 (orig=0.488), K_eff=10.94, q_ci=0.6518
+    [C ci=13] delta=+2.50: kappa_j1=0.488 (orig=0.488), K_eff=10.89, q_ci=0.6518
+    [C ci=13] delta=+2.92: kappa_j1=0.488 (orig=0.488), K_eff=10.84, q_ci=0.6518
+    [C ci=13] delta=+3.33: kappa_j1=0.488 (orig=0.488), K_eff=10.79, q_ci=0.6518
+    [C ci=13] delta=+3.75: kappa_j1=0.488 (orig=0.488), K_eff=10.74, q_ci=0.6518
+    [C ci=13] delta=+4.17: kappa_j1=0.488 (orig=0.488), K_eff=10.69, q_ci=0.6518
+    [C ci=13] delta=+4.58: kappa_j1=0.488 (orig=0.488), K_eff=10.64, q_ci=0.6518
+    [C ci=13] delta=+5.00: kappa_j1=0.488 (orig=0.488), K_eff=10.59, q_ci=0.6518
+  ARM C: r(kappa_j1, logit_q)=0.000 p=1.0000 | r(K_eff, logit_q)=0.000 p=1.0000 | r(kappa_jK, logit_q)=0.000 p=1.0000
+
+======================================================================
+AGGREGATE RESULTS (Fisher z-mean across focus classes)
+======================================================================
+
+Arm A (kappa intervention, n=14 classes):
+  r(kappa_j1, logit_q) = 0.899  [pre-reg threshold > 0.9]
+  FAIL
+
+Arm B (K_eff intervention, ORTHOGONAL, n=14 classes):
+  r(kappa_j1, logit_q) = 0.000  [should be ~0: kappa_j1 unchanged]
+  r(K_eff_kappa, logit_q) = 0.466
+  r(kappa_j2, logit_q)  = 0.450  [pre-reg: > 0.5 = 2-layer; < 0.5 = 1-layer]
+  -> 1-LAYER LAW SUPPORTED (K_eff irrelevant)
+
+Arm C (neg control, n=14 classes):
+  r(kappa_jK, logit_q) = 0.000  [pre-reg: < 0.2]
+  PASS
+
+======================================================================
+VERDICT
+======================================================================
+  Arm A (kappa causal): FAIL (r=0.899)
+  Arm B (K_eff matters): 1-LAYER SUPPORTED (r=0.450)
+  Arm C (neg control): PASS (r=0.000)
+
+Saved to results/cti_orthogonal_factorial.json
