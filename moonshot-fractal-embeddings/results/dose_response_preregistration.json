@@ -20,20 +20,23 @@
   ],
   "note_unseen": "All 6 architectures are outside the 12-arch LOAO training set (Pythia/GPT-Neo/Qwen/OLMo/TinyLlama/Mistral/Falcon-H1/RWKV).",
 
-  "lambdas": [-0.10, -0.06, -0.03, 0.0, 0.03, 0.06, 0.10],
-  "lambda_meaning": "negative = anti-triplet (pushes nearest class closer), positive = triplet (pushes nearest class apart), 0 = neutral (CE only)",
+  "intervention_method": "FROZEN DO-SURGERY (NOT training-based triplet)",
+  "method_rationale": "Training-based triplet loss (5 seeds, lambda=0.10, L2-norm) causes kappa_nearest COLLAPSE (q: 0.71->0.22) because random triplets target average inter-class distance, not kappa_nearest. Frozen do-surgery directly manipulates kappa_nearest without training confounds. This is the correct causal method.",
+
+  "surgery_scales": [-0.40, -0.25, -0.10, 0.0, 0.10, 0.25, 0.40],
+  "surgery_meaning": "Scale factor applied to nearest-class centroid distance: negative=push closer (decrease kappa), positive=push apart (increase kappa). 0=no surgery.",
   "seeds": [11, 23, 47],
   "dataset_text": "dbpedia14",
   "dataset_vision": "cifar10",
   "total_runs": 126,
 
   "prediction_formula": {
-    "step1": "Measure pre-training kappa_nearest for each (arch, seed, lambda) condition via frozen do-surgery",
-    "step2": "delta_kappa_pre = kappa_nearest(lambda) - kappa_nearest(lambda=0)",
-    "step3": "delta_z_pred = alpha* * delta_kappa_pre  (alpha* = 1.4773, no refit)",
-    "step4": "q_pred = sigmoid(logit(q_baseline) + delta_z_pred)",
-    "step5": "Train with CE + lambda*triplet_loss, measure actual q_obs and kappa_obs",
-    "step6": "Compare delta_q_pred vs delta_q_obs"
+    "step1": "For each (arch, surgery_scale s): apply frozen do-surgery to shift nearest centroid, measure delta_kappa_nearest",
+    "step2": "delta_z_pred = alpha* * delta_kappa_nearest  (alpha* = 1.4773, no refit)",
+    "step3": "q_pred = sigmoid(logit(q_baseline) + delta_z_pred)",
+    "step4": "Measure actual q_obs via 1-NN on surgery-modified embeddings",
+    "step5": "Compare delta_q_pred vs delta_q_obs",
+    "note": "No training involved — surgery is applied post-hoc to frozen embeddings"
   },
 
   "pass_criteria": {
@@ -69,5 +72,10 @@
     "cifar_triplet_arm_warning": "Prior training-based triplet on CIFAR-100 showed kappa collapse (gradient conflict). Use L2-norm + small lambda to mitigate."
   },
 
-  "critical_warning": "Prior CIFAR training with triplet loss caused kappa collapse. Use: L2-normalized embeddings, lambda <= 0.10, evaluate kappa change at each epoch to detect collapse early."
+  "critical_warning": "DO NOT use training-based triplet. CONFIRMED FAILURE: L2-norm + lambda=0.10 training collapses kappa_nearest from 0.45 to 0.04-0.09, q from 0.71 to 0.22 (5 seeds). Use frozen surgery only.",
+  "estimated_runtime_frozen": {
+    "surgery_per_arch": "~5 minutes (no training needed)",
+    "total": "6 archs x 7 scales x 3 seeds x 5 min = ~10 GPU-hours",
+    "wall_clock": "~0.5 days on RTX 5090 (100x faster than training-based)"
+  }
 }
