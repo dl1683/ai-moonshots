@@ -103,8 +103,7 @@ def get_embeddings_at_layers(model_name, texts, labels, layers, batch_size=64):
             max_length=128
         ).to(DEVICE)
 
-        with torch.autocast(device_type="cuda", dtype=torch.float16):
-            outputs = model(**inputs)
+        outputs = model(**inputs)
 
         hidden_states = outputs.hidden_states  # tuple of (n_layers+1,) tensors
 
@@ -112,9 +111,10 @@ def get_embeddings_at_layers(model_name, texts, labels, layers, batch_size=64):
         mask = inputs["attention_mask"].unsqueeze(-1).float()
         for layer_idx in layers:
             if layer_idx < len(hidden_states):
-                h = hidden_states[layer_idx]  # (B, seq, d)
+                h = hidden_states[layer_idx].float()  # (B, seq, d) cast to fp32
                 emb = (h * mask).sum(1) / mask.sum(1)  # (B, d)
-                all_layer_embs[layer_idx].append(emb.cpu().float().numpy())
+                emb_np = np.nan_to_num(emb.cpu().numpy(), nan=0.0, posinf=0.0, neginf=0.0)
+                all_layer_embs[layer_idx].append(emb_np)
 
         all_labels.extend(batch_labels)
 
