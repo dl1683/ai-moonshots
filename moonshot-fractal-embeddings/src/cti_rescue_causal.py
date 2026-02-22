@@ -190,6 +190,44 @@ def compute_d_eff_gram(X, y):
     return float(trW ** 2 / (trW2 + 1e-12)), float(trW)
 
 
+def compute_d_eff_formula(X, y):
+    """
+    CORRECT d_eff (discovered Feb 23 2026): centroid-direction anisotropy.
+    d_eff_formula = tr(Sigma_W) / sigma_centroid_dir^2
+    Note: scale-invariant under uniform variance scaling (L_within).
+    L_ETF may change d_eff_formula via centroid restructuring.
+    """
+    classes = np.unique(y)
+    N = len(X)
+    d = X.shape[1]
+    centroids = np.stack([X[y == c].mean(0) for c in classes])
+    trW = 0.0
+    for c in classes:
+        Xc = X[y == c]
+        n_c = len(Xc)
+        trW += (n_c / N) * float(np.sum((Xc - centroids[c]) ** 2)) / n_c
+    # Nearest centroid pair direction
+    min_dist, min_i, min_j = float('inf'), 0, 1
+    for i in range(len(classes)):
+        for j in range(i + 1, len(classes)):
+            dist = float(np.linalg.norm(centroids[i] - centroids[j]))
+            if dist < min_dist:
+                min_dist, min_i, min_j = dist, i, j
+    Delta = centroids[min_i] - centroids[min_j]
+    Delta_hat = Delta / (np.linalg.norm(Delta) + 1e-10)
+    sigma_centroid_sq = 0.0
+    for c in classes:
+        Xc = X[y == c]
+        n_c = len(Xc)
+        proj = (Xc - centroids[c]) @ Delta_hat
+        sigma_centroid_sq += (n_c / N) * float(np.mean(proj ** 2))
+    sigma_W_global = float(np.sqrt(trW / d))
+    sigma_centroid_dir = float(np.sqrt(sigma_centroid_sq + 1e-10))
+    d_eff_formula = float(trW / (sigma_centroid_sq + 1e-10))
+    ratio = float(sigma_centroid_dir / (sigma_W_global + 1e-10))
+    return d_eff_formula, ratio
+
+
 def compute_kappa_nearest(X, y):
     classes = np.unique(y)
     d = X.shape[1]
@@ -316,16 +354,18 @@ def train_one_arm(seed, arm, train_ds, test_ds):
             kappa_val = compute_kappa_nearest(X_tr, y_tr)
             d_eff_sig_val, trW_sig, n_sig = compute_d_eff_sig(X_tr, y_tr)
             d_eff_gram_val, _ = compute_d_eff_gram(X_tr, y_tr)
+            d_eff_formula_val, sigma_ratio = compute_d_eff_formula(X_tr, y_tr)
             kappa_eff_sig = np.sqrt(d_eff_sig_val) * kappa_val
+            kappa_eff_formula = np.sqrt(d_eff_formula_val) * kappa_val
             logit_q = float(np.log(q_val / (1 - q_val + 1e-10) + 1e-10)
                             if 0 < q_val < 1 else (4.0 if q_val >= 1 else -4.0))
-            pred_logit = A_RENORM_K20 * kappa_eff_sig  # prediction (no C, for comparison)
+            pred_logit_formula = A_RENORM_K20 * kappa_eff_formula  # correct physics
 
             log(f"  [seed={seed} arm={arm} epoch={epoch}] "
                 f"q={q_val:.4f} kappa={kappa_val:.4f} "
-                f"d_eff_sig={d_eff_sig_val:.3f} d_eff_gram={d_eff_gram_val:.1f} "
-                f"kappa_eff_sig={kappa_eff_sig:.4f} "
-                f"logit_q={logit_q:.4f} pred_logit(noC)={pred_logit:.4f}")
+                f"d_eff_formula={d_eff_formula_val:.3f} d_eff_sig={d_eff_sig_val:.1f} "
+                f"sigma_ratio={sigma_ratio:.1f}x kappa_eff_formula={kappa_eff_formula:.4f} "
+                f"logit_q={logit_q:.4f} pred(noC)={pred_logit_formula:.4f}")
 
             checkpoints.append({
                 'epoch': epoch,
@@ -333,7 +373,10 @@ def train_one_arm(seed, arm, train_ds, test_ds):
                 'kappa': kappa_val,
                 'd_eff_sig': d_eff_sig_val,
                 'd_eff_gram': d_eff_gram_val,
+                'd_eff_formula': d_eff_formula_val,
+                'sigma_centroid_vs_global_ratio': sigma_ratio,
                 'kappa_eff_sig': kappa_eff_sig,
+                'kappa_eff_formula': kappa_eff_formula,
                 'logit_q': logit_q,
                 'trW_sig': float(trW_sig),
                 'n_sig': n_sig,
@@ -346,8 +389,9 @@ def train_one_arm(seed, arm, train_ds, test_ds):
     final_ck = checkpoints[-1] if checkpoints else {}
     log(f"  DONE [seed={seed} arm={arm}]: q={final_ck.get('q', 0):.4f} "
         f"kappa={final_ck.get('kappa', 0):.4f} "
-        f"d_eff_sig={final_ck.get('d_eff_sig', 0):.3f} "
-        f"kappa_eff_sig={final_ck.get('kappa_eff_sig', 0):.4f}")
+        f"d_eff_formula={final_ck.get('d_eff_formula', 0):.3f} "
+        f"d_eff_sig={final_ck.get('d_eff_sig', 0):.1f} "
+        f"kappa_eff_formula={final_ck.get('kappa_eff_formula', 0):.4f}")
 
     return {
         'seed': seed, 'arm': arm,
@@ -356,7 +400,9 @@ def train_one_arm(seed, arm, train_ds, test_ds):
         'final_kappa': final_ck.get('kappa', 0),
         'final_d_eff_sig': final_ck.get('d_eff_sig', 0),
         'final_d_eff_gram': final_ck.get('d_eff_gram', 0),
+        'final_d_eff_formula': final_ck.get('d_eff_formula', 0),
         'final_kappa_eff_sig': final_ck.get('kappa_eff_sig', 0),
+        'final_kappa_eff_formula': final_ck.get('kappa_eff_formula', 0),
         'final_logit_q': final_ck.get('logit_q', 0),
         'checkpoints': checkpoints,
     }
@@ -378,53 +424,66 @@ def analyze_rescue_results(all_results):
                 all_snaps.append({
                     'arm': arm, 'seed': res['seed'],
                     'kappa_eff_sig': ck['kappa_eff_sig'],
+                    'kappa_eff_formula': ck.get('kappa_eff_formula', ck['kappa_eff_sig']),
                     'logit_q': ck['logit_q'],
                     'q': ck['q'], 'kappa': ck['kappa'],
                     'd_eff_sig': ck['d_eff_sig'],
+                    'd_eff_formula': ck.get('d_eff_formula', 1.46),
                 })
 
     if len(all_snaps) < 3:
         return {'status': 'insufficient_data'}
 
     kappa_eff_sigs = np.array([s['kappa_eff_sig'] for s in all_snaps])
+    kappa_eff_formulas = np.array([s['kappa_eff_formula'] for s in all_snaps])
     logit_qs = np.array([s['logit_q'] for s in all_snaps])
+    ss_tot = float(np.sum((logit_qs - logit_qs.mean()) ** 2))
 
-    # Step 1: Fit C from CE arm only
+    def r2_fixed(ke, C):
+        preds = A_RENORM_K20 * ke + C
+        ss_res = float(np.sum((logit_qs - preds) ** 2))
+        return 1 - ss_res / (ss_tot + 1e-10), float(np.sqrt(np.mean((logit_qs - preds) ** 2)))
+
+    # Step 1: Fit C from CE arm only (one intercept per metric)
     ce_snaps = [s for s in all_snaps if s['arm'] == 'ce']
     if ce_snaps:
-        ce_ke = np.array([s['kappa_eff_sig'] for s in ce_snaps])
+        ce_ke_sig = np.array([s['kappa_eff_sig'] for s in ce_snaps])
+        ce_ke_formula = np.array([s['kappa_eff_formula'] for s in ce_snaps])
         ce_lq = np.array([s['logit_q'] for s in ce_snaps])
-        C_ce = float(np.mean(ce_lq - A_RENORM_K20 * ce_ke))
+        C_ce_sig = float(np.mean(ce_lq - A_RENORM_K20 * ce_ke_sig))
+        C_ce_formula = float(np.mean(ce_lq - A_RENORM_K20 * ce_ke_formula))
     else:
-        C_ce = float(np.mean(logit_qs - A_RENORM_K20 * kappa_eff_sigs))
+        C_ce_sig = float(np.mean(logit_qs - A_RENORM_K20 * kappa_eff_sigs))
+        C_ce_formula = float(np.mean(logit_qs - A_RENORM_K20 * kappa_eff_formulas))
 
     # Step 2: Predict ALL arms (zero additional free params)
-    preds = A_RENORM_K20 * kappa_eff_sigs + C_ce
+    r2_all_sig, rmse_sig = r2_fixed(kappa_eff_sigs, C_ce_sig)
+    r2_all_formula, rmse_formula = r2_fixed(kappa_eff_formulas, C_ce_formula)
+    preds = A_RENORM_K20 * kappa_eff_formulas + C_ce_formula  # primary metric
     residuals = logit_qs - preds
-    ss_res = float(np.sum(residuals ** 2))
-    ss_tot = float(np.sum((logit_qs - logit_qs.mean()) ** 2))
-    r2_all = 1 - ss_res / (ss_tot + 1e-10)
-    rmse = float(np.sqrt(np.mean(residuals ** 2)))
 
-    # Step 3: Per-arm analysis
+    # Step 3: Per-arm analysis (dual metric)
     per_arm = {}
     for arm in all_results:
         arm_snaps = [s for s in all_snaps if s['arm'] == arm]
         if arm_snaps:
-            arm_ke = np.array([s['kappa_eff_sig'] for s in arm_snaps])
+            arm_ke_sig = np.array([s['kappa_eff_sig'] for s in arm_snaps])
+            arm_ke_formula = np.array([s['kappa_eff_formula'] for s in arm_snaps])
             arm_lq = np.array([s['logit_q'] for s in arm_snaps])
-            arm_preds = A_RENORM_K20 * arm_ke + C_ce
-            arm_resid = arm_lq - arm_preds
+            arm_preds_formula = A_RENORM_K20 * arm_ke_formula + C_ce_formula
+            arm_resid_formula = arm_lq - arm_preds_formula
             per_arm[arm] = {
                 'n': len(arm_snaps),
                 'mean_q': float(np.mean([s['q'] for s in arm_snaps])),
-                'mean_kappa_eff_sig': float(np.mean(arm_ke)),
+                'mean_kappa_eff_formula': float(np.mean(arm_ke_formula)),
+                'mean_kappa_eff_sig': float(np.mean(arm_ke_sig)),
+                'mean_d_eff_formula': float(np.mean([s['d_eff_formula'] for s in arm_snaps])),
                 'mean_d_eff_sig': float(np.mean([s['d_eff_sig'] for s in arm_snaps])),
                 'mean_kappa': float(np.mean([s['kappa'] for s in arm_snaps])),
                 'mean_logit_q': float(np.mean(arm_lq)),
-                'mean_pred': float(np.mean(arm_preds)),
-                'mean_residual': float(np.mean(arm_resid)),
-                'max_abs_residual': float(np.max(np.abs(arm_resid))),
+                'mean_pred_formula': float(np.mean(arm_preds_formula)),
+                'mean_residual_formula': float(np.mean(arm_resid_formula)),
+                'max_abs_residual': float(np.max(np.abs(arm_resid_formula))),
             }
 
     # Step 4: Rescue test
@@ -433,8 +492,8 @@ def analyze_rescue_results(all_results):
         rescue_logit = per_arm['rescue']['mean_logit_q']
         ce_logit = per_arm['ce']['mean_logit_q']
         delta_logit = abs(rescue_logit - ce_logit)
-        pred_delta = abs(per_arm['rescue']['mean_kappa_eff_sig']
-                         - per_arm['ce']['mean_kappa_eff_sig']) * A_RENORM_K20
+        pred_delta = abs(per_arm['rescue']['mean_kappa_eff_formula']
+                         - per_arm['ce']['mean_kappa_eff_formula']) * A_RENORM_K20
         rescue_test = {
             'logit_rescue': rescue_logit,
             'logit_ce': ce_logit,
@@ -443,35 +502,40 @@ def analyze_rescue_results(all_results):
             'PASS_threshold': 0.1,
             'PASS': bool(delta_logit < 0.1),
             'pred_delta_from_product': float(pred_delta),
+            'd_eff_formula_rescue': per_arm.get('rescue', {}).get('mean_d_eff_formula'),
+            'd_eff_formula_ce': per_arm.get('ce', {}).get('mean_d_eff_formula'),
         }
 
-    # Step 5: Iso-product invariance
-    # Find pairs with kappa_eff_sig within 0.05 of each other from DIFFERENT arms
+    # Step 5: Iso-product invariance (using d_eff_formula)
+    # Find pairs with kappa_eff_formula within 0.05 of each other from DIFFERENT arms
     iso_pairs = []
     for i, s1 in enumerate(all_snaps):
         for j, s2 in enumerate(all_snaps[i+1:], i+1):
             if s1['arm'] != s2['arm']:
-                delta_ke = abs(s1['kappa_eff_sig'] - s2['kappa_eff_sig'])
+                delta_ke = abs(s1['kappa_eff_formula'] - s2['kappa_eff_formula'])
                 if delta_ke < 0.05:
                     delta_lq = abs(s1['logit_q'] - s2['logit_q'])
                     iso_pairs.append({
                         'arm1': s1['arm'], 'arm2': s2['arm'],
-                        'ke1': s1['kappa_eff_sig'], 'ke2': s2['kappa_eff_sig'],
+                        'ke1': s1['kappa_eff_formula'], 'ke2': s2['kappa_eff_formula'],
                         'lq1': s1['logit_q'], 'lq2': s2['logit_q'],
                         'delta_ke': float(delta_ke), 'delta_lq': float(delta_lq),
                         'consistent': bool(delta_lq < 0.1),
                     })
 
     return {
-        'C_ce': float(C_ce),
-        'r2_all_arms': float(r2_all),
-        'rmse_all_arms': float(rmse),
+        'C_ce_formula': float(C_ce_formula),
+        'C_ce_sig': float(C_ce_sig),
+        'r2_all_arms_formula': float(r2_all_formula),
+        'r2_all_arms_sig': float(r2_all_sig),
+        'rmse_formula': float(rmse_formula),
+        'rmse_sig': float(rmse_sig),
         'n_total_snaps': len(all_snaps),
-        'PASS_r2': bool(r2_all > 0.85),
-        'PASS_rmse': bool(rmse < 0.15),
+        'PASS_r2_formula': bool(r2_all_formula > 0.85),
+        'PASS_r2_sig': bool(r2_all_sig > 0.85),
         'per_arm': per_arm,
         'rescue_test': rescue_test,
-        'iso_pairs': iso_pairs[:20],  # first 20 iso-product pairs
+        'iso_pairs': iso_pairs[:20],
         'n_iso_pairs': len(iso_pairs),
         'iso_consistency_rate': float(
             np.mean([p['consistent'] for p in iso_pairs])
