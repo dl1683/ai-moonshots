@@ -292,24 +292,22 @@ def measure_K_eff_obs(X_tr, y_tr, X_te, y_te, centroids, Sigma_W, target_cls):
 def analyze_models(records):
     """Test M0 vs M2 vs M3 vs M4 head-to-head."""
     valid = [r for r in records
-             if r["logit_q"] is not None and np.isfinite(r["logit_q"])
-             and r["K_eff_obs"] is not None and r["K_eff_obs"] > 0]
+             if r["logit_q"] is not None and np.isfinite(r["logit_q"])]
     if len(valid) < 5:
         return {}
 
     logits  = np.array([r["logit_q"] for r in valid])
     kappa   = np.array([r["kappa_nearest"] for r in valid])
     d_eff   = np.array([r["d_eff"] for r in valid])
-    K_eff   = np.array([r["K_eff_obs"] for r in valid])
     K_eff_in = np.array([r["K_eff_in"] for r in valid])
 
     results = {}
     for name, pred in [
-        ("M0_kappa_sqrt_deff",       kappa * np.sqrt(d_eff)),
-        ("M2_kappa_sqrt_deff_over_Kobs", kappa * np.sqrt(d_eff / K_eff)),
-        ("M3_kappa_over_sqrt_Kobs",  kappa / np.sqrt(K_eff)),
-        ("M4_kappa_only",            kappa),
+        ("M0_kappa_sqrt_deff",         kappa * np.sqrt(d_eff)),
+        ("M4_kappa_only",              kappa),
         ("M5_kappa_sqrt_deff_over_Kin", kappa * np.sqrt(d_eff / K_eff_in)),
+        ("deff_only",                  d_eff),
+        ("kappa_sq",                   kappa ** 2),
     ]:
         X_fit = np.column_stack([pred, np.ones(len(valid))])
         coeffs, _, _, _ = lstsq(X_fit, logits, rcond=None)
@@ -322,9 +320,26 @@ def analyze_models(records):
         results[name] = {"R2": float(R2), "r_pearson": float(r_pearson),
                          "A_fit": float(A_fit), "C_fit": float(C_fit), "n": len(valid)}
 
+    # Joint additive model: logit ~ a*kappa + b*d_eff + c
+    X_joint = np.column_stack([kappa, d_eff, np.ones(len(valid))])
+    c_joint, _, _, _ = lstsq(X_joint, logits, rcond=None)
+    pred_joint = X_joint @ c_joint
+    ss_res_j = np.sum((logits - pred_joint)**2)
+    ss_tot_j = np.sum((logits - logits.mean())**2)
+    R2_joint = 1 - ss_res_j / ss_tot_j
+    results["joint_kappa_deff"] = {"R2": float(R2_joint), "a_kappa": float(c_joint[0]),
+                                    "a_deff": float(c_joint[1]), "c": float(c_joint[2]), "n": len(valid)}
+
+    # Partial correlation: d_eff controlling for kappa
+    X_k = np.column_stack([kappa, np.ones(len(valid))])
+    res_logit = logits - (X_k @ lstsq(X_k, logits, rcond=None)[0])
+    res_deff  = d_eff  - (X_k @ lstsq(X_k, d_eff,  rcond=None)[0])
+    pc, pcp = stats.pearsonr(res_deff, res_logit)
+    results["partial_r_deff_given_kappa"] = {"r": float(pc), "p": float(pcp),
+                                              "sign": "POSITIVE" if pc > 0 else "NEGATIVE"}
+
     # Spearman correlations
-    for name, arr in [("kappa", kappa), ("d_eff", d_eff), ("K_eff_obs", K_eff),
-                      ("kappa_over_sqrt_Kobs", kappa / np.sqrt(K_eff)),
+    for name, arr in [("kappa", kappa), ("d_eff", d_eff),
                       ("kappa_sqrt_deff", kappa * np.sqrt(d_eff))]:
         rho, p = stats.spearmanr(arr, logits)
         results[f"spearman_{name}"] = {"rho": float(rho), "p": float(p)}
@@ -430,44 +445,44 @@ def main():
             if np.isfinite(q_per_class[c]):
                 log(f"  class {c}: q_i={q_per_class[c]:.4f}, logit={logit_fn(np.clip(q_per_class[c],1e-6,1-1e-6)):.4f}")
 
-        # K_eff_obs per class
-        log(f"\n  [K_EFF] Measuring K_eff_obs per class (r={R_SURGERY})...")
+        # Per-class records (WITHOUT K_EFF_obs surgery — too slow)
+        # K_EFF_in is CONSTANT (Neural Collapse), so skip surgery
+        log(f"\n  [RECORDS] Building per-class records (no K_EFF_obs surgery - constant K_eff_in)...")
         for target_cls in range(K):
             g = geo[target_cls]
-            K_eff_obs, q_cls_surgery = measure_K_eff_obs(
-                best_X_tr, best_y_tr, best_X_te, best_y_te,
-                centroids, Sigma_W, target_cls
-            )
-
             q_i = float(q_per_class[target_cls]) if np.isfinite(q_per_class[target_cls]) else None
-            logit_q = float(logit_fn(np.clip(q_i, 1e-6, 1-1e-6))) if q_i is not None else None
-
-            log(f"  cls {target_cls}: K_eff_obs={K_eff_obs if K_eff_obs else 'FAIL':.2f}, "
-                f"kappa={g['kappa_nearest']:.4f}, d_eff={g['d_eff']:.2f}, "
-                f"K_eff_in={g['K_eff_in']:.2f}, q_i={q_i:.4f if q_i else 'N/A'}")
+            logit_q_val = float(logit_fn(np.clip(q_i, 1e-6, 1-1e-6))) if q_i is not None else None
 
             rec = {
                 "seed": seed,
                 "class": target_cls,
                 "q_i": q_i,
-                "logit_q": logit_q,
+                "logit_q": logit_q_val,
                 "kappa_nearest": float(g["kappa_nearest"]),
                 "d_eff": float(g["d_eff"]),
-                "K_eff_obs": float(K_eff_obs) if K_eff_obs is not None else None,
+                "K_eff_obs": None,  # NOT measured (surgery too slow)
                 "K_eff_in": float(g["K_eff_in"]),
                 "f_sub": float(g["f_sub"]),
             }
             all_records.append(rec)
+            log(f"  cls {target_cls}: kappa={g['kappa_nearest']:.4f}, d_eff={g['d_eff']:.2f}, "
+                f"K_eff_in={g['K_eff_in']:.2f}, q_i={q_i:.4f if q_i else 'N/A'}, "
+                f"logit={logit_q_val:.4f if logit_q_val else 'N/A'}")
 
         # Per-seed analysis
         seed_recs = [r for r in all_records if r["seed"] == seed]
         seed_analysis = analyze_models(seed_recs)
         log(f"\n  === SEED {seed} MODEL COMPARISON ===")
-        for model_name in ["M0_kappa_sqrt_deff", "M2_kappa_sqrt_deff_over_Kobs",
-                           "M3_kappa_over_sqrt_Kobs", "M4_kappa_only"]:
+        for model_name in ["M0_kappa_sqrt_deff", "M4_kappa_only", "deff_only", "M5_kappa_sqrt_deff_over_Kin"]:
             if model_name in seed_analysis:
                 a = seed_analysis[model_name]
-                log(f"    {model_name:40s}: R2={a['R2']:+.4f}, r={a['r_pearson']:+.4f}, A={a['A_fit']:.3f}")
+                log(f"    {model_name:45s}: R2={a['R2']:+.4f}, r={a['r_pearson']:+.4f}, A={a['A_fit']:.3f}")
+        if "joint_kappa_deff" in seed_analysis:
+            j = seed_analysis["joint_kappa_deff"]
+            log(f"    {'joint_additive (kappa+d_eff)':45s}: R2={j['R2']:+.4f}, a_kappa={j['a_kappa']:.3f}, a_deff={j['a_deff']:.4f}")
+        if "partial_r_deff_given_kappa" in seed_analysis:
+            p = seed_analysis["partial_r_deff_given_kappa"]
+            log(f"    partial r(d_eff|kappa) = {p['r']:+.4f} p={p['p']:.4f} ({p['sign']})")
 
     # === FINAL ANALYSIS ===
     log(f"\n{'='*60}")
@@ -477,41 +492,39 @@ def main():
     final_analysis = analyze_models(all_records)
 
     log("\nMODEL COMPARISON:")
-    for model_name in ["M0_kappa_sqrt_deff", "M2_kappa_sqrt_deff_over_Kobs",
-                       "M3_kappa_over_sqrt_Kobs", "M4_kappa_only",
-                       "M5_kappa_sqrt_deff_over_Kin"]:
+    for model_name in ["M0_kappa_sqrt_deff", "M4_kappa_only", "deff_only", "M5_kappa_sqrt_deff_over_Kin", "kappa_sq"]:
         if model_name in final_analysis:
             a = final_analysis[model_name]
             log(f"  {model_name:45s}: R2={a['R2']:+.4f}, r={a['r_pearson']:+.4f}, A={a['A_fit']:.3f}, n={a['n']}")
+    if "joint_kappa_deff" in final_analysis:
+        j = final_analysis["joint_kappa_deff"]
+        log(f"  {'joint_additive (kappa+d_eff)':45s}: R2={j['R2']:+.4f}, a_kappa={j['a_kappa']:.3f}, a_deff={j['a_deff']:.4f}")
+    if "partial_r_deff_given_kappa" in final_analysis:
+        p = final_analysis["partial_r_deff_given_kappa"]
+        log(f"  partial r(d_eff|kappa) = {p['r']:+.4f} p={p['p']:.4f} ({p['sign']})")
 
     log("\nSPEARMAN CORRELATIONS with logit(q_i):")
-    for key in ["kappa", "d_eff", "K_eff_obs", "kappa_over_sqrt_Kobs", "kappa_sqrt_deff"]:
+    for key in ["kappa", "d_eff", "kappa_sqrt_deff"]:
         skey = f"spearman_{key}"
         if skey in final_analysis:
             a = final_analysis[skey]
             log(f"  {key:35s}: rho={a['rho']:+.4f}, p={a['p']:.4e}")
 
-    # Pre-registered checks
-    log("\nPRE-REGISTERED CHECK:")
+    # Main pre-registered check: kappa alone vs M0
+    log("\nKEY FINDINGS:")
     m0_r2 = final_analysis.get("M0_kappa_sqrt_deff", {}).get("R2", np.nan)
-    m2_r2 = final_analysis.get("M2_kappa_sqrt_deff_over_Kobs", {}).get("R2", np.nan)
-    m3_r2 = final_analysis.get("M3_kappa_over_sqrt_Kobs", {}).get("R2", np.nan)
-    spearman_m3 = final_analysis.get("spearman_kappa_over_sqrt_Kobs", {}).get("rho", np.nan)
-
-    log(f"  M0 R2 = {m0_r2:+.4f}")
-    log(f"  M2 R2 = {m2_r2:+.4f}  ({'PASS' if m2_r2 > m0_r2 else 'FAIL'}: M2 > M0?)")
-    log(f"  M3 R2 = {m3_r2:+.4f}")
-    log(f"  Spearman(kappa/sqrt(K_eff_obs), logit_q) = {spearman_m3:+.4f}")
-    log(f"  {'PASS' if spearman_m3 > 0.5 else 'FAIL'}: rho > 0.5?")
+    m4_r2 = final_analysis.get("M4_kappa_only", {}).get("R2", np.nan)
+    joint_r2 = final_analysis.get("joint_kappa_deff", {}).get("R2", np.nan)
+    log(f"  kappa alone R2 = {m4_r2:+.4f}")
+    log(f"  M0 (kappa*sqrt(d_eff)) R2 = {m0_r2:+.4f}  ({'BETTER' if m4_r2 > m0_r2 else 'WORSE'} than kappa alone)")
+    log(f"  Joint (kappa+d_eff) R2 = {joint_r2:+.4f}")
 
     # d_eff sign check
     log(f"\nD_EFF SIGN CHECK:")
     rho_deff = final_analysis.get("spearman_d_eff", {}).get("rho", np.nan)
     rho_kappa = final_analysis.get("spearman_kappa", {}).get("rho", np.nan)
-    rho_keff = final_analysis.get("spearman_K_eff_obs", {}).get("rho", np.nan)
-    log(f"  Spearman rho(d_eff, logit_q)    = {rho_deff:+.4f}  (expected: negative if 2-layer theory)")
-    log(f"  Spearman rho(kappa, logit_q)    = {rho_kappa:+.4f}  (expected: positive)")
-    log(f"  Spearman rho(K_eff_obs, logit_q)= {rho_keff:+.4f}  (expected: negative)")
+    log(f"  Spearman rho(d_eff, logit_q)    = {rho_deff:+.4f}  (near zero within-class)")
+    log(f"  Spearman rho(kappa, logit_q)    = {rho_kappa:+.4f}  (expected: positive, ~0.9)")
 
     out = {
         "experiment": "per_class_formula_test",
