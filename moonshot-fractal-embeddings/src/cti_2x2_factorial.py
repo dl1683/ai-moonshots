@@ -131,6 +131,53 @@ def compute_d_eff_gram(X, y):
     return float(trW ** 2 / (trW2 + 1e-12)), float(trW)
 
 
+def compute_d_eff_formula(X, y):
+    """
+    CORRECT d_eff for the CTI law (discovered Feb 23 2026).
+    d_eff_formula = tr(Sigma_W) / sigma_centroid_dir^2
+    where sigma_centroid_dir = sqrt(Delta_min^T Sigma_W Delta_min / ||Delta_min||^2)
+    This measures ANISOTROPY: how concentrated within-class variance is in centroid direction.
+    Expected: ~1.46 for CIFAR CE arm (vs d_eff_sig ~ 15).
+    """
+    classes = np.unique(y)
+    N = len(X)
+    d = X.shape[1]
+    centroids = np.stack([X[y == c].mean(0) for c in classes])
+
+    # tr(Sigma_W)
+    trW = 0.0
+    for c in classes:
+        Xc = X[y == c]
+        n_c = len(Xc)
+        Xc_c = Xc - centroids[c]
+        trW += (n_c / N) * float(np.sum(Xc_c ** 2)) / n_c
+
+    # Nearest centroid pair direction
+    min_dist = float('inf')
+    min_i, min_j = 0, 1
+    for i in range(len(classes)):
+        for j in range(i + 1, len(classes)):
+            dist = float(np.linalg.norm(centroids[i] - centroids[j]))
+            if dist < min_dist:
+                min_dist, min_i, min_j = dist, i, j
+    Delta = centroids[min_i] - centroids[min_j]
+    Delta_hat = Delta / (np.linalg.norm(Delta) + 1e-10)
+
+    # sigma_centroid_dir^2 = sum_c (n_c/N) * E[(Delta_hat^T x_c_centered)^2]
+    sigma_centroid_sq = 0.0
+    for c in classes:
+        Xc = X[y == c]
+        n_c = len(Xc)
+        proj = (Xc - centroids[c]) @ Delta_hat
+        sigma_centroid_sq += (n_c / N) * float(np.mean(proj ** 2))
+
+    sigma_W_global = float(np.sqrt(trW / d))
+    sigma_centroid_dir = float(np.sqrt(sigma_centroid_sq + 1e-10))
+    d_eff_formula = float(trW / (sigma_centroid_sq + 1e-10))
+    ratio = float(sigma_centroid_dir / (sigma_W_global + 1e-10))
+    return d_eff_formula, sigma_centroid_dir, ratio
+
+
 def compute_d_eff_sig(X, y):
     """
     CORRECTED signal-subspace participation ratio (Theorem 16).
@@ -317,12 +364,15 @@ def train_one_arm(seed, arm, train_ds, test_ds):
             X_train, y_train = extract_all_embeddings(model, train_ds)
             d_eff_gram, trW = compute_d_eff_gram(X_train, y_train)
             d_eff_sig, trW_sig, n_sig = compute_d_eff_sig(X_train, y_train)
+            d_eff_formula, sigma_cd, sigma_ratio = compute_d_eff_formula(X_train, y_train)
 
             kappa_eff_gram = float(np.sqrt(d_eff_gram) * kappa_val)
             kappa_eff_sig = float(np.sqrt(d_eff_sig) * kappa_val)
+            kappa_eff_formula = float(np.sqrt(d_eff_formula) * kappa_val)
 
             print(f"d_eff_gram={d_eff_gram:.1f} d_eff_sig={d_eff_sig:.3f} "
-                  f"kappa_eff_sig={kappa_eff_sig:.4f}", flush=True)
+                  f"d_eff_formula={d_eff_formula:.3f} sigma_ratio={sigma_ratio:.1f}x "
+                  f"kappa_eff_formula={kappa_eff_formula:.4f}", flush=True)
 
             checkpoints.append({
                 'epoch': epoch,
@@ -331,10 +381,15 @@ def train_one_arm(seed, arm, train_ds, test_ds):
                 'logit_q': float(logit_q),
                 'd_eff_gram': float(d_eff_gram),
                 'd_eff_sig': float(d_eff_sig),
+                'd_eff_formula': float(d_eff_formula),
+                'sigma_centroid_dir': float(sigma_cd),
+                'sigma_centroid_vs_global_ratio': float(sigma_ratio),
                 'n_sig': int(n_sig),
                 'kappa_eff_gram': float(kappa_eff_gram),
+                'kappa_eff_formula': float(kappa_eff_formula),
                 'kappa_eff_sig': float(kappa_eff_sig),
                 'predicted_logit_sig': float(A_RENORM_K20 * kappa_eff_sig),
+                'predicted_logit_formula': float(A_RENORM_K20 * kappa_eff_formula),
                 'predicted_logit_gram': float(A_RENORM_K20 * kappa_eff_gram),
                 'lambda': float(lam),
             })
@@ -345,6 +400,7 @@ def train_one_arm(seed, arm, train_ds, test_ds):
         'final_q': checkpoints[-1]['q'] if checkpoints else None,
         'final_kappa': checkpoints[-1]['kappa'] if checkpoints else None,
         'final_d_eff_sig': checkpoints[-1]['d_eff_sig'] if checkpoints else None,
+        'final_d_eff_formula': checkpoints[-1]['d_eff_formula'] if checkpoints else None,
     }
 
 
@@ -368,9 +424,11 @@ def analyze_results(all_results):
     logits = np.array([s['logit_q'] for s in all_snaps])
     ke_sig = np.array([s['kappa_eff_sig'] for s in all_snaps])
     ke_gram = np.array([s['kappa_eff_gram'] for s in all_snaps])
+    ke_formula = np.array([s.get('kappa_eff_formula', s['kappa_eff_sig']) for s in all_snaps])
     kappa = np.array([s['kappa'] for s in all_snaps])
     d_sig = np.array([s['d_eff_sig'] for s in all_snaps])
     d_gram = np.array([s['d_eff_gram'] for s in all_snaps])
+    d_formula = np.array([s.get('d_eff_formula', 1.0) for s in all_snaps])
 
     ss_tot = float(np.sum((logits - logits.mean()) ** 2))
     analysis = {'n_snaps': len(all_snaps)}
@@ -391,6 +449,10 @@ def analyze_results(all_results):
     r2_ke_sig_fixed, C_sig = r2_fixed_slope(ke_sig, logits, A_RENORM_K20)
     r2_ke_sig_free, slope_ke_sig = r2_free(ke_sig, logits)
 
+    # NEW: d_eff_formula test (discovered Feb 23 2026)
+    r2_ke_formula_fixed, C_formula = r2_fixed_slope(ke_formula, logits, A_RENORM_K20)
+    r2_ke_formula_free, slope_ke_formula = r2_free(ke_formula, logits)
+
     # COMPARISON tests
     r2_ke_gram_fixed, C_gram = r2_fixed_slope(ke_gram, logits, A_RENORM_K20)
     r2_ke_gram_free, slope_ke_gram = r2_free(ke_gram, logits)
@@ -407,12 +469,26 @@ def analyze_results(all_results):
         'slope_match': bool(slope_ke_sig is not None and abs(slope_ke_sig - A_RENORM_K20) / A_RENORM_K20 < 0.2),
     }
 
+    # NEW: d_eff_formula comparison (key discovery from Feb 23 2026)
+    analysis['D_EFF_FORMULA'] = {
+        'r2_kappa_eff_formula_fixed_slope': r2_ke_formula_fixed,
+        'r2_kappa_eff_formula_free_slope': r2_ke_formula_free,
+        'empirical_slope': slope_ke_formula,
+        'C_optimal': C_formula,
+        'mean_d_eff_formula': float(d_formula.mean()),
+        'PASS': bool(r2_ke_formula_fixed > 0.8),
+        'formula_beats_sig': bool(r2_ke_formula_fixed > r2_ke_sig_fixed),
+    }
+
     analysis['COMPARISONS'] = {
+        'r2_kappa_eff_formula_fixed': r2_ke_formula_fixed,
+        'r2_kappa_eff_sig_fixed': r2_ke_sig_fixed,
         'r2_kappa_eff_gram_fixed': r2_ke_gram_fixed,
         'r2_kappa_eff_gram_free': r2_ke_gram_free,
         'r2_kappa_only_free': r2_kappa_free,
         'r2_deff_sig_only_free': r2_dsig_free,
         'ranking': sorted([
+            ('kappa_eff_formula', r2_ke_formula_fixed),
             ('kappa_eff_sig', r2_ke_sig_free),
             ('kappa_eff_gram', r2_ke_gram_free),
             ('kappa_only', r2_kappa_free),
@@ -420,7 +496,7 @@ def analyze_results(all_results):
         ], key=lambda x: -(x[1] or 0)),
     }
 
-    # FACTOR SEPARATION: per-arm d_eff_sig and kappa changes vs CE
+    # FACTOR SEPARATION: per-arm d_eff changes vs CE
     analysis['FACTOR_SEPARATION'] = {}
     ce_snaps = [s for s in all_snaps if s['arm'] == 'ce']
     for arm in ['nc_margin', 'nc_etf', 'nc_full']:
@@ -430,14 +506,23 @@ def analyze_results(all_results):
                                 - np.mean([s['kappa'] for s in ce_snaps]))
             delta_d_sig = float(np.mean([s['d_eff_sig'] for s in arm_snaps])
                                 - np.mean([s['d_eff_sig'] for s in ce_snaps]))
+            delta_d_formula = float(
+                np.mean([s.get('d_eff_formula', 0) for s in arm_snaps])
+                - np.mean([s.get('d_eff_formula', 0) for s in ce_snaps]))
             delta_ke_sig = float(np.mean([s['kappa_eff_sig'] for s in arm_snaps])
                                  - np.mean([s['kappa_eff_sig'] for s in ce_snaps]))
+            delta_ke_formula = float(
+                np.mean([s.get('kappa_eff_formula', 0) for s in arm_snaps])
+                - np.mean([s.get('kappa_eff_formula', 0) for s in ce_snaps]))
             analysis['FACTOR_SEPARATION'][arm] = {
                 'delta_kappa': delta_kappa,
                 'delta_d_eff_sig': delta_d_sig,
+                'delta_d_eff_formula': delta_d_formula,
                 'delta_kappa_eff_sig': delta_ke_sig,
+                'delta_kappa_eff_formula': delta_ke_formula,
                 'kappa_dominated': bool(abs(delta_kappa) > 2 * abs(delta_d_sig)),
                 'dsig_dominated': bool(abs(delta_d_sig) > 2 * abs(delta_kappa)),
+                'dformula_dominated': bool(abs(delta_d_formula) > 0.1),
             }
 
     # ISO-KAPPA_EFF_SIG TEST: find matched pairs across different arms
