@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-02-22T18:06:17.585623",
+  "test": "RWKV pure non-transformer LOAO boundary test",
+  "description": "Test if CTI universal law extends to RWKV-4, a pure linear RNN with NO attention mechanism. This is the strongest architecture boundary test.",
+  "model": "RWKV/rwkv-4-169m-pile",
+  "architecture": "RWKV-4: pure linear RNN (time-mixing + channel-mixing), 169M params, 12 layers, d=768",
+  "note": "No attention, no convolution, no SSM - just linear recurrence with learned decay",
+  "prior_results_11_arch": {
+    "mean_alpha": 2.8886,
+    "cv_alpha": 0.022,
+    "range": [
+      2.82,
+      2.98
+    ]
+  },
+  "hypothesis_A": {
+    "label": "PASS - Universal across ALL architectures including pure RNN",
+    "prediction": "RWKV LOAO alpha in [2.43, 3.29] (mean +/- 3*sigma from 11-arch)",
+    "alpha_range": [
+      2.43,
+      3.29
+    ],
+    "implication": "CTI law is truly architecture-agnostic: holds for transformer, hybrid, AND pure RNN"
+  },
+  "hypothesis_B": {
+    "label": "FAIL - Attention required for universal law",
+    "prediction": "RWKV LOAO alpha outside [2.43, 3.29]",
+    "implication": "Universal constant alpha requires attention mechanism; RWKV represents a different regime"
+  },
+  "pre_registered_threshold": "alpha in [2.43, 3.29] based on 11-arch mean 2.8886 +/- 3*std(0.054)",
+  "locked_alpha_mean": 2.8886,
+  "locked_alpha_std": 0.054,
+  "locked_alpha_range": [
+    2.43,
+    3.29
+  ]
+}

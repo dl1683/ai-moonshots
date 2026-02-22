@@ -57,6 +57,8 @@ MODELS = [
     # ── Non-transformer / SSM boundary test (pre-registered Feb 22 2026) ─────
     # Mamba2-370m: needs causal-conv1d package not installed, skip
     "tiiuae/Falcon-H1-0.5B-Base",    # Falcon-H1: Transformer+Mamba hybrid (TII 2025, 36 layers)
+    # ── Pure non-transformer: RWKV linear RNN (no attention whatsoever) ───────
+    "RWKV/rwkv-4-169m-pile",          # RWKV-4: pure linear RNN, 169M, 12 layers, d=768
 ]
 
 # Per-model layer indices (proportional depth: 25%, 50%, 75%, 100%)
@@ -72,6 +74,7 @@ MODEL_LAYERS = {
     "Qwen3-1.7B": [7, 14, 21, 28],  # 28 total layers, hidden_dim=2048, same arch 3x scale
     "Mistral-7B-v0.3": [8, 16, 24, 32],  # 32 total layers, sliding-window attn, 4096 hidden
     "Falcon-H1-0.5B-Base": [9, 18, 27, 36],  # 36 layers, Transformer+Mamba hybrid, d=1024
+    "rwkv-4-169m-pile": [3, 6, 9, 12],  # 12 layers, pure linear RNN (no attention), d=768
 }
 
 DATASETS = {
