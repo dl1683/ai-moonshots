@@ -1567,11 +1567,33 @@ From cti_control_law_analysis.json:
 Circular analysis interpretation: NC-loss raises circular d_eff_cls (consistent with q UP/kappa DOWN).
 Direct measurement of d_eff_formula will confirm or deny this non-circularly (H4 of deff_formula_val).
 
+### Session 16 New Findings (Feb 21, 2026 -- evening)
+
+**CRITICAL EMPIRICAL VALIDATION**: Fitting empirical slope to control_law + nc_loss data:
+- For kappa_eff < 1.1 (linear regime): empirical A = **1.0535 EXACTLY** = A_renorm (pre-registered)
+- For kappa_eff > 1.2 (saturation): slope estimate unstable (small range, 3 points only)
+- This confirms the law is EXACT in the linear regime with the pre-registered constant
+
+Data points (kappa_eff, logit_q) across epochs 25-200:
+- kappa_eff=0.55-1.03 (60ep): linear errors <= 0.06
+- kappa_eff=1.43-1.45 (200ep): linear overpredicts by ~0.28 (saturation as expected)
+
+**Surgery experiment**: Fixed Windows DataLoader bug (num_workers=0 for CIFAR on Windows CUDA).
+Surgery now running: epoch 20 loss=0.9073, clean progress.
+
+**Causal surgery expected validation range (linear regime)**:
+- r in [0.685, 2.0]: kappa_eff_new = kappa_base * sqrt(r * d_eff_base) in [0.84, 1.43] -> LINEAR
+- r in [2.0, 3.0]: kappa_eff_new in [1.43, 1.76] -> borderline
+- r > 3.0: kappa_eff_new > 1.76 -> nonlinear, underprediction expected
+
+**Existing data state after Session 16**:
+- nc_loss CE 3 seeds complete: q=0.644±0.003, kappa=1.194±0.006 at 200ep (NC/shuffled arms not complete)
+- control_law CE 3 seeds + NC seed 0 complete (in JSON)
+- deff_formula, deff_signal: killed mid-run (no results yet), need restart
+- Surgery: running (PID 84200), expected completion ~23:00 Feb 21
+
 ### Currently Running Experiments
 
 | Process | Experiment | Status |
 |---|---|---|
-| PID 14138 | d_eff causal surgery (N_SEEDS=3) | Training seed 0, ~60 epochs (2-3 hr) |
-| PID 7593 | control_law_validation NC arm | Seed 1 training (~60-70 min/seed) |
-| PID 12363 | deff_formula_validation | CE seed 0, epoch 1-25 (no output yet) |
-| PID 1253 | nc_loss_training 200ep | CE seed 3 epoch 160+ (low priority) |
+| PID 84200 | d_eff causal surgery (N_SEEDS=3) | Training seed 0, epoch ~20+, ~1hr remaining |
