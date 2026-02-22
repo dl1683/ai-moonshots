@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-02-22T22:44:44.960825+00:00",
+  "experiment": "dbpedia_nc_head_intervention",
+  "description": "NC-loss intervention on frozen Pythia backbone, DBpedia K=14, non-crowded regime",
+  "models": [
+    "EleutherAI/pythia-160m",
+    "EleutherAI/pythia-410m"
+  ],
+  "dataset": "dbpedia14",
+  "K": 14,
+  "n_per_class": 500,
+  "alpha_prereg": 1.477,
+  "arms": {
+    "ce": "Cross-entropy only (baseline)",
+    "nc_full": "CE + NC-loss (L_within + L_ETF + L_margin), differentiable class means",
+    "nc_within_only": "CE + L_within only (within-class collapse only, no ETF)",
+    "shuffled_nc": "CE + NC-loss with shuffled class labels (control)"
+  },
+  "predictions": {
+    "nc_full_delta_q": ">0 (NC arm raises q)",
+    "nc_full_delta_kappa": ">0 (NC arm raises kappa_nearest)",
+    "nc_full_ratio": "\u0394logit_q / \u0394kappa in [1.477*0.70, 1.477*1.30] = [1.034, 1.920]",
+    "shuffled_nc_delta_q": "<nc_full_delta_q (control is weaker or negative)",
+    "anti_control": "nc_full direction is bidirectional (q and kappa move together)"
+  },
+  "pass_criteria": {
+    "primary": "delta_q_nc > 0.02 AND delta_kappa_nc > 0 (two models)",
+    "ratio_check": "ratio = delta_logit_q / delta_kappa within 30% of 1.477",
+    "control_specificity": "nc_full delta_q > shuffled_nc delta_q"
+  },
+  "key_fixes_vs_previous": [
+    "q and kappa measured in SAME space as NC-loss optimization (proj_head outputs)",
+    "class_means computed differentiably (no detach/no_grad for ETF computation)",
+    "Non-crowded regime: DBpedia K=14, not CIFAR-100 K=20",
+    "Full-batch training (7000 samples) for stable class mean estimates"
+  ],
+  "note": "Pre-registered BEFORE data loading or model initialization"
+}
