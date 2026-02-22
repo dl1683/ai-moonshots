@@ -1,0 +1,63 @@
+{
+  "experiment": "cti_noisefloor_analysis",
+  "description": "Simulation showing max attainable r at each (K, N) configuration",
+  "observed": {
+    "NLP_K14_r2": 0.955,
+    "NLP_K14_r": 0.977,
+    "ViT_K10_r2": 0.96,
+    "CNN_K100_r": 0.749
+  },
+  "simulations": [
+    {
+      "config": "NLP K=4",
+      "K": 4,
+      "N": 500,
+      "d_eff": 1.71,
+      "r_mean": 0.8931555363172123,
+      "r_std": 0.14079817926806765,
+      "r_90th": 0.9906776973931289,
+      "r_10th": 0.7678438940749861
+    },
+    {
+      "config": "NLP K=14 (DBpedia)",
+      "K": 14,
+      "N": 500,
+      "d_eff": 1.71,
+      "r_mean": 0.9604275622024139,
+      "r_std": 0.02124418360188823,
+      "r_90th": 0.982552778002626,
+      "r_10th": 0.9362518657160567
+    },
+    {
+      "config": "ViT K=10 (CIFAR-10)",
+      "K": 10,
+      "N": 500,
+      "d_eff": 0.31,
+      "r_mean": 0.9414172311594982,
+      "r_std": 0.034139423145949394,
+      "r_90th": 0.9796579130218163,
+      "r_10th": 0.8939789904100075
+    },
+    {
+      "config": "CNN K=100 (CIFAR-100)",
+      "K": 100,
+      "N": 500,
+      "d_eff": 15.3,
+      "r_mean": 0.8829945139724642,
+      "r_std": 0.01917359359006703,
+      "r_90th": 0.9043695457830038,
+      "r_10th": 0.8557380139129787
+    },
+    {
+      "config": "CNN K=100 (test-only N=100)",
+      "K": 100,
+      "N": 100,
+      "d_eff": 15.3,
+      "r_mean": 0.8748069563761155,
+      "r_std": 0.021172095923446214,
+      "r_90th": 0.9023490619347239,
+      "r_10th": 0.8470240205410473
+    }
+  ],
+  "conclusion": "CNN r=0.75 likely reflects K=100 attenuation, not law failure"
+}
