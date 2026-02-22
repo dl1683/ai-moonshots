@@ -1,0 +1,541 @@
+======================================================================
+VIT CROSS-MODALITY ORTHOGONAL CAUSAL FACTORIAL
+======================================================================
+Embeddings: results/vit_loao_embs_vit-large-patch16-224_cifar10.npz, layer 12
+Subsample: 500/class
+PRE-REGISTERED:
+  Arm A: r(kappa_j1, logit_q) > 0.9
+  Arm B: r(kappa_j2, logit_q) > 0.5 -> 2-layer; < 0.5 -> 1-layer
+  Arm C: |r| < 0.2 [neg control]
+======================================================================
+
+Full dataset: N=10000, d=1024, K=10
+Subsampled: N=5000, d=1024, K=10 (500/class)
+Baseline sigma_W=0.3560
+
+[BASELINE GEOMETRY]
+  class 0(airplane): j1=8(ship) kappa=0.375, j2=1(automobile) kappa=0.464, margin=1.24x
+  class 1(automobile): j1=9(truck) kappa=0.261, j2=8(ship) kappa=0.448, margin=1.71x
+  class 2(bird): j1=4(deer) kappa=0.321, j2=3(cat) kappa=0.382, margin=1.19x
+  class 3(cat): j1=5(dog) kappa=0.220, j2=2(bird) kappa=0.382, margin=1.74x
+  class 4(deer): j1=2(bird) kappa=0.321, j2=7(horse) kappa=0.356, margin=1.11x
+  class 5(dog): j1=3(cat) kappa=0.220, j2=2(bird) kappa=0.394, margin=1.79x
+  class 6(frog): j1=2(bird) kappa=0.405, j2=3(cat) kappa=0.424, margin=1.05x
+  class 7(horse): j1=4(deer) kappa=0.356, j2=5(dog) kappa=0.395, margin=1.11x
+  class 8(ship): j1=0(airplane) kappa=0.375, j2=9(truck) kappa=0.414, margin=1.11x
+  class 9(truck): j1=1(automobile) kappa=0.261, j2=8(ship) kappa=0.414, margin=1.58x
+
+[BASELINE q_ci]
+  class 0(airplane): q_ci=0.5578, logit_q=0.2321
+  class 1(automobile): q_ci=0.7489, logit_q=1.0927
+  class 2(bird): q_ci=0.5644, logit_q=0.2592
+  class 3(cat): q_ci=0.4422, logit_q=-0.2321
+  class 4(deer): q_ci=0.4556, logit_q=-0.1782
+  class 5(dog): q_ci=0.5356, logit_q=0.1425
+  class 6(frog): q_ci=0.6622, logit_q=0.6732
+  class 7(horse): q_ci=0.7333, logit_q=1.0116
+  class 8(ship): q_ci=0.7178, logit_q=0.9335
+  class 9(truck): q_ci=0.6867, logit_q=0.7846
+
+============================================================
+FOCUS CLASS 0(airplane) | j1=8(ship) j2=1(automobile) jK=6(frog) margin=1.24x
+============================================================
+
+  [ARM A] kappa intervention (airplane <-> ship)
+    [A ci=0(airplane)] delta=-3.00: kappa_j1=0.111 (orig=0.375), q_ci=0.4800
+    [A ci=0(airplane)] delta=-2.40: kappa_j1=0.164 (orig=0.375), q_ci=0.4844
+    [A ci=0(airplane)] delta=-1.80: kappa_j1=0.217 (orig=0.375), q_ci=0.5067
+    [A ci=0(airplane)] delta=-1.20: kappa_j1=0.269 (orig=0.375), q_ci=0.5178
+    [A ci=0(airplane)] delta=-0.60: kappa_j1=0.322 (orig=0.375), q_ci=0.5267
+    [A ci=0(airplane)] delta=+0.00: kappa_j1=0.375 (orig=0.375), q_ci=0.5578
+    [A ci=0(airplane)] delta=+0.60: kappa_j1=0.427 (orig=0.375), q_ci=0.5756
+    [A ci=0(airplane)] delta=+1.20: kappa_j1=0.480 (orig=0.375), q_ci=0.6044
+    [A ci=0(airplane)] delta=+1.80: kappa_j1=0.504 (orig=0.375), q_ci=0.6444
+    [A ci=0(airplane)] delta=+2.40: kappa_j1=0.520 (orig=0.375), q_ci=0.6622
+    [A ci=0(airplane)] delta=+3.00: kappa_j1=0.536 (orig=0.375), q_ci=0.7000
+  ARM A: r(kappa_j1, logit_q)=0.942 p=0.0000
+
+  [ARM B] ORTHOGONAL — only automobile moves, airplane fixed
+    [B ci=0(airplane)] delta=+0.00: kappa_j1=0.375 (orig=0.375), q_ci=0.5578
+    [B ci=0(airplane)] delta=+0.40: kappa_j1=0.375 (orig=0.375), q_ci=0.5622
+    [B ci=0(airplane)] delta=+0.80: kappa_j1=0.375 (orig=0.375), q_ci=0.5733
+    [B ci=0(airplane)] delta=+1.20: kappa_j1=0.375 (orig=0.375), q_ci=0.5778
+    [B ci=0(airplane)] delta=+1.60: kappa_j1=0.375 (orig=0.375), q_ci=0.5844
+    [B ci=0(airplane)] delta=+2.00: kappa_j1=0.375 (orig=0.375), q_ci=0.5933
+    [B ci=0(airplane)] delta=+2.40: kappa_j1=0.375 (orig=0.375), q_ci=0.5933
+    [B ci=0(airplane)] delta=+2.80: kappa_j1=0.375 (orig=0.375), q_ci=0.5933
+    [B ci=0(airplane)] delta=+3.20: kappa_j1=0.375 (orig=0.375), q_ci=0.5956
+    [B ci=0(airplane)] delta=+3.60: kappa_j1=0.375 (orig=0.375), q_ci=0.5978
+    [B ci=0(airplane)] delta=+4.00: kappa_j1=0.375 (orig=0.375), q_ci=0.5978
+  ARM B: r(kappa_j1_unchanged, logit_q)=0.000, r(kappa_j2, logit_q)=0.937 p=0.0000
+
+  [ARM C] Neg control — only frog moves, airplane fixed
+    [C ci=0(airplane)] delta=+0.00: kappa_j1=0.375 (orig=0.375), q_ci=0.5578
+    [C ci=0(airplane)] delta=+0.40: kappa_j1=0.375 (orig=0.375), q_ci=0.5578
+    [C ci=0(airplane)] delta=+0.80: kappa_j1=0.375 (orig=0.375), q_ci=0.5578
+    [C ci=0(airplane)] delta=+1.20: kappa_j1=0.375 (orig=0.375), q_ci=0.5578
+    [C ci=0(airplane)] delta=+1.60: kappa_j1=0.375 (orig=0.375), q_ci=0.5600
+    [C ci=0(airplane)] delta=+2.00: kappa_j1=0.375 (orig=0.375), q_ci=0.5600
+    [C ci=0(airplane)] delta=+2.40: kappa_j1=0.375 (orig=0.375), q_ci=0.5622
+    [C ci=0(airplane)] delta=+2.80: kappa_j1=0.375 (orig=0.375), q_ci=0.5622
+    [C ci=0(airplane)] delta=+3.20: kappa_j1=0.375 (orig=0.375), q_ci=0.5622
+    [C ci=0(airplane)] delta=+3.60: kappa_j1=0.375 (orig=0.375), q_ci=0.5622
+    [C ci=0(airplane)] delta=+4.00: kappa_j1=0.375 (orig=0.375), q_ci=0.5644
+  ARM C: r(kappa_jK, logit_q)=0.950 p=0.0000
+
+============================================================
+FOCUS CLASS 1(automobile) | j1=9(truck) j2=8(ship) jK=6(frog) margin=1.71x
+============================================================
+
+  [ARM A] kappa intervention (automobile <-> truck)
+    [A ci=1(automobile)] delta=-3.00: kappa_j1=0.002 (orig=0.261), q_ci=0.5822
+    [A ci=1(automobile)] delta=-2.40: kappa_j1=0.051 (orig=0.261), q_ci=0.5867
+    [A ci=1(automobile)] delta=-1.80: kappa_j1=0.103 (orig=0.261), q_ci=0.6133
+    [A ci=1(automobile)] delta=-1.20: kappa_j1=0.156 (orig=0.261), q_ci=0.6511
+    [A ci=1(automobile)] delta=-0.60: kappa_j1=0.209 (orig=0.261), q_ci=0.7111
+    [A ci=1(automobile)] delta=+0.00: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [A ci=1(automobile)] delta=+0.60: kappa_j1=0.314 (orig=0.261), q_ci=0.8022
+    [A ci=1(automobile)] delta=+1.20: kappa_j1=0.367 (orig=0.261), q_ci=0.8400
+    [A ci=1(automobile)] delta=+1.80: kappa_j1=0.419 (orig=0.261), q_ci=0.8733
+    [A ci=1(automobile)] delta=+2.40: kappa_j1=0.472 (orig=0.261), q_ci=0.9000
+    [A ci=1(automobile)] delta=+3.00: kappa_j1=0.516 (orig=0.261), q_ci=0.9244
+  ARM A: r(kappa_j1, logit_q)=0.988 p=0.0000
+
+  [ARM B] ORTHOGONAL — only ship moves, automobile fixed
+    [B ci=1(automobile)] delta=+0.00: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [B ci=1(automobile)] delta=+0.40: kappa_j1=0.261 (orig=0.261), q_ci=0.7511
+    [B ci=1(automobile)] delta=+0.80: kappa_j1=0.261 (orig=0.261), q_ci=0.7511
+    [B ci=1(automobile)] delta=+1.20: kappa_j1=0.261 (orig=0.261), q_ci=0.7556
+    [B ci=1(automobile)] delta=+1.60: kappa_j1=0.261 (orig=0.261), q_ci=0.7578
+    [B ci=1(automobile)] delta=+2.00: kappa_j1=0.261 (orig=0.261), q_ci=0.7578
+    [B ci=1(automobile)] delta=+2.40: kappa_j1=0.261 (orig=0.261), q_ci=0.7578
+    [B ci=1(automobile)] delta=+2.80: kappa_j1=0.261 (orig=0.261), q_ci=0.7578
+    [B ci=1(automobile)] delta=+3.20: kappa_j1=0.261 (orig=0.261), q_ci=0.7578
+    [B ci=1(automobile)] delta=+3.60: kappa_j1=0.261 (orig=0.261), q_ci=0.7600
+    [B ci=1(automobile)] delta=+4.00: kappa_j1=0.261 (orig=0.261), q_ci=0.7600
+  ARM B: r(kappa_j1_unchanged, logit_q)=0.000, r(kappa_j2, logit_q)=0.912 p=0.0001
+
+  [ARM C] Neg control — only frog moves, automobile fixed
+    [C ci=1(automobile)] delta=+0.00: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [C ci=1(automobile)] delta=+0.40: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [C ci=1(automobile)] delta=+0.80: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [C ci=1(automobile)] delta=+1.20: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [C ci=1(automobile)] delta=+1.60: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [C ci=1(automobile)] delta=+2.00: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [C ci=1(automobile)] delta=+2.40: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [C ci=1(automobile)] delta=+2.80: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [C ci=1(automobile)] delta=+3.20: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [C ci=1(automobile)] delta=+3.60: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+    [C ci=1(automobile)] delta=+4.00: kappa_j1=0.261 (orig=0.261), q_ci=0.7489
+  ARM C: r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 2(bird) | j1=4(deer) j2=3(cat) jK=8(ship) margin=1.19x
+============================================================
+
+  [ARM A] kappa intervention (bird <-> deer)
+    [A ci=2(bird)] delta=-3.00: kappa_j1=0.058 (orig=0.321), q_ci=0.4911
+    [A ci=2(bird)] delta=-2.40: kappa_j1=0.111 (orig=0.321), q_ci=0.4978
+    [A ci=2(bird)] delta=-1.80: kappa_j1=0.163 (orig=0.321), q_ci=0.5111
+    [A ci=2(bird)] delta=-1.20: kappa_j1=0.216 (orig=0.321), q_ci=0.5333
+    [A ci=2(bird)] delta=-0.60: kappa_j1=0.269 (orig=0.321), q_ci=0.5422
+    [A ci=2(bird)] delta=+0.00: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [A ci=2(bird)] delta=+0.60: kappa_j1=0.374 (orig=0.321), q_ci=0.5867
+    [A ci=2(bird)] delta=+1.20: kappa_j1=0.391 (orig=0.321), q_ci=0.6000
+    [A ci=2(bird)] delta=+1.80: kappa_j1=0.399 (orig=0.321), q_ci=0.6222
+    [A ci=2(bird)] delta=+2.40: kappa_j1=0.408 (orig=0.321), q_ci=0.6356
+    [A ci=2(bird)] delta=+3.00: kappa_j1=0.418 (orig=0.321), q_ci=0.6378
+  ARM A: r(kappa_j1, logit_q)=0.962 p=0.0000
+
+  [ARM B] ORTHOGONAL — only cat moves, bird fixed
+    [B ci=2(bird)] delta=+0.00: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [B ci=2(bird)] delta=+0.40: kappa_j1=0.321 (orig=0.321), q_ci=0.5711
+    [B ci=2(bird)] delta=+0.80: kappa_j1=0.321 (orig=0.321), q_ci=0.5756
+    [B ci=2(bird)] delta=+1.20: kappa_j1=0.321 (orig=0.321), q_ci=0.5778
+    [B ci=2(bird)] delta=+1.60: kappa_j1=0.321 (orig=0.321), q_ci=0.5822
+    [B ci=2(bird)] delta=+2.00: kappa_j1=0.321 (orig=0.321), q_ci=0.5822
+    [B ci=2(bird)] delta=+2.40: kappa_j1=0.321 (orig=0.321), q_ci=0.5822
+    [B ci=2(bird)] delta=+2.80: kappa_j1=0.321 (orig=0.321), q_ci=0.5822
+    [B ci=2(bird)] delta=+3.20: kappa_j1=0.321 (orig=0.321), q_ci=0.5822
+    [B ci=2(bird)] delta=+3.60: kappa_j1=0.321 (orig=0.321), q_ci=0.5822
+    [B ci=2(bird)] delta=+4.00: kappa_j1=0.321 (orig=0.321), q_ci=0.5867
+  ARM B: r(kappa_j1_unchanged, logit_q)=0.000, r(kappa_j2, logit_q)=0.871 p=0.0005
+
+  [ARM C] Neg control — only ship moves, bird fixed
+    [C ci=2(bird)] delta=+0.00: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [C ci=2(bird)] delta=+0.40: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [C ci=2(bird)] delta=+0.80: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [C ci=2(bird)] delta=+1.20: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [C ci=2(bird)] delta=+1.60: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [C ci=2(bird)] delta=+2.00: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [C ci=2(bird)] delta=+2.40: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [C ci=2(bird)] delta=+2.80: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [C ci=2(bird)] delta=+3.20: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [C ci=2(bird)] delta=+3.60: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+    [C ci=2(bird)] delta=+4.00: kappa_j1=0.321 (orig=0.321), q_ci=0.5644
+  ARM C: r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 3(cat) | j1=5(dog) j2=2(bird) jK=8(ship) margin=1.74x
+============================================================
+
+  [ARM A] kappa intervention (cat <-> dog)
+    [A ci=3(cat)] delta=-3.00: kappa_j1=0.044 (orig=0.220), q_ci=0.3733
+    [A ci=3(cat)] delta=-2.40: kappa_j1=0.009 (orig=0.220), q_ci=0.3689
+    [A ci=3(cat)] delta=-1.80: kappa_j1=0.062 (orig=0.220), q_ci=0.3733
+    [A ci=3(cat)] delta=-1.20: kappa_j1=0.114 (orig=0.220), q_ci=0.3778
+    [A ci=3(cat)] delta=-0.60: kappa_j1=0.167 (orig=0.220), q_ci=0.4133
+    [A ci=3(cat)] delta=+0.00: kappa_j1=0.220 (orig=0.220), q_ci=0.4422
+    [A ci=3(cat)] delta=+0.60: kappa_j1=0.272 (orig=0.220), q_ci=0.4733
+    [A ci=3(cat)] delta=+1.20: kappa_j1=0.325 (orig=0.220), q_ci=0.5178
+    [A ci=3(cat)] delta=+1.80: kappa_j1=0.378 (orig=0.220), q_ci=0.5689
+    [A ci=3(cat)] delta=+2.40: kappa_j1=0.419 (orig=0.220), q_ci=0.5933
+    [A ci=3(cat)] delta=+3.00: kappa_j1=0.432 (orig=0.220), q_ci=0.6267
+  ARM A: r(kappa_j1, logit_q)=0.976 p=0.0000
+
+  [ARM B] ORTHOGONAL — only bird moves, cat fixed
+    [B ci=3(cat)] delta=+0.00: kappa_j1=0.220 (orig=0.220), q_ci=0.4422
+    [B ci=3(cat)] delta=+0.40: kappa_j1=0.220 (orig=0.220), q_ci=0.4422
+    [B ci=3(cat)] delta=+0.80: kappa_j1=0.220 (orig=0.220), q_ci=0.4444
+    [B ci=3(cat)] delta=+1.20: kappa_j1=0.220 (orig=0.220), q_ci=0.4444
+    [B ci=3(cat)] delta=+1.60: kappa_j1=0.220 (orig=0.220), q_ci=0.4444
+    [B ci=3(cat)] delta=+2.00: kappa_j1=0.220 (orig=0.220), q_ci=0.4444
+    [B ci=3(cat)] delta=+2.40: kappa_j1=0.220 (orig=0.220), q_ci=0.4467
+    [B ci=3(cat)] delta=+2.80: kappa_j1=0.220 (orig=0.220), q_ci=0.4467
+    [B ci=3(cat)] delta=+3.20: kappa_j1=0.220 (orig=0.220), q_ci=0.4467
+    [B ci=3(cat)] delta=+3.60: kappa_j1=0.220 (orig=0.220), q_ci=0.4489
+    [B ci=3(cat)] delta=+4.00: kappa_j1=0.220 (orig=0.220), q_ci=0.4489
+  ARM B: r(kappa_j1_unchanged, logit_q)=0.000, r(kappa_j2, logit_q)=0.961 p=0.0000
+
+  [ARM C] Neg control — only ship moves, cat fixed
+    [C ci=3(cat)] delta=+0.00: kappa_j1=0.220 (orig=0.220), q_ci=0.4422
+    [C ci=3(cat)] delta=+0.40: kappa_j1=0.220 (orig=0.220), q_ci=0.4422
+    [C ci=3(cat)] delta=+0.80: kappa_j1=0.220 (orig=0.220), q_ci=0.4422
+    [C ci=3(cat)] delta=+1.20: kappa_j1=0.220 (orig=0.220), q_ci=0.4422
+    [C ci=3(cat)] delta=+1.60: kappa_j1=0.220 (orig=0.220), q_ci=0.4422
+    [C ci=3(cat)] delta=+2.00: kappa_j1=0.220 (orig=0.220), q_ci=0.4422
+    [C ci=3(cat)] delta=+2.40: kappa_j1=0.220 (orig=0.220), q_ci=0.4422
+    [C ci=3(cat)] delta=+2.80: kappa_j1=0.220 (orig=0.220), q_ci=0.4444
+    [C ci=3(cat)] delta=+3.20: kappa_j1=0.220 (orig=0.220), q_ci=0.4444
+    [C ci=3(cat)] delta=+3.60: kappa_j1=0.220 (orig=0.220), q_ci=0.4444
+    [C ci=3(cat)] delta=+4.00: kappa_j1=0.220 (orig=0.220), q_ci=0.4444
+  ARM C: r(kappa_jK, logit_q)=0.837 p=0.0013
+
+============================================================
+FOCUS CLASS 4(deer) | j1=2(bird) j2=7(horse) jK=8(ship) margin=1.11x
+============================================================
+
+  [ARM A] kappa intervention (deer <-> bird)
+    [A ci=4(deer)] delta=-3.00: kappa_j1=0.058 (orig=0.321), q_ci=0.4267
+    [A ci=4(deer)] delta=-2.40: kappa_j1=0.111 (orig=0.321), q_ci=0.4244
+    [A ci=4(deer)] delta=-1.80: kappa_j1=0.163 (orig=0.321), q_ci=0.4356
+    [A ci=4(deer)] delta=-1.20: kappa_j1=0.216 (orig=0.321), q_ci=0.4333
+    [A ci=4(deer)] delta=-0.60: kappa_j1=0.269 (orig=0.321), q_ci=0.4467
+    [A ci=4(deer)] delta=+0.00: kappa_j1=0.321 (orig=0.321), q_ci=0.4556
+    [A ci=4(deer)] delta=+0.60: kappa_j1=0.364 (orig=0.321), q_ci=0.4800
+    [A ci=4(deer)] delta=+1.20: kappa_j1=0.374 (orig=0.321), q_ci=0.4889
+    [A ci=4(deer)] delta=+1.80: kappa_j1=0.386 (orig=0.321), q_ci=0.5156
+    [A ci=4(deer)] delta=+2.40: kappa_j1=0.398 (orig=0.321), q_ci=0.5422
+    [A ci=4(deer)] delta=+3.00: kappa_j1=0.412 (orig=0.321), q_ci=0.5733
+  ARM A: r(kappa_j1, logit_q)=0.843 p=0.0011
+
+  [ARM B] ORTHOGONAL — only horse moves, deer fixed
+    [B ci=4(deer)] delta=+0.00: kappa_j1=0.321 (orig=0.321), q_ci=0.4556
+    [B ci=4(deer)] delta=+0.40: kappa_j1=0.321 (orig=0.321), q_ci=0.4911
+    [B ci=4(deer)] delta=+0.80: kappa_j1=0.321 (orig=0.321), q_ci=0.5111
+    [B ci=4(deer)] delta=+1.20: kappa_j1=0.321 (orig=0.321), q_ci=0.5222
+    [B ci=4(deer)] delta=+1.60: kappa_j1=0.321 (orig=0.321), q_ci=0.5444
+    [B ci=4(deer)] delta=+2.00: kappa_j1=0.321 (orig=0.321), q_ci=0.5533
+    [B ci=4(deer)] delta=+2.40: kappa_j1=0.321 (orig=0.321), q_ci=0.5578
+    [B ci=4(deer)] delta=+2.80: kappa_j1=0.321 (orig=0.321), q_ci=0.5711
+    [B ci=4(deer)] delta=+3.20: kappa_j1=0.321 (orig=0.321), q_ci=0.5844
+    [B ci=4(deer)] delta=+3.60: kappa_j1=0.321 (orig=0.321), q_ci=0.6022
+    [B ci=4(deer)] delta=+4.00: kappa_j1=0.321 (orig=0.321), q_ci=0.6067
+  ARM B: r(kappa_j1_unchanged, logit_q)=0.000, r(kappa_j2, logit_q)=0.982 p=0.0000
+
+  [ARM C] Neg control — only ship moves, deer fixed
+    [C ci=4(deer)] delta=+0.00: kappa_j1=0.321 (orig=0.321), q_ci=0.4556
+    [C ci=4(deer)] delta=+0.40: kappa_j1=0.321 (orig=0.321), q_ci=0.4556
+    [C ci=4(deer)] delta=+0.80: kappa_j1=0.321 (orig=0.321), q_ci=0.4556
+    [C ci=4(deer)] delta=+1.20: kappa_j1=0.321 (orig=0.321), q_ci=0.4556
+    [C ci=4(deer)] delta=+1.60: kappa_j1=0.321 (orig=0.321), q_ci=0.4556
+    [C ci=4(deer)] delta=+2.00: kappa_j1=0.321 (orig=0.321), q_ci=0.4600
+    [C ci=4(deer)] delta=+2.40: kappa_j1=0.321 (orig=0.321), q_ci=0.4600
+    [C ci=4(deer)] delta=+2.80: kappa_j1=0.321 (orig=0.321), q_ci=0.4600
+    [C ci=4(deer)] delta=+3.20: kappa_j1=0.321 (orig=0.321), q_ci=0.4600
+    [C ci=4(deer)] delta=+3.60: kappa_j1=0.321 (orig=0.321), q_ci=0.4600
+    [C ci=4(deer)] delta=+4.00: kappa_j1=0.321 (orig=0.321), q_ci=0.4600
+  ARM C: r(kappa_jK, logit_q)=0.866 p=0.0006
+
+============================================================
+FOCUS CLASS 5(dog) | j1=3(cat) j2=2(bird) jK=8(ship) margin=1.79x
+============================================================
+
+  [ARM A] kappa intervention (dog <-> cat)
+    [A ci=5(dog)] delta=-3.00: kappa_j1=0.044 (orig=0.220), q_ci=0.5622
+    [A ci=5(dog)] delta=-2.40: kappa_j1=0.009 (orig=0.220), q_ci=0.5378
+    [A ci=5(dog)] delta=-1.80: kappa_j1=0.062 (orig=0.220), q_ci=0.5178
+    [A ci=5(dog)] delta=-1.20: kappa_j1=0.114 (orig=0.220), q_ci=0.5200
+    [A ci=5(dog)] delta=-0.60: kappa_j1=0.167 (orig=0.220), q_ci=0.5222
+    [A ci=5(dog)] delta=+0.00: kappa_j1=0.220 (orig=0.220), q_ci=0.5356
+    [A ci=5(dog)] delta=+0.60: kappa_j1=0.272 (orig=0.220), q_ci=0.5667
+    [A ci=5(dog)] delta=+1.20: kappa_j1=0.325 (orig=0.220), q_ci=0.6089
+    [A ci=5(dog)] delta=+1.80: kappa_j1=0.378 (orig=0.220), q_ci=0.6556
+    [A ci=5(dog)] delta=+2.40: kappa_j1=0.410 (orig=0.220), q_ci=0.6933
+    [A ci=5(dog)] delta=+3.00: kappa_j1=0.418 (orig=0.220), q_ci=0.7133
+  ARM A: r(kappa_j1, logit_q)=0.856 p=0.0008
+
+  [ARM B] ORTHOGONAL — only bird moves, dog fixed
+    [B ci=5(dog)] delta=+0.00: kappa_j1=0.220 (orig=0.220), q_ci=0.5356
+    [B ci=5(dog)] delta=+0.40: kappa_j1=0.220 (orig=0.220), q_ci=0.5400
+    [B ci=5(dog)] delta=+0.80: kappa_j1=0.220 (orig=0.220), q_ci=0.5400
+    [B ci=5(dog)] delta=+1.20: kappa_j1=0.220 (orig=0.220), q_ci=0.5400
+    [B ci=5(dog)] delta=+1.60: kappa_j1=0.220 (orig=0.220), q_ci=0.5400
+    [B ci=5(dog)] delta=+2.00: kappa_j1=0.220 (orig=0.220), q_ci=0.5422
+    [B ci=5(dog)] delta=+2.40: kappa_j1=0.220 (orig=0.220), q_ci=0.5444
+    [B ci=5(dog)] delta=+2.80: kappa_j1=0.220 (orig=0.220), q_ci=0.5467
+    [B ci=5(dog)] delta=+3.20: kappa_j1=0.220 (orig=0.220), q_ci=0.5489
+    [B ci=5(dog)] delta=+3.60: kappa_j1=0.220 (orig=0.220), q_ci=0.5489
+    [B ci=5(dog)] delta=+4.00: kappa_j1=0.220 (orig=0.220), q_ci=0.5489
+  ARM B: r(kappa_j1_unchanged, logit_q)=0.000, r(kappa_j2, logit_q)=0.963 p=0.0000
+
+  [ARM C] Neg control — only ship moves, dog fixed
+    [C ci=5(dog)] delta=+0.00: kappa_j1=0.220 (orig=0.220), q_ci=0.5356
+    [C ci=5(dog)] delta=+0.40: kappa_j1=0.220 (orig=0.220), q_ci=0.5356
+    [C ci=5(dog)] delta=+0.80: kappa_j1=0.220 (orig=0.220), q_ci=0.5356
+    [C ci=5(dog)] delta=+1.20: kappa_j1=0.220 (orig=0.220), q_ci=0.5378
+    [C ci=5(dog)] delta=+1.60: kappa_j1=0.220 (orig=0.220), q_ci=0.5378
+    [C ci=5(dog)] delta=+2.00: kappa_j1=0.220 (orig=0.220), q_ci=0.5378
+    [C ci=5(dog)] delta=+2.40: kappa_j1=0.220 (orig=0.220), q_ci=0.5378
+    [C ci=5(dog)] delta=+2.80: kappa_j1=0.220 (orig=0.220), q_ci=0.5378
+    [C ci=5(dog)] delta=+3.20: kappa_j1=0.220 (orig=0.220), q_ci=0.5378
+    [C ci=5(dog)] delta=+3.60: kappa_j1=0.220 (orig=0.220), q_ci=0.5378
+    [C ci=5(dog)] delta=+4.00: kappa_j1=0.220 (orig=0.220), q_ci=0.5378
+  ARM C: r(kappa_jK, logit_q)=0.775 p=0.0051
+
+============================================================
+FOCUS CLASS 6(frog) | j1=2(bird) j2=3(cat) jK=8(ship) margin=1.05x
+============================================================
+
+  [ARM A] kappa intervention (frog <-> bird)
+    [A ci=6(frog)] delta=-3.00: kappa_j1=0.141 (orig=0.405), q_ci=0.5356
+    [A ci=6(frog)] delta=-2.40: kappa_j1=0.194 (orig=0.405), q_ci=0.5511
+    [A ci=6(frog)] delta=-1.80: kappa_j1=0.247 (orig=0.405), q_ci=0.5733
+    [A ci=6(frog)] delta=-1.20: kappa_j1=0.299 (orig=0.405), q_ci=0.5933
+    [A ci=6(frog)] delta=-0.60: kappa_j1=0.352 (orig=0.405), q_ci=0.6311
+    [A ci=6(frog)] delta=+0.00: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [A ci=6(frog)] delta=+0.60: kappa_j1=0.440 (orig=0.405), q_ci=0.7000
+    [A ci=6(frog)] delta=+1.20: kappa_j1=0.456 (orig=0.405), q_ci=0.7333
+    [A ci=6(frog)] delta=+1.80: kappa_j1=0.474 (orig=0.405), q_ci=0.7711
+    [A ci=6(frog)] delta=+2.40: kappa_j1=0.492 (orig=0.405), q_ci=0.7844
+    [A ci=6(frog)] delta=+3.00: kappa_j1=0.511 (orig=0.405), q_ci=0.7956
+  ARM A: r(kappa_j1, logit_q)=0.955 p=0.0000
+
+  [ARM B] ORTHOGONAL — only cat moves, frog fixed
+    [B ci=6(frog)] delta=+0.00: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [B ci=6(frog)] delta=+0.40: kappa_j1=0.405 (orig=0.405), q_ci=0.6711
+    [B ci=6(frog)] delta=+0.80: kappa_j1=0.405 (orig=0.405), q_ci=0.6800
+    [B ci=6(frog)] delta=+1.20: kappa_j1=0.405 (orig=0.405), q_ci=0.6867
+    [B ci=6(frog)] delta=+1.60: kappa_j1=0.405 (orig=0.405), q_ci=0.6867
+    [B ci=6(frog)] delta=+2.00: kappa_j1=0.405 (orig=0.405), q_ci=0.6911
+    [B ci=6(frog)] delta=+2.40: kappa_j1=0.405 (orig=0.405), q_ci=0.6911
+    [B ci=6(frog)] delta=+2.80: kappa_j1=0.405 (orig=0.405), q_ci=0.6911
+    [B ci=6(frog)] delta=+3.20: kappa_j1=0.405 (orig=0.405), q_ci=0.6933
+    [B ci=6(frog)] delta=+3.60: kappa_j1=0.405 (orig=0.405), q_ci=0.6933
+    [B ci=6(frog)] delta=+4.00: kappa_j1=0.405 (orig=0.405), q_ci=0.6933
+  ARM B: r(kappa_j1_unchanged, logit_q)=0.000, r(kappa_j2, logit_q)=0.874 p=0.0004
+
+  [ARM C] Neg control — only ship moves, frog fixed
+    [C ci=6(frog)] delta=+0.00: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [C ci=6(frog)] delta=+0.40: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [C ci=6(frog)] delta=+0.80: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [C ci=6(frog)] delta=+1.20: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [C ci=6(frog)] delta=+1.60: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [C ci=6(frog)] delta=+2.00: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [C ci=6(frog)] delta=+2.40: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [C ci=6(frog)] delta=+2.80: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [C ci=6(frog)] delta=+3.20: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [C ci=6(frog)] delta=+3.60: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+    [C ci=6(frog)] delta=+4.00: kappa_j1=0.405 (orig=0.405), q_ci=0.6622
+  ARM C: r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 7(horse) | j1=4(deer) j2=5(dog) jK=6(frog) margin=1.11x
+============================================================
+
+  [ARM A] kappa intervention (horse <-> deer)
+    [A ci=7(horse)] delta=-3.00: kappa_j1=0.093 (orig=0.356), q_ci=0.6889
+    [A ci=7(horse)] delta=-2.40: kappa_j1=0.145 (orig=0.356), q_ci=0.6844
+    [A ci=7(horse)] delta=-1.80: kappa_j1=0.198 (orig=0.356), q_ci=0.6956
+    [A ci=7(horse)] delta=-1.20: kappa_j1=0.251 (orig=0.356), q_ci=0.7000
+    [A ci=7(horse)] delta=-0.60: kappa_j1=0.303 (orig=0.356), q_ci=0.7111
+    [A ci=7(horse)] delta=+0.00: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [A ci=7(horse)] delta=+0.60: kappa_j1=0.404 (orig=0.356), q_ci=0.7422
+    [A ci=7(horse)] delta=+1.20: kappa_j1=0.415 (orig=0.356), q_ci=0.7556
+    [A ci=7(horse)] delta=+1.80: kappa_j1=0.427 (orig=0.356), q_ci=0.7667
+    [A ci=7(horse)] delta=+2.40: kappa_j1=0.440 (orig=0.356), q_ci=0.7844
+    [A ci=7(horse)] delta=+3.00: kappa_j1=0.454 (orig=0.356), q_ci=0.7867
+  ARM A: r(kappa_j1, logit_q)=0.926 p=0.0000
+
+  [ARM B] ORTHOGONAL — only dog moves, horse fixed
+    [B ci=7(horse)] delta=+0.00: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [B ci=7(horse)] delta=+0.40: kappa_j1=0.356 (orig=0.356), q_ci=0.7400
+    [B ci=7(horse)] delta=+0.80: kappa_j1=0.356 (orig=0.356), q_ci=0.7467
+    [B ci=7(horse)] delta=+1.20: kappa_j1=0.356 (orig=0.356), q_ci=0.7489
+    [B ci=7(horse)] delta=+1.60: kappa_j1=0.356 (orig=0.356), q_ci=0.7533
+    [B ci=7(horse)] delta=+2.00: kappa_j1=0.356 (orig=0.356), q_ci=0.7600
+    [B ci=7(horse)] delta=+2.40: kappa_j1=0.356 (orig=0.356), q_ci=0.7644
+    [B ci=7(horse)] delta=+2.80: kappa_j1=0.356 (orig=0.356), q_ci=0.7689
+    [B ci=7(horse)] delta=+3.20: kappa_j1=0.356 (orig=0.356), q_ci=0.7711
+    [B ci=7(horse)] delta=+3.60: kappa_j1=0.356 (orig=0.356), q_ci=0.7711
+    [B ci=7(horse)] delta=+4.00: kappa_j1=0.356 (orig=0.356), q_ci=0.7733
+  ARM B: r(kappa_j1_unchanged, logit_q)=0.000, r(kappa_j2, logit_q)=0.983 p=0.0000
+
+  [ARM C] Neg control — only frog moves, horse fixed
+    [C ci=7(horse)] delta=+0.00: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [C ci=7(horse)] delta=+0.40: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [C ci=7(horse)] delta=+0.80: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [C ci=7(horse)] delta=+1.20: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [C ci=7(horse)] delta=+1.60: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [C ci=7(horse)] delta=+2.00: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [C ci=7(horse)] delta=+2.40: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [C ci=7(horse)] delta=+2.80: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [C ci=7(horse)] delta=+3.20: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [C ci=7(horse)] delta=+3.60: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+    [C ci=7(horse)] delta=+4.00: kappa_j1=0.356 (orig=0.356), q_ci=0.7333
+  ARM C: r(kappa_jK, logit_q)=0.000 p=1.0000
+
+============================================================
+FOCUS CLASS 8(ship) | j1=0(airplane) j2=9(truck) jK=6(frog) margin=1.11x
+============================================================
+
+  [ARM A] kappa intervention (ship <-> airplane)
+    [A ci=8(ship)] delta=-3.00: kappa_j1=0.111 (orig=0.375), q_ci=0.6711
+    [A ci=8(ship)] delta=-2.40: kappa_j1=0.164 (orig=0.375), q_ci=0.6667
+    [A ci=8(ship)] delta=-1.80: kappa_j1=0.217 (orig=0.375), q_ci=0.6733
+    [A ci=8(ship)] delta=-1.20: kappa_j1=0.269 (orig=0.375), q_ci=0.6889
+    [A ci=8(ship)] delta=-0.60: kappa_j1=0.322 (orig=0.375), q_ci=0.7044
+    [A ci=8(ship)] delta=+0.00: kappa_j1=0.375 (orig=0.375), q_ci=0.7178
+    [A ci=8(ship)] delta=+0.60: kappa_j1=0.423 (orig=0.375), q_ci=0.7400
+    [A ci=8(ship)] delta=+1.20: kappa_j1=0.433 (orig=0.375), q_ci=0.7622
+    [A ci=8(ship)] delta=+1.80: kappa_j1=0.445 (orig=0.375), q_ci=0.7800
+    [A ci=8(ship)] delta=+2.40: kappa_j1=0.458 (orig=0.375), q_ci=0.7911
+    [A ci=8(ship)] delta=+3.00: kappa_j1=0.471 (orig=0.375), q_ci=0.8178
+  ARM A: r(kappa_j1, logit_q)=0.901 p=0.0002
+
+  [ARM B] ORTHOGONAL — only truck moves, ship fixed
+    [B ci=8(ship)] delta=+0.00: kappa_j1=0.375 (orig=0.375), q_ci=0.7178
+    [B ci=8(ship)] delta=+0.40: kappa_j1=0.375 (orig=0.375), q_ci=0.7289
+    [B ci=8(ship)] delta=+0.80: kappa_j1=0.375 (orig=0.375), q_ci=0.7356
+    [B ci=8(ship)] delta=+1.20: kappa_j1=0.375 (orig=0.375), q_ci=0.7511
+    [B ci=8(ship)] delta=+1.60: kappa_j1=0.375 (orig=0.375), q_ci=0.7600
+    [B ci=8(ship)] delta=+2.00: kappa_j1=0.375 (orig=0.375), q_ci=0.7622
+    [B ci=8(ship)] delta=+2.40: kappa_j1=0.375 (orig=0.375), q_ci=0.7644
+    [B ci=8(ship)] delta=+2.80: kappa_j1=0.375 (orig=0.375), q_ci=0.7644
+    [B ci=8(ship)] delta=+3.20: kappa_j1=0.375 (orig=0.375), q_ci=0.7667
+    [B ci=8(ship)] delta=+3.60: kappa_j1=0.375 (orig=0.375), q_ci=0.7711
+    [B ci=8(ship)] delta=+4.00: kappa_j1=0.375 (orig=0.375), q_ci=0.7733
+  ARM B: r(kappa_j1_unchanged, logit_q)=0.000, r(kappa_j2, logit_q)=0.934 p=0.0000
+
+  [ARM C] Neg control — only frog moves, ship fixed
+    [C ci=8(ship)] delta=+0.00: kappa_j1=0.375 (orig=0.375), q_ci=0.7178
+    [C ci=8(ship)] delta=+0.40: kappa_j1=0.375 (orig=0.375), q_ci=0.7178
+    [C ci=8(ship)] delta=+0.80: kappa_j1=0.375 (orig=0.375), q_ci=0.7200
+    [C ci=8(ship)] delta=+1.20: kappa_j1=0.375 (orig=0.375), q_ci=0.7200
+    [C ci=8(ship)] delta=+1.60: kappa_j1=0.375 (orig=0.375), q_ci=0.7200
+    [C ci=8(ship)] delta=+2.00: kappa_j1=0.375 (orig=0.375), q_ci=0.7200
+    [C ci=8(ship)] delta=+2.40: kappa_j1=0.375 (orig=0.375), q_ci=0.7200
+    [C ci=8(ship)] delta=+2.80: kappa_j1=0.375 (orig=0.375), q_ci=0.7200
+    [C ci=8(ship)] delta=+3.20: kappa_j1=0.375 (orig=0.375), q_ci=0.7200
+    [C ci=8(ship)] delta=+3.60: kappa_j1=0.375 (orig=0.375), q_ci=0.7200
+    [C ci=8(ship)] delta=+4.00: kappa_j1=0.375 (orig=0.375), q_ci=0.7200
+  ARM C: r(kappa_jK, logit_q)=0.671 p=0.0239
+
+============================================================
+FOCUS CLASS 9(truck) | j1=1(automobile) j2=8(ship) jK=6(frog) margin=1.58x
+============================================================
+
+  [ARM A] kappa intervention (truck <-> automobile)
+    [A ci=9(truck)] delta=-3.00: kappa_j1=0.002 (orig=0.261), q_ci=0.6044
+    [A ci=9(truck)] delta=-2.40: kappa_j1=0.051 (orig=0.261), q_ci=0.5844
+    [A ci=9(truck)] delta=-1.80: kappa_j1=0.103 (orig=0.261), q_ci=0.6000
+    [A ci=9(truck)] delta=-1.20: kappa_j1=0.156 (orig=0.261), q_ci=0.6156
+    [A ci=9(truck)] delta=-0.60: kappa_j1=0.209 (orig=0.261), q_ci=0.6511
+    [A ci=9(truck)] delta=+0.00: kappa_j1=0.261 (orig=0.261), q_ci=0.6867
+    [A ci=9(truck)] delta=+0.60: kappa_j1=0.314 (orig=0.261), q_ci=0.7267
+    [A ci=9(truck)] delta=+1.20: kappa_j1=0.367 (orig=0.261), q_ci=0.7822
+    [A ci=9(truck)] delta=+1.80: kappa_j1=0.419 (orig=0.261), q_ci=0.8356
+    [A ci=9(truck)] delta=+2.40: kappa_j1=0.445 (orig=0.261), q_ci=0.8711
+    [A ci=9(truck)] delta=+3.00: kappa_j1=0.457 (orig=0.261), q_ci=0.8956
+  ARM A: r(kappa_j1, logit_q)=0.933 p=0.0000
+
+  [ARM B] ORTHOGONAL — only ship moves, truck fixed
+    [B ci=9(truck)] delta=+0.00: kappa_j1=0.261 (orig=0.261), q_ci=0.6867
+    [B ci=9(truck)] delta=+0.40: kappa_j1=0.261 (orig=0.261), q_ci=0.7022
+    [B ci=9(truck)] delta=+0.80: kappa_j1=0.261 (orig=0.261), q_ci=0.7067
+    [B ci=9(truck)] delta=+1.20: kappa_j1=0.261 (orig=0.261), q_ci=0.7067
+    [B ci=9(truck)] delta=+1.60: kappa_j1=0.261 (orig=0.261), q_ci=0.7111
+    [B ci=9(truck)] delta=+2.00: kappa_j1=0.261 (orig=0.261), q_ci=0.7133
+    [B ci=9(truck)] delta=+2.40: kappa_j1=0.261 (orig=0.261), q_ci=0.7156
+    [B ci=9(truck)] delta=+2.80: kappa_j1=0.261 (orig=0.261), q_ci=0.7200
+    [B ci=9(truck)] delta=+3.20: kappa_j1=0.261 (orig=0.261), q_ci=0.7200
+    [B ci=9(truck)] delta=+3.60: kappa_j1=0.261 (orig=0.261), q_ci=0.7200
+    [B ci=9(truck)] delta=+4.00: kappa_j1=0.261 (orig=0.261), q_ci=0.7200
+  ARM B: r(kappa_j1_unchanged, logit_q)=0.000, r(kappa_j2, logit_q)=0.910 p=0.0001
+
+  [ARM C] Neg control — only frog moves, truck fixed
+    [C ci=9(truck)] delta=+0.00: kappa_j1=0.261 (orig=0.261), q_ci=0.6867
+    [C ci=9(truck)] delta=+0.40: kappa_j1=0.261 (orig=0.261), q_ci=0.6867
+    [C ci=9(truck)] delta=+0.80: kappa_j1=0.261 (orig=0.261), q_ci=0.6867
+    [C ci=9(truck)] delta=+1.20: kappa_j1=0.261 (orig=0.261), q_ci=0.6867
+    [C ci=9(truck)] delta=+1.60: kappa_j1=0.261 (orig=0.261), q_ci=0.6867
+    [C ci=9(truck)] delta=+2.00: kappa_j1=0.261 (orig=0.261), q_ci=0.6889
+    [C ci=9(truck)] delta=+2.40: kappa_j1=0.261 (orig=0.261), q_ci=0.6889
+    [C ci=9(truck)] delta=+2.80: kappa_j1=0.261 (orig=0.261), q_ci=0.6889
+    [C ci=9(truck)] delta=+3.20: kappa_j1=0.261 (orig=0.261), q_ci=0.6889
+    [C ci=9(truck)] delta=+3.60: kappa_j1=0.261 (orig=0.261), q_ci=0.6889
+    [C ci=9(truck)] delta=+4.00: kappa_j1=0.261 (orig=0.261), q_ci=0.6889
+  ARM C: r(kappa_jK, logit_q)=0.866 p=0.0006
+
+======================================================================
+AGGREGATE RESULTS (Fisher z-mean across focus classes)
+======================================================================
+
+Arm A (kappa causal, n=10 classes):
+  r(kappa_j1, logit_q) = 0.943  [threshold > 0.9]
+  PASS
+
+Arm B (ORTHOGONAL — only j2 moves, n=10 classes):
+  r(kappa_j1_UNCHANGED, logit_q) = 0.000  [should be ~0]
+  r(kappa_j2, logit_q) = 0.945  [> 0.5 -> 2-layer; < -> 1-layer]
+  -> 2-LAYER LAW SUPPORTED (j2 causally affects q)
+
+Arm C (neg control, n=10 classes):
+  r(kappa_jK, logit_q) = 0.637  [threshold < 0.2]
+  FAIL
+
+[PER-CLASS SUMMARY]
+class       name   margin  q_base    A_r   B_j1_r   B_j2_r    C_r
+-----------------------------------------------------------------
+    0   airplane     1.24x  0.5578  0.942    0.000    0.937  0.950
+    1 automobile     1.71x  0.7489  0.988    0.000    0.912  0.000
+    2       bird     1.19x  0.5644  0.962    0.000    0.871  0.000
+    3        cat     1.74x  0.4422  0.976    0.000    0.961  0.837
+    4       deer     1.11x  0.4556  0.843    0.000    0.982  0.866
+    5        dog     1.79x  0.5356  0.856    0.000    0.963  0.775
+    6       frog     1.05x  0.6622  0.955    0.000    0.874  0.000
+    7      horse     1.11x  0.7333  0.926    0.000    0.983  0.000
+    8       ship     1.11x  0.7178  0.901    0.000    0.934  0.671
+    9      truck     1.58x  0.6867  0.933    0.000    0.910  0.866
+
+======================================================================
+FINAL VERDICT (cross-modality replication)
+======================================================================
+  Arm A (kappa causal):  PASS r=0.943
+  Arm B (j2 effect):     2-LAYER r=0.945
+  Arm C (neg control):   FAIL r=0.637
+
+  NLP ref: Arm A r=0.899, Arm B r=0.450 (1-layer), Arm C r=0.000
+  CROSS-MODALITY CAUSAL REPLICATION: PARTIAL/FAIL
+
+Saved to results/cti_vit_orthogonal_factorial.json
