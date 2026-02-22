@@ -183,8 +183,10 @@ def predict_M1(kappa_matrix, classes, A, d_eff_per_class):
         kappas_i = [kappa_matrix[i, j] for j in range(K) if j != i]
         kappa_nearest = min(kappas_i)
         d_eff_i = d_eff_per_class[i] if not np.isnan(d_eff_per_class[i]) else np.nanmean(d_eff_per_class)
-        # Full sum: log(sum_{j != i} exp[-A * sqrt(d_eff) * kappa_ij])
-        log_sum = np.log(sum(np.exp(-A * np.sqrt(d_eff_i) * kij) for kij in kappas_i))
+        # Full sum (numerically stable log-sum-exp):
+        terms = np.array([-A * np.sqrt(d_eff_i) * kij for kij in kappas_i])
+        max_term = np.max(terms)
+        log_sum = max_term + np.log(np.sum(np.exp(terms - max_term)))
         # M1: A * sqrt(d_eff) * kappa_nearest - log_sum
         preds.append(A * np.sqrt(d_eff_i) * kappa_nearest - log_sum)
     return np.array(preds)
@@ -415,7 +417,7 @@ def main():
     log("FINAL VERDICT")
     log("=" * 70)
     log("Pre-registered: M1 (full Gumbel) beats M0 (nearest-only) at K_max")
-    log()
+    log("")
     log(f"{'Dataset':>8} {'K':>4} {'M0_R2':>8} {'M1_R2':>8} {'Delta':>8} {'A_fit':>8} {'A_LOAO':>8} {'DeltaPass':>10}")
     log("-" * 75)
     for ds_name, ds_data in all_results.items():
@@ -432,7 +434,7 @@ def main():
                 f"{'PASS' if dp else ('FAIL' if dp is False else 'N/A'):>10}")
 
     # Summary
-    log()
+    log("")
     log("KEY QUESTION: Does M1 (full sum) beat M0 (nearest-only)?")
     for ds_name, ds_data in all_results.items():
         K_max = max(int(k) for k in ds_data["K_results"].keys())
