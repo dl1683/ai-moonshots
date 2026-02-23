@@ -1,0 +1,85 @@
+{
+  "experiment": "kappa_eff_held_out_transfer",
+  "session": 38,
+  "train_source": "pythia-160m",
+  "train_source_file": "C:\\Users\\devan\\OneDrive\\Desktop\\Projects\\AI Moonshots\\moonshot-fractal-embeddings\\results\\cti_competitor_weight_map.json",
+  "w_by_rank": {
+    "1": 1.209069086861955,
+    "2": 0.3552556765433264,
+    "3": 0.2591909536913984,
+    "4": 0.20661164017884184,
+    "5": 0.10675362171500326,
+    "6": 0.10114102388131836,
+    "7": 0.0421671680555929,
+    "8": 0.051203336112701996,
+    "9": 0.0014718660108907157,
+    "10": 0.01034842091093421,
+    "11": 0.023905647306290308,
+    "12": 0.0,
+    "13": 0.057078588548199014
+  },
+  "sum_w": 2.4241970298164524,
+  "held_out_models": [
+    "pythia-410m",
+    "electra-small",
+    "rwkv-4-169m",
+    "bert-base"
+  ],
+  "n_pooled_points": 56,
+  "pooled": {
+    "r2_kappa_nearest": 0.451323507720645,
+    "r_kappa_nearest": 0.6718061533810518,
+    "r2_kappa_eff_frozen": 0.5776005068547347,
+    "r_kappa_eff_frozen": 0.7600003334569891,
+    "r2_abs_improvement": 0.12627699913408974,
+    "r2_rel_improvement_pct": 27.97926475663466,
+    "pooled_pass": true
+  },
+  "per_model": {
+    "pythia-410m": {
+      "n_classes": 14,
+      "r2_kappa_nearest": 0.26221633792185306,
+      "r_kappa_nearest": 0.5120706376290806,
+      "r2_kappa_eff_frozen": 0.43725424386332445,
+      "r_kappa_eff_frozen": 0.6612520274927892,
+      "r2_abs_improvement": 0.1750379059414714,
+      "r2_rel_improvement_pct": 66.75324174256335,
+      "improvement_pass": true
+    },
+    "electra-small": {
+      "n_classes": 14,
+      "r2_kappa_nearest": 0.38901197981853697,
+      "r_kappa_nearest": 0.6237082489582265,
+      "r2_kappa_eff_frozen": 0.631416710295831,
+      "r_kappa_eff_frozen": 0.7946173357634674,
+      "r2_abs_improvement": 0.24240473047729405,
+      "r2_rel_improvement_pct": 62.31292172296826,
+      "improvement_pass": true
+    },
+    "rwkv-4-169m": {
+      "n_classes": 14,
+      "r2_kappa_nearest": 0.23126709309463023,
+      "r_kappa_nearest": 0.4809023737668908,
+      "r2_kappa_eff_frozen": 0.46874341756425486,
+      "r_kappa_eff_frozen": 0.6846483897331938,
+      "r2_abs_improvement": 0.23747632446962463,
+      "r2_rel_improvement_pct": 102.68487457160786,
+      "improvement_pass": true
+    },
+    "bert-base": {
+      "n_classes": 14,
+      "r2_kappa_nearest": 0.2958974351407839,
+      "r_kappa_nearest": 0.5439645532024895,
+      "r2_kappa_eff_frozen": 0.5409953173520039,
+      "r_kappa_eff_frozen": 0.735523838738082,
+      "r2_abs_improvement": 0.24509788221121998,
+      "r2_rel_improvement_pct": 82.83204012721697,
+      "improvement_pass": true
+    }
+  },
+  "pre_registered_criterion": {
+    "r2_abs_improvement_threshold": 0.05,
+    "r2_rel_improvement_threshold_pct": 10.0
+  },
+  "summary_pass": true
+}
