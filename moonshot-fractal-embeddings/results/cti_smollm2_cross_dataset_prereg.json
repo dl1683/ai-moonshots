@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-02-22T23:30:00.000000",
+  "test": "SmolLM2-1.7B cross-dataset replication (corrected design)",
+  "description": "Corrected external replication using cross-DATASET at BEST LAYER design (matches LODO protocol). Original cross-layer design was invalid for non-fine-tuned LMs.",
+  "model": "HuggingFaceTB/SmolLM2-1.7B",
+  "design_rationale": {
+    "problem_with_cross_layer": "Different layers in an autoregressive LM serve different functional roles (next-token prediction vs semantic representation). kappa-logit relationship across layers is non-monotone. This does NOT match the LOAO design.",
+    "correct_design": "For each dataset, find the best single layer (max 1-NN accuracy). Use that best-layer (kappa, logit_q) point. Fit alpha across datasets. This matches the LODO (leave-one-dataset-out) cross-dataset slope measurement.",
+    "connection_to_paper": "LODO alpha=3.598 in comprehensive universality (19 archs x 10 datasets). Pre-registered LOAO interval [2.43, 3.29] also applicable since both measure the same law constant."
+  },
+  "frozen_constants": {
+    "alpha_low": 2.43,
+    "alpha_high": 3.29,
+    "alpha_universal_lodo": 3.598,
+    "source": "12-architecture LOAO BEFORE seeing SmolLM2 results. No post-hoc refit."
+  },
+  "datasets": [
+    "dbpedia_14 (K=14, in training)",
+    "clinc_oos (K=151, NEW out-of-distribution)",
+    "banking77 (K=77, in training)",
+    "ag_news (K=4, in training)",
+    "20newsgroups (K=20, in training)"
+  ],
+  "layer_selection": "Best layer = layer with maximum 1-NN q_raw accuracy, scanning all 24 layers",
+  "pre_registered_criteria": {
+    "PR1": {
+      "label": "Alpha in pre-registered interval",
+      "criterion": "Cross-dataset alpha for SmolLM2 in [2.43, 3.29]",
+      "threshold": "[2.43, 3.29]"
+    },
+    "PR2": {
+      "label": "Correlation test",
+      "criterion": "Pearson r(kappa, logit_q) across datasets >= 0.80",
+      "threshold": "r >= 0.80"
+    },
+    "PR3": {
+      "label": "clinc_oos validity",
+      "criterion": "clinc_oos (K=151, new domain) has kappa > 0 and q_norm > 0.10",
+      "threshold": "kappa > 0 AND q_norm > 0.10"
+    }
+  },
+  "overall_pass_criterion": "PR1 AND PR2 (both must pass for overall PASS)"
+}

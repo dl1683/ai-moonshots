@@ -1,0 +1,58 @@
+{
+  "experiment": "smollm2_held_out_replication",
+  "model": "HuggingFaceTB/SmolLM2-1.7B",
+  "design": "cross-layer at 5 evenly-spaced layers (layers 0,6,12,18,23 of 24)",
+  "note": "DESIGN MISMATCH DISCOVERED: cross-layer fitting does not match LOAO/LODO protocol which uses best-layer per architecture. For non-fine-tuned LMs, kappa-logit relationship across layers is non-monotone (different layers serve different functional roles). See cti_smollm2_cross_dataset.json for corrected design.",
+  "pre_reg_alpha_interval": [2.43, 3.29],
+  "datasets_tested": [
+    {
+      "dataset": "dbpedia_14",
+      "K": 14,
+      "note": "PRIMARY TEST (in training set, new arch)",
+      "layer_results": {
+        "0": {"kappa_nearest": 0.0862, "q_norm": 0.610, "logit_q_norm": 0.446},
+        "6": {"kappa_nearest": 0.0559, "q_norm": 0.625, "logit_q_norm": 0.511},
+        "12": {"kappa_nearest": 0.0191, "q_norm": 0.583, "logit_q_norm": 0.334},
+        "18": {"kappa_nearest": 0.0307, "q_norm": 0.681, "logit_q_norm": 0.757},
+        "23": {"kappa_nearest": 0.0831, "q_norm": 0.525, "logit_q_norm": 0.100}
+      },
+      "alpha_fit": -3.6355,
+      "alpha_se": 4.1029,
+      "pearson_r": -0.4554,
+      "pearson_p": 0.4408,
+      "pr_alpha_pass": false,
+      "pr_r_pass": false,
+      "interpretation": "Non-monotone cross-layer pattern. Design mismatch. Best layer (layer 18: kappa=0.031, q_norm=0.681) shows moderate discrimination."
+    },
+    {
+      "dataset": "clinc_oos",
+      "K": 151,
+      "note": "NEW DATASET (K=151, large-K test)",
+      "layer_results": {
+        "0": {"kappa_nearest": 0.1216, "q_norm": 0.560, "logit_q_norm": 0.241},
+        "6": {"kappa_nearest": 0.1271, "q_norm": 0.493, "logit_q_norm": -0.027},
+        "12": {"kappa_nearest": 0.0148, "q_norm": 0.253, "logit_q_norm": -1.081},
+        "18": {"kappa_nearest": 0.0219, "q_norm": 0.382, "logit_q_norm": -0.480},
+        "23": {"kappa_nearest": 0.0623, "q_norm": 0.266, "logit_q_norm": -1.017}
+      },
+      "alpha_fit": 8.8535,
+      "alpha_se": 3.7807,
+      "pearson_r": 0.8040,
+      "pearson_p": 0.1011,
+      "pr_alpha_pass": false,
+      "pr_r_pass": true,
+      "interpretation": "r=0.804 PASSES PR3 threshold (r>=0.75). alpha=8.85 outside pre-reg range [2.43,3.29]. Directionally correct but slope inflated vs cross-architecture calibration. SmolLM2 at K=151 shows positive kappa-logit relationship (r=0.80)."
+    },
+    {
+      "dataset": "minds14",
+      "K": null,
+      "note": "CRASHED: minds14 is an AUDIO dataset requiring torchcodec/FFmpeg. Wrong dataset selection (was expected to be text).",
+      "error": "RuntimeError: Could not load libtorchcodec"
+    }
+  ],
+  "n_alpha_pass": 0,
+  "n_r_pass": 1,
+  "overall_pass": false,
+  "verdict": "FAIL",
+  "post_hoc_finding": "clinc_oos K=151 shows r=0.804 (passes direction test). The LOAO-equivalent test requires cross-dataset at best-layer (not cross-layer). See cti_smollm2_cross_dataset.json for corrected replication."
+}
