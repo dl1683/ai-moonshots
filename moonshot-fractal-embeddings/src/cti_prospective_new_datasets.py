@@ -67,23 +67,25 @@ print(f"Pre-registered: A(K=6)={A_TREC:.4f}, A(K=77)={A_BANKING:.4f}", flush=Tru
 print(f"Thresholds: rho>={RHO_THRESH}, MAE<={MAE_THRESH}", flush=True)
 
 # NEW UNSEEN DATASETS (never used in A(K) fitting)
+# Note: trec and PolyAI/banking77 require dataset loading scripts (deprecated).
+# Using: dair-ai/emotion (K=6, same A(K) prediction) and mteb/banking77 (K=77)
 NEW_DATASETS = {
-    "trec": {
-        "hf_name": "trec",
+    "emotion": {
+        "hf_name": "dair-ai/emotion",
         "hf_cfg": None,
         "text_col": "text",
-        "label_col": "coarse_label",
+        "label_col": "label",
         "K": 6,
-        "n_sample": 1000,
+        "n_sample": 2000,
         "split": "test",
     },
     "banking77": {
-        "hf_name": "PolyAI/banking77",
+        "hf_name": "mteb/banking77",
         "hf_cfg": None,
         "text_col": "text",
         "label_col": "label",
         "K": 77,
-        "n_sample": 1000,
+        "n_sample": 3000,
         "split": "test",
     },
 }
@@ -127,7 +129,7 @@ def load_dataset_texts(ds_name, config):
         if hf_cfg:
             ds = load_dataset(hf_name, hf_cfg, split=split)
         else:
-            ds = load_dataset(hf_name, split=split, trust_remote_code=True)
+            ds = load_dataset(hf_name, split=split)
 
         texts_raw = [str(x[text_col]) for x in ds]
         labels_raw = [x[label_col] for x in ds]
@@ -247,7 +249,7 @@ def main():
     print("=" * 70)
     print("PROSPECTIVE TEST ON NEW DATASETS (Session 43)")
     print(f"Frozen A(K): a={A_GLOBAL_a}, b={A_GLOBAL_b}")
-    print(f"New datasets: trec (K=6), banking77 (K=77)")
+    print(f"New datasets: emotion (K=6), banking77 (K=77)")
     print(f"A(K=6)={A_TREC:.4f}, A(K=77)={A_BANKING:.4f}")
     print(f"H1: rho>={RHO_THRESH}, H2: MAE<={MAE_THRESH}")
     print("=" * 70)
@@ -403,7 +405,8 @@ def main():
             "A_GLOBAL_b": A_GLOBAL_b,
             "A_trec_K6": float(A_TREC),
             "A_banking_K77": float(A_BANKING),
-            "new_datasets": ["trec (K=6)", "banking77 (K=77)"],
+            "new_datasets": ["emotion (K=6, dair-ai/emotion)", "banking77 (K=77, mteb/banking77)"],
+        "note": "TREC and PolyAI/banking77 replaced with equivalent-K datasets (same A(K) predictions)",
             "H1_rho_threshold": RHO_THRESH,
             "H2_mae_threshold": MAE_THRESH,
             "H1_claim": ">= 2/2 new datasets rho>=0.85",
