@@ -1,0 +1,85 @@
+{
+  "model": "deberta-base",
+  "dataset": "go_emotions",
+  "preregistered": {
+    "causal_A_intercept": 3.23,
+    "causal_A_slope": 34.51,
+    "kappa_ce_prereg": 0.403,
+    "causal_A_predicted": 17.137529999999998,
+    "PASS_DELTA_Q": 0.02,
+    "PASS_PRED_TOL": 0.5
+  },
+  "kappa_from_embeddings": 0.19562938701563412,
+  "results": {
+    "ce": [
+      {
+        "q": 1.0,
+        "kappa": 0.16325785314715194,
+        "logit_q": 10.0
+      },
+      {
+        "q": 1.0,
+        "kappa": 0.17249940631120872,
+        "logit_q": 10.0
+      },
+      {
+        "q": 1.0,
+        "kappa": 0.16785252444780727,
+        "logit_q": 10.0
+      },
+      {
+        "q": 1.0,
+        "kappa": 0.17663699942693745,
+        "logit_q": 10.0
+      },
+      {
+        "q": 1.0,
+        "kappa": 0.18534192681327352,
+        "logit_q": 10.0
+      }
+    ],
+    "triplet": [
+      {
+        "q": 1.0,
+        "kappa": 0.2594670004191782,
+        "logit_q": 10.0
+      },
+      {
+        "q": 1.0,
+        "kappa": 0.26848419926278183,
+        "logit_q": 10.0
+      },
+      {
+        "q": 1.0,
+        "kappa": 0.26380549363505146,
+        "logit_q": 10.0
+      },
+      {
+        "q": 1.0,
+        "kappa": 0.26361261607402126,
+        "logit_q": 10.0
+      },
+      {
+        "q": 1.0,
+        "kappa": 0.2707604609487271,
+        "logit_q": 10.0
+      }
+    ]
+  },
+  "summary": {
+    "mean_q_ce": 1.0,
+    "mean_q_triplet": 1.0,
+    "mean_kappa_ce": 0.1731177420292758,
+    "mean_kappa_triplet": 0.26522595406795196,
+    "delta_q": 0.0,
+    "delta_kappa": 0.09210821203867617,
+    "delta_logit": 0.0,
+    "causal_A_actual": null,
+    "causal_A_predicted": 17.137529999999998,
+    "prediction_error": null,
+    "signs_q": 0,
+    "signs_k": 5,
+    "verdict": "PARTIAL",
+    "n_pass": 0
+  }
+}

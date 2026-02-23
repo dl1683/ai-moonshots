@@ -55,7 +55,10 @@ MODELS = {
         "pooling": "cls",
         "target_layer": 12,
         "trust_remote_code": False,
-        "kappa_ce_prereg": 0.3574,
+        "kappa_ce_prereg": 0.4030,  # from kappa_near_cache_go_emotions_deberta-base.json L12
+        # NOTE: switched from 20newsgroups (q=0.98 ceiling) to go_emotions (K=28, q=0.23)
+        # Same ceiling-switch protocol as mamba-130m. Causal_A_pred = 3.23 + 34.51*0.4030 = 17.15
+        "dataset": "go_emotions",
         "force_fp32": True,  # DeBERTa disentangled attention requires float32
     },
     "olmo-1b": {
@@ -152,6 +155,8 @@ def extract_embeddings(model_key: str, texts, device: str = "cuda"):
         dtype=dtype,
         output_hidden_states=True,
     ).to(device).eval()
+    if info.get("force_fp32"):
+        model = model.float()  # DeBERTa disentangled attention requires all tensors float32
 
     target_layer = info["target_layer"]
     pooling = info["pooling"]

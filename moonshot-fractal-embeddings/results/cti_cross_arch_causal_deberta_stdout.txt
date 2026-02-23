@@ -1,0 +1,71 @@
+
+============================================================
+Model: deberta-base
+Pre-registered kappa_CE: 0.4030
+Pre-registered Causal_A: 17.14
+============================================================
+Dataset: go_emotions, K=28, n=5000
+Loading deberta-base (microsoft/deberta-base)...
+  batch 0/156
+  batch 10/156
+  batch 20/156
+  batch 30/156
+  batch 40/156
+  batch 50/156
+  batch 60/156
+  batch 70/156
+  batch 80/156
+  batch 90/156
+  batch 100/156
+  batch 110/156
+  batch 120/156
+  batch 130/156
+  batch 140/156
+  batch 150/156
+  Embeddings: (5000, 768)
+Saved embeddings to results/causal_v2_embs_deberta-base_go_emotions.npz
+Kappa from embeddings: 0.1956 (pre-reg: 0.4030)
+Adjusted Causal_A prediction: 9.98
+
+Seed 0:
+  CE:     q=1.0000  kappa=0.1633
+  Triplet: q=1.0000  kappa=0.2595
+  delta_q=+0.0000  delta_kappa=+0.0962
+
+Seed 1:
+  CE:     q=1.0000  kappa=0.1725
+  Triplet: q=1.0000  kappa=0.2685
+  delta_q=+0.0000  delta_kappa=+0.0960
+
+Seed 2:
+  CE:     q=1.0000  kappa=0.1679
+  Triplet: q=1.0000  kappa=0.2638
+  delta_q=+0.0000  delta_kappa=+0.0960
+
+Seed 3:
+  CE:     q=1.0000  kappa=0.1766
+  Triplet: q=1.0000  kappa=0.2636
+  delta_q=+0.0000  delta_kappa=+0.0870
+
+Seed 4:
+  CE:     q=1.0000  kappa=0.1853
+  Triplet: q=1.0000  kappa=0.2708
+  delta_q=+0.0000  delta_kappa=+0.0854
+
+============================================================
+SUMMARY for deberta-base:
+  CE:      q=1.0000  kappa=0.1731
+  Triplet: q=1.0000  kappa=0.2652
+  delta_q=+0.0000  delta_kappa=+0.0921  delta_logit=+0.0000
+  Causal_A: N/A
+  Causal_A_predicted=17.14
+  Signs: q=0/5, kappa=5/5
+
+Verdict: PARTIAL (0/3 criteria)
+  delta_q>=0.02: False
+  signs 5/5: False
+  pred within 50%: False
+
+Saved to results/cti_causal_deberta_base_go_emotions.json
+
+[deberta-base done in 26.0s]
