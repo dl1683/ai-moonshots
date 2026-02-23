@@ -78,9 +78,16 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
 
 2. **A_ViT/A_NLP = 1.67 derivation:** via margin thermodynamics (A prop 1/T_eff)
 
-3. **External replication:** highest leverage for Nobel score jump
+3. **External replication:** highest leverage for Nobel score jump (Codex: "externally replicated,
+   pre-registered, blinded OOD prediction with frozen d_eff-corrected law across new task-type +
+   new architecture, requiring both ranking AND calibration pass" = single path to 7+)
 
-4. **Practical utility demo:** predict class difficulty from geometry alone
+4. **LODO reframing (Codex recommendation):** LODO CV=0.37 is currently a weakness for "single
+   universal constant" claim. Reframe as "universality-class" result: architecture-universal within
+   task-type, task-specific across universality classes. Validate prospectively. Data supports
+   "shape universal, scale class-dependent" more than single-scale universality.
+
+5. **Practical utility demo:** predict class difficulty from geometry alone
 
 5. **Renormalized Universality Theorem verification (next):**
    - Theorem: A/sqrt(d_eff_formula) = sqrt(4/pi) = 1.128 universally
