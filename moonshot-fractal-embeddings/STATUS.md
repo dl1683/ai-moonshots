@@ -67,6 +67,7 @@ Where:
 | Biological validation Stringer2018b mouse V1 (Session 61) | Class-level FAIL (K=11, r=-0.49, class-size confound); H3 PASS MAE=0.054; EXPLORATORY per-image: r=0.64 p<0.0001 n=4914. Margin predicts V1 accuracy stronger than IT | DONE |
 | Allen Neuropixels mouse visual cortex K=118 (Session 62, pre-reg bddec1d) | **H1 PASS** r(kappa,logit_q)=0.851 p=3e-34 (FIRST class-level bio H1 pass!); H3 PASS MAE=0.063; H2 FAIL A_renorm=0.033; per-image r=0.747 p=0 n=5900 | DONE |
 | Allen Neuropixels 7-session replication (Session 62) | **7/7 H1 PASS** r_kappa mean=0.733 [0.51,0.89] CV=17.8%; per-image r mean=0.689 [0.48,0.77]; cross-animal replication confirmed | DONE |
+| Allen per-area visual hierarchy (Session 62, exploratory) | ALL_VIS r=0.869 > VISam r=0.802 > VISl r=0.774 > VISp r=0.707 > VISal r=0.658 > LP r=0.519 > VISrl r=0.445; law holds across visual hierarchy | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
