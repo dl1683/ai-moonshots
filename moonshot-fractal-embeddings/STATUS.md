@@ -1,6 +1,6 @@
 # CTI Universal Law - Research Status
 
-**As of: February 23, 2026 (Session 64 COMPLETE)**
+**As of: February 23, 2026 (Session 65 COMPLETE)**
 
 ## The Discovery
 
@@ -134,6 +134,17 @@ ONLY PASS: pythia-160m/dbpedia frozen do-intervention (isolated pair, alpha=1.60
 ## Active Paper
 
 `paper/cti_universal_law.tex` — targeting COLM 2026
+
+**Session 65 paper fixes (Feb 23):**
+- Added `\DeclareMathOperator{\logit}{logit}` to preamble (fixes LaTeX compilation error)
+- Added `\usepackage{enumitem}` to preamble (fixes `[nosep]` option in itemize environments)
+- Updated contribution #6 in Introduction: now cites pre-registered n=10 kappa-spread result (beta=0.83, p=0.038)
+- Reproducibility statement expanded to 42 result files (was 33; 9 previously referenced but unlisted files added)
+- Updated Figure 2 caption: removed non-existent "Panel D"; added precise numbers for ViT-Large r≈0.98 and MC noise floor
+- Created `src/cti_generate_figures.py`: generates all 4 paper figures from JSON result files
+- All 4 figures generated at 180 DPI (`results/figures/`): fig_cti_universal_law.png, fig_cti_multimodal_summary.png, fig_cti_spread_vs_K.png, fig_cti_allen_biological.png
+- Added Figure 3 (kappa-spread vs ranking reliability, n=10 datasets) to Section 4.3
+- Added Figure 4 (Allen Neuropixels 32-session bar chart, 30/32 PASS) to Discussion
 
 ## Key Source Files
 
