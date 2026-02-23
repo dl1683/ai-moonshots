@@ -683,14 +683,16 @@ $N_\mathrm{eff,k}=\sum_{j\neq k}\exp(-\alpha_\mathrm{univ}(\kappa_{kj}-\kappa_{k
 where $\alpha_\mathrm{univ}=3.598$.
 Results: DBpedia geometric exponent $=0.934\pm0.005$ ($r=0.9999$);
 Banking77 ($K=4$--$64$) exponent $=0.918\pm0.012$ ($r=0.9999$).
-Across four architectures (Pythia-160m, GPT-Neo-125M, OLMo-1B, Qwen3-0.6B), the geometric
-$N_\mathrm{eff}$ exponent ranges from $0.71$ to $0.93$ (mean $0.81$, CV$=9.8\%$; see
-\texttt{results/cti\_neff\_pairwise\_multiarch.json}).
-The exponent correlates perfectly with competition density $\rho=N_\mathrm{eff}(K_\mathrm{full})/(K_\mathrm{full}-1)$
-at the full class count: Pearson $r=0.996$ ($p=0.004$), Spearman $\rho=1.000$.
+Across seven architectures (Pythia-160m, TinyLlama-1.1B, RWKV-169M, OLMo-1B, Qwen2.5-0.5B, Qwen3-0.6B, GPT-Neo-125M), the geometric
+$N_\mathrm{eff}$ exponent ranges from $0.71$ to $0.93$ (mean $0.84$; see
+Table~\ref{tab:neff-competition-density} and \texttt{results/cti\_neff\_pairwise\_extended.json}).
+The exponent correlates with competition density $\rho=N_\mathrm{eff}(K_\mathrm{full})/(K_\mathrm{full}-1)$
+at the full class count: Pearson $r=0.978$ ($p=0.0001$, $n=7$), Spearman $\rho=0.893$ ($p=0.007$).
 Architectures that create denser, more uniform inter-class separation
-(pythia-160m: $\rho=0.80$) exhibit steeper geometric scaling; those with sparser competition
+(Pythia-160m: $\rho=0.80$, TinyLlama-1.1B: $\rho=0.78$) exhibit steeper geometric scaling; those with sparser competition
 (GPT-Neo-125M: $\rho=0.45$) scale more sub-linearly.
+Crucially, RWKV (pure linear RNN with no attention) follows the same trend ($\rho=0.66$, $\beta_\mathrm{geom}=0.86$),
+confirming the mechanism is architecture-independent.
 
 These geometric exponents ($0.71$--$0.93$) exceed the regression-based $\beta=0.478$; this does
 \emph{not} represent a contradiction. A direct within-architecture test
