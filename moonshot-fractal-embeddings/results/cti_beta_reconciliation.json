@@ -1,0 +1,152 @@
+{
+  "experiment": "beta_reconciliation",
+  "model": "EleutherAI/pythia-160m",
+  "n_seeds": 20,
+  "n_samples_per_class": 500,
+  "alpha_universal": 3.598,
+  "cross_dataset_regression_beta": 0.478,
+  "datasets": [
+    {
+      "dataset": "dbpedia_14",
+      "geometric_neff_slope_baseline": 0.9339,
+      "per_K": {
+        "4": {
+          "logit_q_mean": 1.7934866665540192,
+          "logit_q_std": 0.7840502394155349,
+          "neff_mean": 2.724032671603152,
+          "neff_std": 0.1533918451212375,
+          "kappa_nearest_mean": 0.15076006912541662,
+          "n_seeds": 20
+        },
+        "6": {
+          "logit_q_mean": 1.578022322461232,
+          "logit_q_std": 0.3127804736112472,
+          "neff_mean": 4.269215063734646,
+          "neff_std": 0.20096129831466034,
+          "kappa_nearest_mean": 0.143955112991434,
+          "n_seeds": 20
+        },
+        "8": {
+          "logit_q_mean": 1.4902369338723875,
+          "logit_q_std": 0.26424596876894907,
+          "neff_mean": 5.922251785173245,
+          "neff_std": 0.23007105123639773,
+          "kappa_nearest_mean": 0.13839507649504856,
+          "n_seeds": 20
+        },
+        "10": {
+          "logit_q_mean": 1.2770368031566508,
+          "logit_q_std": 0.17059247072593836,
+          "neff_mean": 7.3984526683463185,
+          "neff_std": 0.276726567018989,
+          "kappa_nearest_mean": 0.1303072115001878,
+          "n_seeds": 20
+        },
+        "12": {
+          "logit_q_mean": 1.15700442480659,
+          "logit_q_std": 0.12527600503461178,
+          "neff_mean": 8.947218247882283,
+          "neff_std": 0.23919499335463798,
+          "kappa_nearest_mean": 0.12739088794459746,
+          "n_seeds": 20
+        },
+        "14": {
+          "logit_q_mean": 1.019467045714699,
+          "logit_q_std": 0.05502997847194857,
+          "neff_mean": 10.463652601759302,
+          "neff_std": 3.511781310770351e-08,
+          "kappa_nearest_mean": 0.12273324275562494,
+          "n_seeds": 20
+        }
+      },
+      "beta_logit": -0.5191719629224779,
+      "beta_logit_se": 0.04848632867562884,
+      "beta_logit_r": -0.9829995600471686,
+      "beta_logit_p": 0.0004310657471602511,
+      "beta_neff_this_run": 0.9202034545507567,
+      "beta_neff_r": 0.9998855719563168,
+      "diff_logit_vs_geometric": 1.4530719629224778,
+      "h1_pass": false,
+      "h3_pass": false
+    },
+    {
+      "dataset": "banking77",
+      "geometric_neff_slope_baseline": 0.9176,
+      "per_K": {
+        "4": {
+          "logit_q_mean": 0.847023346313821,
+          "logit_q_std": 0.4729759992308984,
+          "neff_mean": 2.5134250450806634,
+          "neff_std": 0.21728576560224624,
+          "kappa_nearest_mean": 0.28206376930462485,
+          "n_seeds": 20
+        },
+        "8": {
+          "logit_q_mean": 0.4650737079573304,
+          "logit_q_std": 0.28268388012984363,
+          "neff_mean": 5.245180571856424,
+          "neff_std": 0.2774848041309724,
+          "kappa_nearest_mean": 0.25385898720709965,
+          "n_seeds": 20
+        },
+        "16": {
+          "logit_q_mean": 0.14317274316347037,
+          "logit_q_std": 0.3163949171497749,
+          "neff_mean": 10.82633597860707,
+          "neff_std": 0.38702596534198697,
+          "kappa_nearest_mean": 0.23771226162637457,
+          "n_seeds": 20
+        },
+        "32": {
+          "logit_q_mean": -0.13394119829272677,
+          "logit_q_std": 0.13740526647227225,
+          "neff_mean": 21.127443752193443,
+          "neff_std": 0.44763855140168207,
+          "kappa_nearest_mean": 0.22402302964845772,
+          "n_seeds": 20
+        },
+        "48": {
+          "logit_q_mean": -0.2905295801995854,
+          "logit_q_std": 0.13035836209703391,
+          "neff_mean": 31.374778024497186,
+          "neff_std": 0.3339276629969603,
+          "kappa_nearest_mean": 0.2159008383446536,
+          "n_seeds": 20
+        },
+        "64": {
+          "logit_q_mean": -0.43958268781907134,
+          "logit_q_std": 0.06995788582165352,
+          "neff_mean": 41.365828354835244,
+          "neff_std": 0.36644099833897115,
+          "kappa_nearest_mean": 0.21183627443515146,
+          "n_seeds": 20
+        },
+        "77": {
+          "logit_q_mean": -0.4589073188948622,
+          "logit_q_std": 0.05827059131760443,
+          "neff_mean": 49.279146963422,
+          "neff_std": 1.142710172869282e-06,
+          "kappa_nearest_mean": 0.20828647672901296,
+          "n_seeds": 20
+        }
+      },
+      "beta_logit": -0.4074488670985192,
+      "beta_logit_se": 0.008435107850049224,
+      "beta_logit_r": -0.9989302611921564,
+      "beta_logit_p": 7.184545342578948e-08,
+      "beta_neff_this_run": 0.9253650214335603,
+      "beta_neff_r": 0.9999067141894137,
+      "diff_logit_vs_geometric": 1.3250488670985192,
+      "h1_pass": false,
+      "h3_pass": false
+    }
+  ],
+  "n_h1_pass": 0,
+  "n_h3_pass": 0,
+  "interpretation": "SPARSE_GENUINE: within-arch beta~0.5 too; sparse competition is real within-arch phenomenon",
+  "pre_reg": {
+    "H1": "Within-arch beta_logit in [0.8,1.0]",
+    "H2": "H1 for Banking77 too",
+    "H3": "|beta_logit - geometric_slope| <= 0.2 for both datasets"
+  }
+}

@@ -299,7 +299,8 @@ def main():
 
     cross_dataset_beta_regression = 0.478  # from comprehensive universality
     print(f"\n  Cross-dataset regression beta: {cross_dataset_beta_regression}")
-    print(f"  Within-arch betas: {[f'{r[\"beta_logit\"]:.4f}' for r in all_dataset_results]}")
+    within_betas = [round(r['beta_logit'], 4) for r in all_dataset_results]
+    print(f"  Within-arch betas: {within_betas}")
 
     if n_h1_pass >= 2 and n_h3_pass >= 2:
         interpretation = "CONSISTENT: within-arch beta~0.93; cross-dataset beta=0.478 is C_0-variation artifact"
