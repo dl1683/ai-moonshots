@@ -85,7 +85,7 @@ NEW_DATASETS = {
         "text_col": "text",
         "label_col": "label",
         "K": 77,
-        "n_sample": 3000,
+        "n_sample": 1500,
         "split": "test",
     },
 }
@@ -110,7 +110,7 @@ MODEL_LAYERS = {
 }
 
 TRUST_REMOTE_CODE_MODELS = {"Falcon-H1-0.5B-Base"}
-BATCH_SIZE = 64
+BATCH_SIZE = 32
 
 
 # ================================================================
