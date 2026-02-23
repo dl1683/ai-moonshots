@@ -1,0 +1,42 @@
+[
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "emotion",
+    "layer": 3,
+    "K": 6,
+    "q": 0.14920000000000005,
+    "q_raw": 0.14920000000000005,
+    "kappa_nearest": 0.07992593199014664,
+    "logit_q": -1.7408893955564213
+  },
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "emotion",
+    "layer": 6,
+    "K": 6,
+    "q": 0.1558,
+    "q_raw": 0.1558,
+    "kappa_nearest": 0.057379528880119324,
+    "logit_q": -1.6898162999117505
+  },
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "emotion",
+    "layer": 9,
+    "K": 6,
+    "q": 0.1666,
+    "q_raw": 0.1666,
+    "kappa_nearest": 0.06267329305410385,
+    "logit_q": -1.6099179892556108
+  },
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "emotion",
+    "layer": 12,
+    "K": 6,
+    "q": 0.21279999999999996,
+    "q_raw": 0.21279999999999996,
+    "kappa_nearest": 0.15454219281673431,
+    "logit_q": -1.3081295882705546
+  }
+]
