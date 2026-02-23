@@ -1,6 +1,6 @@
 # CTI Universal Law - Research Status
 
-**As of: February 23, 2026 (Session 63 COMPLETE)**
+**As of: February 23, 2026 (Session 64 COMPLETE)**
 
 ## The Discovery
 
@@ -69,6 +69,7 @@ Where:
 | Allen Neuropixels 7-session replication (Session 62) | **7/7 H1 PASS** r_kappa mean=0.733 [0.51,0.89] CV=17.8%; per-image r mean=0.689 [0.48,0.77]; cross-animal replication confirmed | DONE |
 | Allen per-area visual hierarchy (Session 62, exploratory) | ALL_VIS r=0.869 > VISam r=0.802 > VISl r=0.774 > VISp r=0.707 > VISal r=0.658 > LP r=0.519 > VISrl r=0.445; law holds across visual hierarchy | DONE |
 | Allen Neuropixels COMPLETE 32-session dataset (Session 63, pre-reg bddec1d) | **30/32 H1 PASS** (93.75%); ALL 32 positive r (range [0.44,0.89], p<0.001 each); r_kappa mean=0.736 std=0.113 CV=15.4%; 2 FAIL sessions explained (noise floor mean_q=0.12; ceiling mean_q=0.81); 32 different mice confirmed | DONE |
+| K×SPREAD follow-up n=10 datasets (Session 64, pre-reg MEMORY.md) | **ALL 3 HYPOTHESES PASS** (was 2/3 at n=6); H_spread PASS (beta=0.83,partial_r=0.34); H_K_null PASS (spread 17x more important than K); H_spread_r PASS Spearman r=0.661 p=0.038 (was FAIL at n=6 underpowered); kappa spread is statistically significant predictor of architecture-ranking reliability | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
