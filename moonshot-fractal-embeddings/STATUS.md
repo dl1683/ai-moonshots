@@ -193,7 +193,21 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
     - H3 PASS: delta_kappa=+0.160, 5/5 seeds (robust kappa causal effect)
     - H4 FAIL: ratio=0.271 vs alpha=1.477 (q still near ceiling ~0.96)
     - KEY FINDING: NC causally improves kappa +5.8% (robust, specific to ETF+margin)
-      But H4 quantitative test requires non-saturated q regime (Banking77 K=77 next)
+      But H4 quantitative test requires non-saturated q regime
+
+    Banking77 K=77 regime (commit 252dee4, pre-registered b3399d0):
+    - ARCH: pythia-160m layer 0, proj_dim=76 (K-1), N_TRAIN=1540 (20/class), N_TEST=770 (10/class)
+    - CE: q=0.7482+-0.0097, kappa=0.7669+-0.0253  (not saturated: correct regime for H4)
+    - full_NC: q=0.7487+-0.0119, kappa=0.8227+-0.0137
+    - within_only: q=0.7484, kappa=0.7669 (no effect vs CE -- confirms ETF+margin required)
+    - shuffled_NC: q=0.7484, kappa=0.7669 (same as within_only -- specificity confirmed)
+    - H1 barely PASS: delta_q=+0.0005, 3/5 seeds positive
+    - H2 FAIL: shuffled delta_q=+0.0003 (barely above 0; causal specificity incomplete)
+    - H3 PASS: delta_kappa=+0.0558, 5/5 seeds (ETF+margin causally increase kappa: ROBUST)
+    - H4 FAIL: mean ratio=-0.064 vs alpha=1.477 (per-seed: [0.202, -0.338, 0.376, -1.084, 0.527])
+    - DIAGNOSIS: kappa change (+7.3%) is too small relative to seed noise for logit(q) to respond
+      cleanly. Need either: (a) much larger NC effect, or (b) backbone with lower baseline kappa
+      where kappa variation is more predictive of q in the logit-linear regime.
 
 12. **Codex Constants Consultation (Session 70 — TASK a74be0143736d6944):**
     - Golden ratio from Gumbel+Gaussian: DEAD-END (no recursive algebraic fixed point in vanilla model)
