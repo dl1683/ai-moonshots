@@ -354,8 +354,17 @@ def main():
         },
     }
 
+    def json_default(obj):
+        if isinstance(obj, (np.bool_, bool)):
+            return bool(obj)
+        if isinstance(obj, (np.integer,)):
+            return int(obj)
+        if isinstance(obj, (np.floating,)):
+            return float(obj)
+        raise TypeError(f"Not serializable: {type(obj)}")
+
     with open(OUT_JSON, "w") as f:
-        json.dump(result, f, indent=2)
+        json.dump(result, f, indent=2, default=json_default)
     print(f"\nSaved to {OUT_JSON}")
 
 
