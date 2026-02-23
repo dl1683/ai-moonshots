@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-02-22T23:45:00.000000",
+  "test": "SmolLM2-1.7B fast cross-dataset replication",
+  "description": "5 datasets (dbpedia K=14, clinc_oos K=151, banking77 K=77, ag_news K=4, 20newsgroups K=20). For each dataset, use best layer from 5-layer scan (layers 0,6,12,18,23). Fit alpha = slope of logit(q_norm) vs kappa_nearest across 5 datasets. Frozen constants, no post-hoc refit.",
+  "model": "HuggingFaceTB/SmolLM2-1.7B",
+  "precomputed_datasets": {
+    "dbpedia_14": {
+      "best_layer": 18,
+      "kappa_nearest": 0.0307,
+      "q_norm": 0.681,
+      "logit_q_norm": 0.757,
+      "source": "cti_smollm2_held_out.json"
+    },
+    "clinc_oos": {
+      "best_layer": 0,
+      "kappa_nearest": 0.1216,
+      "q_norm": 0.560,
+      "logit_q_norm": 0.241,
+      "source": "cti_smollm2_held_out.json"
+    }
+  },
+  "frozen_constants": {
+    "alpha_low": 2.43,
+    "alpha_high": 3.29,
+    "source": "12-architecture LOAO interval, pre-registered before any SmolLM2 tests"
+  },
+  "pre_registered_criteria": {
+    "PR1": "alpha_fit in [2.43, 3.29]",
+    "PR2": "Pearson r(kappa, logit_q) >= 0.80 across 5 datasets",
+    "overall": "PR1 AND PR2"
+  }
+}
