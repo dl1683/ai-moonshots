@@ -1,0 +1,42 @@
+{
+  "experiment": "prospective_k_sweep",
+  "session": 43,
+  "preregistered": {
+    "A_K_formula": "A(K) = 1.1636/log(K) + 1.3013",
+    "A_yahoo_K10": 1.8066450591426237,
+    "A_amazon_K59": 1.5866683175219185,
+    "hypothesis": "rho >= 0.85 requires K >= 10-14",
+    "H1_rho_threshold": 0.85,
+    "H2_mae_threshold": 0.08
+  },
+  "results": [
+    {
+      "dataset": "yahoo",
+      "K": 10,
+      "A_pred": 1.8066450591426237,
+      "n_models": 6,
+      "mean_rho": 0.8353383458646615,
+      "std_rho": 0.026458617059825478,
+      "mean_mae": 0.04935537131443093,
+      "pass_H1": false,
+      "pass_H2": true
+    },
+    {
+      "dataset": "amazon_massive",
+      "K": 59,
+      "A_pred": 1.5866683175219185,
+      "n_models": 6,
+      "mean_rho": 0.9220364245282192,
+      "std_rho": 0.020226597013868104,
+      "mean_mae": 0.05484435627150366,
+      "pass_H1": true,
+      "pass_H2": true
+    }
+  ],
+  "combined_k_sweep": {
+    "K6_emotion_rho": 0.613,
+    "K6_emotion_pass": false,
+    "K77_banking77_rho": 0.89,
+    "K77_banking77_pass": true
+  }
+}

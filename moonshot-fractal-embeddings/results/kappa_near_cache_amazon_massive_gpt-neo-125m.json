@@ -1,0 +1,42 @@
+[
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "amazon_massive",
+    "layer": 3,
+    "K": 59,
+    "q": 0.35086332431870193,
+    "q_raw": 0.35086332431870193,
+    "kappa_nearest": 0.22770749032497406,
+    "logit_q": -0.6152465305736168
+  },
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "amazon_massive",
+    "layer": 6,
+    "K": 59,
+    "q": 0.2470979821094237,
+    "q_raw": 0.2470979821094237,
+    "kappa_nearest": 0.0531218983232975,
+    "logit_q": -1.114150150340042
+  },
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "amazon_massive",
+    "layer": 9,
+    "K": 59,
+    "q": 0.27846889952153114,
+    "q_raw": 0.27846889952153114,
+    "kappa_nearest": 0.06610196828842163,
+    "logit_q": -0.9520691008364633
+  },
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "amazon_massive",
+    "layer": 12,
+    "K": 59,
+    "q": 0.3926912142015117,
+    "q_raw": 0.3926912142015117,
+    "kappa_nearest": 0.4703426659107208,
+    "logit_q": -0.4360137812475384
+  }
+]
