@@ -54,7 +54,14 @@ N_SAMPLE = 7000   # match existing dointerv_multi files for apples-to-apples com
 BATCH_SIZE = 64
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 N_SPLITS_CV = 5
-DELTA_OUT = np.linspace(0.0, 5.0, 11)
+# Pre-registered window: 0..5 (FAIL). Also sweep local windows for artifact disambiguation.
+DELTA_WINDOWS = {
+    "local_0.1":   np.linspace(0.0, 0.10, 11),
+    "local_0.3":   np.linspace(0.0, 0.30, 11),
+    "local_1.0":   np.linspace(0.0, 1.00, 11),
+    "prereg_5.0":  np.linspace(0.0, 5.00, 11),
+}
+DELTA_OUT = DELTA_WINDOWS["prereg_5.0"]  # default (pre-registered)
 
 
 def extract_embeddings():
