@@ -44,7 +44,7 @@ RWKV's held-out $\hat\alpha=2.887$ (single-intercept) falls within the pre-regis
 Cross-modality tests confirm the same functional form on ViT-Large/CIFAR-10 ($R^2=0.964$); both ViT-Base and ResNet50 CNN reach comparable $r\approx0.75$ at $K=100$, confirming the form is architecture-agnostic.
 Causal evidence from frozen do-interventions and an orthogonal factorial test identifies nearest-class geometry as the dominant driver.
 
-\textbf{Honest scope.} The constant $\alpha$ varies substantially by modality (NLP: 1.48, ViT: 0.63, CNN: 4.4); universality is of the \emph{functional form}, not of the constant. At $K=100$, $r\approx0.75$ falls below the Monte Carlo noise floor ($E[r]=0.875$), attributed to CIFAR-100's hierarchical class structure. No external replication exists yet.
+\textbf{Honest scope.} The constant $\alpha$ varies substantially by modality (NLP: 1.48, ViT: 0.63, CNN: 4.4); universality is of the \emph{functional form}, not of the constant. At $K=100$, $r\approx0.75$ falls below the Monte Carlo noise floor ($E[r]=0.875$), attributed to CIFAR-100's hierarchical class structure. The slope scales across datasets as $A(K)=1.164/\log(K)+1.301$ ($r_\mathrm{fit}=0.93$); one-shot dataset calibration achieves practical MAE$\leq$0.08 on all tested datasets. No external replication exists yet.
 \end{abstract}
 
 \section{Introduction}
@@ -64,6 +64,7 @@ The key conceptual point: Eq.~\ref{eq:cti-law}'s structure is derived from first
 \item \textbf{Cross-modal validation}: ViT-Large reaches $R^2=0.964$ with same functional form; ResNet50 CNN on CIFAR-100 ($K=100$) shows $r=0.749$, matching ViT-Base at same $K$ ($r=0.773$).
 \item \textbf{K-regime analysis}: Monte Carlo noise-floor simulation shows K=100 attenuation is expected ($E[r]\approx0.875$); both architectures fall in the same range, confirming form universality across attention and convolutional families.
 \item \textbf{Causal evidence}: Frozen do-interventions and orthogonal factorial test confirm nearest-class dominance.
+\item \textbf{K-scaling and practical prediction}: The slope $A(K)=1.164/\log(K)+1.301$ ($r_\mathrm{fit}=0.93$) predicts held-out dataset slopes within 50\%. One-shot dataset calibration (one anchor architecture) achieves MAE$\leq$0.08 for all tested single-label datasets.
 \end{enumerate}
 
 \section{Related Work}
