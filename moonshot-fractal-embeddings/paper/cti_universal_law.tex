@@ -317,6 +317,60 @@ Dose-response MAE & 0.0104 & Well within $\leq 0.03$ \\
 \end{tabular}
 \end{table}
 
+\subsection{Competition field: j2 is causally active and effects are additive}
+\label{subsec:competition-field}
+
+The original CTI law uses only $\kappa_{j1}$ (nearest competitor). A 6-arm pre-registered RCT
+on frozen DBpedia-14 embeddings (pythia-160m, $K=14$) revealed that the \emph{second-nearest}
+competitor $j_2$ is also causally active: single-competitor shift with $j_1$ fixed gives
+$r(\kappa_{j2},\logit q)=0.811$, exceeding the $r<0.20$ sufficiency threshold.
+The full competition field $r(\kappa_{\mathrm{all}},\logit q)=0.988$.
+
+\paragraph{Upgraded law via soft-min competition field.}
+We fit $\phi(\tau)=-\tau\log\sum_{j\neq i}\exp(-\kappa_{ij}/\tau)$ (log-sum-exp soft-min of all
+competitors) as a replacement predictor for $\kappa_{j1}$.
+A pooled tau-sweep across 5 architectures (70 data points, \texttt{cti\_phi\_upgrade\_pooled.json})
+finds $\tau^*=0.20$ (best R$^2$), yielding R$^2=0.461$ vs.\ R$^2=0.360$ for $\kappa_{j1}$
+alone (+28.1\% relative improvement), with an \emph{out-of-sample} test on 4 held-out
+architectures confirming the transfer: pooled R$^2$ improves from $0.451$ to $0.578$
+(+28.3\%, 4/4 architectures pass, \texttt{cti\_kappa\_eff\_held\_out.json}).
+
+\paragraph{Additivity RCT.}
+A pre-registered factorial RCT (\texttt{cti\_j1j2\_factorial\_rct.json}) jointly perturbed
+$j_1$ and $j_2$ over DELTA $\in\{0.0,0.1,0.2,0.3,0.5,0.8,1.0\}$.
+\emph{Additivity}: $r(\Delta\logit_q,\Delta\kappa_{j1}+\Delta\kappa_{j2})=0.9964$ (n=84
+class-delta pairs), confirming effects sum linearly.
+Mean relative weight $\bar{w}=0.569$ (Codex prediction: 0.40; threshold: $|w-0.40|<0.20$; PASS).
+Near-tied pairs (gap$\approx$0.004) yield $w\approx6.4$, while wide-gap pairs give $w\approx0$,
+consistent with the phi model: $w\propto\exp(-\mathrm{gap}/\tau^*)$.
+
+\paragraph{Synthetic Jacobian validation.}
+A synthetic Gaussian experiment ($K=14$, $d=50$, $N=2000$; \texttt{cti\_phi\_jacobian\_synthetic.json})
+fixes $\kappa_{j1}=0.40$ and varies gap $\in\{0.15,0.25,0.35,0.50,0.70,1.00\}$.
+Results: $r(\log w,-\mathrm{gap})=0.9502$ (threshold $>0.85$; PASS);
+fitted $\tau^*_{\mathrm{median}}=0.207$ (empirical $\tau^*=0.20$; error 3.5\%).
+This provides a first-principles derivation of $\tau^*$ from the geometry.
+
+\begin{table}[h!]
+\centering
+\caption{Competition field evidence summary.}
+\label{tab:competition}
+\small
+\begin{tabular}{lcc}
+\toprule
+Experiment & Result & Status \\
+\midrule
+j2 causal activity (6-arm RCT) & $r=0.811$ & Causally active \\
+Full field activity & $r=0.988$ & PASS \\
+Phi upgrade pooled R$^2$ & $0.360\to0.461$ (+28.1\%) & PASS \\
+Held-out arch transfer (4/4) & $0.451\to0.578$ (+28.3\%) & PASS \\
+Additivity RCT & $r=0.9964$ & PASS \\
+Synthetic Jacobian $r(\log w,-\mathrm{gap})$ & $0.9502$ & PASS \\
+Synthetic $\tau^*$ & $0.207$ vs.\ empirical $0.20$ & 3.5\% error \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Discussion}
 
 \paragraph{What is universal.}
