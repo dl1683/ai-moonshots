@@ -652,21 +652,26 @@ with controlled $\kappa/d_\mathrm{eff}$, while (2)--(3) use transformer embeddin
 
 \begin{table}[h]
 \centering
-\caption{N\textsubscript{eff} geometric exponent and competition density $\rho$ across four architectures
-on DBpedia ($K=14$). Pearson $r=0.996$, Spearman $\rho=1.000$ between exponent and density.}
+\caption{$N_\mathrm{eff}$ geometric exponent and competition density $\rho=N_\mathrm{eff}(K{=}14)/(K-1)$
+across 7 architectures on DBpedia. Denser inter-class competition (higher $\rho$) predicts
+steeper $N_\mathrm{eff}$ scaling (higher $\beta_\mathrm{geom}$). RWKV (pure linear RNN)
+validates the mechanism beyond attention-based models.}
 \label{tab:neff-competition-density}
 \small
-\begin{tabular}{lcccc}
+\begin{tabular}{llcc}
 \toprule
-Architecture & Exponent $\beta_\mathrm{geom}$ & $N_\mathrm{eff}$ at $K=14$ & $\rho = N_\mathrm{eff}/(K-1)$ & $r$ \\
+Architecture & Type & $\beta_\mathrm{geom}$ & $\rho = N_\mathrm{eff}/(K-1)$ \\
 \midrule
-Pythia-160m  & 0.934 & 10.45 & 0.804 & 0.9999 \\
-OLMo-1B      & 0.806 & 7.51  & 0.578 & 0.9995 \\
-Qwen3-0.6B   & 0.791 & 7.35  & 0.566 & 0.9998 \\
-GPT-Neo-125M & 0.711 & 5.91  & 0.455 & 0.9995 \\
+Pythia-160m     & Decoder (GPT-NeoX) & 0.934 & 0.804 \\
+TinyLlama-1.1B  & Decoder (LLaMA)    & 0.923 & 0.779 \\
+RWKV-169M       & Linear RNN         & 0.861 & 0.659 \\
+OLMo-1B         & Decoder (OLMo)     & 0.806 & 0.578 \\
+Qwen2.5-0.5B    & Decoder (Qwen)     & 0.829 & 0.564 \\
+Qwen3-0.6B      & Decoder (Qwen3)    & 0.791 & 0.566 \\
+GPT-Neo-125M    & Decoder (GPT-Neo)  & 0.711 & 0.454 \\
 \midrule
-\textbf{Corr.} & \multicolumn{4}{c}{Pearson $r(\rho, \beta_\mathrm{geom})=0.996$ ($p=0.004$);
-  Spearman $\rho=1.000$} \\
+\multicolumn{4}{c}{Pearson $r(\rho, \beta_\mathrm{geom})=0.978$ ($p=0.0001$, $n=7$);
+  Spearman $\rho=0.893$ ($p=0.007$)} \\
 \bottomrule
 \end{tabular}
 \end{table}
