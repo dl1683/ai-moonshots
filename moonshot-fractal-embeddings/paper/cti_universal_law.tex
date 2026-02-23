@@ -812,6 +812,9 @@ The original datasets require legacy loading scripts deprecated by the \texttt{d
 \addlinespace
 \texttt{6497907} & Stratified sampling in amazon\_massive K=59 test; rare-class guard in \texttt{compute\_q} &
 Random subsampling of 1500 from 1265 available stratified samples left some classes with $<2$ members, causing \texttt{StratifiedShuffleSplit} to fail. The fix (draw $\geq$20 samples per class; drop classes with $<2$ members before CV) is a numeric stability patch with no effect on the analysis model or the frozen $A(K)$ prediction. \\
+\addlinespace
+\texttt{7f4c9f8} & RWKV acceptance interval $[2.43, 3.29]$: pre-registration JSON describes this as ``mean $\pm$ 3*std(0.054)'', but $3\times0.054=0.162$ gives $[2.727, 3.051]$, not $[2.43, 3.29]$. &
+The interval half-width $0.43$ actually equals $\approx8\sigma$ of the locked std, not $3\sigma$. This is a documentation error in the pre-registration artifact; the locked interval $[2.43, 3.29]$ and the observed RWKV $\hat\alpha=2.887$ are both as stated. The outcome is unaffected: $2.887$ lies within any reasonable interval around $2.889$ (the 11-arch prior mean). The paper text now correctly states ``wider than $\pm3\sigma$'' (\S\ref{subsec:rwkv-test}). \\
 \bottomrule
 \end{tabular}
 \end{table}
