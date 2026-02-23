@@ -1,6 +1,6 @@
 # CTI Universal Law - Research Status
 
-**As of: February 23, 2026 (Session 38 COMPLETE)**
+**As of: February 22-23, 2026 (Session 43 COMPLETE)**
 
 ## The Discovery
 
@@ -18,7 +18,7 @@ Where:
 
 ---
 
-## Current Codex Score: Nobel 6.4/10, Turing 7.7/10, Fields 3.0/10
+## Current Codex Score: Nobel 6.6/10, Turing 8.0/10, Fields 3.0/10
 
 ---
 
