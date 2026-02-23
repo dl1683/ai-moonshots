@@ -1,0 +1,60 @@
+======================================================================
+PROPER NULL CONTROL FOR ABCS
+Test: does surgery in NULL SPACE show near-zero effect?
+Timestamp: 2026-02-23T01:16:25.135713
+======================================================================
+PRE-REGISTERED: |slope_null| < 0.1 * slope_m5 for PASS
+
+K=14, d=768, n_train=4900, n_test=2100
+Baseline: acc=0.9076, q=0.9005, logit=2.2029
+tr_W_null = 217.1888 (58.4%)
+
+--- COMPETITIVE ARM (m=5 top nearest pairs) ---
+  r=0.3: delta_obs=-0.3531, delta_pred=-0.2755, ratio=1.282
+  r=0.5: delta_obs=-0.2298, delta_pred=-0.1784, ratio=1.288
+  r=1.0: delta_obs=+0.0000, delta_pred=+0.0000, ratio=0.000
+  r=2.0: delta_obs=+0.2119, delta_pred=+0.2523, ratio=0.840
+  r=5.0: delta_obs=+0.4361, delta_pred=+0.7530, ratio=0.579
+  r=10.0: delta_obs=+0.5762, delta_pred=+1.3172, ratio=0.437
+COMPETITIVE slope = 0.5856 (r=0.9586)
+
+--- NULL SPACE CONTROLS ---
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_null_control_abcs.py:281: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_val = float(pearsonr(deltas_obs, deltas_pred)[0])
+  null_run=0, m=1: slope=-0.0000
+  null_run=0, m=2: slope=0.0008
+  null_run=0, m=5: slope=-0.0085
+  null_run=0, m=8: slope=0.0013
+  null_run=0, m=13: slope=0.0231
+  null_run=1, m=1: slope=-0.0039
+  null_run=1, m=2: slope=-0.0017
+  null_run=1, m=5: slope=-0.0155
+  null_run=1, m=8: slope=0.0126
+  null_run=1, m=13: slope=0.0239
+  null_run=2, m=1: slope=0.0136
+  null_run=2, m=2: slope=0.0118
+  null_run=2, m=5: slope=-0.0042
+  null_run=2, m=8: slope=-0.0001
+  null_run=2, m=13: slope=-0.0022
+  null_run=3, m=1: slope=-0.0035
+  null_run=3, m=2: slope=0.0059
+  null_run=3, m=5: slope=0.0074
+  null_run=3, m=8: slope=0.0317
+  null_run=3, m=13: slope=0.0087
+  null_run=4, m=1: slope=-0.0108
+  null_run=4, m=2: slope=0.0057
+  null_run=4, m=5: slope=0.0023
+  null_run=4, m=8: slope=-0.0001
+  null_run=4, m=13: slope=0.0002
+
+======================================================================
+VERDICT
+======================================================================
+Competitive slope (m=5): 0.5856
+Null slopes (m=5, 5 runs): mean=-0.0037 +/- 0.0080
+All null slopes mean |slope|: 0.0080
+Ratio |null|/competitive: 0.014
+
+VERDICT: NULL CONTROL PASS: Null-space surgery has near-zero effect (0.008 < 0.059). Surgery is SPECIFIC to competitive structure.
+
+Saved to results/cti_null_control_abcs.json
