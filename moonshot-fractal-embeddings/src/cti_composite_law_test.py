@@ -538,8 +538,12 @@ def main():
 
     pass_list = [k for k in ['PR1', 'PR2', 'PR3', 'PR4', 'PR5'] if analysis.get(k, False)]
     verdict = "PASS" if len(pass_list) >= 3 else "FAIL"
-    log(f"\nVERDICT: {' '.join(f'{k}={\"PASS\" if analysis.get(k, False) else \"FAIL\"}' for k in [\"PR1\",\"PR2\",\"PR3\",\"PR4\",\"PR5\"])}. "
-        f"OVERALL: {verdict}")
+    verdict_parts = ['PR1=' + ('PASS' if analysis.get('PR1') else 'FAIL'),
+                     'PR2=' + ('PASS' if analysis.get('PR2') else 'FAIL'),
+                     'PR3=' + ('PASS' if analysis.get('PR3') else 'FAIL'),
+                     'PR4=' + ('PASS' if analysis.get('PR4') else 'FAIL'),
+                     'PR5=' + ('PASS' if analysis.get('PR5') else 'FAIL')]
+    log(f"\nVERDICT: {' '.join(verdict_parts)}. OVERALL: {verdict}")
     log(f"B_univ_pred={B_PRED:.3f}, B_univ_observed={analysis.get('B_mean_valid', float('nan')):.3f}")
 
     output = {
