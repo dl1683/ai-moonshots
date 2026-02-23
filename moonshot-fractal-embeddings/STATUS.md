@@ -258,7 +258,8 @@ while slope magnitude is a competition-renormalized coefficient (local vs global
 DECISIVE EXPERIMENT: top-m competitor sweep (m=1..K-1), pre-register monotonic
 alpha_m rise from ~0.7 to ~1.48. Scaffolding: src/cti_top_m_competitor_sweep.py
 
-TOP-M SWEEP RESULT (stale task b3d36f9, pythia-160m/DBpedia K=14, crashed before JSON save):
+TOP-M SWEEP RESULT (commit 346656b, cti_competitive_geometry_verification.json):
+  pythia-160m/DBpedia K=14, m=[1,2,3,5,13]:
   m= 1: alpha=1.0522, r=0.9833, ratio_to_LOAO=0.712
   m= 2: alpha=1.5228, r=0.9699, ratio_to_LOAO=1.031  <-- LOAO=1.477 MATCHED AT m=2!
   m= 3: alpha=1.6168, r=0.9460, ratio_to_LOAO=1.095
@@ -266,7 +267,9 @@ TOP-M SWEEP RESULT (stale task b3d36f9, pythia-160m/DBpedia K=14, crashed before
   m=13: alpha=3.0152, r=0.9766, ratio_to_LOAO=2.041
   MONOTONIC RISE CONFIRMED. LOAO alpha integrates ~2 effective competitors.
   Consistent with: Session 42 kernel showdown k*=5, sparse competition w1=0.475.
-  STATUS: Script crashed before JSON save. Needs clean pre-registered re-run.
+  ALSO: alpha_global_scale=5.817 (r=0.993): global centroid expansion gives higher alpha
+  Formula pred alpha_LOAO=6.742 vs actual 1.477 (356% error) — formula FALSIFIED.
+  STATUS: COMPLETE. Results in cti_competitive_geometry_verification.json.
 
 Q4 — SCORE (pre-equicorrelation/bio context): Nobel 5/10, Turing 7/10
 "If m-competitor experiment cleanly bridges local->global with pre-registered success: jumps materially"
