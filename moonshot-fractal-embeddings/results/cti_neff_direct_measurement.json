@@ -1,0 +1,86 @@
+{
+  "experiment": "neff_direct_measurement",
+  "n_points": 430,
+  "kappa_only_alpha": 3.9560841324060925,
+  "kappa_only_C": -1.9496140378565316,
+  "beta_neff_slope": 0.286739700489391,
+  "beta_neff_se": 0.053642564315574154,
+  "pearson_r": 0.25016304841864945,
+  "pearson_p": 1.470653208949958e-07,
+  "pre_reg": {
+    "PR_BETA": "beta_neff in [0.35, 0.65]",
+    "PR_P": "p < 0.001"
+  },
+  "verdict": {
+    "PR_BETA": false,
+    "PR_P": true
+  },
+  "full_model_alpha": 3.84397248449315,
+  "full_model_beta_neg": 0.29079576488898096,
+  "full_model_R2": 0.5577957574526571,
+  "per_K": [
+    {
+      "K": 4,
+      "n_pts": 72,
+      "neff_theory_sqrt": 1.7320508075688772,
+      "neff_obs": 0.5539247736790254,
+      "ratio_obs_theory": 0.31980861719438786
+    },
+    {
+      "K": 6,
+      "n_pts": 21,
+      "neff_theory_sqrt": 2.23606797749979,
+      "neff_obs": 3.0593209616618853,
+      "ratio_obs_theory": 1.3681699270532006
+    },
+    {
+      "K": 10,
+      "n_pts": 21,
+      "neff_theory_sqrt": 3.0,
+      "neff_obs": 3.3434819458966145,
+      "ratio_obs_theory": 1.1144939819655382
+    },
+    {
+      "K": 14,
+      "n_pts": 72,
+      "neff_theory_sqrt": 3.605551275463989,
+      "neff_obs": 0.2735068034818218,
+      "ratio_obs_theory": 0.07585713878015088
+    },
+    {
+      "K": 20,
+      "n_pts": 96,
+      "neff_theory_sqrt": 4.358898943540674,
+      "neff_obs": 0.8521953290927373,
+      "ratio_obs_theory": 0.1955070168248752
+    },
+    {
+      "K": 28,
+      "n_pts": 76,
+      "neff_theory_sqrt": 5.196152422706632,
+      "neff_obs": 2.703576777808788,
+      "ratio_obs_theory": 0.5203035934809083
+    },
+    {
+      "K": 42,
+      "n_pts": 24,
+      "neff_theory_sqrt": 6.4031242374328485,
+      "neff_obs": 3.788425871301756,
+      "ratio_obs_theory": 0.5916527199573154
+    },
+    {
+      "K": 59,
+      "n_pts": 24,
+      "neff_theory_sqrt": 7.615773105863909,
+      "neff_obs": 0.7551954386186275,
+      "ratio_obs_theory": 0.09916201915694553
+    },
+    {
+      "K": 77,
+      "n_pts": 24,
+      "neff_theory_sqrt": 8.717797887081348,
+      "neff_obs": 1.0682343846693554,
+      "ratio_obs_theory": 0.12253488765234406
+    }
+  ]
+}

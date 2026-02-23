@@ -1,0 +1,82 @@
+{
+  "experiment": "oneshot_calibration",
+  "alpha_universal": 3.598,
+  "beta_universal": 0.478,
+  "pre_registered_threshold": 0.8,
+  "mean_loao_r": 0.5112511565749781,
+  "n_datasets": 10,
+  "n_pass": 2,
+  "pr_pass": false,
+  "per_dataset": {
+    "20newsgroups": {
+      "K": 20,
+      "n_architectures": 18,
+      "loao_pearson_r": 0.27783911766231395,
+      "loao_mae": 0.0884447240769953,
+      "pr_pass": false
+    },
+    "agnews": {
+      "K": 4,
+      "n_architectures": 18,
+      "loao_pearson_r": 0.4034743485094406,
+      "loao_mae": 0.08546057950683983,
+      "pr_pass": false
+    },
+    "amazon_massive": {
+      "K": 59,
+      "n_architectures": 6,
+      "loao_pearson_r": 0.819464435709295,
+      "loao_mae": 0.06151760643595033,
+      "pr_pass": true
+    },
+    "banking77": {
+      "K": 77,
+      "n_architectures": 6,
+      "loao_pearson_r": 0.787977874204782,
+      "loao_mae": 0.053559398732311324,
+      "pr_pass": false
+    },
+    "dbpedia": {
+      "K": 14,
+      "n_architectures": 18,
+      "loao_pearson_r": 0.7242751002916037,
+      "loao_mae": 0.07050594711147028,
+      "pr_pass": false
+    },
+    "emotion": {
+      "K": 6,
+      "n_architectures": 6,
+      "loao_pearson_r": -0.030623906875501133,
+      "loao_mae": 0.03695761835761102,
+      "pr_pass": false
+    },
+    "go_emotions": {
+      "K": 28,
+      "n_architectures": 19,
+      "loao_pearson_r": 0.9062019705114455,
+      "loao_mae": 0.022918644775855975,
+      "pr_pass": true
+    },
+    "langid": {
+      "K": 20,
+      "n_architectures": 6,
+      "loao_pearson_r": 0.7061841735125878,
+      "loao_mae": 0.09766299287402212,
+      "pr_pass": false
+    },
+    "news_category": {
+      "K": 42,
+      "n_architectures": 6,
+      "loao_pearson_r": 0.3434638381266855,
+      "loao_mae": 0.03339092933952815,
+      "pr_pass": false
+    },
+    "yahoo": {
+      "K": 10,
+      "n_architectures": 6,
+      "loao_pearson_r": 0.17425461409712903,
+      "loao_mae": 0.03415102288545836,
+      "pr_pass": false
+    }
+  }
+}
