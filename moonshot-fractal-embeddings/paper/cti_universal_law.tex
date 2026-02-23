@@ -187,6 +187,7 @@ Analytically, for a regular $K$-simplex (Neural Collapse ETF) configuration of c
 Measuring $\rho$ empirically on five architectures (Pythia-160m to OLMo-1B) and three datasets ($K=4,14,77$): $\rho\in[0.41,0.49]$, $d_\mathrm{eff,comp}\in[1.69,1.97]$, with CV$=3.9\%$ across architectures (tighter than $\alpha$'s CV$=2.3\%$).
 The near-simplex value $\rho\approx0.45$ ($10\%$ below perfect NC) predicts $\alpha\approx1.525$ vs.\@ observed $1.477$ ($3.2\%$ error, zero free parameters).
 This provides a geometric explanation for $\alpha$ universality: class centroids approximately form a regular simplex in whitened embedding space (near-NC geometry), so the competition equicorrelation $\rho$ is approximately architecture-universal.
+Remarkably, the same $\rho\approx0.466$ (CV$=1.65\%$, $d_\mathrm{eff,comp}=1.873$) appears in 5 mouse visual-cortex sessions (Allen Neuropixels, $K=118$; \S\ref{subsec:comprehensive-universality}), only 2.4\% from the LM value --- suggesting near-simplex centroid geometry is not a training artifact but a structural property of categorical representation.
 In contrast, the geometric $d_\mathrm{eff}=\mathrm{tr}(\Sigma_W)/\sigma_{c\text{-dir}}^2$ gives $9$--$151$ across architectures ($A_\mathrm{renorm}$ CV$=0.82$); it measures embedding-space anisotropy, not competition geometry.
 The asymptotic $\beta_\infty=1.0$ is renormalized to $\hat\beta=0.746$ (single-intercept) by finite-sample anisotropy.
 KS test for Gumbel fit fails at $d=200$ ($p<0.001$), but the logit-linear margin (difference of two Gumbels) passes ($p=0.265$), supporting the form as an asymptotic result.
@@ -480,7 +481,10 @@ Allen Neuropixels \citep{siegle2021survey} ($K=118$, 32 mice): \textbf{30/32 ses
 Exploratory per-area: combined VC ($r=0.869$) $>$ VISam ($0.802$) $>$ VISl ($0.774$) $>$ VISp ($0.707$) $>$ LP thalamus ($0.519$) --- law compliance increases up the visual hierarchy.
 
 \textbf{Form} is substrate-independent ($r=0.41$--$0.75$ per-image across all three systems).
-\textbf{Constant}: $A_{\mathrm{renorm,bio}}\approx0.03$--$0.07$ vs $A_{\mathrm{renorm,NLP}}=1.13$ ($15$--$34\times$ smaller) --- gradient training optimises the constant; the geometric skeleton is preserved. See Figure~\ref{fig:allen-bio}.
+\textbf{Constant}: $A_{\mathrm{renorm,bio}}\approx0.03$--$0.07$ vs $A_{\mathrm{renorm,NLP}}=1.13$ ($15$--$34\times$ smaller) --- gradient training optimises the constant; the geometric skeleton is preserved.
+\textbf{Competition geometry:} Measuring the equicorrelation $\rho$ ($\Sigma_W$-whitened cosine similarity of centroid-difference vectors) in 5 Allen sessions gives $\rho\in[0.451,0.471]$ (mean$=0.466$, CV$=1.65\%$) and $d_\mathrm{eff,comp}=1/(1-\rho)\in[1.82,1.89]$ (mean$=1.873$, CV$=1.41\%$).
+These values are strikingly close to the LM-decoder result ($\rho_\mathrm{LM}=0.452$, $d_\mathrm{eff,comp,LM}=1.829$; 2.4\% difference), and both are near the regular-simplex prediction ($\rho=0.5$, $d_\mathrm{eff,comp}=2$).
+This suggests the near-simplex geometry of categorical representations is not a gradient training artifact but a structural property common to biological and artificial representational systems. See Figure~\ref{fig:allen-bio}.
 
 \begin{figure}[t]
 \centering
