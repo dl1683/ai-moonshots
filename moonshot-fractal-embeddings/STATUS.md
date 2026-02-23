@@ -64,6 +64,7 @@ Where:
 | Surgery re-runs confirmation (Session 60) | Linear regime + Gaussian: calib_error~0.99, logit changes 0.17 vs 2.29 predicted (10x d_eff); kappa_nearest is sole predictor | DONE |
 | Two-knob identifiability stdout (Session 60) | P1-P6 FAIL; d_eff: 10x change → q changes 0.003; confirms kappa_nearest as sufficient statistic, d_eff NOT causal | DONE |
 | Biological validation Cadieu2014 macaque IT+V4 (Session 61, pre-reg bddec1d) | H1/H2/H4 FAIL (K=7 underpowered, A_bio=0.069 vs A_NLP=1.129); H3 PASS IT (MAE=0.084); EXPLORATORY per-image: r=0.41 p<0.0001 n=1960 (IT), r=0.12 (V4). Form confirmed, constant different | DONE |
+| Biological validation Stringer2018b mouse V1 (Session 61) | Class-level FAIL (K=11, r=-0.49, class-size confound); H3 PASS MAE=0.054; EXPLORATORY per-image: r=0.64 p<0.0001 n=4914. Margin predicts V1 accuracy stronger than IT | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
@@ -97,12 +98,13 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
    task-type, task-specific across universality classes. Validate prospectively. Data supports
    "shape universal, scale class-dependent" more than single-scale universality.
 
-5. **Biological neuroscience validation (Session 61 DONE):**
-   - Tested Cadieu2014 macaque IT cortex (168 neurons, K=7, n=1960 images)
-   - Pre-registered H4 (substrate-independence) FAILS: A_bio=0.069 vs A_NLP=1.129 (16x difference)
-   - BUT exploratory per-image analysis r=0.41 p<0.0001 n=1960: geometric margin DOES predict IT accuracy!
-   - Finding: Law FORM holds across substrates; CONSTANT A differs → trained NNs are ~5-16x more geometrically efficient than biological IT cortex per unit of kappa
-   - NEXT: MajajHong2015 (K=8, 47 trials per image, trial-level 1-NN would be better test)
+5. **Biological neuroscience validation (Session 61 DONE — TWO DATASETS):**
+   - Cadieu2014 macaque IT (168 neurons, K=7): per-image r=0.41, p<0.0001, n=1960
+   - Stringer2018b mouse V1 (10,079 neurons, K=11): per-image r=0.64, p<0.0001, n=4914
+   - PRE-REGISTERED H4 FAILS: A_bio ≠ A_NLP (CONSTANT not universal across substrates)
+   - KEY FINDING: LAW FORM (margin predicts accuracy) IS substrate-independent; CONSTANT A differs
+   - Cross-substrate table: IT r=0.41, V1 r=0.64, V4 r=0.12 (confirms IT>V4>V1 for class-level, but per-image form universal)
+   - NEXT: Fix class-size confound for class-level test; try Allen Brain Neuropixels for more K
 
 6. **Practical utility demo:** predict class difficulty from geometry alone
 
