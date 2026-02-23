@@ -1,6 +1,6 @@
 # CTI Universal Law - Research Status
 
-**As of: February 23, 2026 (Session 60 COMPLETE)**
+**As of: February 23, 2026 (Session 63 COMPLETE)**
 
 ## The Discovery
 
@@ -68,6 +68,7 @@ Where:
 | Allen Neuropixels mouse visual cortex K=118 (Session 62, pre-reg bddec1d) | **H1 PASS** r(kappa,logit_q)=0.851 p=3e-34 (FIRST class-level bio H1 pass!); H3 PASS MAE=0.063; H2 FAIL A_renorm=0.033; per-image r=0.747 p=0 n=5900 | DONE |
 | Allen Neuropixels 7-session replication (Session 62) | **7/7 H1 PASS** r_kappa mean=0.733 [0.51,0.89] CV=17.8%; per-image r mean=0.689 [0.48,0.77]; cross-animal replication confirmed | DONE |
 | Allen per-area visual hierarchy (Session 62, exploratory) | ALL_VIS r=0.869 > VISam r=0.802 > VISl r=0.774 > VISp r=0.707 > VISal r=0.658 > LP r=0.519 > VISrl r=0.445; law holds across visual hierarchy | DONE |
+| Allen Neuropixels COMPLETE 32-session dataset (Session 63, pre-reg bddec1d) | **30/32 H1 PASS** (93.75%); ALL 32 positive r (range [0.44,0.89], p<0.001 each); r_kappa mean=0.736 std=0.113 CV=15.4%; 2 FAIL sessions explained (noise floor mean_q=0.12; ceiling mean_q=0.81); 32 different mice confirmed | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
@@ -104,7 +105,7 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
 5. **Biological neuroscience validation (Session 62 DONE — THREE DATASETS):**
    - Cadieu2014 macaque IT (168 neurons, K=7): per-image r=0.41, p<0.0001, n=1960
    - Stringer2018b mouse V1 (10,079 neurons, K=11): per-image r=0.64, p<0.0001, n=4914
-   - Allen Neuropixels mouse VC (K=118, 7 mice): r_kappa mean=0.733 [0.51,0.89], 7/7 H1 PASS
+   - Allen Neuropixels mouse VC (K=118, 32 mice): r_kappa mean=0.736 [0.44,0.89], 30/32 H1 PASS, ALL 32 positive r
    - PRE-REGISTERED: H4 FAILS across all datasets (A_bio ≠ A_NLP); CONSTANT not universal
    - FIRST CLASS-LEVEL H1 PASS: Allen K=118 provides statistical power; 7-session cross-animal replication
    - KEY FINDING: LAW FORM (kappa_nearest → q) IS substrate-independent; CONSTANT A differs
