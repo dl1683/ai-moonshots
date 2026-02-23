@@ -216,14 +216,23 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
     - Complex extension (Wick-rotated Gumbel): SPECULATIVE-BUT-TESTABLE (abandons probabilistic interp)
     - d_eff ≈ 1.71 closest candidate: e-1=1.718 (likely coincidence, no proof yet)
 
-    TASK ab1bf219aae015bb0 — "d_eff = e-1 from ETF structure?" (DEFINITIVE DEAD-END):
-    - Setup: ETF rho_n=1/(K-1) equicorrelated margins with i.i.d. Gaussian competitors
-    - RESULT: rho_n=1/(K-1) → sqrt(rho_n)=O(n^{-1/2}) → correlation term asymptotically negligible
-      → reduces to standard i.i.d. Gumbel EVT. Large-K constant is 1, not e-1.
-    - Logit slope alpha grows as sqrt(log K), NOT K-independent → contradicts measured CV=1.75%
+    TASKS ab1bf219aae015bb0 + a643c6c3a95b02c94 — "d_eff = e-1 from ETF structure?" (DEAD-END x2):
+
+    Task ab1bf219: Setup assumed rho_n=+1/(K-1) (positive). Reduces to iid EVT. Alpha grows sqrt(log K).
+    Task a643c6c3: CORRECT ETF: rho = -1/(K-1) (NEGATIVE). Key rigorous findings:
+    - ETF decomposition: Z_i = sqrt(K/(K-1))*(X_i - X_bar), eigenvalues {0, K/(K-1)}
+    - One-factor form Z_i = sqrt(1-rho)*eps_i + sqrt(rho)*W INVALID for negative rho
+    - E[max ETF-Gaussian] = sqrt(K/(K-1)) * E[max iid] → correction factor 1 as K→inf (not e-1)
+    - Extremal index = 1: X_bar = O_p(K^{-1/2}) negligible vs Gumbel scaling 1/sqrt(2 log K)
+      → ETF maxima are in SAME Gumbel universality class as iid Gaussians
+    - Second-moment renormalization: Var(S) = 2/(K-1) vs iid 2/K → ratio K/(K-1) → 1, not e-1
+    - Gumbel MGF M(t) = Gamma(1-t): no canonical evaluation produces e-1
+    - PROPOSED CLOSED FORM: alpha = sqrt(4/pi)*sqrt(e-1) = 1.479 has NO rigorous derivation path
+    - NOTE: e-1 does arise as Var(exp(N(0,1)-1/2)) = e-1 (lognormal variance identity), but
+      this mechanism is unrelated to ETF geometry
     - SIDE NOTE: ETF one-vs-all difference margin pairwise correlation = 1/2 (not 1/(K-1))
       This directly explains the measured rho~0.45-0.50 in equicorrelation experiments
-    - CONCLUSION: d_eff ≈ 1.710 ~ e-1 = 1.718 is coincidental/finite-size artifact. CLOSED.
+    - FINAL VERDICT: d_eff ≈ 1.710 ~ e-1 = 1.718 (0.5% match) is numerical coincidence. CLOSED.
 
 ## Failed Causal Interventions (logged for paper)
 
