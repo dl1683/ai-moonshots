@@ -1,6 +1,6 @@
 # CTI Universal Law - Research Status
 
-**As of: February 23, 2026 (Session 65 COMPLETE)**
+**As of: February 23, 2026 (Session 67 COMPLETE)**
 
 ## The Discovery
 
@@ -135,21 +135,22 @@ ONLY PASS: pythia-160m/dbpedia frozen do-intervention (isolated pair, alpha=1.60
 
 `paper/cti_universal_law.tex` — targeting COLM 2026
 
-**Session 65 paper fixes (Feb 23) — COLM 2026 submission ready:**
-- Added `\DeclareMathOperator{\logit}{logit}` to preamble (fixes LaTeX compilation error)
-- Added `\usepackage{enumitem}` to preamble (fixes `[nosep]` option in itemize environments)
-- Added missing `\label{subsec:rwkv-test}` (fixes undefined cross-reference)
-- Updated contribution #6 in Introduction: now cites pre-registered n=10 kappa-spread result (beta=0.83, p=0.038)
-- Reproducibility statement expanded to 42 result files (was 33)
-- Created `src/cti_generate_figures.py`: generates all 4 paper figures from JSON result files
-- All 4 figures generated at 180 DPI (`results/figures/`)
-- Added Figure 3 (kappa-spread vs ranking reliability, n=10 datasets) to Section 4.3
-- Added Figure 4 (Allen Neuropixels 32-session bar chart, 30/32 PASS) to Discussion
-- Condensed Conclusion from ~700 to ~220 words (was a second abstract, now focused)
-- Pre-registration deviations full table moved to appendix (brief pointer in main text)
-- Condensed Limitations items 3 & 11 (surgery + two-component details) → new appendix sections
-- Moved bibliography BEFORE `\appendix` to match COLM template (appendix now in unlimited-page section)
-- **KNOWN ISSUE**: Paper still likely exceeds 9-page main text limit; user should compile and measure. Further cuts may be needed from Results section (Competition field §4.5, Composite K-law §4.6, Sparse Competition §4.9 are candidates for appendix).
+**Session 67 paper cuts (Feb 23) — aggressive page reduction for COLM 2026 9-page limit:**
+- Abstract: ~460 words → ~180 words (Session 66 commit 0e4e895)
+- §4.5 Competition field (116 lines) → 9-line pointer + appendix (Session 66)
+- §4.7 Composite K-law (46 lines) → 4-line pointer + appendix (Session 66)
+- §4.9 Sparse Competition (131 lines) → 7-line pointer + appendix (Session 66)
+- §4.4 Causal: global surgery 40 lines → 3 lines; table 15 rows → 6 rows (Session 66)
+- Discussion encoder paragraph 15 lines → 4 lines (Session 66)
+- Theory "Connection to theory": 3 huge lines → 3 compact sentences (Session 66)
+- §4.6 K-scaling: ~60 lines → ~25 lines; §4.8 Universality: 21 → 9 lines (Session 67 commit 6cc1f85)
+- Discussion biological validation: 9 lines → 6 lines (Session 67)
+- Limitations bio + beyond-1NN: 7 lines → 3 lines; Theory hierarchical β: 5 lines → 3 lines (Session 67)
+- Intro contributions condensed; Related Work neural-collapse 6 lines → 4 lines (Session 67)
+- Total: ~1200 lines → 1042 lines (estimated saving ~1.5 compiled pages in main text)
+- **NEXT STEP**: User compile paper and check actual page count; target ≤9 pages main text.
+- **Remaining if still over**: The LOAO table (tab:loao-12, `table*`, 12 rows) could move to appendix with a 3-row summary. Or cut 3 limitations items.
+- **REQUIRED before submission**: Replace `\author{Anonymous Authors}` and `[anonymized for review]` URL.
 
 ## Key Source Files
 
