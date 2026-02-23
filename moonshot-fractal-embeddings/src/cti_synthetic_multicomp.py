@@ -360,7 +360,7 @@ def main():
             seed_results = []
             for seed in SEEDS:
                 # Split into train/test
-                X, y = generate_synthetic_embeddings(K, d, N_PER_CLASS * 2, Sigma, KAPPA_NEAREST, seed)
+                X, y, _ = generate_synthetic_embeddings(K, d, N_PER_CLASS * 2, Sigma, KAPPA_NEAREST, seed)
                 n_per = N_PER_CLASS
                 X_tr_list, y_tr_list, X_te_list, y_te_list = [], [], [], []
                 rng2 = np.random.default_rng(seed + 1000)
