@@ -1,6 +1,6 @@
 # CTI Universal Law - Research Status
 
-**As of: February 23, 2026 (Session 59 COMPLETE)**
+**As of: February 23, 2026 (Session 60 COMPLETE)**
 
 ## The Discovery
 
@@ -51,6 +51,9 @@ Where:
 | Null-space kappa_eff identifiability (Session 58) | q tracks kappa_nearest r=1.00 (OLMo-1B); H4 FAIL (kappa_eff marginal) | DONE |
 | 2D causal surface 3×3 factorial (Session 58) | H4 FAIL ΔR2=0.03; H6 PASS cross-arch bivariate r=0.988/0.967 | DONE |
 | Extended family LOAO: GPT-2/Phi-2/Encoders (Session 59) | H1-H4 FAIL; GPT-2 artifact 4/4 confirmed; Phi-2 alpha=1.18 (decoder range); Encoder CV=0.92 | DONE |
+| SmolLM2 re-run exploration (Session 60) | Protocol FAIL (best-layer mixing r=-0.16; NaN crash at 20news); correct result alpha=2.864 from fc9f9ac in paper | DONE |
+| Surgery re-runs confirmation (Session 60) | Linear regime + Gaussian: calib_error~0.99, logit changes 0.17 vs 2.29 predicted (10x d_eff); kappa_nearest is sole predictor | DONE |
+| Two-knob identifiability stdout (Session 60) | P1-P6 FAIL; d_eff: 10x change → q changes 0.003; confirms kappa_nearest as sufficient statistic, d_eff NOT causal | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
@@ -69,6 +72,9 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
    - KEY INSIGHT: ANY monotone-decreasing weighting of all K-1 kappas gives similar improvement
    - UPGRADE: phi(tau*=0.2) is cleaner than causal w_r (theoretically motivated, no interventions needed)
    - OPEN: derive optimal tau* from first principles (should depend on kappa distribution)
+   - **CRITICAL SESSION 60 FINDING:** d_eff is NOT a causal predictor of q; kappa_nearest is the sole
+     sufficient statistic. sqrt(d_eff) in the law acts as an architecture-level scaling constant for A,
+     not as a per-geometry variable. Need to re-examine the role of d_eff in the canonical law form.
 
 2. **A_ViT/A_NLP = 1.67 derivation:** via margin thermodynamics (A prop 1/T_eff)
 
@@ -86,7 +92,9 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
 
 All failed: joint CE+triplet, two-stage CE+centroid-triplet, anti-triplet, dist_ratio regularizer,
 NC-loss at 60 epochs, cross-task do-intervention, DBpedia NC-loss head (specificity failure, shuffled==nc),
-multi-arch frozen do-intervention (direction confirmed but alpha ~0.47x predicted — K-1 competitive geometry issue).
+multi-arch frozen do-intervention (direction confirmed but alpha ~0.47x predicted — K-1 competitive geometry issue),
+CIFAR linear regime surgery (d_eff manipulation barely affects q — kappa_nearest is sole predictor),
+two-knob identifiability (P1-P6 all FAIL; d_eff is NOT a causal variable for q in linear regime).
 ONLY PASS: pythia-160m/dbpedia frozen do-intervention (isolated pair, alpha=1.601 r=0.974).
 
 ## Active Paper
