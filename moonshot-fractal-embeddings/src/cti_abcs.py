@@ -440,7 +440,7 @@ def main():
     log(f"Scale analysis:")
     log(f"  Pearson r(slope, m) for m in [1..8] = {r_scale:.4f} (PASS: >{SCALE_PEARSON_THRESH})")
     log(f"  Estimated K_eff (90% saturation): {k_eff_est}")
-    log(f"  slope(1) = {slope_m1:.4f} ≈ 1/K_eff implies K_eff_from_single = {1/slope_m1:.2f}" if slope_m1 > 0.01 else "")
+    log(f"  slope(1) = {slope_m1:.4f} ~ 1/K_eff implies K_eff_from_single = {1/slope_m1:.2f}" if slope_m1 > 0.01 else "")
 
     if k_eff_est is not None:
         slope_k_eff = slopes_by_m.get(k_eff_est, {}).get('slope', 0.0)
