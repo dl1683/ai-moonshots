@@ -1,6 +1,6 @@
 # CTI Universal Law - Research Status
 
-**As of: February 23, 2026 (Session 67 COMPLETE)**
+**As of: February 23, 2026 (Session 68 COMPLETE)**
 
 ## The Discovery
 
@@ -116,11 +116,18 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
 
 6. **Practical utility demo:** predict class difficulty from geometry alone
 
-7. **Renormalized Universality Theorem verification (next):**
+7. **Renormalized Universality Theorem verification (Session 68 DONE — FAIL):**
    - Theorem: A/sqrt(d_eff_formula) = sqrt(4/pi) = 1.128 universally
-   - NLP check: 1.477/sqrt(1.71) = 1.129 (1.477 back-calculated — need direct d_eff measurement)
-   - ViT next: predict d_eff_ViT = A_ViT^2/(4/pi) = 7.5^2/1.273 = 44, measure actual d_eff_formula
-   - Prediction: A/sqrt(measured_d_eff) = 1.128 for both modalities
+   - Pre-registered prospective test (commits 0d1d0e7, 1fbd0b6; results d7f0317)
+   - H1 (rel_error < 25%): FAIL 0/3 test archs. H2 (r > 0.85): FAIL r=-0.539
+   - MEASURED d_eff (tr(Sigma_W)/sigma_cdir^2): pythia-160m=27.3, gpt-neo=57.5, pythia-1b=73.1, pythia-410m=68.5, OLMo-1B=86.5
+   - NEEDED d_eff for theorem: 0.59–3.20 (10–120x smaller than measured)
+   - A_renorm_measured = 0.30 (theory: 1.128), ranging 0.10–0.33 across archs (NOT constant)
+   - DIAGNOSIS: For LM embeddings, d_eff = d/aniso^2 where aniso~4-5x (vs CIFAR ~18.7x).
+     Theorem holds for discriminative CIFAR embeddings (d_eff~1.46), NOT for LM embeddings (d_eff~27-87).
+   - CONCLUSION: Consistent with Session 60 finding that kappa_nearest is the sole sufficient statistic;
+     d_eff decomposition is CIFAR-specific and does not extend to LM embeddings.
+   - NOTE: Early LM layers show aniso=13-31x (close to CIFAR), suggesting theorem may hold locally at early layers.
 
 ## Failed Causal Interventions (logged for paper)
 
