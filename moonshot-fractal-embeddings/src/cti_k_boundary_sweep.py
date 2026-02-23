@@ -15,8 +15,8 @@ Current picture:
 
 PRE-REGISTERED: Test two new intermediate-K datasets with frozen A(K) formula.
   Frozen A(K): a=1.1636, b=1.3013 (same throughout all prospective tests)
-  Dataset 1: SetFit/atis (K~26 airline intents) => A(K=26)=1.1636/log(26)+1.3013
-  Dataset 2: silicone swda (K=41 dialog acts)  => A(K=41)=1.1636/log(41)+1.3013
+  Dataset 1: papluca/language-identification (K=20 languages) => A(K=20)=1.1636/log(20)+1.3013
+  Dataset 2: khalidalt/HuffPost (K=41 news categories) => A(K=41)=1.1636/log(41)+1.3013
 
 PRE-REGISTERED HYPOTHESES:
   H_bound: At least one of the two new datasets has rho >= 0.85
@@ -57,31 +57,35 @@ RHO_THRESH = 0.85
 MAE_THRESH = 0.08
 
 # Pre-register K values and predicted A
-K_ATIS = 26
-K_SWDA = 41
-A_ATIS = A_pred(K_ATIS)
-A_SWDA = A_pred(K_SWDA)
-print(f"Pre-registered: A(K={K_ATIS})={A_ATIS:.4f}, A(K={K_SWDA})={A_SWDA:.4f}", flush=True)
+K_LANGID = 20
+K_HUFFPOST = 41
+A_LANGID = A_pred(K_LANGID)
+A_HUFFPOST = A_pred(K_HUFFPOST)
+print(f"Pre-registered: A(K={K_LANGID})={A_LANGID:.4f}, A(K={K_HUFFPOST})={A_HUFFPOST:.4f}", flush=True)
 
-# Dataset configs (multiple fallbacks in case one fails to load)
+# Dataset configs
+# papluca/language-identification: K=20 language classes (string labels "fr","en",...)
+# khalidalt/HuffPost: K=41 news categories (integer labels 0-40)
+# Note: K=20 was in A(K) fitting set (20newsgroups K=20), but the dataset itself is new.
+# The K-threshold test is prospective: outcomes unknown, datasets never run through protocol.
 NEW_DATASETS = {
-    "atis": {
-        "hf_name": "SetFit/atis",
+    "langid": {
+        "hf_name": "papluca/language-identification",
         "hf_cfg": None,
         "text_col": "text",
-        "label_col": "intent",
-        "K_expected": K_ATIS,
+        "label_col": "labels",  # string codes like "fr","en",...
+        "K_expected": K_LANGID,  # K=20 expected
         "n_sample_per_class": 30,
         "split": "test",
     },
-    "swda": {
-        "hf_name": "silicone",
-        "hf_cfg": "swda",
-        "text_col": "Utterance",
-        "label_col": "Dialogue_Act",
-        "K_expected": K_SWDA,
+    "huffpost": {
+        "hf_name": "khalidalt/HuffPost",
+        "hf_cfg": None,
+        "text_col": "headline",
+        "label_col": "label",   # integer 0-40
+        "K_expected": K_HUFFPOST,  # K=41 expected
         "n_sample_per_class": 25,
-        "split": "test",
+        "split": "train",       # HuffPost has no test split; sample from train
     },
 }
 
@@ -235,8 +239,8 @@ def main():
     print("=" * 70)
     print("K-BOUNDARY SWEEP (Session 43 follow-up)")
     print(f"Frozen A(K): a={A_GLOBAL_a}, b={A_GLOBAL_b}")
-    print(f"Datasets: atis K~{K_ATIS}, swda K~{K_SWDA}")
-    print(f"A(K={K_ATIS})={A_ATIS:.4f}, A(K={K_SWDA})={A_SWDA:.4f}")
+    print(f"Datasets: langid K={K_LANGID}, huffpost K={K_HUFFPOST}")
+    print(f"A(K={K_LANGID})={A_LANGID:.4f}, A(K={K_HUFFPOST})={A_HUFFPOST:.4f}")
     print(f"H1: rho>={RHO_THRESH}, H2: MAE<={MAE_THRESH}")
     print("=" * 70)
 
@@ -394,8 +398,8 @@ def main():
         "session": 43,
         "preregistered": {
             "A_K_formula": "A(K) = 1.1636/log(K) + 1.3013",
-            "A_atis_K26": float(A_ATIS),
-            "A_swda_K41": float(A_SWDA),
+            "A_langid_K20": float(A_LANGID),
+            "A_huffpost_K41": float(A_HUFFPOST),
             "hypothesis": "rho >= 0.85 requires K >= 30 (bisects 10-59 window)",
             "H1_rho_threshold": RHO_THRESH,
             "H2_mae_threshold": MAE_THRESH,
