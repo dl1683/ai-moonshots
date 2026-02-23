@@ -335,6 +335,15 @@ alone (+28.1\% relative improvement), with an \emph{out-of-sample} test on 4 hel
 architectures confirming the transfer: pooled R$^2$ improves from $0.451$ to $0.578$
 (+28.3\%, 4/4 architectures pass, \texttt{cti\_kappa\_eff\_held\_out.json}).
 
+\textbf{Limitation (functional form specificity):} A pre-registered tournament test compared
+causal weights $\{w_r\}$ against 1000 random monotone weight assignments. The causal weighting
+achieves R$^2=0.578$ and exceeds 67.6\% of random nulls, but does not exceed the 90th-percentile
+random baseline (R$^2_{\mathrm{p90}}=0.585$; pre-registered threshold; FAIL,
+\texttt{cti\_kappa\_tournament.json}). The \emph{direction} of the competition gradient
+(near competitors matter more) is validated; the \emph{specific} exponential functional form
+$\exp(-\mathrm{gap}/\tau^*)$ is not yet decisively distinguished from arbitrary monotone
+weighting on this dataset.
+
 \paragraph{Additivity RCT.}
 A pre-registered factorial RCT (\texttt{cti\_j1j2\_factorial\_rct.json}) jointly perturbed
 $j_1$ and $j_2$ over DELTA $\in\{0.0,0.1,0.2,0.3,0.5,0.8,1.0\}$.
@@ -351,6 +360,13 @@ Results: $r(\log w,-\mathrm{gap})=0.9502$ (threshold $>0.85$; PASS);
 fitted $\tau^*_{\mathrm{median}}=0.207$ (empirical $\tau^*=0.20$; error 3.5\%).
 This provides a first-principles derivation of $\tau^*$ from the geometry.
 
+\textbf{Real-embedding Jacobian (inconclusive):} A matched-delta Jacobian test on
+pythia-160m step-512 checkpoint embeddings (\texttt{cti\_phi\_jacobian\_real.json}) found only
+2 of 14 classes meeting both non-ceiling ($q<0.85$) and rank-stable (gap$>0.04$) criteria;
+the test was inconclusive due to insufficient regime coverage. Qualitatively, wide-gap classes
+($\mathrm{gap}>0.50$) correctly show $w\approx0$, consistent with phi model predictions;
+quantitative validation of the exponential functional form in real embeddings remains open.
+
 \begin{table}[h!]
 \centering
 \caption{Competition field evidence summary.}
@@ -364,9 +380,11 @@ j2 causal activity (6-arm RCT) & $r=0.811$ & Causally active \\
 Full field activity & $r=0.988$ & PASS \\
 Phi upgrade pooled R$^2$ & $0.360\to0.461$ (+28.1\%) & PASS \\
 Held-out arch transfer (4/4) & $0.451\to0.578$ (+28.3\%) & PASS \\
+Monotone null (causal vs random weights) & $67.6\%$ beat, p90 FAIL & FAIL \\
 Additivity RCT & $r=0.9964$ & PASS \\
 Synthetic Jacobian $r(\log w,-\mathrm{gap})$ & $0.9502$ & PASS \\
 Synthetic $\tau^*$ & $0.207$ vs.\ empirical $0.20$ & 3.5\% error \\
+Real-embedding Jacobian & 2/14 valid classes & INCONCLUSIVE \\
 \bottomrule
 \end{tabular}
 \end{table}
