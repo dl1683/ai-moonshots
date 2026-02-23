@@ -22,6 +22,13 @@ Where:
 
 **Nobel score downgraded from 8.0 → 6.7 after Session 57: NLP surgery FAILs (both sub-linear and linear regime) show 1/d_eff attenuation mechanism is CIFAR-CNN-specific, not universal. Correlational law remains robustly universal.**
 
+**Score calibration by prize framing (multiple Codex assessments):**
+- Nobel (general/"Turing-adjacent" framing): ~6.4-6.7/10
+- Nobel Physics specifically: ~4/10 (Physics committee rarely awards ML theory)
+- Nobel Medicine: ~2/10 (no direct clinical/biological mechanism yet)
+- Turing Award: ~8.0/10 (most relevant prize given computational nature of work)
+- CV=0.024 = "within-class universality" (decoder LMs); "universal" claim requires non-transformer families + independent replication
+
 ---
 
 ## Key Validated Results
