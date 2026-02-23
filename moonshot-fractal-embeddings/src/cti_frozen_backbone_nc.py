@@ -218,38 +218,37 @@ def nc_loss(z, y, k, arm, class_perm=None):
 # 4. Evaluation: q and kappa in PROJ HEAD space
 # ────────────────────────────────────────────────────────
 
-def compute_q_and_kappa_head(proj_head, Z_test_t, y_test, K):
+def compute_q_and_kappa_head(proj_head, Z_train_t, y_train, Z_test_t, y_test, K):
     """
     FIX: measure in proj_head output space, same space NC is optimized.
-    Z_test_t: (N, d_model) tensor on CPU
+    FIX2: fit 1-NN on TRAIN set, evaluate on TEST set (not same set!)
     """
     proj_head.eval()
     with torch.no_grad():
-        # Process in batches to avoid OOM
-        chunks = torch.split(Z_test_t.to(DEVICE), 512)
-        zs = [proj_head(c) for c in chunks]
-        Z_proj = torch.cat(zs, dim=0).cpu().numpy()   # (N, proj_dim)
+        train_chunks = torch.split(Z_train_t.to(DEVICE), 512)
+        Z_train_proj = torch.cat([proj_head(c) for c in train_chunks], dim=0).cpu().numpy()
+        test_chunks = torch.split(Z_test_t.to(DEVICE), 512)
+        Z_test_proj = torch.cat([proj_head(c) for c in test_chunks], dim=0).cpu().numpy()
     proj_head.train()
 
     from sklearn.neighbors import KNeighborsClassifier
 
-    # kappa_nearest in proj_head space
-    classes = np.unique(y_test)
-    d = Z_proj.shape[1]
-    means = {c: Z_proj[y_test == c].mean(0) for c in classes}
-    within_var = np.mean([np.mean(np.sum((Z_proj[y_test == c] - means[c])**2, axis=1))
+    # kappa_nearest in proj_head space (on TRAIN set)
+    classes = np.unique(y_train)
+    d = Z_train_proj.shape[1]
+    means = {c: Z_train_proj[y_train == c].mean(0) for c in classes}
+    within_var = np.mean([np.mean(np.sum((Z_train_proj[y_train == c] - means[c])**2, axis=1))
                           for c in classes])
     sigma_W = np.sqrt(within_var / d)
-
     pairwise_dists = [np.linalg.norm(means[classes[i]] - means[classes[j]])
                       for i in range(len(classes)) for j in range(i+1, len(classes))]
     delta_min = min(pairwise_dists)
     kappa = float(delta_min / (sigma_W * np.sqrt(d) + 1e-10))
 
-    # 1-NN accuracy in proj_head space
+    # 1-NN: fit on TRAIN, score on TEST
     knn = KNeighborsClassifier(1, metric="euclidean", n_jobs=-1)
-    knn.fit(Z_proj, y_test)
-    acc = float(knn.score(Z_proj, y_test))
+    knn.fit(Z_train_proj, y_train)
+    acc = float(knn.score(Z_test_proj, y_test))
     q = (acc - 1.0 / K) / (1.0 - 1.0 / K)
 
     return float(q), float(kappa)
@@ -318,7 +317,7 @@ def train_arm(seed, arm, Z_train, y_train, Z_test, y_test, d_model):
         scheduler.step()
 
         if epoch % 10 == 0 or epoch == N_EPOCHS or epoch == 1:
-            q_val, kappa_val = compute_q_and_kappa_head(proj_head, Z_test_t, y_test, K)
+            q_val, kappa_val = compute_q_and_kappa_head(proj_head, Z_train_t, y_train, Z_test_t, y_test, K)
             print(f"  [seed={seed} arm={arm} ep={epoch:3d}] "
                   f"q={q_val:.4f} kappa={kappa_val:.4f} "
                   f"L_ce={e_ce/n_b:.4f} L_nc={e_nc/n_b:.4f}", flush=True)
