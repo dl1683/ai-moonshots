@@ -49,7 +49,12 @@ print()
 
 
 def load_all_points():
-    """Load all valid (kappa, q, K, model, dataset) points."""
+    """Load all valid (kappa, q, K, model, dataset) points.
+
+    Cache files are lists of dicts with keys:
+      model, dataset, layer, K, q, kappa_nearest, logit_q (+ optional fields)
+    q = raw accuracy (0-1), logit_q = logit(q), kappa_nearest = delta/sigma
+    """
     points = []
     for fname in os.listdir(RESULTS_DIR):
         if not fname.startswith(CACHE_PATTERN) or not fname.endswith(".json"):
@@ -61,48 +66,45 @@ def load_all_points():
         except Exception:
             continue
 
-        model = data.get("model", "")
-        dataset = data.get("dataset", "")
+        # Files are lists of per-layer dicts
+        if not isinstance(data, list):
+            continue
 
-        # Two formats
-        if "layers" in data:
-            for layer_data in data["layers"].values():
-                kappa = layer_data.get("kappa_nearest") or layer_data.get("kappa_min")
-                K = layer_data.get("K")
-                q_raw = layer_data.get("q_raw") or layer_data.get("q_norm")
-                if kappa is None or K is None or q_raw is None:
+        for entry in data:
+            if not isinstance(entry, dict):
+                continue
+            kappa = entry.get("kappa_nearest")
+            K = entry.get("K")
+            logit_q = entry.get("logit_q")
+            model = entry.get("model", "")
+            dataset = entry.get("dataset", "")
+
+            # Fall back to computing logit from q
+            if logit_q is None:
+                q = entry.get("q")
+                if q is None or K is None or q <= 1.0 / K or q >= 1.0:
                     continue
-                if kappa <= 0 or K < 3 or q_raw <= 1.0 / K or q_raw >= 1.0:
-                    continue
-                logit_q = float(scipy_logit(q_raw))
-                log_km1 = float(np.log(K - 1))
-                points.append({
-                    "kappa": float(kappa),
-                    "logit_q": logit_q,
-                    "log_km1": log_km1,
-                    "K": K,
-                    "model": model,
-                    "dataset": dataset,
-                })
-        elif "data" in data:
-            for entry in data["data"]:
-                kappa = entry.get("kappa_nearest") or entry.get("kappa_min")
-                K = entry.get("K")
-                q_raw = entry.get("q_raw") or entry.get("q_norm")
-                if kappa is None or K is None or q_raw is None:
-                    continue
-                if kappa <= 0 or K < 3 or q_raw <= 1.0 / K or q_raw >= 1.0:
-                    continue
-                logit_q = float(scipy_logit(q_raw))
-                log_km1 = float(np.log(K - 1))
-                points.append({
-                    "kappa": float(kappa),
-                    "logit_q": logit_q,
-                    "log_km1": log_km1,
-                    "K": K,
-                    "model": model,
-                    "dataset": dataset,
-                })
+                logit_q = float(scipy_logit(q))
+            else:
+                logit_q = float(logit_q)
+
+            if kappa is None or K is None:
+                continue
+            if kappa <= 0 or K < 3:
+                continue
+            # Sanity check: logit_q should be finite
+            if not np.isfinite(logit_q):
+                continue
+
+            log_km1 = float(np.log(K - 1))
+            points.append({
+                "kappa": float(kappa),
+                "logit_q": logit_q,
+                "log_km1": log_km1,
+                "K": K,
+                "model": model,
+                "dataset": dataset,
+            })
     return points
 
 
