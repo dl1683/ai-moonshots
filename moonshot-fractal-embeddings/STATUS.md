@@ -1,6 +1,6 @@
 # CTI Universal Law - Research Status
 
-**As of: February 22-23, 2026 (Session 43 COMPLETE)**
+**As of: February 23, 2026 (Session 57 COMPLETE / Session 58)**
 
 ## The Discovery
 
@@ -18,7 +18,9 @@ Where:
 
 ---
 
-## Current Codex Score: Nobel 6.6/10, Turing 8.0/10, Fields 3.0/10
+## Current Codex Score: Nobel ~6.7/10 (Turing 8.0/10, Fields 3.0/10)
+
+**Nobel score downgraded from 8.0 → 6.7 after Session 57: NLP surgery FAILs (both sub-linear and linear regime) show 1/d_eff attenuation mechanism is CIFAR-CNN-specific, not universal. Correlational law remains robustly universal.**
 
 ---
 
@@ -42,6 +44,10 @@ Where:
 | Single-competitor weight map (Session 38) | sum_w=2.42 effective competitors, A_local=2.04, r_log_log=-0.337 (weak fit) | DONE |
 | Held-out w_r transfer 4/4 PASS (Session 38) | Frozen causal w_r from pythia-160m: pooled R2 0.451->0.578 (+28%) on 4 held-out archs | DONE |
 | Tournament + random null (Session 38) | causal w_r R2=0.578, phi(tau=0.2)=0.567, kappa_mean=0.469. Random null p67 (FAIL >90th pct) | DONE |
+| CIFAR global surgery ratio (Session 56) | Ratio=d_eff=19.47 confirmed (3 seeds, pre-reg PASS), H1/H2/H3 all PASS | DONE |
+| Beyond-1NN test 7arch×3ds (Session 57) | q_knn5 r=0.792 PASS, silhouette r=0.881 PASS; linear probe FAIL (pre-reg primary) | DONE |
+| Cross-domain NLP surgery sub-linear (Session 57) | H1 FAIL ratio=1.88 vs d_eff=33.24; kappa_eff=0.24-0.73 (regime mismatch) | DONE |
+| NLP linear-regime surgery kappa_eff≈1.3 (Session 57) | H1 FAIL ratio=3.68 vs d_eff=54.31; 1/d_eff mech is CIFAR-CNN-specific | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
