@@ -1,0 +1,26 @@
+{
+  "experiment": "neff_pairwise_multi_arch",
+  "pre_registration_date": "2026-02-23",
+  "description": "Test if geometric N_eff exponent (slope of log N_eff vs log(K-1)) is architecture-universal at ~0.93. Pythia-160m measured slope=0.934 (DBpedia) and 0.918 (Banking77). Testing 3 additional architectures.",
+  "hypothesis": "The geometric N_eff exponent is architecture-universal: each architecture gives slope in [0.85, 1.00] when measured from pure centroid geometry.",
+  "models": ["EleutherAI/gpt-neo-125M", "allenai/OLMo-1B-hf", "Qwen/Qwen3-0.6B"],
+  "dataset": "dbpedia_14",
+  "K_subsets": [4, 6, 8, 10, 12, 14],
+  "n_seeds": 20,
+  "n_samples_per_class": 500,
+  "alpha_universal": 3.598,
+  "pre_registered_criteria": {
+    "PR1_slope_range": "Each architecture: slope in [0.85, 1.00]",
+    "PR2_r_threshold": "Each architecture: Pearson r > 0.99",
+    "PR3_cross_arch_cv": "CV of slopes across all 4 architectures (including pythia-160m baseline) < 10%",
+    "PASS": "PR1 and PR2 pass for >=3 of 3 new architectures, PR3 passes"
+  },
+  "baseline": {
+    "pythia-160m": {
+      "dbpedia_slope": 0.9339,
+      "dbpedia_r": 0.9999
+    }
+  },
+  "motivation": "Currently only pythia-160m has been tested. If slope~0.93 is universal across architectures, this strengthens the claim that geometric N_eff competition is a property of the classification geometry, not a pythia-specific artifact.",
+  "commit_before_run": "REQUIRED"
+}
