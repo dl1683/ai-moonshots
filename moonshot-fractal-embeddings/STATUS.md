@@ -1,6 +1,6 @@
 # CTI Universal Law - Research Status
 
-**As of: February 22, 2026**
+**As of: February 23, 2026 (Session 38 COMPLETE)**
 
 ## The Discovery
 
@@ -18,7 +18,7 @@ Where:
 
 ---
 
-## Current Codex Score: Nobel 4.7/10, Turing 6.4/10, Fields 3.0/10
+## Current Codex Score: Nobel 6.4/10, Turing 7.7/10, Fields 3.0/10
 
 ---
 
@@ -38,6 +38,10 @@ Where:
 | Checkpoint phase diagram | B_j2_r geometrically driven (step512 B=0.831) | DONE |
 | DBpedia NC-loss head intervention (Session 37) | FAIL (specificity): shuffled_nc=nc_full, pythia-410m ceiling | DONE |
 | Multi-arch frozen do-intervention (Session 37) | PARTIAL: r>0.87 all 5 models (direction PASS), alpha=0.701 avg (quantitative FAIL) | DONE |
+| Causal sufficiency RCT 6-arm frozen (Session 38) | 2/7 pass: j1_r=0.959 PASS, j2_r=0.811 FAIL (j2 causal), alpha_topall=4.83, ratio~4.59x pure (sparse: ~4-5 active rivals) | DONE |
+| Single-competitor weight map (Session 38) | sum_w=2.42 effective competitors, A_local=2.04, r_log_log=-0.337 (weak fit) | DONE |
+| Held-out w_r transfer 4/4 PASS (Session 38) | Frozen causal w_r from pythia-160m: pooled R2 0.451->0.578 (+28%) on 4 held-out archs | DONE |
+| Tournament + random null (Session 38) | causal w_r R2=0.578, phi(tau=0.2)=0.567, kappa_mean=0.469. Random null p67 (FAIL >90th pct) | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
@@ -49,9 +53,13 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
 
 ## Open Problems
 
-1. **Formal regime-aware law:** `logit(q_i) = A*sqrt(d_eff)*[kappa_j1 + lambda*sum w_r*kappa_jr]`
-   - NLP: lambda->0 (sparse); ViT CIFAR-10: lambda>0 (dense)
-   - Need to derive w_r = exp(-A_local * delta_kappa_r * sqrt(d_eff)) with A_local approx 1.75 (universal?)
+1. **Formal regime-aware law:** `logit(q_i) = C + A*sqrt(d_eff)*phi(tau*, kappas_i)`
+   - phi(tau=0.2) = soft-min of all competitors: R2=0.567 on 4 held-out archs (vs kappa_nearest R2=0.451)
+   - Causal w_r (from do-interventions): R2=0.578 (best), but NOT better than random monotone at p67
+   - sum_w = 2.42 effective competitors (sparse competition confirmed causally for pythia-160m DBpedia)
+   - KEY INSIGHT: ANY monotone-decreasing weighting of all K-1 kappas gives similar improvement
+   - UPGRADE: phi(tau*=0.2) is cleaner than causal w_r (theoretically motivated, no interventions needed)
+   - OPEN: derive optimal tau* from first principles (should depend on kappa distribution)
 
 2. **A_ViT/A_NLP = 1.67 derivation:** via margin thermodynamics (A prop 1/T_eff)
 
@@ -94,6 +102,10 @@ ONLY PASS: pythia-160m/dbpedia frozen do-intervention (isolated pair, alpha=1.60
 | `src/cti_held_out_universality.py` | Held-out architecture test |
 | `src/cti_dbpedia_nc_intervention.py` | NC-loss head intervention (frozen backbone) |
 | `src/cti_do_intervention_multi_arch.py` | Multi-arch frozen do-intervention (5 models) |
+| `src/cti_causal_sufficiency_rct.py` | 6-arm causal sufficiency RCT (Session 38) |
+| `src/cti_competitor_weight_map.py` | Single-competitor causal weight map (Session 38) |
+| `src/cti_kappa_eff_held_out.py` | Held-out w_r transfer test (Session 38) |
+| `src/cti_kappa_tournament.py` | Tournament + random-null specificity test (Session 38) |
 | `src/hierarchical_datasets.py` | Dataset loading utility |
 | `src/multi_model_pipeline.py` | Multi-model embedding pipeline |
 | `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md` | Master theory document |
