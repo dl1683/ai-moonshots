@@ -130,11 +130,35 @@ q_{\mathrm{norm}}
 Two approximations close the derivation.
 
 \paragraph{Nearest-class dominance.}
-Let $j^\star(k)=\arg\min_{j\neq k}\Delta_{k,j}$. Then
+Let $j^\star(k)=\arg\min_{j\neq k}\Delta_{k,j}$. For the dense (ETF) limit where all $K-1$ competitors are equidistant:
 \[
 \sum_{j\neq k}\exp(-\Delta_{k,j}/s)\approx (K-1)\exp(-\Delta_k/s),
 \]
-with $\Delta_k:=\Delta_{k,j^\star(k)}$.
+with $\Delta_k:=\Delta_{k,j^\star(k)}$. This gives $\beta=1$ asymptotically.
+
+\paragraph{Hierarchical class structure and $\beta < 1$.}
+Real classification datasets are not equidistant (dense ETF); instead, classes cluster hierarchically.
+Consider a two-level hierarchy: $K$ classes organized into $\sqrt{K}$ groups of $\sqrt{K}$ each,
+with intra-group distance $D_1$ and inter-group distance $D_2\gg D_1$.
+The Gumbel race sum decomposes as
+\begin{equation}
+\label{eq:hierarchical-decomp}
+\sum_{j\neq k}\exp(-\Delta_{k,j}/s)
+= \underbrace{(\sqrt{K}-1)\exp(-D_1/s)}_{\text{within-group (active)}}
++ \underbrace{(K-\sqrt{K})\exp(-D_2/s)}_{\text{across-group (suppressed)}}.
+\end{equation}
+When the hierarchy gap $D_2-D_1\gg s$ (semantically distinct groups are well-separated),
+the across-group term is negligible and the effective competitor count is
+\[
+N_\mathrm{eff}\approx \sqrt{K-1}.
+\]
+This gives $\beta=\frac{\mathrm{d}\log N_\mathrm{eff}}{\mathrm{d}\log(K-1)}=\frac{1}{2}$,
+i.e., the functional form of Eq.~\ref{eq:cti-law} holds with $\beta=0.5$.
+Intermediate regimes interpolate: when the hierarchy gap is small ($D_2-D_1\ll s$),
+$N_\mathrm{eff}\to K-1$ and $\beta\to 1$ (dense ETF limit);
+when the hierarchy gap is large, $N_\mathrm{eff}\to\sqrt{K-1}$ and $\beta\to 0.5$.
+The pre-registered constrained comparison (\S\ref{subsec:sparse-competition}) confirms
+$\beta=0.5$ beats $\beta=1.0$ by $10.1\%$ LOAO across 444 points and 10 real datasets.
 
 \paragraph{Linear gap-to-SNR map.}
 Under isotropic/noise-normalized geometry, $\Delta_k$ is affine in nearest-centroid SNR:
