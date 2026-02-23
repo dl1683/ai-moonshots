@@ -502,7 +502,7 @@ def main():
         print(f"  {arch:>25} {d_eff_meas:>12.2f} {d_eff_need:>13.2f} {ratio:>8.2f}x {aniso:>7.2f}x {A_meas:>14.4f}")
     print()
     print("  NOTE: For LM embeddings, within-class variance is isotropically distributed")
-    print("  (aniso ≈ 1-5x) unlike discriminative CIFAR embeddings (aniso ≈ 18.7x).")
+    print("  (aniso ~1-5x) unlike discriminative CIFAR embeddings (aniso ~18.7x).")
     print("  d_eff_formula = tr(Sigma_W)/sigma_cdir^2 >> 1 for LM embeddings.")
     print("  The Renormalized Universality Theorem holds for d_eff~1.46 (CIFAR), not d_eff~100+ (LM).")
 

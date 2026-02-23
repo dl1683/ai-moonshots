@@ -1,0 +1,141 @@
+{
+  "experiment": "cti_deff_alpha_prediction",
+  "preregistered": true,
+  "bug_fix_note": "kappa_nearest formula fixed post fast-run: removed erroneous sqrt(d) from denominator (found before any test arch results revealed)",
+  "pre_registered_criteria": {
+    "H1_max_rel_error": 0.25,
+    "H2_min_r": 0.85
+  },
+  "theory_A_renorm": 1.1283791670955126,
+  "dataset": "dbpedia_14",
+  "n_samples": 2000,
+  "training_models": [
+    "pythia-160m",
+    "gpt-neo-125m"
+  ],
+  "test_models": [
+    "pythia-1b",
+    "pythia-410m",
+    "OLMo-1B-hf"
+  ],
+  "A_renorm_preregistered": 0.2976127785258783,
+  "A_renorm_std": 0.03151751531036756,
+  "A_renorm_theory": 1.1283791670955126,
+  "A_renorm_ratio_measured_over_theory": 0.26375245768844174,
+  "training_results": {
+    "pythia-160m": {
+      "d_eff": 27.309482478475996,
+      "kappa": 0.4093405965028534,
+      "q": 0.8772307692307693,
+      "anisotropy_ratio": 5.303027446131163,
+      "trace_SW": 397.5929131027646,
+      "sigma_cdir_sq": 14.558786070593904,
+      "arch": "pythia-160m",
+      "model_id": "EleutherAI/pythia-160m",
+      "best_layer": 11.0,
+      "n_layers": 12,
+      "d": 768,
+      "alpha_obs": 1.7199847353492173,
+      "A_renorm_observed": 0.32913029383624587,
+      "d_eff_needed_for_theory": 2.323480685207324
+    },
+    "gpt-neo-125m": {
+      "d_eff": 57.47532356764953,
+      "kappa": 0.547292433929275,
+      "q": 0.8858461538461538,
+      "anisotropy_ratio": 3.6554420006310906,
+      "trace_SW": 682.5038612792413,
+      "sigma_cdir_sq": 11.874728473271167,
+      "arch": "gpt-neo-125m",
+      "model_id": "EleutherAI/gpt-neo-125m",
+      "best_layer": 11.0,
+      "n_layers": 12,
+      "d": 768,
+      "alpha_obs": 2.0173342229551126,
+      "A_renorm_observed": 0.26609526321551075,
+      "d_eff_needed_for_theory": 3.1962857138186074
+    }
+  },
+  "test_results": {
+    "pythia-1b": {
+      "d_eff": 73.09641062742921,
+      "kappa": 0.5634014130051562,
+      "q": 0.9073846153846155,
+      "anisotropy_ratio": 5.29318350303434,
+      "trace_SW": 1068.974868964039,
+      "sigma_cdir_sq": 14.624177299383142,
+      "arch": "pythia-1b",
+      "model_id": "EleutherAI/pythia-1b",
+      "best_layer": 15.0,
+      "n_layers": 16,
+      "d": 2048,
+      "alpha_obs": 1.0020929266994805,
+      "alpha_pred": 2.544483273189706,
+      "rel_error": 1.5391689786398182,
+      "h1_pass": "False",
+      "A_renorm_would_be": 0.11720873286869765,
+      "d_eff_needed_for_theory": 0.7886891652819381
+    },
+    "pythia-410m": {
+      "d_eff": 68.48180987865456,
+      "kappa": 0.6008011139586846,
+      "q": 0.9203076923076924,
+      "anisotropy_ratio": 3.8668948564652794,
+      "trace_SW": 1019.7098907200888,
+      "sigma_cdir_sq": 14.890229865813275,
+      "arch": "pythia-410m",
+      "model_id": "EleutherAI/pythia-410m",
+      "best_layer": 23.0,
+      "n_layers": 24,
+      "d": 1024,
+      "alpha_obs": 0.8644965588847874,
+      "alpha_pred": 2.4628569602689567,
+      "rel_error": 1.8488915715825136,
+      "h1_pass": "False",
+      "A_renorm_would_be": 0.10446616554120351,
+      "d_eff_needed_for_theory": 0.5869706948813708
+    },
+    "OLMo-1B-hf": {
+      "d_eff": 86.5514092625004,
+      "kappa": 0.5505531196896661,
+      "q": 0.916,
+      "anisotropy_ratio": 4.864384592118651,
+      "trace_SW": 146.87722410359825,
+      "sigma_cdir_sq": 1.6969940218782185,
+      "arch": "OLMo-1B-hf",
+      "model_id": "allenai/OLMo-1B-hf",
+      "best_layer": 15.0,
+      "n_layers": 16,
+      "d": 2048,
+      "alpha_obs": 1.3262106570325984,
+      "alpha_pred": 2.7687812563281406,
+      "rel_error": 1.087738657238134,
+      "h1_pass": "False",
+      "A_renorm_would_be": 0.14255269810426835,
+      "d_eff_needed_for_theory": 1.381385548461487
+    }
+  },
+  "scorecard": {
+    "H1_n_pass": 0,
+    "H1_n_total": 3,
+    "H1_pass": false,
+    "H2_pearson_r": -0.5390359909923007,
+    "H2_pearson_p": 0.3485387890167379,
+    "H2_pass": "False",
+    "overall_pass": false
+  },
+  "all_alpha_obs": [
+    1.7199847353492173,
+    2.0173342229551126,
+    1.0020929266994805,
+    0.8644965588847874,
+    1.3262106570325984
+  ],
+  "all_alpha_pred": [
+    1.5552790055966752,
+    2.256276327710362,
+    2.544483273189706,
+    2.4628569602689567,
+    2.7687812563281406
+  ]
+}
