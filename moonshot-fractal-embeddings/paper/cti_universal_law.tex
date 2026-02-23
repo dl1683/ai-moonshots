@@ -44,7 +44,7 @@ RWKV's held-out $\hat\alpha=2.887$ (single-intercept) falls within the pre-regis
 Cross-modality tests confirm the same functional form on ViT-Large/CIFAR-10 ($R^2=0.964$); both ViT-Base and ResNet50 CNN reach comparable $r\approx0.75$ at $K=100$, confirming the form is architecture-agnostic.
 Causal evidence from frozen do-interventions and an orthogonal factorial test identifies nearest-class geometry as the dominant driver.
 
-\textbf{Honest scope.} The constant $\alpha$ varies substantially by modality (NLP: 1.48, ViT: 0.63, CNN: 4.4); universality is of the \emph{functional form}, not of the constant. At $K=100$, $r\approx0.75$ falls below the Monte Carlo noise floor ($E[r]=0.875$), attributed to CIFAR-100's hierarchical class structure. The slope scales across datasets as $A(K)=1.164/\log(K)+1.301$ ($r_\mathrm{fit}=0.93$); one-shot dataset calibration achieves practical MAE$\leq$0.08 on all tested datasets. No external replication exists yet.
+\textbf{Honest scope.} The constant $\alpha$ varies substantially by modality (NLP: 1.48, ViT: 0.63, CNN: 4.4); universality is of the \emph{functional form}, not of the constant. At $K=100$, $r\approx0.75$ falls below the Monte Carlo noise floor ($E[r]=0.875$), attributed to CIFAR-100's hierarchical class structure. The slope scales across datasets as $A(K)=1.164/\log(K)+1.301$ ($r_\mathrm{fit}=0.93$); one-shot dataset calibration achieves MAE$\leq$0.08 on all four prospective datasets (pre-registered, $K\in\{6,10,59,77\}$). Architecture-ranking ($\rho\geq0.85$) requires $K\geq59$. No external replication exists yet.
 \end{abstract}
 
 \section{Introduction}
@@ -64,7 +64,7 @@ The key conceptual point: Eq.~\ref{eq:cti-law}'s structure is derived from first
 \item \textbf{Cross-modal validation}: ViT-Large reaches $R^2=0.964$ with same functional form; ResNet50 CNN on CIFAR-100 ($K=100$) shows $r=0.749$, matching ViT-Base at same $K$ ($r=0.773$).
 \item \textbf{K-regime analysis}: Monte Carlo noise-floor simulation shows K=100 attenuation is expected ($E[r]\approx0.875$); both architectures fall in the same range, confirming form universality across attention and convolutional families.
 \item \textbf{Causal evidence}: Frozen do-interventions and orthogonal factorial test confirm nearest-class dominance.
-\item \textbf{K-scaling and practical prediction}: The slope $A(K)=1.164/\log(K)+1.301$ ($r_\mathrm{fit}=0.93$) predicts held-out dataset slopes within 50\%. One-shot dataset calibration achieves MAE$\leq$0.08 on all tested single-label datasets. Prospective validation on Banking77 ($K=77$, pre-registered, never seen in fitting): rho$=0.890$ \textbf{PASS}.
+\item \textbf{K-scaling and practical prediction}: The slope $A(K)=1.164/\log(K)+1.301$ ($r_\mathrm{fit}=0.93$) predicts held-out dataset slopes within 50\%. One-shot dataset calibration achieves MAE$\leq$0.08 on \emph{all} four prospective datasets (pre-registered, never seen in fitting). Architecture-ranking ($\rho\geq0.85$) requires $K\geq59$; K-sweep spanning $K\in\{6,10,59,77\}$ establishes the threshold in the range $10$--$59$.
 \end{enumerate}
 
 \section{Related Work}
@@ -464,7 +464,28 @@ We pre-register the above protocol (\texttt{src/cti\_prospective\_new\_datasets.
 \item \textbf{Emotion} (dair-ai/emotion, $K=6$, $A_\mathrm{pred}=1.951$, 6 architectures): MAE$=0.041$ \textbf{PASS H2}; $\rho=0.613$ FAIL H1. Low rho is expected for $K=6$ --- the between-architecture spread in $q$ is small (few classes), limiting ranking discrimination.
 \item \textbf{Banking77} (mteb/banking77, $K=77$, $A_\mathrm{pred}=1.569$, 6 architectures): MAE$=0.060$ \textbf{PASS H2}; $\rho=0.890$ \textbf{PASS H1}.
 \end{itemize}
-Banking77 ($K=77$) is a strong result: rho$=0.890\geq0.85$ across all 6 anchors with frozen pre-registered $A(K=77)$. This is the first genuinely prospective pass (pre-registered formula, unseen dataset). The K=6 rho failure and K=77 rho pass together suggest the ranking-universality threshold requires $K\geq10$--$14$ for sufficient between-architecture discriminability.
+Banking77 ($K=77$) is a strong result: $\rho=0.890\geq0.85$ across all 6 anchors with frozen pre-registered $A(K=77)$.
+
+\paragraph{K-threshold sweep (prospective, pre-registered).}
+To locate the $K$-threshold for reliable ranking, we pre-register a second prospective test (\texttt{src/cti\_prospective\_k\_sweep.py}, commit \texttt{88b3699}) on two intermediate-$K$ datasets:
+\begin{itemize}[nosep]
+\item \textbf{Yahoo Answers Topics} (K=10, $A_\mathrm{pred}=1.807$, 6 architectures): MAE$=0.049$ \textbf{PASS H2}; $\rho=0.835$ FAIL H1.
+\item \textbf{Amazon Massive Intent} (SetFit/amazon-massive-intent-en-US, $K=59$, $A_\mathrm{pred}=1.587$, 6 architectures): MAE$=0.055$ \textbf{PASS H2}; $\rho=0.922$ \textbf{PASS H1}.
+\end{itemize}
+The combined K-sweep across all four prospective datasets establishes a clear empirical pattern:
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Dataset & $K$ & $\rho$ & H1 ($\rho\geq0.85$) \\
+\midrule
+emotion        & 6  & 0.613 & FAIL \\
+Yahoo Topics   & 10 & 0.835 & FAIL \\
+Amazon Massive & 59 & 0.922 & PASS \\
+Banking77      & 77 & 0.890 & PASS \\
+\bottomrule
+\end{tabular}
+\end{center}
+MAE universality (H2: MAE$\leq$0.08) holds for all four prospective datasets, confirming practical magnitude prediction with a single-anchor calibration. Architecture-ranking reliability ($\rho\geq0.85$) consistently requires $K\geq59$; at $K=10$ the threshold is nearly met ($\rho=0.835$), establishing the K-threshold in the range $10$--$59$.
 
 \section{Discussion}
 
@@ -508,7 +529,7 @@ We present the CTI Universal Law
 derived from extreme-value theory and validated across 12 NLP architectures (LOAO $\mathrm{CV}_\alpha=0.019$/$0.023$ single/per-dataset intercepts), spanning transformers, SSM hybrids, and pure linear RNNs (RWKV). Cross-modal tests confirm the same functional form in ViT ($R^2=0.964$, $K=10$), and both ViT and ResNet50 CNN show consistent $r\approx0.75$ at $K=100$, isolating the large-$K$ regime as the limiting factor rather than architecture family. The slope follows $A(K)=1.164/\log(K)+1.301$ ($r_\mathrm{fit}=0.93$) across datasets; one-shot dataset calibration (one anchor architecture $\to$ estimate $C_\mathrm{dataset}$) achieves MAE$\leq$0.08 on all 4 single-label datasets, providing a practical architecture comparison protocol. The next step is a renormalization theory for how constants transform across tasks, modalities, and $K$ regimes, and independent external replication.
 
 \section*{Reproducibility Statement}
-All numerical claims are taken directly from repository artifacts: \texttt{results/cti\_kappa\_nearest\_universal.json}, \texttt{results/rwkv\_preregistration.json}, \texttt{results/cti\_kappa\_loao\_per\_dataset.json}, \texttt{results/cti\_vit\_cross\_modality.json}, \texttt{results/cti\_resnet50\_cifar100.json}, \texttt{results/cti\_vit\_cifar100.json}, \texttt{results/cti\_noisefloor\_analysis.json}, \texttt{results/cti\_do\_intervention\_text.json}, \texttt{results/cti\_orthogonal\_factorial.json}, \texttt{results/cti\_checkpoint\_sweep.json}, \texttt{results/cti\_k\_scaling\_prediction.json}, \texttt{results/cti\_one\_point\_calibration.json}, \texttt{results/cti\_crossdataset\_topk.json}, \texttt{results/cti\_prospective\_new\_datasets.json}. Pre-registration timestamps are verifiable via git log. Code is available at [repository URL].
+All numerical claims are taken directly from repository artifacts: \texttt{results/cti\_kappa\_nearest\_universal.json}, \texttt{results/rwkv\_preregistration.json}, \texttt{results/cti\_kappa\_loao\_per\_dataset.json}, \texttt{results/cti\_vit\_cross\_modality.json}, \texttt{results/cti\_resnet50\_cifar100.json}, \texttt{results/cti\_vit\_cifar100.json}, \texttt{results/cti\_noisefloor\_analysis.json}, \texttt{results/cti\_do\_intervention\_text.json}, \texttt{results/cti\_orthogonal\_factorial.json}, \texttt{results/cti\_checkpoint\_sweep.json}, \texttt{results/cti\_k\_scaling\_prediction.json}, \texttt{results/cti\_one\_point\_calibration.json}, \texttt{results/cti\_crossdataset\_topk.json}, \texttt{results/cti\_prospective\_new\_datasets.json}, \texttt{results/cti\_prospective\_k\_sweep.json}. Pre-registration timestamps are verifiable via git log. Code is available at [repository URL].
 
 \appendix
 \section{Derivation Details}
