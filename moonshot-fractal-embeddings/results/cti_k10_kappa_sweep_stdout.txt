@@ -1,0 +1,873 @@
+======================================================================
+K=10 MULTI-KAPPA SWEEP: B(kappa) = C_K10 / kappa^p
+Timestamp: 2026-02-23T05:42:20.343049
+d=768, K=10, N_PER_CLASS=200
+kappa values: [0.15, 0.2, 0.25, 0.3, 0.4, 0.5]
+alpha levels: [0.75, 1.0, 1.25]
+N_SEEDS=10, R_LEVELS=[2.0, 3.0, 5.0, 7.0, 10.0]
+======================================================================
+PRE-REGISTERED (Feb 23, 2026 -- committed BEFORE running):
+  Prior: C_K10 = sqrt(2/3)*sqrt(9) = 2.4495, p = 0.791
+  C_0_prior = sqrt(2/3) = 0.8165
+  C_0_K7_empirical = 0.8080 (from K=7 STRONG_PASS)
+  Cross-check: multi-K sweep gave B(kappa=0.30,K=10)=6.23, pred=6.35
+  B_pred(kappa=0.15) = 10.985
+  B_pred(kappa=0.20) = 8.749
+  B_pred(kappa=0.25) = 7.333
+  B_pred(kappa=0.30) = 6.349
+  B_pred(kappa=0.40) = 5.056
+  B_pred(kappa=0.50) = 4.238
+  PR1: |B_obs - B_pred| / B_pred < 0.30 for each kappa (within 30%)
+  PR2: log-log slope of B vs kappa in [-0.90, -0.55]
+  PR3: CV of C-normalized B values < 0.15 (tight law)
+  PR4: within-kappa CV(B) < 0.20 for >= 4/6 kappa values
+  PR5: r(log kappa, log B_obs) < -0.90 (strong negative correlation)
+  C_0_test: |C_K10_fit/sqrt(9) - C_0_prior| / C_0_prior < 0.15
+  PRIMARY: PR5 + PR2 must both pass
+
+
+============================================================
+KAPPA = 0.15
+============================================================
+  B_pred(prior) = 10.985
+
+  --- alpha=0.75 ---
+  lambda_max=43.5885, d_eff_theory=17.619
+    seed=42: A_obs=2.2522, r_wk=0.928, B=11.2317, q_base=0.778, d_eff_1=24.871
+    seed=137: A_obs=1.9325, r_wk=0.848, B=9.2259, q_base=0.761, d_eff_1=22.791
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=2.1780, r_wk=0.752, B=10.1367, q_base=0.777, d_eff_1=21.660
+    seed=919: A_obs=1.8402, r_wk=0.844, B=8.6383, q_base=0.777, d_eff_1=22.037
+    seed=2345: A_obs=2.6672, r_wk=0.949, B=13.3235, q_base=0.770, d_eff_1=24.953
+    seed=7777: A_obs=1.8918, r_wk=0.900, B=9.6454, q_base=0.766, d_eff_1=25.996
+    seed=8888: A_obs=1.7711, r_wk=0.780, B=8.4447, q_base=0.753, d_eff_1=22.734
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=1.5959, r_wk=0.846, B=7.9550, q_base=0.760, d_eff_1=24.848
+    seed=11111: A_obs=0.9845, r_wk=0.748, B=5.0710, q_base=0.773, d_eff_1=26.531
+    seed=12345: A_obs=1.9240, r_wk=0.778, B=8.9161, q_base=0.773, d_eff_1=21.476
+  SUMMARY kappa=0.15 alpha=0.75: B=9.2588+/-2.0430(CV=0.221), r_wk=0.837, d_eff=23.790, q_base=0.769
+
+  --- alpha=1.0 ---
+  lambda_max=106.3468, d_eff_theory=7.222
+    seed=42: A_obs=0.9745, r_wk=0.651, B=2.9691, q_base=0.734, d_eff_1=9.282
+    seed=137: A_obs=2.5017, r_wk=0.789, B=7.6106, q_base=0.730, d_eff_1=9.255
+    seed=271: A_obs=2.7627, r_wk=0.970, B=10.0990, q_base=0.719, d_eff_1=13.362
+    seed=919: A_obs=3.8153, r_wk=0.888, B=11.3578, q_base=0.731, d_eff_1=8.862
+    seed=2345: A_obs=2.6722, r_wk=0.786, B=8.0816, q_base=0.723, d_eff_1=9.146
+    seed=7777: A_obs=2.4073, r_wk=0.689, B=7.1210, q_base=0.731, d_eff_1=8.750
+    seed=8888: A_obs=3.3215, r_wk=0.934, B=10.6886, q_base=0.709, d_eff_1=10.356
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=1.9017, r_wk=0.803, B=6.0770, q_base=0.723, d_eff_1=10.211
+    seed=11111: A_obs=1.4772, r_wk=0.609, B=4.4366, q_base=0.729, d_eff_1=9.020
+    seed=12345: A_obs=-0.5454, r_wk=-0.498, B=-1.8015, q_base=0.741, d_eff_1=10.912
+  SUMMARY kappa=0.15 alpha=1.0: B=6.6640+/-3.7916(CV=0.569), r_wk=0.662, d_eff=9.916, q_base=0.727
+
+  --- alpha=1.25 ---
+  lambda_max=200.2399, d_eff_theory=3.835
+    seed=42: A_obs=4.8546, r_wk=0.743, B=10.6298, q_base=0.699, d_eff_1=4.795
+    seed=137: A_obs=4.4522, r_wk=0.882, B=9.7045, q_base=0.683, d_eff_1=4.751
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=1.2980, r_wk=0.788, B=3.5029, q_base=0.701, d_eff_1=7.282
+    seed=919: A_obs=4.4705, r_wk=0.847, B=9.5677, q_base=0.696, d_eff_1=4.580
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=1.5811, r_wk=0.600, B=3.3605, q_base=0.699, d_eff_1=4.517
+    seed=7777: A_obs=4.3534, r_wk=0.675, B=9.1112, q_base=0.693, d_eff_1=4.380
+    seed=8888: A_obs=4.4052, r_wk=0.835, B=10.6840, q_base=0.708, d_eff_1=5.882
+    seed=9999: A_obs=1.6788, r_wk=0.685, B=3.8769, q_base=0.709, d_eff_1=5.333
+    seed=11111: A_obs=13.1961, r_wk=0.902, B=27.8932, q_base=0.714, d_eff_1=4.468
+    seed=12345: A_obs=7.5172, r_wk=0.873, B=17.9427, q_base=0.697, d_eff_1=5.697
+  SUMMARY kappa=0.15 alpha=1.25: B=10.6273+/-7.1066(CV=0.669), r_wk=0.783, d_eff=5.169, q_base=0.700
+
+  KAPPA=0.15 AGGREGATE: B=9.9431+/-0.6842(CV=0.069), B_pred=10.9847, rel_err=0.095, C_K10=2.2172, C_0_obs=0.7391 (valid_alpha=2/3)
+
+============================================================
+KAPPA = 0.2
+============================================================
+  B_pred(prior) = 8.749
+
+  --- alpha=0.75 ---
+  lambda_max=43.5885, d_eff_theory=17.619
+    seed=42: A_obs=2.2639, r_wk=0.937, B=10.5121, q_base=0.859, d_eff_1=21.560
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=1.0630, r_wk=0.755, B=4.7809, q_base=0.858, d_eff_1=20.227
+    seed=271: A_obs=2.1020, r_wk=0.821, B=9.4990, q_base=0.864, d_eff_1=20.421
+    seed=919: A_obs=1.0288, r_wk=0.762, B=4.5725, q_base=0.863, d_eff_1=19.754
+    seed=2345: A_obs=2.2596, r_wk=0.941, B=10.5177, q_base=0.862, d_eff_1=21.666
+    seed=7777: A_obs=0.9722, r_wk=0.782, B=4.5580, q_base=0.863, d_eff_1=21.982
+    seed=8888: A_obs=1.5706, r_wk=0.827, B=7.0784, q_base=0.857, d_eff_1=20.311
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=1.1734, r_wk=0.784, B=5.4975, q_base=0.857, d_eff_1=21.948
+    seed=11111: A_obs=1.0607, r_wk=0.777, B=5.0577, q_base=0.849, d_eff_1=22.735
+    seed=12345: A_obs=2.3211, r_wk=0.897, B=10.3212, q_base=0.854, d_eff_1=19.774
+  SUMMARY kappa=0.2 alpha=0.75: B=7.2395+/-2.5343(CV=0.350), r_wk=0.828, d_eff=21.038, q_base=0.859
+
+  --- alpha=1.0 ---
+  lambda_max=106.3468, d_eff_theory=7.222
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=2.8314, r_wk=0.848, B=8.2481, q_base=0.837, d_eff_1=8.486
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=3.7880, r_wk=0.928, B=10.9193, q_base=0.834, d_eff_1=8.309
+    seed=271: A_obs=2.5602, r_wk=0.941, B=7.9752, q_base=0.824, d_eff_1=9.704
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=1.8606, r_wk=0.775, B=5.2311, q_base=0.839, d_eff_1=7.904
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=2.8120, r_wk=0.822, B=8.1248, q_base=0.842, d_eff_1=8.348
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=7777: A_obs=4.0093, r_wk=0.897, B=11.4636, q_base=0.831, d_eff_1=8.175
+    seed=8888: A_obs=2.4470, r_wk=0.885, B=7.2370, q_base=0.828, d_eff_1=8.747
+    seed=9999: A_obs=2.0828, r_wk=0.832, B=6.2254, q_base=0.827, d_eff_1=8.934
+    seed=11111: A_obs=1.7528, r_wk=0.724, B=5.0723, q_base=0.843, d_eff_1=8.375
+    seed=12345: A_obs=2.5387, r_wk=0.918, B=7.6383, q_base=0.838, d_eff_1=9.052
+  SUMMARY kappa=0.2 alpha=1.0: B=7.8135+/-2.0087(CV=0.257), r_wk=0.857, d_eff=8.603, q_base=0.834
+
+  --- alpha=1.25 ---
+  lambda_max=200.2399, d_eff_theory=3.835
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=3.4210, r_wk=0.758, B=7.2198, q_base=0.823, d_eff_1=4.454
+    seed=137: A_obs=2.6740, r_wk=0.789, B=5.5749, q_base=0.813, d_eff_1=4.347
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=2.4405, r_wk=0.888, B=5.5098, q_base=0.813, d_eff_1=5.097
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=3.5343, r_wk=0.856, B=7.1882, q_base=0.818, d_eff_1=4.137
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=2.0452, r_wk=0.654, B=4.2143, q_base=0.821, d_eff_1=4.246
+    seed=7777: A_obs=2.9736, r_wk=0.698, B=6.0789, q_base=0.819, d_eff_1=4.179
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=2.7862, r_wk=0.866, B=6.0951, q_base=0.809, d_eff_1=4.785
+    seed=9999: A_obs=2.4771, r_wk=0.801, B=5.3423, q_base=0.831, d_eff_1=4.651
+    seed=11111: A_obs=4.1694, r_wk=0.704, B=8.5899, q_base=0.830, d_eff_1=4.245
+    seed=12345: A_obs=2.9041, r_wk=0.859, B=6.3695, q_base=0.823, d_eff_1=4.811
+  SUMMARY kappa=0.2 alpha=1.25: B=6.2183+/-1.1543(CV=0.186), r_wk=0.787, d_eff=4.495, q_base=0.820
+
+  KAPPA=0.2 AGGREGATE: B=7.0904+/-0.6597(CV=0.093), B_pred=8.7491, rel_err=0.190, C_K10=1.9851, C_0_obs=0.6617 (valid_alpha=3/3)
+
+============================================================
+KAPPA = 0.25
+============================================================
+  B_pred(prior) = 7.333
+
+  --- alpha=0.75 ---
+  lambda_max=43.5885, d_eff_theory=17.619
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=1.3404, r_wk=0.878, B=6.0032, q_base=0.896, d_eff_1=20.057
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=2.8311, r_wk=0.977, B=12.3478, q_base=0.896, d_eff_1=19.022
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=1.5171, r_wk=0.804, B=6.7417, q_base=0.900, d_eff_1=19.748
+    seed=919: A_obs=1.2128, r_wk=0.823, B=5.2383, q_base=0.897, d_eff_1=18.656
+    seed=2345: A_obs=1.1029, r_wk=0.821, B=4.9483, q_base=0.899, d_eff_1=20.129
+    seed=7777: A_obs=1.9330, r_wk=0.950, B=8.7004, q_base=0.900, d_eff_1=20.258
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=1.8125, r_wk=0.911, B=7.9260, q_base=0.892, d_eff_1=19.122
+    seed=9999: A_obs=1.2104, r_wk=0.843, B=5.4897, q_base=0.894, d_eff_1=20.572
+    seed=11111: A_obs=2.5265, r_wk=0.974, B=11.5865, q_base=0.892, d_eff_1=21.031
+    seed=12345: A_obs=1.3868, r_wk=0.826, B=6.0283, q_base=0.896, d_eff_1=18.895
+  SUMMARY kappa=0.25 alpha=0.75: B=7.5010+/-2.4994(CV=0.333), r_wk=0.881, d_eff=19.749, q_base=0.896
+
+  --- alpha=1.0 ---
+  lambda_max=106.3468, d_eff_theory=7.222
+    seed=42: A_obs=1.1503, r_wk=0.694, B=3.2690, q_base=0.883, d_eff_1=8.075
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=2.7434, r_wk=0.911, B=7.6961, q_base=0.877, d_eff_1=7.869
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=1.7798, r_wk=0.909, B=5.2138, q_base=0.869, d_eff_1=8.582
+    seed=919: A_obs=1.5184, r_wk=0.788, B=4.1508, q_base=0.879, d_eff_1=7.472
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=2.2189, r_wk=0.823, B=6.2509, q_base=0.887, d_eff_1=7.936
+    seed=7777: A_obs=2.3713, r_wk=0.834, B=6.6531, q_base=0.871, d_eff_1=7.872
+    seed=8888: A_obs=2.2409, r_wk=0.898, B=6.3566, q_base=0.877, d_eff_1=8.047
+    seed=9999: A_obs=1.7455, r_wk=0.829, B=5.0460, q_base=0.872, d_eff_1=8.357
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=11111: A_obs=1.5998, r_wk=0.736, B=4.5352, q_base=0.891, d_eff_1=8.037
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=12345: A_obs=3.0394, r_wk=0.963, B=8.7525, q_base=0.888, d_eff_1=8.292
+  SUMMARY kappa=0.25 alpha=1.0: B=5.7924+/-1.5871(CV=0.274), r_wk=0.839, d_eff=8.054, q_base=0.879
+
+  --- alpha=1.25 ---
+  lambda_max=200.2399, d_eff_theory=3.835
+    seed=42: A_obs=4.3757, r_wk=0.879, B=9.0432, q_base=0.872, d_eff_1=4.271
+    seed=137: A_obs=2.7825, r_wk=0.845, B=5.6755, q_base=0.863, d_eff_1=4.160
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=3.7539, r_wk=0.973, B=7.9479, q_base=0.861, d_eff_1=4.483
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=-0.0101, r_wk=-0.546, B=-0.0200, q_base=0.867, d_eff_1=3.941
+    seed=2345: A_obs=2.9838, r_wk=0.769, B=6.0406, q_base=0.875, d_eff_1=4.098
+    seed=7777: A_obs=3.4828, r_wk=0.830, B=7.0244, q_base=0.859, d_eff_1=4.068
+    seed=8888: A_obs=2.6380, r_wk=0.889, B=5.4928, q_base=0.859, d_eff_1=4.336
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=2.5258, r_wk=0.860, B=5.2735, q_base=0.869, d_eff_1=4.359
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=11111: A_obs=3.4750, r_wk=0.809, B=7.0560, q_base=0.871, d_eff_1=4.123
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=12345: A_obs=3.3495, r_wk=0.929, B=7.0560, q_base=0.874, d_eff_1=4.438
+  SUMMARY kappa=0.25 alpha=1.25: B=6.0590+/-2.3115(CV=0.382), r_wk=0.724, d_eff=4.228, q_base=0.867
+
+  KAPPA=0.25 AGGREGATE: B=6.4508+/-0.7505(CV=0.116), B_pred=7.3334, rel_err=0.120, C_K10=2.1547, C_0_obs=0.7182 (valid_alpha=3/3)
+
+============================================================
+KAPPA = 0.3
+============================================================
+  B_pred(prior) = 6.349
+
+  --- alpha=0.75 ---
+  lambda_max=43.5885, d_eff_theory=17.619
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=1.2278, r_wk=0.885, B=5.3879, q_base=0.914, d_eff_1=19.256
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=1.3713, r_wk=0.887, B=5.8762, q_base=0.913, d_eff_1=18.364
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=0.4607, r_wk=0.635, B=2.0261, q_base=0.922, d_eff_1=19.342
+    seed=919: A_obs=1.3267, r_wk=0.878, B=5.6357, q_base=0.914, d_eff_1=18.045
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=1.5232, r_wk=0.918, B=6.6906, q_base=0.916, d_eff_1=19.293
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=7777: A_obs=1.5017, r_wk=0.932, B=6.6087, q_base=0.914, d_eff_1=19.367
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=1.9034, r_wk=0.941, B=8.1768, q_base=0.917, d_eff_1=18.454
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=1.6115, r_wk=0.930, B=7.1734, q_base=0.910, d_eff_1=19.813
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=11111: A_obs=0.9064, r_wk=0.821, B=4.0663, q_base=0.903, d_eff_1=20.126
+    seed=12345: A_obs=1.1759, r_wk=0.832, B=5.0419, q_base=0.913, d_eff_1=18.385
+  SUMMARY kappa=0.3 alpha=0.75: B=5.6684+/-1.6381(CV=0.289), r_wk=0.866, d_eff=19.045, q_base=0.914
+
+  --- alpha=1.0 ---
+  lambda_max=106.3468, d_eff_theory=7.222
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=1.6700, r_wk=0.817, B=4.6750, q_base=0.908, d_eff_1=7.837
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=1.3298, r_wk=0.791, B=3.6733, q_base=0.888, d_eff_1=7.630
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=1.6233, r_wk=0.906, B=4.6196, q_base=0.889, d_eff_1=8.099
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=1.8477, r_wk=0.864, B=4.9726, q_base=0.899, d_eff_1=7.243
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=2.2615, r_wk=0.883, B=6.2742, q_base=0.902, d_eff_1=7.697
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=7777: A_obs=1.7872, r_wk=0.808, B=4.9567, q_base=0.894, d_eff_1=7.692
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=1.6769, r_wk=0.863, B=4.6483, q_base=0.895, d_eff_1=7.684
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=2.4024, r_wk=0.937, B=6.8163, q_base=0.894, d_eff_1=8.050
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=11111: A_obs=2.1876, r_wk=0.864, B=6.1246, q_base=0.906, d_eff_1=7.838
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=12345: A_obs=2.3137, r_wk=0.942, B=6.5082, q_base=0.902, d_eff_1=7.912
+  SUMMARY kappa=0.3 alpha=1.0: B=5.3269+/-0.9762(CV=0.183), r_wk=0.868, d_eff=7.768, q_base=0.898
+
+  --- alpha=1.25 ---
+  lambda_max=200.2399, d_eff_theory=3.835
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=2.4273, r_wk=0.812, B=4.9521, q_base=0.896, d_eff_1=4.162
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=3.5380, r_wk=0.938, B=7.1286, q_base=0.882, d_eff_1=4.060
+    seed=271: A_obs=2.8086, r_wk=0.947, B=5.7770, q_base=0.886, d_eff_1=4.231
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=3.4129, r_wk=0.931, B=6.6861, q_base=0.883, d_eff_1=3.838
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=2.3494, r_wk=0.795, B=4.7045, q_base=0.893, d_eff_1=4.010
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=7777: A_obs=3.7267, r_wk=0.893, B=7.4531, q_base=0.882, d_eff_1=4.000
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=3.2921, r_wk=0.952, B=6.6764, q_base=0.878, d_eff_1=4.113
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=0.8906, r_wk=0.694, B=1.8272, q_base=0.888, d_eff_1=4.209
+    seed=11111: A_obs=3.6038, r_wk=0.898, B=7.2522, q_base=0.886, d_eff_1=4.050
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=12345: A_obs=2.5964, r_wk=0.905, B=5.3516, q_base=0.895, d_eff_1=4.248
+  SUMMARY kappa=0.3 alpha=1.25: B=5.7809+/-1.6143(CV=0.279), r_wk=0.876, d_eff=4.092, q_base=0.887
+
+  KAPPA=0.3 AGGREGATE: B=5.5920+/-0.1930(CV=0.035), B_pred=6.3485, rel_err=0.119, C_K10=2.1576, C_0_obs=0.7192 (valid_alpha=3/3)
+
+============================================================
+KAPPA = 0.4
+============================================================
+  B_pred(prior) = 5.056
+
+  --- alpha=0.75 ---
+  lambda_max=43.5885, d_eff_theory=17.619
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=0.8911, r_wk=0.872, B=3.8302, q_base=0.932, d_eff_1=18.475
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=0.8749, r_wk=0.857, B=3.6815, q_base=0.928, d_eff_1=17.708
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=0.9885, r_wk=0.847, B=4.2974, q_base=0.937, d_eff_1=18.899
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=1.1006, r_wk=0.898, B=4.5942, q_base=0.930, d_eff_1=17.425
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=0.9944, r_wk=0.889, B=4.2730, q_base=0.935, d_eff_1=18.464
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=7777: A_obs=0.8673, r_wk=0.871, B=3.7325, q_base=0.929, d_eff_1=18.521
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=1.1021, r_wk=0.896, B=4.6461, q_base=0.938, d_eff_1=17.773
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=0.9202, r_wk=0.878, B=4.0166, q_base=0.925, d_eff_1=19.051
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=11111: A_obs=1.1608, r_wk=0.927, B=5.0926, q_base=0.920, d_eff_1=19.246
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=12345: A_obs=1.3473, r_wk=0.928, B=5.6917, q_base=0.929, d_eff_1=17.847
+  SUMMARY kappa=0.4 alpha=0.75: B=4.3856+/-0.6086(CV=0.139), r_wk=0.886, d_eff=18.341, q_base=0.930
+
+  --- alpha=1.0 ---
+  lambda_max=106.3468, d_eff_theory=7.222
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=1.8127, r_wk=0.904, B=4.9926, q_base=0.921, d_eff_1=7.585
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=2.0197, r_wk=0.939, B=5.4911, q_base=0.903, d_eff_1=7.392
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=1.1465, r_wk=0.871, B=3.1820, q_base=0.909, d_eff_1=7.702
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=1.5529, r_wk=0.888, B=4.1141, q_base=0.915, d_eff_1=7.019
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=1.5990, r_wk=0.868, B=4.3629, q_base=0.921, d_eff_1=7.445
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=7777: A_obs=2.5864, r_wk=0.952, B=7.0825, q_base=0.910, d_eff_1=7.499
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=1.8638, r_wk=0.932, B=5.0493, q_base=0.903, d_eff_1=7.339
+    seed=9999: A_obs=2.3354, r_wk=0.967, B=6.5020, q_base=0.907, d_eff_1=7.751
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=11111: A_obs=2.3465, r_wk=0.948, B=6.4803, q_base=0.921, d_eff_1=7.627
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=12345: A_obs=0.5612, r_wk=0.709, B=1.5430, q_base=0.912, d_eff_1=7.561
+  SUMMARY kappa=0.4 alpha=1.0: B=4.8800+/-1.5916(CV=0.326), r_wk=0.898, d_eff=7.492, q_base=0.912
+
+  --- alpha=1.25 ---
+  lambda_max=200.2399, d_eff_theory=3.835
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=2.5000, r_wk=0.898, B=5.0280, q_base=0.907, d_eff_1=4.045
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=1.9781, r_wk=0.872, B=3.9365, q_base=0.899, d_eff_1=3.960
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=1.9702, r_wk=0.920, B=3.9560, q_base=0.897, d_eff_1=4.032
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=2.9963, r_wk=0.952, B=5.7941, q_base=0.893, d_eff_1=3.739
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=1.7246, r_wk=0.813, B=3.4115, q_base=0.907, d_eff_1=3.913
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=7777: A_obs=2.8571, r_wk=0.910, B=5.6598, q_base=0.896, d_eff_1=3.924
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=1.5661, r_wk=0.847, B=3.0969, q_base=0.898, d_eff_1=3.910
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=2.0972, r_wk=0.903, B=4.2290, q_base=0.903, d_eff_1=4.066
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=11111: A_obs=2.9350, r_wk=0.929, B=5.8477, q_base=0.907, d_eff_1=3.970
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=12345: A_obs=2.6454, r_wk=0.951, B=5.3380, q_base=0.904, d_eff_1=4.072
+  SUMMARY kappa=0.4 alpha=1.25: B=4.6298+/-0.9741(CV=0.210), r_wk=0.900, d_eff=3.963, q_base=0.901
+
+  KAPPA=0.4 AGGREGATE: B=4.6318+/-0.2018(CV=0.044), B_pred=5.0565, rel_err=0.084, C_K10=2.2438, C_0_obs=0.7479 (valid_alpha=3/3)
+
+============================================================
+KAPPA = 0.5
+============================================================
+  B_pred(prior) = 4.238
+
+  --- alpha=0.75 ---
+  lambda_max=43.5885, d_eff_theory=17.619
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=0.6776, r_wk=0.854, B=2.8845, q_base=0.948, d_eff_1=18.122
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=0.9431, r_wk=0.915, B=3.9347, q_base=0.941, d_eff_1=17.405
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=0.9777, r_wk=0.900, B=4.2249, q_base=0.950, d_eff_1=18.674
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=0.9502, r_wk=0.913, B=3.9331, q_base=0.948, d_eff_1=17.132
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=0.5661, r_wk=0.812, B=2.4071, q_base=0.949, d_eff_1=18.081
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=7777: A_obs=1.1429, r_wk=0.958, B=4.8688, q_base=0.949, d_eff_1=18.146
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=0.8345, r_wk=0.887, B=3.4859, q_base=0.954, d_eff_1=17.450
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=0.9020, r_wk=0.914, B=3.9001, q_base=0.940, d_eff_1=18.694
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=11111: A_obs=0.9686, r_wk=0.934, B=4.2050, q_base=0.936, d_eff_1=18.848
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=12345: A_obs=0.9638, r_wk=0.909, B=4.0416, q_base=0.943, d_eff_1=17.585
+  SUMMARY kappa=0.5 alpha=0.75: B=3.7886+/-0.6683(CV=0.176), r_wk=0.900, d_eff=18.014, q_base=0.946
+
+  --- alpha=1.0 ---
+  lambda_max=106.3468, d_eff_theory=7.222
+    seed=42: A_obs=1.4928, r_wk=0.912, B=4.0780, q_base=0.929, d_eff_1=7.462
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=1.5284, r_wk=0.925, B=4.1242, q_base=0.921, d_eff_1=7.281
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=1.4555, r_wk=0.951, B=3.9986, q_base=0.915, d_eff_1=7.548
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=1.4040, r_wk=0.909, B=3.6929, q_base=0.921, d_eff_1=6.918
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=1.0410, r_wk=0.833, B=2.8168, q_base=0.928, d_eff_1=7.322
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=7777: A_obs=1.7978, r_wk=0.942, B=4.8914, q_base=0.917, d_eff_1=7.403
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=1.7883, r_wk=0.956, B=4.7941, q_base=0.911, d_eff_1=7.187
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=1.3418, r_wk=0.912, B=3.7030, q_base=0.919, d_eff_1=7.616
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=11111: A_obs=1.8643, r_wk=0.951, B=5.1134, q_base=0.930, d_eff_1=7.523
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=12345: A_obs=1.5290, r_wk=0.944, B=4.1616, q_base=0.918, d_eff_1=7.408
+  SUMMARY kappa=0.5 alpha=1.0: B=4.1374+/-0.6408(CV=0.155), r_wk=0.923, d_eff=7.367, q_base=0.921
+
+  --- alpha=1.25 ---
+  lambda_max=200.2399, d_eff_theory=3.835
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=42: A_obs=2.2611, r_wk=0.932, B=4.5145, q_base=0.917, d_eff_1=3.986
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=137: A_obs=2.4183, r_wk=0.951, B=4.7846, q_base=0.907, d_eff_1=3.915
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=271: A_obs=1.7896, r_wk=0.936, B=3.5597, q_base=0.907, d_eff_1=3.957
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=919: A_obs=1.6973, r_wk=0.884, B=3.2629, q_base=0.904, d_eff_1=3.696
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=2345: A_obs=1.9878, r_wk=0.886, B=3.9075, q_base=0.917, d_eff_1=3.864
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=7777: A_obs=2.2028, r_wk=0.918, B=4.3422, q_base=0.903, d_eff_1=3.886
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=8888: A_obs=1.7206, r_wk=0.907, B=3.3649, q_base=0.902, d_eff_1=3.825
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=9999: A_obs=1.6363, r_wk=0.901, B=3.2740, q_base=0.908, d_eff_1=4.004
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=11111: A_obs=2.4957, r_wk=0.951, B=4.9470, q_base=0.912, d_eff_1=3.929
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_k10_kappa_sweep.py:290: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  r_k = float(pearsonr(d_obs, d_pred)[0])
+    seed=12345: A_obs=0.9718, r_wk=0.794, B=1.9421, q_base=0.913, d_eff_1=3.994
+  SUMMARY kappa=0.5 alpha=1.25: B=3.7900+/-0.8581(CV=0.226), r_wk=0.906, d_eff=3.905, q_base=0.909
+
+  KAPPA=0.5 AGGREGATE: B=3.9053+/-0.1641(CV=0.042), B_pred=4.2383, rel_err=0.079, C_K10=2.2570, C_0_obs=0.7523 (valid_alpha=3/3)
+
+======================================================================
+ANALYSIS
+======================================================================
+
+Kappa values with valid data: 6/6
+
+   kappa     B_obs    B_pred   rel_err   C_K10  C_0_obs    CV_B  n_valid
+    0.15    9.9431   10.9847     0.095   2.217   0.7391   0.069        2
+    0.20    7.0904    8.7491     0.190   1.985   0.6617   0.093        3
+    0.25    6.4508    7.3334     0.120   2.155   0.7182   0.116        3
+    0.30    5.5920    6.3485     0.119   2.158   0.7192   0.035        3
+    0.40    4.6318    5.0565     0.084   2.244   0.7479   0.044        3
+    0.50    3.9053    4.2383     0.079   2.257   0.7523   0.042        3
+
+PR5 r(log kappa, log B) = -0.9922 -> PASS (<-0.90)
+
+PR2 slope = -0.7385 (p_fit=0.739), C_K10_fit = 2.3183 -> PASS (slope in [-0.90,-0.55])
+   C_K10_fit vs C_K10_prior=2.4495: rel_err=0.054
+   C_0_fit = C_K10_fit/sqrt(K-1) = 2.3183/sqrt(9) = 0.7728
+   C_0_prior (sqrt(2/3)) = 0.8165, ratio C_0_fit/C_0_prior = 0.9465
+   C_0_K7_empirical = 0.8080, ratio = 0.9564
+
+C_0_test: |C_0_fit - C_0_prior|/C_0_prior = 0.0535 -> PASS (<0.15)
+
+PR3 CV of C-normalized B = 0.0371 -> PASS (<0.15)
+
+PR4 kappa values with within-kappa CV < 0.20: 6/6 -> PASS (>= 4/6)
+
+PR1 kappa values within 30% of prior: 6/6 -> PASS (need >= 2/3)
+
+C_0_obs per kappa: ['0.7391', '0.6617', '0.7182', '0.7192', '0.7479', '0.7523']
+  mean C_0_obs = 0.7231, CV = 0.0420
+  vs C_0_prior=sqrt(2/3)=0.8165, vs C_0_K7_empirical=0.8080
+
+PRIMARY (PR5+PR2): PASS
+SECONDARY (PR1,PR3,PR4,C_0_test): 4/4 pass
+VERDICT: STRONG_PASS
+
+Fitted law: B(kappa) = 2.318 / kappa^0.739
+Prior law:  B(kappa) = 2.449 / kappa^0.791
+Universal: B(kappa,K) = 0.7728 * sqrt(K-1) / kappa^0.739
+           (K=7: B_fit = 1.893 vs K=7 C_fit=1.979)
+           (K=14: B_fit = 2.786 vs K=14 C_fit=2.96)
+
+Saved to results/cti_k10_kappa_sweep.json

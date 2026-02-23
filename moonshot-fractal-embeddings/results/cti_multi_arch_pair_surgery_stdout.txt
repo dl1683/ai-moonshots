@@ -1,0 +1,85 @@
+======================================================================
+MULTI-ARCH INDIVIDUAL-PAIR SURGERY: Fitted A_local
+Timestamp: 2026-02-23T01:43:12.516305
+N_ARCHS=5, N_SEEDS=3, N_PAIRS=12
+======================================================================
+PRE-REGISTERED (Feb 25, 2026):
+  M1: CV(A_local_fit) across archs < 0.30
+  M2: Pearson r(A_local_fit, tail_ratio_inv) > 0.50
+  M3: mean A_local_fit in [0.10, 0.40]
+  M4: r_wk_fitted > r_wk_fixed (fitted A_local better)
+
+==================================================
+ARCH: pythia-160m (d=768)
+==================================================
+  seed=42 ...
+    A_local_fit=0.767, r_wk_fixed=0.620, r_wk_fitted=0.572
+  seed=137 ...
+    A_local_fit=0.125, r_wk_fixed=0.362, r_wk_fitted=0.276
+  seed=271 ...
+    A_local_fit=0.161, r_wk_fixed=0.428, r_wk_fitted=0.356
+  SUMMARY: A_local = 0.351 +/- 0.295, r_wk_fixed=0.470, r_wk_fitted=0.402, tail_ratio_inv=0.0693
+
+==================================================
+ARCH: bert-base-uncased (d=768)
+==================================================
+  seed=42 ...
+    A_local_fit=0.498, r_wk_fixed=0.209, r_wk_fitted=0.362
+  seed=137 ...
+    A_local_fit=0.565, r_wk_fixed=0.078, r_wk_fitted=0.259
+  seed=271 ...
+    A_local_fit=0.910, r_wk_fixed=0.510, r_wk_fitted=0.617
+  SUMMARY: A_local = 0.658 +/- 0.181, r_wk_fixed=0.266, r_wk_fitted=0.413, tail_ratio_inv=0.0264
+
+==================================================
+ARCH: electra-small (d=256)
+==================================================
+  seed=42 ...
+    A_local_fit=1.837, r_wk_fixed=0.276, r_wk_fitted=0.269
+  seed=137 ...
+    A_local_fit=1.475, r_wk_fixed=0.651, r_wk_fitted=0.656
+  seed=271 ...
+    A_local_fit=1.631, r_wk_fixed=0.055, r_wk_fitted=0.062
+  SUMMARY: A_local = 1.648 +/- 0.148, r_wk_fixed=0.327, r_wk_fitted=0.329, tail_ratio_inv=0.0152
+
+==================================================
+ARCH: pythia-410m (d=1024)
+==================================================
+  seed=42 ...
+    A_local_fit=1.016, r_wk_fixed=0.503, r_wk_fitted=0.568
+  seed=137 ...
+    A_local_fit=0.427, r_wk_fixed=0.440, r_wk_fitted=0.566
+  seed=271 ...
+    A_local_fit=1.085, r_wk_fixed=0.424, r_wk_fitted=0.485
+  SUMMARY: A_local = 0.843 +/- 0.295, r_wk_fixed=0.455, r_wk_fitted=0.540, tail_ratio_inv=0.0143
+
+==================================================
+ARCH: rwkv-4-169m (d=768)
+==================================================
+  seed=42 ...
+    A_local_fit=0.379, r_wk_fixed=0.188, r_wk_fitted=0.330
+  seed=137 ...
+    A_local_fit=0.317, r_wk_fixed=-0.008, r_wk_fitted=0.178
+  seed=271 ...
+    A_local_fit=0.386, r_wk_fixed=0.160, r_wk_fitted=0.341
+  SUMMARY: A_local = 0.361 +/- 0.031, r_wk_fixed=0.113, r_wk_fitted=0.283, tail_ratio_inv=0.0113
+
+======================================================================
+POOLED UNIVERSALITY ANALYSIS
+======================================================================
+Pooled A_local: 0.772 +/- 0.476 (CV=0.616)
+M1 (CV < 0.30): FAIL (CV=0.616)
+M2 r(A_local, tail_ratio_inv): r=-0.437 (p=0.461) FAIL
+M3 mean A_local in [0.10, 0.40]: FAIL (mean=0.772)
+M4 r_wk_fitted > r_wk_fixed: PASS (fitted=0.393 vs fixed=0.326)
+
+Per-arch A_local:
+  pythia-160m              : A_local=0.351+/-0.295, tail_inv=0.0693
+  bert-base-uncased        : A_local=0.658+/-0.181, tail_inv=0.0264
+  electra-small            : A_local=1.648+/-0.148, tail_inv=0.0152
+  pythia-410m              : A_local=0.843+/-0.295, tail_inv=0.0143
+  rwkv-4-169m              : A_local=0.361+/-0.031, tail_inv=0.0113
+
+VERDICT: M1=FAIL, M2=FAIL, M3=FAIL, M4=PASS. A_local=0.772+/-0.476 (CV=0.616). OVERALL: FAIL
+
+Saved to results/cti_multi_arch_pair_surgery.json

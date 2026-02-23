@@ -1,0 +1,212 @@
+Device: cuda
+Model: HuggingFaceTB/SmolLM2-1.7B
+Total layers: 24
+Testing layers: [0, 6, 12, 18, 23]
+
+============================================================
+Dataset: dbpedia_14 (PRIMARY TEST (in training set, new arch))
+  K=14, total=560000, n_per_class=200
+  Layer 0...
+    kappa=0.0862, q_norm=0.610, logit(q)=0.446
+  Layer 6...
+    kappa=0.0559, q_norm=0.625, logit(q)=0.511
+  Layer 12...
+    kappa=0.0191, q_norm=0.583, logit(q)=0.334
+  Layer 18...
+    kappa=0.0307, q_norm=0.681, logit(q)=0.757
+  Layer 23...
+    kappa=0.0831, q_norm=0.525, logit(q)=0.100
+
+  Fit: alpha=-3.6355+/-4.1029, r=-0.4554 (p=0.4408)
+  PR_ALPHA in [2.43,3.29]: FAIL
+  PR_R >= 0.75: FAIL
+
+============================================================
+Dataset: clinc_oos (NEW DATASET (K=151, large-K test))
+  K=151, total=5500, n_per_class=100
+  Layer 0...
+    kappa=0.1216, q_norm=0.560, logit(q)=0.241
+  Layer 6...
+    kappa=0.1271, q_norm=0.493, logit(q)=-0.027
+  Layer 12...
+    kappa=0.0148, q_norm=0.253, logit(q)=-1.081
+  Layer 18...
+    kappa=0.0219, q_norm=0.382, logit(q)=-0.480
+  Layer 23...
+    kappa=0.0623, q_norm=0.266, logit(q)=-1.017
+
+  Fit: alpha=8.8535+/-3.7807, r=0.8040 (p=0.1011)
+  PR_ALPHA in [2.43,3.29]: FAIL
+  PR_R >= 0.75: PASS
+
+============================================================
+Dataset: minds14 (NEW DATASET (intent detection, different domain))
+Traceback (most recent call last):
+  File "C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_smollm2_held_out.py", line 290, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\cti_smollm2_held_out.py", line 167, in main
+    texts = [x[ds_config["text_col"]] for x in ds]
+                                               ^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\datasets\arrow_dataset.py", line 2483, in __iter__
+    formatted_output = format_table(
+        pa_subtable_ex,
+    ...<3 lines>...
+        output_all_columns=self._output_all_columns,
+    )
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\datasets\formatting\formatting.py", line 658, in format_table
+    return formatter(pa_table, query_type=query_type)
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\datasets\formatting\formatting.py", line 411, in __call__
+    return self.format_row(pa_table)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\datasets\formatting\formatting.py", line 460, in format_row
+    row = self.python_features_decoder.decode_row(row)
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\datasets\formatting\formatting.py", line 224, in decode_row
+    return self.features.decode_example(row, token_per_repo_id=self.token_per_repo_id) if self.features else row
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\datasets\features\features.py", line 2106, in decode_example
+    column_name: decode_nested_example(feature, value, token_per_repo_id=token_per_repo_id)
+                 ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\datasets\features\features.py", line 1414, in decode_nested_example
+    return schema.decode_example(obj, token_per_repo_id=token_per_repo_id) if obj is not None else None
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\datasets\features\audio.py", line 184, in decode_example
+    from ._torchcodec import AudioDecoder
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\datasets\features\_torchcodec.py", line 2, in <module>
+    from torchcodec.decoders import AudioDecoder as _AudioDecoder
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\__init__.py", line 12, in <module>
+    from . import decoders, encoders, samplers, transforms  # noqa
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\decoders\__init__.py", line 7, in <module>
+    from .._core import AudioStreamMetadata, VideoStreamMetadata
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\_core\__init__.py", line 8, in <module>
+    from ._metadata import (
+    ...<5 lines>...
+    )
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\_core\_metadata.py", line 16, in <module>
+    from torchcodec._core.ops import (
+    ...<3 lines>...
+    )
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\_core\ops.py", line 109, in <module>
+    ffmpeg_major_version, core_library_path = load_torchcodec_shared_libraries()
+                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\_core\ops.py", line 76, in load_torchcodec_shared_libraries
+    raise RuntimeError(
+    ...<16 lines>...
+    )
+RuntimeError: Could not load libtorchcodec. Likely causes:
+          1. FFmpeg is not properly installed in your environment. We support
+             versions 4, 5, 6, 7, and 8, and we attempt to load libtorchcodec
+             for each of those versions. Errors for versions not installed on
+             your system are expected; only the error for your installed FFmpeg
+             version is relevant. On Windows, ensure you've installed the
+             "full-shared" version which ships DLLs.
+          2. The PyTorch version (2.9.1+cu128) is not compatible with
+             this version of TorchCodec. Refer to the version compatibility
+             table:
+             https://github.com/pytorch/torchcodec?tab=readme-ov-file#installing-torchcodec.
+          3. Another runtime dependency; see exceptions below.
+
+        The following exceptions were raised as we tried to load libtorchcodec:
+        
+[start of libtorchcodec loading traceback]
+FFmpeg version 8:
+Traceback (most recent call last):
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\_ops.py", line 1488, in load_library
+    ctypes.CDLL(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\ctypes\__init__.py", line 390, in __init__
+    self._handle = _dlopen(self._name, mode)
+                   ~~~~~~~^^^^^^^^^^^^^^^^^^
+FileNotFoundError: Could not find module 'C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\libtorchcodec_core8.dll' (or one of its dependencies). Try using the full path with constructor syntax.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\_core\ops.py", line 57, in load_torchcodec_shared_libraries
+    torch.ops.load_library(core_library_path)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\_ops.py", line 1490, in load_library
+    raise OSError(f"Could not load this library: {path}") from e
+OSError: Could not load this library: C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\libtorchcodec_core8.dll
+
+FFmpeg version 7:
+Traceback (most recent call last):
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\_ops.py", line 1488, in load_library
+    ctypes.CDLL(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\ctypes\__init__.py", line 390, in __init__
+    self._handle = _dlopen(self._name, mode)
+                   ~~~~~~~^^^^^^^^^^^^^^^^^^
+FileNotFoundError: Could not find module 'C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\libtorchcodec_core7.dll' (or one of its dependencies). Try using the full path with constructor syntax.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\_core\ops.py", line 57, in load_torchcodec_shared_libraries
+    torch.ops.load_library(core_library_path)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\_ops.py", line 1490, in load_library
+    raise OSError(f"Could not load this library: {path}") from e
+OSError: Could not load this library: C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\libtorchcodec_core7.dll
+
+FFmpeg version 6:
+Traceback (most recent call last):
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\_ops.py", line 1488, in load_library
+    ctypes.CDLL(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\ctypes\__init__.py", line 390, in __init__
+    self._handle = _dlopen(self._name, mode)
+                   ~~~~~~~^^^^^^^^^^^^^^^^^^
+FileNotFoundError: Could not find module 'C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\libtorchcodec_core6.dll' (or one of its dependencies). Try using the full path with constructor syntax.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\_core\ops.py", line 57, in load_torchcodec_shared_libraries
+    torch.ops.load_library(core_library_path)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\_ops.py", line 1490, in load_library
+    raise OSError(f"Could not load this library: {path}") from e
+OSError: Could not load this library: C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\libtorchcodec_core6.dll
+
+FFmpeg version 5:
+Traceback (most recent call last):
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\_ops.py", line 1488, in load_library
+    ctypes.CDLL(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\ctypes\__init__.py", line 390, in __init__
+    self._handle = _dlopen(self._name, mode)
+                   ~~~~~~~^^^^^^^^^^^^^^^^^^
+FileNotFoundError: Could not find module 'C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\libtorchcodec_core5.dll' (or one of its dependencies). Try using the full path with constructor syntax.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\_core\ops.py", line 57, in load_torchcodec_shared_libraries
+    torch.ops.load_library(core_library_path)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\_ops.py", line 1490, in load_library
+    raise OSError(f"Could not load this library: {path}") from e
+OSError: Could not load this library: C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\libtorchcodec_core5.dll
+
+FFmpeg version 4:
+Traceback (most recent call last):
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\_ops.py", line 1488, in load_library
+    ctypes.CDLL(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\ctypes\__init__.py", line 390, in __init__
+    self._handle = _dlopen(self._name, mode)
+                   ~~~~~~~^^^^^^^^^^^^^^^^^^
+FileNotFoundError: Could not find module 'C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\libtorchcodec_core4.dll' (or one of its dependencies). Try using the full path with constructor syntax.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\_core\ops.py", line 57, in load_torchcodec_shared_libraries
+    torch.ops.load_library(core_library_path)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\_ops.py", line 1490, in load_library
+    raise OSError(f"Could not load this library: {path}") from e
+OSError: Could not load this library: C:\Users\devan\AppData\Local\Programs\Python\Python313\Lib\site-packages\torchcodec\libtorchcodec_core4.dll
+[end of libtorchcodec loading traceback].

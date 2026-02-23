@@ -1,0 +1,66 @@
+STEP 1: Fix SmolLM2 caches (q_raw -> q_norm)
+  Fixed C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\kappa_near_cache_dbpedia_SmolLM2-1.7B.json: 4 points converted to q_norm
+  Fixed C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\kappa_near_cache_agnews_SmolLM2-1.7B.json: 4 points converted to q_norm
+  Fixed C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\kappa_near_cache_20newsgroups_SmolLM2-1.7B.json: 4 points converted to q_norm
+
+STEP 2: Generate go_emotions for SmolLM2
+Device: cuda
+
+============================================================
+Dataset: go_emotions (K=28)
+  K=28, total=5427
+  Layer 6...
+    4317 valid embeddings
+    kappa=0.0893, q_norm=0.109, logit=-2.102
+  Layer 12...
+    4317 valid embeddings
+    kappa=0.0258, q_norm=0.112, logit=-2.066
+  Layer 18...
+    4317 valid embeddings
+    kappa=0.0428, q_norm=0.134, logit=-1.868
+  Layer 23...
+    4317 valid embeddings
+    kappa=0.1997, q_norm=0.102, logit=-2.178
+  Saved: C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\kappa_near_cache_go_emotions_SmolLM2-1.7B.json
+
+STEP 3: Corrected LOAO Analysis
+
+============================================================
+CORRECTED LOAO ANALYSIS (12 original archs + SmolLM2, 4 datasets)
+============================================================
+Total points: 208
+Architectures (13): ['Falcon-H1-0.5B-Base', 'Mistral-7B-v0.3', 'OLMo-1B-hf', 'Qwen2.5-0.5B', 'Qwen3-0.6B', 'Qwen3-1.7B', 'SmolLM2-1.7B', 'TinyLlama-1.1B-intermediate-step-1431k-3T', 'gpt-neo-125m', 'pythia-160m', 'pythia-1b', 'pythia-410m', 'rwkv-4-169m-pile']
+
+Train: 192 pts (12 archs)
+Test (SmolLM2): 16 pts
+
+Train fit (12 archs): alpha=2.8660, beta=-0.7459, C=0.8129
+
+SmolLM2 fit: alpha=2.8642, beta=-0.8211, C=1.5851
+
+PR1 (SmolLM2 alpha in [2.43,3.29]): PASS
+     alpha_smol=2.8642
+PR2 (r(pred,obs) >= 0.80): FAIL
+     r=0.7195, MAE=0.9947
+
+OVERALL: FAIL
+
+SmolLM2 data points (q_norm convention):
+  20newsgroups L6: kappa=0.0844, q_norm=0.368, logit=-0.539, pred=-1.142
+  20newsgroups L12: kappa=0.0111, q_norm=0.383, logit=-0.475, pred=-1.352
+  20newsgroups L18: kappa=0.0277, q_norm=0.503, logit=0.012, pred=-1.304
+  20newsgroups L23: kappa=0.3171, q_norm=0.536, logit=0.145, pred=-0.475
+  agnews L6: kappa=0.2477, q_norm=0.730, logit=0.995, pred=0.703
+  agnews L12: kappa=0.1804, q_norm=0.747, logit=1.081, pred=0.511
+  agnews L18: kappa=0.3719, q_norm=0.820, logit=1.516, pred=1.059
+  agnews L23: kappa=0.6137, q_norm=0.757, logit=1.134, pred=1.752
+  dbpedia L6: kappa=0.2223, q_norm=0.814, logit=1.475, pred=-0.463
+  dbpedia L12: kappa=0.1236, q_norm=0.828, logit=1.569, pred=-0.746
+  dbpedia L18: kappa=0.2832, q_norm=0.903, logit=2.232, pred=-0.289
+  dbpedia L23: kappa=0.6988, q_norm=0.885, logit=2.037, pred=0.902
+  go_emotions L6: kappa=0.0893, q_norm=0.109, logit=-2.102, pred=-1.390
+  go_emotions L12: kappa=0.0258, q_norm=0.112, logit=-2.066, pred=-1.572
+  go_emotions L18: kappa=0.0428, q_norm=0.134, logit=-1.868, pred=-1.523
+  go_emotions L23: kappa=0.1997, q_norm=0.102, logit=-2.178, pred=-1.073
+
+Saved to C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\cti_smollm2_loao_corrected.json

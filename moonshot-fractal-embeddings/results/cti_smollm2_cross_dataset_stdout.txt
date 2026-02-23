@@ -1,0 +1,9 @@
+Device: cuda
+Model: HuggingFaceTB/SmolLM2-1.7B
+Total layers: 24
+
+============================================================
+Dataset: dbpedia_14 (In training set (K=14, anchor))
+  K=14, total=560000
+  Finding best layer...
+  Scanning layers: [0, 3, 6, 9, 12, 15, 18, 21, 23]
