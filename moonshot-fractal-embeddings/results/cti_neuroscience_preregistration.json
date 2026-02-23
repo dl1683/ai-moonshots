@@ -1,0 +1,55 @@
+{
+  "experiment": "CTI_law_biological_validation_MajajHong2015",
+  "preregistration_timestamp": "2026-02-23T00:00:00Z",
+  "git_commit": "f190757c805182e1828f7b1cf88c7f04bc2c3fbd",
+  "rationale": "Test whether the CTI universal law logit(q_norm)=A*kappa_nearest*sqrt(d_eff)+C holds for macaque IT cortex neural population responses. If A_renorm_bio = A_fit/sqrt(d_eff) ≈ sqrt(4/pi) = 1.128 (same as artificial neural networks), the law is substrate-independent.",
+  "dataset": {
+    "name": "MajajHong2015",
+    "source": "brainio: dicarlo.MajajHong2015.public",
+    "description": "Macaque IT cortex multi-unit responses, K=8 object categories, 256 sites, 47 trials per image",
+    "categories": ["Cars", "Faces", "Fruits", "Bodies", "Animals", "Planes", "Chairs", "Tables"]
+  },
+  "preregistered_hypotheses": {
+    "H1_correlation": {
+      "description": "kappa_nearest predicts logit(q_1nn) across the K=8 categories",
+      "metric": "Pearson r(kappa_nearest, logit_q_1nn)",
+      "threshold": "r > 0.50",
+      "rationale": "With only K=8 classes the test is low-power; r>0.50 is conservative"
+    },
+    "H2_renorm_constant": {
+      "description": "Renormalized slope A_renorm = A_fit / sqrt(d_eff_formula) matches universal constant",
+      "metric": "A_renorm_bio = A_fit / sqrt(mean_d_eff_across_classes)",
+      "acceptance_interval": [0.70, 1.80],
+      "center": 1.128,
+      "rationale": "sqrt(4/pi)=1.128; interval is ±60% to account for finite-K, noisy neuroscience data, and possible biological deviations"
+    },
+    "H3_mae": {
+      "description": "Fitted law predicts q_1nn with practical accuracy",
+      "metric": "MAE(q_predicted, q_observed) on leave-one-class-out",
+      "threshold": "MAE < 0.10",
+      "rationale": "Same practical threshold as NLP dataset calibration"
+    },
+    "H4_substrate_independence": {
+      "description": "PASS if H1 AND H2 both pass: law is substrate-independent",
+      "metric": "H1 AND H2",
+      "interpretation": "If PASS: CTI law is universal across biological and artificial neural systems"
+    }
+  },
+  "analysis_plan": {
+    "population_vector": "Mean firing rate across 47 trials, per image per site → (n_images, 256) responses",
+    "class_labels": "8 object categories, K=8",
+    "kappa_computation": "delta_min = min centroid distance; sigma_W = sqrt(tr(Sigma_W)/d); kappa = delta_min/(sigma_W*sqrt(d))",
+    "d_eff_computation": "tr(Sigma_W) / sigma_centroid_dir^2 (same formula as NLP experiments)",
+    "q_1nn_computation": "Leave-one-stimulus-out 1-NN on mean population vectors, per-class accuracy",
+    "q_norm_computation": "(q - 1/K) / (1 - 1/K)",
+    "fitting": "OLS of logit(q_norm) on kappa_nearest * sqrt(d_eff), separate fit per brain region (aIT, pIT)",
+    "comparison": "A_renorm_bio vs A_renorm_NLP=1.477/sqrt(1.71)=1.129; vs A_renorm_ViT=0.63/sqrt(?)  ",
+    "regions": "aIT and pIT analyzed separately (aIT expected higher categorical coding)"
+  },
+  "expected_outcomes": {
+    "IT_cortex": "H1 PASS (IT is specialized for object category), A_renorm_bio in [0.9, 1.3]",
+    "pIT": "H1 marginal (pIT less categorical than aIT)",
+    "comparison": "If A_renorm_bio ≈ 1.128: substrate-independent law confirmed → Nobel Physics score jumps from 4/10 toward 7/10"
+  },
+  "status": "PRE-REGISTERED_NOT_YET_RUN"
+}
