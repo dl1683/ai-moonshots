@@ -319,8 +319,8 @@ def main():
             continue
 
         log(f"  Using checkpoint epoch={best_ep}")
-        X_tr_base = np.load(f"{EMBED_DIR}/X_tr_seed{seed}_ep{best_ep}.npy")
-        y_tr = np.load(f"{EMBED_DIR}/y_tr_seed{seed}_ep{best_ep}.npy")
+        X_tr_full = np.load(f"{EMBED_DIR}/X_tr_seed{seed}_ep{best_ep}.npy")
+        y_tr_full = np.load(f"{EMBED_DIR}/y_tr_seed{seed}_ep{best_ep}.npy")
         # Load test embeddings — check for ep-specific or non-ep test files
         X_te_path = f"{EMBED_DIR}/X_te_seed{seed}_ep{best_ep}.npy"
         if not os.path.exists(X_te_path):
@@ -329,11 +329,35 @@ def main():
             if os.path.exists(X_te_path_base):
                 X_te_path = X_te_path_base
             else:
-                log(f"  Cannot find test embeddings for seed {seed}. Skipping.")
-                continue
-        X_te_base = np.load(X_te_path)
-        y_te_path = X_te_path.replace("X_te", "y_te")
-        y_te = np.load(y_te_path)
+                X_te_path = None
+
+        if X_te_path is not None:
+            X_te_base = np.load(X_te_path)
+            y_te_path = X_te_path.replace("X_te", "y_te")
+            y_te = np.load(y_te_path)
+            log(f"  Loaded test embeddings from {X_te_path}")
+        else:
+            # Fallback: stratified 80/20 split of X_tr_full into train/val
+            log(f"  WARNING: No test embeddings found for seed {seed}.")
+            log(f"  Fallback: stratified 80/20 split of X_tr as train/val.")
+            rng = np.random.default_rng(seed + 42)
+            train_idx, val_idx = [], []
+            for c in np.unique(y_tr_full):
+                c_idx = np.where(y_tr_full == c)[0]
+                rng.shuffle(c_idx)
+                n_val = max(1, len(c_idx) // 5)  # 20% val
+                val_idx.extend(c_idx[:n_val])
+                train_idx.extend(c_idx[n_val:])
+            train_idx = np.array(train_idx)
+            val_idx = np.array(val_idx)
+            X_tr_full, y_tr_full, X_te_base, y_te = (
+                X_tr_full[train_idx], y_tr_full[train_idx],
+                X_tr_full[val_idx], y_tr_full[val_idx],
+            )
+            log(f"  Split: {len(train_idx)} train, {len(val_idx)} val")
+
+        X_tr_base = X_tr_full
+        y_tr = y_tr_full
 
         geo_base = compute_geometry(X_tr_base, y_tr)
         q_base, acc_base = compute_q(X_tr_base, y_tr, X_te_base, y_te)

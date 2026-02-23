@@ -365,6 +365,8 @@ def main():
         # Save selected checkpoint embeddings
         np.save(f"{EMBED_DIR}/X_tr_seed{seed}_ep{best_epoch}.npy", best_checkpoint['X_tr'])
         np.save(f"{EMBED_DIR}/y_tr_seed{seed}_ep{best_epoch}.npy", best_checkpoint['y_tr'])
+        np.save(f"{EMBED_DIR}/X_te_seed{seed}_ep{best_epoch}.npy", best_checkpoint['X_te'])
+        np.save(f"{EMBED_DIR}/y_te_seed{seed}_ep{best_epoch}.npy", best_checkpoint['y_te'])
 
         # ============ APPLY SURGERY ============
         log(f"\n  --- SURGERY at epoch={best_epoch}, "
