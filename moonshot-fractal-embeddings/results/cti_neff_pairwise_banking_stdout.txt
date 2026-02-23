@@ -1,0 +1,27 @@
+Device: cuda
+Loading EleutherAI/pythia-160m...
+Loading Banking77 dataset...
+Banking77: K=77, 3076 samples
+
+Extracting embeddings (N_SAMPLES_PER_CLASS=300)...
+  Class 0/77: 40 samples  Class 1/77: 40 samples  Class 2/77: 40 samples  Class 3/77: 39 samples  Class 4/77: 40 samples  Class 5/77: 40 samples  Class 6/77: 40 samples  Class 7/77: 40 samples  Class 8/77: 40 samples  Class 9/77: 40 samples  Class 10/77: 40 samples  Class 11/77: 40 samples  Class 12/77: 40 samples  Class 13/77: 40 samples  Class 14/77: 40 samples  Class 15/77: 40 samples  Class 16/77: 40 samples  Class 17/77: 40 samples  Class 18/77: 40 samples  Class 19/77: 40 samples  Class 20/77: 40 samples  Class 21/77: 40 samples  Class 22/77: 40 samples  Class 23/77: 40 samples  Class 24/77: 40 samples  Class 25/77: 40 samples  Class 26/77: 40 samples  Class 27/77: 40 samples  Class 28/77: 40 samples  Class 29/77: 40 samples  Class 30/77: 40 samples  Class 31/77: 40 samples  Class 32/77: 40 samples  Class 33/77: 39 samples  Class 34/77: 40 samples  Class 35/77: 40 samples  Class 36/77: 40 samples  Class 37/77: 40 samples  Class 38/77: 40 samples  Class 39/77: 40 samples  Class 40/77: 40 samples  Class 41/77: 40 samples  Class 42/77: 40 samples  Class 43/77: 40 samples  Class 44/77: 40 samples  Class 45/77: 40 samples  Class 46/77: 40 samples  Class 47/77: 40 samples  Class 48/77: 39 samples  Class 49/77: 40 samples  Class 50/77: 40 samples  Class 51/77: 40 samples  Class 52/77: 40 samples  Class 53/77: 40 samples  Class 54/77: 40 samples  Class 55/77: 40 samples  Class 56/77: 40 samples  Class 57/77: 40 samples  Class 58/77: 40 samples  Class 59/77: 40 samples  Class 60/77: 40 samples  Class 61/77: 40 samples  Class 62/77: 40 samples  Class 63/77: 40 samples  Class 64/77: 40 samples  Class 65/77: 40 samples  Class 66/77: 39 samples  Class 67/77: 40 samples  Class 68/77: 40 samples  Class 69/77: 40 samples  Class 70/77: 40 samples  Class 71/77: 40 samples  Class 72/77: 40 samples  Class 73/77: 40 samples  Class 74/77: 40 samples  Class 75/77: 40 samples  Class 76/77: 40 samples
+Embedding dim: 768
+
+Computing N_eff for K subsets: [4, 8, 16, 32, 48, 64]
+  K=  4: N_eff_obs=2.542, sqrt(K-1)=1.732, ratio=1.468, kappa=0.2806
+  K=  8: N_eff_obs=5.391, sqrt(K-1)=2.646, ratio=2.038, kappa=0.2506
+  K= 16: N_eff_obs=10.745, sqrt(K-1)=3.873, ratio=2.774, kappa=0.2314
+  K= 32: N_eff_obs=21.267, sqrt(K-1)=5.568, ratio=3.820, kappa=0.2249
+  K= 48: N_eff_obs=31.218, sqrt(K-1)=6.856, ratio=4.554, kappa=0.2177
+  K= 64: N_eff_obs=41.485, sqrt(K-1)=7.937, ratio=5.227, kappa=0.2114
+
+Log-log regression (Banking77):
+  slope (beta_neff): 0.9176 +/- 0.0059
+  Pearson r: 0.9999, p=0.0000
+
+Pre-registered:
+  PR_SLOPE_SPARSE (in [0.35,0.65]): FAIL (slope=0.9176)
+  DBpedia slope: 0.9339
+  PR_CONTRAST (banking slope < dbpedia slope): PASS
+
+Saved to C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\cti_neff_pairwise_banking.json

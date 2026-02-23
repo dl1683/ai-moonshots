@@ -76,7 +76,7 @@ def main():
         tokenizer.pad_token = tokenizer.eos_token
 
     print("Loading Banking77 dataset...")
-    ds = load_dataset("PolyAI/banking77", split="test")
+    ds = load_dataset("mteb/banking77", split="test")
     texts = [x["text"] for x in ds]
     labels = [x["label"] for x in ds]
     all_classes = sorted(set(labels))
