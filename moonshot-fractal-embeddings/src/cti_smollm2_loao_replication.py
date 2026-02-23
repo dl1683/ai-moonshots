@@ -154,10 +154,16 @@ def extract_mean_pool_embeddings_at_layer(model, tokenizer, device, texts, layer
         with torch.no_grad():
             out = model(**tok, output_hidden_states=True)
         # Mean pool over non-padding tokens
-        hidden = out.hidden_states[layer_idx + 1]  # (B, seq, d)
+        hidden = out.hidden_states[layer_idx + 1].float()  # (B, seq, d) cast to fp32
         mask = tok["attention_mask"].unsqueeze(-1).float()  # (B, seq, 1)
-        mean_emb = (hidden * mask).sum(1) / mask.sum(1)  # (B, d)
-        all_embs.append(mean_emb.cpu().float().numpy())
+        mask_sum = mask.sum(1).clamp(min=1e-9)  # avoid div-by-zero for empty seqs
+        mean_emb = (hidden * mask).sum(1) / mask_sum  # (B, d)
+        emb_np = mean_emb.cpu().numpy()
+        # Filter out any NaN rows (empty sequences after tokenization)
+        valid_mask = ~np.isnan(emb_np).any(axis=1)
+        if not valid_mask.all():
+            print(f"    Warning: {(~valid_mask).sum()} NaN rows filtered from batch")
+        all_embs.append(emb_np[valid_mask])
     return np.vstack(all_embs)
 
 
