@@ -1,0 +1,76 @@
+Device: cuda
+Loading DBpedia dataset...
+DBpedia: K=14, 560000 samples
+
+============================================================
+Model: TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T
+============================================================
+
+Extracting embeddings (N_SAMPLES_PER_CLASS=500)...
+  Class 0/14: 500 samples  Class 1/14: 500 samples  Class 2/14: 500 samples  Class 3/14: 500 samples  Class 4/14: 500 samples  Class 5/14: 500 samples  Class 6/14: 500 samples  Class 7/14: 500 samples  Class 8/14: 500 samples  Class 9/14: 500 samples  Class 10/14: 500 samples  Class 11/14: 500 samples  Class 12/14: 500 samples  Class 13/14: 500 samples
+Embedding dim: 2048
+
+Computing N_eff for K subsets: [4, 6, 8, 10, 12, 14]
+  K=  4: N_eff_obs=2.622, sqrt(K-1)=1.732, ratio=1.514, kappa=0.1337
+  K=  6: N_eff_obs=4.142, sqrt(K-1)=2.236, ratio=1.852, kappa=0.1241
+  K=  8: N_eff_obs=5.621, sqrt(K-1)=2.646, ratio=2.125, kappa=0.1201
+  K= 10: N_eff_obs=7.149, sqrt(K-1)=3.000, ratio=2.383, kappa=0.1155
+  K= 12: N_eff_obs=8.657, sqrt(K-1)=3.317, ratio=2.610, kappa=0.1118
+  K= 14: N_eff_obs=10.125, sqrt(K-1)=3.606, ratio=2.808, kappa=0.1087
+
+  slope=0.9228, r=0.9999, N_eff@14=10.125, density=0.779
+
+============================================================
+Model: RWKV/rwkv-4-169m-pile
+============================================================
+W0223 07:18:31.496000 185452 site-packages\torch\utils\cpp_extension.py:480] Error checking compiler version for cl: [WinError 2] The system cannot find the file specified
+INFO: Could not find files for the given pattern(s).
+
+Extracting embeddings (N_SAMPLES_PER_CLASS=500)...
+`attention_mask` was passed, but it is unused in this model.
+  Class 0/14: 500 samples  Class 1/14: 500 samples  Class 2/14: 500 samples  Class 3/14: 500 samples  Class 4/14: 500 samples  Class 5/14: 500 samples  Class 6/14: 500 samples  Class 7/14: 500 samples  Class 8/14: 500 samples  Class 9/14: 500 samples  Class 10/14: 500 samples  Class 11/14: 500 samples  Class 12/14: 500 samples  Class 13/14: 500 samples
+Embedding dim: 768
+
+Computing N_eff for K subsets: [4, 6, 8, 10, 12, 14]
+  K=  4: N_eff_obs=2.411, sqrt(K-1)=1.732, ratio=1.392, kappa=0.1054
+  K=  6: N_eff_obs=3.635, sqrt(K-1)=2.236, ratio=1.626, kappa=0.0778
+  K=  8: N_eff_obs=4.840, sqrt(K-1)=2.646, ratio=1.829, kappa=0.0697
+  K= 10: N_eff_obs=6.021, sqrt(K-1)=3.000, ratio=2.007, kappa=0.0608
+  K= 12: N_eff_obs=7.256, sqrt(K-1)=3.317, ratio=2.188, kappa=0.0557
+  K= 14: N_eff_obs=8.568, sqrt(K-1)=3.606, ratio=2.376, kappa=0.0540
+
+  slope=0.8613, r=0.9994, N_eff@14=8.568, density=0.659
+
+============================================================
+Model: Qwen/Qwen2.5-0.5B
+============================================================
+
+Extracting embeddings (N_SAMPLES_PER_CLASS=500)...
+  Class 0/14: 500 samples  Class 1/14: 500 samples  Class 2/14: 500 samples  Class 3/14: 500 samples  Class 4/14: 500 samples  Class 5/14: 500 samples  Class 6/14: 500 samples  Class 7/14: 500 samples  Class 8/14: 500 samples  Class 9/14: 500 samples  Class 10/14: 500 samples  Class 11/14: 500 samples  Class 12/14: 500 samples  Class 13/14: 500 samples
+Embedding dim: 896
+
+Computing N_eff for K subsets: [4, 6, 8, 10, 12, 14]
+  K=  4: N_eff_obs=2.180, sqrt(K-1)=1.732, ratio=1.258, kappa=0.2979
+  K=  6: N_eff_obs=3.298, sqrt(K-1)=2.236, ratio=1.475, kappa=0.2404
+  K=  8: N_eff_obs=4.397, sqrt(K-1)=2.646, ratio=1.662, kappa=0.2232
+  K= 10: N_eff_obs=5.407, sqrt(K-1)=3.000, ratio=1.802, kappa=0.2211
+  K= 12: N_eff_obs=6.378, sqrt(K-1)=3.317, ratio=1.923, kappa=0.2085
+  K= 14: N_eff_obs=7.330, sqrt(K-1)=3.606, ratio=2.033, kappa=0.1996
+
+  slope=0.8289, r=1.0000, N_eff@14=7.330, density=0.564
+
+============================================================
+COMPETITION DENSITY vs N_EFF EXPONENT (7 architectures)
+============================================================
+  pythia-160m                                  : slope=0.9339, density=0.804
+  gpt-neo-125M                                 : slope=0.7112, density=0.454
+  OLMo-1B-hf                                   : slope=0.8063, density=0.578
+  Qwen3-0.6B                                   : slope=0.7914, density=0.566
+  TinyLlama-1.1B-intermediate-step-1431k-3T    : slope=0.9228, density=0.779
+  rwkv-4-169m-pile                             : slope=0.8613, density=0.659
+  Qwen2.5-0.5B                                 : slope=0.8289, density=0.564
+
+Correlation: Pearson r=0.9781 (p=0.0001)
+             Spearman rho=0.8929 (p=0.0068)
+
+Saved to C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\cti_neff_pairwise_extended.json
