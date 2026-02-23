@@ -649,9 +649,26 @@ Three independent experimental frameworks converge on the same exponent:
 \end{enumerate}
 Synthetic and real-network results are mutually independent: (1) uses Gaussian-mixture embeddings
 with controlled $\kappa/d_\mathrm{eff}$, while (2)--(3) use transformer embeddings on natural-language tasks.
-Direct centroid-geometry measurement of $N_\mathrm{eff}$ (requiring the full $K\times K$ pairwise
-distance matrix, not just $\kappa_\mathrm{nearest}$) is a planned follow-up
-that would provide the most direct mechanistic test.
+
+\paragraph{Direct centroid-geometry measurement.}
+A direct test (\texttt{src/cti\_neff\_pairwise.py}) extracts all class centroids from Pythia-160m
+on DBpedia ($K=4$--$14$ subsets, $n=20$ seeds each) and computes
+$N_\mathrm{eff,k}=\sum_{j\neq k}\exp(-\alpha_\mathrm{univ}(\kappa_{kj}-\kappa_{k,\mathrm{near}}))$
+where $\alpha_\mathrm{univ}=3.598$. This gives a geometric estimate of the effective competitor count.
+Results: DBpedia slope $=0.934\pm0.005$ ($r=0.9999$); Banking77 ($K=4$--$64$ subsets)
+slope $=0.918\pm0.012$ ($r=0.9999$). Both slopes are near 1, suggesting
+$N_\mathrm{eff}\approx(K-1)^{0.93}$ from pure centroid geometry.
+
+This does \emph{not} contradict the regression-based $\beta=0.478$. The geometric $N_\mathrm{eff}$
+exponent $\approx0.93$ reflects competition within a single (model, dataset) pair with pythia-160m.
+The regression $\beta=0.478$ reflects how $\log(K-1)$ affects $\logit(q)$ \emph{across datasets}
+with different intercepts $C_0$. Cross-dataset variation in $C_0$, finite-sample effects,
+and approximation error in the Gumbel race model together produce the global $\beta\approx0.5$,
+which may differ from the within-architecture geometric exponent.
+This is an important distinction: the regression $\beta$ is a fitting parameter that compresses
+multi-dataset $K$-variation, not a direct geometric observable.
+Full mechanistic reconciliation of the two $\beta$ estimates requires per-model,
+multi-$K$ embedding extraction across varied datasets --- a planned follow-up.
 
 \section{Discussion}
 
