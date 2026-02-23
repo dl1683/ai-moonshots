@@ -1,0 +1,177 @@
+{
+  "experiment": "smollm2_loao_replication",
+  "model": "HuggingFaceTB/SmolLM2-1.7B",
+  "design": "LOAO-equivalent: mean-pool, logit(q_raw), 4 proportional layers (6,12,18,23)",
+  "convention": "logit(q_raw) -- matches original kappa_near_cache format",
+  "pre_reg_alpha_interval": [
+    2.43,
+    3.29
+  ],
+  "datasets_used": [
+    "dbpedia",
+    "agnews",
+    "20newsgroups"
+  ],
+  "layers_used": [
+    6,
+    12,
+    18,
+    23
+  ],
+  "n_train_points": 228,
+  "n_train_architectures": 19,
+  "n_smollm2_points": 12,
+  "smollm2_points": [
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "dbpedia",
+      "layer": 6,
+      "K": 14,
+      "q": 0.8271428571428572,
+      "kappa_nearest": 0.2223020834033283,
+      "kappa_min": 0.16784551025890213,
+      "logit_q": 1.5655119319762545,
+      "logKm1": 2.5649493574615367
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "dbpedia",
+      "layer": 12,
+      "K": 14,
+      "q": 0.84,
+      "kappa_nearest": 0.12362123401238867,
+      "kappa_min": 0.08077881069478796,
+      "logit_q": 1.6582280766035322,
+      "logKm1": 2.5649493574615367
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "dbpedia",
+      "layer": 18,
+      "K": 14,
+      "q": 0.91,
+      "kappa_nearest": 0.2832253589642538,
+      "kappa_min": 0.22198414961854573,
+      "logit_q": 2.313634929180631,
+      "logKm1": 2.5649493574615367
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "dbpedia",
+      "layer": 23,
+      "K": 14,
+      "q": 0.8928571428571429,
+      "kappa_nearest": 0.6987954701424355,
+      "kappa_min": 0.4404937321261889,
+      "logit_q": 2.1202635362000914,
+      "logKm1": 2.5649493574615367
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "agnews",
+      "layer": 6,
+      "K": 4,
+      "q": 0.7975,
+      "kappa_nearest": 0.24768810575797753,
+      "kappa_min": 0.21568081750394122,
+      "logit_q": 1.3707419481124057,
+      "logKm1": 1.0986122886681098
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "agnews",
+      "layer": 12,
+      "K": 4,
+      "q": 0.81,
+      "kappa_nearest": 0.1804494520282676,
+      "kappa_min": 0.11388810892023543,
+      "logit_q": 1.4500101755059986,
+      "logKm1": 1.0986122886681098
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "agnews",
+      "layer": 18,
+      "K": 4,
+      "q": 0.865,
+      "kappa_nearest": 0.3719026451162799,
+      "kappa_min": 0.345863548280108,
+      "logit_q": 1.8574547284934497,
+      "logKm1": 1.0986122886681098
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "agnews",
+      "layer": 23,
+      "K": 4,
+      "q": 0.8175,
+      "kappa_nearest": 0.6137196069293894,
+      "kappa_min": 0.5263565342083969,
+      "logit_q": 1.4995007297488623,
+      "logKm1": 1.0986122886681098
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "20newsgroups",
+      "layer": 6,
+      "K": 20,
+      "q": 0.4,
+      "kappa_nearest": 0.08435794623559388,
+      "kappa_min": 0.051214349856867805,
+      "logit_q": -0.4054651081081643,
+      "logKm1": 2.9444389791664403
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "20newsgroups",
+      "layer": 12,
+      "K": 20,
+      "q": 0.41424936386768446,
+      "kappa_nearest": 0.011080528536146116,
+      "kappa_min": 0.005152005740433606,
+      "logit_q": -0.3464260427193424,
+      "logKm1": 2.9444389791664403
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "20newsgroups",
+      "layer": 18,
+      "K": 20,
+      "q": 0.527735368956743,
+      "kappa_nearest": 0.02769062838112536,
+      "kappa_min": 0.018879539608291154,
+      "logit_q": 0.11105547544332675,
+      "logKm1": 2.9444389791664403
+    },
+    {
+      "model": "SmolLM2-1.7B",
+      "dataset": "20newsgroups",
+      "layer": 23,
+      "K": 20,
+      "q": 0.5592875318066157,
+      "kappa_nearest": 0.31705860409400183,
+      "kappa_min": 0.17303191851337316,
+      "logit_q": 0.23827104584118597,
+      "logKm1": 2.9444389791664403
+    }
+  ],
+  "train_fit": {
+    "alpha": 5.643468397623555,
+    "beta": 0.17076887476099245,
+    "C0": -2.3500700017719396
+  },
+  "smollm2_fit": {
+    "alpha": 2.198466417801495,
+    "beta": -0.35372567188966064,
+    "C": 1.315598108574093
+  },
+  "evaluation": {
+    "mae_frozen": 1.5969127562116148,
+    "pearson_r_pred": 0.5760467105630097,
+    "pearson_p_pred": 0.04996873573331577
+  },
+  "pr1_alpha_pass": false,
+  "pr2_r_pass": false,
+  "overall_pass": false,
+  "verdict": "FAIL"
+}

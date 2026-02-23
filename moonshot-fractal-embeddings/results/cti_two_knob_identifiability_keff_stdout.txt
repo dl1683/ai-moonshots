@@ -1,0 +1,236 @@
+======================================================================
+TWO-KNOB IDENTIFIABILITY: kappa_eff sufficient statistic test
+======================================================================
+A_renorm(K=20) = 1.0535 (pre-registered)
+Linear regime: kappa_eff in [0.5, 2.0]
+Kappa scales: [0.75, 0.85, 0.95, 1.0, 1.1, 1.2, 1.35]
+d_eff scales: [0.7, 0.85, 1.0, 1.2, 1.5, 1.8]
+Grid size: 7 x 6 = 42 conditions per seed
+Match tolerance: kappa_eff within 5%, knob separation >= 15%
+
+PRE-REGISTERED PASS CRITERIA:
+  P1: Pearson r >= 0.99
+  P2: Mean calibration error <= 0.1
+  P3: Mean |Delta_logit| (matched pairs) <= 0.08
+  P4: >=80% matched pairs: |Delta_logit| <= 0.1
+  P5: |corr(residual, kappa)| < 0.1
+  P6: |corr(residual, d_eff)| < 0.1
+  P7: >= 30 total pairs (>= 8 per seed)
+
+
+============================================================
+SEED 0
+============================================================
+  Using checkpoint epoch=4
+  WARNING: No test embeddings found for seed 0.
+  Fallback: stratified 80/20 split of X_tr as train/val.
+  Split: 40000 train, 10000 val
+  Base: kappa=0.2092, d_eff=23.263, kappa_eff=1.0090, q=0.2546
+  C_seed = -2.1371
+  s=0.75 r=0.70: kappa=0.1569, d_eff=16.284, kappa_eff=0.6332, q=0.2538 [OK]
+  s=0.75 r=0.85: kappa=0.1569, d_eff=19.773, kappa_eff=0.6977, q=0.2525 [OK]
+  s=0.75 r=1.00: kappa=0.1569, d_eff=23.263, kappa_eff=0.7568, q=0.2525 [OK]
+  s=0.75 r=1.20: kappa=0.1569, d_eff=27.915, kappa_eff=0.8290, q=0.2522 [OK]
+  s=0.75 r=1.50: kappa=0.1569, d_eff=34.894, kappa_eff=0.9269, q=0.2518 [OK]
+  s=0.75 r=1.80: kappa=0.1569, d_eff=41.873, kappa_eff=1.0153, q=0.2538 [OK]
+  s=0.85 r=0.70: kappa=0.1778, d_eff=16.284, kappa_eff=0.7176, q=0.2438 [OK]
+  s=0.85 r=0.85: kappa=0.1778, d_eff=19.773, kappa_eff=0.7908, q=0.2439 [OK]
+  s=0.85 r=1.00: kappa=0.1778, d_eff=23.263, kappa_eff=0.8577, q=0.2437 [OK]
+  s=0.85 r=1.20: kappa=0.1778, d_eff=27.915, kappa_eff=0.9396, q=0.2453 [OK]
+  s=0.85 r=1.50: kappa=0.1778, d_eff=34.894, kappa_eff=1.0505, q=0.2465 [OK]
+  s=0.85 r=1.80: kappa=0.1778, d_eff=41.873, kappa_eff=1.1507, q=0.2496 [OK]
+  s=0.95 r=0.70: kappa=0.1987, d_eff=16.284, kappa_eff=0.8020, q=0.2475 [OK]
+  s=0.95 r=0.85: kappa=0.1987, d_eff=19.773, kappa_eff=0.8838, q=0.2474 [OK]
+  s=0.95 r=1.00: kappa=0.1987, d_eff=23.263, kappa_eff=0.9586, q=0.2479 [OK]
+  s=0.95 r=1.20: kappa=0.1987, d_eff=27.915, kappa_eff=1.0501, q=0.2487 [OK]
+  s=0.95 r=1.50: kappa=0.1987, d_eff=34.894, kappa_eff=1.1740, q=0.2488 [OK]
+  s=0.95 r=1.80: kappa=0.1987, d_eff=41.873, kappa_eff=1.2861, q=0.2519 [OK]
+  s=1.00 r=0.70: kappa=0.2092, d_eff=16.284, kappa_eff=0.8442, q=0.2540 [OK]
+  s=1.00 r=0.85: kappa=0.2092, d_eff=19.773, kappa_eff=0.9303, q=0.2527 [OK]
+  s=1.00 r=1.00: kappa=0.2092, d_eff=23.263, kappa_eff=1.0090, q=0.2546 [OK]
+  s=1.00 r=1.20: kappa=0.2092, d_eff=27.915, kappa_eff=1.1054, q=0.2546 [OK]
+  s=1.00 r=1.50: kappa=0.2092, d_eff=34.894, kappa_eff=1.2358, q=0.2555 [OK]
+  s=1.00 r=1.80: kappa=0.2092, d_eff=41.873, kappa_eff=1.3538, q=0.2569 [OK]
+  s=1.10 r=0.70: kappa=0.2301, d_eff=16.284, kappa_eff=0.9287, q=0.2714 [OK]
+  s=1.10 r=0.85: kappa=0.2301, d_eff=19.773, kappa_eff=1.0233, q=0.2695 [OK]
+  s=1.10 r=1.00: kappa=0.2301, d_eff=23.263, kappa_eff=1.1100, q=0.2695 [OK]
+  s=1.10 r=1.20: kappa=0.2301, d_eff=27.915, kappa_eff=1.2159, q=0.2702 [OK]
+  s=1.10 r=1.50: kappa=0.2301, d_eff=34.894, kappa_eff=1.3594, q=0.2729 [OK]
+  s=1.10 r=1.80: kappa=0.2301, d_eff=41.873, kappa_eff=1.4892, q=0.2761 [OK]
+  s=1.20 r=0.70: kappa=0.2511, d_eff=16.284, kappa_eff=1.0131, q=0.3005 [OK]
+  s=1.20 r=0.85: kappa=0.2511, d_eff=19.773, kappa_eff=1.1164, q=0.2992 [OK]
+  s=1.20 r=1.00: kappa=0.2511, d_eff=23.263, kappa_eff=1.2109, q=0.2999 [OK]
+  s=1.20 r=1.20: kappa=0.2511, d_eff=27.915, kappa_eff=1.3264, q=0.2989 [OK]
+  s=1.20 r=1.50: kappa=0.2511, d_eff=34.894, kappa_eff=1.4830, q=0.3021 [OK]
+  s=1.20 r=1.80: kappa=0.2511, d_eff=41.873, kappa_eff=1.6245, q=0.3048 [OK]
+  s=1.35 r=0.70: kappa=0.2824, d_eff=16.284, kappa_eff=1.1397, q=0.3697 [OK]
+  s=1.35 r=0.85: kappa=0.2824, d_eff=19.773, kappa_eff=1.2559, q=0.3688 [OK]
+  s=1.35 r=1.00: kappa=0.2824, d_eff=23.263, kappa_eff=1.3622, q=0.3687 [OK]
+  s=1.35 r=1.20: kappa=0.2824, d_eff=27.915, kappa_eff=1.4922, q=0.3703 [OK]
+  s=1.35 r=1.50: kappa=0.2824, d_eff=34.894, kappa_eff=1.6684, q=0.3716 [OK]
+  s=1.35 r=1.80: kappa=0.2824, d_eff=41.873, kappa_eff=1.8276, q=0.3743 [OK]
+
+  Valid (linear-regime) conditions: 43
+  Matched pairs found: 11
+    Pair: (s=0.75,r=1.80) vs (s=1.20,r=0.70): kappa_eff_gap=0.2%, kappa_diff=37.5%, |Delta_logit|=0.2337
+    Pair: (s=0.85,r=1.80) vs (s=1.35,r=0.70): kappa_eff_gap=1.0%, kappa_diff=37.0%, |Delta_logit|=0.5673
+    Pair: (s=0.75,r=1.50) vs (s=1.10,r=0.70): kappa_eff_gap=0.2%, kappa_diff=31.8%, |Delta_logit|=0.1014
+    Pair: (s=0.95,r=1.80) vs (s=1.35,r=0.85): kappa_eff_gap=2.4%, kappa_diff=29.6%, |Delta_logit|=0.5513
+    Pair: (s=1.00,r=1.80) vs (s=1.35,r=1.00): kappa_eff_gap=0.6%, kappa_diff=25.9%, |Delta_logit|=0.5243
+    Pair: (s=0.75,r=1.20) vs (s=1.00,r=0.70): kappa_eff_gap=1.8%, kappa_diff=25.0%, |Delta_logit|=0.0095
+    Pair: (s=0.85,r=1.50) vs (s=1.10,r=0.85): kappa_eff_gap=2.6%, kappa_diff=22.7%, |Delta_logit|=0.1199
+    Pair: (s=0.95,r=1.50) vs (s=1.20,r=1.00): kappa_eff_gap=3.1%, kappa_diff=20.8%, |Delta_logit|=0.2570
+    Pair: (s=1.10,r=1.80) vs (s=1.35,r=1.20): kappa_eff_gap=0.2%, kappa_diff=18.5%, |Delta_logit|=0.4330
+    Pair: (s=1.00,r=1.20) vs (s=1.20,r=0.85): kappa_eff_gap=1.0%, kappa_diff=16.7%, |Delta_logit|=0.2227
+    Pair: (s=0.85,r=1.20) vs (s=1.00,r=0.85): kappa_eff_gap=1.0%, kappa_diff=15.0%, |Delta_logit|=0.0400
+
+============================================================
+SEED 1
+============================================================
+  Using checkpoint epoch=4
+  WARNING: No test embeddings found for seed 1.
+  Fallback: stratified 80/20 split of X_tr as train/val.
+  Split: 40000 train, 10000 val
+  Base: kappa=0.2008, d_eff=28.233, kappa_eff=1.0669, q=0.1727
+  C_seed = -2.6903
+  s=0.75 r=0.70: kappa=0.1506, d_eff=19.763, kappa_eff=0.6695, q=0.1814 [OK]
+  s=0.75 r=0.85: kappa=0.1506, d_eff=23.998, kappa_eff=0.7377, q=0.1792 [OK]
+  s=0.75 r=1.00: kappa=0.1506, d_eff=28.233, kappa_eff=0.8002, q=0.1788 [OK]
+  s=0.75 r=1.20: kappa=0.1506, d_eff=33.880, kappa_eff=0.8766, q=0.1802 [OK]
+  s=0.75 r=1.50: kappa=0.1506, d_eff=42.349, kappa_eff=0.9800, q=0.1813 [OK]
+  s=0.75 r=1.80: kappa=0.1506, d_eff=50.819, kappa_eff=1.0736, q=0.1817 [OK]
+  s=0.85 r=0.70: kappa=0.1707, d_eff=19.763, kappa_eff=0.7587, q=0.1703 [OK]
+  s=0.85 r=0.85: kappa=0.1707, d_eff=23.998, kappa_eff=0.8361, q=0.1680 [OK]
+  s=0.85 r=1.00: kappa=0.1707, d_eff=28.233, kappa_eff=0.9069, q=0.1677 [OK]
+  s=0.85 r=1.20: kappa=0.1707, d_eff=33.880, kappa_eff=0.9934, q=0.1685 [OK]
+  s=0.85 r=1.50: kappa=0.1707, d_eff=42.349, kappa_eff=1.1107, q=0.1704 [OK]
+  s=0.85 r=1.80: kappa=0.1707, d_eff=50.819, kappa_eff=1.2167, q=0.1703 [OK]
+  s=0.95 r=0.70: kappa=0.1908, d_eff=19.763, kappa_eff=0.8480, q=0.1699 [OK]
+  s=0.95 r=0.85: kappa=0.1908, d_eff=23.998, kappa_eff=0.9345, q=0.1699 [OK]
+  s=0.95 r=1.00: kappa=0.1908, d_eff=28.233, kappa_eff=1.0136, q=0.1696 [OK]
+  s=0.95 r=1.20: kappa=0.1908, d_eff=33.880, kappa_eff=1.1103, q=0.1691 [OK]
+  s=0.95 r=1.50: kappa=0.1908, d_eff=42.349, kappa_eff=1.2414, q=0.1703 [OK]
+  s=0.95 r=1.80: kappa=0.1908, d_eff=50.819, kappa_eff=1.3598, q=0.1717 [OK]
+  s=1.00 r=0.70: kappa=0.2008, d_eff=19.763, kappa_eff=0.8926, q=0.1745 [OK]
+  s=1.00 r=0.85: kappa=0.2008, d_eff=23.998, kappa_eff=0.9836, q=0.1743 [OK]
+  s=1.00 r=1.00: kappa=0.2008, d_eff=28.233, kappa_eff=1.0669, q=0.1727 [OK]
+  s=1.00 r=1.20: kappa=0.2008, d_eff=33.880, kappa_eff=1.1687, q=0.1724 [OK]
+  s=1.00 r=1.50: kappa=0.2008, d_eff=42.349, kappa_eff=1.3067, q=0.1749 [OK]
+  s=1.00 r=1.80: kappa=0.2008, d_eff=50.819, kappa_eff=1.4314, q=0.1772 [OK]
+  s=1.10 r=0.70: kappa=0.2209, d_eff=19.763, kappa_eff=0.9819, q=0.1907 [OK]
+  s=1.10 r=0.85: kappa=0.2209, d_eff=23.998, kappa_eff=1.0820, q=0.1884 [OK]
+  s=1.10 r=1.00: kappa=0.2209, d_eff=28.233, kappa_eff=1.1736, q=0.1909 [OK]
+  s=1.10 r=1.20: kappa=0.2209, d_eff=33.880, kappa_eff=1.2856, q=0.1903 [OK]
+  s=1.10 r=1.50: kappa=0.2209, d_eff=42.349, kappa_eff=1.4374, q=0.1933 [OK]
+  s=1.10 r=1.80: kappa=0.2209, d_eff=50.819, kappa_eff=1.5745, q=0.1944 [OK]
+  s=1.20 r=0.70: kappa=0.2410, d_eff=19.763, kappa_eff=1.0712, q=0.2194 [OK]
+  s=1.20 r=0.85: kappa=0.2410, d_eff=23.998, kappa_eff=1.1804, q=0.2193 [OK]
+  s=1.20 r=1.00: kappa=0.2410, d_eff=28.233, kappa_eff=1.2803, q=0.2208 [OK]
+  s=1.20 r=1.20: kappa=0.2410, d_eff=33.880, kappa_eff=1.4025, q=0.2208 [OK]
+  s=1.20 r=1.50: kappa=0.2410, d_eff=42.349, kappa_eff=1.5680, q=0.2224 [OK]
+  s=1.20 r=1.80: kappa=0.2410, d_eff=50.819, kappa_eff=1.7177, q=0.2254 [OK]
+  s=1.35 r=0.70: kappa=0.2711, d_eff=19.763, kappa_eff=1.2051, q=0.2777 [OK]
+  s=1.35 r=0.85: kappa=0.2711, d_eff=23.998, kappa_eff=1.3279, q=0.2791 [OK]
+  s=1.35 r=1.00: kappa=0.2711, d_eff=28.233, kappa_eff=1.4403, q=0.2799 [OK]
+  s=1.35 r=1.20: kappa=0.2711, d_eff=33.880, kappa_eff=1.5778, q=0.2820 [OK]
+  s=1.35 r=1.50: kappa=0.2711, d_eff=42.349, kappa_eff=1.7640, q=0.2847 [OK]
+  s=1.35 r=1.80: kappa=0.2711, d_eff=50.819, kappa_eff=1.9324, q=0.2875 [OK]
+
+  Valid (linear-regime) conditions: 43
+  Matched pairs found: 11
+    Pair: (s=0.75,r=1.80) vs (s=1.20,r=0.70): kappa_eff_gap=0.2%, kappa_diff=37.5%, |Delta_logit|=0.2356
+    Pair: (s=0.85,r=1.80) vs (s=1.35,r=0.70): kappa_eff_gap=1.0%, kappa_diff=37.0%, |Delta_logit|=0.6274
+    Pair: (s=0.75,r=1.50) vs (s=1.10,r=0.70): kappa_eff_gap=0.2%, kappa_diff=31.8%, |Delta_logit|=0.0626
+    Pair: (s=0.95,r=1.80) vs (s=1.35,r=0.85): kappa_eff_gap=2.4%, kappa_diff=29.6%, |Delta_logit|=0.6246
+    Pair: (s=1.00,r=1.80) vs (s=1.35,r=1.00): kappa_eff_gap=0.6%, kappa_diff=25.9%, |Delta_logit|=0.5907
+    Pair: (s=0.75,r=1.20) vs (s=1.00,r=0.70): kappa_eff_gap=1.8%, kappa_diff=25.0%, |Delta_logit|=0.0390
+    Pair: (s=0.85,r=1.50) vs (s=1.10,r=0.85): kappa_eff_gap=2.6%, kappa_diff=22.7%, |Delta_logit|=0.1223
+    Pair: (s=0.95,r=1.50) vs (s=1.20,r=1.00): kappa_eff_gap=3.1%, kappa_diff=20.8%, |Delta_logit|=0.3226
+    Pair: (s=1.10,r=1.80) vs (s=1.35,r=1.20): kappa_eff_gap=0.2%, kappa_diff=18.5%, |Delta_logit|=0.4870
+    Pair: (s=1.00,r=1.20) vs (s=1.20,r=0.85): kappa_eff_gap=1.0%, kappa_diff=16.7%, |Delta_logit|=0.2986
+    Pair: (s=0.85,r=1.20) vs (s=1.00,r=0.85): kappa_eff_gap=1.0%, kappa_diff=15.0%, |Delta_logit|=0.0408
+
+============================================================
+SEED 2
+============================================================
+  Using checkpoint epoch=5
+  WARNING: No test embeddings found for seed 2.
+  Fallback: stratified 80/20 split of X_tr as train/val.
+  Split: 40000 train, 10000 val
+  Base: kappa=0.2165, d_eff=22.978, kappa_eff=1.0377, q=0.2326
+  C_seed = -2.2867
+  s=0.75 r=0.70: kappa=0.1624, d_eff=16.085, kappa_eff=0.6511, q=0.2317 [OK]
+  s=0.75 r=0.85: kappa=0.1624, d_eff=19.531, kappa_eff=0.7175, q=0.2315 [OK]
+  s=0.75 r=1.00: kappa=0.1624, d_eff=22.978, kappa_eff=0.7783, q=0.2321 [OK]
+  s=0.75 r=1.20: kappa=0.1624, d_eff=27.574, kappa_eff=0.8525, q=0.2317 [OK]
+  s=0.75 r=1.50: kappa=0.1624, d_eff=34.467, kappa_eff=0.9532, q=0.2344 [OK]
+  s=0.75 r=1.80: kappa=0.1624, d_eff=41.360, kappa_eff=1.0441, q=0.2356 [OK]
+  s=0.85 r=0.70: kappa=0.1840, d_eff=16.085, kappa_eff=0.7380, q=0.2245 [OK]
+  s=0.85 r=0.85: kappa=0.1840, d_eff=19.531, kappa_eff=0.8132, q=0.2251 [OK]
+  s=0.85 r=1.00: kappa=0.1840, d_eff=22.978, kappa_eff=0.8820, q=0.2254 [OK]
+  s=0.85 r=1.20: kappa=0.1840, d_eff=27.574, kappa_eff=0.9662, q=0.2259 [OK]
+  s=0.85 r=1.50: kappa=0.1840, d_eff=34.467, kappa_eff=1.0803, q=0.2271 [OK]
+  s=0.85 r=1.80: kappa=0.1840, d_eff=41.360, kappa_eff=1.1834, q=0.2283 [OK]
+  s=0.95 r=0.70: kappa=0.2057, d_eff=16.085, kappa_eff=0.8248, q=0.2282 [OK]
+  s=0.95 r=0.85: kappa=0.2057, d_eff=19.531, kappa_eff=0.9089, q=0.2283 [OK]
+  s=0.95 r=1.00: kappa=0.2057, d_eff=22.978, kappa_eff=0.9858, q=0.2278 [OK]
+  s=0.95 r=1.20: kappa=0.2057, d_eff=27.574, kappa_eff=1.0799, q=0.2284 [OK]
+  s=0.95 r=1.50: kappa=0.2057, d_eff=34.467, kappa_eff=1.2074, q=0.2299 [OK]
+  s=0.95 r=1.80: kappa=0.2057, d_eff=41.360, kappa_eff=1.3226, q=0.2301 [OK]
+  s=1.00 r=0.70: kappa=0.2165, d_eff=16.085, kappa_eff=0.8682, q=0.2319 [OK]
+  s=1.00 r=0.85: kappa=0.2165, d_eff=19.531, kappa_eff=0.9567, q=0.2327 [OK]
+  s=1.00 r=1.00: kappa=0.2165, d_eff=22.978, kappa_eff=1.0377, q=0.2326 [OK]
+  s=1.00 r=1.20: kappa=0.2165, d_eff=27.574, kappa_eff=1.1367, q=0.2338 [OK]
+  s=1.00 r=1.50: kappa=0.2165, d_eff=34.467, kappa_eff=1.2709, q=0.2339 [OK]
+  s=1.00 r=1.80: kappa=0.2165, d_eff=41.360, kappa_eff=1.3922, q=0.2354 [OK]
+  s=1.10 r=0.70: kappa=0.2381, d_eff=16.085, kappa_eff=0.9550, q=0.2523 [OK]
+  s=1.10 r=0.85: kappa=0.2381, d_eff=19.531, kappa_eff=1.0524, q=0.2506 [OK]
+  s=1.10 r=1.00: kappa=0.2381, d_eff=22.978, kappa_eff=1.1414, q=0.2514 [OK]
+  s=1.10 r=1.20: kappa=0.2381, d_eff=27.574, kappa_eff=1.2504, q=0.2523 [OK]
+  s=1.10 r=1.50: kappa=0.2381, d_eff=34.467, kappa_eff=1.3980, q=0.2523 [OK]
+  s=1.10 r=1.80: kappa=0.2381, d_eff=41.360, kappa_eff=1.5314, q=0.2538 [OK]
+  s=1.20 r=0.70: kappa=0.2598, d_eff=16.085, kappa_eff=1.0418, q=0.2815 [OK]
+  s=1.20 r=0.85: kappa=0.2598, d_eff=19.531, kappa_eff=1.1480, q=0.2813 [OK]
+  s=1.20 r=1.00: kappa=0.2598, d_eff=22.978, kappa_eff=1.2452, q=0.2817 [OK]
+  s=1.20 r=1.20: kappa=0.2598, d_eff=27.574, kappa_eff=1.3641, q=0.2826 [OK]
+  s=1.20 r=1.50: kappa=0.2598, d_eff=34.467, kappa_eff=1.5251, q=0.2839 [OK]
+  s=1.20 r=1.80: kappa=0.2598, d_eff=41.360, kappa_eff=1.6706, q=0.2853 [OK]
+  s=1.35 r=0.70: kappa=0.2922, d_eff=16.085, kappa_eff=1.1721, q=0.3532 [OK]
+  s=1.35 r=0.85: kappa=0.2922, d_eff=19.531, kappa_eff=1.2915, q=0.3528 [OK]
+  s=1.35 r=1.00: kappa=0.2922, d_eff=22.978, kappa_eff=1.4009, q=0.3517 [OK]
+  s=1.35 r=1.20: kappa=0.2922, d_eff=27.574, kappa_eff=1.5346, q=0.3529 [OK]
+  s=1.35 r=1.50: kappa=0.2922, d_eff=34.467, kappa_eff=1.7157, q=0.3551 [OK]
+  s=1.35 r=1.80: kappa=0.2922, d_eff=41.360, kappa_eff=1.8795, q=0.3571 [OK]
+
+  Valid (linear-regime) conditions: 43
+  Matched pairs found: 11
+    Pair: (s=0.75,r=1.80) vs (s=1.20,r=0.70): kappa_eff_gap=0.2%, kappa_diff=37.5%, |Delta_logit|=0.2399
+    Pair: (s=0.85,r=1.80) vs (s=1.35,r=0.70): kappa_eff_gap=1.0%, kappa_diff=37.0%, |Delta_logit|=0.6127
+    Pair: (s=0.75,r=1.50) vs (s=1.10,r=0.70): kappa_eff_gap=0.2%, kappa_diff=31.8%, |Delta_logit|=0.0972
+    Pair: (s=0.95,r=1.80) vs (s=1.35,r=0.85): kappa_eff_gap=2.4%, kappa_diff=29.6%, |Delta_logit|=0.6011
+    Pair: (s=1.00,r=1.80) vs (s=1.35,r=1.00): kappa_eff_gap=0.6%, kappa_diff=25.9%, |Delta_logit|=0.5666
+    Pair: (s=0.75,r=1.20) vs (s=1.00,r=0.70): kappa_eff_gap=1.8%, kappa_diff=25.0%, |Delta_logit|=0.0012
+    Pair: (s=0.85,r=1.50) vs (s=1.10,r=0.85): kappa_eff_gap=2.6%, kappa_diff=22.7%, |Delta_logit|=0.1298
+    Pair: (s=0.95,r=1.50) vs (s=1.20,r=1.00): kappa_eff_gap=3.1%, kappa_diff=20.8%, |Delta_logit|=0.2728
+    Pair: (s=1.10,r=1.80) vs (s=1.35,r=1.20): kappa_eff_gap=0.2%, kappa_diff=18.5%, |Delta_logit|=0.4724
+    Pair: (s=1.00,r=1.20) vs (s=1.20,r=0.85): kappa_eff_gap=1.0%, kappa_diff=16.7%, |Delta_logit|=0.2488
+    Pair: (s=0.85,r=1.20) vs (s=1.00,r=0.85): kappa_eff_gap=1.0%, kappa_diff=15.0%, |Delta_logit|=0.0387
+
+======================================================================
+GLOBAL ANALYSIS
+======================================================================
+Total conditions (linear regime): 129
+Total matched pairs: 33
+
+PRE-REGISTERED RESULTS:
+  P1: Pearson r = 0.7983 (threshold >= 0.99): FAIL
+  P2: Mean calibration error = 0.9945 (threshold <= 0.1): FAIL
+  P3: Mean |Delta_logit| = 0.2967 (threshold <= 0.08): FAIL
+  P4: 24.2% pairs within 0.1 (threshold >= 80%): FAIL
+  P5: |corr(residual, kappa)| = 0.1768 (threshold < 0.1): FAIL
+  P6: |corr(residual, d_eff)| = 0.7905 (threshold < 0.1): FAIL
+  P7: n_pairs = 33 (total), 11 (min per seed): PASS
+
+OVERALL: 1/7 criteria PASS: FAIL
+
+Results saved to results/cti_two_knob_identifiability_keff.json

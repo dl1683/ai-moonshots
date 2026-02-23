@@ -1,0 +1,84 @@
+{
+  "experiment": "smollm2_fast_replication",
+  "model": "HuggingFaceTB/SmolLM2-1.7B",
+  "design": "cross-dataset at best-of-5-layers (0,6,12,18,23). Matches LODO protocol.",
+  "pre_reg_alpha_interval": [
+    2.43,
+    3.29
+  ],
+  "dataset_results": [
+    {
+      "dataset": "dbpedia_14",
+      "K": 14,
+      "best_layer": 18,
+      "kappa_nearest": 0.0307,
+      "q_raw": null,
+      "q_norm": 0.681,
+      "logit_q_norm": 0.757,
+      "note": "In training set (K=14) -- from original smollm2_held_out run"
+    },
+    {
+      "dataset": "clinc_oos",
+      "K": 151,
+      "best_layer": 0,
+      "kappa_nearest": 0.1216,
+      "q_raw": null,
+      "q_norm": 0.56,
+      "logit_q_norm": 0.241,
+      "note": "OUT-OF-DISTRIBUTION (K=151, new domain) -- from original run"
+    },
+    {
+      "dataset": "banking77",
+      "K": 77,
+      "note": "In training set (K=77, large-K)",
+      "best_layer": 0,
+      "best_q_raw": 0.4959718026183283,
+      "kappa_nearest": 0.10248245516548958,
+      "q_norm": 0.48933985265277996,
+      "logit_q_norm": -0.042647051982085314
+    },
+    {
+      "dataset": "ag_news",
+      "K": 4,
+      "note": "In training set (K=4, small-K)",
+      "best_layer": 0,
+      "best_q_raw": 0.7,
+      "kappa_nearest": 0.11759958530351856,
+      "q_norm": 0.6,
+      "logit_q_norm": 0.4054651081081643
+    },
+    {
+      "dataset": "20newsgroups",
+      "K": 20,
+      "note": "In training set (K=20)",
+      "best_layer": 23,
+      "best_q_raw": 0.16125,
+      "kappa_nearest": 0.09072160771227954,
+      "q_norm": 0.11710526315789474,
+      "logit_q_norm": -2.020132767239542
+    }
+  ],
+  "kappa_values": [
+    0.0307,
+    0.1216,
+    0.10248245516548958,
+    0.11759958530351856,
+    0.09072160771227954
+  ],
+  "logit_q_values": [
+    0.757,
+    0.241,
+    -0.042647051982085314,
+    0.4054651081081643,
+    -2.020132767239542
+  ],
+  "alpha_fit": -4.879998201857076,
+  "alpha_se": 16.967351435817573,
+  "intercept": 0.32012605185693455,
+  "pearson_r": -0.16380930113710823,
+  "pearson_p": 0.7923680808116849,
+  "pr1_alpha_pass": false,
+  "pr2_r_pass": false,
+  "overall_pass": false,
+  "verdict": "FAIL"
+}
