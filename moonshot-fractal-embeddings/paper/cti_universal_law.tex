@@ -489,12 +489,90 @@ To directly test whether kappa spread or $K$ better predicts $\rho$, we pre-regi
 
 Result (\texttt{results/cti\_spread\_vs\_K.json}): $\hat\beta_1=0.44$, $\hat\beta_2=0.08$ --- spread is $5.8\times$ more important than $\log(K)$ in regression (H\textsubscript{K\_null}: PASS). Spearman $r(\mathrm{spread}, \rho)=0.886$ vs.\ $r(\log K, \rho)=0.600$. Partial correlation $r(\mathrm{spread}\mid\log K)=0.630$ vs.\ $r(\log K\mid\mathrm{spread})=0.777$ (n=6, underpowered; both $p\approx0.07$--$0.18$). Pearson H\textsubscript{spread\_r} fails because language-ID (spread$=0.336$) is an outlier; Spearman is robust and favors spread. \textit{Interpretation}: architecture-ranking reliability is mechanistically linked to between-architecture kappa spread. Datasets where all architectures produce similar kappa (news categories, emotion, yahoo) yield unreliable ranking regardless of $K$; datasets with high kappa variation (language ID, Amazon intent, Banking77) yield reliable ranking. This is a post-hoc exploratory finding (n=6) and requires a pre-registered follow-up with more datasets.
 
+\subsection{Comprehensive Cross-Architecture Universality ($K=4$--$77$)}
+\label{subsec:comprehensive-universality}
+
+To stress-test universality beyond the 12-architecture, 4-dataset primary LOAO, we assembled a
+comprehensive test across all available cache files: 19 architectures $\times$ 10 datasets,
+spanning $K\in\{4,6,10,14,20,28,42,59,77\}$, 444 valid data points
+(\texttt{results/cti\_kappa\_universal\_comprehensive.json}).
+The 19 architectures include all 12 from the primary LOAO plus encoder-only models (BERT-base,
+DeBERTa-base, ELECTRA-small, BGE-base-v1.5), SSM models (Mamba-130m), GPT-2, and Phi-2.
+The 10 datasets span topics (20newsgroups, AGNews, DBpedia), intent/task (Banking77, Amazon Massive),
+emotions (GoEmotions, emotion), news (news\_category), languages (langid), and multi-domain (Yahoo).
+
+Global single-$C_0$ OLS fit: $\hat\alpha=3.596$, $\hat\beta=-0.478$, $R^2=0.612$.
+\begin{itemize}[nosep]
+  \item \textbf{LOAO $\mathrm{CV}_\alpha=1.75\%$} (19 architectures): well below the pre-registered 5\% threshold. \textbf{PASS.}
+  \item \textbf{LODO $\mathrm{CV}_\alpha=5.51\%$} (10 datasets): PASS at the 7\% threshold.
+  \item \textbf{Median per-$K$ Pearson $r=0.770$}: ranging from $r=0.582$ ($K=14$) to $r=0.874$ ($K=59$). All positive, $p < 0.001$. PASS.
+  \item \textbf{Overall $R^2=0.612$}: substantial explained variance across a 20$\times$ range in $K$ and 4 years of architecture development.
+\end{itemize}
+
+The key finding is LOAO $\mathrm{CV}_\alpha=1.75\%$---tighter than the 12-architecture primary test ($\mathrm{CV}=1.9\%$)---despite covering architecturally diverse encoder models, SSMs, and GPT-2 in addition to the original 12 decoders. Mamba-130m is the worst LOAO outlier (MAE$=2.21$), consistent with its non-transformer SSM structure; the law's functional form still holds directionally.
+
+\subsection{Sparse Competition: Pre-Registered Beta Exponent Test}
+\label{subsec:sparse-competition}
+
+The Gumbel race identity (Eq.~\ref{eq:gumbel-sum}) under nearest-class dominance predicts
+$\beta_\infty = 1.0$ (all $K-1$ competitors equally active). The empirical global estimate
+$\hat\beta = 0.478$ (positive sign convention; from the 444-point fit) is substantially below 1.0.
+We tested two competing mechanistic hypotheses:
+\begin{itemize}[nosep]
+  \item \textbf{Dense ETF competition (M1)}: $\beta = 1.0$ (all $K-1$ competitors contribute equally, as in
+    an equiangular tight frame); $\alpha$ and $C_0$ fit freely.
+  \item \textbf{Sparse competition (M2)}: $\beta = 0.5$ (only $N_\mathrm{eff} \propto \sqrt{K-1}$ competitors
+    contribute); $\alpha$ and $C_0$ fit freely.
+\end{itemize}
+We additionally tested M0 (all free) and M3 ($\beta=0$, $K$-independent).
+
+\paragraph{Pre-registration.} The model comparison was pre-registered (\texttt{src/cti\_beta\_constrained\_test.py},
+committed before running; \texttt{results/cti\_beta\_constrained.json}) with criteria: (PR\_WIN) M2 LOAO MAE $\leq$ M1 LOAO MAE; (PR\_CLOSE) relative improvement $\geq 3\%$; (PR\_UNCON\_GAP) unconstrained M0 within 5\% of winner.
+
+\begin{table}[t]
+\centering
+\caption{Beta-constrained model comparison: LOAO and LODO MAE across 444 data points,
+19 architectures, 10 datasets. Winner (M2, $\beta=0.5$) is highlighted.}
+\label{tab:beta-constrained}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Model & $\beta$ & LOAO MAE & LODO MAE & Status \\
+\midrule
+\textbf{M2 (sparse)} & $\mathbf{0.5}$ & $\mathbf{0.766}$ & $\mathbf{0.857}$ & \textbf{WINNER} \\
+M0 (unconstrained) & $0.478$ & $0.771$ & $0.898$ & $+0.6\%$ vs M2 \\
+M3 ($K$-indep.) & $0.0$ & $0.917$ & $0.899$ & \\
+M1 (dense ETF) & $1.0$ & $0.852$ & $1.069$ & $+10.1\%$ vs M2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{All three pre-registered criteria pass.} PR\_WIN: M2 MAE $= 0.766 < $ M1 MAE $= 0.852$ (10.1\% improvement). PR\_CLOSE: PASS ($\geq 3\%$ threshold). PR\_UNCON\_GAP: M0 (unconstrained, $\hat\beta=0.478$) is within 0.6\% of M2, confirming $\beta=0.5$ is not under-constrained---it is effectively the best global estimate. LODO confirms: M2 beats M1 by 24.8\% (0.857 vs.\ 1.069).
+
+\paragraph{Per-$K$ winner breakdown.}
+M2 ($\beta=0.5$) wins at $K \in \{4, 6, 10, 59, 77\}$ (sparse, task-specific classes);
+M1 ($\beta=1.0$) wins at $K \in \{14, 20, 28, 42\}$ (semantically dense topic/emotion datasets).
+This is consistent with a regime-dependent competition structure: at low $K$ (few distinct classes) and very high $K$ (many fine-grained task classes), competition is sparse ($\sqrt{K}$ scale); at medium $K$ with semantically overlapping topics (news, emotions), competition approaches the dense ETF limit.
+
+\paragraph{Sparse competition mechanism.}
+The Gumbel race sum (Eq.~\ref{eq:gumbel-sum}) can be decomposed as
+$\sum_{j\neq k}\exp(-\Delta_{k,j}/s) \approx N_\mathrm{eff}\exp(-\Delta_k/s)$
+where $N_\mathrm{eff}$ is the effective number of competitive classes.
+The empirical $\beta=0.5$ implies $N_\mathrm{eff} \propto \sqrt{K-1}$.
+A plausible mechanism (Codex analysis): in real text classification, classes are organized
+hierarchically. Competitors at the same semantic level number $\sim\sqrt{K}$; deeper-level
+competitors are substantially farther away and contribute negligibly. Equivalently, if each
+competitor activates an effective gate with probability $\propto 1/\sqrt{K}$ (sparse gating),
+then $N_\mathrm{eff} = (K-1)\cdot p_K \approx \sqrt{K-1}$.
+Empirical validation of this mechanism (direct measurement of $N_\mathrm{eff}$ from full pairwise
+centroid matrices) is planned as a follow-up.
+
 \section{Discussion}
 
 \paragraph{What is universal.}
-Four claims are strongly supported:
+Five claims are now strongly supported:
 (1)~\textbf{Form universality}: EVT/Gumbel race requires Eq.~\ref{eq:cti-law}'s structure.
-(2)~\textbf{NLP architecture constant stability}: LOAO $\mathrm{CV}_\alpha=0.019$ (single-$C_0$) / $0.023$ (per-dataset) across 12 diverse architectures spanning 4 years and 56$\times$ parameter range.
+(2)~\textbf{NLP architecture constant stability}: LOAO $\mathrm{CV}_\alpha=0.019$ (single-$C_0$) / $0.023$ (per-dataset) across 12 diverse architectures spanning 4 years and 56$\times$ parameter range; extended test confirms $\mathrm{CV}_\alpha=1.75\%$ across 19 architectures and 10 datasets spanning $K=4$--$77$.
 (3)~\textbf{Architecture boundary crossing}: RWKV (pure linear RNN, no attention) satisfies the pre-registered acceptance interval.
 (4)~\textbf{Cross-family form universality}: Both ViT and ResNet50 CNN yield comparable $r$ at $K=100$ ($r=0.773$ and $0.749$ respectively), confirming the logit-linear form holds across attention and convolutional architectures.
 
