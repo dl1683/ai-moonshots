@@ -340,26 +340,30 @@ def main():
 
         seed_results = []
         for seed in SEEDS:
-            X, y, _ = generate_synthetic_embeddings(
-                K, D, N_PER_CLASS * 2, Sigma, KAPPA_NEAREST, seed)
-            rng2 = np.random.default_rng(seed + 1000)
-            classes = np.unique(y)
-            X_tr_list, y_tr_list, X_te_list, y_te_list = [], [], [], []
-            for c in classes:
-                idx = np.where(y == c)[0]
-                rng2.shuffle(idx)
-                n_tr = min(N_PER_CLASS, len(idx) // 2)
-                X_tr_list.append(X[idx[:n_tr]])
-                y_tr_list.append(y[idx[:n_tr]])
-                X_te_list.append(X[idx[n_tr:n_tr + n_tr]])
-                y_te_list.append(y[idx[n_tr:n_tr + n_tr]])
-            X_tr = np.concatenate(X_tr_list)
-            y_tr = np.concatenate(y_tr_list)
-            X_te = np.concatenate(X_te_list)
-            y_te = np.concatenate(y_te_list)
+            try:
+                X, y, _ = generate_synthetic_embeddings(
+                    K, D, N_PER_CLASS * 2, Sigma, KAPPA_NEAREST, seed)
+                rng2 = np.random.default_rng(seed + 1000)
+                classes = np.unique(y)
+                X_tr_list, y_tr_list, X_te_list, y_te_list = [], [], [], []
+                for c in classes:
+                    idx = np.where(y == c)[0]
+                    rng2.shuffle(idx)
+                    n_tr = min(N_PER_CLASS, len(idx) // 2)
+                    X_tr_list.append(X[idx[:n_tr]])
+                    y_tr_list.append(y[idx[:n_tr]])
+                    X_te_list.append(X[idx[n_tr:n_tr + n_tr]])
+                    y_te_list.append(y[idx[n_tr:n_tr + n_tr]])
+                X_tr = np.concatenate(X_tr_list)
+                y_tr = np.concatenate(y_tr_list)
+                X_te = np.concatenate(X_te_list)
+                y_te = np.concatenate(y_te_list)
 
-            A_local_fit, r_wk, baseline, pair_results = run_surgery_for_seed(
-                X_tr, y_tr, X_te, y_te, classes)
+                A_local_fit, r_wk, baseline, pair_results = run_surgery_for_seed(
+                    X_tr, y_tr, X_te, y_te, classes)
+            except Exception as e:
+                log(f"  seed={seed}: EXCEPTION {type(e).__name__}: {e}")
+                continue
 
             if not baseline:
                 log(f"  seed={seed}: SKIP")
