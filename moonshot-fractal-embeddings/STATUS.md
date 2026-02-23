@@ -209,12 +209,21 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
       cleanly. Need either: (a) much larger NC effect, or (b) backbone with lower baseline kappa
       where kappa variation is more predictive of q in the logit-linear regime.
 
-12. **Codex Constants Consultation (Session 70 — TASK a74be0143736d6944):**
+12. **Codex Constants Consultation (Session 70 — TWO TASKS):**
+
+    TASK a74be0143736d6944 (earlier):
     - Golden ratio from Gumbel+Gaussian: DEAD-END (no recursive algebraic fixed point in vanilla model)
     - Complex extension (Wick-rotated Gumbel): SPECULATIVE-BUT-TESTABLE (abandons probabilistic interp)
-    - d_eff ≈ 1.71 from ETF+Gumbel race: SPECULATIVE-BUT-TESTABLE
-      Closest candidate: e-1=1.718, sqrt(3)=1.732 (likely coincidence, no proof yet)
-      ETF+correlated-extreme-value path is the tractable theoretical direction
+    - d_eff ≈ 1.71 closest candidate: e-1=1.718 (likely coincidence, no proof yet)
+
+    TASK ab1bf219aae015bb0 — "d_eff = e-1 from ETF structure?" (DEFINITIVE DEAD-END):
+    - Setup: ETF rho_n=1/(K-1) equicorrelated margins with i.i.d. Gaussian competitors
+    - RESULT: rho_n=1/(K-1) → sqrt(rho_n)=O(n^{-1/2}) → correlation term asymptotically negligible
+      → reduces to standard i.i.d. Gumbel EVT. Large-K constant is 1, not e-1.
+    - Logit slope alpha grows as sqrt(log K), NOT K-independent → contradicts measured CV=1.75%
+    - SIDE NOTE: ETF one-vs-all difference margin pairwise correlation = 1/2 (not 1/(K-1))
+      This directly explains the measured rho~0.45-0.50 in equicorrelation experiments
+    - CONCLUSION: d_eff ≈ 1.710 ~ e-1 = 1.718 is coincidental/finite-size artifact. CLOSED.
 
 ## Failed Causal Interventions (logged for paper)
 
