@@ -455,6 +455,100 @@ def make_figure3():
     print(f"Saved: {out}")
 
 
+# ══════════════════════════════════════════════════════════════════════════════
+# FIGURE 4 – Allen Neuropixels biological validation (32 mice, K=118)
+# ══════════════════════════════════════════════════════════════════════════════
+def make_figure4():
+    """Allen Neuropixels 32-session CTI validation results."""
+    data     = load("cti_allen_all_sessions_complete.json")
+    sessions = data["sessions"]
+    summary  = data["summary"]
+
+    r_kappas  = [s["r_kappa"]  for s in sessions]
+    r_margins = [s["r_margin"] for s in sessions]
+    mean_qs   = [s["mean_q"]   for s in sessions]
+    h1_pass   = [s.get("H1", s["r_kappa"] > 0.5) for s in sessions]
+
+    # sort by r_kappa
+    order     = np.argsort(r_kappas)
+    r_sorted  = [r_kappas[i]  for i in order]
+    h1_sorted = [h1_pass[i]   for i in order]
+    mq_sorted = [mean_qs[i]   for i in order]
+    n_sess    = len(sessions)
+
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+
+    # ── Left: bar chart of r_kappa per session ──────────────────────────────
+    ax = axes[0]
+    bar_colors = ["#2ca02c" if h else "#d62728" for h in h1_sorted]
+    y_pos = np.arange(n_sess)
+    ax.barh(y_pos, r_sorted, color=bar_colors, edgecolor="white",
+            linewidth=0.3, height=0.9)
+    ax.axvline(0.5, color="black", lw=1.5, linestyle="--",
+               label="H1 threshold ($r=0.5$)")
+    ax.axvline(summary["mean_r_kappa"], color="navy", lw=2.0, linestyle="-",
+               label=f"Mean $r={summary['mean_r_kappa']:.3f}$")
+
+    n_pass = sum(h1_pass)
+    ax.set_yticks([])
+    ax.set_xlabel(r"Pearson $r(\kappa_\mathrm{nearest},\,\mathrm{logit}\,q)$  per session",
+                  fontsize=11)
+    ax.set_title(f"Allen Neuropixels (DANDI:000021, $K=118$)\n"
+                 f"{n_pass}/{n_sess} sessions pass H1 ($r>0.5$); all {n_sess} positive $r$",
+                 fontsize=11)
+    ax.legend(fontsize=9, loc="lower right")
+    ax.set_xlim(0, 1)
+    ax.grid(True, axis="x", alpha=0.3)
+
+    # patch legend for pass/fail colours
+    import matplotlib.patches as mpatches
+    pass_patch = mpatches.Patch(color="#2ca02c", label=f"PASS ($r>0.5$, $n={n_pass}$)")
+    fail_patch = mpatches.Patch(color="#d62728", label=f"FAIL ($r\\leq0.5$, $n={n_sess-n_pass}$)")
+    ax.legend(handles=[pass_patch, fail_patch, ax.get_lines()[0], ax.get_lines()[1]],
+              fontsize=8.5, loc="lower right")
+
+    # ── Right: scatter r_kappa vs mean_q across sessions ────────────────────
+    ax = axes[1]
+    colors2 = ["#2ca02c" if h else "#d62728" for h in h1_pass]
+    ax.scatter(mean_qs, r_kappas, c=colors2, s=60, edgecolors="white",
+               linewidths=0.5, alpha=0.85, zorder=3)
+
+    # noise floor vs ceiling annotation
+    ax.axhline(0.5, color="black", lw=1.5, linestyle="--", alpha=0.7,
+               label="H1 threshold ($r=0.5$)")
+    ax.axvline(0.15, color="orange", lw=1.2, linestyle=":", alpha=0.7,
+               label="Low-accuracy (noise floor) region")
+    ax.axvline(0.75, color="purple", lw=1.2, linestyle=":", alpha=0.7,
+               label="High-accuracy (ceiling) region")
+
+    # annotate the 2 fail sessions
+    for s in sessions:
+        h = s.get("H1", s["r_kappa"] > 0.5)
+        if not h:
+            ax.annotate(f"q={s['mean_q']:.2f}", (s["mean_q"], s["r_kappa"]),
+                        textcoords="offset points", xytext=(6, 0), fontsize=8, color="#d62728")
+
+    ax.set_xlabel("Mean per-class 1-NN accuracy $\\bar{q}$", fontsize=11)
+    ax.set_ylabel(r"$r(\kappa_\mathrm{nearest},\,\mathrm{logit}\,q)$", fontsize=11)
+    ax.set_title("The two failing sessions:\nnoise floor ($\\bar{q}=0.12$) and ceiling ($\\bar{q}=0.81$)",
+                 fontsize=11)
+    ax.legend(fontsize=8.5)
+    ax.grid(True, alpha=0.3)
+
+    # inset text
+    cv = summary["cv_r_kappa"]
+    ax.text(0.04, 0.97,
+            f"Mean $r={summary['mean_r_kappa']:.3f}$\nCV$={cv:.3f}$\n32 different mice",
+            transform=ax.transAxes, va="top", fontsize=9,
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="gray", alpha=0.8))
+
+    plt.tight_layout(pad=1.2)
+    out = os.path.join(FIGURES, "fig_cti_allen_biological.png")
+    plt.savefig(out, dpi=180, bbox_inches="tight")
+    plt.close()
+    print(f"Saved: {out}")
+
+
 if __name__ == "__main__":
     import scipy  # noqa – verify dependency present
     print("Generating Figure 1 (NLP law + LOAO alpha)...")
@@ -463,4 +557,6 @@ if __name__ == "__main__":
     make_figure2()
     print("Generating Figure 3 (kappa spread vs ranking reliability)...")
     make_figure3()
+    print("Generating Figure 4 (Allen Neuropixels biological validation)...")
+    make_figure4()
     print("Done.")

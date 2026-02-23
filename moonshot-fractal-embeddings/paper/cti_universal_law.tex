@@ -799,7 +799,14 @@ For mouse visual cortex \citep{siegle2021survey} (Allen Neuropixels, DANDI:00002
 
 Exploratory per-area analysis on one session (session ses-721123822) separates units by recorded brain region: combined visual cortex (r=0.869, n=579 active units) $>$ anteromedial (VISam: r=0.802) $>$ lateral (VISl: r=0.774) $>$ primary V1 (VISp: r=0.707) $>$ anterolateral (VISal: r=0.658) $>$ LP thalamus (r=0.519) $\geq$ rostrolateral (VISrl: r=0.445). The law holds across all visual processing stages; higher-order areas show stronger compliance, consistent with the visual hierarchy.
 
-Two-level findings: (1)~\textbf{Form}: geometric margin predicts accuracy in all datasets---$r=0.41$--$0.75$ per-image (macaque IT, mouse V1, mouse VC), 30/32 Allen sessions pass H1 and all 32 show positive $r$, all mouse visual areas show positive $r$---confirming the EVT-derived law shape is substrate-independent. (2)~\textbf{Constant}: $A_{\mathrm{renorm,bio}}\in[0.03, 0.07]$ versus $A_{\mathrm{renorm,NLP}}=1.13$---biological visual codes are $\approx15$--$34\times$ less geometrically efficient per unit of $\kappa_{\mathrm{nearest}}$ than trained artificial networks, consistent with the interpretation that gradient-based training optimises the constant while leaving the geometric skeleton intact.
+Two-level findings: (1)~\textbf{Form}: geometric margin predicts accuracy in all datasets---$r=0.41$--$0.75$ per-image (macaque IT, mouse V1, mouse VC), 30/32 Allen sessions pass H1 and all 32 show positive $r$, all mouse visual areas show positive $r$---confirming the EVT-derived law shape is substrate-independent. (2)~\textbf{Constant}: $A_{\mathrm{renorm,bio}}\in[0.03, 0.07]$ versus $A_{\mathrm{renorm,NLP}}=1.13$---biological visual codes are $\approx15$--$34\times$ less geometrically efficient per unit of $\kappa_{\mathrm{nearest}}$ than trained artificial networks, consistent with the interpretation that gradient-based training optimises the constant while leaving the geometric skeleton intact. See Figure~\ref{fig:allen-bio}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../results/figures/fig_cti_allen_biological.png}
+\caption{Allen Neuropixels biological validation ($K=118$, 32 independent mice, DANDI:000021; pre-registration commit \texttt{bddec1d}). \textbf{Left:} Pearson $r(\kappa_\mathrm{nearest}, \logit q)$ for each of 32 recording sessions, sorted ascending. Green = H1 PASS ($r>0.5$); red = FAIL ($n=2$). All 32 sessions show positive $r$ (range $[0.44, 0.89]$, $p<0.001$ each). \textbf{Right:} The two non-passing sessions explained by regime effects: one is near the noise floor ($\bar{q}=0.12$, too few correct trials) and one is near the ceiling ($\bar{q}=0.81$, compressed logit range). Excluding regime extremes, 30/32 pass. Mean $r=0.736$, CV$=15.4\%$ across 32 different mice confirms cross-animal replication.}
+\label{fig:allen-bio}
+\end{figure}
 
 \section{Pre-registration Deviations}
 \label{sec:prereg-deviations}
