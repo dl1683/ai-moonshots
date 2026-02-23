@@ -1,0 +1,46 @@
+{
+  "experiment": "per_dataset_beta_estimation",
+  "timestamp": "2026-02-23T06:18:01.519938",
+  "n_total": 448,
+  "dataset_betas": {},
+  "model_betas": {
+    "Falcon-H1-0.5B-Base": -0.23267481019252734,
+    "Mistral-7B-v0.3": -0.8453602442285527,
+    "OLMo-1B-hf": -0.35525719233519704,
+    "Qwen2.5-0.5B": -0.8810226299663889,
+    "Qwen3-0.6B": -0.376570626858751,
+    "Qwen3-1.7B": -0.8598231012320859,
+    "TinyLlama-1.1B-intermediate-step-1431k-3T": -0.6957146374750396,
+    "bert-base-uncased": -0.5869345204851022,
+    "bge-base-v1.5": -0.8091811798439896,
+    "deberta-base": -0.6363608359569508,
+    "electra-small": -0.47788106004186415,
+    "gpt-neo-125m": -0.31235393204588047,
+    "gpt2": -0.3757784215811595,
+    "mamba-130m": 5.305430804928724,
+    "phi2": -0.4497321106317961,
+    "pythia-160m": -0.3074782353541162,
+    "pythia-1b": -0.6586965948670563,
+    "pythia-410m": -0.6516558928070026,
+    "rwkv-4-169m-pile": -0.31701088243797915
+  },
+  "density_groups": {
+    "dense": {
+      "go_emotions": null,
+      "emotion": null
+    },
+    "sparse": {
+      "amazon_massive": null,
+      "dbpedia": null,
+      "langid": null,
+      "banking77": null
+    },
+    "medium": {
+      "20newsgroups": null,
+      "news_category": null,
+      "agnews": null,
+      "yahoo": null
+    }
+  },
+  "hypothesis": "dense datasets beta closer to -1, sparse closer to -0.5"
+}
