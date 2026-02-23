@@ -234,6 +234,30 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
       This directly explains the measured rho~0.45-0.50 in equicorrelation experiments
     - FINAL VERDICT: d_eff ≈ 1.710 ~ e-1 = 1.718 (0.5% match) is numerical coincidence. CLOSED.
 
+## Local vs Global Alpha (Codex analysis, task bf9a0a0)
+
+Q1 — THEORETICAL MEANING of local alpha (~0.7) vs global alpha (1.477):
+- alpha_local = PARTIAL DERIVATIVE from one-pair surgical perturbation
+- alpha_global = EFFECTIVE COARSE-GRAINED SLOPE averaging over full K-1 competitive geometry
+- Gap is EXPECTED if global fit includes gain from multi-competitor structure beyond moved pair
+
+Q2 — FEATURE NOT BUG (if we upgrade the claim):
+- Supported: universal functional form (high r survives interventions)
+- Not supported: "one universal scalar alpha for all protocols"
+- Upgraded claim: "universal law + competition-renormalized slope"
+- NOT just 1/(K-1): K=14 fixed but cross-model spread 0.428-1.052
+
+Q3 — STRONGEST CLAIM:
+"Nearest-class geometry is a universal directional causal order parameter,
+while slope magnitude is a competition-renormalized coefficient (local vs global)."
+DECISIVE EXPERIMENT: top-m competitor sweep (m=1..K-1), pre-register monotonic
+alpha_m rise from ~0.7 to ~1.48. Scaffolding: src/cti_top_m_competitor_sweep.py
+(already run but noisy; need cleaner pre-registered version)
+
+Q4 — SCORE (pre-equicorrelation/bio context): Nobel 5/10, Turing 7/10
+"If m-competitor experiment cleanly bridges local->global with pre-registered success: jumps materially"
+NOTE: Current score (with equicorrelation + Allen bio + 19 archs) is Nobel 6.6/10, Turing 8.0/10
+
 ## Failed Causal Interventions (logged for paper)
 
 All failed: joint CE+triplet, two-stage CE+centroid-triplet, anti-triplet, dist_ratio regularizer,
