@@ -57,6 +57,8 @@ Where:
 | NLP linear-regime surgery kappa_eff≈1.3 (Session 57) | H1 FAIL ratio=3.68 vs d_eff=54.31; 1/d_eff mech is CIFAR-CNN-specific | DONE |
 | Null-space kappa_eff identifiability (Session 58) | q tracks kappa_nearest r=1.00 (OLMo-1B); H4 FAIL (kappa_eff marginal) | DONE |
 | 2D causal surface 3×3 factorial (Session 58) | H4 FAIL ΔR2=0.03; H6 PASS cross-arch bivariate r=0.988/0.967 | DONE |
+| RWKV-4-169M pure linear RNN LOAO (pre-reg, Feb 22) | alpha=2.887 PASS [2.43,3.29]; 12-arch CV=0.0191 (1.91%) — no attention, pure recurrence | DONE |
+| Falcon-H1-0.5B Transformer+Mamba hybrid LOAO (pre-reg, Feb 22) | alpha=2.830 PASS; 11-arch CV=0.022 | DONE |
 | Extended family LOAO: GPT-2/Phi-2/Encoders (Session 59) | H1-H4 FAIL; GPT-2 artifact 4/4 confirmed; Phi-2 alpha=1.18 (decoder range); Encoder CV=0.92 | DONE |
 | SmolLM2 re-run exploration (Session 60) | Protocol FAIL (best-layer mixing r=-0.16; NaN crash at 20news); correct result alpha=2.864 from fc9f9ac in paper | DONE |
 | Surgery re-runs confirmation (Session 60) | Linear regime + Gaussian: calib_error~0.99, logit changes 0.17 vs 2.29 predicted (10x d_eff); kappa_nearest is sole predictor | DONE |
