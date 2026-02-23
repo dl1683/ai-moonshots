@@ -92,17 +92,22 @@ def get_cifar_coarse():
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
-    test_transform = transforms.Compose([
+    eval_transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
     train_ds = torchvision.datasets.CIFAR100(
         'data', train=True, download=False,
         transform=train_transform, target_transform=coarse_label)
+    # train_eval_ds: same training images, deterministic transforms only
+    # Fixes augmentation confound: stochastic d_eff from RandomCrop/RandomHorizontalFlip
+    train_eval_ds = torchvision.datasets.CIFAR100(
+        'data', train=True, download=False,
+        transform=eval_transform, target_transform=coarse_label)
     test_ds = torchvision.datasets.CIFAR100(
         'data', train=False, download=False,
-        transform=test_transform, target_transform=coarse_label)
-    return train_ds, test_ds
+        transform=eval_transform, target_transform=coarse_label)
+    return train_ds, train_eval_ds, test_ds
 
 
 def extract_embeddings(model, dataset):
@@ -260,7 +265,7 @@ def main():
     log(f"Checkpoint epochs: {CHECKPOINT_EPOCHS}")
     log(f"Surgery levels r: {SURGERY_LEVELS}")
 
-    train_ds, test_ds = get_cifar_coarse()
+    train_ds, train_eval_ds, test_ds = get_cifar_coarse()
 
     all_results = []
 
@@ -293,7 +298,7 @@ def main():
 
             # Save checkpoint
             if epoch in CHECKPOINT_EPOCHS:
-                X_tr, y_tr = extract_embeddings(model, train_ds)
+                X_tr, y_tr = extract_embeddings(model, train_eval_ds)
                 X_te, y_te = extract_embeddings(model, test_ds)
                 geo = compute_geometry(X_tr, y_tr)
                 q_base, acc_base = compute_q(X_tr, y_tr, X_te, y_te)

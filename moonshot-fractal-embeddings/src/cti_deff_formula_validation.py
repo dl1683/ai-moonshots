@@ -110,17 +110,22 @@ def get_cifar_coarse():
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
-    test_transform = transforms.Compose([
+    eval_transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
     train_ds = torchvision.datasets.CIFAR100(
         'data', train=True, download=False,
         transform=train_transform, target_transform=coarse_label)
+    # train_eval_ds: same training images, deterministic transforms only
+    # Fixes augmentation confound: stochastic d_eff from RandomCrop/RandomHorizontalFlip
+    train_eval_ds = torchvision.datasets.CIFAR100(
+        'data', train=True, download=False,
+        transform=eval_transform, target_transform=coarse_label)
     test_ds = torchvision.datasets.CIFAR100(
         'data', train=False, download=False,
-        transform=test_transform, target_transform=coarse_label)
-    return train_ds, test_ds
+        transform=eval_transform, target_transform=coarse_label)
+    return train_ds, train_eval_ds, test_ds
 
 
 def extract_all_embeddings(model, dataset):
@@ -253,9 +258,9 @@ def compute_all_metrics(X, y):
     }
 
 
-def compute_q_test(model, test_ds, train_ds):
-    """Compute q using full train set as 1-NN reference."""
-    X_tr, y_tr = extract_all_embeddings(model, train_ds)
+def compute_q_test(model, test_ds, train_eval_ds):
+    """Compute q using full train set as 1-NN reference (deterministic eval-mode transforms)."""
+    X_tr, y_tr = extract_all_embeddings(model, train_eval_ds)
     X_te, y_te = extract_all_embeddings(model, test_ds)
     knn = KNeighborsClassifier(1, metric='euclidean', n_jobs=-1)
     knn.fit(X_tr, y_tr)
@@ -298,7 +303,7 @@ def update_ema_means(class_means, z, y):
     return class_means
 
 
-def train_one_arm(seed, arm, train_ds, test_ds):
+def train_one_arm(seed, arm, train_ds, train_eval_ds, test_ds):
     torch.manual_seed(seed)
     np.random.seed(seed)
     torch.cuda.manual_seed_all(seed)
@@ -335,7 +340,7 @@ def train_one_arm(seed, arm, train_ds, test_ds):
         if epoch in CHECKPOINT_EPOCHS:
             model.eval()
             log(f"  [seed={seed} arm={arm} epoch={epoch}] computing metrics...")
-            q_val, X_tr, y_tr = compute_q_test(model, test_ds, train_ds)
+            q_val, X_tr, y_tr = compute_q_test(model, test_ds, train_eval_ds)
             metrics = compute_all_metrics(X_tr, y_tr)
             logit_q = float(np.log(q_val / (1 - q_val + 1e-10) + 1e-10)
                            if 0 < q_val < 1 else (4.0 if q_val >= 1 else -4.0))
@@ -496,7 +501,7 @@ def main():
     log(f"  H5: d_eff_formula is approximately constant across training")
     log("")
 
-    train_ds, test_ds = get_cifar_coarse()
+    train_ds, train_eval_ds, test_ds = get_cifar_coarse()
 
     all_results = {'ce': [], 'nc': []}
     result = {'status': 'running', 'results': all_results}
@@ -523,7 +528,7 @@ def main():
                 log(f"  seed={seed}: already done, skipping")
                 continue
             log(f"\n--- seed={seed} ---")
-            res = train_one_arm(seed, arm, train_ds, test_ds)
+            res = train_one_arm(seed, arm, train_ds, train_eval_ds, test_ds)
             if arm not in all_results:
                 all_results[arm] = []
             all_results[arm].append(res)

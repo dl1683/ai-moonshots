@@ -107,17 +107,23 @@ def get_cifar_coarse():
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
-    test_transform = transforms.Compose([
+    eval_transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
     train_ds = torchvision.datasets.CIFAR100(
         'data', train=True, download=False,
         transform=train_transform, target_transform=coarse_label)
+    # train_eval_ds: same training images but with deterministic transforms
+    # Use this for ALL embedding extraction (geometry, surgery, q computation)
+    # to avoid stochastic d_eff measurements from RandomCrop/RandomHorizontalFlip
+    train_eval_ds = torchvision.datasets.CIFAR100(
+        'data', train=True, download=False,
+        transform=eval_transform, target_transform=coarse_label)
     test_ds = torchvision.datasets.CIFAR100(
         'data', train=False, download=False,
-        transform=test_transform, target_transform=coarse_label)
-    return train_ds, test_ds
+        transform=eval_transform, target_transform=coarse_label)
+    return train_ds, train_eval_ds, test_ds
 
 
 def extract_embeddings(model, dataset):
@@ -304,7 +310,7 @@ def compute_q_knn(X_tr, y_tr, X_te, y_te, K_classes=K):
 
 
 # ==================== TRAINING ====================
-def train_and_save_embeddings(seed, train_ds, test_ds):
+def train_and_save_embeddings(seed, train_ds, train_eval_ds, test_ds):
     """Train CE ResNet-18 for N_EPOCHS, save embeddings to disk."""
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -323,9 +329,9 @@ def train_and_save_embeddings(seed, train_ds, test_ds):
         if epoch % 10 == 0:
             log(f"  [seed={seed} epoch={epoch}] loss={loss:.4f}")
 
-    # Extract embeddings
-    log(f"  Extracting train embeddings (seed={seed})...")
-    X_tr, y_tr = extract_embeddings(model, train_ds)
+    # Extract embeddings using DETERMINISTIC transforms (no RandomCrop/RandomHorizontalFlip)
+    log(f"  Extracting train embeddings (seed={seed}, eval-mode transforms)...")
+    X_tr, y_tr = extract_embeddings(model, train_eval_ds)
     log(f"  Extracting test embeddings (seed={seed})...")
     X_te, y_te = extract_embeddings(model, test_ds)
 
@@ -545,7 +551,7 @@ def main():
     log(f"PRE-REGISTERED PREDICTION: logit(q_new) = C + A * kappa_base * sqrt(r * d_eff_base)")
     log(f"ACCEPTANCE: Pearson r > 0.99, Mean calibration error < 10%\n")
 
-    train_ds, test_ds = get_cifar_coarse()
+    train_ds, train_eval_ds, test_ds = get_cifar_coarse()
 
     all_records = []
     summary = {}
@@ -565,7 +571,7 @@ def main():
             y_te = np.load(f"{EMBED_DIR}/y_te_seed{seed}.npy")
             log(f"  Loaded: X_tr={X_tr.shape}, X_te={X_te.shape}")
         else:
-            X_tr, y_tr, X_te, y_te = train_and_save_embeddings(seed, train_ds, test_ds)
+            X_tr, y_tr, X_te, y_te = train_and_save_embeddings(seed, train_ds, train_eval_ds, test_ds)
 
         records = run_surgery_experiment(X_tr, y_tr, X_te, y_te, seed)
         all_records.extend(records)
