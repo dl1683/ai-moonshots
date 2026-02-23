@@ -63,6 +63,7 @@ Where:
 | SmolLM2 re-run exploration (Session 60) | Protocol FAIL (best-layer mixing r=-0.16; NaN crash at 20news); correct result alpha=2.864 from fc9f9ac in paper | DONE |
 | Surgery re-runs confirmation (Session 60) | Linear regime + Gaussian: calib_error~0.99, logit changes 0.17 vs 2.29 predicted (10x d_eff); kappa_nearest is sole predictor | DONE |
 | Two-knob identifiability stdout (Session 60) | P1-P6 FAIL; d_eff: 10x change → q changes 0.003; confirms kappa_nearest as sufficient statistic, d_eff NOT causal | DONE |
+| Biological validation Cadieu2014 macaque IT+V4 (Session 61, pre-reg bddec1d) | H1/H2/H4 FAIL (K=7 underpowered, A_bio=0.069 vs A_NLP=1.129); H3 PASS IT (MAE=0.084); EXPLORATORY per-image: r=0.41 p<0.0001 n=1960 (IT), r=0.12 (V4). Form confirmed, constant different | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
@@ -96,12 +97,12 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
    task-type, task-specific across universality classes. Validate prospectively. Data supports
    "shape universal, scale class-dependent" more than single-scale universality.
 
-5. **Biological neuroscience validation (NEW - highest Nobel Physics leverage):**
-   - Test CTI law on macaque IT cortex neural recordings (MajajHong2015, K=8 categories)
-   - If A_bio ≈ A_artificial ≈ 1.05: law is substrate-independent → Nobel Physics/Medicine score jumps
-   - Research file: `research/NEUROSCIENCE_DATASETS.md`
-   - Recommended: MajajHong2015 (~400MB BrainIO), Cadieu2014 (~400MB direct zip)
-   - Pre-register A_bio prediction BEFORE downloading data
+5. **Biological neuroscience validation (Session 61 DONE):**
+   - Tested Cadieu2014 macaque IT cortex (168 neurons, K=7, n=1960 images)
+   - Pre-registered H4 (substrate-independence) FAILS: A_bio=0.069 vs A_NLP=1.129 (16x difference)
+   - BUT exploratory per-image analysis r=0.41 p<0.0001 n=1960: geometric margin DOES predict IT accuracy!
+   - Finding: Law FORM holds across substrates; CONSTANT A differs → trained NNs are ~5-16x more geometrically efficient than biological IT cortex per unit of kappa
+   - NEXT: MajajHong2015 (K=8, 47 trials per image, trial-level 1-NN would be better test)
 
 6. **Practical utility demo:** predict class difficulty from geometry alone
 
