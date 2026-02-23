@@ -175,6 +175,33 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
       NOT a gradient/cross-entropy training artifact
     - This connects CTI universality to Neural Collapse as a deep geometric principle
 
+11. **Frozen-Backbone NC-Loss Causal Test (Session 70 — PARTIAL PASS):**
+    - Codex guidance (task bc21248): 3 bugs in prior NC-loss work identified and fixed
+    - FIX 1: class means differentiable (batch-scatter, no torch.no_grad EMA)
+    - FIX 2: q/kappa measured in proj_head space (same as NC optimization)
+    - FIX 3: DBpedia K=14 instead of CIFAR (no coarse-label confound)
+    - FIX 4 (discovered during run): KNN was fitting+scoring on same TEST set (trivial q=1.0)
+
+    Standard regime (proj_dim=256): q saturated at 1.0 from epoch 1 — too easy
+    Hard regime (proj_dim=13=K-1 bottleneck, commits df2b233, 023b2ff):
+    - CE: q=0.9592±0.0022, kappa=2.7241
+    - full_NC: q=0.9608±0.0022, kappa=2.8839
+    - shuffled_NC: q=0.9592 (same as CE — CONTROL WORKS)
+    - within_only: q=0.9592, kappa=2.7369 (ETF+margin are the active terms)
+    - H1 PASS (barely): delta_q=+0.0015, 4/5 seeds positive
+    - H2 PASS: shuffled control delta_q=0.000 (causal specificity confirmed)
+    - H3 PASS: delta_kappa=+0.160, 5/5 seeds (robust kappa causal effect)
+    - H4 FAIL: ratio=0.271 vs alpha=1.477 (q still near ceiling ~0.96)
+    - KEY FINDING: NC causally improves kappa +5.8% (robust, specific to ETF+margin)
+      But H4 quantitative test requires non-saturated q regime (Banking77 K=77 next)
+
+12. **Codex Constants Consultation (Session 70 — TASK a74be0143736d6944):**
+    - Golden ratio from Gumbel+Gaussian: DEAD-END (no recursive algebraic fixed point in vanilla model)
+    - Complex extension (Wick-rotated Gumbel): SPECULATIVE-BUT-TESTABLE (abandons probabilistic interp)
+    - d_eff ≈ 1.71 from ETF+Gumbel race: SPECULATIVE-BUT-TESTABLE
+      Closest candidate: e-1=1.718, sqrt(3)=1.732 (likely coincidence, no proof yet)
+      ETF+correlated-extreme-value path is the tractable theoretical direction
+
 ## Failed Causal Interventions (logged for paper)
 
 All failed: joint CE+triplet, two-stage CE+centroid-triplet, anti-triplet, dist_ratio regularizer,
@@ -183,6 +210,7 @@ multi-arch frozen do-intervention (direction confirmed but alpha ~0.47x predicte
 CIFAR linear regime surgery (d_eff manipulation barely affects q — kappa_nearest is sole predictor),
 two-knob identifiability (P1-P6 all FAIL; d_eff is NOT a causal variable for q in linear regime).
 ONLY PASS: pythia-160m/dbpedia frozen do-intervention (isolated pair, alpha=1.601 r=0.974).
+PARTIAL PASS (Session 70): frozen-backbone NC DBpedia K=14 hard-regime — H3 PASS (kappa), H1 barely PASS, H4 FAIL (ceiling)
 
 ## Active Paper
 
