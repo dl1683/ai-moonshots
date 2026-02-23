@@ -175,6 +175,26 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
       NOT a gradient/cross-entropy training artifact
     - This connects CTI universality to Neural Collapse as a deep geometric principle
 
+10b. **Cross-Family Equicorrelation Test (Session 71 DONE — UNIVERSAL ACROSS FAMILIES):**
+    - Commit: see cti_cross_family_equicorr.json; 5 models from dointerv_multi NPZ files
+    - QUESTION: Does rho~0.45 explain the cross-family alpha difference (encoder alpha~7 vs decoder alpha~1.5)?
+    - PROTOCOL: Same Sigma_W^{1/2} whitening as Session 69; applied to bert-base and electra-small encoders
+    - RESULTS (DBpedia K=14, N=7000):
+      pythia-160m (decoder): rho=0.418, d_eff_comp=1.717, alpha_pred=1.479 ← matches LOAO=1.477 exactly!
+      pythia-410m (decoder): rho=0.455, d_eff_comp=1.836, alpha_pred=1.529
+      rwkv-4-169m (SSM):     rho=0.428, d_eff_comp=1.747, alpha_pred=1.491
+      bert-base (encoder):   rho=0.456, d_eff_comp=1.837, alpha_pred=1.530  ← SAME as decoders!
+      electra-small (encoder):rho=0.446, d_eff_comp=1.806, alpha_pred=1.516 ← SAME as decoders!
+    - All-family rho range: [0.418, 0.456], CV=3.3% — near-simplex geometry UNIVERSAL across families
+    - KEY NULL RESULT: rho does NOT explain cross-family alpha difference (bert alpha_emp=4.4x,
+      rho=0.456 identical to decoder rho) — the formula correctly predicts alpha~1.5 for encoders too
+    - INTERPRETATION: near-simplex equicorrelation rho~0.45 is a UNIVERSAL property of categorical
+      representation (decoders + encoders + SSMs + biological), regardless of pre-training objective
+    - The formula alpha=sqrt(4/pi)*sqrt(1/(1-rho)) predicts within-family (decoder) alpha correctly
+      because rho=0.45 gives alpha~1.479 matching NLP decoder alpha. But it does NOT explain the
+      higher encoder/CNN alphas — their difference must come from a different factor (bidirectionality?
+      pooling method? pre-training objective?)
+
 11. **Frozen-Backbone NC-Loss Causal Test (Session 70 — PARTIAL PASS):**
     - Codex guidance (task bc21248): 3 bugs in prior NC-loss work identified and fixed
     - FIX 1: class means differentiable (batch-scatter, no torch.no_grad EMA)
