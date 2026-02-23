@@ -76,12 +76,12 @@ def load_all_points():
             kappa = entry.get("kappa_nearest")
             K = entry.get("K")
             logit_q = entry.get("logit_q")
+            q = entry.get("q")
             model = entry.get("model", "")
             dataset = entry.get("dataset", "")
 
             # Fall back to computing logit from q
             if logit_q is None:
-                q = entry.get("q")
                 if q is None or K is None or q <= 1.0 / K or q >= 1.0:
                     continue
                 logit_q = float(scipy_logit(q))
@@ -91,6 +91,10 @@ def load_all_points():
             if kappa is None or K is None:
                 continue
             if kappa <= 0 or K < 3:
+                continue
+            # Require q > 0 and q < 1 (same as comprehensive universality script)
+            # This filters out below-chance models (q < 1/K) and perfect models (q=1)
+            if q is None or q <= 0 or q >= 1.0:
                 continue
             # Sanity check: logit_q should be finite
             if not np.isfinite(logit_q):
