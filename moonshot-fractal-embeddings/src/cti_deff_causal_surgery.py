@@ -492,7 +492,8 @@ def analyze_surgery_results(all_records):
     kappa_effs_arr = np.array(kappa_effs)
     if len(kappa_effs_arr) > 1 and np.std(kappa_effs_arr) > 0:
         A_mat = np.column_stack([kappa_effs_arr, np.ones(len(kappa_effs_arr))])
-        A_fitted, C_fitted_global, _, _ = np.linalg.lstsq(A_mat, actual_arr, rcond=None)
+        coeffs, _, _, _ = np.linalg.lstsq(A_mat, actual_arr, rcond=None)
+        A_fitted, C_fitted_global = float(coeffs[0]), float(coeffs[1])
         log(f"\nFitted slope A_empirical = {A_fitted:.4f} (pre-registered A_renorm = {A_RENORM_K20})")
         log(f"Fitted C = {C_fitted_global:.4f}")
         log(f"A_error = {abs(A_fitted - A_RENORM_K20) / A_RENORM_K20 * 100:.1f}%")
