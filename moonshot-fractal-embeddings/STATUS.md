@@ -1,6 +1,6 @@
 # CTI Universal Law - Research Status
 
-**As of: February 23, 2026 (Session 57 COMPLETE / Session 58)**
+**As of: February 23, 2026 (Session 59 COMPLETE)**
 
 ## The Discovery
 
@@ -48,6 +48,9 @@ Where:
 | Beyond-1NN test 7arch×3ds (Session 57) | q_knn5 r=0.792 PASS, silhouette r=0.881 PASS; linear probe FAIL (pre-reg primary) | DONE |
 | Cross-domain NLP surgery sub-linear (Session 57) | H1 FAIL ratio=1.88 vs d_eff=33.24; kappa_eff=0.24-0.73 (regime mismatch) | DONE |
 | NLP linear-regime surgery kappa_eff≈1.3 (Session 57) | H1 FAIL ratio=3.68 vs d_eff=54.31; 1/d_eff mech is CIFAR-CNN-specific | DONE |
+| Null-space kappa_eff identifiability (Session 58) | q tracks kappa_nearest r=1.00 (OLMo-1B); H4 FAIL (kappa_eff marginal) | DONE |
+| 2D causal surface 3×3 factorial (Session 58) | H4 FAIL ΔR2=0.03; H6 PASS cross-arch bivariate r=0.988/0.967 | DONE |
+| Extended family LOAO: GPT-2/Phi-2/Encoders (Session 59) | H1-H4 FAIL; GPT-2 artifact 4/4 confirmed; Phi-2 alpha=1.18 (decoder range); Encoder CV=0.92 | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
