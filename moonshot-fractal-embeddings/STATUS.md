@@ -65,6 +65,7 @@ Where:
 | Two-knob identifiability stdout (Session 60) | P1-P6 FAIL; d_eff: 10x change → q changes 0.003; confirms kappa_nearest as sufficient statistic, d_eff NOT causal | DONE |
 | Biological validation Cadieu2014 macaque IT+V4 (Session 61, pre-reg bddec1d) | H1/H2/H4 FAIL (K=7 underpowered, A_bio=0.069 vs A_NLP=1.129); H3 PASS IT (MAE=0.084); EXPLORATORY per-image: r=0.41 p<0.0001 n=1960 (IT), r=0.12 (V4). Form confirmed, constant different | DONE |
 | Biological validation Stringer2018b mouse V1 (Session 61) | Class-level FAIL (K=11, r=-0.49, class-size confound); H3 PASS MAE=0.054; EXPLORATORY per-image: r=0.64 p<0.0001 n=4914. Margin predicts V1 accuracy stronger than IT | DONE |
+| Allen Neuropixels mouse visual cortex K=118 (Session 62, pre-reg bddec1d) | **H1 PASS** r(kappa,logit_q)=0.851 p=3e-34 (FIRST class-level bio H1 pass!); H3 PASS MAE=0.063; H2 FAIL A_renorm=0.033; per-image r=0.747 p=0 n=5900 | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
@@ -98,13 +99,16 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
    task-type, task-specific across universality classes. Validate prospectively. Data supports
    "shape universal, scale class-dependent" more than single-scale universality.
 
-5. **Biological neuroscience validation (Session 61 DONE — TWO DATASETS):**
+5. **Biological neuroscience validation (Session 62 DONE — THREE DATASETS):**
    - Cadieu2014 macaque IT (168 neurons, K=7): per-image r=0.41, p<0.0001, n=1960
    - Stringer2018b mouse V1 (10,079 neurons, K=11): per-image r=0.64, p<0.0001, n=4914
-   - PRE-REGISTERED H4 FAILS: A_bio ≠ A_NLP (CONSTANT not universal across substrates)
-   - KEY FINDING: LAW FORM (margin predicts accuracy) IS substrate-independent; CONSTANT A differs
-   - Cross-substrate table: IT r=0.41, V1 r=0.64, V4 r=0.12 (confirms IT>V4>V1 for class-level, but per-image form universal)
-   - NEXT: Fix class-size confound for class-level test; try Allen Brain Neuropixels for more K
+   - Allen Neuropixels mouse visual cortex (963 units, K=118): r=0.851, per-image r=0.747
+   - PRE-REGISTERED: H4 FAILS across all datasets (A_bio ≠ A_NLP); CONSTANT not universal
+   - FIRST CLASS-LEVEL H1 PASS: Allen K=118 provides statistical power for r>0.50 threshold
+   - KEY FINDING: LAW FORM (kappa_nearest → q) IS substrate-independent; CONSTANT A differs
+   - POWER FINDING: class-level test requires K≥118 to reliably detect the correlation
+   - Cross-substrate per-image r: macaque IT=0.41, macaque V4=0.12, mouse V1=0.64, mouse VC=0.75
+   - NEXT: Add biological section to paper; cross-species A_renorm table
 
 6. **Practical utility demo:** predict class difficulty from geometry alone
 
