@@ -96,9 +96,16 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
    task-type, task-specific across universality classes. Validate prospectively. Data supports
    "shape universal, scale class-dependent" more than single-scale universality.
 
-5. **Practical utility demo:** predict class difficulty from geometry alone
+5. **Biological neuroscience validation (NEW - highest Nobel Physics leverage):**
+   - Test CTI law on macaque IT cortex neural recordings (MajajHong2015, K=8 categories)
+   - If A_bio ≈ A_artificial ≈ 1.05: law is substrate-independent → Nobel Physics/Medicine score jumps
+   - Research file: `research/NEUROSCIENCE_DATASETS.md`
+   - Recommended: MajajHong2015 (~400MB BrainIO), Cadieu2014 (~400MB direct zip)
+   - Pre-register A_bio prediction BEFORE downloading data
 
-5. **Renormalized Universality Theorem verification (next):**
+6. **Practical utility demo:** predict class difficulty from geometry alone
+
+7. **Renormalized Universality Theorem verification (next):**
    - Theorem: A/sqrt(d_eff_formula) = sqrt(4/pi) = 1.128 universally
    - NLP check: 1.477/sqrt(1.71) = 1.129 (1.477 back-calculated — need direct d_eff measurement)
    - ViT next: predict d_eff_ViT = A_ViT^2/(4/pi) = 7.5^2/1.273 = 44, measure actual d_eff_formula
