@@ -1,0 +1,38 @@
+[
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "langid",
+    "layer": 3,
+    "K": 20,
+    "q": 0.8368421052631578,
+    "kappa_nearest": 0.4827103018760681,
+    "logit_q": 1.6349169977350848
+  },
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "langid",
+    "layer": 6,
+    "K": 20,
+    "q": 0.8052631578947367,
+    "kappa_nearest": 0.31809237599372864,
+    "logit_q": 1.4195200087482098
+  },
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "langid",
+    "layer": 9,
+    "K": 20,
+    "q": 0.863157894736842,
+    "kappa_nearest": 0.3843900263309479,
+    "logit_q": 1.8417698898027157
+  },
+  {
+    "model": "gpt-neo-125m",
+    "dataset": "langid",
+    "layer": 12,
+    "K": 20,
+    "q": 0.9631578947368422,
+    "kappa_nearest": 1.5443274974822998,
+    "logit_q": 3.2635760037861106
+  }
+]

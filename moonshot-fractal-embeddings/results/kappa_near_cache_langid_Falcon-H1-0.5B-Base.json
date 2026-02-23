@@ -1,0 +1,38 @@
+[
+  {
+    "model": "Falcon-H1-0.5B-Base",
+    "dataset": "langid",
+    "layer": 9,
+    "K": 20,
+    "q": 0.8403508771929825,
+    "kappa_nearest": 0.6638318300247192,
+    "logit_q": 1.6608410908940656
+  },
+  {
+    "model": "Falcon-H1-0.5B-Base",
+    "dataset": "langid",
+    "layer": 18,
+    "K": 20,
+    "q": 0.856140350877193,
+    "kappa_nearest": 0.7474369406700134,
+    "logit_q": 1.783596158588894
+  },
+  {
+    "model": "Falcon-H1-0.5B-Base",
+    "dataset": "langid",
+    "layer": 27,
+    "K": 20,
+    "q": 0.9631578947368422,
+    "kappa_nearest": 1.3678820133209229,
+    "logit_q": 3.2635760037861106
+  },
+  {
+    "model": "Falcon-H1-0.5B-Base",
+    "dataset": "langid",
+    "layer": 36,
+    "K": 20,
+    "q": 0.9666666666666667,
+    "kappa_nearest": 1.7407357692718506,
+    "logit_q": 3.367295829986474
+  }
+]

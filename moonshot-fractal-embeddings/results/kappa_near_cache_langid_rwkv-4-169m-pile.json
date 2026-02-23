@@ -1,0 +1,38 @@
+[
+  {
+    "model": "rwkv-4-169m-pile",
+    "dataset": "langid",
+    "layer": 3,
+    "K": 20,
+    "q": 0.980701754385965,
+    "kappa_nearest": 1.3620885610580444,
+    "logit_q": 3.928254200356731
+  },
+  {
+    "model": "rwkv-4-169m-pile",
+    "dataset": "langid",
+    "layer": 6,
+    "K": 20,
+    "q": 0.9578947368421052,
+    "kappa_nearest": 1.3345227241516113,
+    "logit_q": 3.124565145396959
+  },
+  {
+    "model": "rwkv-4-169m-pile",
+    "dataset": "langid",
+    "layer": 9,
+    "K": 20,
+    "q": 0.9719298245614034,
+    "kappa_nearest": 1.6734765768051147,
+    "logit_q": 3.5445759645074992
+  },
+  {
+    "model": "rwkv-4-169m-pile",
+    "dataset": "langid",
+    "layer": 12,
+    "K": 20,
+    "q": 0.9842105263157894,
+    "kappa_nearest": 2.079953670501709,
+    "logit_q": 4.132496328186474
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "model": "OLMo-1B-hf",
+    "dataset": "news_category",
+    "layer": 4,
+    "K": 42,
+    "q": 0.11121951219512198,
+    "kappa_nearest": 0.12629857659339905,
+    "logit_q": -2.0783444488654625
+  },
+  {
+    "model": "OLMo-1B-hf",
+    "dataset": "news_category",
+    "layer": 8,
+    "K": 42,
+    "q": 0.12292682926829268,
+    "kappa_nearest": 0.15261749923229218,
+    "logit_q": -1.9650011275201424
+  },
+  {
+    "model": "OLMo-1B-hf",
+    "dataset": "news_category",
+    "layer": 12,
+    "K": 42,
+    "q": 0.11609756097560976,
+    "kappa_nearest": 0.1458325833082199,
+    "logit_q": -2.02991581293145
+  },
+  {
+    "model": "OLMo-1B-hf",
+    "dataset": "news_category",
+    "layer": 16,
+    "K": 42,
+    "q": 0.2273170731707317,
+    "kappa_nearest": 0.35786622762680054,
+    "logit_q": -1.2235229382487254
+  }
+]

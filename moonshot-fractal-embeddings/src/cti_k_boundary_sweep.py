@@ -78,14 +78,14 @@ NEW_DATASETS = {
         "n_sample_per_class": 30,
         "split": "test",
     },
-    "huffpost": {
-        "hf_name": "khalidalt/HuffPost",
+    "news_category": {
+        "hf_name": "heegyu/news-category-dataset",
         "hf_cfg": None,
         "text_col": "headline",
-        "label_col": "label",   # integer 0-40
-        "K_expected": K_HUFFPOST,  # K=41 expected
+        "label_col": "category",  # string labels e.g. "POLITICS","WELLNESS",...
+        "K_expected": K_HUFFPOST,  # K~41 expected
         "n_sample_per_class": 25,
-        "split": "train",       # HuffPost has no test split; sample from train
+        "split": "train",       # uses train split (no test split for news-category)
     },
 }
 

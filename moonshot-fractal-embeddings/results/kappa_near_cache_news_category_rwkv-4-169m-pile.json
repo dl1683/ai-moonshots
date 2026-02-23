@@ -1,0 +1,38 @@
+[
+  {
+    "model": "rwkv-4-169m-pile",
+    "dataset": "news_category",
+    "layer": 3,
+    "K": 42,
+    "q": 0.11902439024390246,
+    "kappa_nearest": 0.3151952922344208,
+    "logit_q": -2.0017015086837286
+  },
+  {
+    "model": "rwkv-4-169m-pile",
+    "dataset": "news_category",
+    "layer": 6,
+    "K": 42,
+    "q": 0.12585365853658537,
+    "kappa_nearest": 0.28990140557289124,
+    "logit_q": -1.9381280086132584
+  },
+  {
+    "model": "rwkv-4-169m-pile",
+    "dataset": "news_category",
+    "layer": 9,
+    "K": 42,
+    "q": 0.144390243902439,
+    "kappa_nearest": 0.26434922218322754,
+    "logit_q": -1.779294718608068
+  },
+  {
+    "model": "rwkv-4-169m-pile",
+    "dataset": "news_category",
+    "layer": 12,
+    "K": 42,
+    "q": 0.14341463414634145,
+    "kappa_nearest": 0.3358314633369446,
+    "logit_q": -1.7872140068563804
+  }
+]
