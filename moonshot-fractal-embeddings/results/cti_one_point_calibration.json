@@ -1,0 +1,74 @@
+{
+  "experiment": "one_point_calibration",
+  "session": 43,
+  "preregistered": {
+    "A_K_formula": "A(K) = 1.1636/log(K) + 1.3013",
+    "A_GLOBAL_a": 1.1636,
+    "A_GLOBAL_b": 1.3013,
+    "source": "K-scaling LODO (4 datasets, global fit)",
+    "H1_rho_threshold": 0.85,
+    "H2_mae_threshold": 0.08,
+    "claim": "one anchor architecture per dataset -> predict all others"
+  },
+  "results": [
+    {
+      "dataset": "agnews",
+      "K": 4,
+      "A_pred": 2.140659974789199,
+      "n_architectures": 18,
+      "simple_rho": 0.697775943281252,
+      "twocomp_rho": 0.8362247737337611,
+      "twocomp_rho_std": 0.007610627546417929,
+      "simple_mae": 0.08697985819445768,
+      "twocomp_mae": 0.05844192228597664,
+      "pass_H1": false,
+      "pass_H2": true
+    },
+    {
+      "dataset": "dbpedia",
+      "K": 14,
+      "A_pred": 1.742215014214427,
+      "n_architectures": 18,
+      "simple_rho": 0.8040793316418517,
+      "twocomp_rho": 0.8577051684574413,
+      "twocomp_rho_std": 0.007874128220042213,
+      "simple_mae": 0.06301955347665025,
+      "twocomp_mae": 0.04626906875076195,
+      "pass_H1": true,
+      "pass_H2": true
+    },
+    {
+      "dataset": "20newsgroups",
+      "K": 20,
+      "A_pred": 1.6897192223290907,
+      "n_architectures": 18,
+      "simple_rho": 0.5302625643553792,
+      "twocomp_rho": 0.7157793586010154,
+      "twocomp_rho_std": 0.015165042990741751,
+      "simple_mae": 0.08473130383359836,
+      "twocomp_mae": 0.06970214695037268,
+      "pass_H1": false,
+      "pass_H2": true
+    },
+    {
+      "dataset": "go_emotions",
+      "K": 28,
+      "A_pred": 1.6504982549230807,
+      "n_architectures": 19,
+      "simple_rho": 0.6041408393064899,
+      "twocomp_rho": 0.11831500778788998,
+      "twocomp_rho_std": 0.05654370496276084,
+      "simple_mae": 0.030143321801304097,
+      "twocomp_mae": 0.0571958388545351,
+      "pass_H1": false,
+      "pass_H2": true
+    }
+  ],
+  "summary": {
+    "n_H1_pass": 1,
+    "n_H2_pass": 4,
+    "pass_H1_claim": false,
+    "pass_H2_claim": true,
+    "pass_H1_excl_go_emotions": false
+  }
+}
