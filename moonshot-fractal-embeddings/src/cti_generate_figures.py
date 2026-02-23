@@ -350,10 +350,117 @@ def make_figure2():
     print(f"Saved: {out}")
 
 
+# ══════════════════════════════════════════════════════════════════════════════
+# FIGURE 3 – Kappa spread vs ranking reliability (n=10 datasets)
+# ══════════════════════════════════════════════════════════════════════════════
+def make_figure3():
+    """Scatter: kappa_spread vs rho for n=10 datasets (pre-registered, p=0.038)."""
+    data = load("cti_spread_vs_K_n10.json")
+    pts  = data["per_dataset"]
+
+    spreads  = [p["spread"]    for p in pts]
+    rhos     = [p["mean_rho"]  for p in pts]
+    ks       = [p["K"]         for p in pts]
+    labels   = [p["dataset"]   for p in pts]
+    pass_h1  = [p["pass_H1"]   for p in pts]
+
+    beta1  = data["results"]["beta_spread"]
+    beta2  = data["results"]["beta_logK"]
+    const  = data["results"]["beta_const"]
+    r_spr  = data["results"]["r_spread_spearman"]
+    p_spr  = data["results"]["p_spread_spearman"]
+    r_k    = data["results"]["r_logK_spearman"]
+    p_k    = data["results"]["p_logK_spearman"]
+
+    # colour = K (log-mapped), shape = H1 pass/fail
+    import matplotlib.cm as cm
+    k_norm = np.array([np.log(k) for k in ks])
+    k_norm = (k_norm - k_norm.min()) / (k_norm.max() - k_norm.min())
+    colors = [cm.viridis(v) for v in k_norm]
+
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+
+    # ── Left: spread vs rho ──────────────────────────────────────────────────
+    ax = axes[0]
+    for sp, rh, c, lbl, ph1, k in zip(spreads, rhos, colors, labels, pass_h1, ks):
+        mk = "o" if ph1 else "X"
+        ax.scatter(sp, rh, c=[c], marker=mk, s=120, zorder=4,
+                   edgecolors="black", linewidths=0.8)
+        offset_y = 0.02 if rh < 0.85 else -0.04
+        ax.annotate(lbl.replace("_", " "), (sp, rh),
+                    textcoords="offset points", xytext=(5, 3), fontsize=7.5)
+
+    # Regression line (beta1 * spread + const, beta2 * mean_logK_ignored)
+    xs = np.linspace(0, max(spreads) * 1.15, 100)
+    mean_logK = np.mean([np.log(k) for k in ks])
+    ys = beta1 * xs + beta2 * mean_logK + const
+    ax.plot(xs, ys, "k--", lw=1.8, alpha=0.7,
+            label=rf"Regression ($\hat{{\beta}}_{{spread}}={beta1:.2f}$)")
+    ax.axhline(0.85, color="red", lw=1.5, linestyle=":", alpha=0.7,
+               label="H1 threshold ($\\rho=0.85$)")
+
+    ax.set_xlabel("kappa spread  ($\\sigma$ of per-arch mean $\\kappa$)", fontsize=11)
+    ax.set_ylabel("Ranking reliability $\\rho$\n(mean within-model Spearman)", fontsize=11)
+    ax.set_title(f"kappa spread vs. ranking reliability\n"
+                 f"Spearman $r={r_spr:.3f}$, $p={p_spr:.3f}$  ($n=10$ datasets)", fontsize=11)
+    ax.legend(fontsize=9)
+    ax.grid(True, alpha=0.3)
+
+    # colourbar for K
+    sm = plt.cm.ScalarMappable(cmap=cm.viridis,
+                               norm=plt.Normalize(vmin=min(ks), vmax=max(ks)))
+    sm.set_array([])
+    cbar = plt.colorbar(sm, ax=ax, shrink=0.7, pad=0.02)
+    cbar.set_label("$K$ (classes)", fontsize=9)
+    cbar.set_ticks([4, 14, 28, 59, 77])
+
+    # ── Right: log(K) vs rho (for comparison) ───────────────────────────────
+    ax = axes[1]
+    log_ks = [np.log(k) for k in ks]
+    for lk, rh, c, lbl, ph1 in zip(log_ks, rhos, colors, labels, pass_h1):
+        mk = "o" if ph1 else "X"
+        ax.scatter(lk, rh, c=[c], marker=mk, s=120, zorder=4,
+                   edgecolors="black", linewidths=0.8)
+        ax.annotate(lbl.replace("_", " "), (lk, rh),
+                    textcoords="offset points", xytext=(5, 3), fontsize=7.5)
+
+    xs_k = np.linspace(min(log_ks) * 0.95, max(log_ks) * 1.05, 100)
+    ys_k = beta2 * xs_k + beta1 * np.mean(spreads) + const
+    ax.plot(xs_k, ys_k, "k--", lw=1.8, alpha=0.7,
+            label=rf"Regression ($\hat{{\beta}}_{{\log K}}={beta2:.2f}$)")
+    ax.axhline(0.85, color="red", lw=1.5, linestyle=":", alpha=0.7,
+               label="H1 threshold ($\\rho=0.85$)")
+
+    xtick_vals = sorted(set(ks))
+    ax.set_xticks([np.log(k) for k in xtick_vals])
+    ax.set_xticklabels([str(k) for k in xtick_vals], fontsize=8)
+    ax.set_xlabel("Number of classes $K$ (log scale)", fontsize=11)
+    ax.set_ylabel("Ranking reliability $\\rho$\n(mean within-model Spearman)", fontsize=11)
+    ax.set_title(f"$K$ alone is NOT a reliable predictor\n"
+                 f"Spearman $r={r_k:.3f}$, $p={p_k:.3f}$ (n.s.)", fontsize=11)
+    ax.legend(fontsize=9)
+    ax.grid(True, alpha=0.3)
+
+    sm2 = plt.cm.ScalarMappable(cmap=cm.viridis,
+                                norm=plt.Normalize(vmin=min(ks), vmax=max(ks)))
+    sm2.set_array([])
+    cbar2 = plt.colorbar(sm2, ax=ax, shrink=0.7, pad=0.02)
+    cbar2.set_label("$K$ (classes)", fontsize=9)
+    cbar2.set_ticks([4, 14, 28, 59, 77])
+
+    plt.tight_layout(pad=1.2)
+    out = os.path.join(FIGURES, "fig_cti_spread_vs_K.png")
+    plt.savefig(out, dpi=180, bbox_inches="tight")
+    plt.close()
+    print(f"Saved: {out}")
+
+
 if __name__ == "__main__":
     import scipy  # noqa – verify dependency present
     print("Generating Figure 1 (NLP law + LOAO alpha)...")
     make_figure1()
     print("Generating Figure 2 (multi-modal summary)...")
     make_figure2()
+    print("Generating Figure 3 (kappa spread vs ranking reliability)...")
+    make_figure3()
     print("Done.")
