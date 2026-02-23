@@ -32,10 +32,16 @@ from scipy.stats import pearsonr, spearmanr
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import StratifiedKFold
 
+import sys
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RESULTS_DIR = REPO_ROOT / "results"
-CACHE_NPZ = RESULTS_DIR / "checkpoint_embs_pythia-160m_step512.npz"
-OUT_JSON = RESULTS_DIR / "cti_confusion_causal_prediction.json"
+# Optional command-line: python script.py <cache_npz> <out_json>
+if len(sys.argv) >= 3:
+    CACHE_NPZ = Path(sys.argv[1])
+    OUT_JSON = Path(sys.argv[2])
+else:
+    CACHE_NPZ = RESULTS_DIR / "checkpoint_embs_pythia-160m_step512.npz"
+    OUT_JSON = RESULTS_DIR / "cti_confusion_causal_prediction.json"
 
 # PRE-REGISTERED (DO NOT CHANGE AFTER RUNNING)
 A_NLP = 1.054       # LOAO constant
