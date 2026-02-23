@@ -50,10 +50,10 @@
       0.418,
       0.456
     ],
-    "all_rho_CV": 0.033
+    "all_rho_CV": 0.03431876199988346
   },
   "key_findings": [
-    "rho~0.45 is architecture-universal: holds for BOTH encoder and decoder families (range 0.418-0.456, CV=3.3%)",
+    "rho~0.45 is architecture-universal: holds for BOTH encoder and decoder families (range 0.418-0.456, CV=3.4%)",
     "Near-simplex geometry is NOT specific to decoder pre-training; it is a general property of categorical representation",
     "rho does NOT explain cross-family alpha differences: bert-base rho=0.456 (identical to decoders) but alpha_emp=4.4x higher",
     "For NLP decoders: formula alpha=sqrt(4/pi)*sqrt(1/(1-rho)) predicts alpha~1.479-1.529 matching LOAO=1.477",
