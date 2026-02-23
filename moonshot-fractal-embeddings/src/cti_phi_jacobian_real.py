@@ -63,11 +63,14 @@ Q_CEILING = 0.85       # above this: skip (ceiling)
 MIN_GAP = 0.04         # below this: skip (near-tie / rank-switch risk)
 RANK_STABLE_FRAC = 0.45  # use delta < gap * RANK_STABLE_FRAC to avoid rank switch
 
-# Arm A: shift j1 with these deltas (kappa units)
-DELTA_A_LIST = [0.0, 0.02, 0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.70, 1.00]
+# MATCHED delta range: Arm A and Arm B use the SAME small deltas per class.
+# max_delta = gap * RANK_STABLE_FRAC (caps Arm B; Arm A also capped at same max)
+# FINE_DELTAS: the candidate delta grid (in kappa units)
+FINE_DELTAS = [0.0, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04,
+               0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.12, 0.15, 0.20]
 
-# Arm B: shift j2 ONLY; same list but cap per-class at gap * RANK_STABLE_FRAC
-DELTA_B_LIST = [0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.10, 0.12]
+# Arm A large-delta list (for global slope calibration only, NOT for w ratio)
+DELTA_A_LARGE = [0.0, 0.10, 0.20, 0.30, 0.50, 0.70, 1.00]
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {DEVICE}", flush=True)
@@ -268,24 +271,28 @@ def main():
             }
             continue
 
-        # Max stable delta for j2 arm (rank-stable condition)
-        max_delta_b = gap * RANK_STABLE_FRAC
-        delta_b_safe = [d for d in DELTA_B_LIST if d <= max_delta_b + 1e-6]
-        print(f"    max_delta_b = {max_delta_b:.4f}; "
-              f"n_stable_points = {len(delta_b_safe)}")
+        # Max stable delta for BOTH arms (rank-stable condition)
+        max_delta = gap * RANK_STABLE_FRAC
+        # Matched deltas: same grid for both Arm A and Arm B (local Jacobian)
+        matched_deltas = [dv for dv in FINE_DELTAS if dv <= max_delta + 1e-6]
+        print(f"    max_delta = {max_delta:.4f}; n_matched_pts = {len(matched_deltas)}")
 
-        if len(delta_b_safe) < 3:
-            print(f"    SKIP: too few stable delta_b points ({len(delta_b_safe)} < 3)")
+        if len(matched_deltas) < 3:
+            print(f"    SKIP: too few matched delta pts ({len(matched_deltas)} < 3)")
             per_class_results[ci] = {
-                "skip_reason": "too_few_delta_b", "q_base": q_base,
+                "skip_reason": "too_few_delta", "q_base": q_base,
                 "kappa_j1": kappa_j1, "kappa_j2": kappa_j2, "gap": gap,
-                "n_stable_delta_b": len(delta_b_safe)
+                "n_matched_delta_pts": len(matched_deltas)
             }
             continue
 
-        # ------ ARM A: shift j1 ------
+        # ------ ARM A: shift j1 (matched range = local Jacobian) ------
         delta_a_vals, logit_delta_a = [], []
-        for delta in DELTA_A_LIST:
+        for delta in matched_deltas:
+            if delta == 0.0:
+                delta_a_vals.append(0.0)
+                logit_delta_a.append(0.0)
+                continue
             direction = centroids[j1] - centroids[ci]
             norm = np.linalg.norm(direction)
             if norm < 1e-12:
@@ -304,9 +311,33 @@ def main():
 
         slope_j1, r_j1 = fit_slope(delta_a_vals, logit_delta_a)
 
-        # ------ ARM B: shift j2 only (orthogonal) ------
+        # Also compute global slope_j1 from larger range (informational only)
+        delta_a_large_vals, logit_delta_a_large = [], []
+        for delta in DELTA_A_LARGE:
+            if delta == 0.0:
+                delta_a_large_vals.append(0.0)
+                logit_delta_a_large.append(0.0)
+                continue
+            direction = centroids[j1] - centroids[ci]
+            norm = np.linalg.norm(direction)
+            if norm < 1e-12:
+                continue
+            direction = direction / norm
+            shift = delta * sigma_W * np.sqrt(d) * direction
+            X_tr_mod = X_tr_base.copy()
+            X_te_mod = X_te_base.copy()
+            X_tr_mod[y_tr == j1] += shift
+            X_te_mod[y_te == j1] += shift
+            q_mod = eval_q_ci(X_tr_mod, y_tr, X_te_mod, y_te, ci)
+            if q_mod is None:
+                continue
+            delta_a_large_vals.append(float(delta))
+            logit_delta_a_large.append(safe_logit(q_mod) - logit_base)
+        slope_j1_global, r_j1_global = fit_slope(delta_a_large_vals, logit_delta_a_large)
+
+        # ------ ARM B: shift j2 only (orthogonal, matched range) ------
         delta_b_vals, logit_delta_b = [], []
-        for delta in delta_b_safe:
+        for delta in matched_deltas:
             if delta == 0.0:
                 delta_b_vals.append(0.0)
                 logit_delta_b.append(0.0)
@@ -341,29 +372,39 @@ def main():
         slope_j2, r_j2 = fit_slope(delta_b_vals, logit_delta_b)
 
         # ------ Report ------
-        s1_str = f"{slope_j1:.4f}" if slope_j1 is not None else "N/A"
-        r1_str = f"{r_j1:.4f}" if r_j1 is not None else "N/A"
-        s2_str = f"{slope_j2:.4f}" if slope_j2 is not None else "N/A"
-        r2_str = f"{r_j2:.4f}" if r_j2 is not None else "N/A"
-        print(f"    Arm A: slope_j1={s1_str} (r={r1_str})")
+        s1l_str = f"{slope_j1:.4f}" if slope_j1 is not None else "N/A"
+        r1l_str = f"{r_j1:.4f}" if r_j1 is not None else "N/A"
+        s1g_str = f"{slope_j1_global:.4f}" if slope_j1_global is not None else "N/A"
+        s2_str  = f"{slope_j2:.4f}" if slope_j2 is not None else "N/A"
+        r2_str  = f"{r_j2:.4f}" if r_j2 is not None else "N/A"
+        print(f"    Arm A local: slope_j1={s1l_str} (r={r1l_str}), "
+              f"global: slope_j1={s1g_str}")
         print(f"    Arm B: slope_j2={s2_str} (r={r2_str})")
 
         w_empirical = None
+        # w uses LOCAL matched slope_j1 (same delta range as Arm B)
         if (slope_j1 is not None and slope_j2 is not None
-                and abs(slope_j1) > 0.01 and slope_j1 > 0):
+                and abs(slope_j1) > 1e-4):
             w_empirical = float(slope_j2 / slope_j1)
             w_phi_pred = float(np.exp(-gap / TAU_STAR))
-            print(f"    w_empirical={w_empirical:.4f}, "
-                  f"w_phi(tau*={TAU_STAR})={w_phi_pred:.4f}")
-            valid_classes.append(ci)
+            we_str = f"{w_empirical:.4f}"
+            wp_str = f"{w_phi_pred:.4f}"
+            print(f"    w_empirical={we_str}, w_phi(tau*={TAU_STAR})={wp_str}")
+            # Only add to valid if w is in reasonable range AND slope_j1 > 0
+            if slope_j1 > 0 and 0 <= w_empirical <= 20:
+                valid_classes.append(ci)
 
         per_class_results[ci] = {
             "j1": int(j1), "j2": int(j2),
             "kappa_j1": float(kappa_j1), "kappa_j2": float(kappa_j2), "gap": float(gap),
             "q_base": float(q_base), "logit_base": float(logit_base),
-            "slope_j1": float(slope_j1) if slope_j1 is not None else None,
+            "max_delta_matched": float(max_delta),
+            "n_matched_delta_pts": len(matched_deltas),
+            "slope_j1_local": float(slope_j1) if slope_j1 is not None else None,
+            "slope_j1_global": float(slope_j1_global) if slope_j1_global is not None else None,
             "slope_j2": float(slope_j2) if slope_j2 is not None else None,
-            "r_j1": float(r_j1) if r_j1 is not None else None,
+            "r_j1_local": float(r_j1) if r_j1 is not None else None,
+            "r_j1_global": float(r_j1_global) if r_j1_global is not None else None,
             "r_j2": float(r_j2) if r_j2 is not None else None,
             "n_arm_a_pts": len(delta_a_vals),
             "n_arm_b_pts": len(delta_b_vals),
