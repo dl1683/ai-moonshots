@@ -240,6 +240,11 @@ Q1 — THEORETICAL MEANING of local alpha (~0.7) vs global alpha (1.477):
 - alpha_local = PARTIAL DERIVATIVE from one-pair surgical perturbation
 - alpha_global = EFFECTIVE COARSE-GRAINED SLOPE averaging over full K-1 competitive geometry
 - Gap is EXPECTED if global fit includes gain from multi-competitor structure beyond moved pair
+- CORRECT FORMULA: alpha_intervention = alpha_loao * w1
+  where w1 = nearest-pair sensitivity share (hazard weight) in full multiclass competition
+  From data: w1 = 0.701/1.477 = 0.475 -> ~2 active rivals out of 13 (SPARSE competition)
+  NOT 1/(K-1)=0.077 (that assumes all 13 rivals contribute equally -- FALSE)
+  Consistent with near-tie j1/j2 margins and orthogonal-arm near-zero j2/jK effects
 
 Q2 — FEATURE NOT BUG (if we upgrade the claim):
 - Supported: universal functional form (high r survives interventions)
