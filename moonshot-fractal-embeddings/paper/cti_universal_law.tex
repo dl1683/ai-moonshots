@@ -650,6 +650,27 @@ Three independent experimental frameworks converge on the same exponent:
 Synthetic and real-network results are mutually independent: (1) uses Gaussian-mixture embeddings
 with controlled $\kappa/d_\mathrm{eff}$, while (2)--(3) use transformer embeddings on natural-language tasks.
 
+\begin{table}[h]
+\centering
+\caption{N\textsubscript{eff} geometric exponent and competition density $\rho$ across four architectures
+on DBpedia ($K=14$). Pearson $r=0.996$, Spearman $\rho=1.000$ between exponent and density.}
+\label{tab:neff-competition-density}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Architecture & Exponent $\beta_\mathrm{geom}$ & $N_\mathrm{eff}$ at $K=14$ & $\rho = N_\mathrm{eff}/(K-1)$ & $r$ \\
+\midrule
+Pythia-160m  & 0.934 & 10.45 & 0.804 & 0.9999 \\
+OLMo-1B      & 0.806 & 7.51  & 0.578 & 0.9995 \\
+Qwen3-0.6B   & 0.791 & 7.35  & 0.566 & 0.9998 \\
+GPT-Neo-125M & 0.711 & 5.91  & 0.455 & 0.9995 \\
+\midrule
+\textbf{Corr.} & \multicolumn{4}{c}{Pearson $r(\rho, \beta_\mathrm{geom})=0.996$ ($p=0.004$);
+  Spearman $\rho=1.000$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \paragraph{Direct centroid-geometry and beta reconciliation.}
 A direct test (\texttt{src/cti\_neff\_pairwise.py}) extracts all class centroids from Pythia-160m
 on DBpedia ($K=4$--$14$ subsets, $n=20$ seeds each) and computes
