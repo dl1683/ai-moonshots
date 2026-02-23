@@ -31,7 +31,7 @@ import numpy as np
 from pathlib import Path
 from scipy.stats import pearsonr, spearmanr, linregress
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold, StratifiedShuffleSplit
 import torch
 from transformers import AutoTokenizer, AutoModel
 from datasets import load_dataset
@@ -72,9 +72,15 @@ def extract_embeddings():
     print(f"Model loaded on {DEVICE}")
 
     print(f"Loading dataset {DATASET_NAME}...")
-    ds = load_dataset(DATASET_NAME, split="train")
-    texts = list(ds["content"])[:N_SAMPLE]
-    labels = np.array(ds["label"][:N_SAMPLE], dtype=np.int64)
+    ds = load_dataset(DATASET_NAME, split="test", trust_remote_code=True)
+    all_texts = list(ds["content"])
+    all_labels = np.array(ds["label"], dtype=np.int64)
+    # Stratified subsample to get balanced class coverage
+    sss = StratifiedShuffleSplit(n_splits=1, test_size=N_SAMPLE, random_state=42)
+    _, idx = next(sss.split(np.zeros(len(all_labels)), all_labels))
+    texts = [all_texts[i] for i in idx]
+    labels = all_labels[idx]
+    print(f"Stratified sample: N={len(texts)}, classes={np.unique(labels).tolist()}")
 
     print(f"Extracting embeddings at layer {LAYER} (N={len(texts)})...")
     all_embs = []
@@ -84,7 +90,7 @@ def extract_embeddings():
                           truncation=True, max_length=128).to(DEVICE)
         with torch.no_grad():
             out = model(**inputs, output_hidden_states=True)
-        hidden = out.hidden_states[LAYER + 1]  # +1 for embedding layer
+        hidden = out.hidden_states[LAYER]  # 0=embedding, 1..N=transformer layers
         mask = inputs["attention_mask"].unsqueeze(-1).float()
         pooled = (hidden * mask).sum(1) / mask.sum(1)
         all_embs.append(pooled.cpu().float().numpy())
@@ -388,8 +394,17 @@ def main():
         "per_class": jacobian_results,
     }
 
+    def json_default(obj):
+        if isinstance(obj, (np.bool_,)):
+            return bool(obj)
+        if isinstance(obj, (np.integer,)):
+            return int(obj)
+        if isinstance(obj, (np.floating,)):
+            return float(obj)
+        raise TypeError(f"Not serializable: {type(obj)}")
+
     with open(OUT_JSON, "w") as f:
-        json.dump(result, f, indent=2)
+        json.dump(result, f, indent=2, default=json_default)
     print(f"\nSaved to {OUT_JSON}")
 
 
