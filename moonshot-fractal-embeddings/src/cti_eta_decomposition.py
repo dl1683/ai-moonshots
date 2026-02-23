@@ -422,7 +422,7 @@ def main():
     }
 
     best_candidate = None
-    best_r = -1.0
+    best_r = 0.0
 
     log("\nCorrelations with A_empirical:")
     for cname, cvals in candidates.items():
