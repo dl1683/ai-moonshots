@@ -1,0 +1,481 @@
+{
+  "experiment": "confusion_causal_prediction",
+  "session": 41,
+  "preregistered": {
+    "A_NLP": 1.054,
+    "tau_star": 0.2,
+    "tau_local": 0.026,
+    "H1_threshold": 0.5,
+    "H2_threshold": 0.5,
+    "H3_sign_threshold": 0.8,
+    "deltas": [
+      1.0,
+      2.0,
+      3.0
+    ]
+  },
+  "results": [
+    {
+      "delta": 1.0,
+      "n_pairs": 182,
+      "r_tau_star": 0.8420828845249385,
+      "p_tau_star": 3.835531527942648e-50,
+      "r_tau_local": 0.6831299910958198,
+      "p_tau_local": 2.3248915296682904e-26,
+      "sign_accuracy": 0.9285714285714286,
+      "pass_H1": true,
+      "pass_H2": true,
+      "pass_H3": true,
+      "per_class": [
+        {
+          "ci": 0,
+          "j1": 1,
+          "delta_kappa": 0.11433366415968754,
+          "q_pred": 0.5241079246012225,
+          "q_actual": 0.528,
+          "delta_C_j1_pred_star": -0.032848575521527534,
+          "delta_C_j1_actual": -0.064,
+          "sign_match": true
+        },
+        {
+          "ci": 1,
+          "j1": 13,
+          "delta_kappa": 0.11433366415968726,
+          "q_pred": 0.7113587536515683,
+          "q_actual": 0.702,
+          "delta_C_j1_pred_star": -0.007637215728348787,
+          "delta_C_j1_actual": -0.022000000000000002,
+          "sign_match": true
+        },
+        {
+          "ci": 2,
+          "j1": 3,
+          "delta_kappa": 0.11433366415968726,
+          "q_pred": 0.5440163439562137,
+          "q_actual": 0.55,
+          "delta_C_j1_pred_star": -0.07237953938493116,
+          "delta_C_j1_actual": -0.05799999999999998,
+          "sign_match": true
+        },
+        {
+          "ci": 3,
+          "j1": 2,
+          "delta_kappa": 0.11433366415968677,
+          "q_pred": 0.7341715859770387,
+          "q_actual": 0.76,
+          "delta_C_j1_pred_star": -0.0957668629646482,
+          "delta_C_j1_actual": -0.06999999999999999,
+          "sign_match": true
+        },
+        {
+          "ci": 4,
+          "j1": 3,
+          "delta_kappa": 0.11433366415968738,
+          "q_pred": 0.8352584521833576,
+          "q_actual": 0.83,
+          "delta_C_j1_pred_star": -0.009867287755680978,
+          "delta_C_j1_actual": -0.012,
+          "sign_match": true
+        },
+        {
+          "ci": 5,
+          "j1": 6,
+          "delta_kappa": 0.11433366415968832,
+          "q_pred": 0.8167300740205676,
+          "q_actual": 0.818,
+          "delta_C_j1_pred_star": -0.04061254099685788,
+          "delta_C_j1_actual": -0.029999999999999992,
+          "sign_match": true
+        },
+        {
+          "ci": 6,
+          "j1": 5,
+          "delta_kappa": 0.11433366415968821,
+          "q_pred": 0.6285433404238628,
+          "q_actual": 0.608,
+          "delta_C_j1_pred_star": -0.0025956730478705822,
+          "delta_C_j1_actual": -0.013999999999999999,
+          "sign_match": true
+        },
+        {
+          "ci": 7,
+          "j1": 6,
+          "delta_kappa": 0.11433366415968782,
+          "q_pred": 0.7869048796865185,
+          "q_actual": 0.78,
+          "delta_C_j1_pred_star": -0.037296266849376716,
+          "delta_C_j1_actual": -0.027999999999999997,
+          "sign_match": true
+        },
+        {
+          "ci": 8,
+          "j1": 7,
+          "delta_kappa": 0.11433366415968749,
+          "q_pred": 0.9356481187365155,
+          "q_actual": 0.928,
+          "delta_C_j1_pred_star": -0.012026393800691508,
+          "delta_C_j1_actual": 0.0,
+          "sign_match": false
+        },
+        {
+          "ci": 9,
+          "j1": 10,
+          "delta_kappa": 0.11433366415968771,
+          "q_pred": 0.7493088585509501,
+          "q_actual": 0.788,
+          "delta_C_j1_pred_star": -0.03485616658989876,
+          "delta_C_j1_actual": -0.07,
+          "sign_match": true
+        },
+        {
+          "ci": 10,
+          "j1": 9,
+          "delta_kappa": 0.11433366415968771,
+          "q_pred": 0.7887754749136268,
+          "q_actual": 0.8,
+          "delta_C_j1_pred_star": -0.015047198422274921,
+          "delta_C_j1_actual": -0.034,
+          "sign_match": true
+        },
+        {
+          "ci": 11,
+          "j1": 12,
+          "delta_kappa": 0.11433366415968693,
+          "q_pred": 0.7887754749136267,
+          "q_actual": 0.796,
+          "delta_C_j1_pred_star": -0.053742484764856,
+          "delta_C_j1_actual": -0.044000000000000004,
+          "sign_match": true
+        },
+        {
+          "ci": 12,
+          "j1": 2,
+          "delta_kappa": 0.11433366415968677,
+          "q_pred": 0.6285433404238625,
+          "q_actual": 0.62,
+          "delta_C_j1_pred_star": -0.004596311913763848,
+          "delta_C_j1_actual": -0.026000000000000002,
+          "sign_match": true
+        },
+        {
+          "ci": 13,
+          "j1": 12,
+          "delta_kappa": 0.11433366415968699,
+          "q_pred": 0.5440163439562136,
+          "q_actual": 0.532,
+          "delta_C_j1_pred_star": -0.08249166387441886,
+          "delta_C_j1_actual": -0.032,
+          "sign_match": true
+        }
+      ]
+    },
+    {
+      "delta": 2.0,
+      "n_pairs": 182,
+      "r_tau_star": 0.8076568617831665,
+      "p_tau_star": 3.737258645868725e-43,
+      "r_tau_local": 0.6460503632978435,
+      "p_tau_local": 6.994831140045766e-23,
+      "sign_accuracy": 1.0,
+      "pass_H1": true,
+      "pass_H2": true,
+      "pass_H3": true,
+      "per_class": [
+        {
+          "ci": 0,
+          "j1": 1,
+          "delta_kappa": 0.22866732831937547,
+          "q_pred": 0.5540416276470687,
+          "q_actual": 0.548,
+          "delta_C_j1_pred_star": -0.07138657616289058,
+          "delta_C_j1_actual": -0.096,
+          "sign_match": true
+        },
+        {
+          "ci": 1,
+          "j1": 13,
+          "delta_kappa": 0.22866732831937553,
+          "q_pred": 0.7354592841548743,
+          "q_actual": 0.712,
+          "delta_C_j1_pred_star": -0.023247168807493054,
+          "delta_C_j1_actual": -0.038000000000000006,
+          "sign_match": true
+        },
+        {
+          "ci": 2,
+          "j1": 3,
+          "delta_kappa": 0.22866732831937403,
+          "q_pred": 0.5737163169711936,
+          "q_actual": 0.584,
+          "delta_C_j1_pred_star": -0.10263679421793123,
+          "delta_C_j1_actual": -0.10799999999999998,
+          "sign_match": true
+        },
+        {
+          "ci": 3,
+          "j1": 2,
+          "delta_kappa": 0.22866732831937514,
+          "q_pred": 0.7570179533524117,
+          "q_actual": 0.794,
+          "delta_C_j1_pred_star": -0.11928386209288218,
+          "delta_C_j1_actual": -0.118,
+          "sign_match": true
+        },
+        {
+          "ci": 4,
+          "j1": 3,
+          "delta_kappa": 0.2286673283193743,
+          "q_pred": 0.851178088940154,
+          "q_actual": 0.836,
+          "delta_C_j1_pred_star": -0.022499032810629975,
+          "delta_C_j1_actual": -0.02,
+          "sign_match": true
+        },
+        {
+          "ci": 5,
+          "j1": 6,
+          "delta_kappa": 0.2286673283193748,
+          "q_pred": 0.8340845235999377,
+          "q_actual": 0.832,
+          "delta_C_j1_pred_star": -0.05466449887984344,
+          "delta_C_j1_actual": -0.05399999999999999,
+          "sign_match": true
+        },
+        {
+          "ci": 6,
+          "j1": 5,
+          "delta_kappa": 0.2286673283193748,
+          "q_pred": 0.6562169074158987,
+          "q_actual": 0.614,
+          "delta_C_j1_pred_star": -0.01783422677768641,
+          "delta_C_j1_actual": -0.022,
+          "sign_match": true
+        },
+        {
+          "ci": 7,
+          "j1": 6,
+          "delta_kappa": 0.22866732831937486,
+          "q_pred": 0.8064141589722438,
+          "q_actual": 0.784,
+          "delta_C_j1_pred_star": -0.047788910645493336,
+          "delta_C_j1_actual": -0.039999999999999994,
+          "sign_match": true
+        },
+        {
+          "ci": 8,
+          "j1": 7,
+          "delta_kappa": 0.22866732831937453,
+          "q_pred": 0.9425341328872957,
+          "q_actual": 0.932,
+          "delta_C_j1_pred_star": -0.01575069942065738,
+          "delta_C_j1_actual": -0.004,
+          "sign_match": true
+        },
+        {
+          "ci": 9,
+          "j1": 10,
+          "delta_kappa": 0.22866732831937447,
+          "q_pred": 0.7712595975441372,
+          "q_actual": 0.828,
+          "delta_C_j1_pred_star": -0.07859582476686305,
+          "delta_C_j1_actual": -0.11,
+          "sign_match": true
+        },
+        {
+          "ci": 10,
+          "j1": 9,
+          "delta_kappa": 0.2286673283193747,
+          "q_pred": 0.8081552493125568,
+          "q_actual": 0.85,
+          "delta_C_j1_pred_star": -0.049682027560314146,
+          "delta_C_j1_actual": -0.08800000000000001,
+          "sign_match": true
+        },
+        {
+          "ci": 11,
+          "j1": 12,
+          "delta_kappa": 0.22866732831937542,
+          "q_pred": 0.8081552493125569,
+          "q_actual": 0.802,
+          "delta_C_j1_pred_star": -0.06576511269468516,
+          "delta_C_j1_actual": -0.06,
+          "sign_match": true
+        },
+        {
+          "ci": 12,
+          "j1": 2,
+          "delta_kappa": 0.22866732831937503,
+          "q_pred": 0.6562169074158987,
+          "q_actual": 0.628,
+          "delta_C_j1_pred_star": -0.024104933435764638,
+          "delta_C_j1_actual": -0.036000000000000004,
+          "sign_match": true
+        },
+        {
+          "ci": 13,
+          "j1": 12,
+          "delta_kappa": 0.22866732831937536,
+          "q_pred": 0.573716316971194,
+          "q_actual": 0.558,
+          "delta_C_j1_pred_star": -0.10373304359209035,
+          "delta_C_j1_actual": -0.082,
+          "sign_match": true
+        }
+      ]
+    },
+    {
+      "delta": 3.0,
+      "n_pairs": 182,
+      "r_tau_star": 0.7756129160270254,
+      "p_tau_star": 8.196768144732869e-38,
+      "r_tau_local": 0.6189432565524019,
+      "p_tau_local": 1.2537262858928615e-20,
+      "sign_accuracy": 1.0,
+      "pass_H1": true,
+      "pass_H2": true,
+      "pass_H3": true,
+      "per_class": [
+        {
+          "ci": 0,
+          "j1": 1,
+          "delta_kappa": 0.3430009924790626,
+          "q_pred": 0.5835884360465841,
+          "q_actual": 0.552,
+          "delta_C_j1_pred_star": -0.09476146012687434,
+          "delta_C_j1_actual": -0.104,
+          "sign_match": true
+        },
+        {
+          "ci": 1,
+          "j1": 13,
+          "delta_kappa": 0.34300099247906224,
+          "q_pred": 0.758231426058666,
+          "q_actual": 0.716,
+          "delta_C_j1_pred_star": -0.032015692947187084,
+          "delta_C_j1_actual": -0.042,
+          "sign_match": true
+        },
+        {
+          "ci": 2,
+          "j1": 3,
+          "delta_kappa": 0.3430009924790614,
+          "q_pred": 0.6028938902646884,
+          "q_actual": 0.588,
+          "delta_C_j1_pred_star": -0.1204300983278916,
+          "delta_C_j1_actual": -0.118,
+          "sign_match": true
+        },
+        {
+          "ci": 3,
+          "j1": 2,
+          "delta_kappa": 0.34300099247906196,
+          "q_pred": 0.778493221628721,
+          "q_actual": 0.802,
+          "delta_C_j1_pred_star": -0.1332700453155502,
+          "delta_C_j1_actual": -0.134,
+          "sign_match": true
+        },
+        {
+          "ci": 4,
+          "j1": 3,
+          "delta_kappa": 0.3430009924790619,
+          "q_pred": 0.865806504799029,
+          "q_actual": 0.84,
+          "delta_C_j1_pred_star": -0.029733764517488305,
+          "delta_C_j1_actual": -0.03,
+          "sign_match": true
+        },
+        {
+          "ci": 5,
+          "j1": 6,
+          "delta_kappa": 0.3430009924790632,
+          "q_pred": 0.850097242598879,
+          "q_actual": 0.842,
+          "delta_C_j1_pred_star": -0.06273579595381637,
+          "delta_C_j1_actual": -0.06799999999999999,
+          "sign_match": true
+        },
+        {
+          "ci": 6,
+          "j1": 5,
+          "delta_kappa": 0.34300099247906196,
+          "q_pred": 0.6828690111765244,
+          "q_actual": 0.616,
+          "delta_C_j1_pred_star": -0.026316227898507728,
+          "delta_C_j1_actual": -0.025999999999999995,
+          "sign_match": true
+        },
+        {
+          "ci": 7,
+          "j1": 6,
+          "delta_kappa": 0.34300099247906213,
+          "q_pred": 0.8245355934940768,
+          "q_actual": 0.79,
+          "delta_C_j1_pred_star": -0.053574714826313874,
+          "delta_C_j1_actual": -0.048,
+          "sign_match": true
+        },
+        {
+          "ci": 8,
+          "j1": 7,
+          "delta_kappa": 0.34300099247906246,
+          "q_pred": 0.9487236858595549,
+          "q_actual": 0.934,
+          "delta_C_j1_pred_star": -0.01778810324969083,
+          "delta_C_j1_actual": -0.012,
+          "sign_match": true
+        },
+        {
+          "ci": 9,
+          "j1": 10,
+          "delta_kappa": 0.3430009924790621,
+          "q_pred": 0.7918222997447267,
+          "q_actual": 0.872,
+          "delta_C_j1_pred_star": -0.12071842359781843,
+          "delta_C_j1_actual": -0.16,
+          "sign_match": true
+        },
+        {
+          "ci": 10,
+          "j1": 9,
+          "delta_kappa": 0.3430009924790625,
+          "q_pred": 0.8261488381920261,
+          "q_actual": 0.892,
+          "delta_C_j1_pred_star": -0.08466230047269303,
+          "delta_C_j1_actual": -0.136,
+          "sign_match": true
+        },
+        {
+          "ci": 11,
+          "j1": 12,
+          "delta_kappa": 0.343000992479062,
+          "q_pred": 0.8261488381920259,
+          "q_actual": 0.81,
+          "delta_C_j1_pred_star": -0.07247386245057634,
+          "delta_C_j1_actual": -0.07,
+          "sign_match": true
+        },
+        {
+          "ci": 12,
+          "j1": 2,
+          "delta_kappa": 0.34300099247906196,
+          "q_pred": 0.6828690111765244,
+          "q_actual": 0.634,
+          "delta_C_j1_pred_star": -0.035166751870675764,
+          "delta_C_j1_actual": -0.046,
+          "sign_match": true
+        },
+        {
+          "ci": 13,
+          "j1": 12,
+          "delta_kappa": 0.3430009924790622,
+          "q_pred": 0.6028938902646886,
+          "q_actual": 0.568,
+          "delta_C_j1_pred_star": -0.11580431371370715,
+          "delta_C_j1_actual": -0.10400000000000001,
+          "sign_match": true
+        }
+      ]
+    }
+  ]
+}
