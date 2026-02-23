@@ -114,11 +114,20 @@ def load_dataset_texts(ds_name, config):
         print(f"  Error loading {hf_name}: {e}", flush=True)
         return None, None
     le = LabelEncoder()
-    labels = le.fit_transform(labels_raw)
+    labels_enc = le.fit_transform(labels_raw)
+    # Stratified sampling: ensure each class has at least min_per_class samples
     np.random.seed(42)
-    idx = np.random.choice(len(texts_raw), min(n_sample, len(texts_raw)), replace=False)
-    texts = [texts_raw[i] for i in idx]
-    labels = labels[idx]
+    classes = np.unique(labels_enc)
+    n_per_class = max(20, n_sample // len(classes))
+    selected_idx = []
+    for c in classes:
+        c_idx = np.where(labels_enc == c)[0]
+        take = min(n_per_class, len(c_idx))
+        chosen = np.random.choice(c_idx, take, replace=False)
+        selected_idx.extend(chosen.tolist())
+    selected_idx = np.array(selected_idx)
+    texts = [texts_raw[i] for i in selected_idx]
+    labels = labels_enc[selected_idx]
     return texts, labels
 
 
@@ -182,6 +191,13 @@ def compute_q(X, labels, K, n_splits=5):
     from sklearn.model_selection import StratifiedShuffleSplit
     if len(X) < 20:
         return None
+    # Drop classes with < 2 samples (can't stratify-split)
+    counts = np.bincount(labels)
+    valid_classes = np.where(counts >= 2)[0]
+    if len(valid_classes) < 2:
+        return None
+    mask = np.isin(labels, valid_classes)
+    X, labels = X[mask], labels[mask]
     cv = StratifiedShuffleSplit(n_splits=n_splits, test_size=0.2, random_state=42)
     accs = []
     for train_idx, test_idx in cv.split(X, labels):
