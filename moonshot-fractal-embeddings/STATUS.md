@@ -66,6 +66,7 @@ Where:
 | Biological validation Cadieu2014 macaque IT+V4 (Session 61, pre-reg bddec1d) | H1/H2/H4 FAIL (K=7 underpowered, A_bio=0.069 vs A_NLP=1.129); H3 PASS IT (MAE=0.084); EXPLORATORY per-image: r=0.41 p<0.0001 n=1960 (IT), r=0.12 (V4). Form confirmed, constant different | DONE |
 | Biological validation Stringer2018b mouse V1 (Session 61) | Class-level FAIL (K=11, r=-0.49, class-size confound); H3 PASS MAE=0.054; EXPLORATORY per-image: r=0.64 p<0.0001 n=4914. Margin predicts V1 accuracy stronger than IT | DONE |
 | Allen Neuropixels mouse visual cortex K=118 (Session 62, pre-reg bddec1d) | **H1 PASS** r(kappa,logit_q)=0.851 p=3e-34 (FIRST class-level bio H1 pass!); H3 PASS MAE=0.063; H2 FAIL A_renorm=0.033; per-image r=0.747 p=0 n=5900 | DONE |
+| Allen Neuropixels 7-session replication (Session 62) | **7/7 H1 PASS** r_kappa mean=0.733 [0.51,0.89] CV=17.8%; per-image r mean=0.689 [0.48,0.77]; cross-animal replication confirmed | DONE |
 
 ## Key Theoretical Results (Theorems 1-16)
 
@@ -102,13 +103,13 @@ Canonical theory document: `research/OBSERVABLE_ORDER_PARAMETER_THEOREM.md`
 5. **Biological neuroscience validation (Session 62 DONE — THREE DATASETS):**
    - Cadieu2014 macaque IT (168 neurons, K=7): per-image r=0.41, p<0.0001, n=1960
    - Stringer2018b mouse V1 (10,079 neurons, K=11): per-image r=0.64, p<0.0001, n=4914
-   - Allen Neuropixels mouse visual cortex (963 units, K=118): r=0.851, per-image r=0.747
+   - Allen Neuropixels mouse VC (K=118, 7 mice): r_kappa mean=0.733 [0.51,0.89], 7/7 H1 PASS
    - PRE-REGISTERED: H4 FAILS across all datasets (A_bio ≠ A_NLP); CONSTANT not universal
-   - FIRST CLASS-LEVEL H1 PASS: Allen K=118 provides statistical power for r>0.50 threshold
+   - FIRST CLASS-LEVEL H1 PASS: Allen K=118 provides statistical power; 7-session cross-animal replication
    - KEY FINDING: LAW FORM (kappa_nearest → q) IS substrate-independent; CONSTANT A differs
    - POWER FINDING: class-level test requires K≥118 to reliably detect the correlation
-   - Cross-substrate per-image r: macaque IT=0.41, macaque V4=0.12, mouse V1=0.64, mouse VC=0.75
-   - NEXT: Add biological section to paper; cross-species A_renorm table
+   - Cross-substrate per-image r: macaque IT=0.41, macaque V4=0.12, mouse V1=0.64, mouse VC=0.69(mean)
+   - BIOLOGICAL SECTION ADDED to paper/cti_universal_law.tex
 
 6. **Practical utility demo:** predict class difficulty from geometry alone
 
