@@ -846,98 +846,6 @@ Open directions include a renormalization theory for how constants transform acr
 \section*{Reproducibility Statement}
 All numerical claims are taken directly from repository artifacts: \texttt{results/cti\_smollm2\_loao\_corrected.json}, \texttt{results/cti\_smollm2\_ood\_prediction.json}, \texttt{results/cti\_expanded\_blind\_ood.json}, \texttt{results/cti\_oneshot\_calibration\_ood.json}, \texttt{results/cti\_kappa\_nearest\_universal.json}, \texttt{results/rwkv\_preregistration.json}, \texttt{results/cti\_kappa\_loao\_per\_dataset.json}, \texttt{results/cti\_vit\_cross\_modality.json}, \texttt{results/cti\_resnet50\_cifar100.json}, \texttt{results/cti\_vit\_cifar100.json}, \texttt{results/cti\_noisefloor\_analysis.json}, \texttt{results/cti\_do\_intervention\_text.json}, \texttt{results/cti\_orthogonal\_factorial.json}, \texttt{results/cti\_checkpoint\_sweep.json}, \texttt{results/cti\_k\_scaling\_prediction.json}, \texttt{results/cti\_one\_point\_calibration.json}, \texttt{results/cti\_crossdataset\_topk.json}, \texttt{results/cti\_prospective\_new\_datasets.json}, \texttt{results/cti\_prospective\_k\_sweep.json}, \texttt{results/cti\_k\_boundary\_sweep.json}, \texttt{results/cti\_global\_vs\_single\_surgery.json}, \texttt{results/cti\_beyond\_1nn.json}, \texttt{results/cti\_crossdomain\_surgery.json}, \texttt{results/cti\_nlp\_linear\_regime\_surgery.json}, \texttt{results/cti\_kappa\_eff\_identifiability.json}, \texttt{results/cti\_2d\_causal\_surface.json}, \texttt{results/cti\_extended\_family\_loao.json}, \texttt{results/cti\_neuroscience\_cadieu2014.json}, \texttt{results/cti\_stringer2018b\_validation.json}, \texttt{results/cti\_allen\_neuropixels\_validation.json}, \texttt{results/cti\_allen\_all\_sessions\_complete.json}, \texttt{results/cti\_spread\_vs\_K.json}, \texttt{results/cti\_spread\_vs\_K\_n10.json}, \texttt{results/cti\_kappa\_universal\_comprehensive.json}, \texttt{results/cti\_beta\_constrained.json}, \texttt{results/cti\_multi\_k\_sweep.json}, \texttt{results/cti\_k10\_kappa\_sweep.json}, \texttt{results/cti\_neff\_pairwise\_extended.json}, \texttt{results/cti\_all\_models\_fit.json}, \texttt{results/dose\_response\_preregistration.json}. Pre-registration timestamps are verifiable via git log. Code is available at \url{[anonymized for review]}.
 
-\appendix
-\section{Derivation Details}
-Starting from the Gumbel race identity (Eq.~\ref{eq:gumbel-sum}), under nearest-class dominance:
-\[
-q\approx\left[1+(K-1)\exp\!\left(-\frac{\Delta_k}{s}\right)\right]^{-1}.
-\]
-Taking logits:
-\[
-\logit(q)=\frac{\Delta_k}{s}-\log(K-1).
-\]
-With $\Delta_k=a_0+a_1\kappa_{\mathrm{nearest}}+o(1)$:
-\[
-\logit(q)=\underbrace{\frac{a_1}{s}}_{\alpha}\kappa_{\mathrm{nearest}}
--\underbrace{1}_{\beta_\infty}\log(K-1)
-+\underbrace{\frac{a_0}{s}}_{C_0}+o(1).
-\]
-Finite-data corrections renormalize $\beta_\infty=1$ to $\beta\approx0.746$, yielding Eq.~\ref{eq:cti-law}.
-
-\section{Pre-registration Deviation Log}
-\label{app:prereg-deviations}
-
-\begin{table}[h]
-\centering
-\caption{Pre-registration deviation log. Commits with timestamps are verifiable via \texttt{git log --oneline}.}
-\label{tab:prereg-deviations}
-\small
-\begin{tabular}{p{2.2cm}p{5.0cm}p{5.0cm}}
-\toprule
-Commit & Change & Justification \\
-\midrule
-\texttt{8250bf1} & Dataset substitution: TREC (K=6) $\to$ dair-ai/emotion (K=6); PolyAI/banking77 $\to$ mteb/banking77 &
-The original datasets require legacy loading scripts deprecated by the \texttt{datasets} library (\texttt{trust\_remote\_code=True} no longer accepted). Replacement datasets have identical $K$ values; the pre-registered $A(K)$ predictions (1.951 and 1.569) are unchanged. \\
-\addlinespace
-\texttt{6497907} & Stratified sampling in amazon\_massive K=59 test; rare-class guard in \texttt{compute\_q} &
-Random subsampling of 1500 from 1265 available stratified samples left some classes with $<2$ members, causing \texttt{StratifiedShuffleSplit} to fail. The fix (draw $\geq$20 samples per class; drop classes with $<2$ members before CV) is a numeric stability patch with no effect on the analysis model or the frozen $A(K)$ prediction. \\
-\addlinespace
-\texttt{7f4c9f8} & RWKV acceptance interval $[2.43, 3.29]$: pre-registration JSON describes this as ``mean $\pm$ 3*std(0.054)'', but $3\times0.054=0.162$ gives $[2.727, 3.051]$, not $[2.43, 3.29]$. &
-The interval half-width $0.43$ actually equals $\approx8\sigma$ of the locked std, not $3\sigma$. This is a documentation error in the pre-registration artifact; the locked interval $[2.43, 3.29]$ and the observed RWKV $\hat\alpha=2.887$ are both as stated. The outcome is unaffected: $2.887$ lies within any reasonable interval around $2.889$ (the 11-arch prior mean). The paper text now correctly states ``wider than $\pm3\sigma$'' (\S\ref{subsec:rwkv-test}). \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Neither edit changes the pre-registered predictions ($A$ values, hypothesis thresholds, or evaluation metrics); both are verifiable as non-analysis-changing by inspecting the git diffs.
-
-\section{Surgery Details}
-\label{app:surgery-details}
-Attempts to increase $\kappa_{\mathrm{nearest}}$ via CE + triplet-loss fine-tuning of a ResNet backbone on CIFAR-100 consistently caused representation collapse (5 seeds, $\lambda\in\{0.1,0.5\}$); the law governs existing representation geometry, not targeted training manipulations. Single-direction frozen surgery (scaling ONE centroid-pair direction) underperforms the full CTI prediction by $\approx16\times$: this is understood as a predicted $1/d_{\mathrm{eff}}$ attenuation (a single dimension out of $d_{\mathrm{eff}}\approx24$). A pre-registered global surgery test (scaling ALL $K-1$ signal-subspace directions; commit \texttt{1abdef6}) recovers the full predicted effect in the \emph{linear regime} (CIFAR-100, $\kappa_{\mathrm{eff}}\approx1.0$, 3 seeds): ratio $\Delta\logit_{\mathrm{global}}/\Delta\logit_{\mathrm{single}} = 18.74 \approx d_{\mathrm{eff}} = 24.52$ (within-15\% at $r=1.5$). Two pre-registered cross-domain follow-ups on frozen NLP embeddings failed H1: (1) sub-linear regime ($\kappa_{\mathrm{eff}}=0.24$--$0.73$): median ratio$\approx2\ll d_{\mathrm{eff}}\approx33$; (2) pythia-1b, $\kappa_{\mathrm{eff}}=1.33$: median ratio$\approx3.68\ll d_{\mathrm{eff}}=54$. Global surgery consistently outperforms single-direction surgery in NLP (directional H2 passes: 10/13 and 5/5), but the quantitative $d_{\mathrm{eff}}$ prediction fails. The $1/d_{\mathrm{eff}}$ attenuation mechanism appears specific to the trained CIFAR-100 CNN context.
-
-\section{Two-Component Geometry Details}
-\label{app:twocomp-details}
-\textit{Null-space identifiability} (commit \texttt{6938940}; \texttt{cti\_kappa\_eff\_identifiability.json}): null-space scaling provably holds $\kappa_{\mathrm{eff}}$ invariant while changing $\kappa_{\mathrm{nearest}}$ ($<0.001\%$ variation, H1: 3/3); $q$ tracks $\kappa_{\mathrm{nearest}}$ (OLMo-1B: $r=1.00$), not $\kappa_{\mathrm{eff}}$ (H4: 1/3 PASS).
-
-\textit{2D causal surface} (commit \texttt{2bc7da6}; \texttt{cti\_2d\_causal\_surface.json}): a $3\times3$ factorial orthogonally manipulates both components on 2 NLP architectures. A bivariate model $\logit(q)=\alpha_1\kappa_{\mathrm{nearest}}+\alpha_2\kappa_{\mathrm{eff}}+C$ does not significantly outperform the univariate $\kappa_{\mathrm{nearest}}$ law (H4 FAIL: $\Delta R^2=0.03/0.001$; $R^2=0.92$--$0.98$ for $\kappa_{\mathrm{nearest}}$ alone). Cross-architecture bivariate transfer is strong (H6: $r=0.988$, $0.967$). A dimensional confound limits the factorial: in $d=2048$ with $\approx$2029 null dimensions, compensated signal-scaling redistributes high-dimensional null noise. Combined, these experiments establish $\kappa_{\mathrm{nearest}}$ as the dominant causal predictor; $d_{\mathrm{eff}}$ adds marginal information.
-
-\section{Additional Tables}
-
-\begin{table}[h]
-\centering
-\caption{Global fit statistics (single $C_0$ and per-dataset $C_0$).}
-\label{tab:global}
-\small
-\begin{tabular}{lcc}
-\toprule
-Quantity & Single $C_0$ & Per-dataset $C_0$ \\
-\midrule
-$\hat\alpha$ & 2.8660 & 1.4773 \\
-$\hat\beta$ & 0.7459 & 0.3262 \\
-$R^2$ & 0.6273 & 0.9552 \\
-LOAO $\mathrm{CV}_\alpha$ & 0.0191 & 0.0228 \\
-LODO $\mathrm{CV}_\alpha$ & 0.4193 & -- \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[h]
-\centering
-\caption{RWKV pre-registration and outcome.}
-\label{tab:rwkv}
-\small
-\begin{tabular}{lc}
-\toprule
-Item & Value \\
-\midrule
-Locked prior mean (11 arch) & 2.8886 \\
-Locked prior std & 0.0540 \\
-Pre-registered acceptance interval & $[2.43, 3.29]$ \\
-Observed RWKV LOAO $\alpha$ & 2.8869 \\
-Outcome & \textbf{PASS} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 \begin{thebibliography}{99}
 
 \bibitem[Kaplan et~al.(2020)]{kaplan2020}
@@ -1061,5 +969,98 @@ J.~H.~Siegle, X.~Jia, S.~Durand, S.~Gale, C.~Bennett, N.~Graddis, G.~Bhaskaran, 
 \newblock \emph{Nature}, 592(7852):86--92, 2021.
 
 \end{thebibliography}
+
+\appendix
+\section{Derivation Details}
+Starting from the Gumbel race identity (Eq.~\ref{eq:gumbel-sum}), under nearest-class dominance:
+\[
+q\approx\left[1+(K-1)\exp\!\left(-\frac{\Delta_k}{s}\right)\right]^{-1}.
+\]
+Taking logits:
+\[
+\logit(q)=\frac{\Delta_k}{s}-\log(K-1).
+\]
+With $\Delta_k=a_0+a_1\kappa_{\mathrm{nearest}}+o(1)$:
+\[
+\logit(q)=\underbrace{\frac{a_1}{s}}_{\alpha}\kappa_{\mathrm{nearest}}
+-\underbrace{1}_{\beta_\infty}\log(K-1)
++\underbrace{\frac{a_0}{s}}_{C_0}+o(1).
+\]
+Finite-data corrections renormalize $\beta_\infty=1$ to $\beta\approx0.746$, yielding Eq.~\ref{eq:cti-law}.
+
+\section{Pre-registration Deviation Log}
+\label{app:prereg-deviations}
+
+\begin{table}[h]
+\centering
+\caption{Pre-registration deviation log. Commits with timestamps are verifiable via \texttt{git log --oneline}.}
+\label{tab:prereg-deviations}
+\small
+\begin{tabular}{p{2.2cm}p{5.0cm}p{5.0cm}}
+\toprule
+Commit & Change & Justification \\
+\midrule
+\texttt{8250bf1} & Dataset substitution: TREC (K=6) $\to$ dair-ai/emotion (K=6); PolyAI/banking77 $\to$ mteb/banking77 &
+The original datasets require legacy loading scripts deprecated by the \texttt{datasets} library (\texttt{trust\_remote\_code=True} no longer accepted). Replacement datasets have identical $K$ values; the pre-registered $A(K)$ predictions (1.951 and 1.569) are unchanged. \\
+\addlinespace
+\texttt{6497907} & Stratified sampling in amazon\_massive K=59 test; rare-class guard in \texttt{compute\_q} &
+Random subsampling of 1500 from 1265 available stratified samples left some classes with $<2$ members, causing \texttt{StratifiedShuffleSplit} to fail. The fix (draw $\geq$20 samples per class; drop classes with $<2$ members before CV) is a numeric stability patch with no effect on the analysis model or the frozen $A(K)$ prediction. \\
+\addlinespace
+\texttt{7f4c9f8} & RWKV acceptance interval $[2.43, 3.29]$: pre-registration JSON describes this as ``mean $\pm$ 3*std(0.054)'', but $3\times0.054=0.162$ gives $[2.727, 3.051]$, not $[2.43, 3.29]$. &
+The interval half-width $0.43$ actually equals $\approx8\sigma$ of the locked std, not $3\sigma$. This is a documentation error in the pre-registration artifact; the locked interval $[2.43, 3.29]$ and the observed RWKV $\hat\alpha=2.887$ are both as stated. The outcome is unaffected: $2.887$ lies within any reasonable interval around $2.889$ (the 11-arch prior mean). The paper text now correctly states ``wider than $\pm3\sigma$'' (\S\ref{subsec:rwkv-test}). \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Neither edit changes the pre-registered predictions ($A$ values, hypothesis thresholds, or evaluation metrics); both are verifiable as non-analysis-changing by inspecting the git diffs.
+
+\section{Surgery Details}
+\label{app:surgery-details}
+Attempts to increase $\kappa_{\mathrm{nearest}}$ via CE + triplet-loss fine-tuning of a ResNet backbone on CIFAR-100 consistently caused representation collapse (5 seeds, $\lambda\in\{0.1,0.5\}$); the law governs existing representation geometry, not targeted training manipulations. Single-direction frozen surgery (scaling ONE centroid-pair direction) underperforms the full CTI prediction by $\approx16\times$: this is understood as a predicted $1/d_{\mathrm{eff}}$ attenuation (a single dimension out of $d_{\mathrm{eff}}\approx24$). A pre-registered global surgery test (scaling ALL $K-1$ signal-subspace directions; commit \texttt{1abdef6}) recovers the full predicted effect in the \emph{linear regime} (CIFAR-100, $\kappa_{\mathrm{eff}}\approx1.0$, 3 seeds): ratio $\Delta\logit_{\mathrm{global}}/\Delta\logit_{\mathrm{single}} = 18.74 \approx d_{\mathrm{eff}} = 24.52$ (within-15\% at $r=1.5$). Two pre-registered cross-domain follow-ups on frozen NLP embeddings failed H1: (1) sub-linear regime ($\kappa_{\mathrm{eff}}=0.24$--$0.73$): median ratio$\approx2\ll d_{\mathrm{eff}}\approx33$; (2) pythia-1b, $\kappa_{\mathrm{eff}}=1.33$: median ratio$\approx3.68\ll d_{\mathrm{eff}}=54$. Global surgery consistently outperforms single-direction surgery in NLP (directional H2 passes: 10/13 and 5/5), but the quantitative $d_{\mathrm{eff}}$ prediction fails. The $1/d_{\mathrm{eff}}$ attenuation mechanism appears specific to the trained CIFAR-100 CNN context.
+
+\section{Two-Component Geometry Details}
+\label{app:twocomp-details}
+\textit{Null-space identifiability} (commit \texttt{6938940}; \texttt{cti\_kappa\_eff\_identifiability.json}): null-space scaling provably holds $\kappa_{\mathrm{eff}}$ invariant while changing $\kappa_{\mathrm{nearest}}$ ($<0.001\%$ variation, H1: 3/3); $q$ tracks $\kappa_{\mathrm{nearest}}$ (OLMo-1B: $r=1.00$), not $\kappa_{\mathrm{eff}}$ (H4: 1/3 PASS).
+
+\textit{2D causal surface} (commit \texttt{2bc7da6}; \texttt{cti\_2d\_causal\_surface.json}): a $3\times3$ factorial orthogonally manipulates both components on 2 NLP architectures. A bivariate model $\logit(q)=\alpha_1\kappa_{\mathrm{nearest}}+\alpha_2\kappa_{\mathrm{eff}}+C$ does not significantly outperform the univariate $\kappa_{\mathrm{nearest}}$ law (H4 FAIL: $\Delta R^2=0.03/0.001$; $R^2=0.92$--$0.98$ for $\kappa_{\mathrm{nearest}}$ alone). Cross-architecture bivariate transfer is strong (H6: $r=0.988$, $0.967$). A dimensional confound limits the factorial: in $d=2048$ with $\approx$2029 null dimensions, compensated signal-scaling redistributes high-dimensional null noise. Combined, these experiments establish $\kappa_{\mathrm{nearest}}$ as the dominant causal predictor; $d_{\mathrm{eff}}$ adds marginal information.
+
+\section{Additional Tables}
+
+\begin{table}[h]
+\centering
+\caption{Global fit statistics (single $C_0$ and per-dataset $C_0$).}
+\label{tab:global}
+\small
+\begin{tabular}{lcc}
+\toprule
+Quantity & Single $C_0$ & Per-dataset $C_0$ \\
+\midrule
+$\hat\alpha$ & 2.8660 & 1.4773 \\
+$\hat\beta$ & 0.7459 & 0.3262 \\
+$R^2$ & 0.6273 & 0.9552 \\
+LOAO $\mathrm{CV}_\alpha$ & 0.0191 & 0.0228 \\
+LODO $\mathrm{CV}_\alpha$ & 0.4193 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{RWKV pre-registration and outcome.}
+\label{tab:rwkv}
+\small
+\begin{tabular}{lc}
+\toprule
+Item & Value \\
+\midrule
+Locked prior mean (11 arch) & 2.8886 \\
+Locked prior std & 0.0540 \\
+Pre-registered acceptance interval & $[2.43, 3.29]$ \\
+Observed RWKV LOAO $\alpha$ & 2.8869 \\
+Outcome & \textbf{PASS} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 \end{document}
