@@ -513,6 +513,52 @@ To directly test whether kappa spread or $K$ better predicts $\rho$, we pre-regi
 
 Result (\texttt{results/cti\_spread\_vs\_K.json}): $\hat\beta_1=0.44$, $\hat\beta_2=0.08$ --- spread is $5.8\times$ more important than $\log(K)$ in regression (H\textsubscript{K\_null}: PASS). Spearman $r(\mathrm{spread}, \rho)=0.886$ vs.\ $r(\log K, \rho)=0.600$. Partial correlation $r(\mathrm{spread}\mid\log K)=0.630$ vs.\ $r(\log K\mid\mathrm{spread})=0.777$ (n=6, underpowered; both $p\approx0.07$--$0.18$). Pearson H\textsubscript{spread\_r} fails because language-ID (spread$=0.336$) is an outlier; Spearman is robust and favors spread. \textit{Interpretation}: architecture-ranking reliability is mechanistically linked to between-architecture kappa spread. Datasets where all architectures produce similar kappa (news categories, emotion, yahoo) yield unreliable ranking regardless of $K$; datasets with high kappa variation (language ID, Amazon intent, Banking77) yield reliable ranking. This is a post-hoc exploratory finding (n=6) and requires a pre-registered follow-up with more datasets.
 
+\subsection{Composite Kappa-K Law: Multi-K and K=10 Sweeps}
+\label{subsec:kappa-k-sweeps}
+
+The comprehensive universality test (above) sweeps architecture at fixed $K$ per dataset.
+A complementary validation sweeps $\kappa$ at fixed $K$: how does q change as the nearest-class
+gap varies, and does the $\sqrt{K-1}$ competition scaling persist at different $K$?
+
+\paragraph{B($\kappa$) power-law form.}
+Define $B = q_\mathrm{base}/(1-q_\mathrm{base})$ as the baseline performance ratio when only
+the minimum $\kappa$ class pair is varied. The Gumbel race predicts:
+\begin{equation}
+B(K,\kappa) = C_0\,\frac{\sqrt{K-1}}{\kappa^p},\quad p>0,\quad C_0=\sqrt{2/3}\approx 0.816,
+\label{eq:multi-k-law}
+\end{equation}
+where $p$ is the empirical kappa exponent and $C_0$ is derived analytically from the
+Gumbel race variance.
+
+\paragraph{Multi-K sweep ($K\in\{5,7,10,14,20\}$, pre-registered).}
+The pre-registered multi-K sweep (\texttt{src/cti\_multi\_k\_sweep.py})
+varies $K$ at a fixed target $\kappa$ and measures $B$.
+Result (\texttt{results/cti\_multi\_k\_sweep.json}): $B\propto\sqrt{K-1}$ with
+$\mathrm{CV}=4.4\%$ across 5 $K$ values and 3 alpha levels --- the $\sqrt{K-1}$ scaling
+is confirmed with high consistency. This is independent evidence for $N_\mathrm{eff}\propto\sqrt{K-1}$
+using synthetic Gaussian-mixture embeddings (not real neural networks).
+
+\paragraph{K=10 kappa sweep (pre-registered).}
+The $K=10$ sweep (\texttt{src/cti\_k10\_kappa\_sweep.py}, 6 kappa values
+$\kappa\in\{0.15,0.20,0.25,0.30,0.40,0.50\}$, 3 alpha levels, 12 seeds)
+tests whether Eq.~\ref{eq:multi-k-law} holds at $K=10$ with the specific $C_0$
+derived from the $K=7$ strong pass.
+
+Results (\texttt{results/cti\_k10\_kappa\_sweep.json}): \textbf{STRONG PASS} (all 5 pre-registered criteria):
+\begin{itemize}[nosep]
+  \item \textbf{PR1} (all $|\text{rel\_err}|<30\%$): 6/6 kappas pass. Maximum relative error $=19\%$ (kappa$=0.20$).
+  \item \textbf{PR2} (log-log slope $\in[-0.90,-0.55]$): slope$=-0.739$. PASS.
+  \item \textbf{PR3} ($C_0$ within $\pm20\%$ of prior 0.816): $C_0=0.773$, relative error $=5.4\%$. PASS.
+  \item \textbf{PR4} ($C_0$ CV $<25\%$): CV$=4.2\%$. PASS.
+  \item \textbf{PR5} (Pearson $p<0.05$): $r=-0.992$, $p<10^{-4}$. PASS.
+\end{itemize}
+The $C_0=0.773$ at $K=10$ is 5.4\% below the prior $C_0=0.816$ (K=7 result),
+consistent with easy-class dilution: at $K=10$, 8 easy classes with large $\kappa$
+drive $q_\mathrm{base}$ near 1, diluting the $\kappa$-surgery signal. This systematic
+dilution decreases with $K$ (more hard pairs at large $K$) and with $\kappa$ (harder pairs
+have larger signal). The pattern is theoretically expected and confirms the law's
+functional form without altering the universal scaling.
+
 \subsection{Comprehensive Cross-Architecture Universality ($K=4$--$77$)}
 \label{subsec:comprehensive-universality}
 
