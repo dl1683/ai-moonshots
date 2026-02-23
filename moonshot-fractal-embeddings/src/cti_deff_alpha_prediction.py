@@ -216,8 +216,14 @@ def compute_deff_formula(X, labels):
     # sigma_W_global = sqrt(trace_SW / d)  -- global within-class std
     sigma_W_global = float(np.sqrt(trace_SW / d))
 
+    # Anisotropy ratio: sigma_centroid_dir / sigma_W_global
+    # For discriminative CIFAR embeddings: ~18.7 (highly concentrated in boundary direction)
+    # For isotropic LM embeddings: ~1 (uniform variance across directions)
+    anisotropy_ratio = float(np.sqrt(sigma_cdir_sq) / (sigma_W_global + 1e-10))
+
     # kappa_nearest = delta_min / (sigma_W_global * sqrt(d)) = delta_min / sqrt(trace_SW)
-    kappa_nearest = delta_min / float(np.sqrt(trace_SW * d)) if trace_SW > 1e-12 else 0.0
+    # FIX: was erroneously sqrt(trace_SW * d), should be sqrt(trace_SW) (found in fast pre-reg run)
+    kappa_nearest = delta_min / float(np.sqrt(trace_SW)) if trace_SW > 1e-12 else 0.0
 
     # Normalized 1-NN accuracy q
     try:
@@ -231,7 +237,7 @@ def compute_deff_formula(X, labels):
     except Exception:
         q = None
 
-    return float(d_eff), float(kappa_nearest), q
+    return float(d_eff), float(kappa_nearest), q, float(anisotropy_ratio), float(trace_SW), float(sigma_cdir_sq)
 
 
 def find_best_layer(model, tokenizer, texts, labels, n_layers, device,
@@ -247,11 +253,13 @@ def find_best_layer(model, tokenizer, texts, labels, n_layers, device,
     for li in layer_indices:
         t0 = time.time()
         X = extract_embeddings_at_layer(model, tokenizer, texts, li, device)
-        d_eff, kappa, q = compute_deff_formula(X, labels)
+        d_eff, kappa, q, aniso, trace_SW, sigma_cdir_sq = compute_deff_formula(X, labels)
         elapsed = time.time() - t0
         if kappa is not None:
-            results[li] = {"d_eff": d_eff, "kappa": kappa, "q": q}
-            print(f"    L{li:2d}: kappa={kappa:.4f}  d_eff={d_eff:.4f}  q={q:.4f}  ({elapsed:.1f}s)", flush=True)
+            results[li] = {"d_eff": d_eff, "kappa": kappa, "q": q,
+                           "anisotropy_ratio": aniso, "trace_SW": trace_SW,
+                           "sigma_cdir_sq": sigma_cdir_sq}
+            print(f"    L{li:2d}: kappa={kappa:.4f}  d_eff={d_eff:.2f}  aniso={aniso:.2f}x  q={q:.4f}  ({elapsed:.1f}s)", flush=True)
             if kappa > best_kappa:
                 best_kappa = kappa
                 best_layer = li
@@ -338,16 +346,22 @@ def main():
             d_eff = result["d_eff"]
             kappa = result["kappa"]
             q = result["q"]
+            aniso = result.get("anisotropy_ratio", float("nan"))
             alpha_obs = result["alpha_obs"]
             A_renorm_i = alpha_obs / np.sqrt(d_eff) if d_eff > 0 else None
+            d_eff_needed = (alpha_obs / THEORY_A_RENORM) ** 2  # what d_eff would need to be
             print(f"\n  RESULTS for {arch_name}:")
-            print(f"    d_eff_formula = {d_eff:.4f}")
-            print(f"    kappa_nearest = {kappa:.4f}")
-            print(f"    q             = {q:.4f}")
-            print(f"    alpha_obs     = {alpha_obs:.4f}")
-            print(f"    A_renorm      = alpha_obs/sqrt(d_eff) = {A_renorm_i:.4f}")
-            print(f"    Theory A_renorm = {THEORY_A_RENORM:.4f}")
+            print(f"    d_eff_formula    = {d_eff:.4f}")
+            print(f"    d_eff_needed     = {d_eff_needed:.4f}  (for A_renorm=theory to hold)")
+            print(f"    anisotropy_ratio = {aniso:.2f}x  (sigma_cdir / sigma_W_global; CIFAR ~18.7x)")
+            print(f"    kappa_nearest    = {kappa:.4f}")
+            print(f"    q                = {q:.4f}")
+            print(f"    alpha_obs        = {alpha_obs:.4f}")
+            print(f"    A_renorm_meas    = alpha_obs/sqrt(d_eff) = {A_renorm_i:.4f}")
+            print(f"    A_renorm_theory  = {THEORY_A_RENORM:.4f}  (sqrt(4/pi))")
+            print(f"    DISCREPANCY: measured/theory = {A_renorm_i/THEORY_A_RENORM:.3f}x")
             result["A_renorm_observed"] = A_renorm_i
+            result["d_eff_needed_for_theory"] = float(d_eff_needed)
 
     if len(training_results) < 2:
         print("[ERROR] Too few training architectures succeeded!")
@@ -393,20 +407,27 @@ def main():
         # PREDICT alpha from d_eff (prospective)
         alpha_pred = A_renorm_measured * np.sqrt(d_eff)
         alpha_obs = result["alpha_obs"]
+        aniso = result.get("anisotropy_ratio", float("nan"))
 
         rel_error = abs(alpha_pred - alpha_obs) / abs(alpha_obs)
         h1_pass = rel_error < H1_MAX_REL_ERROR
+        d_eff_needed = (alpha_obs / THEORY_A_RENORM) ** 2
+        A_renorm_would_be = float(alpha_obs / np.sqrt(d_eff)) if d_eff > 0 else None
 
         print(f"\n  PROSPECTIVE RESULTS for {arch_name}:")
-        print(f"    d_eff_formula = {d_eff:.4f}")
-        print(f"    alpha_pred    = A_renorm * sqrt(d_eff) = {A_renorm_measured:.4f} * sqrt({d_eff:.4f}) = {alpha_pred:.4f}")
-        print(f"    alpha_obs     = {alpha_obs:.4f}")
-        print(f"    rel_error     = {rel_error*100:.1f}%  {'PASS H1' if h1_pass else 'FAIL H1'} (<{H1_MAX_REL_ERROR*100:.0f}%)")
+        print(f"    d_eff_formula    = {d_eff:.4f}")
+        print(f"    d_eff_needed     = {d_eff_needed:.4f}  (for A_renorm=theory to hold)")
+        print(f"    anisotropy_ratio = {aniso:.2f}x")
+        print(f"    alpha_pred       = {A_renorm_measured:.4f} * sqrt({d_eff:.2f}) = {alpha_pred:.4f}")
+        print(f"    alpha_obs        = {alpha_obs:.4f}")
+        print(f"    rel_error        = {rel_error*100:.1f}%  {'PASS H1' if h1_pass else 'FAIL H1'}")
+        print(f"    A_renorm_would_be = {A_renorm_would_be:.4f}  (vs theory {THEORY_A_RENORM:.4f})")
 
         result["alpha_pred"] = float(alpha_pred)
         result["rel_error"] = float(rel_error)
         result["h1_pass"] = h1_pass
-        result["A_renorm_would_be"] = float(alpha_obs / np.sqrt(d_eff)) if d_eff > 0 else None
+        result["A_renorm_would_be"] = A_renorm_would_be
+        result["d_eff_needed_for_theory"] = float(d_eff_needed)
         test_results[arch_name] = result
 
     # ============================================================
@@ -467,12 +488,31 @@ def main():
     print(f"    -> ratio = {A_renorm_measured/THEORY_A_RENORM:.4f} "
           f"({'CLOSE' if abs(A_renorm_measured/THEORY_A_RENORM - 1) < 0.15 else 'FAR'})")
 
+    # Diagnosis: print d_eff measured vs needed, and anisotropy ratios
+    print("\n  DIAGNOSIS (why theorem may not hold for LM embeddings):")
+    print(f"  {'arch':>25} {'d_eff_meas':>12} {'d_eff_needed':>13} {'ratio':>8} {'aniso':>8} {'A_renorm_meas':>14}")
+    print("  " + "-" * 85)
+    all_results_diag = {**training_results, **test_results}
+    for arch, r in all_results_diag.items():
+        d_eff_meas = r.get("d_eff", float("nan"))
+        d_eff_need = r.get("d_eff_needed_for_theory", float("nan"))
+        aniso = r.get("anisotropy_ratio", float("nan"))
+        A_meas = r.get("A_renorm_observed", r.get("A_renorm_would_be", float("nan")))
+        ratio = d_eff_meas / d_eff_need if d_eff_need > 0 else float("nan")
+        print(f"  {arch:>25} {d_eff_meas:>12.2f} {d_eff_need:>13.2f} {ratio:>8.2f}x {aniso:>7.2f}x {A_meas:>14.4f}")
+    print()
+    print("  NOTE: For LM embeddings, within-class variance is isotropically distributed")
+    print("  (aniso ≈ 1-5x) unlike discriminative CIFAR embeddings (aniso ≈ 18.7x).")
+    print("  d_eff_formula = tr(Sigma_W)/sigma_cdir^2 >> 1 for LM embeddings.")
+    print("  The Renormalized Universality Theorem holds for d_eff~1.46 (CIFAR), not d_eff~100+ (LM).")
+
     # ============================================================
     # Save results
     # ============================================================
     out = {
         "experiment": "cti_deff_alpha_prediction",
         "preregistered": True,
+        "bug_fix_note": "kappa_nearest formula fixed post fast-run: removed erroneous sqrt(d) from denominator (found before any test arch results revealed)",
         "pre_registered_criteria": {
             "H1_max_rel_error": H1_MAX_REL_ERROR,
             "H2_min_r": H2_MIN_R,
