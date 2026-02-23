@@ -650,25 +650,39 @@ Three independent experimental frameworks converge on the same exponent:
 Synthetic and real-network results are mutually independent: (1) uses Gaussian-mixture embeddings
 with controlled $\kappa/d_\mathrm{eff}$, while (2)--(3) use transformer embeddings on natural-language tasks.
 
-\paragraph{Direct centroid-geometry measurement.}
+\paragraph{Direct centroid-geometry and beta reconciliation.}
 A direct test (\texttt{src/cti\_neff\_pairwise.py}) extracts all class centroids from Pythia-160m
 on DBpedia ($K=4$--$14$ subsets, $n=20$ seeds each) and computes
 $N_\mathrm{eff,k}=\sum_{j\neq k}\exp(-\alpha_\mathrm{univ}(\kappa_{kj}-\kappa_{k,\mathrm{near}}))$
-where $\alpha_\mathrm{univ}=3.598$. This gives a geometric estimate of the effective competitor count.
-Results: DBpedia slope $=0.934\pm0.005$ ($r=0.9999$); Banking77 ($K=4$--$64$ subsets)
-slope $=0.918\pm0.012$ ($r=0.9999$). Both slopes are near 1, suggesting
-$N_\mathrm{eff}\approx(K-1)^{0.93}$ from pure centroid geometry.
+where $\alpha_\mathrm{univ}=3.598$.
+Results: DBpedia geometric exponent $=0.934\pm0.005$ ($r=0.9999$);
+Banking77 ($K=4$--$64$) exponent $=0.918\pm0.012$ ($r=0.9999$).
+Across four architectures (Pythia-160m, GPT-Neo-125M, OLMo-1B, Qwen3-0.6B), the geometric
+$N_\mathrm{eff}$ exponent ranges from $0.71$ to $0.93$ (mean $0.81$, CV$=9.8\%$; see
+\texttt{results/cti\_neff\_pairwise\_multiarch.json}).
+The exponent correlates perfectly with competition density $\rho=N_\mathrm{eff}(K_\mathrm{full})/(K_\mathrm{full}-1)$
+at the full class count: Pearson $r=0.996$ ($p=0.004$), Spearman $\rho=1.000$.
+Architectures that create denser, more uniform inter-class separation
+(pythia-160m: $\rho=0.80$) exhibit steeper geometric scaling; those with sparser competition
+(GPT-Neo-125M: $\rho=0.45$) scale more sub-linearly.
 
-This does \emph{not} contradict the regression-based $\beta=0.478$. The geometric $N_\mathrm{eff}$
-exponent $\approx0.93$ reflects competition within a single (model, dataset) pair with pythia-160m.
-The regression $\beta=0.478$ reflects how $\log(K-1)$ affects $\logit(q)$ \emph{across datasets}
-with different intercepts $C_0$. Cross-dataset variation in $C_0$, finite-sample effects,
-and approximation error in the Gumbel race model together produce the global $\beta\approx0.5$,
-which may differ from the within-architecture geometric exponent.
-This is an important distinction: the regression $\beta$ is a fitting parameter that compresses
-multi-dataset $K$-variation, not a direct geometric observable.
-Full mechanistic reconciliation of the two $\beta$ estimates requires per-model,
-multi-$K$ embedding extraction across varied datasets --- a planned follow-up.
+These geometric exponents ($0.71$--$0.93$) exceed the regression-based $\beta=0.478$; this does
+\emph{not} represent a contradiction. A direct within-architecture test
+(\texttt{src/cti\_beta\_reconciliation.py}) measures the univariate slope of $\logit(q_\mathrm{norm})$
+vs $\log(K-1)$ as $K$ is varied by subsampling classes from a fixed
+architecture (Pythia-160m).
+Without controlling for $\kappa_\mathrm{nearest}$: slope $\approx-0.52$ (DBpedia), $-0.41$
+(Banking77) --- both consistent with $\beta\approx0.5$.
+After controlling for $\kappa_\mathrm{nearest}$: slope $\approx+0.03$ (DBpedia), $+0.31$
+(Banking77) --- $\kappa_\mathrm{nearest}$ mediates nearly all K-dependence within a single
+architecture, especially at small $K$ ranges.
+The cross-dataset regression $\beta=0.478$ is an average partial slope across datasets with
+varied $C_0$; the geometric $N_\mathrm{eff}$ exponent measures a distinct quantity
+(competition density scaling) that is inherently above $\beta$ because it does not subtract
+the $\kappa_\mathrm{nearest}$ mediation term.
+Both quantities confirm the sparse-competition regime ($\beta<1$):
+the Gumbel race with $N_\mathrm{eff}\propto K^{0.81}$, combined with $\kappa_\mathrm{nearest}$
+mediating K-dependence, produces the observed $\beta\approx0.5$ in the law.
 
 \section{Discussion}
 
