@@ -65,7 +65,9 @@ SOURCE_WEIGHT_MAP_JSON = REPO_ROOT / "results" / "cti_competitor_weight_map.json
 OUT_JSON = REPO_ROOT / "results" / "cti_weight_map_transfer.json"
 
 K = 14
-DELTA_OUT = np.linspace(0.0, 5.0, 11)
+# KAPPA-SPACE delta: same kappa changes across all architectures
+# Absolute delta = DELTA_KAPPA_OUT * sigma_W * sqrt(d) per arch
+DELTA_KAPPA_OUT = np.linspace(0.0, 0.5, 11)  # target kappa changes
 N_CV_SPLITS = 5
 
 # Pre-registered thresholds
@@ -210,7 +212,10 @@ def run_arch(npz_path, arch_name, source_weights, log):
     log(f"\nLoaded {arch_name}: N={X.shape[0]}, d={d}, K={len(classes)}")
 
     centroids, sigma_W = compute_class_stats(X, y)
-    log(f"sigma_W={sigma_W:.4f}")
+    # Adaptive delta: DELTA_KAPPA_OUT in kappa units → absolute delta
+    norm = sigma_W * np.sqrt(d)
+    DELTA_OUT = DELTA_KAPPA_OUT * norm
+    log(f"sigma_W={sigma_W:.4f}, norm={norm:.3f}, delta_max_abs={DELTA_OUT[-1]:.3f} (kappa_target={DELTA_KAPPA_OUT[-1]:.2f})")
 
     # Baseline q per class
     baseline_q = {}
