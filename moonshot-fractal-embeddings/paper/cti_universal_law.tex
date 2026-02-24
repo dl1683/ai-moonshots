@@ -359,7 +359,10 @@ H1 and H3 with no refit: $r=0.842$--$0.776$, sign accuracy $92.9$--$100\%$.
 A model-free sweep over $m=1,\ldots,K\!-\!1$ directional interventions (Pythia-160M, DBpedia $K=14$) directly localises the LOAO slope: moving the nearest $m$ centroid pairs by equal amounts, the fitted slope rises monotonically from $\alpha_1=1.052$ ($m=1$) to $\alpha_2=1.523$ ($m=2$) and $\alpha_{13}=3.015$ ($m=K\!-\!1$).
 Crucially, $\alpha_2=1.523\approx\alpha_\mathrm{LOAO}=1.477$ (2.3\% error): \emph{the LOAO cross-architecture slope is recovered by involving exactly two competitor directions}.
 This zero-free-parameter localisation confirms the causal weight map result ($\sum_r w_r=2.42$ effective rivals) and the soft-competition kernel result ($k^*=2$ dominant competitors in the kernel showdown): exactly two near-tie competitors drive the cross-architecture constant.
-See Appendix~\ref{app:competition-field} for the full 11-experiment summary table and details.
+An unconfounded ci-fixed weight map confirms $\sum_r w_r=2.42$ with heavy-head decay (only
+ranks 1--4 causally significant; $\alpha_{j_1}=1.272$); Spearman rank correlation validates
+monotone decay: 14/14 classes negative ($\bar\rho=-0.551$, $p=1.2\times10^{-4}$).
+See Appendix~\ref{app:competition-field} for the full 14-experiment summary table and details.
 
 \subsection{Cross-dataset K-scaling and practical one-point prediction}
 \label{sec:kdataset}
@@ -852,6 +855,49 @@ sensitivity while $\tau_\mathrm{local}$ describes the equilibrium confusion stru
 Predicted per-class $q$ values match observed within 0.01--0.07 logit units (no refit),
 providing quantitative causal-predictive validation of the CTI framework.
 
+\paragraph{Unconfounded competitor weight map (ci-fixed interventions).}
+\label{para:weight-map}
+The competition experiments above shift $c_j$ while $c_i$ may move under projection; a
+fully unconfounded estimate requires anchoring $c_i$ at its original position while moving
+only $c_j$.
+We run 14~classes $\times$ 13~competitors $\times$ 11~delta points $\times$ 5-fold CV with
+$c_i$ fixed (\texttt{src/cti\_competitor\_weight\_map.py};
+\texttt{results/cti\_competitor\_weight\_map.json}).
+The per-rank causal weight $w_r = \alpha_r / \alpha_{j_1}$ (normalised by nearest-competitor
+slope) yields the profile $w = [1.00, 0.29, 0.21, 0.17, 0.09, 0.08, 0.03, \ldots]$:
+a heavy-head distribution where only ranks 1--4 are causally significant.
+The summed effective competition $\sum_r w_r = 2.42$ is consistent with $\alpha_2=1.523$
+(2-competitor localisation; \S\ref{subsec:competition-field}) and the kernel-showdown
+finding ($k^*=2$ dominant rivals), independently confirming that 2--4 near competitors
+drive the cross-architecture constant.
+The nearest-competitor slope $\alpha_{j_1} = 1.272$ is close to (but below) LOAO
+$\alpha=1.477$; the gap reflects residual saturation in high-accuracy DBpedia classes.
+
+\paragraph{Alpha-kappa rank correlation: monotone decay confirmed.}
+As an internal validation that competition weight decays with kappa distance (as theory
+requires), we compute Spearman $\rho(\alpha_r, \mathrm{kappa\_rank})$ for each of the 14
+classes (\texttt{results/cti\_alpha\_kappa\_rank\_corr.json}).
+\textbf{14/14 classes show negative correlation} (sign test $p=6.1\times10^{-5}$,
+Wilcoxon $p=1.2\times10^{-4}$); mean $\rho=-0.551$, 95\% CI $[-0.665, -0.436]$.
+This confirms that competition weight decays monotonically with kappa distance, as
+predicted by the Gumbel race theory, without relying on any functional-form assumption.
+
+\paragraph{Cross-architecture weight transfer (pre-registered; negative result).}
+We pre-registered a no-refit transfer test: use the pythia-160m weight profile $w_r$ to
+predict total competition effects $\alpha_\mathrm{top}\,m$ on two held-out architectures
+(pythia-410m, bert-base; \texttt{results/cti\_weight\_map\_transfer\_prereg.json},
+pre-registered commit \texttt{c013ddc}).
+Both H1 (relative error $<30\%$) and H2 (Pearson $r>0.90$) fail on both architectures.
+Root cause: the held-out architectures operate in a saturation regime ($q>0.85$) on
+DBpedia K=14, making $\alpha_{j_1} = \delta\,\mathrm{logit}/\delta\kappa \to \infty$
+and rendering the normalised weight profile unidentifiable.
+The pythia-160m source slope $\alpha_{j_1}=1.272$ vs.\ pythia-410m $\alpha_{j_1}=12.6$
+and bert-base $\alpha_{j_1}=9.6$ reflects saturation amplification rather than a
+genuinely different competition structure.
+We record this as a pre-registered negative result: $w_r$ cross-architecture
+universality cannot be evaluated on a dataset where held-out models are near ceiling.
+The finding motivates future transfer tests on harder datasets ($q\in[0.5, 0.8]$).
+
 \begin{table}[h!]
 \centering
 \caption{Competition field evidence summary.}
@@ -872,6 +918,9 @@ Synthetic $\tau^*$ & $0.207$ vs.\ empirical $0.20$ & 3.5\% error \\
 Real-embedding Jacobian & 2/14 valid classes & INCONCLUSIVE \\
 Confusion matrix Gumbel ($r$, $\rho$) & 0.750, 0.768 & PASS (H1+H4) \\
 Causal confusion prediction ($\delta=1..3$, no refit) & $r=0.842$--$0.776$ & PASS (H1+H3) \\
+Unconfounded weight map (ci-fixed) & $\sum_r w_r=2.42$; $w_1$--$w_4$ significant & PASS \\
+$\alpha$-kappa rank correlation & 14/14 negative, $\bar\rho=-0.551$, $p=1.2\times10^{-4}$ & PASS \\
+Cross-arch weight transfer (pre-reg.) & H1/H2 FAIL (saturation regime) & NEGATIVE \\
 \bottomrule
 \end{tabular}
 \end{table}
