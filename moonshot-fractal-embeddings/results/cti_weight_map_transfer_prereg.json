@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-02-24T00:18:49+00:00",
+  "experiment": "weight_map_transfer",
+  "session": 72,
+  "description": "No-refit transfer of pythia-160m w_r profile to held-out archs (pythia-410m, bert-base). Codex priority #1 after competitor weight map.",
+  "source_model": "pythia-160m",
+  "source_w_r_true": [
+    1.0,
+    0.2938,
+    0.2144,
+    0.1709,
+    0.0883,
+    0.0837,
+    0.0349,
+    0.0423,
+    0.0012,
+    0.0086,
+    0.0198,
+    0.0,
+    0.0472
+  ],
+  "source_sums": {
+    "sum_top2": 1.2938,
+    "sum_top4": 1.6791,
+    "sum_topall": 2.005
+  },
+  "held_out_models": [
+    "pythia-410m (L3)",
+    "bert-base-uncased (L10)"
+  ],
+  "hypotheses": {
+    "H1": "Relative prediction error < 30% for top2, top4, topall on BOTH held-out archs",
+    "H2": "Pearson r(predicted, actual) > 0.90 across 2 archs x 3 topm = 6 datapoints",
+    "H3": "alpha_j1_only_held in [0.70, 1.90] for both archs"
+  },
+  "null_model": "Uniform competition: alpha_topm = alpha_j1_only * m (no decay)",
+  "key_prediction": "If w_r shape is universal, one-calibration-parameter transfer should predict multi-competitor effects within 30%"
+}
