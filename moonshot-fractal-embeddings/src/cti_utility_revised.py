@@ -761,6 +761,233 @@ def test_mixed_effects_decomposition(pts, family_alphas):
     }
 
 
+# =====================================================================
+# H8: Prospective blind test on holdout models
+# =====================================================================
+# Holdout models NOT in the 20-model training set
+HOLDOUT_MODELS = {"gemma-3-1b", "roberta-base"}
+# Note: "phi-2" (with hyphen) may be same as "phi2" — exclude for safety
+TRAINING_MODELS = set(MODEL_META.keys())
+
+
+def test_prospective_blind(pts, family_alphas):
+    """Prospective blind test: fit model on training set, predict holdout.
+
+    Steps:
+    1. Fit C_d, C_f, gamma from training models only
+    2. Predict logit(q) for holdout models using only:
+       - kappa (geometric, from cache)
+       - family identity
+       - model size
+       - dataset identity
+    3. Compare predicted vs actual q
+    """
+    model_best = _get_model_best(pts)
+
+    # Step 1: Fit on training models
+    train_obs = []
+    for model, ds_dict in model_best.items():
+        if model not in TRAINING_MODELS:
+            continue
+        family = get_family(model)
+        alpha = family_alphas.get(family, 1.477)
+        meta = MODEL_META.get(model, {})
+        log_m = np.log(meta["params_m"]) if meta else np.log(100)
+
+        for ds, pt in ds_dict.items():
+            K = pt["K"]
+            q_norm = (pt["q"] - 1.0 / K) / (1.0 - 1.0 / K)
+            if q_norm <= 0.01 or q_norm >= 0.99:
+                continue
+            logit_q = sp_logit(q_norm)
+            # Residual after alpha*kappa
+            resid = logit_q - alpha * pt["kappa"]
+            train_obs.append({
+                "model": model, "dataset": ds, "family": family,
+                "logit_q": logit_q, "kappa": pt["kappa"],
+                "resid": resid, "log_m": log_m,
+                "q": pt["q"], "K": K, "q_norm": q_norm,
+            })
+
+    # Compute training C_d and C_f
+    ds_resids = {}
+    for o in train_obs:
+        ds_resids.setdefault(o["dataset"], []).append(o["resid"])
+    C_d = {ds: float(np.mean(vs)) for ds, vs in ds_resids.items()}
+
+    fam_resids = {}
+    for o in train_obs:
+        fam_resids.setdefault(o["family"], []).append(o["resid"] - C_d[o["dataset"]])
+    C_f = {f: float(np.mean(vs)) for f, vs in fam_resids.items()}
+
+    # Compute gamma from residuals after C_d + C_f
+    final_resids = []
+    log_ms = []
+    for o in train_obs:
+        r = o["resid"] - C_d[o["dataset"]] - C_f.get(o["family"], 0)
+        final_resids.append(r)
+        log_ms.append(o["log_m"])
+    final_resids = np.array(final_resids)
+    log_ms = np.array(log_ms)
+
+    # Simple OLS for gamma
+    X = np.column_stack([log_ms, np.ones(len(log_ms))])
+    beta = np.linalg.lstsq(X, final_resids, rcond=None)[0]
+    gamma = float(beta[0])
+    gamma_intercept = float(beta[1])
+
+    # Step 2: Predict on holdout models
+    holdout_meta = {
+        "gemma-3-1b": {"params_m": 1000, "family": "decoder"},
+        "roberta-base": {"params_m": 125, "family": "encoder"},
+    }
+
+    predictions = []
+    for model, ds_dict in model_best.items():
+        if model not in HOLDOUT_MODELS:
+            continue
+        meta = holdout_meta.get(model)
+        if not meta:
+            continue
+        family = meta["family"]
+        alpha = family_alphas.get(family, 1.477)
+        log_m = np.log(meta["params_m"])
+        c_f = C_f.get(family, 0)
+
+        for ds, pt in ds_dict.items():
+            K = pt["K"]
+            q_norm_actual = (pt["q"] - 1.0 / K) / (1.0 - 1.0 / K)
+            if q_norm_actual <= 0.001:
+                continue
+            c_d = C_d.get(ds, 0)
+
+            # Full prediction
+            logit_pred = alpha * pt["kappa"] + c_d + c_f + gamma * log_m + gamma_intercept
+            q_norm_pred = float(expit(logit_pred))
+
+            # Simple prediction (no gamma)
+            logit_pred_simple = alpha * pt["kappa"] + c_d + c_f
+            q_norm_pred_simple = float(expit(logit_pred_simple))
+
+            predictions.append({
+                "model": model,
+                "dataset": ds,
+                "layer": pt["layer"],
+                "K": K,
+                "kappa": pt["kappa"],
+                "q_actual": pt["q"],
+                "q_norm_actual": q_norm_actual,
+                "q_norm_pred_full": q_norm_pred,
+                "q_norm_pred_simple": q_norm_pred_simple,
+                "error_full": abs(q_norm_pred - q_norm_actual),
+                "error_simple": abs(q_norm_pred_simple - q_norm_actual),
+                "logit_actual": float(sp_logit(q_norm_actual)) if 0.01 < q_norm_actual < 0.99 else float("nan"),
+                "logit_pred": logit_pred,
+            })
+
+    if not predictions:
+        return {"error": "no holdout predictions"}
+
+    # Summary
+    errors_full = [p["error_full"] for p in predictions]
+    errors_simple = [p["error_simple"] for p in predictions]
+    logit_actuals = [p["logit_actual"] for p in predictions if not np.isnan(p["logit_actual"])]
+    logit_preds = [p["logit_pred"] for p in predictions if not np.isnan(p["logit_actual"])]
+
+    logit_r = 0.0
+    if len(logit_actuals) >= 3:
+        logit_r = float(pearsonr(logit_actuals, logit_preds)[0])
+
+    return {
+        "n_predictions": len(predictions),
+        "mae_full_model": float(np.mean(errors_full)),
+        "mae_simple_model": float(np.mean(errors_simple)),
+        "logit_pearson_r": logit_r,
+        "fitted_gamma": gamma,
+        "fitted_gamma_intercept": gamma_intercept,
+        "C_d_used": C_d,
+        "C_f_used": C_f,
+        "per_prediction": predictions,
+    }
+
+
+# =====================================================================
+# H9: Within-family scaling test (Pythia, Qwen3)
+# =====================================================================
+def test_within_family_scaling(pts, family_alphas):
+    """Test gamma*log(M) prediction within Pythia and Qwen3 families."""
+    model_best = _get_model_best(pts)
+
+    # Families to test
+    families = {
+        "pythia": ["pythia-160m", "pythia-410m", "pythia-1b"],
+        "qwen3": ["Qwen3-0.6B", "Qwen3-1.7B"],
+    }
+    sizes = {
+        "pythia-160m": 160, "pythia-410m": 410, "pythia-1b": 1000,
+        "Qwen3-0.6B": 600, "Qwen3-1.7B": 1700,
+    }
+
+    results = {}
+    for fam_name, models in families.items():
+        # Get C_obs per (model, dataset) = logit(q_norm) - alpha*kappa
+        fam_data = []
+        for model in models:
+            if model not in model_best:
+                continue
+            alpha = family_alphas.get(get_family(model), 1.477)
+            for ds, pt in model_best[model].items():
+                K = pt["K"]
+                q_norm = (pt["q"] - 1.0 / K) / (1.0 - 1.0 / K)
+                if q_norm <= 0.01 or q_norm >= 0.99:
+                    continue
+                C_obs = sp_logit(q_norm) - alpha * pt["kappa"]
+                fam_data.append({
+                    "model": model, "dataset": ds,
+                    "log_m": np.log(sizes[model]),
+                    "C_obs": C_obs, "q_norm": q_norm,
+                })
+
+        if len(fam_data) < 4:
+            continue
+
+        # Per-dataset: does C increase with log(M)?
+        ds_groups = {}
+        for d in fam_data:
+            ds_groups.setdefault(d["dataset"], []).append(d)
+
+        per_ds = []
+        for ds, obs in sorted(ds_groups.items()):
+            if len(obs) < 2:
+                continue
+            log_ms = np.array([o["log_m"] for o in obs])
+            cs = np.array([o["C_obs"] for o in obs])
+            if len(obs) >= 3:
+                rho, p = spearmanr(log_ms, cs)
+            else:
+                rho = float(np.sign(cs[-1] - cs[0]) * np.sign(log_ms[-1] - log_ms[0]))
+                p = 1.0
+            per_ds.append({
+                "dataset": ds, "n_models": len(obs),
+                "spearman_rho": float(rho) if not np.isnan(rho) else 0.0,
+                "C_values": {o["model"]: round(o["C_obs"], 4) for o in obs},
+            })
+
+        # Global: does C increase with log(M) across all datasets?
+        all_log_ms = np.array([d["log_m"] for d in fam_data])
+        all_cs = np.array([d["C_obs"] for d in fam_data])
+        global_rho, global_p = spearmanr(all_log_ms, all_cs)
+
+        results[fam_name] = {
+            "n_obs": len(fam_data),
+            "global_rho": float(global_rho) if not np.isnan(global_rho) else 0.0,
+            "global_p": float(global_p),
+            "per_dataset": per_ds,
+        }
+
+    return results
+
+
 def _h1_random_baseline(h1_results):
     """Baseline: random layer selection regret."""
     rng = np.random.RandomState(42)
@@ -937,6 +1164,36 @@ def main():
                       f"range={stats['range_C']:.3f}, n={stats['n_models']}")
 
     # =========================================================
+    # H8: Prospective blind test on holdout models
+    # =========================================================
+    print("\n--- H8: Prospective blind test (holdout: gemma-3-1b, roberta-base) ---")
+    h8_results = test_prospective_blind(pts, family_alphas)
+    if "error" not in h8_results:
+        print(f"  N predictions: {h8_results['n_predictions']}")
+        print(f"  Fitted gamma: {h8_results['fitted_gamma']:.4f}")
+        print(f"  MAE (full model):   {h8_results['mae_full_model']:.4f}")
+        print(f"  MAE (simple model): {h8_results['mae_simple_model']:.4f}")
+        print(f"  Logit Pearson r:    {h8_results['logit_pearson_r']:.4f}")
+        print("\n  Per-prediction detail:")
+        for p in h8_results["per_prediction"]:
+            print(f"    {p['model']:>15} {p['dataset']:>18} L{p['layer']:>3}: "
+                  f"q_actual={p['q_norm_actual']:.3f}, q_pred={p['q_norm_pred_full']:.3f}, "
+                  f"err={p['error_full']:.4f}")
+    else:
+        print(f"  {h8_results['error']}")
+
+    # =========================================================
+    # H9: Within-family scaling test
+    # =========================================================
+    print("\n--- H9: Within-family scaling (C increases with log(M)?) ---")
+    h9_results = test_within_family_scaling(pts, family_alphas)
+    for fam, data in h9_results.items():
+        print(f"  {fam}: global rho={data['global_rho']:.3f}, p={data['global_p']:.4f}, n={data['n_obs']}")
+        for ds_data in data["per_dataset"]:
+            print(f"    {ds_data['dataset']:>20}: rho={ds_data['spearman_rho']:.3f}, "
+                  f"C={ds_data['C_values']}")
+
+    # =========================================================
     # OUTPUT
     # =========================================================
     h2_global = h2_results["global_alpha"]
@@ -944,7 +1201,7 @@ def main():
 
     output = {
         "experiment": "cti_utility_revised",
-        "description": "CTI utility with mixed-effects, LOO, residuals, within-dataset",
+        "description": "CTI utility: full decomposition + prospective blind test",
         "h1_within_model_layer_ranking": {
             "n_pairs": len(h1_results),
             "mean_spearman_rho": mean_rho,
@@ -961,6 +1218,8 @@ def main():
         "h5_within_dataset_ordering": h5_results,
         "h6_residual_prediction": h6_results,
         "h7_mixed_effects": h7_results,
+        "h8_prospective_blind": h8_results,
+        "h9_within_family_scaling": h9_results,
         "summary": {
             "h1_best_layer_pct": float(100 * n_perfect_match / len(h1_results)) if h1_results else 0,
             "h1_baseline_random_pct": h1_baseline["random_best_layer_match_pct"],

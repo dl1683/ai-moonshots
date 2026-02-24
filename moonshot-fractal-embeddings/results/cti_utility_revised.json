@@ -1,6 +1,6 @@
 {
   "experiment": "cti_utility_revised",
-  "description": "CTI utility with mixed-effects, LOO, residuals, within-dataset",
+  "description": "CTI utility: full decomposition + prospective blind test",
   "h1_within_model_layer_ranking": {
     "n_pairs": 122,
     "mean_spearman_rho": 0.6147309465287164,
@@ -2018,6 +2018,171 @@
       "hybrid": -1.36993627527752,
       "decoder": -1.207266699719863,
       "ssm": -1.4041867464828186
+    }
+  },
+  "h8_prospective_blind": {
+    "n_predictions": 3,
+    "mae_full_model": 0.11369951373768515,
+    "mae_simple_model": 0.10441087305781376,
+    "logit_pearson_r": 0.9020276810174355,
+    "fitted_gamma": 0.10641908753180583,
+    "fitted_gamma_intercept": -0.6306938553698428,
+    "C_d_used": {
+      "20newsgroups": -1.7431753016220757,
+      "agnews": -0.8383008271696943,
+      "dbpedia": -0.3094369773929283,
+      "go_emotions": -3.029504311845799,
+      "amazon_massive": -0.9862999634225371,
+      "banking77": -1.2127139841715378,
+      "emotion": -2.4833483519970114,
+      "langid": 0.4768729279616477,
+      "news_category": -2.5135410644012732,
+      "yahoo": -2.1738107701261153
+    },
+    "C_f_used": {
+      "encoder": -1.253717202557692,
+      "hybrid": 0.11138958714121254,
+      "decoder": 0.21216500826652335,
+      "ssm": 0.2178826113383743
+    },
+    "per_prediction": [
+      {
+        "model": "gemma-3-1b",
+        "dataset": "amazon_massive",
+        "layer": 5,
+        "K": 60,
+        "kappa": 0.2425063545688789,
+        "q_actual": 0.4791917154714347,
+        "q_norm_actual": 0.47036445641162855,
+        "q_norm_pred_full": 0.4506466988179078,
+        "q_norm_pred_simple": 0.42495102866483037,
+        "error_full": 0.01971775759372074,
+        "error_simple": 0.045413427746798185,
+        "logit_actual": -0.11868128301697303,
+        "logit_pred": -0.1980581107834491
+      },
+      {
+        "model": "gemma-3-1b",
+        "dataset": "banking77",
+        "layer": 5,
+        "K": 77,
+        "kappa": 0.21605430110403656,
+        "q_actual": 0.33716782132147655,
+        "q_norm_actual": 0.3284463452862328,
+        "q_norm_pred_full": 0.3832162403186825,
+        "q_norm_pred_simple": 0.35885385166791184,
+        "error_full": 0.05476989503244972,
+        "error_simple": 0.03040750638167905,
+        "logit_actual": -0.7152204234242985,
+        "logit_pred": -0.47591906595498035
+      },
+      {
+        "model": "roberta-base",
+        "dataset": "banking77",
+        "layer": 3,
+        "K": 77,
+        "kappa": 0.4642832755077765,
+        "q_actual": 0.7462129045600248,
+        "q_norm_actual": 0.7428736006726566,
+        "q_norm_pred_full": 0.47626271208577164,
+        "q_norm_pred_simple": 0.5054619156276926,
+        "error_full": 0.266610888586885,
+        "error_simple": 0.23741168504496402,
+        "logit_actual": 1.0609581198556446,
+        "logit_pred": -0.09502058152801274
+      }
+    ]
+  },
+  "h9_within_family_scaling": {
+    "pythia": {
+      "n_obs": 18,
+      "global_rho": 0.018356930462949585,
+      "global_p": 0.9423661996413957,
+      "per_dataset": [
+        {
+          "dataset": "20newsgroups",
+          "n_models": 3,
+          "spearman_rho": 0.5,
+          "C_values": {
+            "pythia-160m": -1.7509,
+            "pythia-410m": -1.7639,
+            "pythia-1b": -1.5198
+          }
+        },
+        {
+          "dataset": "agnews",
+          "n_models": 3,
+          "spearman_rho": -0.5,
+          "C_values": {
+            "pythia-160m": -0.3951,
+            "pythia-410m": -0.6664,
+            "pythia-1b": -0.4046
+          }
+        },
+        {
+          "dataset": "dbpedia",
+          "n_models": 3,
+          "spearman_rho": -1.0,
+          "C_values": {
+            "pythia-160m": 0.3258,
+            "pythia-410m": 0.177,
+            "pythia-1b": 0.0613
+          }
+        },
+        {
+          "dataset": "go_emotions",
+          "n_models": 3,
+          "spearman_rho": -0.5,
+          "C_values": {
+            "pythia-160m": -2.4692,
+            "pythia-410m": -3.0649,
+            "pythia-1b": -2.8575
+          }
+        }
+      ]
+    },
+    "qwen3": {
+      "n_obs": 14,
+      "global_rho": 0.03922322702763681,
+      "global_p": 0.894093249209627,
+      "per_dataset": [
+        {
+          "dataset": "20newsgroups",
+          "n_models": 2,
+          "spearman_rho": 1.0,
+          "C_values": {
+            "Qwen3-0.6B": -1.5959,
+            "Qwen3-1.7B": -1.3366
+          }
+        },
+        {
+          "dataset": "agnews",
+          "n_models": 2,
+          "spearman_rho": 1.0,
+          "C_values": {
+            "Qwen3-0.6B": -0.6974,
+            "Qwen3-1.7B": -0.3865
+          }
+        },
+        {
+          "dataset": "dbpedia",
+          "n_models": 2,
+          "spearman_rho": -1.0,
+          "C_values": {
+            "Qwen3-0.6B": 0.067,
+            "Qwen3-1.7B": -0.1678
+          }
+        },
+        {
+          "dataset": "go_emotions",
+          "n_models": 2,
+          "spearman_rho": -1.0,
+          "C_values": {
+            "Qwen3-0.6B": -3.0216,
+            "Qwen3-1.7B": -3.2808
+          }
+        }
+      ]
     }
   },
   "summary": {
