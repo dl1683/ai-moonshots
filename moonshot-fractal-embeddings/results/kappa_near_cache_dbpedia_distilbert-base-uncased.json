@@ -1,0 +1,46 @@
+[
+  {
+    "model": "distilbert-base-uncased",
+    "dataset": "dbpedia",
+    "layer": 2,
+    "K": 14,
+    "q": 0.8061538461538461,
+    "kappa_nearest": 0.6644071497502966,
+    "kappa_min": 0.5628630058174724,
+    "logit_q": 1.4252097773695638,
+    "logKm1": 2.5649493574615367
+  },
+  {
+    "model": "distilbert-base-uncased",
+    "dataset": "dbpedia",
+    "layer": 3,
+    "K": 14,
+    "q": 0.8276923076923076,
+    "kappa_nearest": 0.6836053215659709,
+    "kappa_min": 0.5231577286501549,
+    "logit_q": 1.5693596888666894,
+    "logKm1": 2.5649493574615367
+  },
+  {
+    "model": "distilbert-base-uncased",
+    "dataset": "dbpedia",
+    "layer": 5,
+    "K": 14,
+    "q": 0.8653846153846154,
+    "kappa_nearest": 0.7712392060959627,
+    "kappa_min": 0.6302270881535759,
+    "logit_q": 1.8607523407150068,
+    "logKm1": 2.5649493574615367
+  },
+  {
+    "model": "distilbert-base-uncased",
+    "dataset": "dbpedia",
+    "layer": 6,
+    "K": 14,
+    "q": 0.86,
+    "kappa_nearest": 0.773907644150205,
+    "kappa_min": 0.5971709392859038,
+    "logit_q": 1.815289966638249,
+    "logKm1": 2.5649493574615367
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "model": "roberta-base",
+    "dataset": "dbpedia",
+    "layer": 3,
+    "K": 14,
+    "q": 0.8061538461538461,
+    "kappa_nearest": 0.6035199627076127,
+    "kappa_min": 0.44549085620603535,
+    "logit_q": 1.4252097773695638,
+    "logKm1": 2.5649493574615367
+  },
+  {
+    "model": "roberta-base",
+    "dataset": "dbpedia",
+    "layer": 6,
+    "K": 14,
+    "q": 0.7953846153846155,
+    "kappa_nearest": 0.6060715842267926,
+    "kappa_min": 0.4149744219933383,
+    "logit_q": 1.3576937462866758,
+    "logKm1": 2.5649493574615367
+  },
+  {
+    "model": "roberta-base",
+    "dataset": "dbpedia",
+    "layer": 9,
+    "K": 14,
+    "q": 0.8061538461538461,
+    "kappa_nearest": 0.621308549461254,
+    "kappa_min": 0.4632045210642681,
+    "logit_q": 1.4252097773695638,
+    "logKm1": 2.5649493574615367
+  },
+  {
+    "model": "roberta-base",
+    "dataset": "dbpedia",
+    "layer": 12,
+    "K": 14,
+    "q": 0.8061538461538461,
+    "kappa_nearest": 0.6706476776086837,
+    "kappa_min": 0.5249133625192127,
+    "logit_q": 1.4252097773695638,
+    "logKm1": 2.5649493574615367
+  }
+]

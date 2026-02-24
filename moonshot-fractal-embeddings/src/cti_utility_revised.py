@@ -32,12 +32,14 @@ OUTPUT_PATH = os.path.join(RESULTS_DIR, "cti_utility_revised.json")
 ENCODER_MODELS = {
     "bert-base-uncased", "bge-base-v1.5", "deberta-base", "electra-small",
     "bge-small-en-v1.5", "bge-large-en-v1.5",
+    "roberta-base", "distilbert-base-uncased",
 }
 DECODER_MODELS = {
     "gpt-neo-125m", "gpt2", "pythia-160m", "pythia-410m", "pythia-1b",
     "Qwen2.5-0.5B", "Qwen3-0.6B", "Qwen3-1.7B", "Mistral-7B-v0.3",
     "OLMo-1B-hf", "phi2", "TinyLlama-1.1B-intermediate-step-1431k-3T",
     "SmolLM2-1.7B",
+    "opt-125m", "pythia-2.8b", "stablelm-3b-4e1t", "gemma-3-1b",
 }
 SSM_MODELS = {"mamba-130m", "rwkv-4-169m-pile"}
 HYBRID_MODELS = {"Falcon-H1-0.5B-Base"}
@@ -765,8 +767,10 @@ def test_mixed_effects_decomposition(pts, family_alphas):
 # H8: Prospective blind test on holdout models
 # =====================================================================
 # Holdout models NOT in the 20-model training set
-HOLDOUT_MODELS = {"gemma-3-1b", "roberta-base"}
-# Note: "phi-2" (with hyphen) may be same as "phi2" — exclude for safety
+HOLDOUT_MODELS = {
+    "gemma-3-1b", "roberta-base", "distilbert-base-uncased",
+    "opt-125m", "pythia-2.8b", "stablelm-3b-4e1t",
+}
 TRAINING_MODELS = set(MODEL_META.keys())
 
 
@@ -840,6 +844,10 @@ def test_prospective_blind(pts, family_alphas):
     holdout_meta = {
         "gemma-3-1b": {"params_m": 1000, "family": "decoder"},
         "roberta-base": {"params_m": 125, "family": "encoder"},
+        "distilbert-base-uncased": {"params_m": 66, "family": "encoder"},
+        "opt-125m": {"params_m": 125, "family": "decoder"},
+        "pythia-2.8b": {"params_m": 2800, "family": "decoder"},
+        "stablelm-3b-4e1t": {"params_m": 3000, "family": "decoder"},
     }
 
     predictions = []
@@ -1166,7 +1174,7 @@ def main():
     # =========================================================
     # H8: Prospective blind test on holdout models
     # =========================================================
-    print("\n--- H8: Prospective blind test (holdout: gemma-3-1b, roberta-base) ---")
+    print("\n--- H8: Prospective blind test (6 holdout models, factorized design) ---")
     h8_results = test_prospective_blind(pts, family_alphas)
     if "error" not in h8_results:
         print(f"  N predictions: {h8_results['n_predictions']}")

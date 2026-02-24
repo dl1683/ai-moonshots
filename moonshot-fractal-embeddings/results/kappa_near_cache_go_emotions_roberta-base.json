@@ -1,0 +1,46 @@
+[
+  {
+    "model": "roberta-base",
+    "dataset": "go_emotions",
+    "layer": 3,
+    "K": 28,
+    "q": 0.16923076923076924,
+    "kappa_nearest": 0.4045706115386779,
+    "kappa_min": 0.24119781319332073,
+    "logit_q": -1.5910887737659039,
+    "logKm1": 3.295836866004329
+  },
+  {
+    "model": "roberta-base",
+    "dataset": "go_emotions",
+    "layer": 6,
+    "K": 28,
+    "q": 0.1796153846153846,
+    "kappa_nearest": 0.4261868152475425,
+    "kappa_min": 0.27803693234843907,
+    "logit_q": -1.5189554608024534,
+    "logKm1": 3.295836866004329
+  },
+  {
+    "model": "roberta-base",
+    "dataset": "go_emotions",
+    "layer": 9,
+    "K": 28,
+    "q": 0.13288461538461538,
+    "kappa_nearest": 0.40869122162460897,
+    "kappa_min": 0.26745468836005604,
+    "logit_q": -1.8756908546534143,
+    "logKm1": 3.295836866004329
+  },
+  {
+    "model": "roberta-base",
+    "dataset": "go_emotions",
+    "layer": 12,
+    "K": 28,
+    "q": 0.13288461538461538,
+    "kappa_nearest": 0.3896734183964367,
+    "kappa_min": 0.2336177756620497,
+    "logit_q": -1.8756908546534143,
+    "logKm1": 3.295836866004329
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "model": "distilbert-base-uncased",
+    "dataset": "go_emotions",
+    "layer": 2,
+    "K": 28,
+    "q": 0.16403846153846155,
+    "kappa_nearest": 0.406941820910776,
+    "kappa_min": 0.2468724161880258,
+    "logit_q": -1.6284816834971128,
+    "logKm1": 3.295836866004329
+  },
+  {
+    "model": "distilbert-base-uncased",
+    "dataset": "go_emotions",
+    "layer": 3,
+    "K": 28,
+    "q": 0.16923076923076924,
+    "kappa_nearest": 0.41499995975917436,
+    "kappa_min": 0.28122726482008564,
+    "logit_q": -1.5910887737659039,
+    "logKm1": 3.295836866004329
+  },
+  {
+    "model": "distilbert-base-uncased",
+    "dataset": "go_emotions",
+    "layer": 5,
+    "K": 28,
+    "q": 0.16403846153846155,
+    "kappa_nearest": 0.42807384686060646,
+    "kappa_min": 0.24236345127412018,
+    "logit_q": -1.6284816834971128,
+    "logKm1": 3.295836866004329
+  },
+  {
+    "model": "distilbert-base-uncased",
+    "dataset": "go_emotions",
+    "layer": 6,
+    "K": 28,
+    "q": 0.21076923076923074,
+    "kappa_nearest": 0.44175695416646804,
+    "kappa_min": 0.2928334785594931,
+    "logit_q": -1.320294919342645,
+    "logKm1": 3.295836866004329
+  }
+]
