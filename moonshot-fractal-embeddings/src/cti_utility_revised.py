@@ -597,6 +597,170 @@ def test_residual_prediction(pts, family_alphas):
     }
 
 
+# =====================================================================
+# H7: Mixed-effects decomposition of C
+# =====================================================================
+# Model metadata for regression
+MODEL_META = {
+    "Falcon-H1-0.5B-Base": {"params_m": 500, "n_layers": 36, "hidden": 1024},
+    "Mistral-7B-v0.3": {"params_m": 7000, "n_layers": 32, "hidden": 4096},
+    "OLMo-1B-hf": {"params_m": 1000, "n_layers": 16, "hidden": 2048},
+    "Qwen2.5-0.5B": {"params_m": 500, "n_layers": 28, "hidden": 1024},
+    "Qwen3-0.6B": {"params_m": 600, "n_layers": 28, "hidden": 1024},
+    "Qwen3-1.7B": {"params_m": 1700, "n_layers": 28, "hidden": 2048},
+    "SmolLM2-1.7B": {"params_m": 1700, "n_layers": 24, "hidden": 2048},
+    "TinyLlama-1.1B-intermediate-step-1431k-3T": {"params_m": 1100, "n_layers": 22, "hidden": 2048},
+    "bert-base-uncased": {"params_m": 109, "n_layers": 12, "hidden": 768},
+    "bge-base-v1.5": {"params_m": 109, "n_layers": 12, "hidden": 768},
+    "deberta-base": {"params_m": 86, "n_layers": 12, "hidden": 768},
+    "electra-small": {"params_m": 14, "n_layers": 12, "hidden": 256},
+    "gpt-neo-125m": {"params_m": 125, "n_layers": 12, "hidden": 768},
+    "gpt2": {"params_m": 124, "n_layers": 12, "hidden": 768},
+    "mamba-130m": {"params_m": 130, "n_layers": 24, "hidden": 768},
+    "phi2": {"params_m": 2700, "n_layers": 32, "hidden": 2560},
+    "pythia-160m": {"params_m": 160, "n_layers": 12, "hidden": 768},
+    "pythia-1b": {"params_m": 1000, "n_layers": 16, "hidden": 2048},
+    "pythia-410m": {"params_m": 410, "n_layers": 12, "hidden": 1024},
+    "rwkv-4-169m-pile": {"params_m": 169, "n_layers": 12, "hidden": 768},
+}
+
+
+def test_mixed_effects_decomposition(pts, family_alphas):
+    """Decompose C = logit(q) - alpha*kappa into dataset + model + family effects.
+
+    Tests whether C has structured components that can be separated.
+    R2 at each level shows how much variance each component explains.
+    """
+    model_best = _get_model_best(pts)
+
+    # Compute observed C for each (model, dataset) pair
+    observations = []
+    for model, ds_dict in model_best.items():
+        family = get_family(model)
+        alpha = family_alphas.get(family, 1.477)
+        for ds, pt in ds_dict.items():
+            K = pt["K"]
+            q_norm = (pt["q"] - 1.0 / K) / (1.0 - 1.0 / K)
+            if q_norm <= 0.01 or q_norm >= 0.99:
+                continue
+            C_obs = sp_logit(q_norm) - alpha * pt["kappa"]
+            observations.append({
+                "model": model, "dataset": ds, "family": family,
+                "C_obs": float(C_obs), "kappa": pt["kappa"],
+                "q_norm": q_norm, "K": K,
+            })
+
+    if len(observations) < 10:
+        return {"error": "too few observations"}
+
+    C_all = np.array([o["C_obs"] for o in observations])
+    grand_mean = float(np.mean(C_all))
+    ss_total = float(np.sum((C_all - grand_mean) ** 2))
+
+    # Level 1: Dataset effect only
+    ds_means = {}
+    for o in observations:
+        ds_means.setdefault(o["dataset"], []).append(o["C_obs"])
+    ds_means = {ds: np.mean(vs) for ds, vs in ds_means.items()}
+    pred_ds = np.array([ds_means[o["dataset"]] for o in observations])
+    ss_res_ds = float(np.sum((C_all - pred_ds) ** 2))
+    r2_ds = 1 - ss_res_ds / ss_total if ss_total > 0 else 0
+
+    # Level 2: Dataset + family effect
+    df_means = {}
+    for o in observations:
+        key = (o["dataset"], o["family"])
+        df_means.setdefault(key, []).append(o["C_obs"])
+    df_means = {k: np.mean(vs) for k, vs in df_means.items()}
+    pred_df = np.array([df_means.get((o["dataset"], o["family"]), grand_mean) for o in observations])
+    ss_res_df = float(np.sum((C_all - pred_df) ** 2))
+    r2_df = 1 - ss_res_df / ss_total if ss_total > 0 else 0
+
+    # Level 3: Dataset + model effect (full model)
+    dm_means = {}
+    for o in observations:
+        key = (o["dataset"], o["model"])
+        dm_means.setdefault(key, []).append(o["C_obs"])
+    dm_means = {k: np.mean(vs) for k, vs in dm_means.items()}
+    pred_dm = np.array([dm_means.get((o["dataset"], o["model"]), grand_mean) for o in observations])
+    ss_res_dm = float(np.sum((C_all - pred_dm) ** 2))
+    r2_dm = 1 - ss_res_dm / ss_total if ss_total > 0 else 0
+
+    # Level 4: Family effect only (no dataset)
+    fam_means = {}
+    for o in observations:
+        fam_means.setdefault(o["family"], []).append(o["C_obs"])
+    fam_means = {f: np.mean(vs) for f, vs in fam_means.items()}
+    pred_fam = np.array([fam_means[o["family"]] for o in observations])
+    ss_res_fam = float(np.sum((C_all - pred_fam) ** 2))
+    r2_fam = 1 - ss_res_fam / ss_total if ss_total > 0 else 0
+
+    # Level 5: Model effect only (no dataset)
+    mod_means = {}
+    for o in observations:
+        mod_means.setdefault(o["model"], []).append(o["C_obs"])
+    mod_means = {m: np.mean(vs) for m, vs in mod_means.items()}
+    pred_mod = np.array([mod_means[o["model"]] for o in observations])
+    ss_res_mod = float(np.sum((C_all - pred_mod) ** 2))
+    r2_mod = 1 - ss_res_mod / ss_total if ss_total > 0 else 0
+
+    # Regress residuals (after dataset+family) against model architectural features
+    residuals_after_df = C_all - pred_df
+    log_params = []
+    n_layers_arr = []
+    log_hidden = []
+    valid_idx = []
+    for i, o in enumerate(observations):
+        meta = MODEL_META.get(o["model"])
+        if meta:
+            log_params.append(np.log(meta["params_m"]))
+            n_layers_arr.append(meta["n_layers"])
+            log_hidden.append(np.log(meta["hidden"]))
+            valid_idx.append(i)
+
+    arch_regression = {}
+    if len(valid_idx) >= 10:
+        resid = residuals_after_df[valid_idx]
+        for name, feat in [("log_params", log_params), ("n_layers", n_layers_arr), ("log_hidden", log_hidden)]:
+            feat_arr = np.array(feat)
+            rho, p = spearmanr(feat_arr, resid)
+            r, _ = pearsonr(feat_arr, resid)
+            arch_regression[name] = {
+                "spearman_rho": float(rho) if not np.isnan(rho) else 0.0,
+                "pearson_r": float(r) if not np.isnan(r) else 0.0,
+                "p_value": float(p) if not np.isnan(p) else 1.0,
+            }
+
+    # Per-dataset C variance decomposition
+    per_ds_var = {}
+    for ds in sorted(ds_means.keys()):
+        ds_obs = [o for o in observations if o["dataset"] == ds]
+        if len(ds_obs) >= 3:
+            cs = [o["C_obs"] for o in ds_obs]
+            per_ds_var[ds] = {
+                "mean_C": float(np.mean(cs)),
+                "std_C": float(np.std(cs)),
+                "n_models": len(ds_obs),
+                "range_C": float(max(cs) - min(cs)),
+            }
+
+    return {
+        "n_observations": len(observations),
+        "grand_mean_C": grand_mean,
+        "total_variance": float(np.var(C_all)),
+        "r2_dataset_only": r2_ds,
+        "r2_dataset_plus_family": r2_df,
+        "r2_dataset_plus_model": r2_dm,
+        "r2_family_only": r2_fam,
+        "r2_model_only": r2_mod,
+        "marginal_r2_family_given_dataset": r2_df - r2_ds,
+        "marginal_r2_model_given_dataset": r2_dm - r2_ds,
+        "arch_feature_regression": arch_regression,
+        "per_dataset_C": per_ds_var,
+        "family_mean_C": {f: float(v) for f, v in fam_means.items()},
+    }
+
+
 def _h1_random_baseline(h1_results):
     """Baseline: random layer selection regret."""
     rng = np.random.RandomState(42)
@@ -745,6 +909,34 @@ def main():
                   f"residual_std={d['residual_std']:.4f} {status}")
 
     # =========================================================
+    # H7: Mixed-effects decomposition of C
+    # =========================================================
+    print("\n--- H7: Mixed-effects decomposition of C ---")
+    h7_results = test_mixed_effects_decomposition(pts, family_alphas)
+    if "error" not in h7_results:
+        print(f"  N observations: {h7_results['n_observations']}")
+        print(f"  Total C variance: {h7_results['total_variance']:.4f}")
+        print(f"  R2 (dataset only):          {h7_results['r2_dataset_only']:.4f}")
+        print(f"  R2 (family only):           {h7_results['r2_family_only']:.4f}")
+        print(f"  R2 (model only):            {h7_results['r2_model_only']:.4f}")
+        print(f"  R2 (dataset + family):      {h7_results['r2_dataset_plus_family']:.4f}")
+        print(f"  R2 (dataset + model):       {h7_results['r2_dataset_plus_model']:.4f}")
+        print(f"  Marginal R2 (family|ds):    {h7_results['marginal_r2_family_given_dataset']:.4f}")
+        print(f"  Marginal R2 (model|ds):     {h7_results['marginal_r2_model_given_dataset']:.4f}")
+        print(f"\n  Family mean C: {h7_results['family_mean_C']}")
+        if h7_results["arch_feature_regression"]:
+            print("\n  Architectural feature regression (residuals after dataset+family):")
+            for feat, stats in h7_results["arch_feature_regression"].items():
+                sig = "***" if stats["p_value"] < 0.001 else "**" if stats["p_value"] < 0.01 else "*" if stats["p_value"] < 0.05 else "ns"
+                print(f"    {feat:>12}: rho={stats['spearman_rho']:.3f}, r={stats['pearson_r']:.3f}, "
+                      f"p={stats['p_value']:.4f} {sig}")
+        if h7_results["per_dataset_C"]:
+            print("\n  Per-dataset C statistics:")
+            for ds, stats in sorted(h7_results["per_dataset_C"].items()):
+                print(f"    {ds:>20}: mean_C={stats['mean_C']:.3f}, std_C={stats['std_C']:.3f}, "
+                      f"range={stats['range_C']:.3f}, n={stats['n_models']}")
+
+    # =========================================================
     # OUTPUT
     # =========================================================
     h2_global = h2_results["global_alpha"]
@@ -752,7 +944,7 @@ def main():
 
     output = {
         "experiment": "cti_utility_revised",
-        "description": "CTI utility with family alpha, baselines, LOO, residuals, within-dataset",
+        "description": "CTI utility with mixed-effects, LOO, residuals, within-dataset",
         "h1_within_model_layer_ranking": {
             "n_pairs": len(h1_results),
             "mean_spearman_rho": mean_rho,
@@ -768,6 +960,7 @@ def main():
         "h4_loo_costed": h4_results,
         "h5_within_dataset_ordering": h5_results,
         "h6_residual_prediction": h6_results,
+        "h7_mixed_effects": h7_results,
         "summary": {
             "h1_best_layer_pct": float(100 * n_perfect_match / len(h1_results)) if h1_results else 0,
             "h1_baseline_random_pct": h1_baseline["random_best_layer_match_pct"],
@@ -787,6 +980,10 @@ def main():
             "h5_mean_rho": float(np.mean(h5_rhos)) if h5_rhos else 0.0,
             "h6_global_rho": h6_results["global_spearman_rho"],
             "h6_global_p": h6_results["global_p_value"],
+            "h7_r2_dataset": h7_results.get("r2_dataset_only", 0),
+            "h7_r2_dataset_family": h7_results.get("r2_dataset_plus_family", 0),
+            "h7_r2_dataset_model": h7_results.get("r2_dataset_plus_model", 0),
+            "h7_marginal_family": h7_results.get("marginal_r2_family_given_dataset", 0),
             "family_alphas": {f: round(a, 4) for f, a in family_alphas.items()},
         },
     }

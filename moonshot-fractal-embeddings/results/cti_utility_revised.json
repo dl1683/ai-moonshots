@@ -1,6 +1,6 @@
 {
   "experiment": "cti_utility_revised",
-  "description": "CTI utility with family alpha, baselines, LOO, residuals, within-dataset",
+  "description": "CTI utility with mixed-effects, LOO, residuals, within-dataset",
   "h1_within_model_layer_ranking": {
     "n_pairs": 122,
     "mean_spearman_rho": 0.6147309465287164,
@@ -1923,6 +1923,103 @@
       }
     }
   },
+  "h7_mixed_effects": {
+    "n_observations": 120,
+    "grand_mean_C": -1.442414149615666,
+    "total_variance": 1.4916781330169508,
+    "r2_dataset_only": 0.7119961700013311,
+    "r2_dataset_plus_family": 0.921163596074333,
+    "r2_dataset_plus_model": 1.0,
+    "r2_family_only": 0.17509230434305179,
+    "r2_model_only": 0.2582368351405615,
+    "marginal_r2_family_given_dataset": 0.20916742607300187,
+    "marginal_r2_model_given_dataset": 0.2880038299986689,
+    "arch_feature_regression": {
+      "log_params": {
+        "spearman_rho": 0.35637905496482847,
+        "pearson_r": 0.33185091986908327,
+        "p_value": 9.262331931470633e-05
+      },
+      "n_layers": {
+        "spearman_rho": 0.24246418749180676,
+        "pearson_r": 0.21386988726235337,
+        "p_value": 0.00903270511836345
+      },
+      "log_hidden": {
+        "spearman_rho": 0.35316243695684757,
+        "pearson_r": 0.3311698044217713,
+        "p_value": 0.00010821702900118845
+      }
+    },
+    "per_dataset_C": {
+      "20newsgroups": {
+        "mean_C": -1.7431753016220757,
+        "std_C": 0.6320111634370926,
+        "n_models": 19,
+        "range_C": 2.3593249462166277
+      },
+      "agnews": {
+        "mean_C": -0.8383008271696943,
+        "std_C": 0.8226202618494256,
+        "n_models": 19,
+        "range_C": 2.5716606557748176
+      },
+      "amazon_massive": {
+        "mean_C": -0.8509517746983613,
+        "std_C": 0.36395257764055405,
+        "n_models": 9,
+        "range_C": 1.2307786276828225
+      },
+      "banking77": {
+        "mean_C": -0.9750733175792862,
+        "std_C": 0.5233745312657286,
+        "n_models": 10,
+        "range_C": 1.6958110538294886
+      },
+      "dbpedia": {
+        "mean_C": -0.3094369773929283,
+        "std_C": 1.0091972466007895,
+        "n_models": 19,
+        "range_C": 3.103075179100524
+      },
+      "emotion": {
+        "mean_C": -2.4833483519970114,
+        "std_C": 0.48240825402137955,
+        "n_models": 6,
+        "range_C": 1.2762294126023006
+      },
+      "go_emotions": {
+        "mean_C": -3.029504311845799,
+        "std_C": 0.45078841298576555,
+        "n_models": 20,
+        "range_C": 1.57088688795593
+      },
+      "langid": {
+        "mean_C": 0.4768729279616477,
+        "std_C": 0.3708581756619756,
+        "n_models": 6,
+        "range_C": 1.092178056041036
+      },
+      "news_category": {
+        "mean_C": -2.5135410644012732,
+        "std_C": 0.30763168131690505,
+        "n_models": 6,
+        "range_C": 0.8451259905519177
+      },
+      "yahoo": {
+        "mean_C": -2.1738107701261153,
+        "std_C": 0.4021539151575286,
+        "n_models": 6,
+        "range_C": 1.1008692630950376
+      }
+    },
+    "family_mean_C": {
+      "encoder": -2.7338215570653164,
+      "hybrid": -1.36993627527752,
+      "decoder": -1.207266699719863,
+      "ssm": -1.4041867464828186
+    }
+  },
   "summary": {
     "h1_best_layer_pct": 69.67213114754098,
     "h1_baseline_random_pct": 25.0,
@@ -1942,6 +2039,10 @@
     "h5_mean_rho": 0.5408729661041446,
     "h6_global_rho": 0.25311840226444127,
     "h6_global_p": 0.005281806857858366,
+    "h7_r2_dataset": 0.7119961700013311,
+    "h7_r2_dataset_family": 0.921163596074333,
+    "h7_r2_dataset_model": 1.0,
+    "h7_marginal_family": 0.20916742607300187,
     "family_alphas": {
       "encoder": 5.3594,
       "hybrid": 1.6983,
