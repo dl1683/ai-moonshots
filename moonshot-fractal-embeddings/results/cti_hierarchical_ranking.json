@@ -1,0 +1,834 @@
+{
+  "experiment": "cti_hierarchical_ranking",
+  "description": "Codex Experiment 1: Hierarchical calibration for architecture ranking",
+  "codex_success_criteria": {
+    "pass_rate_target": ">=7/10",
+    "agnews_delta": ">=+0.25",
+    "emotion_delta": ">=+0.25"
+  },
+  "baseline": {
+    "method": "baseline_mean_raw_kappa",
+    "n_datasets": 10,
+    "mean_spearman_rho": 0.4731419579873391,
+    "n_pass": 2,
+    "pr_mean_pass": false,
+    "per_dataset": {
+      "20newsgroups": {
+        "K": 20,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.3609022556390977,
+        "spearman_rho_raw_kappa": 0.3609022556390977,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "agnews": {
+        "K": 4,
+        "n_architectures": 19,
+        "spearman_rho_calibrated": 0.29298245614035084,
+        "spearman_rho_raw_kappa": 0.29298245614035084,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "amazon_massive": {
+        "K": 59,
+        "n_architectures": 9,
+        "spearman_rho_calibrated": 0.21666666666666667,
+        "spearman_rho_raw_kappa": 0.21666666666666667,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "banking77": {
+        "K": 77,
+        "n_architectures": 10,
+        "spearman_rho_calibrated": 0.4545454545454545,
+        "spearman_rho_raw_kappa": 0.4545454545454545,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "dbpedia": {
+        "K": 14,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.58796992481203,
+        "spearman_rho_raw_kappa": 0.58796992481203,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "emotion": {
+        "K": 6,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.3142857142857143,
+        "spearman_rho_raw_kappa": 0.3142857142857143,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "go_emotions": {
+        "K": 28,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.8183528220697911,
+        "spearman_rho_raw_kappa": 0.8183528220697911,
+        "improvement": 0.0,
+        "pr_pass_calibrated": true,
+        "pr_pass_raw": true,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "langid": {
+        "K": 20,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.8857142857142858,
+        "spearman_rho_raw_kappa": 0.8857142857142858,
+        "improvement": 0.0,
+        "pr_pass_calibrated": true,
+        "pr_pass_raw": true,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "news_category": {
+        "K": 42,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.3142857142857143,
+        "spearman_rho_raw_kappa": 0.3142857142857143,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "yahoo": {
+        "K": 10,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.48571428571428577,
+        "spearman_rho_raw_kappa": 0.48571428571428577,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      }
+    }
+  },
+  "fix1_best_layer": {
+    "method": "best_layer_raw_kappa",
+    "n_datasets": 10,
+    "mean_spearman_rho": 0.5408729661041446,
+    "n_pass": 1,
+    "pr_mean_pass": false,
+    "per_dataset": {
+      "20newsgroups": {
+        "K": 20,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.7273411571153382,
+        "spearman_rho_raw_kappa": 0.7273411571153382,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "agnews": {
+        "K": 4,
+        "n_architectures": 19,
+        "spearman_rho_calibrated": 0.48325191421427716,
+        "spearman_rho_raw_kappa": 0.48325191421427716,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "amazon_massive": {
+        "K": 59,
+        "n_architectures": 9,
+        "spearman_rho_calibrated": -0.016666666666666666,
+        "spearman_rho_raw_kappa": -0.016666666666666666,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "banking77": {
+        "K": 77,
+        "n_architectures": 10,
+        "spearman_rho_calibrated": 0.07878787878787878,
+        "spearman_rho_raw_kappa": 0.07878787878787878,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "dbpedia": {
+        "K": 14,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.5755189113377766,
+        "spearman_rho_raw_kappa": 0.5755189113377766,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "emotion": {
+        "K": 6,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.8285714285714287,
+        "spearman_rho_raw_kappa": 0.8285714285714287,
+        "improvement": 0.0,
+        "pr_pass_calibrated": true,
+        "pr_pass_raw": true,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "go_emotions": {
+        "K": 28,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.635782671687282,
+        "spearman_rho_raw_kappa": 0.635782671687282,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "langid": {
+        "K": 20,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.7247137945655605,
+        "spearman_rho_raw_kappa": 0.7247137945655605,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "news_category": {
+        "K": 42,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.7714285714285715,
+        "spearman_rho_raw_kappa": 0.7714285714285715,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "yahoo": {
+        "K": 10,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.6,
+        "spearman_rho_raw_kappa": 0.6,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      }
+    }
+  },
+  "fix2_family_alpha": {
+    "method": "best_layer_family_alpha",
+    "n_datasets": 10,
+    "mean_spearman_rho": 0.6059138056274928,
+    "n_pass": 1,
+    "pr_mean_pass": false,
+    "per_dataset": {
+      "20newsgroups": {
+        "K": 20,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.7047762815067962,
+        "spearman_rho_raw_kappa": 0.7273411571153382,
+        "improvement": -0.022564875608542034,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "agnews": {
+        "K": 4,
+        "n_architectures": 19,
+        "spearman_rho_calibrated": 0.6931313952051493,
+        "spearman_rho_raw_kappa": 0.48325191421427716,
+        "improvement": 0.20987948099087217,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "amazon_massive": {
+        "K": 59,
+        "n_architectures": 9,
+        "spearman_rho_calibrated": 0.19999999999999998,
+        "spearman_rho_raw_kappa": -0.016666666666666666,
+        "improvement": 0.21666666666666665,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "banking77": {
+        "K": 77,
+        "n_architectures": 10,
+        "spearman_rho_calibrated": 0.2606060606060606,
+        "spearman_rho_raw_kappa": 0.07878787878787878,
+        "improvement": 0.18181818181818182,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "dbpedia": {
+        "K": 14,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.6403024537134948,
+        "spearman_rho_raw_kappa": 0.5755189113377766,
+        "improvement": 0.06478354237571826,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "emotion": {
+        "K": 6,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.8285714285714287,
+        "spearman_rho_raw_kappa": 0.8285714285714287,
+        "improvement": 0.0,
+        "pr_pass_calibrated": true,
+        "pr_pass_raw": true,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "go_emotions": {
+        "K": 28,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.7209052331809583,
+        "spearman_rho_raw_kappa": 0.635782671687282,
+        "improvement": 0.08512256149367636,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "langid": {
+        "K": 20,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.753702346348183,
+        "spearman_rho_raw_kappa": 0.7247137945655605,
+        "improvement": 0.028988551782622496,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "news_category": {
+        "K": 42,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.7142857142857143,
+        "spearman_rho_raw_kappa": 0.7714285714285715,
+        "improvement": -0.05714285714285716,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "yahoo": {
+        "K": 10,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.5428571428571429,
+        "spearman_rho_raw_kappa": 0.6,
+        "improvement": -0.05714285714285705,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      }
+    }
+  },
+  "fix3_lodo": {
+    "method": "lodo_family_alpha",
+    "n_datasets": 10,
+    "mean_spearman_rho": 0.31550762782890485,
+    "n_pass": 1,
+    "per_dataset": {
+      "20newsgroups": {
+        "K": 20,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.49793158842849417,
+        "spearman_rho_raw_kappa": 0.7273411571153382,
+        "improvement": -0.22940956868684403,
+        "pr_pass": false
+      },
+      "agnews": {
+        "K": 4,
+        "n_architectures": 19,
+        "spearman_rho_calibrated": 0.12169482511235445,
+        "spearman_rho_raw_kappa": 0.48325191421427716,
+        "improvement": -0.3615570891019227,
+        "pr_pass": false
+      },
+      "amazon_massive": {
+        "K": 59,
+        "n_architectures": 9,
+        "spearman_rho_calibrated": -0.049999999999999996,
+        "spearman_rho_raw_kappa": -0.016666666666666666,
+        "improvement": -0.033333333333333326,
+        "pr_pass": false
+      },
+      "banking77": {
+        "K": 77,
+        "n_architectures": 10,
+        "spearman_rho_calibrated": 0.06666666666666665,
+        "spearman_rho_raw_kappa": 0.07878787878787878,
+        "improvement": -0.01212121212121213,
+        "pr_pass": false
+      },
+      "dbpedia": {
+        "K": 14,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.41506664940721844,
+        "spearman_rho_raw_kappa": 0.5755189113377766,
+        "improvement": -0.16045226193055812,
+        "pr_pass": false
+      },
+      "emotion": {
+        "K": 6,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.8285714285714287,
+        "spearman_rho_raw_kappa": 0.8285714285714287,
+        "improvement": 0.0,
+        "pr_pass": true
+      },
+      "go_emotions": {
+        "K": 28,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.6945398380280499,
+        "spearman_rho_raw_kappa": 0.635782671687282,
+        "improvement": 0.058757166340767886,
+        "pr_pass": false
+      },
+      "langid": {
+        "K": 20,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.6377481392176932,
+        "spearman_rho_raw_kappa": 0.7247137945655605,
+        "improvement": -0.08696565534786727,
+        "pr_pass": false
+      },
+      "news_category": {
+        "K": 42,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": -0.14285714285714288,
+        "spearman_rho_raw_kappa": 0.7714285714285715,
+        "improvement": -0.9142857142857144,
+        "pr_pass": false
+      },
+      "yahoo": {
+        "K": 10,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.08571428571428573,
+        "spearman_rho_raw_kappa": 0.6,
+        "improvement": -0.5142857142857142,
+        "pr_pass": false
+      }
+    }
+  },
+  "fix4_decoder_only": {
+    "method": "decoder_only_best_layer_kappa",
+    "n_datasets": 6,
+    "mean_spearman_rho": 0.3203730126698593,
+    "n_pass": 0,
+    "per_dataset": {
+      "20newsgroups": {
+        "K": 20,
+        "n": 13,
+        "spearman_rho": 0.5199454712472894,
+        "kappa_cv": 0.217766226492821,
+        "pr_pass": false
+      },
+      "agnews": {
+        "K": 4,
+        "n": 13,
+        "spearman_rho": 0.5789673605796897,
+        "kappa_cv": 0.15567449639179085,
+        "pr_pass": false
+      },
+      "amazon_massive": {
+        "K": 60,
+        "n": 7,
+        "spearman_rho": -0.10714285714285716,
+        "kappa_cv": 0.22327457644937607,
+        "pr_pass": false
+      },
+      "banking77": {
+        "K": 77,
+        "n": 8,
+        "spearman_rho": -0.07142857142857144,
+        "kappa_cv": 0.22069867370576088,
+        "pr_pass": false
+      },
+      "dbpedia": {
+        "K": 14,
+        "n": 13,
+        "spearman_rho": 0.6244847723446278,
+        "kappa_cv": 0.1601375904118218,
+        "pr_pass": false
+      },
+      "go_emotions": {
+        "K": 28,
+        "n": 13,
+        "spearman_rho": 0.3774119004189774,
+        "kappa_cv": 0.20501305483170795,
+        "pr_pass": false
+      }
+    }
+  },
+  "fix5_best_q_layer": {
+    "method": "best_q_layer_raw_kappa",
+    "n_datasets": 10,
+    "mean_spearman_rho": 0.3465010619957777,
+    "n_pass": 1,
+    "pr_mean_pass": false,
+    "per_dataset": {
+      "20newsgroups": {
+        "K": 20,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.5191875058917722,
+        "spearman_rho_raw_kappa": 0.5191875058917722,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "agnews": {
+        "K": 4,
+        "n_architectures": 19,
+        "spearman_rho_calibrated": 0.01673284826389978,
+        "spearman_rho_raw_kappa": 0.01673284826389978,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "amazon_massive": {
+        "K": 59,
+        "n_architectures": 9,
+        "spearman_rho_calibrated": -0.06666666666666667,
+        "spearman_rho_raw_kappa": -0.06666666666666667,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "banking77": {
+        "K": 77,
+        "n_architectures": 10,
+        "spearman_rho_calibrated": 0.05454545454545454,
+        "spearman_rho_raw_kappa": 0.05454545454545454,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "dbpedia": {
+        "K": 14,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.31939792985237864,
+        "spearman_rho_raw_kappa": 0.31939792985237864,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "emotion": {
+        "K": 6,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.8285714285714287,
+        "spearman_rho_raw_kappa": 0.8285714285714287,
+        "improvement": 0.0,
+        "pr_pass_calibrated": true,
+        "pr_pass_raw": true,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "go_emotions": {
+        "K": 28,
+        "n_architectures": 20,
+        "spearman_rho_calibrated": 0.6113854677910918,
+        "spearman_rho_raw_kappa": 0.6113854677910918,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "encoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 4
+      },
+      "langid": {
+        "K": 20,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.7247137945655605,
+        "spearman_rho_raw_kappa": 0.7247137945655605,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "news_category": {
+        "K": 42,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.3714285714285715,
+        "spearman_rho_raw_kappa": 0.3714285714285715,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      },
+      "yahoo": {
+        "K": 10,
+        "n_architectures": 6,
+        "spearman_rho_calibrated": 0.08571428571428573,
+        "spearman_rho_raw_kappa": 0.08571428571428573,
+        "improvement": 0.0,
+        "pr_pass_calibrated": false,
+        "pr_pass_raw": false,
+        "families_present": [
+          "decoder",
+          "hybrid",
+          "ssm"
+        ],
+        "n_families": 3
+      }
+    }
+  },
+  "family_alphas": {
+    "encoder": {
+      "alpha": 3.7376467049947073,
+      "r2": 0.9535263590042684,
+      "n": 16,
+      "n_datasets": 4
+    },
+    "hybrid": {
+      "alpha": 0.7459321385760804,
+      "r2": 1.0,
+      "n": 10,
+      "n_datasets": 10
+    },
+    "decoder": {
+      "alpha": 2.003323045800014,
+      "r2": 0.9420797089022478,
+      "n": 83,
+      "n_datasets": 10
+    },
+    "ssm": {
+      "alpha": 5.412500656980845,
+      "r2": 1.0,
+      "n": 11,
+      "n_datasets": 10
+    }
+  },
+  "kappa_cv_vs_rankability": {
+    "correlation": -0.34545454545454546,
+    "p_value": 0.32822651147136733
+  },
+  "codex_criteria_met": {
+    "pass_rate_7_of_10": false,
+    "agnews_delta_ge_025": false,
+    "emotion_delta_ge_025": true
+  }
+}
