@@ -360,7 +360,7 @@ H1 and H3 with no refit: $r=0.842$--$0.776$, sign accuracy $92.9$--$100\%$.
 \paragraph{Top-$m$ competitor sweep.}
 A model-free sweep over $m=1,\ldots,K\!-\!1$ directional interventions (Pythia-160M, DBpedia $K=14$) directly localises the LOAO slope: moving the nearest $m$ centroid pairs by equal amounts, the fitted slope rises monotonically from $\alpha_1=1.052$ ($m=1$) to $\alpha_2=1.523$ ($m=2$) and $\alpha_{13}=3.015$ ($m=K\!-\!1$).
 Crucially, $\alpha_2=1.523\approx\alpha_\mathrm{LOAO}=1.477$ (2.3\% error): \emph{the LOAO cross-architecture slope is recovered by involving exactly two competitor directions}.
-This zero-free-parameter localisation confirms the causal weight map result ($\sum_r w_r=2.42$ effective rivals) and the soft-competition kernel result ($k^*=2$ dominant competitors in the kernel showdown): exactly two near-tie competitors drive the cross-architecture constant.
+This zero-free-parameter localisation confirms the causal weight map result ($\sum_r w_r=2.42$ effective rivals): exactly two near-tie competitors drive the cross-architecture constant.
 An unconfounded ci-fixed weight map confirms $\sum_r w_r=2.42$ with heavy-head decay (only
 ranks 1--4 causally significant; $\alpha_{j_1}=1.272$); Spearman rank correlation validates
 monotone decay: 14/14 classes negative ($\bar\rho=-0.551$, $p=1.2\times10^{-4}$).
@@ -876,8 +876,7 @@ The per-rank causal weight $w_r = \alpha_r / \alpha_{j_1}$ (normalised by neares
 slope) yields the profile $w = [1.00, 0.29, 0.21, 0.17, 0.09, 0.08, 0.03, \ldots]$:
 a heavy-head distribution where only ranks 1--4 are causally significant.
 The summed effective competition $\sum_r w_r = 2.42$ is consistent with $\alpha_2=1.523$
-(2-competitor localisation; \S\ref{subsec:competition-field}) and the kernel-showdown
-finding ($k^*=2$ dominant rivals), independently confirming that 2--4 near competitors
+(2-competitor localisation; \S\ref{subsec:competition-field}), independently confirming that 2--4 near competitors
 drive the cross-architecture constant.
 The nearest-competitor slope $\alpha_{j_1} = 1.272$ is close to (but below) LOAO
 $\alpha=1.477$; the gap reflects residual saturation in high-accuracy DBpedia classes.
