@@ -71,6 +71,7 @@ The key conceptual point: Eq.~\ref{eq:cti-law}'s structure is derived from first
 \item \textbf{Cross-modal validation}: ViT-Large reaches $R^2=0.964$ with same functional form; ResNet50 CNN on CIFAR-100 ($K=100$) shows $r=0.749$, matching ViT-Base at same $K$ ($r=0.773$).
 \item \textbf{Causal evidence}: Frozen do-interventions and orthogonal factorial confirm nearest-class dominance; cross-modal dose-response (6 unseen archs): 6/6 directional PASS.
 \item \textbf{K-scaling and practical prediction}: $A(K)=1.164/\log K+1.301$ ($r=0.93$). MAE$\leq$0.08 on all six prospective datasets; kappa spread ($17\times$ more predictive than $K$; $p=0.038$) is the mechanistic predictor of architecture-ranking reliability.
+\item \textbf{External blind OOD tests}: SmolLM2-1.7B (absent from training set) yields $r=0.817$, $p=0.013$ (PASS) with zero in-distribution calibration. Exploratory expanded test: Gemma-3-1B $r=0.998$, phi-2 $r=0.613$; within-model form confirmed for all three OOD architectures.
 \end{enumerate}
 
 \section{Related Work}
