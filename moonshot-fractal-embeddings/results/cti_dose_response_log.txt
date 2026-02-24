@@ -1,401 +1,0 @@
-Device: cuda
-CUDA: NVIDIA GeForce RTX 5090 Laptop GPU
-======================================================================
-CTI PRE-REGISTERED DOSE-RESPONSE CAUSAL EXPERIMENT
-======================================================================
-Design hash: 7bb675204eed1da5943ee519dd89fad8afa0970082f2aa6b9408013d7003fe54
-Frozen alpha*: 1.4773
-Surgery scales: [-0.4, -0.25, -0.1, 0.0, 0.1, 0.25, 0.4]
-Seeds: [11, 23, 47]
-
-
-======================================================================
-BLOCK 1: TEXT ARCHITECTURES (dbpedia14, K=14)
-======================================================================
-
---- GEMMA-2-2B ---
-  Extracting embeddings for gemma-2-2b on dbpedia14...
-  Loading google/gemma-2-2b...
-`torch_dtype` is deprecated! Use `dtype` instead!
-Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:  33%|###3      | 1/3 [00:00<00:01,  1.18it/s]Loading checkpoint shards:  67%|######6   | 2/3 [00:01<00:00,  1.12it/s]Loading checkpoint shards: 100%|##########| 3/3 [00:01<00:00,  1.63it/s]
-    [gemma-2-2b] batch 1 / 875 (0s)
-    [gemma-2-2b] batch 21 / 875 (3s)
-    [gemma-2-2b] batch 41 / 875 (5s)
-    [gemma-2-2b] batch 61 / 875 (8s)
-    [gemma-2-2b] batch 81 / 875 (10s)
-    [gemma-2-2b] batch 101 / 875 (12s)
-    [gemma-2-2b] batch 121 / 875 (15s)
-    [gemma-2-2b] batch 141 / 875 (17s)
-    [gemma-2-2b] batch 161 / 875 (20s)
-    [gemma-2-2b] batch 181 / 875 (22s)
-    [gemma-2-2b] batch 201 / 875 (25s)
-    [gemma-2-2b] batch 221 / 875 (28s)
-    [gemma-2-2b] batch 241 / 875 (30s)
-    [gemma-2-2b] batch 261 / 875 (33s)
-    [gemma-2-2b] batch 281 / 875 (35s)
-    [gemma-2-2b] batch 301 / 875 (38s)
-    [gemma-2-2b] batch 321 / 875 (41s)
-    [gemma-2-2b] batch 341 / 875 (43s)
-    [gemma-2-2b] batch 361 / 875 (46s)
-    [gemma-2-2b] batch 381 / 875 (49s)
-    [gemma-2-2b] batch 401 / 875 (52s)
-    [gemma-2-2b] batch 421 / 875 (54s)
-    [gemma-2-2b] batch 441 / 875 (57s)
-    [gemma-2-2b] batch 461 / 875 (60s)
-    [gemma-2-2b] batch 481 / 875 (62s)
-    [gemma-2-2b] batch 501 / 875 (65s)
-    [gemma-2-2b] batch 521 / 875 (68s)
-    [gemma-2-2b] batch 541 / 875 (70s)
-    [gemma-2-2b] batch 561 / 875 (73s)
-    [gemma-2-2b] batch 581 / 875 (76s)
-    [gemma-2-2b] batch 601 / 875 (78s)
-    [gemma-2-2b] batch 621 / 875 (81s)
-    [gemma-2-2b] batch 641 / 875 (84s)
-    [gemma-2-2b] batch 661 / 875 (87s)
-    [gemma-2-2b] batch 681 / 875 (89s)
-    [gemma-2-2b] batch 701 / 875 (93s)
-    [gemma-2-2b] batch 721 / 875 (96s)
-    [gemma-2-2b] batch 741 / 875 (99s)
-    [gemma-2-2b] batch 761 / 875 (103s)
-    [gemma-2-2b] batch 781 / 875 (106s)
-    [gemma-2-2b] batch 801 / 875 (109s)
-    [gemma-2-2b] batch 821 / 875 (113s)
-    [gemma-2-2b] batch 841 / 875 (116s)
-    [gemma-2-2b] batch 861 / 875 (120s)
-  Saved embedding cache: (14000, 2304)
-
-  Seed 11:
-  Baseline: kappa=0.4520, q=0.8977, nearest_pair=(np.int64(2), np.int64(4))
-    scale=-0.40: dk=-0.1808, q_obs=0.8902, q_pred=0.8704, dq_obs=-0.0075, dq_pred=-0.0273
-    scale=-0.25: dk=-0.1130, q_obs=0.8955, q_pred=0.8813, dq_obs=-0.0022, dq_pred=-0.0164
-    scale=-0.10: dk=-0.0452, q_obs=0.8966, q_pred=0.8914, dq_obs=-0.0011, dq_pred=-0.0063
-    scale=+0.00: dk=+0.0000, q_obs=0.8977, q_pred=0.8977, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0233, q_obs=0.8977, q_pred=0.9008, dq_obs=+0.0000, dq_pred=+0.0031
-    scale=+0.25: dk=+0.0405, q_obs=0.8998, q_pred=0.9031, dq_obs=+0.0022, dq_pred=+0.0054
-    scale=+0.40: dk=+0.0554, q_obs=0.9020, q_pred=0.9050, dq_obs=+0.0043, dq_pred=+0.0073
-  Seed 11 done in 52.6s
-
-  Seed 23:
-  Baseline: kappa=0.4491, q=0.8772, nearest_pair=(np.int64(2), np.int64(4))
-    scale=-0.40: dk=-0.1796, q_obs=0.8697, q_pred=0.8457, dq_obs=-0.0075, dq_pred=-0.0316
-    scale=-0.25: dk=-0.1123, q_obs=0.8718, q_pred=0.8582, dq_obs=-0.0054, dq_pred=-0.0190
-    scale=-0.10: dk=-0.0449, q_obs=0.8729, q_pred=0.8699, dq_obs=-0.0043, dq_pred=-0.0073
-    scale=+0.00: dk=+0.0000, q_obs=0.8772, q_pred=0.8772, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0220, q_obs=0.8772, q_pred=0.8807, dq_obs=+0.0000, dq_pred=+0.0035
-    scale=+0.25: dk=+0.0394, q_obs=0.8805, q_pred=0.8834, dq_obs=+0.0032, dq_pred=+0.0061
-    scale=+0.40: dk=+0.0583, q_obs=0.8848, q_pred=0.8862, dq_obs=+0.0075, dq_pred=+0.0090
-  Seed 23 done in 50.4s
-
-  Seed 47:
-  Baseline: kappa=0.4516, q=0.8815, nearest_pair=(np.int64(3), np.int64(4))
-    scale=-0.40: dk=-0.1806, q_obs=0.8762, q_pred=0.8507, dq_obs=-0.0054, dq_pred=-0.0308
-    scale=-0.25: dk=-0.1129, q_obs=0.8783, q_pred=0.8630, dq_obs=-0.0032, dq_pred=-0.0186
-    scale=-0.10: dk=-0.0452, q_obs=0.8794, q_pred=0.8744, dq_obs=-0.0022, dq_pred=-0.0071
-    scale=+0.00: dk=+0.0000, q_obs=0.8815, q_pred=0.8815, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0178, q_obs=0.8826, q_pred=0.8843, dq_obs=+0.0011, dq_pred=+0.0027
-    scale=+0.25: dk=+0.0268, q_obs=0.8848, q_pred=0.8856, dq_obs=+0.0032, dq_pred=+0.0041
-    scale=+0.40: dk=+0.0268, q_obs=0.8858, q_pred=0.8856, dq_obs=+0.0043, dq_pred=+0.0041
-  Seed 47 done in 50.2s
-  Saved partial results -> results/cti_dose_response.json
-
---- PHI-2 ---
-  Extracting embeddings for phi-2 on dbpedia14...
-  Loading microsoft/phi-2...
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|##########| 2/2 [00:00<00:00, 35.43it/s]
-    [phi-2] batch 1 / 875 (0s)
-    [phi-2] batch 21 / 875 (4s)
-    [phi-2] batch 41 / 875 (7s)
-    [phi-2] batch 61 / 875 (10s)
-    [phi-2] batch 81 / 875 (13s)
-    [phi-2] batch 101 / 875 (17s)
-    [phi-2] batch 121 / 875 (20s)
-    [phi-2] batch 141 / 875 (23s)
-    [phi-2] batch 161 / 875 (27s)
-    [phi-2] batch 181 / 875 (30s)
-    [phi-2] batch 201 / 875 (33s)
-    [phi-2] batch 221 / 875 (37s)
-    [phi-2] batch 241 / 875 (40s)
-    [phi-2] batch 261 / 875 (43s)
-    [phi-2] batch 281 / 875 (47s)
-    [phi-2] batch 301 / 875 (50s)
-    [phi-2] batch 321 / 875 (54s)
-    [phi-2] batch 341 / 875 (57s)
-    [phi-2] batch 361 / 875 (61s)
-    [phi-2] batch 381 / 875 (65s)
-    [phi-2] batch 401 / 875 (68s)
-    [phi-2] batch 421 / 875 (72s)
-    [phi-2] batch 441 / 875 (75s)
-    [phi-2] batch 461 / 875 (79s)
-    [phi-2] batch 481 / 875 (83s)
-    [phi-2] batch 501 / 875 (86s)
-    [phi-2] batch 521 / 875 (90s)
-    [phi-2] batch 541 / 875 (94s)
-    [phi-2] batch 561 / 875 (98s)
-    [phi-2] batch 581 / 875 (101s)
-    [phi-2] batch 601 / 875 (105s)
-    [phi-2] batch 621 / 875 (108s)
-    [phi-2] batch 641 / 875 (112s)
-    [phi-2] batch 661 / 875 (116s)
-    [phi-2] batch 681 / 875 (119s)
-    [phi-2] batch 701 / 875 (123s)
-    [phi-2] batch 721 / 875 (126s)
-    [phi-2] batch 741 / 875 (130s)
-    [phi-2] batch 761 / 875 (133s)
-    [phi-2] batch 781 / 875 (137s)
-    [phi-2] batch 801 / 875 (141s)
-    [phi-2] batch 821 / 875 (144s)
-    [phi-2] batch 841 / 875 (148s)
-    [phi-2] batch 861 / 875 (151s)
-  Saved embedding cache: (14000, 2560)
-
-  Seed 11:
-  Baseline: kappa=0.4818, q=0.9203, nearest_pair=(np.int64(2), np.int64(13))
-    scale=-0.40: dk=-0.1927, q_obs=0.9052, q_pred=0.8968, dq_obs=-0.0151, dq_pred=-0.0235
-    scale=-0.25: dk=-0.1205, q_obs=0.9085, q_pred=0.9062, dq_obs=-0.0118, dq_pred=-0.0141
-    scale=-0.10: dk=-0.0482, q_obs=0.9160, q_pred=0.9149, dq_obs=-0.0043, dq_pred=-0.0054
-    scale=+0.00: dk=+0.0000, q_obs=0.9203, q_pred=0.9203, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0425, q_obs=0.9203, q_pred=0.9248, dq_obs=+0.0000, dq_pred=+0.0045
-    scale=+0.25: dk=+0.0479, q_obs=0.9235, q_pred=0.9253, dq_obs=+0.0032, dq_pred=+0.0050
-    scale=+0.40: dk=+0.0557, q_obs=0.9278, q_pred=0.9261, dq_obs=+0.0075, dq_pred=+0.0058
-  Seed 11 done in 65.1s
-
-  Seed 23:
-  Baseline: kappa=0.4805, q=0.9149, nearest_pair=(np.int64(2), np.int64(13))
-    scale=-0.40: dk=-0.1922, q_obs=0.9074, q_pred=0.8901, dq_obs=-0.0075, dq_pred=-0.0249
-    scale=-0.25: dk=-0.1201, q_obs=0.9117, q_pred=0.9001, dq_obs=-0.0032, dq_pred=-0.0149
-    scale=-0.10: dk=-0.0480, q_obs=0.9128, q_pred=0.9092, dq_obs=-0.0022, dq_pred=-0.0057
-    scale=+0.00: dk=+0.0000, q_obs=0.9149, q_pred=0.9149, dq_obs=+0.0000, dq_pred=-0.0000
-    scale=+0.10: dk=+0.0454, q_obs=0.9182, q_pred=0.9200, dq_obs=+0.0032, dq_pred=+0.0051
-    scale=+0.25: dk=+0.0518, q_obs=0.9225, q_pred=0.9207, dq_obs=+0.0075, dq_pred=+0.0058
-    scale=+0.40: dk=+0.0605, q_obs=0.9225, q_pred=0.9216, dq_obs=+0.0075, dq_pred=+0.0067
-  Seed 23 done in 66.5s
-
-  Seed 47:
-  Baseline: kappa=0.4889, q=0.9149, nearest_pair=(np.int64(2), np.int64(13))
-    scale=-0.40: dk=-0.1955, q_obs=0.9074, q_pred=0.8896, dq_obs=-0.0075, dq_pred=-0.0253
-    scale=-0.25: dk=-0.1222, q_obs=0.9095, q_pred=0.8998, dq_obs=-0.0054, dq_pred=-0.0151
-    scale=-0.10: dk=-0.0489, q_obs=0.9138, q_pred=0.9091, dq_obs=-0.0011, dq_pred=-0.0058
-    scale=+0.00: dk=+0.0000, q_obs=0.9149, q_pred=0.9149, dq_obs=+0.0000, dq_pred=-0.0000
-    scale=+0.10: dk=+0.0367, q_obs=0.9160, q_pred=0.9190, dq_obs=+0.0011, dq_pred=+0.0041
-    scale=+0.25: dk=+0.0487, q_obs=0.9182, q_pred=0.9204, dq_obs=+0.0032, dq_pred=+0.0054
-    scale=+0.40: dk=+0.0586, q_obs=0.9225, q_pred=0.9214, dq_obs=+0.0075, dq_pred=+0.0065
-  Seed 47 done in 68.3s
-  Saved partial results -> results/cti_dose_response.json
-
---- MAMBA-130M ---
-  Extracting embeddings for mamba-130m on dbpedia14...
-  Loading state-spaces/mamba-130m-hf...
-The fast path is not available because one of `(selective_state_update, selective_scan_fn, causal_conv1d_fn, causal_conv1d_update, mamba_inner_fn)` is None. Falling back to the sequential implementation of Mamba, as use_mambapy is set to False. To install follow https://github.com/state-spaces/mamba/#installation and https://github.com/Dao-AILab/causal-conv1d. For the mamba.py backend, follow https://github.com/alxndrTL/mamba.py.
-    [mamba-130m] batch 1 / 438 (1s)
-    [mamba-130m] batch 21 / 438 (10s)
-    [mamba-130m] batch 41 / 438 (17s)
-    [mamba-130m] batch 61 / 438 (25s)
-    [mamba-130m] batch 81 / 438 (32s)
-    [mamba-130m] batch 101 / 438 (39s)
-    [mamba-130m] batch 121 / 438 (46s)
-    [mamba-130m] batch 141 / 438 (53s)
-    [mamba-130m] batch 161 / 438 (60s)
-    [mamba-130m] batch 181 / 438 (66s)
-    [mamba-130m] batch 201 / 438 (73s)
-    [mamba-130m] batch 221 / 438 (79s)
-    [mamba-130m] batch 241 / 438 (86s)
-    [mamba-130m] batch 261 / 438 (93s)
-    [mamba-130m] batch 281 / 438 (100s)
-    [mamba-130m] batch 301 / 438 (107s)
-    [mamba-130m] batch 321 / 438 (114s)
-    [mamba-130m] batch 341 / 438 (121s)
-    [mamba-130m] batch 361 / 438 (127s)
-    [mamba-130m] batch 381 / 438 (134s)
-    [mamba-130m] batch 401 / 438 (141s)
-    [mamba-130m] batch 421 / 438 (148s)
-  Saved embedding cache: (14000, 768)
-
-  Seed 11:
-  Baseline: kappa=0.3873, q=0.8428, nearest_pair=(np.int64(9), np.int64(10))
-    scale=-0.40: dk=-0.1549, q_obs=0.8363, q_pred=0.8100, dq_obs=-0.0065, dq_pred=-0.0328
-    scale=-0.25: dk=-0.0968, q_obs=0.8406, q_pred=0.8229, dq_obs=-0.0022, dq_pred=-0.0199
-    scale=-0.10: dk=-0.0387, q_obs=0.8406, q_pred=0.8350, dq_obs=-0.0022, dq_pred=-0.0077
-    scale=+0.00: dk=+0.0000, q_obs=0.8428, q_pred=0.8428, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0244, q_obs=0.8449, q_pred=0.8475, dq_obs=+0.0022, dq_pred=+0.0047
-    scale=+0.25: dk=+0.0244, q_obs=0.8471, q_pred=0.8475, dq_obs=+0.0043, dq_pred=+0.0047
-    scale=+0.40: dk=+0.0244, q_obs=0.8503, q_pred=0.8475, dq_obs=+0.0075, dq_pred=+0.0047
-  Seed 11 done in 18.0s
-
-  Seed 23:
-  Baseline: kappa=0.3592, q=0.8449, nearest_pair=(np.int64(9), np.int64(10))
-    scale=-0.40: dk=-0.1437, q_obs=0.8374, q_pred=0.8150, dq_obs=-0.0075, dq_pred=-0.0299
-    scale=-0.25: dk=-0.0898, q_obs=0.8406, q_pred=0.8267, dq_obs=-0.0043, dq_pred=-0.0182
-    scale=-0.10: dk=-0.0359, q_obs=0.8438, q_pred=0.8378, dq_obs=-0.0011, dq_pred=-0.0071
-    scale=+0.00: dk=+0.0000, q_obs=0.8449, q_pred=0.8449, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0359, q_obs=0.8482, q_pred=0.8517, dq_obs=+0.0032, dq_pred=+0.0068
-    scale=+0.25: dk=+0.0616, q_obs=0.8503, q_pred=0.8565, dq_obs=+0.0054, dq_pred=+0.0115
-    scale=+0.40: dk=+0.0616, q_obs=0.8525, q_pred=0.8565, dq_obs=+0.0075, dq_pred=+0.0115
-  Seed 23 done in 18.4s
-
-  Seed 47:
-  Baseline: kappa=0.3587, q=0.8352, nearest_pair=(np.int64(9), np.int64(10))
-    scale=-0.40: dk=-0.1435, q_obs=0.8266, q_pred=0.8040, dq_obs=-0.0086, dq_pred=-0.0313
-    scale=-0.25: dk=-0.0897, q_obs=0.8288, q_pred=0.8162, dq_obs=-0.0065, dq_pred=-0.0190
-    scale=-0.10: dk=-0.0359, q_obs=0.8342, q_pred=0.8278, dq_obs=-0.0011, dq_pred=-0.0074
-    scale=+0.00: dk=+0.0000, q_obs=0.8352, q_pred=0.8352, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0359, q_obs=0.8363, q_pred=0.8424, dq_obs=+0.0011, dq_pred=+0.0072
-    scale=+0.25: dk=+0.0507, q_obs=0.8385, q_pred=0.8453, dq_obs=+0.0032, dq_pred=+0.0101
-    scale=+0.40: dk=+0.0507, q_obs=0.8406, q_pred=0.8453, dq_obs=+0.0054, dq_pred=+0.0101
-  Seed 47 done in 18.3s
-  Saved partial results -> results/cti_dose_response.json
-
-======================================================================
-BLOCK 2: VISION ARCHITECTURES (CIFAR-10, K=10)
-======================================================================
-
---- VIT-BASE ---
-
-  Seed 11:
-  Baseline: kappa=0.2576, q=0.6456, nearest_pair=(np.int64(3), np.int64(5))
-    scale=-0.40: dk=-0.1030, q_obs=0.6389, q_pred=0.6100, dq_obs=-0.0067, dq_pred=-0.0356
-    scale=-0.25: dk=-0.0644, q_obs=0.6411, q_pred=0.6235, dq_obs=-0.0044, dq_pred=-0.0221
-    scale=-0.10: dk=-0.0258, q_obs=0.6467, q_pred=0.6368, dq_obs=+0.0011, dq_pred=-0.0088
-    scale=+0.00: dk=+0.0000, q_obs=0.6456, q_pred=0.6456, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0258, q_obs=0.6478, q_pred=0.6542, dq_obs=+0.0022, dq_pred=+0.0087
-    scale=+0.25: dk=+0.0299, q_obs=0.6522, q_pred=0.6556, dq_obs=+0.0067, dq_pred=+0.0100
-    scale=+0.40: dk=+0.0299, q_obs=0.6589, q_pred=0.6556, dq_obs=+0.0133, dq_pred=+0.0100
-  Seed 11 done in 22.3s
-
-  Seed 23:
-  Baseline: kappa=0.2365, q=0.6333, nearest_pair=(np.int64(3), np.int64(5))
-    scale=-0.40: dk=-0.0946, q_obs=0.6278, q_pred=0.6003, dq_obs=-0.0056, dq_pred=-0.0330
-    scale=-0.25: dk=-0.0591, q_obs=0.6278, q_pred=0.6128, dq_obs=-0.0056, dq_pred=-0.0205
-    scale=-0.10: dk=-0.0236, q_obs=0.6300, q_pred=0.6252, dq_obs=-0.0033, dq_pred=-0.0081
-    scale=+0.00: dk=+0.0000, q_obs=0.6333, q_pred=0.6333, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0236, q_obs=0.6344, q_pred=0.6414, dq_obs=+0.0011, dq_pred=+0.0081
-    scale=+0.25: dk=+0.0591, q_obs=0.6378, q_pred=0.6534, dq_obs=+0.0044, dq_pred=+0.0200
-    scale=+0.40: dk=+0.0774, q_obs=0.6433, q_pred=0.6595, dq_obs=+0.0100, dq_pred=+0.0261
-  Seed 23 done in 22.5s
-
-  Seed 47:
-  Baseline: kappa=0.2546, q=0.6444, nearest_pair=(np.int64(3), np.int64(5))
-    scale=-0.40: dk=-0.1019, q_obs=0.6356, q_pred=0.6093, dq_obs=-0.0089, dq_pred=-0.0352
-    scale=-0.25: dk=-0.0637, q_obs=0.6367, q_pred=0.6226, dq_obs=-0.0078, dq_pred=-0.0218
-    scale=-0.10: dk=-0.0255, q_obs=0.6389, q_pred=0.6358, dq_obs=-0.0056, dq_pred=-0.0087
-    scale=+0.00: dk=+0.0000, q_obs=0.6444, q_pred=0.6444, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0255, q_obs=0.6489, q_pred=0.6530, dq_obs=+0.0044, dq_pred=+0.0086
-    scale=+0.25: dk=+0.0483, q_obs=0.6511, q_pred=0.6606, dq_obs=+0.0067, dq_pred=+0.0162
-    scale=+0.40: dk=+0.0483, q_obs=0.6544, q_pred=0.6606, dq_obs=+0.0100, dq_pred=+0.0162
-  Seed 47 done in 22.5s
-  Saved partial results -> results/cti_dose_response.json
-
---- VIT-LARGE ---
-
-  Seed 11:
-  Baseline: kappa=0.2222, q=0.5967, nearest_pair=(np.int64(3), np.int64(5))
-    scale=-0.40: dk=-0.0889, q_obs=0.5856, q_pred=0.5647, dq_obs=-0.0111, dq_pred=-0.0320
-    scale=-0.25: dk=-0.0555, q_obs=0.5911, q_pred=0.5768, dq_obs=-0.0056, dq_pred=-0.0199
-    scale=-0.10: dk=-0.0222, q_obs=0.5944, q_pred=0.5887, dq_obs=-0.0022, dq_pred=-0.0079
-    scale=+0.00: dk=+0.0000, q_obs=0.5967, q_pred=0.5967, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0222, q_obs=0.6033, q_pred=0.6045, dq_obs=+0.0067, dq_pred=+0.0079
-    scale=+0.25: dk=+0.0479, q_obs=0.6056, q_pred=0.6136, dq_obs=+0.0089, dq_pred=+0.0169
-    scale=+0.40: dk=+0.0479, q_obs=0.6100, q_pred=0.6136, dq_obs=+0.0133, dq_pred=+0.0169
-  Seed 11 done in 33.4s
-
-  Seed 23:
-  Baseline: kappa=0.2017, q=0.5956, nearest_pair=(np.int64(3), np.int64(5))
-    scale=-0.40: dk=-0.0807, q_obs=0.5867, q_pred=0.5665, dq_obs=-0.0089, dq_pred=-0.0290
-    scale=-0.25: dk=-0.0504, q_obs=0.5878, q_pred=0.5775, dq_obs=-0.0078, dq_pred=-0.0181
-    scale=-0.10: dk=-0.0202, q_obs=0.5911, q_pred=0.5884, dq_obs=-0.0044, dq_pred=-0.0072
-    scale=+0.00: dk=+0.0000, q_obs=0.5956, q_pred=0.5956, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0202, q_obs=0.5967, q_pred=0.6027, dq_obs=+0.0011, dq_pred=+0.0072
-    scale=+0.25: dk=+0.0504, q_obs=0.6022, q_pred=0.6134, dq_obs=+0.0067, dq_pred=+0.0178
-    scale=+0.40: dk=+0.0807, q_obs=0.6067, q_pred=0.6239, dq_obs=+0.0111, dq_pred=+0.0284
-  Seed 23 done in 33.5s
-
-  Seed 47:
-  Baseline: kappa=0.2163, q=0.6233, nearest_pair=(np.int64(3), np.int64(5))
-    scale=-0.40: dk=-0.0865, q_obs=0.6178, q_pred=0.5929, dq_obs=-0.0056, dq_pred=-0.0305
-    scale=-0.25: dk=-0.0541, q_obs=0.6200, q_pred=0.6044, dq_obs=-0.0033, dq_pred=-0.0189
-    scale=-0.10: dk=-0.0216, q_obs=0.6200, q_pred=0.6158, dq_obs=-0.0033, dq_pred=-0.0075
-    scale=+0.00: dk=+0.0000, q_obs=0.6233, q_pred=0.6233, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0216, q_obs=0.6267, q_pred=0.6308, dq_obs=+0.0033, dq_pred=+0.0075
-    scale=+0.25: dk=+0.0541, q_obs=0.6322, q_pred=0.6419, dq_obs=+0.0089, dq_pred=+0.0186
-    scale=+0.40: dk=+0.0620, q_obs=0.6389, q_pred=0.6446, dq_obs=+0.0156, dq_pred=+0.0213
-  Seed 47 done in 33.8s
-  Saved partial results -> results/cti_dose_response.json
-
---- RESNET50 ---
-  Extracting ResNet50 features...
-  Loading ResNet50 (ImageNet pretrained)...
-  0%|          | 0.00/170M [00:00<?, ?B/s]  0%|          | 98.3k/170M [00:00<03:31, 806kB/s]  0%|          | 492k/170M [00:00<01:08, 2.48MB/s]  1%|          | 1.05M/170M [00:00<00:56, 2.98MB/s]  1%|          | 1.51M/170M [00:00<00:52, 3.24MB/s]  1%|1         | 2.03M/170M [00:00<00:43, 3.84MB/s]  2%|1         | 2.65M/170M [00:00<00:37, 4.52MB/s]  2%|1         | 3.21M/170M [00:00<00:34, 4.79MB/s]  2%|2         | 3.93M/170M [00:00<00:30, 5.44MB/s]  3%|2         | 4.72M/170M [00:01<00:27, 5.94MB/s]  3%|3         | 5.64M/170M [00:01<00:24, 6.86MB/s]  4%|3         | 6.52M/170M [00:01<00:22, 7.36MB/s]  4%|4         | 7.63M/170M [00:01<00:19, 8.33MB/s]  5%|5         | 9.01M/170M [00:01<00:16, 9.82MB/s]  6%|5         | 10.0M/170M [00:01<00:16, 9.63MB/s]  7%|6         | 11.3M/170M [00:01<00:15, 10.4MB/s]  7%|7         | 12.6M/170M [00:01<00:14, 11.3MB/s]  8%|8         | 14.5M/170M [00:01<00:11, 13.4MB/s] 10%|9         | 16.3M/170M [00:01<00:10, 14.4MB/s] 11%|#         | 18.0M/170M [00:02<00:09, 15.3MB/s] 12%|#1        | 19.9M/170M [00:02<00:09, 16.3MB/s] 13%|#2        | 21.8M/170M [00:02<00:08, 16.9MB/s] 14%|#4        | 24.2M/170M [00:02<00:07, 19.1MB/s] 16%|#5        | 26.8M/170M [00:02<00:06, 21.1MB/s] 17%|#6        | 28.9M/170M [00:02<00:06, 20.4MB/s] 19%|#8        | 31.8M/170M [00:02<00:06, 22.6MB/s] 20%|#9        | 34.0M/170M [00:02<00:06, 22.3MB/s] 21%|##1       | 36.3M/170M [00:02<00:05, 22.4MB/s] 23%|##2       | 38.6M/170M [00:03<00:06, 20.5MB/s] 24%|##4       | 41.3M/170M [00:03<00:05, 22.2MB/s] 26%|##5       | 44.2M/170M [00:03<00:05, 24.1MB/s] 27%|##7       | 46.6M/170M [00:03<00:05, 23.7MB/s] 29%|##8       | 49.2M/170M [00:03<00:05, 24.3MB/s] 30%|###       | 51.7M/170M [00:03<00:04, 24.3MB/s] 32%|###1      | 54.1M/170M [00:03<00:04, 24.0MB/s] 33%|###3      | 56.8M/170M [00:03<00:04, 24.6MB/s] 35%|###5      | 60.4M/170M [00:03<00:03, 27.9MB/s] 38%|###8      | 65.4M/170M [00:03<00:03, 34.3MB/s] 42%|####1     | 70.8M/170M [00:04<00:02, 39.9MB/s] 44%|####4     | 75.2M/170M [00:04<00:02, 41.3MB/s] 47%|####6     | 79.4M/170M [00:04<00:02, 38.8MB/s] 49%|####8     | 83.4M/170M [00:04<00:02, 39.1MB/s] 51%|#####1    | 87.4M/170M [00:04<00:02, 38.5MB/s] 54%|#####3    | 91.3M/170M [00:04<00:02, 37.0MB/s] 57%|#####6    | 96.6M/170M [00:04<00:01, 41.6MB/s] 60%|#####9    | 102M/170M [00:04<00:01, 45.4MB/s]  63%|######2   | 107M/170M [00:04<00:01, 46.6MB/s] 66%|######5   | 112M/170M [00:04<00:01, 47.7MB/s] 69%|######8   | 117M/170M [00:05<00:01, 46.8MB/s] 72%|#######1  | 122M/170M [00:05<00:01, 47.6MB/s] 74%|#######4  | 127M/170M [00:05<00:00, 43.8MB/s] 77%|#######6  | 131M/170M [00:05<00:00, 42.3MB/s] 80%|#######9  | 136M/170M [00:05<00:00, 43.9MB/s] 82%|########2 | 141M/170M [00:05<00:00, 41.2MB/s] 85%|########5 | 145M/170M [00:05<00:00, 42.8MB/s] 88%|########7 | 150M/170M [00:05<00:00, 40.3MB/s] 90%|######### | 154M/170M [00:06<00:00, 37.7MB/s] 93%|#########2| 158M/170M [00:06<00:00, 38.7MB/s] 95%|#########5| 162M/170M [00:06<00:00, 39.1MB/s] 97%|#########7| 166M/170M [00:06<00:00, 36.5MB/s]100%|#########9| 170M/170M [00:06<00:00, 37.8MB/s]100%|##########| 170M/170M [00:06<00:00, 26.3MB/s]
-    ResNet50: batch 1/157 (0s)
-    ResNet50: batch 21/157 (2s)
-    ResNet50: batch 41/157 (3s)
-    ResNet50: batch 61/157 (5s)
-    ResNet50: batch 81/157 (6s)
-    ResNet50: batch 101/157 (8s)
-    ResNet50: batch 121/157 (10s)
-    ResNet50: batch 141/157 (11s)
-  Saved ResNet50 cache: (10000, 2048)
-
-  Seed 11:
-  Baseline: kappa=0.4065, q=0.7411, nearest_pair=(np.int64(3), np.int64(5))
-    scale=-0.40: dk=-0.1626, q_obs=0.7256, q_pred=0.6924, dq_obs=-0.0156, dq_pred=-0.0487
-    scale=-0.25: dk=-0.1016, q_obs=0.7289, q_pred=0.7113, dq_obs=-0.0122, dq_pred=-0.0298
-    scale=-0.10: dk=-0.0406, q_obs=0.7356, q_pred=0.7294, dq_obs=-0.0056, dq_pred=-0.0117
-    scale=+0.00: dk=+0.0000, q_obs=0.7411, q_pred=0.7411, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0406, q_obs=0.7422, q_pred=0.7525, dq_obs=+0.0011, dq_pred=+0.0114
-    scale=+0.25: dk=+0.0883, q_obs=0.7478, q_pred=0.7654, dq_obs=+0.0067, dq_pred=+0.0242
-    scale=+0.40: dk=+0.0883, q_obs=0.7567, q_pred=0.7654, dq_obs=+0.0156, dq_pred=+0.0242
-  Seed 11 done in 57.1s
-
-  Seed 23:
-  Baseline: kappa=0.3842, q=0.7433, nearest_pair=(np.int64(3), np.int64(5))
-    scale=-0.40: dk=-0.1537, q_obs=0.7333, q_pred=0.6977, dq_obs=-0.0100, dq_pred=-0.0456
-    scale=-0.25: dk=-0.0961, q_obs=0.7378, q_pred=0.7153, dq_obs=-0.0056, dq_pred=-0.0280
-    scale=-0.10: dk=-0.0384, q_obs=0.7411, q_pred=0.7324, dq_obs=-0.0022, dq_pred=-0.0110
-    scale=+0.00: dk=+0.0000, q_obs=0.7433, q_pred=0.7433, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0384, q_obs=0.7456, q_pred=0.7540, dq_obs=+0.0022, dq_pred=+0.0107
-    scale=+0.25: dk=+0.0825, q_obs=0.7478, q_pred=0.7659, dq_obs=+0.0044, dq_pred=+0.0226
-    scale=+0.40: dk=+0.0825, q_obs=0.7511, q_pred=0.7659, dq_obs=+0.0078, dq_pred=+0.0226
-  Seed 23 done in 57.4s
-
-  Seed 47:
-  Baseline: kappa=0.3917, q=0.7589, nearest_pair=(np.int64(3), np.int64(5))
-    scale=-0.40: dk=-0.1567, q_obs=0.7478, q_pred=0.7140, dq_obs=-0.0111, dq_pred=-0.0448
-    scale=-0.25: dk=-0.0979, q_obs=0.7578, q_pred=0.7314, dq_obs=-0.0011, dq_pred=-0.0275
-    scale=-0.10: dk=-0.0392, q_obs=0.7578, q_pred=0.7481, dq_obs=-0.0011, dq_pred=-0.0107
-    scale=+0.00: dk=+0.0000, q_obs=0.7589, q_pred=0.7589, dq_obs=+0.0000, dq_pred=+0.0000
-    scale=+0.10: dk=+0.0392, q_obs=0.7600, q_pred=0.7693, dq_obs=+0.0011, dq_pred=+0.0104
-    scale=+0.25: dk=+0.0629, q_obs=0.7622, q_pred=0.7755, dq_obs=+0.0033, dq_pred=+0.0166
-    scale=+0.40: dk=+0.0629, q_obs=0.7633, q_pred=0.7755, dq_obs=+0.0044, dq_pred=+0.0166
-  Seed 47 done in 52.0s
-  Saved partial results -> results/cti_dose_response.json
-
-
-======================================================================
-PASS CRITERIA EVALUATION
-======================================================================
-  [gemma-2-2b] directional: neg=-0.0043, pos=+0.0029 -> PASS
-  [phi-2] directional: neg=-0.0065, pos=+0.0045 -> PASS
-  [mamba-130m] directional: neg=-0.0044, pos=+0.0044 -> PASS
-  [vit-base] directional: neg=-0.0052, pos=+0.0065 -> PASS
-  [vit-large] directional: neg=-0.0058, pos=+0.0084 -> PASS
-  [resnet50] directional: neg=-0.0072, pos=+0.0052 -> PASS
-
-  C1. Directional: 6/6 >= 5 -> PASS
-  C2. Pooled r: 0.8963 >= 0.9 -> FAIL
-  C3. Pooled MAE: 0.0104 <= 0.03 -> PASS
-  C4. Text r: 0.8759 >= 0.85 -> PASS
-  C5. Vision r: 0.9075 >= 0.85 -> PASS
-  C6. Neutral |dq|: 0.0000 <= 0.01 -> PASS
-
-  OVERALL: FAIL
-  Failed criteria: ['C2-r_pooled']
-
-Final results saved -> results/cti_dose_response.json
-
-======================================================================
-DOSE-RESPONSE EXPERIMENT: FAIL
-  r_pooled = 0.8962572314981445
-  mae_pooled = 0.010383797810395888
-  r_text = 0.8758555802661226
-  r_vision = 0.9075064468705957
-  neutral = 0.0
-======================================================================

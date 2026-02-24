@@ -1,26 +1,0 @@
-Device: cuda
-Loading EleutherAI/pythia-160m...
-Loading dbpedia dataset...
-DBpedia: K=14, 70000 samples
-
-Extracting embeddings (N_SAMPLES_PER_CLASS=500)...
-  Class 0: 500 samples  Class 1: 500 samples  Class 2: 500 samples  Class 3: 500 samples  Class 4: 500 samples  Class 5: 500 samples  Class 6: 500 samples  Class 7: 500 samples  Class 8: 500 samples  Class 9: 500 samples  Class 10: 500 samples  Class 11: 500 samples  Class 12: 500 samples  Class 13: 500 samples
-Embedding dim: 768
-
-Computing N_eff for K subsets: [4, 6, 8, 10, 12, 14]
-  K=  4: N_eff_obs=2.662, sqrt(K-1)=1.732, ratio=1.537, n_seeds=20
-  K=  6: N_eff_obs=4.336, sqrt(K-1)=2.236, ratio=1.939, n_seeds=20
-  K=  8: N_eff_obs=5.869, sqrt(K-1)=2.646, ratio=2.218, n_seeds=20
-  K= 10: N_eff_obs=7.472, sqrt(K-1)=3.000, ratio=2.491, n_seeds=20
-  K= 12: N_eff_obs=9.038, sqrt(K-1)=3.317, ratio=2.725, n_seeds=20
-  K= 14: N_eff_obs=10.449, sqrt(K-1)=3.606, ratio=2.898, n_seeds=20
-
-Log-log regression:
-  slope (beta_neff): 0.9339 +/- 0.0050
-  Pearson r: 0.9999, p=0.0000
-
-Pre-registered:
-  PR_SLOPE (in [0.35,0.65]): FAIL (slope=0.9339)
-  PR_R (r >= 0.9): PASS (r=0.9999)
-
-Saved to C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\cti_neff_pairwise.json

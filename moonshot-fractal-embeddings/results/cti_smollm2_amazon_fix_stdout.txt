@@ -1,50 +1,0 @@
-============================================================
-OOD BLIND PREDICTION FIX: amazon_massive via MTEB
-alpha=1.4770, beta=-0.3090 (per-dataset-intercept)
-============================================================
-
-Estimating C_d from partial archs...
-  banking77: loaded 24 pts from partial archs
-  C_banking77 = 0.0167 +/- 0.3344 (24 residuals)
-  amazon_massive: loaded 24 pts from partial archs
-  C_amazon_massive = 0.2608 +/- 0.2735 (24 residuals)
-
-Loading SmolLM2-1.7B...
-Device: cuda
-
-============================================================
-Generating SmolLM2 cache: amazon_massive (MTEB version, English)
-Filter:   0%|          | 0/587214 [00:00<?, ? examples/s]Filter:   5%|5         | 31000/587214 [00:00<00:01, 300269.09 examples/s]Filter:  11%|#         | 63000/587214 [00:00<00:01, 306880.60 examples/s]Filter:  17%|#6        | 99000/587214 [00:00<00:01, 325214.88 examples/s]Filter:  23%|##3       | 136000/587214 [00:00<00:01, 338698.65 examples/s]Filter:  29%|##9       | 171000/587214 [00:00<00:01, 338665.52 examples/s]Filter:  36%|###5      | 209000/587214 [00:00<00:01, 347303.45 examples/s]Filter:  42%|####2     | 247000/587214 [00:00<00:00, 355765.64 examples/s]Filter:  50%|#####     | 296000/587214 [00:00<00:00, 337212.07 examples/s]Filter:  59%|#####8    | 345000/587214 [00:01<00:00, 328190.21 examples/s]Filter:  65%|######4   | 379000/587214 [00:01<00:00, 328088.40 examples/s]Filter:  71%|#######1  | 417000/587214 [00:01<00:00, 339904.23 examples/s]Filter:  80%|########  | 470000/587214 [00:01<00:00, 339950.67 examples/s]Filter:  87%|########6 | 508000/587214 [00:01<00:00, 346920.58 examples/s]Filter:  93%|#########2| 546000/587214 [00:01<00:00, 353471.64 examples/s]Filter:  99%|#########9| 583000/587214 [00:01<00:00, 357352.07 examples/s]Filter: 100%|##########| 587214/587214 [00:01<00:00, 339333.58 examples/s]
-  English samples: 11514
-  K=60, n=11514
-  Layer 6...
-    kappa=0.1451, q_norm=0.497, logit=-0.011
-  Layer 12...
-    kappa=0.0378, q_norm=0.501, logit=0.004
-  Layer 18...
-    kappa=0.0593, q_norm=0.556, logit=0.223
-  Layer 23...
-    kappa=0.3612, q_norm=0.561, logit=0.246
-  Saved: C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\kappa_near_cache_amazon_massive_SmolLM2-1.7B.json
-
-Loaded banking77: 4 pts
-
-============================================================
-BLIND OOD PREDICTION (8 points: banking77 + amazon_massive)
-============================================================
-
-Dataset                Layer  kappa    q_norm   obs_logit    pred_logit   error   
-  amazon_massive         L6     0.1451   0.497    -0.011       -0.785       0.774   
-  amazon_massive         L12    0.0378   0.501    0.004        -0.943       0.948   
-  amazon_massive         L18    0.0593   0.556    0.223        -0.912       1.135   
-  amazon_massive         L23    0.3612   0.561    0.246        -0.466       0.711   
-  banking77              L6     0.1321   0.471    -0.116       -1.126       1.010   
-  banking77              L12    0.0386   0.426    -0.297       -1.265       0.967   
-  banking77              L18    0.0911   0.489    -0.044       -1.187       1.143   
-  banking77              L23    0.3807   0.527    0.109        -0.759       0.868   
-
-Blind OOD prediction: r=0.8170 (p=0.0133), MAE=0.9446
-n=8 data points (2 datasets x 4 layers)
-Pre-registered threshold r>=0.8: PASS
-
-Saved to C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\cti_smollm2_ood_prediction.json

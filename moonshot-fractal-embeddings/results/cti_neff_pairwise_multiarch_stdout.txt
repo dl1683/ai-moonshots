@@ -1,94 +1,0 @@
-Device: cuda
-Loading DBpedia dataset...
-`trust_remote_code` is not supported anymore.
-Please check that the Hugging Face dataset 'dbpedia_14' isn't based on a loading script and remove `trust_remote_code`.
-If the dataset is based on a loading script, please ask the dataset author to remove it and convert it to a standard format like Parquet.
-DBpedia: K=14, 560000 samples
-
-============================================================
-Model: EleutherAI/gpt-neo-125M
-============================================================
-
-Extracting embeddings (N_SAMPLES_PER_CLASS=500)...
-  Class 0/14: 500 samples  Class 1/14: 500 samples  Class 2/14: 500 samples  Class 3/14: 500 samples  Class 4/14: 500 samples  Class 5/14: 500 samples  Class 6/14: 500 samples  Class 7/14: 500 samples  Class 8/14: 500 samples  Class 9/14: 500 samples  Class 10/14: 500 samples  Class 11/14: 500 samples  Class 12/14: 500 samples  Class 13/14: 500 samples
-Embedding dim: 768
-
-Computing N_eff for K subsets: [4, 6, 8, 10, 12, 14]
-  K=  4: N_eff_obs=2.051, sqrt(K-1)=1.732, ratio=1.184, kappa=0.5664
-  K=  6: N_eff_obs=2.980, sqrt(K-1)=2.236, ratio=1.333, kappa=0.4953
-  K=  8: N_eff_obs=3.776, sqrt(K-1)=2.646, ratio=1.427, kappa=0.4774
-  K= 10: N_eff_obs=4.393, sqrt(K-1)=3.000, ratio=1.464, kappa=0.4543
-  K= 12: N_eff_obs=5.162, sqrt(K-1)=3.317, ratio=1.557, kappa=0.4320
-  K= 14: N_eff_obs=5.905, sqrt(K-1)=3.606, ratio=1.638, kappa=0.4230
-
-Log-log regression:
-  slope (N_eff exponent): 0.7112 +/- 0.0112
-  Pearson r: 0.9995, p=0.0000
-
-Pre-registered:
-  PR1 slope in [0.85,1.0]: FAIL (slope=0.7112)
-  PR2 r >= 0.99: PASS (r=0.9995)
-
-============================================================
-Model: allenai/OLMo-1B-hf
-============================================================
-
-Extracting embeddings (N_SAMPLES_PER_CLASS=500)...
-  Class 0/14: 500 samples  Class 1/14: 500 samples  Class 2/14: 500 samples  Class 3/14: 500 samples  Class 4/14: 500 samples  Class 5/14: 500 samples  Class 6/14: 500 samples  Class 7/14: 500 samples  Class 8/14: 500 samples  Class 9/14: 500 samples  Class 10/14: 500 samples  Class 11/14: 500 samples  Class 12/14: 500 samples  Class 13/14: 500 samples
-Embedding dim: 2048
-
-Computing N_eff for K subsets: [4, 6, 8, 10, 12, 14]
-  K=  4: N_eff_obs=2.268, sqrt(K-1)=1.732, ratio=1.309, kappa=0.4337
-  K=  6: N_eff_obs=3.518, sqrt(K-1)=2.236, ratio=1.574, kappa=0.3973
-  K=  8: N_eff_obs=4.597, sqrt(K-1)=2.646, ratio=1.737, kappa=0.3815
-  K= 10: N_eff_obs=5.439, sqrt(K-1)=3.000, ratio=1.813, kappa=0.3669
-  K= 12: N_eff_obs=6.525, sqrt(K-1)=3.317, ratio=1.967, kappa=0.3487
-  K= 14: N_eff_obs=7.508, sqrt(K-1)=3.606, ratio=2.082, kappa=0.3438
-
-Log-log regression:
-  slope (N_eff exponent): 0.8063 +/- 0.0133
-  Pearson r: 0.9995, p=0.0000
-
-Pre-registered:
-  PR1 slope in [0.85,1.0]: FAIL (slope=0.8063)
-  PR2 r >= 0.99: PASS (r=0.9995)
-
-============================================================
-Model: Qwen/Qwen3-0.6B
-============================================================
-
-Extracting embeddings (N_SAMPLES_PER_CLASS=500)...
-  Class 0/14: 500 samples  Class 1/14: 500 samples  Class 2/14: 500 samples  Class 3/14: 500 samples  Class 4/14: 500 samples  Class 5/14: 500 samples  Class 6/14: 500 samples  Class 7/14: 500 samples  Class 8/14: 500 samples  Class 9/14: 500 samples  Class 10/14: 500 samples  Class 11/14: 500 samples  Class 12/14: 500 samples  Class 13/14: 500 samples
-Embedding dim: 1024
-
-Computing N_eff for K subsets: [4, 6, 8, 10, 12, 14]
-  K=  4: N_eff_obs=2.287, sqrt(K-1)=1.732, ratio=1.321, kappa=0.4137
-  K=  6: N_eff_obs=3.451, sqrt(K-1)=2.236, ratio=1.543, kappa=0.3749
-  K=  8: N_eff_obs=4.539, sqrt(K-1)=2.646, ratio=1.716, kappa=0.3571
-  K= 10: N_eff_obs=5.402, sqrt(K-1)=3.000, ratio=1.801, kappa=0.3417
-  K= 12: N_eff_obs=6.409, sqrt(K-1)=3.317, ratio=1.932, kappa=0.3227
-  K= 14: N_eff_obs=7.352, sqrt(K-1)=3.606, ratio=2.039, kappa=0.3182
-
-Log-log regression:
-  slope (N_eff exponent): 0.7914 +/- 0.0077
-  Pearson r: 0.9998, p=0.0000
-
-Pre-registered:
-  PR1 slope in [0.85,1.0]: FAIL (slope=0.7914)
-  PR2 r >= 0.99: PASS (r=0.9998)
-
-============================================================
-CROSS-ARCHITECTURE SUMMARY
-============================================================
-Baseline (pythia-160m): slope=0.9339
-  EleutherAI/gpt-neo-125M: slope=0.7112, r=0.9995, [FAIL]
-  allenai/OLMo-1B-hf: slope=0.8063, r=0.9995, [FAIL]
-  Qwen/Qwen3-0.6B: slope=0.7914, r=0.9998, [FAIL]
-All slopes: ['0.9339', '0.7112', '0.8063', '0.7914']
-CV across all 4 architectures: 0.0984 (PASS threshold=0.1)
-
-OVERALL VERDICT: FAIL
-  PR1+PR2 pass: 0/3 architectures
-  PR3 (CV<10%): PASS
-
-Saved to C:\Users\devan\OneDrive\Desktop\Projects\AI Moonshots\moonshot-fractal-embeddings\src\..\results\cti_neff_pairwise_multiarch.json
