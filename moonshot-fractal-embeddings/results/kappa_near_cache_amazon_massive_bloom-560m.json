@@ -1,0 +1,46 @@
+[
+  {
+    "model": "bloom-560m",
+    "dataset": "amazon_massive",
+    "layer": 6,
+    "K": 60,
+    "q": 0.023157894736842106,
+    "kappa_nearest": 0.05477051123028919,
+    "kappa_min": 0.0,
+    "logit_q": -3.7419892794278846,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "bloom-560m",
+    "dataset": "amazon_massive",
+    "layer": 12,
+    "K": 60,
+    "q": 0.023157894736842106,
+    "kappa_nearest": 0.06246303954668132,
+    "kappa_min": 0.0,
+    "logit_q": -3.7419892794278846,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "bloom-560m",
+    "dataset": "amazon_massive",
+    "layer": 18,
+    "K": 60,
+    "q": 0.02824561403508772,
+    "kappa_nearest": 0.0977964452693312,
+    "kappa_min": 0.0,
+    "logit_q": -3.538164893048641,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "bloom-560m",
+    "dataset": "amazon_massive",
+    "layer": 24,
+    "K": 60,
+    "q": 0.023157894736842106,
+    "kappa_nearest": 0.03328153703389712,
+    "kappa_min": 0.0,
+    "logit_q": -3.7419892794278846,
+    "logKm1": 4.07753744390572
+  }
+]

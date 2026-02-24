@@ -32,14 +32,14 @@ OUTPUT_PATH = os.path.join(RESULTS_DIR, "cti_utility_revised.json")
 ENCODER_MODELS = {
     "bert-base-uncased", "bge-base-v1.5", "deberta-base", "electra-small",
     "bge-small-en-v1.5", "bge-large-en-v1.5",
-    "roberta-base", "distilbert-base-uncased",
+    "roberta-base", "distilbert-base-uncased", "albert-base-v2",
 }
 DECODER_MODELS = {
     "gpt-neo-125m", "gpt2", "pythia-160m", "pythia-410m", "pythia-1b",
     "Qwen2.5-0.5B", "Qwen3-0.6B", "Qwen3-1.7B", "Mistral-7B-v0.3",
     "OLMo-1B-hf", "phi2", "TinyLlama-1.1B-intermediate-step-1431k-3T",
     "SmolLM2-1.7B",
-    "opt-125m", "pythia-2.8b", "stablelm-3b-4e1t", "gemma-3-1b",
+    "opt-125m", "pythia-2.8b", "stablelm-3b-4e1t", "gemma-3-1b", "bloom-560m",
 }
 SSM_MODELS = {"mamba-130m", "rwkv-4-169m-pile"}
 HYBRID_MODELS = {"Falcon-H1-0.5B-Base"}
@@ -770,6 +770,7 @@ def test_mixed_effects_decomposition(pts, family_alphas):
 HOLDOUT_MODELS = {
     "gemma-3-1b", "roberta-base", "distilbert-base-uncased",
     "opt-125m", "pythia-2.8b", "stablelm-3b-4e1t",
+    "albert-base-v2", "bloom-560m",
 }
 TRAINING_MODELS = set(MODEL_META.keys())
 
@@ -845,9 +846,11 @@ def test_prospective_blind(pts, family_alphas):
         "gemma-3-1b": {"params_m": 1000, "family": "decoder"},
         "roberta-base": {"params_m": 125, "family": "encoder"},
         "distilbert-base-uncased": {"params_m": 66, "family": "encoder"},
+        "albert-base-v2": {"params_m": 12, "family": "encoder"},
         "opt-125m": {"params_m": 125, "family": "decoder"},
         "pythia-2.8b": {"params_m": 2800, "family": "decoder"},
         "stablelm-3b-4e1t": {"params_m": 3000, "family": "decoder"},
+        "bloom-560m": {"params_m": 560, "family": "decoder"},
     }
 
     predictions = []
@@ -865,7 +868,8 @@ def test_prospective_blind(pts, family_alphas):
         for ds, pt in ds_dict.items():
             K = pt["K"]
             q_norm_actual = (pt["q"] - 1.0 / K) / (1.0 - 1.0 / K)
-            if q_norm_actual <= 0.001:
+            # Pre-registered exclusion: q_actual <= 0.01 or q_actual >= 0.99
+            if q_norm_actual <= 0.01 or q_norm_actual >= 0.99:
                 continue
             c_d = C_d.get(ds, 0)
 
@@ -889,7 +893,7 @@ def test_prospective_blind(pts, family_alphas):
                 "q_norm_pred_simple": q_norm_pred_simple,
                 "error_full": abs(q_norm_pred - q_norm_actual),
                 "error_simple": abs(q_norm_pred_simple - q_norm_actual),
-                "logit_actual": float(sp_logit(q_norm_actual)) if 0.01 < q_norm_actual < 0.99 else float("nan"),
+                "logit_actual": float(sp_logit(np.clip(q_norm_actual, 0.001, 0.999))),
                 "logit_pred": logit_pred,
             })
 
@@ -1174,7 +1178,7 @@ def main():
     # =========================================================
     # H8: Prospective blind test on holdout models
     # =========================================================
-    print("\n--- H8: Prospective blind test (6 holdout models, factorized design) ---")
+    print("\n--- H8: Prospective blind test (8 holdout models, factorized H8+ design) ---")
     h8_results = test_prospective_blind(pts, family_alphas)
     if "error" not in h8_results:
         print(f"  N predictions: {h8_results['n_predictions']}")

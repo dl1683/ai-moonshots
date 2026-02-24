@@ -1,0 +1,46 @@
+[
+  {
+    "model": "albert-base-v2",
+    "dataset": "emotion",
+    "layer": 3,
+    "K": 6,
+    "q": 0.202,
+    "kappa_nearest": 0.20842184027911692,
+    "kappa_min": 0.16473239617835822,
+    "logit_q": -1.373840900048604,
+    "logKm1": 1.6094379124341003
+  },
+  {
+    "model": "albert-base-v2",
+    "dataset": "emotion",
+    "layer": 6,
+    "K": 6,
+    "q": 0.19,
+    "kappa_nearest": 0.20064862951686946,
+    "kappa_min": 0.16927142535556208,
+    "logit_q": -1.4500101755059984,
+    "logKm1": 1.6094379124341003
+  },
+  {
+    "model": "albert-base-v2",
+    "dataset": "emotion",
+    "layer": 9,
+    "K": 6,
+    "q": 0.13600000000000004,
+    "kappa_nearest": 0.2163701054995741,
+    "kappa_min": 0.19932319007544624,
+    "logit_q": -1.8489178830680033,
+    "logKm1": 1.6094379124341003
+  },
+  {
+    "model": "albert-base-v2",
+    "dataset": "emotion",
+    "layer": 12,
+    "K": 6,
+    "q": 0.07000000000000002,
+    "kappa_nearest": 0.20754579704284395,
+    "kappa_min": 0.18278152496446254,
+    "logit_q": -2.5866893440979424,
+    "logKm1": 1.6094379124341003
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "model": "stablelm-3b-4e1t",
+    "dataset": "amazon_massive",
+    "layer": 8,
+    "K": 60,
+    "q": 0.2012280701754386,
+    "kappa_nearest": 0.11466933609060939,
+    "kappa_min": 0.015388517782830326,
+    "logit_q": -1.3786365182054117,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "stablelm-3b-4e1t",
+    "dataset": "amazon_massive",
+    "layer": 16,
+    "K": 60,
+    "q": 0.2571929824561404,
+    "kappa_nearest": 0.06658137089999784,
+    "kappa_min": 0.028916863413442444,
+    "logit_q": -1.0606095692482134,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "stablelm-3b-4e1t",
+    "dataset": "amazon_massive",
+    "layer": 24,
+    "K": 60,
+    "q": 0.32333333333333336,
+    "kappa_nearest": 0.10163594466503331,
+    "kappa_min": 0.06852292345090046,
+    "logit_q": -0.7384950005384043,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "stablelm-3b-4e1t",
+    "dataset": "amazon_massive",
+    "layer": 32,
+    "K": 60,
+    "q": 0.5217543859649123,
+    "kappa_nearest": 0.7202859428308556,
+    "kappa_min": 0.46757859234671917,
+    "logit_q": 0.08707251476362247,
+    "logKm1": 4.07753744390572
+  }
+]

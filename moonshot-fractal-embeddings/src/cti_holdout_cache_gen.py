@@ -1,16 +1,21 @@
 #!/usr/bin/env python -u
 """
-Generate kappa_nearest cache for HOLDOUT models (factorized prospective test).
-Temporary script — delete after generating cache files.
+Generate kappa_nearest cache for HOLDOUT models (H8+ expanded factorized test).
 
-Models (all UNSEEN during CTI law fitting):
-  1. roberta-base        (encoder, 125M, 12L)  — encoder generalization
-  2. distilbert-base-uncased (encoder, 66M, 6L)  — smaller encoder
-  3. facebook/opt-125m   (decoder/OPT, 125M, 12L) — new decoder family
-  4. EleutherAI/pythia-2.8b (decoder, 2.8B, 32L) — scaling test
-  5. stabilityai/stablelm-3b-4e1t (decoder, 3B, 32L) — new decoder family
+Pre-registered at commit 719da25 (PREREGISTRATION_expanded_holdout_h8plus.md).
+Target: 8 models x 8 datasets = 64 predictions.
 
-Datasets: agnews (K=4), dbpedia (K=14), 20newsgroups (K=20), go_emotions (K=28)
+Models (all UNSEEN during CTI law training):
+  1. roberta-base          (encoder, 125M, 12L)
+  2. distilbert-base-uncased (encoder, 66M, 6L)
+  3. albert-base-v2        (encoder/ALBERT, 12M, 12L) — NEW family
+  4. facebook/opt-125m     (decoder/OPT, 125M, 12L)
+  5. EleutherAI/pythia-2.8b (decoder/Pythia, 2.8B, 32L)
+  6. stabilityai/stablelm-3b-4e1t (decoder/StableLM, 3B, 32L)
+  7. gemma-3-1b            (decoder/Gemma, 1B, 26L)
+  8. bigscience/bloom-560m (decoder/BLOOM, 560M, 24L) — NEW family
+
+Datasets: 4 core + 4 extended = 8 total
 """
 
 import json, os, sys, time, gc
@@ -28,22 +33,32 @@ print(f"Device: {DEVICE}", flush=True)
 BATCH_SIZE = 64
 CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "results")
 
-# 4 core datasets (identical to cti_kappa_nearest_universal.py)
+# 8 datasets: 4 core + 4 extended (matching training pipeline configs)
 DATASETS = {
+    # Core 4
     "agnews":       {"hf_name": "fancyzhx/ag_news",    "text_col": "text",    "label_col": "label",       "K": 4,  "n_sample": 1000},
     "dbpedia":      {"hf_name": "fancyzhx/dbpedia_14", "text_col": "content", "label_col": "label",       "K": 14, "n_sample": 1000},
     "20newsgroups": {"hf_name": "SetFit/20_newsgroups", "text_col": "text",   "label_col": "label_text",  "K": 20, "n_sample": 1000},
     "go_emotions":  {"hf_name": "google-research-datasets/go_emotions", "hf_cfg": "simplified",
                      "text_col": "text", "label_col": "labels", "K": 28, "n_sample": 1000, "multilabel": True},
+    # Extended 4
+    "banking77":       {"hf_name": "mteb/banking77",         "text_col": "text", "label_col": "label", "K": 77, "n_sample": 1500},
+    "emotion":         {"hf_name": "dair-ai/emotion",        "text_col": "text", "label_col": "label", "K": 6,  "n_sample": 1000},
+    "yahoo":           {"hf_name": "yahoo_answers_topics",   "text_col": "question_content", "label_col": "topic", "K": 10, "n_sample": 1000},
+    "amazon_massive":  {"hf_name": "mteb/amazon_massive_intent", "text_col": "text", "label_col": "label", "K": 60, "n_sample": 1000,
+                        "filter_lang": "en"},
 }
 
 # (hf_id, short_name, layers_at_25_50_75_100_pct)
 HOLDOUT_MODELS = [
     ("roberta-base",                      "roberta-base",           [3, 6, 9, 12]),
     ("distilbert-base-uncased",           "distilbert-base-uncased", [2, 3, 5, 6]),
+    ("albert-base-v2",                    "albert-base-v2",         [3, 6, 9, 12]),
     ("facebook/opt-125m",                 "opt-125m",               [3, 6, 9, 12]),
     ("EleutherAI/pythia-2.8b",            "pythia-2.8b",            [8, 16, 24, 32]),
     ("stabilityai/stablelm-3b-4e1t",      "stablelm-3b-4e1t",      [8, 16, 24, 32]),
+    ("google/gemma-3-1b-pt",              "gemma-3-1b",             [5, 12, 19, 25]),
+    ("bigscience/bloom-560m",             "bloom-560m",             [6, 12, 18, 24]),
 ]
 
 
@@ -56,11 +71,22 @@ def load_dataset_texts_labels(dataset_name, config):
     hf_cfg = config.get("hf_cfg")
     multilabel = config.get("multilabel", False)
 
+    filter_lang = config.get("filter_lang")
+
     try:
         if hf_cfg:
             ds = hf_load_dataset(hf_name, hf_cfg, split="test")
         else:
-            ds = hf_load_dataset(hf_name, split="test")
+            # Try test split first, fall back to train
+            try:
+                ds = hf_load_dataset(hf_name, split="test")
+            except Exception:
+                ds = hf_load_dataset(hf_name, split="train")
+
+        # Filter by language if needed (amazon_massive)
+        if filter_lang:
+            ds = ds.filter(lambda x: x.get("lang", x.get("language", "")) == filter_lang)
+
         texts = [str(x[text_col]) for x in ds]
         labels_raw = [x[label_col] for x in ds]
     except Exception as e:

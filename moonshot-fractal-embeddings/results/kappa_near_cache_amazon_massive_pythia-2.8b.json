@@ -1,0 +1,46 @@
+[
+  {
+    "model": "pythia-2.8b",
+    "dataset": "amazon_massive",
+    "layer": 8,
+    "K": 60,
+    "q": 0.3335087719298246,
+    "kappa_nearest": 0.17039231573366054,
+    "kappa_min": 0.09601656547415473,
+    "logit_q": -0.6923578106991962,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "pythia-2.8b",
+    "dataset": "amazon_massive",
+    "layer": 16,
+    "K": 60,
+    "q": 0.4047368421052632,
+    "kappa_nearest": 0.25283237748009085,
+    "kappa_min": 0.11724539621263279,
+    "logit_q": -0.38576650661047635,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "pythia-2.8b",
+    "dataset": "amazon_massive",
+    "layer": 24,
+    "K": 60,
+    "q": 0.47596491228070176,
+    "kappa_nearest": 0.4073261131324295,
+    "kappa_min": 0.2710531127052578,
+    "logit_q": -0.09621450555717816,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "pythia-2.8b",
+    "dataset": "amazon_massive",
+    "layer": 32,
+    "K": 60,
+    "q": 0.46578947368421053,
+    "kappa_nearest": 0.6712501731158762,
+    "kappa_min": 0.46494780902334865,
+    "logit_q": -0.13705624646795814,
+    "logKm1": 4.07753744390572
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "model": "albert-base-v2",
+    "dataset": "agnews",
+    "layer": 3,
+    "K": 4,
+    "q": 0.6533333333333333,
+    "kappa_nearest": 0.4362851601931536,
+    "kappa_min": 0.3687919061019899,
+    "logit_q": 0.6337237600891445,
+    "logKm1": 1.0986122886681098
+  },
+  {
+    "model": "albert-base-v2",
+    "dataset": "agnews",
+    "layer": 6,
+    "K": 4,
+    "q": 0.68,
+    "kappa_nearest": 0.424717276377998,
+    "kappa_min": 0.36743214459078605,
+    "logit_q": 0.7537718023763803,
+    "logKm1": 1.0986122886681098
+  },
+  {
+    "model": "albert-base-v2",
+    "dataset": "agnews",
+    "layer": 9,
+    "K": 4,
+    "q": 0.68,
+    "kappa_nearest": 0.4394130283470894,
+    "kappa_min": 0.3798315081170786,
+    "logit_q": 0.7537718023763803,
+    "logKm1": 1.0986122886681098
+  },
+  {
+    "model": "albert-base-v2",
+    "dataset": "agnews",
+    "layer": 12,
+    "K": 4,
+    "q": 0.6733333333333333,
+    "kappa_nearest": 0.5989179290202107,
+    "kappa_min": 0.4889773864498919,
+    "logit_q": 0.7233002187306328,
+    "logKm1": 1.0986122886681098
+  }
+]

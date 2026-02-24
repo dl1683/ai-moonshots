@@ -1,0 +1,46 @@
+[
+  {
+    "model": "albert-base-v2",
+    "dataset": "banking77",
+    "layer": 3,
+    "K": 77,
+    "q": 0.4326315789473684,
+    "kappa_nearest": 0.6923683023915295,
+    "kappa_min": 0.5053697341248328,
+    "logit_q": -0.27112235641276244,
+    "logKm1": 4.330733340286331
+  },
+  {
+    "model": "albert-base-v2",
+    "dataset": "banking77",
+    "layer": 6,
+    "K": 77,
+    "q": 0.4579605263157895,
+    "kappa_nearest": 0.6703809977727154,
+    "kappa_min": 0.49054580968903233,
+    "logit_q": -0.16855583514692338,
+    "logKm1": 4.330733340286331
+  },
+  {
+    "model": "albert-base-v2",
+    "dataset": "banking77",
+    "layer": 9,
+    "K": 77,
+    "q": 0.4225,
+    "kappa_nearest": 0.6684323125901779,
+    "kappa_min": 0.4443359300173385,
+    "logit_q": -0.3125189955987201,
+    "logKm1": 4.330733340286331
+  },
+  {
+    "model": "albert-base-v2",
+    "dataset": "banking77",
+    "layer": 12,
+    "K": 77,
+    "q": 0.41236842105263155,
+    "kappa_nearest": 0.6929776145440648,
+    "kappa_min": 0.4859944023995697,
+    "logit_q": -0.3541830094841373,
+    "logKm1": 4.330733340286331
+  }
+]

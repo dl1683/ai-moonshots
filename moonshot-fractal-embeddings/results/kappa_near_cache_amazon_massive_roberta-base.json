@@ -1,0 +1,46 @@
+[
+  {
+    "model": "roberta-base",
+    "dataset": "amazon_massive",
+    "layer": 3,
+    "K": 60,
+    "q": 0.5624561403508771,
+    "kappa_nearest": 0.6959866230461002,
+    "kappa_min": 0.42777579522116865,
+    "logit_q": 0.2511362069295161,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "roberta-base",
+    "dataset": "amazon_massive",
+    "layer": 6,
+    "K": 60,
+    "q": 0.5675438596491228,
+    "kappa_nearest": 0.6756545961486768,
+    "kappa_min": 0.459682495717086,
+    "logit_q": 0.27183712045821046,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "roberta-base",
+    "dataset": "amazon_massive",
+    "layer": 9,
+    "K": 60,
+    "q": 0.5929824561403508,
+    "kappa_nearest": 0.7118566249801034,
+    "kappa_min": 0.5121068745607602,
+    "logit_q": 0.37630852381670865,
+    "logKm1": 4.07753744390572
+  },
+  {
+    "model": "roberta-base",
+    "dataset": "amazon_massive",
+    "layer": 12,
+    "K": 60,
+    "q": 0.5624561403508771,
+    "kappa_nearest": 0.6691793218280402,
+    "kappa_min": 0.4950822425230283,
+    "logit_q": 0.2511362069295161,
+    "logKm1": 4.07753744390572
+  }
+]
