@@ -3,17 +3,21 @@
 Generate kappa_nearest cache for HOLDOUT models (H8+ expanded factorized test).
 
 Pre-registered at commit 719da25 (PREREGISTRATION_expanded_holdout_h8plus.md).
-Target: 8 models x 8 datasets = 64 predictions.
+Target: 12 models x 8 datasets = 96 predictions.
 
 Models (all UNSEEN during CTI law training):
   1. roberta-base          (encoder, 125M, 12L)
   2. distilbert-base-uncased (encoder, 66M, 6L)
-  3. albert-base-v2        (encoder/ALBERT, 12M, 12L) — NEW family
+  3. albert-base-v2        (encoder/ALBERT, 12M, 12L)
   4. facebook/opt-125m     (decoder/OPT, 125M, 12L)
   5. EleutherAI/pythia-2.8b (decoder/Pythia, 2.8B, 32L)
   6. stabilityai/stablelm-3b-4e1t (decoder/StableLM, 3B, 32L)
   7. gemma-3-1b            (decoder/Gemma, 1B, 26L)
-  8. bigscience/bloom-560m (decoder/BLOOM, 560M, 24L) — NEW family
+  8. bigscience/bloom-560m (decoder/BLOOM, 560M, 24L)
+  9. meta-llama/Llama-3.2-1B (decoder/Llama, 1B, 16L) — NEW family
+ 10. microsoft/phi-1_5      (decoder/Phi, 1.3B, 24L) — NEW family
+ 11. Qwen/Qwen2.5-1.5B     (decoder/Qwen, 1.5B, 28L) — size generalization
+ 12. tiiuae/falcon-rw-1b    (decoder/Falcon, 1B, 24L) — NEW family
 
 Datasets: 4 core + 4 extended = 8 total
 """
@@ -59,6 +63,11 @@ HOLDOUT_MODELS = [
     ("stabilityai/stablelm-3b-4e1t",      "stablelm-3b-4e1t",      [8, 16, 24, 32]),
     ("google/gemma-3-1b-pt",              "gemma-3-1b",             [5, 12, 19, 25]),
     ("bigscience/bloom-560m",             "bloom-560m",             [6, 12, 18, 24]),
+    # Round 2: 4 more models to push n > 60
+    ("meta-llama/Llama-3.2-1B",           "llama-3.2-1b",          [4, 8, 12, 16]),
+    ("microsoft/phi-1_5",                 "phi-1.5",               [6, 12, 18, 24]),
+    ("Qwen/Qwen2.5-1.5B",                "qwen2.5-1.5b",          [7, 14, 21, 28]),
+    ("tiiuae/falcon-rw-1b",              "falcon-rw-1b",           [6, 12, 18, 24]),
 ]
 
 

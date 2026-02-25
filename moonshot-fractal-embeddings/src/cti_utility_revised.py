@@ -40,6 +40,7 @@ DECODER_MODELS = {
     "OLMo-1B-hf", "phi2", "TinyLlama-1.1B-intermediate-step-1431k-3T",
     "SmolLM2-1.7B",
     "opt-125m", "pythia-2.8b", "stablelm-3b-4e1t", "gemma-3-1b", "bloom-560m",
+    "phi-1.5", "qwen2.5-1.5b", "falcon-rw-1b",
 }
 SSM_MODELS = {"mamba-130m", "rwkv-4-169m-pile"}
 HYBRID_MODELS = {"Falcon-H1-0.5B-Base"}
@@ -771,6 +772,7 @@ HOLDOUT_MODELS = {
     "gemma-3-1b", "roberta-base", "distilbert-base-uncased",
     "opt-125m", "pythia-2.8b", "stablelm-3b-4e1t",
     "albert-base-v2", "bloom-560m",
+    "phi-1.5", "qwen2.5-1.5b", "falcon-rw-1b",
 }
 TRAINING_MODELS = set(MODEL_META.keys())
 
@@ -851,6 +853,9 @@ def test_prospective_blind(pts, family_alphas):
         "pythia-2.8b": {"params_m": 2800, "family": "decoder"},
         "stablelm-3b-4e1t": {"params_m": 3000, "family": "decoder"},
         "bloom-560m": {"params_m": 560, "family": "decoder"},
+        "phi-1.5": {"params_m": 1300, "family": "decoder"},
+        "qwen2.5-1.5b": {"params_m": 1500, "family": "decoder"},
+        "falcon-rw-1b": {"params_m": 1000, "family": "decoder"},
     }
 
     predictions = []
@@ -1178,7 +1183,7 @@ def main():
     # =========================================================
     # H8: Prospective blind test on holdout models
     # =========================================================
-    print("\n--- H8: Prospective blind test (8 holdout models, factorized H8+ design) ---")
+    print("\n--- H8: Prospective blind test (11 holdout models, expanded H8+ design) ---")
     h8_results = test_prospective_blind(pts, family_alphas)
     if "error" not in h8_results:
         print(f"  N predictions: {h8_results['n_predictions']}")

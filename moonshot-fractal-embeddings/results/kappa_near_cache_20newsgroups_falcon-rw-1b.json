@@ -1,0 +1,46 @@
+[
+  {
+    "model": "falcon-rw-1b",
+    "dataset": "20newsgroups",
+    "layer": 6,
+    "K": 20,
+    "q": 0.2315789473684211,
+    "kappa_nearest": 0.02730953212810222,
+    "kappa_min": 0.012998560108714856,
+    "logit_q": -1.1994169877900749,
+    "logKm1": 2.9444389791664403
+  },
+  {
+    "model": "falcon-rw-1b",
+    "dataset": "20newsgroups",
+    "layer": 12,
+    "K": 20,
+    "q": 0.2947368421052632,
+    "kappa_nearest": 0.08094800086445059,
+    "kappa_min": 0.01756618798918994,
+    "logit_q": -0.872488109215762,
+    "logKm1": 2.9444389791664403
+  },
+  {
+    "model": "falcon-rw-1b",
+    "dataset": "20newsgroups",
+    "layer": 18,
+    "K": 20,
+    "q": 0.4,
+    "kappa_nearest": 0.07817016085473709,
+    "kappa_min": 0.04617759802514364,
+    "logit_q": -0.4054651081081643,
+    "logKm1": 2.9444389791664403
+  },
+  {
+    "model": "falcon-rw-1b",
+    "dataset": "20newsgroups",
+    "layer": 24,
+    "K": 20,
+    "q": 0.4421052631578947,
+    "kappa_nearest": 0.39618754630541275,
+    "kappa_min": 0.2760841274010937,
+    "logit_q": -0.23262229526875347,
+    "logKm1": 2.9444389791664403
+  }
+]

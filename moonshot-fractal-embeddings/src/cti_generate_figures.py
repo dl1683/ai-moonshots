@@ -562,6 +562,7 @@ def make_figure5():
         "roberta-base": "encoder", "bloom-560m": "decoder",
         "gemma-3-1b": "decoder", "opt-125m": "decoder",
         "pythia-2.8b": "decoder", "stablelm-3b-4e1t": "decoder",
+        "phi-1.5": "decoder", "qwen2.5-1.5b": "decoder", "falcon-rw-1b": "decoder",
     }
     FAM_COLOR = {"encoder": "#1f77b4", "decoder": "#ff7f0e"}
     FAM_MARKER = {"encoder": "s", "decoder": "o"}
@@ -602,7 +603,8 @@ def make_figure5():
 
     ax.set_xlabel("Actual $q_{\\mathrm{norm}}$", fontsize=11)
     ax.set_ylabel("Predicted $q_{\\mathrm{norm}}$", fontsize=11)
-    ax.set_title("H8+ Expanded Holdout: 8 Models $\\times$ 8 Datasets ($n=54$)", fontsize=11)
+    n_models = len(set(p["model"] for p in preds))
+    ax.set_title(f"H8+ Expanded Holdout: {n_models} Models $\\times$ 8 Datasets ($n={len(preds)}$)", fontsize=11)
     ax.set_xlim(-0.02, 1.02)
     ax.set_ylim(-0.02, 1.02)
     ax.set_aspect("equal")
