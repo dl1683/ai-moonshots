@@ -292,7 +292,9 @@ outlier rate$=5.6\%$ (H8f: $\leq10\%$).
 
 \emph{Sensitivity analysis.}
 Restricting to the moderate regime $q\in[0.05,0.95]$ improves $r$ to 0.907 ($n=52$); excluding two pathological models (bloom-560m, near-chance on 4/8 datasets; gemma-3-1b, catastrophic on DBpedia) yields $r=0.946$ ($n=46$, MAE$=0.066$).
-Pointwise MAE is close to the dataset-mean baseline (CTI 0.081 vs.\ baseline 0.084), confirming that the law captures \emph{mechanistic ordering} rather than high-precision calibration; the geometric signal (kappa) explains within-dataset architecture variation that dataset means cannot, while cross-dataset variance is dominated by $C_d$.
+Pointwise MAE is close to the dataset-mean baseline (CTI 0.081 vs.\ baseline 0.084), confirming that the law captures \emph{mechanistic ordering} rather than high-precision calibration.
+CTI's unique value emerges in within-dataset architecture ranking: on the four datasets with meaningful cross-architecture variation (spread${}>0.20$), CTI achieves mean Spearman $\rho=0.698$ (20newsgroups: $0.929$, Amazon Massive: $0.826$, DBpedia: $0.607$, Banking77: $0.429$), while the dataset-mean baseline provides $\rho=0$ by definition.
+Cross-dataset variance is dominated by $C_d$; the geometric signal ($\kappa$) captures within-dataset architecture variation that dataset means cannot.
 Full per-model tables appear in the appendix (Table~\ref{tab:h8plus-detail}; Figure~\ref{fig:h8plus}).
 
 \begin{figure}[t]
