@@ -549,6 +549,72 @@ def make_figure4():
     print(f"Saved: {out}")
 
 
+# ══════════════════════════════════════════════════════════════════════════════
+# FIGURE 5 – H8+ Expanded Holdout: predicted vs actual q_norm
+# ══════════════════════════════════════════════════════════════════════════════
+def make_figure5():
+    """Scatter: predicted vs actual q_norm for 54 holdout predictions."""
+    data = load("cti_utility_revised.json")
+    preds = data["h8_prospective_blind"]["per_prediction"]
+
+    FAMILY_MAP = {
+        "albert-base-v2": "encoder", "distilbert-base-uncased": "encoder",
+        "roberta-base": "encoder", "bloom-560m": "decoder",
+        "gemma-3-1b": "decoder", "opt-125m": "decoder",
+        "pythia-2.8b": "decoder", "stablelm-3b-4e1t": "decoder",
+    }
+    FAM_COLOR = {"encoder": "#1f77b4", "decoder": "#ff7f0e"}
+    FAM_MARKER = {"encoder": "s", "decoder": "o"}
+
+    fig, ax = plt.subplots(figsize=(6, 5.5))
+
+    for p in preds:
+        fam = FAMILY_MAP.get(p["model"], "decoder")
+        ax.scatter(p["q_norm_actual"], p["q_norm_pred_full"],
+                   c=FAM_COLOR[fam], marker=FAM_MARKER[fam],
+                   s=50, alpha=0.7, edgecolors="black", linewidths=0.4, zorder=4)
+
+    # Diagonal
+    ax.plot([0, 1], [0, 1], "k--", lw=1.5, alpha=0.5, label="Perfect prediction")
+
+    # Annotate top outliers
+    sorted_p = sorted(preds, key=lambda x: x["error_full"], reverse=True)
+    for p in sorted_p[:3]:
+        ax.annotate(f"{p['model']}\n{p['dataset']}",
+                    (p["q_norm_actual"], p["q_norm_pred_full"]),
+                    textcoords="offset points", xytext=(8, -8), fontsize=6.5,
+                    arrowprops=dict(arrowstyle="-", color="gray", lw=0.5))
+
+    # Legend
+    legend_elements = [
+        Line2D([0], [0], marker="s", color="w", markerfacecolor="#1f77b4",
+               markersize=8, label=f"Encoder (n={sum(1 for p in preds if FAMILY_MAP.get(p['model'])=='encoder')})"),
+        Line2D([0], [0], marker="o", color="w", markerfacecolor="#ff7f0e",
+               markersize=8, label=f"Decoder (n={sum(1 for p in preds if FAMILY_MAP.get(p['model'])=='decoder')})"),
+    ]
+    ax.legend(handles=legend_elements, loc="upper left", fontsize=9)
+
+    r_val = data["h8_prospective_blind"]["logit_pearson_r"]
+    mae_val = data["h8_prospective_blind"]["mae_full_model"]
+    ax.text(0.95, 0.05, f"$r(\\mathrm{{logit}})={r_val:.3f}$\nMAE$={mae_val:.3f}$",
+            transform=ax.transAxes, ha="right", va="bottom", fontsize=10,
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="lightyellow", alpha=0.8))
+
+    ax.set_xlabel("Actual $q_{\\mathrm{norm}}$", fontsize=11)
+    ax.set_ylabel("Predicted $q_{\\mathrm{norm}}$", fontsize=11)
+    ax.set_title("H8+ Expanded Holdout: 8 Models $\\times$ 8 Datasets ($n=54$)", fontsize=11)
+    ax.set_xlim(-0.02, 1.02)
+    ax.set_ylim(-0.02, 1.02)
+    ax.set_aspect("equal")
+    ax.grid(True, alpha=0.3)
+
+    fig.tight_layout()
+    out = os.path.join(FIGURES, "fig_cti_h8plus_holdout.png")
+    fig.savefig(out, dpi=180, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Saved: {out}")
+
+
 if __name__ == "__main__":
     import scipy  # noqa – verify dependency present
     print("Generating Figure 1 (NLP law + LOAO alpha)...")
@@ -559,4 +625,6 @@ if __name__ == "__main__":
     make_figure3()
     print("Generating Figure 4 (Allen Neuropixels biological validation)...")
     make_figure4()
+    print("Generating Figure 5 (H8+ expanded holdout)...")
+    make_figure5()
     print("Done.")

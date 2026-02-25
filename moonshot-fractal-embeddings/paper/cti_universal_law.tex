@@ -293,7 +293,14 @@ outlier rate$=5.6\%$ (H8f: $\leq10\%$).
 \emph{Sensitivity analysis.}
 Restricting to the moderate regime $q\in[0.05,0.95]$ improves $r$ to 0.907 ($n=52$); excluding two pathological models (bloom-560m, near-chance on 4/8 datasets; gemma-3-1b, catastrophic on DBpedia) yields $r=0.946$ ($n=46$, MAE$=0.066$).
 Pointwise MAE is close to the dataset-mean baseline (CTI 0.081 vs.\ baseline 0.084), confirming that the law captures \emph{mechanistic ordering} rather than high-precision calibration; the geometric signal (kappa) explains within-dataset architecture variation that dataset means cannot, while cross-dataset variance is dominated by $C_d$.
-Full per-model tables appear in the appendix (Table~\ref{tab:h8plus-detail}).
+Full per-model tables appear in the appendix (Table~\ref{tab:h8plus-detail}; Figure~\ref{fig:h8plus}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\columnwidth]{../results/figures/fig_cti_h8plus_holdout.png}
+\caption{H8+ expanded holdout: predicted vs.\ actual $q_\mathrm{norm}$ for 8 unseen architectures across 8 datasets ($n=54$). All parameters frozen from 20-model training set. Three annotated outliers account for all errors ${>}0.20$.}
+\label{fig:h8plus}
+\end{figure}
 
 \subsection{Cross-modal results}
 \begin{table}[t]
