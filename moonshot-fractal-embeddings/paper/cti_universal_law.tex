@@ -292,9 +292,11 @@ outlier rate$=3.9\%$ (H8f: $\leq10\%$).
 
 \emph{Sensitivity analysis.}
 Restricting to the moderate regime $q\in[0.05,0.95]$ improves $r$ to 0.918 ($n=73$); excluding two pathological models (bloom-560m, near-chance on 4/8 datasets; gemma-3-1b, catastrophic on DBpedia) yields $r=0.938$ ($n=69$, MAE$=0.067$).
-Pointwise MAE is close to the dataset-mean baseline (CTI 0.077 vs.\ baseline 0.079), confirming that the law captures \emph{mechanistic ordering} rather than high-precision calibration.
-CTI's unique value emerges in within-dataset architecture ranking: on the four datasets with meaningful cross-architecture variation (spread${}>0.20$), CTI achieves mean Spearman $\rho=0.642$ (20newsgroups: $0.912$, Amazon Massive: $0.733$, DBpedia: $0.444$, Banking77: $0.479$), while the dataset-mean baseline provides $\rho=0$ by definition.
+Pointwise MAE is close to the dataset-mean baseline (CTI 0.077 vs.\ baseline 0.079); the absolute lift is small and not individually significant ($\Delta$MAE$=0.002$).
+CTI's verified contribution is therefore \emph{not} large absolute error reduction over a strong dataset-level baseline, but rather \emph{within-dataset architecture ranking}---a capability the baseline cannot provide at all.
+On the four datasets with meaningful cross-architecture variation (spread${}>0.20$), CTI achieves mean Spearman $\rho=0.642$ (20newsgroups: $0.912$, Amazon Massive: $0.733$, DBpedia: $0.444$, Banking77: $0.479$), while the dataset-mean baseline provides $\rho=0$ by definition.
 Cross-dataset variance is dominated by $C_d$; the geometric signal ($\kappa$) captures within-dataset architecture variation that dataset means cannot.
+Note that the 77 predictions are not fully independent (11 models $\times$ 8 datasets share dataset-level and family-level parameters); the bootstrap CIs above use prediction-level resampling and should be interpreted as approximate.
 Full per-model tables appear in the appendix (Table~\ref{tab:h8plus-detail}; Figure~\ref{fig:h8plus}).
 
 \begin{figure}[t]
@@ -303,6 +305,16 @@ Full per-model tables appear in the appendix (Table~\ref{tab:h8plus-detail}; Fig
 \caption{H8+ expanded holdout: predicted vs.\ actual $q_\mathrm{norm}$ for 11 unseen architectures across 8 datasets ($n=77$). All parameters frozen from 20-model training set. Encoder (blue, $n=23$) and decoder (orange, $n=54$) families shown separately.}
 \label{fig:h8plus}
 \end{figure}
+
+\paragraph{Cross-family transfer (LOMFO) and dataset-scope analysis (LODO).}
+A leave-one-model-family-out (LOMFO) test provides stronger evidence of functional-form universality: for each of the four training families (encoder, decoder, SSM, hybrid), we remove \emph{all} its training models, refit $\alpha$, $C_d$, $C_f$, and $\gamma$ from the remaining families, then use the borrowed mean $\alpha$ (no family-specific calibration) to predict \emph{all} models in the excluded family.
+All four families achieve $r\geq0.84$ on the logit scale (encoder: $r=0.943$, MAE$=0.079$; decoder: $r=0.846$, MAE$=0.121$; SSM: $r=0.984$, MAE$=0.051$; hybrid: $r=0.959$, MAE$=0.086$; \texttt{results/cti\_lomfo\_lodo\_stress\_test.json}), confirming that the logit-linear structure $\logit(q)\propto\kappa_{\mathrm{nearest}}$ transfers across architecture families even with a misspecified slope.
+The alpha gaps are substantial (encoder: borrowed$=1.68$ vs.\ true$=5.36$; decoder: $2.85$ vs.\ $1.84$), confirming that family-specific $\alpha$ calibration is needed for absolute accuracy, but not for within-dataset architecture \emph{ranking}.
+
+A leave-one-dataset-out (LODO) test examines whether the dataset intercept $C_d$ can be estimated from the mean of other datasets.
+It cannot: LODO mean $r=0.125$ (only 2 of 8 datasets PASS $r\geq0.70$; best: 20newsgroups $r=0.714$, Amazon Massive $r=0.711$).
+This confirms that $C_d$ encodes dataset-specific difficulty that is not predictable from other datasets---at least one calibration measurement per dataset is required for absolute prediction.
+This is an honest scope limit, not a pathology: the law makes no claim to predict $C_d$ from first principles.
 
 \subsection{Cross-modal results}
 \begin{table}[t]
