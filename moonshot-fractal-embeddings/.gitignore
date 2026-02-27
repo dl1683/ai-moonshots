@@ -58,3 +58,12 @@ Thumbs.db
 # Large binary embedding caches
 *.npz
 *.npy
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
