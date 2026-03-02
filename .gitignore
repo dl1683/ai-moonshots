@@ -3,12 +3,11 @@ CLAUDE.md
 ROUNDTABLE_STATE.md
 *_HANDOFF.md
 
-# Moonshots not yet ready for public release
-moonshot-fractal-mind/
-moonshot-j-self-construction/
-moonshot-complex-fractal-adapters/
-moonshot-tokenization-limit/
-/models/
+# Nested moonshot repos (each has its own GitHub repo)
+moonshot-*/
+NUL
+
+# Research docs (private working notes)
 /research/
 
 # Python
@@ -27,6 +26,18 @@ venv/
 *.pt
 *.pth
 *.onnx
+*.npz
+*.npy
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
 
 # IDE
 .idea/
