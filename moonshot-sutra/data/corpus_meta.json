@@ -1,0 +1,15 @@
+{
+  "train_files": 10500,
+  "test_files": 553,
+  "train_chars": 63465062,
+  "test_chars": 4194290,
+  "train_mb": 60.52,
+  "test_mb": 4.0,
+  "categories": {
+    "prose": 1570,
+    "config": 285,
+    "code": 3734,
+    "wiki": 5464
+  },
+  "source": "local files + wikitext-2"
+}

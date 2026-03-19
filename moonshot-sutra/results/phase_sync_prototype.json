@@ -1,0 +1,8 @@
+{
+  "experiment": "phase_sync_prototype",
+  "timestamp": "1773905962.641535",
+  "params": 198528,
+  "gradient_flows": true,
+  "phase_differentiation": 1.1774075031280518,
+  "final_loss": 0.09231294691562653
+}

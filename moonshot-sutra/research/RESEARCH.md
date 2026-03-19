@@ -643,6 +643,34 @@ performance gains on trivial data. Need structured data where routing MATTERS.
 This is expected — you don't need content-dependent processing for random digits.
 The real test is on language with genuine structure (the v0.2-MVP test).
 
+### Paper Deep Dives: MEGABYTE + PonderNet (2026-03-19)
+
+**MEGABYTE design parameters for Sutra:**
+- Patch size 8 for text (robust 48-768 for other modalities)
+- Local model: 12-24 layers, dim 768-1024 (processes within patch)
+- Global model: 24-32 layers, dim 1024-2560 (processes across patches)
+- BOTH levels critical: removing either degrades BPB by ~0.6 (from 0.687)
+- Per-patch FFN = P× larger FFN for same FLOPs (efficiency win)
+- PG-19: 0.908 BPB vs transformer 1.057 (14% improvement)
+- End-of-patch degradation exists (strided inference helps at 2x cost)
+
+**PonderNet design parameters for adaptive depth:**
+- Halting: geometric distribution, λ_n = sigmoid(linear(h_n))
+- Loss: L_recon + 0.01 * KL(p_halt || geometric(λ_p))
+- λ_p ∈ [0.1, 0.9] robust (0.1 = expect ~10 steps is safe default)
+- bAbI: 6.1x fewer steps than Universal Transformer
+- Extrapolation: trained on 1-48 elements, works on 49-96
+- Key: prediction from ACTUAL halting step, not weighted average
+
+**Integration into Sutra v0.2-MVP:**
+1. Patch size = 8 bytes (MEGABYTE validated)
+2. Local model within patch (small MLP/transformer, 2-4 layers)
+3. Global model between patches: THIS is where our innovation goes
+   - MEGABYTE uses global transformer (O(n²/P²))
+   - Sutra tests message passing (O(n/P)) vs small scratchpad
+4. Add PonderNet halting to message passing rounds (adaptive depth)
+5. Train on 60MB real corpus (code + wiki + prose)
+
 ### Updated Probe Priority
 
 Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
