@@ -1956,3 +1956,55 @@ This IS a well-studied approach (Relational GAT, R-GCN).
 BUT: applying it to LANGUAGE with LEARNED types (not predefined) at
 the PATCH level with multi-scale structure is a specific combination
 that hasn't been explored for language modeling.
+
+---
+
+## EXPERIMENTAL PLAN (Post v0.4 Production)
+
+### Priority Order (based on Codex + our analysis)
+
+**Experiment 1: Token-Level Combo 5 (Pragmatist)**
+- BPE tokenizer + v0.4 architecture + bf16 + larger batch
+- FASTEST path to competitive model
+- Compare against: Pythia-410M, SmolLM-360M on same test sets
+- Success: within 20% of Pythia BPB at matched tokens seen
+
+**Experiment 2: MSBP vs Generic MP (TinyMSBP prototype)**
+- Does BP-structured messaging beat generic messaging?
+- Same data, same params, same compute
+- Success: lower BPB AND belief residual predicts error
+
+**Experiment 3: Grown Sparsity (Routing Table Evolution)**
+- Does gradient-driven routing develop meaningful patterns?
+- Compare: fixed random routing vs grown vs content-computed
+- Success: grown routing matches MI-measured dependency structure
+
+**Experiment 4: Kalman Variance Calibration**
+- Does (mean, variance) state track prediction correctness?
+- AUROC of variance vs error. Compare to logit entropy.
+- Success: AUROC > 0.6 (better than chance, better than logit entropy)
+
+**Experiment 5: Combo 6 (Codex-proposed Hybrid)**
+- Token + hierarchical addr + conv+GRU + hybrid routing + Kalman + verifier
+- The "best of everything" combo rated 5/10 by Codex
+- Compare against Combo 5 (pragmatist)
+- Success: beats Combo 5 on both BPB and task accuracy
+
+### Kill Gates
+
+After each experiment, decide:
+- Win clearly → proceed to next
+- Win marginally → run with 3 seeds for significance
+- Lose → kill that direction, move to next
+- All lose → pivot to pure token-level transformer with our training data
+
+### Timeline (Estimated)
+
+Experiment 1: 12-24 hours (token-level training)
+Experiment 2: 2-4 hours (tiny scale CPU test)
+Experiment 3: 4-8 hours (grow routing table during training)
+Experiment 4: 1-2 hours (measure variance on trained model)
+Experiment 5: 24-48 hours (full combo training)
+
+Total: ~3-5 days of compute for the full experimental plan.
+First results (Exp 1 + 2) within 1-2 days.
