@@ -55,12 +55,13 @@ class ByteDataset(Dataset):
 # =============================================================================
 
 class TransformerBaseline(nn.Module):
-    def __init__(self, vocab=256, dim=256, n_layers=6, n_heads=4, max_seq=256):
+    def __init__(self, vocab=256, dim=256, n_layers=6, n_heads=4, max_seq=256, dropout=0.1):
         super().__init__()
         self.emb = nn.Embedding(vocab, dim)
         self.pos = nn.Embedding(max_seq, dim)
+        self.drop = nn.Dropout(dropout)
         self.layers = nn.ModuleList([
-            nn.TransformerEncoderLayer(dim, n_heads, dim * 4, dropout=0.0, batch_first=True)
+            nn.TransformerEncoderLayer(dim, n_heads, dim * 4, dropout=dropout, batch_first=True)
             for _ in range(n_layers)
         ])
         self.ln = nn.LayerNorm(dim)
@@ -68,7 +69,7 @@ class TransformerBaseline(nn.Module):
 
     def forward(self, x):
         B, T = x.shape
-        h = self.emb(x) + self.pos(torch.arange(T, device=x.device))
+        h = self.drop(self.emb(x) + self.pos(torch.arange(T, device=x.device)))
         mask = nn.Transformer.generate_square_subsequent_mask(T, device=x.device)
         for layer in self.layers:
             h = layer(h, src_mask=mask, is_causal=True)

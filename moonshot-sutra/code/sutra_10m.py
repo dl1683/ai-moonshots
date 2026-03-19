@@ -93,6 +93,10 @@ def main():
     print(f"Train: {len(train_ds):,} samples ({len(train_ds.data):,} bytes)")
     print(f"Test: {len(test_ds):,} samples ({len(test_ds.data):,} bytes)")
 
+    # NOTE: TransformerBaseline uses dropout=0.0 by default.
+    # For fair comparison, add dropout via nn.TransformerEncoderLayer's dropout param.
+    # The import creates models with dropout=0.0; we override for fairness.
+
     configs = [
         ("Transformer-10M", lambda: TransformerBaseline(
             dim=DIM, n_layers=8, n_heads=8, max_seq=SEQ_LEN
@@ -102,6 +106,9 @@ def main():
             k_retrieval=K_RETRIEVAL, max_seq=SEQ_LEN
         ).to(DEVICE)),
     ]
+
+    # TODO: Add dropout=0.1 to TransformerBaseline for production fairness.
+    # Current comparison is still useful but transformer may overfit on small data.
 
     results = []
     for name, make_model in configs:
