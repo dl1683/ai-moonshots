@@ -524,6 +524,40 @@ Adding recurrence WITHIN patches gives sequential processing capability.
 For v0.4: swap MLP patch processor for GRU. Closes sequential reasoning gap
 while keeping message passing + sparse retrieval for inter-patch.
 
+---
+
+## Sutra v0.4 Architecture (All Validated Components Combined)
+
+IF the fair ablation validates v0.3 core, upgrade to v0.4:
+
+```
+BYTE INPUT
+    |
+4-BYTE PATCHES (validated: all patch sizes beat transformer)
+    |
+GRU PATCH PROCESSOR (validated: 8.7% better than MLP on sequential)
+    |
+PATCH SUMMARIES (mean pool)
+    |
+GROWN SPARSE RETRIEVAL (Codex top pick, gradient-driven routing table)
+    + Local message passing (validated: 28-46% structural advantage)
+    + Routing table evolves: high-gradient connections thicken, low atrophy
+    |
+ADAPTIVE DEPTH with min_rounds=2 (PonderNet, collapse fixed)
+    |
+BROADCAST BACK + PREDICT (standard CE loss)
+```
+
+**Novel contributions in v0.4:**
+1. Grown sparsity from fungal biology (routing table = fungal tube network)
+2. GRU+message passing hybrid (recurrence within patches, message passing between)
+3. Gradient-driven routing evolution (gradient flow = nutrient flow)
+
+**Standard components (not novel but validated):**
+4. Byte-level patching (from MEGABYTE)
+5. PonderNet adaptive depth (from DeepMind)
+6. Sparse top-k retrieval (from efficient attention literature)
+
 ### Evolutionary Routing Search
 Hybrid training: gradient descent for model, evolution for routing patterns.
 Routing table mutations tested each generation, best kept. Escapes local optima.
