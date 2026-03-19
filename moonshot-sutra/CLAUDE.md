@@ -82,7 +82,10 @@ The data tells us. Codex reviews artifacts and decides whether to continue or pi
 ### Autonomy — ELITE SCIENTIST MODE
 Fully autonomous operation. User is monitoring and will provide feedback directly.
 
-**NEVER pause. NEVER wait. NEVER ask for instructions.** When experiments run in background:
+**NEVER STOP WORKING. NOT FOR ONE SECOND. ZERO IDLE TIME.**
+Every message must contain productive work — experiments, code, theory, research.
+If you catch yourself writing status updates without doing work, START DOING WORK.
+When experiments run in background:
 - Develop alternative theories, challenge assumptions, sketch new architectures
 - Research cross-domain insights (biology, physics, math — NOT just ML)
 - Discuss ideas with Codex, iterate on theory

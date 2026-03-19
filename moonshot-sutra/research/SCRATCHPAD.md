@@ -566,6 +566,25 @@ makes the model focus on what it finds HARDEST to predict.
 This is adaptive resource allocation applied to the LOSS, not compute.
 Simple to implement, zero architecture change, potentially big impact.
 
+### THEOREM DRAFT: Information-Optimal Compute Allocation
+
+**Statement**: For text source X with MI profile I(d) ∝ d^(-alpha) for d > 1:
+- Optimal local window d_0 = argmin_d {cumulative_MI(1..d) >= 0.75 * total_MI}
+- Optimal sparse k ≈ integral_{d_0}^{inf} I(d) dd / mean(I(d) for d > d_0)
+- Architecture matching this allocation is information-optimal
+
+**From measurement**: I(d) ≈ 1.12 * d^(-1.2). d_0 ≈ 5 bytes. k ≈ 4-8.
+Predicts EXACTLY our v0.4 configuration.
+
+**Testable predictions**:
+1. Code (more structure) should have steeper alpha → smaller d_0, larger k
+2. Stories (more narrative) should have shallower alpha → larger d_0, smaller k
+3. Optimal architecture config should CHANGE with the text domain
+4. Architecture that matches MI profile should beat one that doesn't
+
+**Status**: Need Codex to check if this is trivial, known, or genuinely new.
+MI universality test running on 3 text types.
+
 ### Theoretical Explanation: Why GRU+MsgPass Works
 
 Hypothesis: language has TWO kinds of dependency:
