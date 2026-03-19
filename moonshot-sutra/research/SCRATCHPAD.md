@@ -1664,3 +1664,66 @@ If NO: structure doesn't help, go back to generic routing.
 2. Convergence speed (how many rounds to stabilize)
 3. Belief quality (do beliefs correlate with correctness?)
 4. Cross-scale benefit (does scale 1 actually help scale 0?)
+
+---
+
+## FRESH EXPLORATION #11: What if the TRAINING OBJECTIVE is wrong?
+
+### Everyone Uses Cross-Entropy. Is That Optimal?
+
+Cross-entropy: minimize -log P(correct_token | context). Treats every
+token equally. Treats every error equally.
+
+But: predicting "the" after "in" is TRIVIAL and teaches nothing.
+Predicting the answer to "What is 17*23?" is HARD and teaches everything.
+
+### Alternative Objectives (From First Principles)
+
+**A. Focal Loss for Language**
+Weight = (CE)^gamma: hard tokens get exponentially more weight.
+Already proven for object detection (class imbalance). For language:
+the "class imbalance" is between easy (function words) and hard
+(content words, reasoning, facts) predictions.
+
+**B. Contrastive Loss**
+Instead of "predict the right token," ask "distinguish the right token
+from wrong ones." Forces the model to understand WHY the right answer
+is right, not just that it's likely.
+
+**C. Compression Objective (MDL)**
+Minimize BOTH prediction error AND model complexity.
+L = CE + lambda * description_length(model).
+Forces the model to find SIMPLER patterns that predict as well.
+
+**D. Multi-Objective: Different Losses Per Stage**
+Stage 3 loss: local prediction quality (can local features predict next byte?)
+Stage 4 loss: routing quality (does routing improve prediction vs no routing?)
+Stage 5 loss: retention quality (does memory improve prediction vs fresh start?)
+
+Each stage has its OWN loss that measures its SPECIFIC contribution.
+The total loss is the sum. But now each stage is optimized for its purpose.
+
+**E. Self-Supervised Consistency**
+Instead of predicting the next token, predict whether TWO different
+processing of the same text agree. If the model routes differently on
+two passes of the same input, something is wrong.
+
+This encourages CONSISTENT routing — the model should process the same
+text the same way regardless of initialization/noise.
+
+### Which Objective Best Serves "Structure Over Search"?
+
+If the core insight is that STRUCTURE is more valuable than SEARCH,
+then the objective should REWARD structure and PENALIZE brute-force
+memorization.
+
+MDL (option C) does exactly this: simpler models that predict well
+are PREFERRED over complex models that predict equally well.
+A model that builds good structure (simple) beats a model that
+memorizes (complex). The objective ENCODES our thesis.
+
+### This Connects to Grokking
+
+Grokking = phase transition from memorization to generalization.
+MDL objective = explicit pressure toward the generalizing solution.
+Prediction: MDL-trained models grok FASTER than CE-trained models.
