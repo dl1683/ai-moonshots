@@ -898,3 +898,62 @@ insufficient (over-squashing, attention sinks, information concentration).
 This IS mathematically derived, NOT copied from existing architectures.
 Optimal transport theory predates modern ML. Applying it to neural routing
 is principled and novel for language modeling.
+
+---
+
+## DEEP DIVE: Kalman State Updates (Stage 5)
+
+### Why Track Uncertainty
+
+Standard: h ∈ R^d (point estimate). No uncertainty.
+Proposed: (μ, log_σ²) ∈ R^(2d). Mean + variance.
+
+Kalman update combines prior belief with new evidence OPTIMALLY:
+
+```
+K = σ²_prior / (σ²_prior + σ²_evidence)   # Kalman gain
+μ_new = μ_prior + K · (evidence - μ_prior)  # Updated mean
+σ²_new = (1 - K) · σ²_prior                 # Updated (reduced) variance
+```
+
+### Why This Prevents Over-Smoothing
+
+As a position accumulates evidence: σ² decreases → K decreases →
+harder to overwrite. Information-theoretic STIFFNESS.
+
+This is the PRINCIPLED solution to the GNN over-smoothing problem.
+Positions that have gathered enough evidence RESIST further updates.
+Positions that lack evidence WELCOME updates. No tunable hyperparameter
+— the behavior emerges from Bayesian inference.
+
+### Practical Implementation
+
+State: (μ, log_σ²) where log_σ² prevents negative variance.
+
+When receiving message m with estimated noise σ²_msg:
+```
+K = sigmoid(W_K · [log_σ², m, σ²_msg])  # Learned Kalman gain
+μ_new = μ + K * (m - μ)                  # Precision-weighted update
+log_σ²_new = log_σ² + log(1 - K + ε)    # Variance reduction
+```
+
+The learned K approximates the true Kalman gain but adapts to
+non-Gaussian distributions. The variance reduction is monotonic
+— each update DECREASES uncertainty (as it should).
+
+### Connection to Stage 6 and 7
+
+**Stage 6 (Compute Control)**: σ² IS the confidence signal.
+High variance = uncertain = need more processing.
+Low variance = confident = can advance to output.
+No separate halting mechanism needed — variance IS the controller.
+
+**Stage 7 (Verify/Abstain)**: σ² determines abstention.
+If σ² > threshold at readout time → abstain ("I'm not sure").
+This gives NATIVE calibration — the model KNOWS what it doesn't know.
+
+### Cost
+
+2x state size (mean + variance). 2x memory. ~1.5x compute
+(extra ops for variance update). Worthwhile if it eliminates
+over-smoothing AND gives free calibration AND enables adaptive depth.
