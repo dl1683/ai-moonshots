@@ -786,6 +786,26 @@ prices (shared medium) without central controller. Each trader = local agent. Pr
 This IS our stigmergic architecture. Key insight: markets work because traders are DIVERSE.
 Homogeneous traders don't discover prices. Supports V(D)J diversity for post-MVP.
 
+### Complete Results Summary (2026-03-19)
+
+| Experiment | Sutra | Transformer | Winner | Confidence |
+|-----------|-------|-------------|--------|-----------|
+| Block-structured (aligned) | 3.31 | 4.58 | **Sutra +28%** | HIGH |
+| Block-structured (misaligned) | 3.56 | 4.95 | **Sutra +28%** | HIGH |
+| Matched params (100K vs 112K) | 3.24 | 4.91 | **Sutra +34%** | HIGH |
+| Patch=4 sweep | 2.67 | 4.95 | **Sutra +46%** | HIGH |
+| Patch=8 sweep | 3.58 | 4.95 | **Sutra +28%** | HIGH |
+| Patch=12 sweep | 3.97 | 4.95 | **Sutra +20%** | HIGH |
+| Patch=16 sweep | 4.16 | 4.95 | **Sutra +16%** | HIGH |
+| Real text (200K corpus) | 1.40 | 5.23 | **Sutra +73%** | MED (TF overfits) |
+| Structured reasoning | 0.91 | 0.43 | **TF 2.1x** | MED (params unmatched) |
+| MQAR (retrieval, 500ep) | — | 21% | TF > GRU | HIGH |
+| Sparse k=4 MQAR | 16% | — | k=4 works | HIGH |
+
+**Pattern**: Sutra excels at spatial/block/real-text modeling. Transformer excels at
+sequential reasoning. The 10M GPU test (running NOW) will determine if this holds at scale
+with a fairly-regularized transformer baseline.
+
 ### Over-Smoothing Mitigation
 
 v0.3 already has correct mitigations from GNN literature:
