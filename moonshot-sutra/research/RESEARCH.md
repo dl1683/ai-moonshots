@@ -587,6 +587,42 @@ This could be Probe H.
 
 NOTE: Mamba-3 already showed gains from complex-valued SSMs. This might be WHY.
 
+### Decision Tree: What We Build Based on Probe Results
+
+```
+Probe F (stigmergic)?
+├── ratio < 1.5: Local works → v0.2 WITHOUT scratchpad → add phase sync → scale up
+└── ratio > 1.5: Local insufficient → v0.2 WITH scratchpad → if still fails: hybrid
+
+Probe A (compression)?
+├── r > 0.5: MDL-style training, architecture maximizes compression
+└── r < 0.5: Standard CE, focus on architecture not objective
+
+Probe B (depth)?
+├── adaptive >> fixed on hard tasks: include PonderNet-style halting
+└── adaptive ≈ fixed: use fixed depth (simpler)
+
+Probe C (memory)?
+├── external memory best: Sutra needs explicit key-value store
+├── transformer best: attention IS the memory mechanism
+└── all fail >5 vars: training problem, need curriculum
+```
+
+### Meta-Question: Why Do All Efficient Attention Replacements Become Hybrids?
+
+Longformer, BigBird, Performer, Mamba, RWKV, Hyena, RetNet — all tried O(n).
+None REPLACED transformers. All became hybrids. Why?
+
+Answer: attention isn't just computation — it's CONTENT-ADDRESSABLE MEMORY.
+Every O(n) replacement loses content-addressing. The real question:
+what is the MINIMUM mechanism for content-addressable routing?
+
+Phase sync = broadcast-based content routing (O(n)).
+Sufficient for: semantic similarity connections (noun-verb, topic coherence).
+Insufficient for: specific binding (pronoun resolution, variable tracking).
+
+Probe C will tell us if specific binding requires attention or can be done otherwise.
+
 ### Updated Probe Priority
 
 Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
