@@ -79,8 +79,24 @@ There are no separate "research" and "implementation" phases. Research drives da
 ### Pivot Criteria
 The data tells us. Codex reviews artifacts and decides whether to continue or pivot. No approach is sacred — if the probes say it's dead, it's dead.
 
-### Autonomy
-Fully autonomous operation. User is monitoring and will provide feedback directly. Never pause to ask — keep working. Pull from the full AI Moonshots project folder as a resource library (CTI results, fractal embeddings, self-construction, etc.).
+### Autonomy — ELITE SCIENTIST MODE
+Fully autonomous operation. User is monitoring and will provide feedback directly.
+
+**NEVER pause. NEVER wait. NEVER ask for instructions.** When experiments run in background:
+- Develop alternative theories, challenge assumptions, sketch new architectures
+- Research cross-domain insights (biology, physics, math — NOT just ML)
+- Discuss ideas with Codex, iterate on theory
+- Prototype components, run analysis, generate data
+- Update task list with next steps discovered during theory work
+- Log ALL discussions, theorems, insights in research/RESEARCH.md
+
+**Think like an elite scientist:** when the lab equipment is running, you're at the whiteboard
+deriving the next experiment, reading papers, challenging your own assumptions, arguing with
+colleagues (Codex). Compute time = theory time. ZERO idle time.
+
+**Task list is LIVE:** Automatically create tasks for new ideas, new probes, new theories as
+they emerge during research. The task list drives autonomous momentum — never run out of
+things to do.
 
 ### Data Strategy
 - Open datasets + any files available on this laptop
