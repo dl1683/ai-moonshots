@@ -12,13 +12,17 @@
       "does not contain the word 'tall'"
     ],
     "expected_answer": null,
-    "tags": ["length", "word_inclusion", "word_exclusion"]
+    "tags": [
+      "length",
+      "word_inclusion",
+      "word_exclusion"
+    ]
   },
   {
     "id": "IF002",
     "category": "instruction_following",
     "subcategory": "format_specific",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "List exactly 5 fruits. Number them 1 through 5. Each fruit name must be capitalized. Do not include any fruit that contains the letter 'e'.",
     "scoring": "constraint_check",
     "constraints": [
@@ -28,7 +32,11 @@
       "no fruit contains the letter 'e' (case-insensitive)"
     ],
     "expected_answer": null,
-    "tags": ["list", "capitalization", "letter_exclusion"]
+    "tags": [
+      "list",
+      "capitalization",
+      "letter_exclusion"
+    ]
   },
   {
     "id": "IF003",
@@ -44,13 +52,16 @@
       "does not contain the word 'bark'"
     ],
     "expected_answer": null,
-    "tags": ["sentence_count", "word_exclusion"]
+    "tags": [
+      "sentence_count",
+      "word_exclusion"
+    ]
   },
   {
     "id": "IF004",
     "category": "instruction_following",
     "subcategory": "format_specific",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Write a haiku about rain. A haiku has exactly 3 lines: 5 syllables, 7 syllables, 5 syllables. Do not rhyme any lines.",
     "scoring": "constraint_check",
     "constraints": [
@@ -61,7 +72,11 @@
       "no two lines rhyme"
     ],
     "expected_answer": null,
-    "tags": ["poetry", "syllable_count", "rhyme_avoidance"]
+    "tags": [
+      "poetry",
+      "syllable_count",
+      "rhyme_avoidance"
+    ]
   },
   {
     "id": "IF005",
@@ -76,13 +91,16 @@
       "topic is the ocean"
     ],
     "expected_answer": null,
-    "tags": ["word_count", "punctuation"]
+    "tags": [
+      "word_count",
+      "punctuation"
+    ]
   },
   {
     "id": "IF006",
     "category": "instruction_following",
     "subcategory": "format_specific",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Write the days of the week in reverse order (Sunday to Monday going backward). Each day must be on its own line. Abbreviate each day to its first 3 letters.",
     "scoring": "constraint_check",
     "constraints": [
@@ -91,7 +109,11 @@
       "each day abbreviated to exactly 3 letters"
     ],
     "expected_answer": null,
-    "tags": ["ordering", "abbreviation", "formatting"]
+    "tags": [
+      "ordering",
+      "abbreviation",
+      "formatting"
+    ]
   },
   {
     "id": "IF007",
@@ -107,7 +129,11 @@
       "each sentence starts with 'You should'"
     ],
     "expected_answer": null,
-    "tags": ["list", "sentence_starter", "topic_exclusion"]
+    "tags": [
+      "list",
+      "sentence_starter",
+      "topic_exclusion"
+    ]
   },
   {
     "id": "IF008",
@@ -123,13 +149,17 @@
       "the word 'coffee' does not appear anywhere in the response"
     ],
     "expected_answer": null,
-    "tags": ["sentiment", "word_substitution", "word_exclusion"]
+    "tags": [
+      "sentiment",
+      "word_substitution",
+      "word_exclusion"
+    ]
   },
   {
     "id": "IF009",
     "category": "instruction_following",
     "subcategory": "format_specific",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Create a simple 2x2 table with the headers 'Animal' and 'Sound'. Fill in one row with a common farm animal and the sound it makes, and one row with a jungle animal and the sound it makes.",
     "scoring": "constraint_check",
     "constraints": [
@@ -139,13 +169,16 @@
       "second data row contains a jungle animal and its sound"
     ],
     "expected_answer": null,
-    "tags": ["table", "formatting"]
+    "tags": [
+      "table",
+      "formatting"
+    ]
   },
   {
     "id": "IF010",
     "category": "instruction_following",
     "subcategory": "sequential_steps",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Give me a 3-step recipe for making toast. Number each step. Each step must begin with a verb in the imperative form.",
     "scoring": "constraint_check",
     "constraints": [
@@ -154,7 +187,11 @@
       "each step begins with an imperative verb"
     ],
     "expected_answer": null,
-    "tags": ["sequential", "imperatives", "recipe"]
+    "tags": [
+      "sequential",
+      "imperatives",
+      "recipe"
+    ]
   },
   {
     "id": "IF011",
@@ -169,13 +206,17 @@
       "countries are listed in alphabetical order"
     ],
     "expected_answer": null,
-    "tags": ["geography", "alphabetical", "diversity"]
+    "tags": [
+      "geography",
+      "alphabetical",
+      "diversity"
+    ]
   },
   {
     "id": "IF012",
     "category": "instruction_following",
     "subcategory": "negation_handling",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Write a birthday message that is exactly 2 sentences long. Do not use the words 'happy', 'birthday', 'celebrate', or 'wish'.",
     "scoring": "constraint_check",
     "constraints": [
@@ -186,13 +227,16 @@
       "does not contain 'wish'"
     ],
     "expected_answer": null,
-    "tags": ["word_exclusion", "sentence_count"]
+    "tags": [
+      "word_exclusion",
+      "sentence_count"
+    ]
   },
   {
     "id": "IF013",
     "category": "instruction_following",
     "subcategory": "format_specific",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Write the numbers 1 through 10 in words. Each number word must be on its own line. Capitalize only the first letter of each word.",
     "scoring": "constraint_check",
     "constraints": [
@@ -201,13 +245,17 @@
       "only first letter of each word is capitalized"
     ],
     "expected_answer": null,
-    "tags": ["formatting", "capitalization", "enumeration"]
+    "tags": [
+      "formatting",
+      "capitalization",
+      "enumeration"
+    ]
   },
   {
     "id": "IF014",
     "category": "instruction_following",
     "subcategory": "multi_constraint",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Describe winter in exactly 5 words. The description must include at least one adjective.",
     "scoring": "constraint_check",
     "constraints": [
@@ -215,7 +263,10 @@
       "contains at least one adjective"
     ],
     "expected_answer": null,
-    "tags": ["word_count", "parts_of_speech"]
+    "tags": [
+      "word_count",
+      "parts_of_speech"
+    ]
   },
   {
     "id": "IF015",
@@ -233,7 +284,11 @@
       "does not contain the word 'technology'"
     ],
     "expected_answer": null,
-    "tags": ["explanation", "word_exclusion", "audience_awareness"]
+    "tags": [
+      "explanation",
+      "word_exclusion",
+      "audience_awareness"
+    ]
   },
   {
     "id": "IF016",
@@ -248,13 +303,17 @@
       "each step is 5 words or fewer"
     ],
     "expected_answer": null,
-    "tags": ["sequential", "length_limit", "routine"]
+    "tags": [
+      "sequential",
+      "length_limit",
+      "routine"
+    ]
   },
   {
     "id": "IF017",
     "category": "instruction_following",
     "subcategory": "multi_constraint",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "Write a product description for a coffee mug. Requirements: (1) exactly 60 words, (2) mention the price $12.99, (3) start with the word 'Introducing', (4) end with an exclamation mark, (5) do not use the words 'perfect', 'great', or 'amazing'.",
     "scoring": "constraint_check",
     "constraints": [
@@ -267,13 +326,18 @@
       "does not contain 'amazing'"
     ],
     "expected_answer": null,
-    "tags": ["word_count", "word_inclusion", "word_exclusion", "format"]
+    "tags": [
+      "word_count",
+      "word_inclusion",
+      "word_exclusion",
+      "format"
+    ]
   },
   {
     "id": "IF018",
     "category": "instruction_following",
     "subcategory": "format_specific",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "Write a poem about time with exactly 4 stanzas. Each stanza must have exactly 3 lines. The first line of each stanza must rhyme with the first line of every other stanza. The last line of each stanza must not rhyme with anything else.",
     "scoring": "constraint_check",
     "constraints": [
@@ -283,13 +347,17 @@
       "the last line of each stanza does not rhyme with any other line"
     ],
     "expected_answer": null,
-    "tags": ["poetry", "rhyme_scheme", "stanza_structure"]
+    "tags": [
+      "poetry",
+      "rhyme_scheme",
+      "stanza_structure"
+    ]
   },
   {
     "id": "IF019",
     "category": "instruction_following",
     "subcategory": "negation_handling",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "Explain the concept of gravity in exactly 3 paragraphs. Do not use the words 'force', 'pull', 'mass', or 'weight'. Each paragraph must start with a different letter of the alphabet (your choice which letters).",
     "scoring": "constraint_check",
     "constraints": [
@@ -302,13 +370,17 @@
       "all three starting letters are distinct"
     ],
     "expected_answer": null,
-    "tags": ["explanation", "word_exclusion", "paragraph_starter"]
+    "tags": [
+      "explanation",
+      "word_exclusion",
+      "paragraph_starter"
+    ]
   },
   {
     "id": "IF020",
     "category": "instruction_following",
     "subcategory": "constraint_interaction",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "Write a short story in exactly 5 sentences. Each sentence must be longer than the previous one (measured in words). The story must include a character named 'Alex', a specific location, and end with a moral lesson.",
     "scoring": "constraint_check",
     "constraints": [
@@ -319,7 +391,11 @@
       "the story ends with a moral lesson"
     ],
     "expected_answer": null,
-    "tags": ["story", "escalating_length", "narrative_elements"]
+    "tags": [
+      "story",
+      "escalating_length",
+      "narrative_elements"
+    ]
   },
   {
     "id": "IF021",
@@ -340,7 +416,11 @@
       "each step contains at least 8 words"
     ],
     "expected_answer": null,
-    "tags": ["acrostic", "sequential", "minimum_length"]
+    "tags": [
+      "acrostic",
+      "sequential",
+      "minimum_length"
+    ]
   },
   {
     "id": "IF022",
@@ -357,7 +437,11 @@
       "speaker B's turns do not repeat content words from speaker A's immediately preceding turn"
     ],
     "expected_answer": null,
-    "tags": ["dialogue", "word_uniqueness", "turn_taking"]
+    "tags": [
+      "dialogue",
+      "word_uniqueness",
+      "turn_taking"
+    ]
   },
   {
     "id": "IF023",
@@ -374,7 +458,12 @@
       "total word count across all bullets is between 40 and 50 inclusive"
     ],
     "expected_answer": null,
-    "tags": ["resume", "bullet_points", "word_count", "verb_usage"]
+    "tags": [
+      "resume",
+      "bullet_points",
+      "word_count",
+      "verb_usage"
+    ]
   },
   {
     "id": "IF024",
@@ -391,7 +480,11 @@
       "total word count is between 40 and 60 inclusive"
     ],
     "expected_answer": null,
-    "tags": ["self_reference", "word_count", "accuracy"]
+    "tags": [
+      "self_reference",
+      "word_count",
+      "accuracy"
+    ]
   },
   {
     "id": "IF025",
@@ -409,7 +502,11 @@
       "sentence 4 has more than 16 words"
     ],
     "expected_answer": null,
-    "tags": ["word_count", "ratio", "question"]
+    "tags": [
+      "word_count",
+      "ratio",
+      "question"
+    ]
   },
   {
     "id": "IF026",
@@ -425,7 +522,11 @@
       "review is positive/glowing in tone"
     ],
     "expected_answer": null,
-    "tags": ["review", "word_exclusion", "positive_tone"]
+    "tags": [
+      "review",
+      "word_exclusion",
+      "positive_tone"
+    ]
   },
   {
     "id": "IF027",
@@ -443,7 +544,11 @@
       "does not contain any exclamation marks"
     ],
     "expected_answer": null,
-    "tags": ["tweet", "character_limit", "marketing"]
+    "tags": [
+      "tweet",
+      "character_limit",
+      "marketing"
+    ]
   },
   {
     "id": "IF028",
@@ -459,7 +564,11 @@
       "the second sentence of each step references content from the first sentence of that same step"
     ],
     "expected_answer": null,
-    "tags": ["sequential", "internal_reference", "conflict_resolution"]
+    "tags": [
+      "sequential",
+      "internal_reference",
+      "conflict_resolution"
+    ]
   },
   {
     "id": "IF029",
@@ -477,7 +586,11 @@
       "answers are in plain text (not bold)"
     ],
     "expected_answer": null,
-    "tags": ["FAQ", "formatting", "complexity_progression"]
+    "tags": [
+      "FAQ",
+      "formatting",
+      "complexity_progression"
+    ]
   },
   {
     "id": "IF030",
@@ -494,7 +607,12 @@
       "titles are fictional (not real published book titles)"
     ],
     "expected_answer": null,
-    "tags": ["list", "alphabetical", "word_count", "uniqueness"]
+    "tags": [
+      "list",
+      "alphabetical",
+      "word_count",
+      "uniqueness"
+    ]
   },
   {
     "id": "IF031",
@@ -512,7 +630,11 @@
       "word count is between 80 and 100 inclusive"
     ],
     "expected_answer": null,
-    "tags": ["biography", "word_count", "content_requirements"]
+    "tags": [
+      "biography",
+      "word_count",
+      "content_requirements"
+    ]
   },
   {
     "id": "IF032",
@@ -529,13 +651,17 @@
       "does not contain 'dream'"
     ],
     "expected_answer": null,
-    "tags": ["speech", "pronoun_avoidance", "word_exclusion"]
+    "tags": [
+      "speech",
+      "pronoun_avoidance",
+      "word_exclusion"
+    ]
   },
   {
     "id": "IF033",
     "category": "instruction_following",
     "subcategory": "multi_constraint",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write a weather forecast for a fictional city. Include exactly 3 days. For each day, state: the day name, a temperature in Celsius, and one weather condition. Present it as a numbered list. The temperature must decrease by exactly 3 degrees each day.",
     "scoring": "constraint_check",
     "constraints": [
@@ -547,13 +673,17 @@
       "temperature decreases by exactly 3 degrees each day"
     ],
     "expected_answer": null,
-    "tags": ["forecast", "numerical_pattern", "structured_list"]
+    "tags": [
+      "forecast",
+      "numerical_pattern",
+      "structured_list"
+    ]
   },
   {
     "id": "IF034",
     "category": "instruction_following",
     "subcategory": "self_referential",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write exactly 3 sentences. Sentence 1 must say how many sentences will follow it. Sentence 2 must be a question. Sentence 3 must answer the question posed in sentence 2.",
     "scoring": "constraint_check",
     "constraints": [
@@ -563,13 +693,17 @@
       "sentence 3 answers the question in sentence 2"
     ],
     "expected_answer": null,
-    "tags": ["self_reference", "question_answer", "sentence_roles"]
+    "tags": [
+      "self_reference",
+      "question_answer",
+      "sentence_roles"
+    ]
   },
   {
     "id": "IF035",
     "category": "instruction_following",
     "subcategory": "format_specific",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Create a structured to-do list for a fictional character planning a wedding. Organize items under exactly 3 category headers. Each category must have exactly 2 to-do items. Every to-do item must start with a checkbox formatted as '[ ]'.",
     "scoring": "constraint_check",
     "constraints": [
@@ -579,13 +713,17 @@
       "total of 6 to-do items"
     ],
     "expected_answer": null,
-    "tags": ["list", "categorization", "checkbox_format"]
+    "tags": [
+      "list",
+      "categorization",
+      "checkbox_format"
+    ]
   },
   {
     "id": "IF036",
     "category": "instruction_following",
     "subcategory": "constraint_interaction",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write a short poem about seasons. Requirements: exactly 4 lines, each line corresponds to a different season (spring, summer, autumn, winter) in that order, each line contains exactly 7 words, and each line must contain the name of that season.",
     "scoring": "constraint_check",
     "constraints": [
@@ -597,13 +735,18 @@
       "each line contains exactly 7 words"
     ],
     "expected_answer": null,
-    "tags": ["poetry", "word_count", "word_inclusion", "seasonal"]
+    "tags": [
+      "poetry",
+      "word_count",
+      "word_inclusion",
+      "seasonal"
+    ]
   },
   {
     "id": "IF037",
     "category": "instruction_following",
     "subcategory": "negation_handling",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write a description of a forest at night without using any of the following: darkness, dark, night, moon, stars, quiet, silent, silence, mysterious, eerie. The description must be exactly 4 sentences.",
     "scoring": "constraint_check",
     "constraints": [
@@ -620,13 +763,17 @@
       "does not contain 'eerie'"
     ],
     "expected_answer": null,
-    "tags": ["description", "word_exclusion", "atmosphere"]
+    "tags": [
+      "description",
+      "word_exclusion",
+      "atmosphere"
+    ]
   },
   {
     "id": "IF038",
     "category": "instruction_following",
     "subcategory": "multi_constraint",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write a definition of 'artificial intelligence' that would appear in three different contexts: (1) a children's book, (2) a legal document, (3) a scientific paper. Each definition must be exactly 1 sentence. Each sentence must be noticeably different in vocabulary and tone.",
     "scoring": "constraint_check",
     "constraints": [
@@ -638,13 +785,17 @@
       "the three definitions are clearly distinct in vocabulary and tone"
     ],
     "expected_answer": null,
-    "tags": ["register", "audience_adaptation", "definition"]
+    "tags": [
+      "register",
+      "audience_adaptation",
+      "definition"
+    ]
   },
   {
     "id": "IF039",
     "category": "instruction_following",
     "subcategory": "format_specific",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write a fictional email. It must have: a subject line, a greeting, exactly 2 body paragraphs, a sign-off, and a sender name. The subject line must be a question. The first paragraph must be at least 3 sentences. The second paragraph must be shorter than the first.",
     "scoring": "constraint_check",
     "constraints": [
@@ -658,13 +809,17 @@
       "includes a sender name"
     ],
     "expected_answer": null,
-    "tags": ["email", "format", "paragraph_length"]
+    "tags": [
+      "email",
+      "format",
+      "paragraph_length"
+    ]
   },
   {
     "id": "IF040",
     "category": "instruction_following",
     "subcategory": "sequential_steps",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Describe a decision-making process in exactly 5 steps. Steps must be labeled Step 1 through Step 5. Each step must include: a bolded action phrase (3 words or fewer), followed by exactly one sentence of explanation. The action phrases across all 5 steps must form a coherent summary when read together.",
     "scoring": "constraint_check",
     "constraints": [
@@ -676,7 +831,11 @@
       "the 5 bolded phrases form a coherent summary when read in sequence"
     ],
     "expected_answer": null,
-    "tags": ["process", "bold_formatting", "coherence"]
+    "tags": [
+      "process",
+      "bold_formatting",
+      "coherence"
+    ]
   },
   {
     "id": "IF041",
@@ -698,7 +857,12 @@
       "exactly 3 statistics appear in the essay"
     ],
     "expected_answer": null,
-    "tags": ["essay", "acrostic", "word_uniqueness", "statistics"]
+    "tags": [
+      "essay",
+      "acrostic",
+      "word_uniqueness",
+      "statistics"
+    ]
   },
   {
     "id": "IF042",
@@ -717,7 +881,13 @@
       "line 14 answers the question in line 13"
     ],
     "expected_answer": null,
-    "tags": ["poetry", "sonnet", "acrostic", "rhyme", "meter"]
+    "tags": [
+      "poetry",
+      "sonnet",
+      "acrostic",
+      "rhyme",
+      "meter"
+    ]
   },
   {
     "id": "IF043",
@@ -735,7 +905,12 @@
       "story has a clear beginning, middle, and end"
     ],
     "expected_answer": null,
-    "tags": ["story", "letter_limit", "pronoun_avoidance", "word_uniqueness"]
+    "tags": [
+      "story",
+      "letter_limit",
+      "pronoun_avoidance",
+      "word_uniqueness"
+    ]
   },
   {
     "id": "IF044",
@@ -754,7 +929,11 @@
       "the dish is a real, edible recipe"
     ],
     "expected_answer": null,
-    "tags": ["recipe", "bijection", "ingredient_tracking"]
+    "tags": [
+      "recipe",
+      "bijection",
+      "ingredient_tracking"
+    ]
   },
   {
     "id": "IF045",
@@ -771,7 +950,11 @@
       "closing demand is 15 words or fewer"
     ],
     "expected_answer": null,
-    "tags": ["complaint_letter", "arithmetic_sequence", "rhetorical_questions"]
+    "tags": [
+      "complaint_letter",
+      "arithmetic_sequence",
+      "rhetorical_questions"
+    ]
   },
   {
     "id": "IF046",
@@ -791,7 +974,11 @@
       "tutorial provides genuinely useful drawing advice"
     ],
     "expected_answer": null,
-    "tags": ["tutorial", "alternating_pattern", "word_inclusion"]
+    "tags": [
+      "tutorial",
+      "alternating_pattern",
+      "word_inclusion"
+    ]
   },
   {
     "id": "IF047",
@@ -808,7 +995,11 @@
       "does not contain the word 'paragraph'"
     ],
     "expected_answer": null,
-    "tags": ["self_reference", "accuracy", "counting"]
+    "tags": [
+      "self_reference",
+      "accuracy",
+      "counting"
+    ]
   },
   {
     "id": "IF048",
@@ -834,7 +1025,11 @@
       "scientifically accurate description of photosynthesis"
     ],
     "expected_answer": null,
-    "tags": ["science", "word_exclusion", "accuracy"]
+    "tags": [
+      "science",
+      "word_exclusion",
+      "accuracy"
+    ]
   },
   {
     "id": "IF049",
@@ -854,7 +1049,11 @@
       "exactly one option per course is marked '(V)'"
     ],
     "expected_answer": null,
-    "tags": ["menu", "price_ordering", "word_uniqueness"]
+    "tags": [
+      "menu",
+      "price_ordering",
+      "word_uniqueness"
+    ]
   },
   {
     "id": "IF050",
@@ -873,7 +1072,11 @@
       "section 5 begins with 'In conclusion'"
     ],
     "expected_answer": null,
-    "tags": ["technical_document", "structured_format", "multi_section"]
+    "tags": [
+      "technical_document",
+      "structured_format",
+      "multi_section"
+    ]
   },
   {
     "id": "IF051",
@@ -892,7 +1095,11 @@
       "no sentence begins with 'The'"
     ],
     "expected_answer": null,
-    "tags": ["news_article", "journalistic_format", "sentence_starter"]
+    "tags": [
+      "news_article",
+      "journalistic_format",
+      "sentence_starter"
+    ]
   },
   {
     "id": "IF052",
@@ -909,7 +1116,11 @@
       "no word from a clue appears as its own answer"
     ],
     "expected_answer": null,
-    "tags": ["wordplay", "grammatical_sentence", "clue_writing"]
+    "tags": [
+      "wordplay",
+      "grammatical_sentence",
+      "clue_writing"
+    ]
   },
   {
     "id": "IF053",
@@ -930,7 +1141,11 @@
       "does not contain 'role'"
     ],
     "expected_answer": null,
-    "tags": ["cover_letter", "verb_avoidance", "paragraph_structure"]
+    "tags": [
+      "cover_letter",
+      "verb_avoidance",
+      "paragraph_structure"
+    ]
   },
   {
     "id": "IF054",
@@ -948,7 +1163,11 @@
       "each step is 1-2 sentences"
     ],
     "expected_answer": null,
-    "tags": ["sequential", "alternating_pattern", "internal_reference"]
+    "tags": [
+      "sequential",
+      "alternating_pattern",
+      "internal_reference"
+    ]
   },
   {
     "id": "IF055",
@@ -967,7 +1186,12 @@
       "the final speech concedes at least one point to the opposing side"
     ],
     "expected_answer": null,
-    "tags": ["debate", "statistics", "turn_taking", "concession"]
+    "tags": [
+      "debate",
+      "statistics",
+      "turn_taking",
+      "concession"
+    ]
   },
   {
     "id": "IF056",
@@ -989,7 +1213,12 @@
       "poem is about mathematics"
     ],
     "expected_answer": null,
-    "tags": ["poetry", "fibonacci", "word_count", "mathematics"]
+    "tags": [
+      "poetry",
+      "fibonacci",
+      "word_count",
+      "mathematics"
+    ]
   },
   {
     "id": "IF057",
@@ -1008,7 +1237,12 @@
       "each character's third line answers a question that was addressed to them"
     ],
     "expected_answer": null,
-    "tags": ["dialogue", "question_answer", "consistency", "books"]
+    "tags": [
+      "dialogue",
+      "question_answer",
+      "consistency",
+      "books"
+    ]
   },
   {
     "id": "IF058",
@@ -1040,7 +1274,11 @@
       "ends with a sign-off"
     ],
     "expected_answer": null,
-    "tags": ["creative_writing", "word_exclusion", "word_count_per_paragraph"]
+    "tags": [
+      "creative_writing",
+      "word_exclusion",
+      "word_count_per_paragraph"
+    ]
   },
   {
     "id": "IF059",
@@ -1058,7 +1296,12 @@
       "'QuickSync X1' appears at least once in each paragraph"
     ],
     "expected_answer": null,
-    "tags": ["technical_writing", "manual", "all_caps", "structured_format"]
+    "tags": [
+      "technical_writing",
+      "manual",
+      "all_caps",
+      "structured_format"
+    ]
   },
   {
     "id": "IF060",
@@ -1076,7 +1319,11 @@
       "exactly one example appears somewhere in the 5 instructions"
     ],
     "expected_answer": null,
-    "tags": ["self_reference", "meta_instructions", "consistency"]
+    "tags": [
+      "self_reference",
+      "meta_instructions",
+      "consistency"
+    ]
   },
   {
     "id": "IF061",
@@ -1095,7 +1342,12 @@
       "exactly 3 events mention a fictional named person"
     ],
     "expected_answer": null,
-    "tags": ["timeline", "chronological", "arithmetic", "word_count"]
+    "tags": [
+      "timeline",
+      "chronological",
+      "arithmetic",
+      "word_count"
+    ]
   },
   {
     "id": "IF062",
@@ -1114,7 +1366,11 @@
       "no word is shared between any two chapter titles"
     ],
     "expected_answer": null,
-    "tags": ["novel_outline", "story_structure", "word_uniqueness"]
+    "tags": [
+      "novel_outline",
+      "story_structure",
+      "word_uniqueness"
+    ]
   },
   {
     "id": "IF063",
@@ -1138,7 +1394,12 @@
       "each paragraph has at least 3 sentences"
     ],
     "expected_answer": null,
-    "tags": ["explanation", "passive_voice_avoidance", "word_exclusion", "analogy"]
+    "tags": [
+      "explanation",
+      "passive_voice_avoidance",
+      "word_exclusion",
+      "analogy"
+    ]
   },
   {
     "id": "IF064",
@@ -1158,7 +1419,12 @@
       "no message exceeds 30 words"
     ],
     "expected_answer": null,
-    "tags": ["chat_log", "timestamps", "narrative_arc", "word_limit"]
+    "tags": [
+      "chat_log",
+      "timestamps",
+      "narrative_arc",
+      "word_limit"
+    ]
   },
   {
     "id": "IF065",
@@ -1179,7 +1445,13 @@
       "the instructions provide genuinely useful paper crane folding guidance"
     ],
     "expected_answer": null,
-    "tags": ["instructions", "alternating_pattern", "acrostic", "letter_exclusion", "simile"]
+    "tags": [
+      "instructions",
+      "alternating_pattern",
+      "acrostic",
+      "letter_exclusion",
+      "simile"
+    ]
   },
   {
     "id": "IF066",
@@ -1197,7 +1469,12 @@
       "final word of the text is 'done'"
     ],
     "expected_answer": null,
-    "tags": ["self_reference", "geometric_sequence", "word_count", "counting"]
+    "tags": [
+      "self_reference",
+      "geometric_sequence",
+      "word_count",
+      "counting"
+    ]
   },
   {
     "id": "IF067",
@@ -1215,7 +1492,12 @@
       "has a clear beginning, middle, and end"
     ],
     "expected_answer": null,
-    "tags": ["story", "word_uniqueness", "sentence_starter", "twist"]
+    "tags": [
+      "story",
+      "word_uniqueness",
+      "sentence_starter",
+      "twist"
+    ]
   },
   {
     "id": "IF068",
@@ -1237,7 +1519,12 @@
       "first sentence contains the phrase 'refers to'"
     ],
     "expected_answer": null,
-    "tags": ["wikipedia", "structured_format", "word_count", "citations"]
+    "tags": [
+      "wikipedia",
+      "structured_format",
+      "word_count",
+      "citations"
+    ]
   },
   {
     "id": "IF069",
@@ -1255,7 +1542,13 @@
       "the poem tells a coherent story progressing across 3 stanzas"
     ],
     "expected_answer": null,
-    "tags": ["poetry", "rhyme_scheme", "syllable_count", "parts_of_speech", "narrative"]
+    "tags": [
+      "poetry",
+      "rhyme_scheme",
+      "syllable_count",
+      "parts_of_speech",
+      "narrative"
+    ]
   },
   {
     "id": "IF070",
@@ -1277,7 +1570,11 @@
       "does not contain 'proud'"
     ],
     "expected_answer": null,
-    "tags": ["press_release", "palindrome_structure", "word_exclusion"]
+    "tags": [
+      "press_release",
+      "palindrome_structure",
+      "word_exclusion"
+    ]
   },
   {
     "id": "IF071",
@@ -1295,7 +1592,12 @@
       "steps 4, 8, and 12 each end with an evaluative question"
     ],
     "expected_answer": null,
-    "tags": ["scientific_method", "sequential", "phase_structure", "measurement"]
+    "tags": [
+      "scientific_method",
+      "sequential",
+      "phase_structure",
+      "measurement"
+    ]
   },
   {
     "id": "IF072",
@@ -1314,7 +1616,12 @@
       "every activity mentions a cost, and all costs sum to exactly $500"
     ],
     "expected_answer": null,
-    "tags": ["itinerary", "word_count", "arithmetic_sum", "uniqueness"]
+    "tags": [
+      "itinerary",
+      "word_count",
+      "arithmetic_sum",
+      "uniqueness"
+    ]
   },
   {
     "id": "IF073",
@@ -1332,7 +1639,12 @@
       "following all 7 rules would produce a text that satisfies all 7 rules (self-consistent)"
     ],
     "expected_answer": null,
-    "tags": ["self_reference", "writing_rules", "self_exemplifying", "consistency"]
+    "tags": [
+      "self_reference",
+      "writing_rules",
+      "self_exemplifying",
+      "consistency"
+    ]
   },
   {
     "id": "IF074",
@@ -1354,7 +1666,12 @@
       "does not contain 'lose'"
     ],
     "expected_answer": null,
-    "tags": ["sports", "tense", "word_exclusion", "parts_of_speech"]
+    "tags": [
+      "sports",
+      "tense",
+      "word_exclusion",
+      "parts_of_speech"
+    ]
   },
   {
     "id": "IF075",
@@ -1373,7 +1690,12 @@
       "section 6 has exactly 2 sentences with the second in if...then conditional form"
     ],
     "expected_answer": null,
-    "tags": ["game_rules", "structured_format", "multi_section", "conditional"]
+    "tags": [
+      "game_rules",
+      "structured_format",
+      "multi_section",
+      "conditional"
+    ]
   },
   {
     "id": "IF076",
@@ -1393,7 +1715,12 @@
       "the synopsis forms a coherent tragic narrative"
     ],
     "expected_answer": null,
-    "tags": ["play", "tragedy", "escalating_length", "narrative_arc"]
+    "tags": [
+      "play",
+      "tragedy",
+      "escalating_length",
+      "narrative_arc"
+    ]
   },
   {
     "id": "IF077",
@@ -1418,7 +1745,12 @@
       "does not contain 'limited'"
     ],
     "expected_answer": null,
-    "tags": ["classified_ad", "word_count", "punctuation_count", "format"]
+    "tags": [
+      "classified_ad",
+      "word_count",
+      "punctuation_count",
+      "format"
+    ]
   },
   {
     "id": "IF078",
@@ -1439,7 +1771,12 @@
       "across all 9 steps, each of the 5 vowels (a,e,i,o,u) is the first letter of at least one step's opening word"
     ],
     "expected_answer": null,
-    "tags": ["meditation", "structure", "imperative", "vowel_distribution"]
+    "tags": [
+      "meditation",
+      "structure",
+      "imperative",
+      "vowel_distribution"
+    ]
   },
   {
     "id": "IF079",
@@ -1464,7 +1801,12 @@
       "text ends with a period"
     ],
     "expected_answer": null,
-    "tags": ["abstract", "academic", "passive_voice", "word_count_per_sentence"]
+    "tags": [
+      "abstract",
+      "academic",
+      "passive_voice",
+      "word_count_per_sentence"
+    ]
   },
   {
     "id": "IF080",
@@ -1487,6 +1829,12 @@
       "no character names are revealed"
     ],
     "expected_answer": null,
-    "tags": ["fiction", "perspective_shift", "sensory_detail", "word_count", "in_media_res"]
+    "tags": [
+      "fiction",
+      "perspective_shift",
+      "sensory_detail",
+      "word_count",
+      "in_media_res"
+    ]
   }
 ]

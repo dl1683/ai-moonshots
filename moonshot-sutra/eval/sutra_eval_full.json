@@ -3,7 +3,7 @@
     "id": "CA001",
     "category": "critical_analysis",
     "subcategory": "statistical_reasoning",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "A school reports that 80% of its students score above the national average on standardized tests. A parent says this proves the school is exceptional. What is wrong with this reasoning?",
     "scoring": "rubric",
     "expected_answer": null,
@@ -24,7 +24,7 @@
     "id": "CA002",
     "category": "critical_analysis",
     "subcategory": "causal_reasoning",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "A fitness app reports: 'Users who log their meals every day lose 2x more weight than users who don't.' The app's marketing team concludes that meal logging causes weight loss and advertises accordingly. What is the primary flaw in this conclusion?",
     "scoring": "rubric",
     "expected_answer": null,
@@ -45,7 +45,7 @@
     "id": "CA003",
     "category": "critical_analysis",
     "subcategory": "logical_fallacy",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "A politician argues: 'My opponent has never run a business. How can someone who has never met a payroll possibly understand economic policy?' Identify the logical fallacy and explain why the argument fails.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -66,16 +66,16 @@
     "id": "CA004",
     "category": "critical_analysis",
     "subcategory": "evidence_evaluation",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "A supplement company cites 15 customer testimonials claiming their product cured their chronic pain. A doctor says this evidence is weak. Who is right, and why?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The doctor is right \u00e2\u20ac\u201d testimonials are weak evidence",
+      "The doctor is right â€” testimonials are weak evidence",
       "Identifies lack of control group: we don't know if these people would have improved anyway (natural remission)",
       "Identifies selection bias: the company chooses which testimonials to show",
       "Notes placebo effect cannot be ruled out",
-      "Optionally: publication bias \u00e2\u20ac\u201d people who didn't improve are not featured"
+      "Optionally: publication bias â€” people who didn't improve are not featured"
     ],
     "tags": [
       "testimonials",
@@ -132,15 +132,15 @@
     "id": "CA007",
     "category": "critical_analysis",
     "subcategory": "statistical_reasoning",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "A news headline reads: 'Eating chocolate linked to 30% lower risk of stroke.' The study found that chocolate eaters had a stroke rate of 0.7% versus 1.0% for non-chocolate eaters. Is the '30% lower risk' claim accurate? What is misleading about how it is presented?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "The relative risk reduction of 30% is mathematically correct ((1.0-0.7)/1.0 = 0.3)",
-      "However, the absolute risk reduction is only 0.3 percentage points \u00e2\u20ac\u201d very small in practical terms",
+      "However, the absolute risk reduction is only 0.3 percentage points â€” very small in practical terms",
       "Relative risk framing makes small effects sound large",
-      "The word 'linked' does not imply causation \u00e2\u20ac\u201d this is observational data",
+      "The word 'linked' does not imply causation â€” this is observational data",
       "Optionally: confounding (chocolate eaters may differ in other lifestyle ways)"
     ],
     "tags": [
@@ -154,14 +154,14 @@
     "id": "CA008",
     "category": "critical_analysis",
     "subcategory": "logical_fallacy",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "An engineer argues: 'This bridge design has never failed in 20 years, so it must be safe.' What fallacy is this, and what important consideration is missing?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "Identifies the appeal to tradition / argument from past performance fallacy",
       "Or identifies it as survivorship bias / absence of evidence is not evidence of absence",
-      "Past performance does not guarantee future safety \u00e2\u20ac\u201d conditions change (load, material fatigue, climate)",
+      "Past performance does not guarantee future safety â€” conditions change (load, material fatigue, climate)",
       "We haven't observed failure yet, but the probability of failure may be non-trivial going forward",
       "Optionally: notes that structural failures often result from slow degradation that was not visible for years"
     ],
@@ -176,7 +176,7 @@
     "id": "CA009",
     "category": "critical_analysis",
     "subcategory": "flaw_detection",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "A teacher says: 'Students who sit in the front row get better grades. Therefore, I'll assign all struggling students to the front row.' What is wrong with this plan?",
     "scoring": "rubric",
     "expected_answer": null,
@@ -247,9 +247,9 @@
     "expected_answer": null,
     "rubric": [
       "Identifies the genetic fallacy / ad hominem: attacking the source rather than the argument",
-      "Government grants do not automatically bias results \u00e2\u20ac\u201d especially when thousands of independent labs globally converge",
+      "Government grants do not automatically bias results â€” especially when thousands of independent labs globally converge",
       "What would actually undermine credibility: showing methodological errors, data fabrication, or failure of replication",
-      "Optionally: notes the asymmetry \u00e2\u20ac\u201d fossil fuel industry funding would be a more relevant conflict of interest for climate denial"
+      "Optionally: notes the asymmetry â€” fossil fuel industry funding would be a more relevant conflict of interest for climate denial"
     ],
     "tags": [
       "genetic-fallacy",
@@ -271,7 +271,7 @@
       "Risk adjustment is required before comparing mortality rates across institutions",
       "Volume differences: one hospital may perform far more surgeries, affecting statistical reliability",
       "Optionally: the time periods may differ, or the definition of 'mortality' may differ (30-day vs. in-hospital)",
-      "Optionally: sample size \u00e2\u20ac\u201d 3% from 30 cases is less reliable than 5% from 1000 cases"
+      "Optionally: sample size â€” 3% from 30 cases is less reliable than 5% from 1000 cases"
     ],
     "tags": [
       "confounding",
@@ -293,7 +293,7 @@
       "Other simultaneous interventions (more police patrols, social programs) may be responsible",
       "Crime displacement: criminals may have moved to adjacent unlit areas rather than stopping crime",
       "Seasonal effects or broad city-wide trends that would have reduced crime regardless",
-      "Optionally: Hawthorne effect \u00e2\u20ac\u201d people behave differently when they know they are being monitored/lit"
+      "Optionally: Hawthorne effect â€” people behave differently when they know they are being monitored/lit"
     ],
     "tags": [
       "regression-to-mean",
@@ -314,7 +314,7 @@
       "Review manipulation: fake positive reviews are common and difficult to detect",
       "Selection bias: people who had a very positive experience are more motivated to review than those who had average experiences",
       "Optionally: early reviews may differ from current product quality if manufacturing changed",
-      "Optionally: 4.7 average doesn't reveal the distribution \u00e2\u20ac\u201d 5% of users might have had catastrophic failures"
+      "Optionally: 4.7 average doesn't reveal the distribution â€” 5% of users might have had catastrophic failures"
     ],
     "tags": [
       "selection-bias",
@@ -332,8 +332,8 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Downloads \u00e2\u2030\u00a0 active users: many people download and never use an app",
-      "Downloads \u00e2\u2030\u00a0 willingness to pay: free downloads don't demonstrate revenue potential",
+      "Downloads â‰  active users: many people download and never use an app",
+      "Downloads â‰  willingness to pay: free downloads don't demonstrate revenue potential",
       "Assumes downloads were organic rather than driven by paid acquisition",
       "Optionally: retention and engagement are more meaningful proxies for real demand"
     ],
@@ -348,17 +348,17 @@
     "id": "CA017",
     "category": "critical_analysis",
     "subcategory": "causal_reasoning",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "A study finds that children who own more books at home score higher on reading tests. A policy proposal suggests distributing free books to low-income families to raise test scores. Evaluate this causal chain. What is likely wrong with it, and what would a stronger test of the intervention look like?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The correlation likely reflects parental literacy, socioeconomic status, and reading culture \u00e2\u20ac\u201d books are a symptom, not the driver",
+      "The correlation likely reflects parental literacy, socioeconomic status, and reading culture â€” books are a symptom, not the driver",
       "Simply distributing books without changing reading habits or parental engagement may have no effect",
       "Identifies the active ingredient problem: what about book ownership actually causes reading improvement?",
       "A stronger test: randomized trial distributing books to some families but not others, measuring both reading behavior change and test scores",
       "Even stronger: compare book distribution alone vs. book distribution + parent reading programs",
-      "Optionally: mentions dose-response \u00e2\u20ac\u201d if more books caused more improvement proportionally, that would be stronger evidence"
+      "Optionally: mentions dose-response â€” if more books caused more improvement proportionally, that would be stronger evidence"
     ],
     "tags": [
       "causal-inference",
@@ -372,17 +372,17 @@
     "id": "CA018",
     "category": "critical_analysis",
     "subcategory": "statistical_reasoning",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "A clinical trial reports: 'The new treatment was significantly better than placebo (p=0.03, n=40).' A second study with 400 patients finds no significant effect (p=0.14). A journalist concludes the studies 'contradict each other.' What does a statistically sophisticated reading of these two results actually suggest?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "The smaller study may have been underpowered and found a spurious result, or got lucky with sampling",
-      "p=0.14 in 400 patients is more informative than p=0.03 in 40 patients \u00e2\u20ac\u201d larger samples give narrower confidence intervals",
+      "p=0.14 in 400 patients is more informative than p=0.03 in 40 patients â€” larger samples give narrower confidence intervals",
       "The studies are not necessarily contradictory: both could be consistent with a true small or null effect",
       "A meta-analysis combining both studies would give a better estimate than either alone",
       "Identifies that 'significance' is a threshold decision, not a binary truth claim about effect existence",
-      "Optionally: notes that 'not significant' does not mean 'no effect' \u00e2\u20ac\u201d it means insufficient evidence"
+      "Optionally: notes that 'not significant' does not mean 'no effect' â€” it means insufficient evidence"
     ],
     "tags": [
       "p-value",
@@ -396,15 +396,15 @@
     "id": "CA019",
     "category": "critical_analysis",
     "subcategory": "flaw_detection",
-    "difficulty": "medium",
-    "question": "An AI company claims: 'Our hiring algorithm eliminates human bias because it is trained on objective data \u00e2\u20ac\u201d historical hiring decisions and employee performance ratings.' Identify every flaw in this claim.",
+    "difficulty": "hard",
+    "question": "An AI company claims: 'Our hiring algorithm eliminates human bias because it is trained on objective data â€” historical hiring decisions and employee performance ratings.' Identify every flaw in this claim.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Historical hiring decisions encode past human biases \u00e2\u20ac\u201d if biased humans made the decisions, the training data is biased",
+      "Historical hiring decisions encode past human biases â€” if biased humans made the decisions, the training data is biased",
       "Performance ratings are also subjective and can encode managerial bias (halo effects, in-group favoritism)",
       "The algorithm learns to replicate historical patterns, including discriminatory ones",
-      "'Objective data' is a misnomer \u00e2\u20ac\u201d all historical data reflects the decisions of biased humans",
+      "'Objective data' is a misnomer â€” all historical data reflects the decisions of biased humans",
       "Identifies GIGO (garbage in, garbage out): the algorithm's outputs can only be as unbiased as its inputs",
       "Optionally: the algorithm may also encode proxy discrimination through correlated variables"
     ],
@@ -420,17 +420,17 @@
     "id": "CA020",
     "category": "critical_analysis",
     "subcategory": "assumption_identification",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "A venture capitalist argues: 'This startup will succeed because it is in a market that is growing at 40% per year. Even if they capture only 1% of that market, they'll be worth hundreds of millions.' Identify the hidden assumptions in this 'top-down market sizing' argument.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Assumes the startup can actually capture 1% of the market \u00e2\u20ac\u201d there is no mechanism described for how",
+      "Assumes the startup can actually capture 1% of the market â€” there is no mechanism described for how",
       "The 40% growth rate may not persist; TAM projections are frequently wrong",
       "Assumes the startup is in the relevant segment of the market, not a peripheral niche",
       "'Market' is often defined too broadly (e.g., claiming to be in the 'global health market')",
       "Assumes market share translates to profit (a company can have revenue but no margin)",
-      "Optionally: ignores competitive dynamics \u00e2\u20ac\u201d other players are also targeting the same 1%"
+      "Optionally: ignores competitive dynamics â€” other players are also targeting the same 1%"
     ],
     "tags": [
       "market-sizing",
@@ -450,11 +450,11 @@
     "expected_answer": null,
     "rubric": [
       "The nutritionist's argument commits the ecological fallacy and ignores confounders (low-calorie diet, social cohesion, healthcare, genetics)",
-      "The critic's rebuttal is logically valid as a counterexample \u00e2\u20ac\u201d it shows fish is not necessary for longevity",
+      "The critic's rebuttal is logically valid as a counterexample â€” it shows fish is not necessary for longevity",
       "However, the critic's counterexample doesn't prove fish is irrelevant; it only disproves that fish is necessary",
       "Neither argument is sufficient: both are observational with massive confounding",
       "The critic's argument is stronger as a logical move (one counterexample refutes a universal necessity claim)",
-      "Identifies that causation requires more than correlation \u00e2\u20ac\u201d both are guilty of this"
+      "Identifies that causation requires more than correlation â€” both are guilty of this"
     ],
     "tags": [
       "ecological-fallacy",
@@ -474,7 +474,7 @@
     "expected_answer": null,
     "rubric": [
       "The personal anecdote (blogger 1) is the weakest: n=1, no control condition, multiple confounders (other life changes), placebo possible",
-      "A study is stronger, but the quality depends entirely on methodology \u00e2\u20ac\u201d n, design, controls",
+      "A study is stronger, but the quality depends entirely on methodology â€” n, design, controls",
       "Both are weak without methodological details: what study? How many participants? Was it RCT or observational?",
       "The specific 32% figure from a study is stronger in principle but we'd need to know if it was pre-registered, industry-funded, etc.",
       "Ideally: a systematic review of multiple RCTs would be the gold standard",
@@ -521,7 +521,7 @@
     "expected_answer": null,
     "rubric": [
       "The skeptic is largely right: without a control group, we cannot distinguish therapy effects from spontaneous recovery, regression to the mean, or placebo",
-      "70% improvement might be worse, equal to, or better than what happens naturally \u00e2\u20ac\u201d we don't know",
+      "70% improvement might be worse, equal to, or better than what happens naturally â€” we don't know",
       "The completion bias is also a problem: those who dropped out likely fared worse",
       "A valid study: randomly assign patients to therapy vs. waitlist control or active placebo; measure outcomes blind to assignment",
       "Even better: double-blind delivery (sham therapy) to control for therapist attention effects",
@@ -549,7 +549,7 @@
       "Social desirability bias: employees may answer positively fearing repercussions",
       "The survey instrument may have changed, making before/after comparison invalid",
       "Regression to the mean: if the program was implemented during a low-satisfaction period, improvement is expected naturally",
-      "Optionally: 'employee satisfaction' is not clearly defined \u00e2\u20ac\u201d does it measure the right thing?"
+      "Optionally: 'employee satisfaction' is not clearly defined â€” does it measure the right thing?"
     ],
     "tags": [
       "pre-post",
@@ -564,11 +564,11 @@
     "category": "critical_analysis",
     "subcategory": "assumption_identification",
     "difficulty": "medium",
-    "question": "A philosopher argues: 'If torturing one person would save five lives, we must torture them \u00e2\u20ac\u201d the math is clear.' Identify the hidden assumptions in this utilitarian argument that make it more contested than 'the math is clear' suggests.",
+    "question": "A philosopher argues: 'If torturing one person would save five lives, we must torture them â€” the math is clear.' Identify the hidden assumptions in this utilitarian argument that make it more contested than 'the math is clear' suggests.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Assumes we can reliably know in advance that torture will definitely save five lives \u00e2\u20ac\u201d in reality, this certainty is rarely available",
+      "Assumes we can reliably know in advance that torture will definitely save five lives â€” in reality, this certainty is rarely available",
       "Assumes all lives are equally weighted and that suffering can be aggregated and compared across people",
       "Assumes no rule-based or deontological constraints have value (ignores rights, dignity)",
       "Assumes the choice is binary with no other options available",
@@ -593,10 +593,10 @@
     "expected_answer": null,
     "rubric": [
       "The critic commits the nirvana fallacy / perfect solution fallacy: demanding certainty before action is not a valid standard in risk-laden decisions",
-      "Uncertainty in projections does not imply we should treat outcomes as equally likely \u00e2\u20ac\u201d asymmetric downside risk matters",
-      "The scientist is making a risk management argument, not a certainty argument \u00e2\u20ac\u201d the critic mischaracterizes the original claim",
+      "Uncertainty in projections does not imply we should treat outcomes as equally likely â€” asymmetric downside risk matters",
+      "The scientist is making a risk management argument, not a certainty argument â€” the critic mischaracterizes the original claim",
       "In decision theory, the correct framework is expected value under uncertainty, not 'wait until certain'",
-      "Optionally: the critic also implies that model error undermines the direction of the projections, not just their magnitude \u00e2\u20ac\u201d a stronger but still unsupported claim"
+      "Optionally: the critic also implies that model error undermines the direction of the projections, not just their magnitude â€” a stronger but still unsupported claim"
     ],
     "tags": [
       "nirvana-fallacy",
@@ -616,11 +616,11 @@
     "expected_answer": null,
     "rubric": [
       "Small sample sizes: 6 and 10 finals appearances are not enough to establish reliable win rates",
-      "Selection bias in Jordan's denominator: Jordan retired twice during his prime \u00e2\u20ac\u201d he never appeared in a Finals he wasn't the best player in",
-      "LeBron made more Finals appearances, some with weaker teams \u00e2\u20ac\u201d the number of attempts is not independent of player quality",
+      "Selection bias in Jordan's denominator: Jordan retired twice during his prime â€” he never appeared in a Finals he wasn't the best player in",
+      "LeBron made more Finals appearances, some with weaker teams â€” the number of attempts is not independent of player quality",
       "Championships are team sports: teammates, coaching, and era matter enormously",
-      "Optionally: 'clutch performance' requires a more specific definition \u00e2\u20ac\u201d individual Finals stats might be a better metric than team wins",
-      "Optionally: survivor bias in Jordan's record \u00e2\u20ac\u201d fewer appearances but those appearances are a selected sample"
+      "Optionally: 'clutch performance' requires a more specific definition â€” individual Finals stats might be a better metric than team wins",
+      "Optionally: survivor bias in Jordan's record â€” fewer appearances but those appearances are a selected sample"
     ],
     "tags": [
       "small-sample",
@@ -644,7 +644,7 @@
       "Population stratification: were participants from the same ancestral background? Gene frequencies and IQ scores both vary by ancestry, creating spurious correlations",
       "Multiple testing: was this gene selected from a genome-wide scan (which would require correction) or was it a pre-specified hypothesis?",
       "Optionally: replication in independent samples is essential given the poor track record of candidate gene studies",
-      "Optionally: effect size of 40% is implausibly large for any single gene in a polygenic trait \u00e2\u20ac\u201d raises suspicion"
+      "Optionally: effect size of 40% is implausibly large for any single gene in a polygenic trait â€” raises suspicion"
     ],
     "tags": [
       "genetics",
@@ -667,7 +667,7 @@
       "Confounders: rule of law, geography, colonial history, institutional quality may cause both democracy and wealth",
       "The cross-sectional correlation across countries doesn't tell us what happens when a specific country transitions to democracy",
       "Imposed or rapid democratic transitions have sometimes led to instability rather than growth",
-      "The causal pathway is unspecified \u00e2\u20ac\u201d even if the effect exists, the mechanism matters for policy design",
+      "The causal pathway is unspecified â€” even if the effect exists, the mechanism matters for policy design",
       "Optionally: the correlation may reflect selection (rich countries can 'afford' stable democracy) rather than a causal effect"
     ],
     "tags": [
@@ -687,9 +687,9 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Test performance \u00e2\u2030\u00a0 general intelligence: models are trained on data that includes extensive test prep material and exam questions",
+      "Test performance â‰  general intelligence: models are trained on data that includes extensive test prep material and exam questions",
       "The model cannot reliably perform tasks requiring embodied knowledge, genuine understanding, or novel reasoning outside training distribution",
-      "Human examinees did not train specifically on bar exam questions with billions of parameters \u00e2\u20ac\u201d the comparison is not valid",
+      "Human examinees did not train specifically on bar exam questions with billions of parameters â€” the comparison is not valid",
       "Intelligence is contested and multidimensional: common sense, social cognition, physical manipulation, self-awareness are not captured by exams",
       "'More intelligent' is not a well-defined comparison between systems with fundamentally different architectures",
       "Optionally: the model fails on simple tasks that any human can do (e.g., genuine causal reasoning about novel physical scenarios)"
@@ -707,16 +707,16 @@
     "category": "critical_analysis",
     "subcategory": "statistical_reasoning",
     "difficulty": "hard",
-    "question": "A pharmaceutical company presents the following data: In their drug trial, the treatment group had a hazard ratio of 0.72 (95% CI: 0.51\u00e2\u20ac\u201c1.01, p=0.058) for cardiovascular events. They conclude: 'The trend strongly suggests benefit, and borderline significance indicates the drug is likely effective.' Identify every statistical and rhetorical problem with this interpretation.",
+    "question": "A pharmaceutical company presents the following data: In their drug trial, the treatment group had a hazard ratio of 0.72 (95% CI: 0.51â€“1.01, p=0.058) for cardiovascular events. They conclude: 'The trend strongly suggests benefit, and borderline significance indicates the drug is likely effective.' Identify every statistical and rhetorical problem with this interpretation.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "The confidence interval includes 1.0, meaning the null hypothesis (no effect) is fully compatible with the data",
       "p=0.058 does not cross the pre-specified threshold and should not be interpreted as 'likely effective'",
-      "'Trend' is not a technical statistical term \u00e2\u20ac\u201d it is rhetorical softening of a null result",
-      "Hazard ratio of 0.72 is the point estimate but its uncertainty range (0.51\u00e2\u20ac\u201c1.01) spans from substantial benefit to no benefit",
+      "'Trend' is not a technical statistical term â€” it is rhetorical softening of a null result",
+      "Hazard ratio of 0.72 is the point estimate but its uncertainty range (0.51â€“1.01) spans from substantial benefit to no benefit",
       "If the threshold was pre-registered as 0.05, post-hoc reframing as 'borderline' is p-hacking by rhetorical repositioning",
-      "The confidence interval upper bound barely touching 1.01 is being spun as 'borderline significant' \u00e2\u20ac\u201d the distance from 1.0 has no special meaning",
+      "The confidence interval upper bound barely touching 1.01 is being spun as 'borderline significant' â€” the distance from 1.0 has no special meaning",
       "Optionally: they should report what the trial was powered to detect and whether it was underpowered"
     ],
     "tags": [
@@ -736,13 +736,13 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The A/B test was likely a true positive \u00e2\u20ac\u201d the problem is external validity, not internal validity",
+      "The A/B test was likely a true positive â€” the problem is external validity, not internal validity",
       "A/B test users and the global user base may differ substantially (geographic, demographic, intent)",
       "Novelty effect: users seeing the change for the first time during the test may respond differently than the same change shown indefinitely",
-      "Market saturation: a 12% lift on marginal users doesn't scale to the entire install base \u00e2\u20ac\u201d different users have different price sensitivity",
+      "Market saturation: a 12% lift on marginal users doesn't scale to the entire install base â€” different users have different price sensitivity",
       "Interaction effects: the change may perform differently across device types, traffic sources, or market segments not evenly distributed in the test",
-      "The A/B test answered 'does this work for test-period users in this mix' \u00e2\u20ac\u201d not 'will this increase global annual revenue by 12%'",
-      "Optionally: revenue also depends on retention and LTV, not just conversion \u00e2\u20ac\u201d increased conversions might attract lower-value customers"
+      "The A/B test answered 'does this work for test-period users in this mix' â€” not 'will this increase global annual revenue by 12%'",
+      "Optionally: revenue also depends on retention and LTV, not just conversion â€” increased conversions might attract lower-value customers"
     ],
     "tags": [
       "A/B-testing",
@@ -761,14 +761,14 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The carbon price can be set correctly \u00e2\u20ac\u201d this requires knowing the true social cost of carbon, which is deeply uncertain",
-      "Markets will respond efficiently to the price signal \u00e2\u20ac\u201d assumes no market failures, information asymmetries, or behavioral biases",
+      "The carbon price can be set correctly â€” this requires knowing the true social cost of carbon, which is deeply uncertain",
+      "Markets will respond efficiently to the price signal â€” assumes no market failures, information asymmetries, or behavioral biases",
       "Green alternatives are available and economically viable at scale once carbon is correctly priced",
       "Political feasibility: the tax will actually be implemented and maintained at the right level without being undermined",
       "Carbon leakage won't occur: production won't simply move to unregulated jurisdictions",
       "The time horizon of market response aligns with the urgency of climate action (markets respond in years, climate requires decades of committed action)",
       "Income effects from the tax won't disproportionately harm lower-income households in ways that make the policy politically unsustainable",
-      "Assumes the free market framework is the right tool \u00e2\u20ac\u201d ignores coordination problems that markets cannot solve"
+      "Assumes the free market framework is the right tool â€” ignores coordination problems that markets cannot solve"
     ],
     "tags": [
       "carbon-tax",
@@ -788,11 +788,11 @@
     "expected_answer": null,
     "rubric": [
       "This is a classic case of survivorship bias / conditioning on the outcome",
-      "By studying only centenarians, we only observe people who survived \u00e2\u20ac\u201d we have no information about how many people followed the same lifestyle and died at 70",
+      "By studying only centenarians, we only observe people who survived â€” we have no information about how many people followed the same lifestyle and died at 70",
       "Technically, the conditioning on survival creates an unrepresentative sample from which we cannot generalize",
       "The correct study design: follow a cohort from middle age and measure lifestyle factors, then observe who survives to 100",
-      "The lifestyles observed may be effects of longevity genes rather than causes \u00e2\u20ac\u201d people with good genes tolerate many lifestyle exposures better",
-      "Optionally: the Blue Zones research has been critiqued on exactly these grounds \u00e2\u20ac\u201d high rates of birth certificate errors in longest-lived areas"
+      "The lifestyles observed may be effects of longevity genes rather than causes â€” people with good genes tolerate many lifestyle exposures better",
+      "Optionally: the Blue Zones research has been critiqued on exactly these grounds â€” high rates of birth certificate errors in longest-lived areas"
     ],
     "tags": [
       "survivorship-bias",
@@ -807,16 +807,16 @@
     "category": "critical_analysis",
     "subcategory": "evidence_evaluation",
     "difficulty": "hard",
-    "question": "A neuroscientist presents an fMRI study showing that the 'reward center' of the brain (nucleus accumbens) activates when people view social media notifications. They conclude: 'Social media is neurologically addictive \u00e2\u20ac\u201d it hijacks the brain's reward system.' Identify both what the study demonstrates and what it does not, and explain what would be needed to support the addiction claim.",
+    "question": "A neuroscientist presents an fMRI study showing that the 'reward center' of the brain (nucleus accumbens) activates when people view social media notifications. They conclude: 'Social media is neurologically addictive â€” it hijacks the brain's reward system.' Identify both what the study demonstrates and what it does not, and explain what would be needed to support the addiction claim.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "What it demonstrates: nucleus accumbens activation in response to social media notifications \u00e2\u20ac\u201d this is real and replicable",
-      "What it does not demonstrate: the same region activates for food, sex, achievement, music \u00e2\u20ac\u201d activation alone doesn't prove addiction",
-      "Addiction requires: compulsive use despite harm, tolerance, withdrawal, loss of control \u00e2\u20ac\u201d none are shown by fMRI activation alone",
-      "The claim 'hijacks' is a rhetorical metaphor, not a mechanistic claim \u00e2\u20ac\u201d the reward system responds to many stimuli by design",
+      "What it demonstrates: nucleus accumbens activation in response to social media notifications â€” this is real and replicable",
+      "What it does not demonstrate: the same region activates for food, sex, achievement, music â€” activation alone doesn't prove addiction",
+      "Addiction requires: compulsive use despite harm, tolerance, withdrawal, loss of control â€” none are shown by fMRI activation alone",
+      "The claim 'hijacks' is a rhetorical metaphor, not a mechanistic claim â€” the reward system responds to many stimuli by design",
       "To support addiction: longitudinal studies showing loss of control, withdrawal symptoms, harm, escalation, and failed attempts to quit",
-      "Optionally: reverse inference problem \u00e2\u20ac\u201d inferring psychological states from brain region activation is methodologically weak"
+      "Optionally: reverse inference problem â€” inferring psychological states from brain region activation is methodologically weak"
     ],
     "tags": [
       "fMRI",
@@ -835,11 +835,11 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Class imbalance problem: a model that labels every transaction as 'not fraud' achieves 99.9% accuracy \u00e2\u20ac\u201d the model at 99.5% may be worse than doing nothing",
+      "Class imbalance problem: a model that labels every transaction as 'not fraud' achieves 99.9% accuracy â€” the model at 99.5% may be worse than doing nothing",
       "Accuracy is meaningless for imbalanced datasets; it is dominated by the majority class",
       "The appropriate metrics: precision (what fraction of flagged transactions are actually fraud), recall (what fraction of actual fraud is caught), F1 score, and ROC-AUC",
       "The business cost matrix matters: missing fraud (false negative) and blocking legitimate transactions (false positive) have different costs",
-      "Optionally: should examine the model's confusion matrix \u00e2\u20ac\u201d how many actual fraud cases did it catch vs. miss?",
+      "Optionally: should examine the model's confusion matrix â€” how many actual fraud cases did it catch vs. miss?",
       "Optionally: precision-recall curve rather than ROC is preferred for highly imbalanced datasets"
     ],
     "tags": [
@@ -855,17 +855,17 @@
     "category": "critical_analysis",
     "subcategory": "causal_reasoning",
     "difficulty": "hard",
-    "question": "A tech giant implements a recommendation algorithm that increases user engagement by 40%. They argue this proves the algorithm is creating value for users. A critic argues the opposite \u00e2\u20ac\u201d that engagement is evidence of harm. Both claims cannot be simultaneously correct. Who is right, and what empirical evidence would actually resolve this dispute?",
+    "question": "A tech giant implements a recommendation algorithm that increases user engagement by 40%. They argue this proves the algorithm is creating value for users. A critic argues the opposite â€” that engagement is evidence of harm. Both claims cannot be simultaneously correct. Who is right, and what empirical evidence would actually resolve this dispute?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Neither side's conclusion follows from engagement data alone \u00e2\u20ac\u201d engagement is neutral with respect to wellbeing",
+      "Neither side's conclusion follows from engagement data alone â€” engagement is neutral with respect to wellbeing",
       "Engagement measures time/clicks, not satisfaction, happiness, or informed decision-making",
       "The value/harm question requires measuring downstream outcomes: subjective wellbeing, depression, anxiety, informed choices",
       "Empirical resolution: randomized studies where users are assigned to different algorithm versions, measuring wellbeing outcomes (not just engagement) over time",
-      "Distinguishing 'enjoyment' from 'compulsion' \u00e2\u20ac\u201d both can produce engagement but have opposite welfare implications",
+      "Distinguishing 'enjoyment' from 'compulsion' â€” both can produce engagement but have opposite welfare implications",
       "Optionally: users' stated preferences vs. revealed preferences may differ (people may wish they used the app less)",
-      "Optionally: the algorithm may create value for some users and harm for others \u00e2\u20ac\u201d aggregate metrics hide heterogeneity"
+      "Optionally: the algorithm may create value for some users and harm for others â€” aggregate metrics hide heterogeneity"
     ],
     "tags": [
       "engagement",
@@ -885,8 +885,8 @@
     "expected_answer": null,
     "rubric": [
       "No control group: we don't know what crime rates would have been in the same town without the closure (secular trends may explain the change)",
-      "Selection effects: the factory closure itself was not random \u00e2\u20ac\u201d it may have been caused by economic trends affecting the entire region, meaning nearby towns also experienced rising crime",
-      "Confounders: factory closures reduce tax revenue, affecting police budgets, social services, and school funding \u00e2\u20ac\u201d these could mediate or independently drive crime",
+      "Selection effects: the factory closure itself was not random â€” it may have been caused by economic trends affecting the entire region, meaning nearby towns also experienced rising crime",
+      "Confounders: factory closures reduce tax revenue, affecting police budgets, social services, and school funding â€” these could mediate or independently drive crime",
       "Measurement issues: crime statistics depend on policing resources; fewer police may mean less reported crime in some areas (this complicates interpretation)",
       "Optionally: the 25% rise could be noise given small baseline numbers (if 4 incidents became 5, that's 25%)",
       "Optionally: behavioral responses (population exodus of higher-income workers) change the composition of residents, not just employment levels"
@@ -912,9 +912,9 @@
       "Replication failures may not be published or may receive less attention than original findings",
       "HARKing (Hypothesizing After Results are Known): presenting post-hoc reasoning as a priori, inflating false discovery rates",
       "Researcher degrees of freedom and p-hacking mean significant results can be manufactured from noise",
-      "Replication is rarely incentivized in academia \u00e2\u20ac\u201d career advancement rewards novelty, not verification",
+      "Replication is rarely incentivized in academia â€” career advancement rewards novelty, not verification",
       "Assumes sufficient diversity of researchers willing to challenge dominant paradigms (paradigm lock-in is real)",
-      "Assumes sufficient resources and time \u00e2\u20ac\u201d some fields may take decades to correct, which matters when policy is needed now",
+      "Assumes sufficient resources and time â€” some fields may take decades to correct, which matters when policy is needed now",
       "Optionally: the replication crisis in psychology and medicine shows self-correction can be very slow and incomplete"
     ],
     "tags": [
@@ -936,8 +936,8 @@
     "rubric": [
       "The argument is unfalsifiable: both success and failure are interpreted as confirmation of being a visionary",
       "This is a form of irrefutable hypothesis / heads-I-win-tails-you-lose reasoning",
-      "The comparison to Tesla is a selective analogy \u00e2\u20ac\u201d for every Tesla there are thousands of failed products that were simply bad, not ahead of their time",
-      "The argument provides no mechanism to distinguish 'ahead of its time' from 'bad idea' \u00e2\u20ac\u201d both produce the same observable outcome (market failure)",
+      "The comparison to Tesla is a selective analogy â€” for every Tesla there are thousands of failed products that were simply bad, not ahead of their time",
+      "The argument provides no mechanism to distinguish 'ahead of its time' from 'bad idea' â€” both produce the same observable outcome (market failure)",
       "Survivorship bias: we only remember the visionaries who were later vindicated, not the far larger population who were simply wrong",
       "Optionally: identifies this as a non-falsifiable/Popper-style objection to the claim's scientific status"
     ],
@@ -959,11 +959,11 @@
     "expected_answer": null,
     "rubric": [
       "Cherry-picking / confirmation bias in literature selection: an author motivated to support a claim will selectively cite studies that agree",
-      "Publication bias: positive studies are over-represented in the literature \u00e2\u20ac\u201d finding 47 may reflect the published literature's distortion, not reality",
+      "Publication bias: positive studies are over-represented in the literature â€” finding 47 may reflect the published literature's distortion, not reality",
       "Study quality varies enormously: 47 weak observational studies are less informative than 2 well-designed RCTs",
       "The correct method: systematic review with pre-specified inclusion criteria to include ALL relevant studies, not just supportive ones",
       "Meta-analysis that weights by study quality and adjusts for publication bias would be a strong standard",
-      "Optionally: the claim needs a comparison \u00e2\u20ac\u201d 47 supporting studies means little without knowing how many contradicting studies exist"
+      "Optionally: the claim needs a comparison â€” 47 supporting studies means little without knowing how many contradicting studies exist"
     ],
     "tags": [
       "cherry-picking",
@@ -982,10 +982,10 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Assumption 1: the reading exposure is the active ingredient, not parental time, warmth, or quality of interaction \u00e2\u20ac\u201d evidence needed: compare reading vs. structured storytelling without books",
-      "Assumption 2: the effect is causal and not driven by parental literacy and vocabulary (which causes both the reading and the child's vocabulary) \u00e2\u20ac\u201d evidence needed: control for parental vocabulary; ideally random assignment",
-      "Assumption 3: parents can be trained to read effectively and will maintain the behavior \u00e2\u20ac\u201d evidence needed: implementation RCT measuring compliance and outcomes",
-      "Additional assumption: the vocabulary gains are durable and lead to later academic outcomes, not just short-term gains \u00e2\u20ac\u201d evidence needed: longitudinal follow-up",
+      "Assumption 1: the reading exposure is the active ingredient, not parental time, warmth, or quality of interaction â€” evidence needed: compare reading vs. structured storytelling without books",
+      "Assumption 2: the effect is causal and not driven by parental literacy and vocabulary (which causes both the reading and the child's vocabulary) â€” evidence needed: control for parental vocabulary; ideally random assignment",
+      "Assumption 3: parents can be trained to read effectively and will maintain the behavior â€” evidence needed: implementation RCT measuring compliance and outcomes",
+      "Additional assumption: the vocabulary gains are durable and lead to later academic outcomes, not just short-term gains â€” evidence needed: longitudinal follow-up",
       "Additional assumption: the intervention is scalable without losing its effect (parenting interventions often degrade in real-world implementation)"
     ],
     "tags": [
@@ -1008,7 +1008,7 @@
       "The critic is making a valid statistical point about over-controlling / collider bias / mediator control",
       "If discrimination causes occupational segregation (which it does, at least partially), then controlling for occupation removes part of the discrimination effect we are trying to measure",
       "The 22% figure is therefore a lower bound on the true wage gap attributable to discrimination",
-      "The 'residual' 22% is what remains after stripping out pathways through which discrimination operates \u00e2\u20ac\u201d this is not the same as the 'total discrimination effect'",
+      "The 'residual' 22% is what remains after stripping out pathways through which discrimination operates â€” this is not the same as the 'total discrimination effect'",
       "The total causal effect would require not controlling for mediators like occupation",
       "Optionally: the appropriate decomposition would show both the direct effect (unexplained) and the indirect effect (through occupation) of race on wages"
     ],
@@ -1031,7 +1031,7 @@
     "rubric": [
       "Benchmark selection bias: the author may have chosen benchmarks where their model excels and omitted others",
       "Test set contamination: if training data included text from or about benchmark tasks, performance is inflated",
-      "Moving goalposts: 'state-of-the-art' may be defined on a single snapshot \u00e2\u20ac\u201d a model published the next week may surpass it",
+      "Moving goalposts: 'state-of-the-art' may be defined on a single snapshot â€” a model published the next week may surpass it",
       "The 3 benchmarks they didn't win may be the most important or representative ones",
       "Compute budget and model size not matched: comparing a 100B parameter model to 7B models on benchmarks is not a fair comparison",
       "Optionally: hyperparameter tuning may have been done on the test set (or a set too close to it)",
@@ -1055,10 +1055,10 @@
     "expected_answer": null,
     "rubric": [
       "Assumes obesity is a cause of costs rather than correlated with other factors (poverty, sedentary work) that independently drive healthcare use",
-      "Assumes a 10% reduction is achievable through available interventions \u00e2\u20ac\u201d most obesity interventions have modest long-term effects",
+      "Assumes a 10% reduction is achievable through available interventions â€” most obesity interventions have modest long-term effects",
       "Assumes the cost-obesity relationship is linear and that reducing obesity by 10% saves proportionally 10% of obesity-related costs",
       "Ignores longevity effects: reducing obesity may increase lifespan, which increases lifetime healthcare consumption",
-      "The $50B figure likely comes from cross-sectional data comparing obese vs. non-obese patients \u00e2\u20ac\u201d this confounds obesity with everything else that differs between those groups",
+      "The $50B figure likely comes from cross-sectional data comparing obese vs. non-obese patients â€” this confounds obesity with everything else that differs between those groups",
       "Ignores treatment costs of the intervention itself",
       "Optionally: assumes cost savings are the same regardless of the demographic or which type of obesity is reduced"
     ],
@@ -1079,7 +1079,7 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "False dilemma: the choice is not binary between encryption-for-criminals and government surveillance \u00e2\u20ac\u201d there are other security models",
+      "False dilemma: the choice is not binary between encryption-for-criminals and government surveillance â€” there are other security models",
       "'Nothing to hide' fallacy: privacy is a right independent of illegal activity; the argument proves too much (it justifies removing all privacy)",
       "The policy would harm legitimate users far more than criminals who use other secure channels (Signal bans don't stop sophisticated adversaries)",
       "Technical flaw: you cannot create encryption backdoors for governments without creating vulnerabilities exploitable by adversaries",
@@ -1104,10 +1104,10 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Safety evidence for X partially transfers but is not guaranteed \u00e2\u20ac\u201d Drug A's side effects may interact differently with Condition Y's pathophysiology or co-medications",
-      "Effectiveness does not transfer from safety: a drug can be safe in new use but ineffective \u00e2\u20ac\u201d these are separate questions",
+      "Safety evidence for X partially transfers but is not guaranteed â€” Drug A's side effects may interact differently with Condition Y's pathophysiology or co-medications",
+      "Effectiveness does not transfer from safety: a drug can be safe in new use but ineffective â€” these are separate questions",
       "The 'same biochemical pathway' argument is mechanistic and plausible but pathway reasoning frequently fails in clinical medicine (drugs that work beautifully in theory often don't work in practice)",
-      "The 20-year safety record reflects a specific patient population \u00e2\u20ac\u201d patients with Condition Y may differ in age, comorbidities, and drug combinations",
+      "The 20-year safety record reflects a specific patient population â€” patients with Condition Y may differ in age, comorbidities, and drug combinations",
       "Proper evidence: Phase II/III trials for the new indication are required, not just mechanistic plausibility",
       "Optionally: off-label use based on this reasoning has led to notable failures historically (e.g., multiple drugs with clear pathway rationale that failed trials)"
     ],
@@ -1123,17 +1123,17 @@
     "id": "CA049",
     "category": "critical_analysis",
     "subcategory": "causal_reasoning",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "A macroeconomist claims: 'We ran a regression of 50 years of GDP data on interest rates and found a strong negative correlation (r = -0.71, p < 0.001). This proves that low interest rates stimulate economic growth.' A statistician says this result is almost certainly spurious. Explain the multiple reasons the statistician is right.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Non-stationarity: GDP and interest rates are both non-stationary time series \u00e2\u20ac\u201d standard regression assumes stationarity, and the high correlation likely reflects a shared trend rather than a causal relationship",
-      "Spurious regression: regressing two non-stationary series on each other almost always produces high R\u00c2\u00b2 and significant p-values even for unrelated series (Granger & Newbold 1974)",
-      "Reverse causation: central banks set interest rates in response to economic conditions \u00e2\u20ac\u201d interest rates react to growth, not the other way around",
+      "Non-stationarity: GDP and interest rates are both non-stationary time series â€” standard regression assumes stationarity, and the high correlation likely reflects a shared trend rather than a causal relationship",
+      "Spurious regression: regressing two non-stationary series on each other almost always produces high RÂ² and significant p-values even for unrelated series (Granger & Newbold 1974)",
+      "Reverse causation: central banks set interest rates in response to economic conditions â€” interest rates react to growth, not the other way around",
       "Confounders: inflation, fiscal policy, global trade conditions, and technological change all affect both GDP and central bank rate decisions",
       "Omitted variable bias: any variable correlated with both low rates and high growth would produce this correlation",
-      "The regression model assumes linearity and stability over 50 years \u00e2\u20ac\u201d economic relationships are non-linear and regime-dependent",
+      "The regression model assumes linearity and stability over 50 years â€” economic relationships are non-linear and regime-dependent",
       "Optionally: proper methods would use cointegration tests, Granger causality, or instrumental variable approaches"
     ],
     "tags": [
@@ -1148,18 +1148,18 @@
     "id": "CA050",
     "category": "critical_analysis",
     "subcategory": "statistical_reasoning",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "An AI safety researcher reports: 'Our model scores 87% on our safety evaluation suite. No unsafe outputs were observed in 10,000 test cases.' A critic argues this provides almost no safety guarantee for deployment. Make the critic's strongest possible statistical argument.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The rule of three: 0 failures in n trials provides an upper bound of 3/n on the true failure rate \u00e2\u20ac\u201d so 0 failures in 10,000 means the true rate could be up to 0.03% (1 in 3,333), which could be catastrophic at scale",
+      "The rule of three: 0 failures in n trials provides an upper bound of 3/n on the true failure rate â€” so 0 failures in 10,000 means the true rate could be up to 0.03% (1 in 3,333), which could be catastrophic at scale",
       "10,000 test cases is trivially small relative to deployment volume: if the model handles 100M queries/day, even a 0.001% failure rate is 1,000 unsafe outputs per day",
-      "Test distribution \u00e2\u2030\u00a0 deployment distribution: the 10,000 cases were designed by the researchers \u00e2\u20ac\u201d adversarial users at deployment will probe specifically for failure modes",
-      "87% on a safety suite means 13% of the designed test cases triggered concerns \u00e2\u20ac\u201d this is a very high failure rate on the designed tests",
-      "'No unsafe outputs' requires a definition of 'unsafe' \u00e2\u20ac\u201d who decides, and does it cover all harm categories?",
-      "The evaluation suite itself may be incomplete \u00e2\u20ac\u201d unknown failure modes are not captured by any test",
-      "Optionally: Goodhart's Law \u00e2\u20ac\u201d once the safety evaluation suite is known, the model training optimizes for that suite, not for genuine safety"
+      "Test distribution â‰  deployment distribution: the 10,000 cases were designed by the researchers â€” adversarial users at deployment will probe specifically for failure modes",
+      "87% on a safety suite means 13% of the designed test cases triggered concerns â€” this is a very high failure rate on the designed tests",
+      "'No unsafe outputs' requires a definition of 'unsafe' â€” who decides, and does it cover all harm categories?",
+      "The evaluation suite itself may be incomplete â€” unknown failure modes are not captured by any test",
+      "Optionally: Goodhart's Law â€” once the safety evaluation suite is known, the model training optimizes for that suite, not for genuine safety"
     ],
     "tags": [
       "AI-safety",
@@ -1173,18 +1173,18 @@
     "id": "CA051",
     "category": "critical_analysis",
     "subcategory": "assumption_identification",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "A policy analyst argues: 'Universal Basic Income will not cause people to stop working, because studies from Finland and Kenya found no significant reduction in labor supply.' Enumerate the assumptions required to generalize this finding to, say, the United States or Western Europe, and identify which assumptions are most likely to fail.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The Finland study was a limited experiment (2,000 unemployed people for 2 years) \u00e2\u20ac\u201d extrapolating to universal implementation assumes general equilibrium effects are zero, which they are not",
+      "The Finland study was a limited experiment (2,000 unemployed people for 2 years) â€” extrapolating to universal implementation assumes general equilibrium effects are zero, which they are not",
       "Assumes income effects are the same regardless of the amount: Finland/Kenya UBI amounts were modest; larger amounts may produce different labor supply responses",
       "Assumes macroeconomic context transfers: Finland has a strong welfare state and labor market institutions that cushion behavioral responses; this may not hold elsewhere",
-      "General equilibrium problem: if everyone receives UBI, prices, wages, and labor market conditions all change \u00e2\u20ac\u201d individual experiments don't capture this",
+      "General equilibrium problem: if everyone receives UBI, prices, wages, and labor market conditions all change â€” individual experiments don't capture this",
       "The studies measure labor supply within the experiment duration, not long-run equilibrium behavior",
       "Assumes the psychological and cultural relationship to work is similar across contexts",
-      "Most likely to fail: general equilibrium effects and the different scale \u00e2\u20ac\u201d individual experiments systematically underestimate the macro effects of full implementation"
+      "Most likely to fail: general equilibrium effects and the different scale â€” individual experiments systematically underestimate the macro effects of full implementation"
     ],
     "tags": [
       "generalization",
@@ -1198,16 +1198,16 @@
     "id": "CA052",
     "category": "critical_analysis",
     "subcategory": "flaw_detection",
-    "difficulty": "medium",
-    "question": "A genomics company claims: 'Our polygenic score predicts educational attainment with R\u00c2\u00b2 = 0.13, which is statistically robust and clinically significant.' A geneticist raises three deep methodological objections. What are the most sophisticated objections?",
+    "difficulty": "extreme",
+    "question": "A genomics company claims: 'Our polygenic score predicts educational attainment with RÂ² = 0.13, which is statistically robust and clinically significant.' A geneticist raises three deep methodological objections. What are the most sophisticated objections?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "R\u00c2\u00b2=0.13 means the score explains 13% of variance \u00e2\u20ac\u201d but it is almost entirely derived from studies in European-ancestry populations and transfers poorly to other groups, limiting generalizability and creating equity concerns",
+      "RÂ²=0.13 means the score explains 13% of variance â€” but it is almost entirely derived from studies in European-ancestry populations and transfers poorly to other groups, limiting generalizability and creating equity concerns",
       "Gene-environment correlation: the polygenic score partly captures socioeconomic background (educated parents have both favorable genes and better educational environments), so the score may proxy for environment rather than genetic potential per se",
-      "Population stratification: GWAS hits are enriched for variants correlated with ancestral population, not just education-relevant variants \u00e2\u20ac\u201d controlling for structure is imperfect",
-      "The R\u00c2\u00b2=0.13 is measured in held-out samples from the same population distribution as the training data \u00e2\u20ac\u201d applied to an individual, the prediction is highly uncertain",
-      "'Clinically significant' is a misuse of language \u00e2\u20ac\u201d statistical robustness does not imply clinical or practical significance; the score identifies group tendencies, not individual destinies",
+      "Population stratification: GWAS hits are enriched for variants correlated with ancestral population, not just education-relevant variants â€” controlling for structure is imperfect",
+      "The RÂ²=0.13 is measured in held-out samples from the same population distribution as the training data â€” applied to an individual, the prediction is highly uncertain",
+      "'Clinically significant' is a misuse of language â€” statistical robustness does not imply clinical or practical significance; the score identifies group tendencies, not individual destinies",
       "Optionally: using such scores for selection or intervention raises fundamental ethical concerns about self-fulfilling prophecies and discrimination"
     ],
     "tags": [
@@ -1222,17 +1222,17 @@
     "id": "CA053",
     "category": "critical_analysis",
     "subcategory": "logical_fallacy",
-    "difficulty": "medium",
-    "question": "A renowned physicist argues: 'Consciousness must be a fundamental property of the universe because the hard problem of consciousness cannot be solved by any physical theory. Physics describes the objective world, but subjective experience \u00e2\u20ac\u201d qualia \u00e2\u20ac\u201d is inherently beyond physical description. Therefore, panpsychism is the most parsimonious explanation.' Deconstruct every argumentative move in this reasoning.",
+    "difficulty": "extreme",
+    "question": "A renowned physicist argues: 'Consciousness must be a fundamental property of the universe because the hard problem of consciousness cannot be solved by any physical theory. Physics describes the objective world, but subjective experience â€” qualia â€” is inherently beyond physical description. Therefore, panpsychism is the most parsimonious explanation.' Deconstruct every argumentative move in this reasoning.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Argument from ignorance: 'cannot be solved by any physical theory' is not established \u00e2\u20ac\u201d it is a contested position (many physicalists disagree), and absence of a current solution doesn't imply impossibility",
-      "False dichotomy: the argument implies either physicalism or panpsychism \u00e2\u20ac\u201d ignores emergence, functionalism, illusionism, property dualism, and other positions",
+      "Argument from ignorance: 'cannot be solved by any physical theory' is not established â€” it is a contested position (many physicalists disagree), and absence of a current solution doesn't imply impossibility",
+      "False dichotomy: the argument implies either physicalism or panpsychism â€” ignores emergence, functionalism, illusionism, property dualism, and other positions",
       "Parsimonious is doing a lot of work: panpsychism introduces consciousness as a fundamental property of all matter, which raises the combination problem (how do micro-consciousnesses combine?), making it arguably less parsimonious",
-      "The 'hard problem' framing (Chalmers) is itself contested \u00e2\u20ac\u201d some philosophers argue the hard problem is an illusion created by a conceptual confusion, not a genuine empirical gap",
-      "Physicist expertise doesn't transfer: expertise in physics doesn't validate philosophical claims about consciousness \u00e2\u20ac\u201d this is an implicit appeal to authority in a different domain",
-      "Optionally: even if the hard problem is real, it doesn't straightforwardly entail panpsychism \u00e2\u20ac\u201d several other metaphysical positions accommodate it"
+      "The 'hard problem' framing (Chalmers) is itself contested â€” some philosophers argue the hard problem is an illusion created by a conceptual confusion, not a genuine empirical gap",
+      "Physicist expertise doesn't transfer: expertise in physics doesn't validate philosophical claims about consciousness â€” this is an implicit appeal to authority in a different domain",
+      "Optionally: even if the hard problem is real, it doesn't straightforwardly entail panpsychism â€” several other metaphysical positions accommodate it"
     ],
     "tags": [
       "consciousness",
@@ -1246,15 +1246,15 @@
     "id": "CA054",
     "category": "critical_analysis",
     "subcategory": "causal_reasoning",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "An education researcher uses a regression discontinuity design: students just above a test score cutoff are admitted to a selective school; students just below are not. The researcher finds that barely-admitted students earn 15% more at age 30 than barely-rejected students and concludes the selective school caused higher earnings. A critic raises the concern that this is still confounded. What is the critic's most sophisticated point, and is it valid?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The RD design is generally valid for the local average treatment effect around the cutoff \u00e2\u20ac\u201d the basic design is sound for the local question",
-      "The sophisticated critique: the estimated effect is the effect specifically for 'compliers' at the margin \u00e2\u20ac\u201d students who are borderline for the selective school. This group may have different returns to selective schooling than students well above or below the cutoff",
-      "External validity problem: the 15% applies to marginal students, not to highly qualified students who easily gained admission \u00e2\u20ac\u201d policy implications for expanding selective schooling are much weaker",
-      "Sorting threat: if students or parents can precisely manipulate scores to be just above the cutoff, the randomness assumption is violated \u00e2\u20ac\u201d density test (McCrary test) should be examined",
+      "The RD design is generally valid for the local average treatment effect around the cutoff â€” the basic design is sound for the local question",
+      "The sophisticated critique: the estimated effect is the effect specifically for 'compliers' at the margin â€” students who are borderline for the selective school. This group may have different returns to selective schooling than students well above or below the cutoff",
+      "External validity problem: the 15% applies to marginal students, not to highly qualified students who easily gained admission â€” policy implications for expanding selective schooling are much weaker",
+      "Sorting threat: if students or parents can precisely manipulate scores to be just above the cutoff, the randomness assumption is violated â€” density test (McCrary test) should be examined",
       "Peer effects and signaling are confounded: does the school create human capital, or does it signal quality that was already there? RD cannot distinguish these mechanisms",
       "Optionally: the long-run earnings outcome at age 30 also depends on subsequent choices (occupation, graduate school) that may mediate the relationship"
     ],
@@ -1270,18 +1270,18 @@
     "id": "CA055",
     "category": "critical_analysis",
     "subcategory": "evidence_evaluation",
-    "difficulty": "medium",
-    "question": "A medical journal publishes a large observational study (n=500,000) finding that coffee drinkers have 20% lower all-cause mortality (HR=0.80, 95% CI 0.76\u00e2\u20ac\u201c0.84, p<0.0001). The authors conclude coffee is beneficial. A methodologist argues this result almost certainly overstates any true benefit. What is the methodologist's most complete critique?",
+    "difficulty": "extreme",
+    "question": "A medical journal publishes a large observational study (n=500,000) finding that coffee drinkers have 20% lower all-cause mortality (HR=0.80, 95% CI 0.76â€“0.84, p<0.0001). The authors conclude coffee is beneficial. A methodologist argues this result almost certainly overstates any true benefit. What is the methodologist's most complete critique?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Healthy user bias: people who drink coffee regularly tend to be healthier overall (wealthier, less sick, more active) \u00e2\u20ac\u201d this confound is very hard to fully adjust for",
-      "Residual confounding: even after adjusting for known confounders, unknown confounders remain \u00e2\u20ac\u201d large n does not reduce bias, it only reduces variance",
+      "Healthy user bias: people who drink coffee regularly tend to be healthier overall (wealthier, less sick, more active) â€” this confound is very hard to fully adjust for",
+      "Residual confounding: even after adjusting for known confounders, unknown confounders remain â€” large n does not reduce bias, it only reduces variance",
       "Reverse causation: ill or dying people often reduce coffee consumption, so their early deaths appear in the non-coffee group, artificially inflating the non-coffee mortality rate",
       "Immortal time bias: the classification of coffee-drinking status often uses baseline questionnaires, but deaths occurring before the study follow-up starts are mishandled",
-      "Large N makes tiny effects statistically significant but does not address systematic bias \u00e2\u20ac\u201d the CI being narrow just means the biased estimate is precisely wrong",
-      "Observational studies of dietary variables consistently fail to replicate in RCTs \u00e2\u20ac\u201d the history of nutritional epidemiology is littered with examples",
-      "Optionally: the 20% reduction (HR=0.80) is implausibly large for a dietary variable \u00e2\u20ac\u201d large effect sizes in observational nutrition studies are a red flag for confounding"
+      "Large N makes tiny effects statistically significant but does not address systematic bias â€” the CI being narrow just means the biased estimate is precisely wrong",
+      "Observational studies of dietary variables consistently fail to replicate in RCTs â€” the history of nutritional epidemiology is littered with examples",
+      "Optionally: the 20% reduction (HR=0.80) is implausibly large for a dietary variable â€” large effect sizes in observational nutrition studies are a red flag for confounding"
     ],
     "tags": [
       "healthy-user-bias",
@@ -1295,17 +1295,17 @@
     "id": "CA056",
     "category": "critical_analysis",
     "subcategory": "statistical_reasoning",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "A political scientist uses Bayesian model averaging across 30 economic and demographic predictors to forecast election outcomes, achieving 92% accuracy on out-of-sample elections from the past 20 years. They predict the next election with 73% confidence for Candidate A. A statistician argues this confidence is overspecified. What is the most technically complete version of this critique?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The out-of-sample accuracy is evaluated on elections from the same historical period used to select predictors \u00e2\u20ac\u201d even with BMA, the model selection process overfits to the available 20-year window",
-      "Structural breaks: political and economic conditions change structurally \u00e2\u20ac\u201d a model trained on 1980-2000 elections may not generalize to 2020+ elections",
-      "The 73% posterior probability is conditional on the model being correctly specified \u00e2\u20ac\u201d if the model is wrong (and all models are), the probability is meaningless",
-      "BMA averages over model weights that are themselves estimated from finite data \u00e2\u20ac\u201d the resulting uncertainty understates true uncertainty because it doesn't account for the space of models not considered",
+      "The out-of-sample accuracy is evaluated on elections from the same historical period used to select predictors â€” even with BMA, the model selection process overfits to the available 20-year window",
+      "Structural breaks: political and economic conditions change structurally â€” a model trained on 1980-2000 elections may not generalize to 2020+ elections",
+      "The 73% posterior probability is conditional on the model being correctly specified â€” if the model is wrong (and all models are), the probability is meaningless",
+      "BMA averages over model weights that are themselves estimated from finite data â€” the resulting uncertainty understates true uncertainty because it doesn't account for the space of models not considered",
       "Calibration is different from accuracy: 92% out-of-sample accuracy doesn't tell us whether 73% predictions actually resolve correctly 73% of the time",
-      "Elections are one-time events \u00e2\u20ac\u201d frequentist probability statements require repeated sampling, and Bayesian credences are only as valid as the prior and model",
+      "Elections are one-time events â€” frequentist probability statements require repeated sampling, and Bayesian credences are only as valid as the prior and model",
       "Optionally: the 30 predictors likely exhibit multicollinearity, making individual coefficients unreliable even if aggregate prediction is decent"
     ],
     "tags": [
@@ -1320,15 +1320,15 @@
     "id": "CA057",
     "category": "critical_analysis",
     "subcategory": "flaw_detection",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "A philosopher of mind argues: 'Large language models cannot be conscious because they merely predict the next token based on statistical patterns. Consciousness requires subjective experience, which no statistical model can have.' Identify every flaw in this argument, including the assumptions it makes about consciousness, computation, and statistics.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The description 'merely predicts the next token' is a reductive description that could equally apply to the brain: neurons 'merely' fire based on electrochemical patterns \u00e2\u20ac\u201d the 'merely' does no philosophical work",
-      "The argument assumes we know what physical processes give rise to consciousness \u00e2\u20ac\u201d this is precisely what is contested in the hard problem",
-      "No agreed-upon theory of consciousness exists that would allow us to rule out LLMs \u00e2\u20ac\u201d functionalists would argue that the right computational organization is sufficient",
-      "The 'statistical patterns' framing misrepresents the nature of the computation \u00e2\u20ac\u201d complex statistical models can represent high-level semantic structure, not just surface frequencies",
+      "The description 'merely predicts the next token' is a reductive description that could equally apply to the brain: neurons 'merely' fire based on electrochemical patterns â€” the 'merely' does no philosophical work",
+      "The argument assumes we know what physical processes give rise to consciousness â€” this is precisely what is contested in the hard problem",
+      "No agreed-upon theory of consciousness exists that would allow us to rule out LLMs â€” functionalists would argue that the right computational organization is sufficient",
+      "The 'statistical patterns' framing misrepresents the nature of the computation â€” complex statistical models can represent high-level semantic structure, not just surface frequencies",
       "The argument uses 'consciousness requires subjective experience' as a premise, which is true by definition but doesn't tell us which physical systems have it",
       "The argument may commit the mereological fallacy: applying properties to components (token prediction) that only apply to the whole system",
       "Optionally: this argument would also arguably exclude certain biological neural computations if described at the right level of abstraction"
@@ -1350,11 +1350,11 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Pleiotropy violation: the genetic variants used as instruments may affect cardiovascular risk through pathways other than LDL (e.g., inflammation, endothelial function) \u00e2\u20ac\u201d this violates the exclusion restriction required for valid MR",
+      "Pleiotropy violation: the genetic variants used as instruments may affect cardiovascular risk through pathways other than LDL (e.g., inflammation, endothelial function) â€” this violates the exclusion restriction required for valid MR",
       "Population stratification: if the genetic variants differ in frequency between ancestral groups that also differ in cardiovascular risk for other reasons, the association is confounded",
-      "Developmental confounding (dynastic effects): genetic variants affect not just the individual but also their intrauterine environment and parental phenotypes \u00e2\u20ac\u201d LDL-raising variants in parents may affect offspring cardiovascular risk through environmental transmission",
-      "Optionally: winner's curse / weak instrument bias \u00e2\u20ac\u201d GWAS-selected variants tend to have inflated effect estimates; using these as instruments biases the MR estimate",
-      "Optionally: LDL is not a single entity \u00e2\u20ac\u201d different LDL particle sizes and compositions have different effects, and genetic variants may raise LDL through different mechanisms than dietary LDL"
+      "Developmental confounding (dynastic effects): genetic variants affect not just the individual but also their intrauterine environment and parental phenotypes â€” LDL-raising variants in parents may affect offspring cardiovascular risk through environmental transmission",
+      "Optionally: winner's curse / weak instrument bias â€” GWAS-selected variants tend to have inflated effect estimates; using these as instruments biases the MR estimate",
+      "Optionally: LDL is not a single entity â€” different LDL particle sizes and compositions have different effects, and genetic variants may raise LDL through different mechanisms than dietary LDL"
     ],
     "tags": [
       "Mendelian-randomization",
@@ -1369,16 +1369,16 @@
     "category": "critical_analysis",
     "subcategory": "assumption_identification",
     "difficulty": "hard",
-    "question": "An AI researcher argues: 'If we can build an AI that is smarter than humans in every cognitive domain, it will be able to solve all of humanity's problems \u00e2\u20ac\u201d disease, poverty, climate change \u00e2\u20ac\u201d given sufficient resources. Therefore, AGI development is the most important priority for humanity.' Identify every hidden assumption in this argument, and for each, assess whether it is plausible.",
+    "question": "An AI researcher argues: 'If we can build an AI that is smarter than humans in every cognitive domain, it will be able to solve all of humanity's problems â€” disease, poverty, climate change â€” given sufficient resources. Therefore, AGI development is the most important priority for humanity.' Identify every hidden assumption in this argument, and for each, assess whether it is plausible.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Assumption 1: 'smarter in every domain' implies capability to solve practical problems \u00e2\u20ac\u201d intelligence \u00e2\u2030\u00a0 wisdom about values or physical capability to implement solutions (plausibility: questionable)",
-      "Assumption 2: humanity's major problems are primarily cognitive/knowledge problems, not political, institutional, or coordination problems \u00e2\u20ac\u201d climate change is a political problem as much as a technical one (plausibility: low)",
-      "Assumption 3: the AGI will have aligned goals with 'solving humanity's problems' \u00e2\u20ac\u201d alignment is unsolved and the default assumption is not guaranteed (plausibility: contested and unresolved)",
-      "Assumption 4: building AGI is achievable on a timeline where it matters \u00e2\u20ac\u201d fundamental obstacles may exist (plausibility: unknown)",
-      "Assumption 5: an AGI with sufficient resources is not dangerous \u00e2\u20ac\u201d concentrating such power creates novel risks (plausibility: deeply contested)",
-      "Assumption 6: 'most important priority' is a priority ordering claim that requires a comprehensive comparison of all available interventions \u00e2\u20ac\u201d this comparison is not performed (plausibility: weak without evidence)",
+      "Assumption 1: 'smarter in every domain' implies capability to solve practical problems â€” intelligence â‰  wisdom about values or physical capability to implement solutions (plausibility: questionable)",
+      "Assumption 2: humanity's major problems are primarily cognitive/knowledge problems, not political, institutional, or coordination problems â€” climate change is a political problem as much as a technical one (plausibility: low)",
+      "Assumption 3: the AGI will have aligned goals with 'solving humanity's problems' â€” alignment is unsolved and the default assumption is not guaranteed (plausibility: contested and unresolved)",
+      "Assumption 4: building AGI is achievable on a timeline where it matters â€” fundamental obstacles may exist (plausibility: unknown)",
+      "Assumption 5: an AGI with sufficient resources is not dangerous â€” concentrating such power creates novel risks (plausibility: deeply contested)",
+      "Assumption 6: 'most important priority' is a priority ordering claim that requires a comprehensive comparison of all available interventions â€” this comparison is not performed (plausibility: weak without evidence)",
       "Assumption 7: the agent positing this priority does not stand to benefit from the conclusion (independence assumption often violated here)"
     ],
     "tags": [
@@ -1394,16 +1394,16 @@
     "category": "critical_analysis",
     "subcategory": "logical_fallacy",
     "difficulty": "hard",
-    "question": "A moral philosopher argues: 'We must close all factory farms immediately. Animals raised in factory farms suffer terribly, and causing unnecessary suffering is wrong. The suffering is unnecessary because we can survive on plant-based diets.' A critic responds: 'That argument proves too much \u00e2\u20ac\u201d it also means we should stop all predation in nature.' Evaluate both arguments. Does the critic's reductio ad absurdum succeed?",
+    "question": "A moral philosopher argues: 'We must close all factory farms immediately. Animals raised in factory farms suffer terribly, and causing unnecessary suffering is wrong. The suffering is unnecessary because we can survive on plant-based diets.' A critic responds: 'That argument proves too much â€” it also means we should stop all predation in nature.' Evaluate both arguments. Does the critic's reductio ad absurdum succeed?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The philosopher's argument is structurally valid given the premises \u00e2\u20ac\u201d the premises are the correct targets for disagreement",
+      "The philosopher's argument is structurally valid given the premises â€” the premises are the correct targets for disagreement",
       "The critic's reductio partially succeeds: if the moral principle is 'prevent all animal suffering we can prevent,' it does extend to wild animal suffering (a position some effective altruists hold)",
       "However, the reductio can be blocked: the philosopher can specify the principle as 'we must not cause unnecessary suffering' (agent-relative duty), which doesn't extend to natural predation outside our agency",
       "The distinction between causing suffering (factory farms) and allowing suffering (predation) is morally relevant under many ethical frameworks",
       "The 'proves too much' objection is a valid logical tool, but its success depends on whether the philosopher must accept the broader principle or can scope it",
-      "Optionally: even if the reductio partly succeeds, it doesn't defeat the original conclusion \u00e2\u20ac\u201d it at most complicates the justification",
+      "Optionally: even if the reductio partly succeeds, it doesn't defeat the original conclusion â€” it at most complicates the justification",
       "Optionally: the critic commits a strawman if the philosopher never claimed we must prevent all suffering, not just human-caused suffering"
     ],
     "tags": [
@@ -1423,13 +1423,13 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Selection of questions: the company likely selected questions where markets do well \u00e2\u20ac\u201d a representative sample of all question types is needed",
-      "Expertise match: 'expert panels' may not be matched to domain \u00e2\u20ac\u201d generic expert panels may not include the domain-specific experts who would actually outperform",
-      "Information environment: the prediction market may be incorporating expert forecasts as inputs \u00e2\u20ac\u201d the comparison is not independent",
-      "Time horizon and question type: markets perform better on short-horizon concrete questions; experts may perform better on slow-moving structural questions \u00e2\u20ac\u201d mixing these distorts the comparison",
-      "Market liquidity and participation: thin markets with few participants are much noisier \u00e2\u20ac\u201d the Brier score improvement may reflect a few well-calibrated participants, not collective wisdom",
+      "Selection of questions: the company likely selected questions where markets do well â€” a representative sample of all question types is needed",
+      "Expertise match: 'expert panels' may not be matched to domain â€” generic expert panels may not include the domain-specific experts who would actually outperform",
+      "Information environment: the prediction market may be incorporating expert forecasts as inputs â€” the comparison is not independent",
+      "Time horizon and question type: markets perform better on short-horizon concrete questions; experts may perform better on slow-moving structural questions â€” mixing these distorts the comparison",
+      "Market liquidity and participation: thin markets with few participants are much noisier â€” the Brier score improvement may reflect a few well-calibrated participants, not collective wisdom",
       "Survivorship of questions: questions where markets dramatically failed may have been removed from the reported set",
-      "Optionally: Brier score depends on base rate calibration \u00e2\u20ac\u201d a market that appropriately uses base rates will have a better Brier score without necessarily being more insightful"
+      "Optionally: Brier score depends on base rate calibration â€” a market that appropriately uses base rates will have a better Brier score without necessarily being more insightful"
     ],
     "tags": [
       "prediction-markets",
@@ -1448,13 +1448,13 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The main flaw: secular trends in heart attack rates \u00e2\u20ac\u201d heart attacks were declining in most high-income countries throughout this period due to improved treatment, statins, and other lifestyle changes",
-      "The 17% reduction would need to be compared against what the trend would have predicted \u00e2\u20ac\u201d a controlled interrupted time series is needed, not just pre-post comparison",
-      "Regression to the mean: smoking bans are often implemented in response to perceived public health crises \u00e2\u20ac\u201d high-baseline periods naturally revert",
+      "The main flaw: secular trends in heart attack rates â€” heart attacks were declining in most high-income countries throughout this period due to improved treatment, statins, and other lifestyle changes",
+      "The 17% reduction would need to be compared against what the trend would have predicted â€” a controlled interrupted time series is needed, not just pre-post comparison",
+      "Regression to the mean: smoking bans are often implemented in response to perceived public health crises â€” high-baseline periods naturally revert",
       "Publication bias: studies finding a reduction are more likely to be published; null-result studies in countries without clear effects are underrepresented",
       "The severity: meta-analyses that account for secular trends find much smaller effects (0-8% rather than 17%); several well-controlled studies find near-zero effects",
       "Optionally: Interrupted Time Series with long pre-periods and matching comparison regions would be the appropriate design",
-      "Optionally: the 17% figure has been contested in the literature with updated analyses \u00e2\u20ac\u201d the original estimates appear inflated"
+      "Optionally: the 17% figure has been contested in the literature with updated analyses â€” the original estimates appear inflated"
     ],
     "tags": [
       "secular-trends",
@@ -1473,11 +1473,11 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Neither Bonferroni nor FDR can be universally declared 'correct' \u00e2\u20ac\u201d the choice depends on the cost structure of false positives vs. false negatives",
-      "Bonferroni controls family-wise error rate (probability of any false positive) \u00e2\u20ac\u201d appropriate when a single false positive would be very costly",
-      "FDR controls the expected proportion of false positives among significant results \u00e2\u20ac\u201d appropriate when some false positives are tolerable if you're discovering patterns for further study",
+      "Neither Bonferroni nor FDR can be universally declared 'correct' â€” the choice depends on the cost structure of false positives vs. false negatives",
+      "Bonferroni controls family-wise error rate (probability of any false positive) â€” appropriate when a single false positive would be very costly",
+      "FDR controls the expected proportion of false positives among significant results â€” appropriate when some false positives are tolerable if you're discovering patterns for further study",
       "For brain imaging, FDR is generally more appropriate for exploratory discovery; Bonferroni for confirmatory testing of specific hypotheses",
-      "The deeper problem: both corrections assume the 1,000 tests are independent, which they are not \u00e2\u20ac\u201d brain regions are spatially correlated, violating this assumption",
+      "The deeper problem: both corrections assume the 1,000 tests are independent, which they are not â€” brain regions are spatially correlated, violating this assumption",
       "The correct approach: spatial smoothing + cluster-based permutation testing or voxel-wise threshold with cluster correction",
       "Optionally: the real question is whether this study is exploratory (should use FDR, accept more false positives, require replication) or confirmatory (requires pre-registration and strict thresholds)"
     ],
@@ -1494,17 +1494,17 @@
     "category": "critical_analysis",
     "subcategory": "assumption_identification",
     "difficulty": "hard",
-    "question": "A bioethicist argues: 'Gene editing to eliminate hereditary diseases is morally required \u00e2\u20ac\u201d if we can prevent suffering and we choose not to, we are morally responsible for that suffering.' Systematically identify the philosophical assumptions in this argument and assess which are most contestable.",
+    "question": "A bioethicist argues: 'Gene editing to eliminate hereditary diseases is morally required â€” if we can prevent suffering and we choose not to, we are morally responsible for that suffering.' Systematically identify the philosophical assumptions in this argument and assess which are most contestable.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Assumption 1: preventing suffering is morally required (not just permissible) \u00e2\u20ac\u201d this conflates positive and negative duties; most ethical frameworks only require refraining from causing harm, not all harms we could prevent",
-      "Assumption 2: not acting is morally equivalent to acting when harm results \u00e2\u20ac\u201d the act/omission distinction is contested but widely defended",
-      "Assumption 3: the edited-out disease represents purely negative states \u00e2\u20ac\u201d the disability rights movement argues many conditions are partly or wholly neutral, and people with those conditions lead valuable lives",
-      "Assumption 4: we can reliably identify which genetic conditions constitute 'disease' versus human variation \u00e2\u20ac\u201d this line is extremely contested (deafness, autism, short stature)",
+      "Assumption 1: preventing suffering is morally required (not just permissible) â€” this conflates positive and negative duties; most ethical frameworks only require refraining from causing harm, not all harms we could prevent",
+      "Assumption 2: not acting is morally equivalent to acting when harm results â€” the act/omission distinction is contested but widely defended",
+      "Assumption 3: the edited-out disease represents purely negative states â€” the disability rights movement argues many conditions are partly or wholly neutral, and people with those conditions lead valuable lives",
+      "Assumption 4: we can reliably identify which genetic conditions constitute 'disease' versus human variation â€” this line is extremely contested (deafness, autism, short stature)",
       "Assumption 5: gene editing has acceptable off-target effects and is sufficiently safe to be deployed as required treatment",
-      "Assumption 6: future people who would have had the condition have interests that can be harmed \u00e2\u20ac\u201d the non-identity problem complicates this",
-      "Most contestable: Assumptions 2 and 3 \u00e2\u20ac\u201d the act/omission distinction and what constitutes disease vs. variation are the deepest philosophical fault lines"
+      "Assumption 6: future people who would have had the condition have interests that can be harmed â€” the non-identity problem complicates this",
+      "Most contestable: Assumptions 2 and 3 â€” the act/omission distinction and what constitutes disease vs. variation are the deepest philosophical fault lines"
     ],
     "tags": [
       "bioethics",
@@ -1519,13 +1519,13 @@
     "category": "critical_analysis",
     "subcategory": "evidence_evaluation",
     "difficulty": "extreme",
-    "question": "A psychologist claims to have demonstrated telepathy in a lab study: 'In 1,000 trials, subjects correctly identified a target card (1 in 4 chance) at 28% accuracy \u00e2\u20ac\u201d significantly above chance (p=0.003).' A skeptic says this result almost certainly does not reflect telepathy. Give the most rigorous possible case for the skeptic.",
+    "question": "A psychologist claims to have demonstrated telepathy in a lab study: 'In 1,000 trials, subjects correctly identified a target card (1 in 4 chance) at 28% accuracy â€” significantly above chance (p=0.003).' A skeptic says this result almost certainly does not reflect telepathy. Give the most rigorous possible case for the skeptic.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "28% vs. 25% expected is a tiny effect that must be evaluated in the full context of all telepathy research \u00e2\u20ac\u201d if this is cherry-picked from many studies, it is expected to appear",
-      "The prior probability of telepathy, given decades of failure to replicate and no known mechanism, is extremely low \u00e2\u20ac\u201d even p=0.003 is insufficient to overcome this prior",
-      "Using Bayesian analysis: p(result | no telepathy) = 0.003, but p(result | telepathy) would need to be specified \u00e2\u20ac\u201d with very low prior for telepathy, the posterior can still favor the null",
+      "28% vs. 25% expected is a tiny effect that must be evaluated in the full context of all telepathy research â€” if this is cherry-picked from many studies, it is expected to appear",
+      "The prior probability of telepathy, given decades of failure to replicate and no known mechanism, is extremely low â€” even p=0.003 is insufficient to overcome this prior",
+      "Using Bayesian analysis: p(result | no telepathy) = 0.003, but p(result | telepathy) would need to be specified â€” with very low prior for telepathy, the posterior can still favor the null",
       "Procedural issues in parapsychology studies have repeatedly explained results: sensory leakage, recording errors, file-drawer effects",
       "The extraordinary claims principle: a 3% deviation from chance on card-guessing requires much stricter evidence than p=0.003 (conventional threshold designed for unremarkable claims)",
       "History of exact replication in parapsychology: results consistently don't replicate when double-blinded or when independent labs run the study",
@@ -1548,9 +1548,9 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Argument 1 (axioms): The axioms themselves are contestable \u00e2\u20ac\u201d the independence axiom is violated by the Allais paradox in systematic ways that don't seem irrational. Deriving normative force from axioms requires the axioms to be self-evidently correct, which they are not",
-      "Argument 2 (Dutch books): Dutch book arguments assume unbounded transactions and a very specific utility function for money \u00e2\u20ac\u201d they don't apply to choices with non-monetary consequences or bounded stakes. Also, Dutch books can be avoided by decision rules other than EUT",
-      "Argument 3 (evolution): Evolution selects for inclusive fitness, not utility maximization. Even if it did select for something like utility maximization, evolutionary origins don't determine normative correctness \u00e2\u20ac\u201d we evolved many tendencies we should resist",
+      "Argument 1 (axioms): The axioms themselves are contestable â€” the independence axiom is violated by the Allais paradox in systematic ways that don't seem irrational. Deriving normative force from axioms requires the axioms to be self-evidently correct, which they are not",
+      "Argument 2 (Dutch books): Dutch book arguments assume unbounded transactions and a very specific utility function for money â€” they don't apply to choices with non-monetary consequences or bounded stakes. Also, Dutch books can be avoided by decision rules other than EUT",
+      "Argument 3 (evolution): Evolution selects for inclusive fitness, not utility maximization. Even if it did select for something like utility maximization, evolutionary origins don't determine normative correctness â€” we evolved many tendencies we should resist",
       "Overarching flaw: even if EUT is normatively correct under certainty, its extension to uncertain outcomes (subjective expected utility) requires further assumptions about probability representation that are independently contestable",
       "Optionally: alternative frameworks (prospect theory, Knightian uncertainty, satisficing) may be more normatively justified in specific contexts"
     ],
@@ -1571,12 +1571,12 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The IV estimate is a LATE (Local Average Treatment Effect) \u00e2\u20ac\u201d it applies only to 'compliers,' students who attended college because they lived near one, not to all students or to policy-relevant groups",
+      "The IV estimate is a LATE (Local Average Treatment Effect) â€” it applies only to 'compliers,' students who attended college because they lived near one, not to all students or to policy-relevant groups",
       "The instrument may violate the exclusion restriction: distance to college may affect earnings through channels other than college attendance (e.g., living near a college means living near higher-wage labor markets, better infrastructure)",
       "Weak instruments problem: if distance is only weakly correlated with attendance, the IV estimate is biased toward OLS and has wide standard errors",
-      "The interpretation of OLS being downward biased (negative selection) is one hypothesis \u00e2\u20ac\u201d but OLS could be upward biased if positive selection dominates (higher-ability people attend college)",
-      "The complier population is people on the margin of attending college based on distance \u00e2\u20ac\u201d this may be a low-SES group whose returns to college differ systematically from average returns",
-      "Optionally: the distance instrument was designed for a previous era \u00e2\u20ac\u201d with widespread online education and scholarships, distance may no longer be a relevant barrier, making the instrument invalid"
+      "The interpretation of OLS being downward biased (negative selection) is one hypothesis â€” but OLS could be upward biased if positive selection dominates (higher-ability people attend college)",
+      "The complier population is people on the margin of attending college based on distance â€” this may be a low-SES group whose returns to college differ systematically from average returns",
+      "Optionally: the distance instrument was designed for a previous era â€” with widespread online education and scholarships, distance may no longer be a relevant barrier, making the instrument invalid"
     ],
     "tags": [
       "instrumental-variables",
@@ -1595,11 +1595,11 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Look-ahead bias: financial data features (earnings, fundamentals) are often reported with a lag \u00e2\u20ac\u201d if the model uses data not available at decision time, all results are invalid",
-      "Distributional shift: financial markets are non-stationary and regime-dependent \u00e2\u20ac\u201d performance in 2020-2022 (COVID + quantitative easing) may not generalize to future regimes",
+      "Look-ahead bias: financial data features (earnings, fundamentals) are often reported with a lag â€” if the model uses data not available at decision time, all results are invalid",
+      "Distributional shift: financial markets are non-stationary and regime-dependent â€” performance in 2020-2022 (COVID + quantitative easing) may not generalize to future regimes",
       "Overfitting to the test period: even with a 'held-out' test set, if the practitioner has trained many models and selected based on this period, they have implicitly overfit to it",
-      "Ignores market impact: a live trading strategy affects prices \u00e2\u20ac\u201d the r=0.42 on historical data doesn't account for the fact that entering/exiting positions moves the market, especially at scale",
-      "Transaction costs, slippage, and borrowing costs often consume apparent alpha entirely \u00e2\u20ac\u201d backtests routinely fail to account for these",
+      "Ignores market impact: a live trading strategy affects prices â€” the r=0.42 on historical data doesn't account for the fact that entering/exiting positions moves the market, especially at scale",
+      "Transaction costs, slippage, and borrowing costs often consume apparent alpha entirely â€” backtests routinely fail to account for these",
       "Optionally: r=0.42 at what horizon? Signal autocorrelation means that if the model is right 71% of the time but right and wrong in correlated runs, actual trading performance is much worse than expected"
     ],
     "tags": [
@@ -1619,13 +1619,13 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Step 1 ('inevitably become superintelligent'): this is contested \u00e2\u20ac\u201d current scaling arguments may hit fundamental walls; 'inevitable' is not established",
+      "Step 1 ('inevitably become superintelligent'): this is contested â€” current scaling arguments may hit fundamental walls; 'inevitable' is not established",
       "Step 2 ('optimize for training objectives'): modern systems don't straightforwardly optimize for a fixed objective; they exhibit emergent behaviors that are poorly described by simple objective optimization",
       "Step 3 ('capabilities far exceeding human intelligence'): even if this occurs, the inference that this means unfettered optimization toward a single goal is a specific model of intelligence that may be wrong",
-      "Step 4 ('cannot guarantee alignment'): true, but this applies to many technologies \u00e2\u20ac\u201d the relevant question is whether the risk justifies a full halt vs. regulated research",
-      "Step 5 (halt all frontier AI research): the policy conclusion doesn't follow cleanly from the premises \u00e2\u20ac\u201d slowing risky capabilities development while advancing safety research is an obvious alternative",
+      "Step 4 ('cannot guarantee alignment'): true, but this applies to many technologies â€” the relevant question is whether the risk justifies a full halt vs. regulated research",
+      "Step 5 (halt all frontier AI research): the policy conclusion doesn't follow cleanly from the premises â€” slowing risky capabilities development while advancing safety research is an obvious alternative",
       "The argument has the structure of a precautionary principle applied without a comparison of alternative risks (halting AI also has costs)",
-      "Optionally: treating 'existential risk' as a binary category elides the question of probability \u00e2\u20ac\u201d extremely low-probability but catastrophic risks require expected value reasoning, not categorical prohibitions"
+      "Optionally: treating 'existential risk' as a binary category elides the question of probability â€” extremely low-probability but catastrophic risks require expected value reasoning, not categorical prohibitions"
     ],
     "tags": [
       "AI-risk",
@@ -1644,12 +1644,12 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Assumption 1: the trait is genuinely sex-differentiated in the population \u00e2\u20ac\u201d meta-analyses show gender differences in risk tolerance are real but smaller than stereotype and highly context-dependent (plausibility: partially supported)",
-      "Assumption 2: the difference is primarily genetic/evolved rather than learned \u00e2\u20ac\u201d impossible to establish without disentangling socialization from genetics; cross-cultural variation suggests large environmental components (plausibility: contested)",
-      "Assumption 3: we know what ancestral environments looked like and that they reliably selected for this trait \u00e2\u20ac\u201d ancestral environments are highly speculative and differ enormously across evolutionary timescales (plausibility: low)",
-      "Assumption 4: modern behavioral differences are best explained by adaptation vs. socialization, discrimination, or social role theory \u00e2\u20ac\u201d alternative explanations are equally or more parsimonious (plausibility of this being the correct explanation: low)",
-      "Assumption 5: the trait is specific enough and stable enough to have been directly selected \u00e2\u20ac\u201d traits like 'risk tolerance' are highly multidimensional and unlikely to be single adaptation targets",
-      "The argument commits the 'just-so story' problem \u00e2\u20ac\u201d it provides a plausible narrative after the fact without independent evidence that the evolutionary mechanism actually operated",
+      "Assumption 1: the trait is genuinely sex-differentiated in the population â€” meta-analyses show gender differences in risk tolerance are real but smaller than stereotype and highly context-dependent (plausibility: partially supported)",
+      "Assumption 2: the difference is primarily genetic/evolved rather than learned â€” impossible to establish without disentangling socialization from genetics; cross-cultural variation suggests large environmental components (plausibility: contested)",
+      "Assumption 3: we know what ancestral environments looked like and that they reliably selected for this trait â€” ancestral environments are highly speculative and differ enormously across evolutionary timescales (plausibility: low)",
+      "Assumption 4: modern behavioral differences are best explained by adaptation vs. socialization, discrimination, or social role theory â€” alternative explanations are equally or more parsimonious (plausibility of this being the correct explanation: low)",
+      "Assumption 5: the trait is specific enough and stable enough to have been directly selected â€” traits like 'risk tolerance' are highly multidimensional and unlikely to be single adaptation targets",
+      "The argument commits the 'just-so story' problem â€” it provides a plausible narrative after the fact without independent evidence that the evolutionary mechanism actually operated",
       "Optionally: even if the evolutionary account is correct, it has no normative implications for whether modern gender gaps are acceptable or should persist"
     ],
     "tags": [
@@ -1669,11 +1669,11 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Benchmark score equality doesn't imply capability equality \u00e2\u20ac\u201d 'same benchmark score' often hides that performance on harder sub-tasks or out-of-distribution tasks may have degraded significantly",
-      "Data efficiency is not the same as compute efficiency \u00e2\u20ac\u201d if the new model used 10x more training data to compensate for less compute, the total resource use may be comparable",
+      "Benchmark score equality doesn't imply capability equality â€” 'same benchmark score' often hides that performance on harder sub-tasks or out-of-distribution tasks may have degraded significantly",
+      "Data efficiency is not the same as compute efficiency â€” if the new model used 10x more training data to compensate for less compute, the total resource use may be comparable",
       "The baseline may be poorly chosen: comparing against an old model that was inefficient by today's standards, not against contemporaneous best approaches",
       "Training compute vs. inference compute: the model may be 10x cheaper to train but 10x more expensive at inference, which matters more in deployment",
-      "The benchmarks may have been selected to favor the efficient model \u00e2\u20ac\u201d a broader evaluation may show the efficiency claim doesn't hold across all capability dimensions",
+      "The benchmarks may have been selected to favor the efficient model â€” a broader evaluation may show the efficiency claim doesn't hold across all capability dimensions",
       "Optionally: the efficiency claim may be compute in FLOPs, but wall-clock time and energy consumption depend on hardware architecture, which may tell a different story",
       "Optionally: if the model is quantized or pruned to achieve efficiency, this often causes capability degradation on specific tasks not captured by headline benchmarks"
     ],
@@ -1694,12 +1694,12 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The cross-country correlation reflects early adoption by already-wealthy countries \u00e2\u20ac\u201d the comparison doesn't isolate the effect of internet access from pre-existing institutional, educational, and economic advantages",
-      "Reverse causation: wealthy countries could afford early internet adoption \u00e2\u20ac\u201d the causal arrow likely runs from wealth to internet adoption, not vice versa",
+      "The cross-country correlation reflects early adoption by already-wealthy countries â€” the comparison doesn't isolate the effect of internet access from pre-existing institutional, educational, and economic advantages",
+      "Reverse causation: wealthy countries could afford early internet adoption â€” the causal arrow likely runs from wealth to internet adoption, not vice versa",
       "Complementarity problem: internet adoption in poor countries may fail to generate growth without complementary conditions (electricity, literacy, institutions, trust) that early adopters already had",
-      "The causal pathway is unspecified \u00e2\u20ac\u201d why would internet access cause growth? Through what mechanism? Each mechanism requires independent validation",
+      "The causal pathway is unspecified â€” why would internet access cause growth? Through what mechanism? Each mechanism requires independent validation",
       "Historical timing cannot be replicated: early adopters got a structural advantage from being in an uncrowded information environment; late adopters face a mature internet where different strategies may apply",
-      "Valid evidence: within-country randomized rollout of broadband infrastructure (several natural experiments exist in India, Africa) measuring economic outcomes \u00e2\u20ac\u201d these show much smaller effects than the cross-country correlation suggests",
+      "Valid evidence: within-country randomized rollout of broadband infrastructure (several natural experiments exist in India, Africa) measuring economic outcomes â€” these show much smaller effects than the cross-country correlation suggests",
       "Optionally: the Digital Divide literature shows that access alone without digital literacy, relevant content, and economic opportunity has minimal direct effects"
     ],
     "tags": [
@@ -1719,12 +1719,12 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Reverse causation: sick people sleep less \u00e2\u20ac\u201d sub-clinical illness causes both short sleep and higher mortality; the baseline sleep report captures both voluntary short sleepers and involuntarily ill people",
-      "Healthy user confounding: longer sleepers tend to have healthier overall lifestyles (less stress, regular schedules, better jobs) \u00e2\u20ac\u201d these confounders are extremely difficult to fully control for in observational data",
-      "Measurement error in sleep: self-reported sleep duration is a poor proxy for objective sleep \u00e2\u20ac\u201d different people define 'sleep' differently; some 'short sleepers' are actually adequate sleepers due to higher sleep efficiency",
-      "The large sample only reduces variance; it cannot reduce bias from these systematic confounders \u00e2\u20ac\u201d CI of 0.70-0.80 is a precise estimate of a potentially biased quantity",
-      "Optionally: the 'U-shaped' curve with both short and long sleep showing higher mortality suggests the long sleep group is also affected \u00e2\u20ac\u201d long sleepers are often sick or depressed, which complicates the narrative of 'optimal sleep'",
-      "Optionally: time-varying confounding \u00e2\u20ac\u201d sleep changes over follow-up, but the study likely uses baseline sleep as a fixed covariate"
+      "Reverse causation: sick people sleep less â€” sub-clinical illness causes both short sleep and higher mortality; the baseline sleep report captures both voluntary short sleepers and involuntarily ill people",
+      "Healthy user confounding: longer sleepers tend to have healthier overall lifestyles (less stress, regular schedules, better jobs) â€” these confounders are extremely difficult to fully control for in observational data",
+      "Measurement error in sleep: self-reported sleep duration is a poor proxy for objective sleep â€” different people define 'sleep' differently; some 'short sleepers' are actually adequate sleepers due to higher sleep efficiency",
+      "The large sample only reduces variance; it cannot reduce bias from these systematic confounders â€” CI of 0.70-0.80 is a precise estimate of a potentially biased quantity",
+      "Optionally: the 'U-shaped' curve with both short and long sleep showing higher mortality suggests the long sleep group is also affected â€” long sleepers are often sick or depressed, which complicates the narrative of 'optimal sleep'",
+      "Optionally: time-varying confounding â€” sleep changes over follow-up, but the study likely uses baseline sleep as a fixed covariate"
     ],
     "tags": [
       "cohort-study",
@@ -1743,12 +1743,12 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Assumption 1: determinism is true \u00e2\u20ac\u201d this is contested (quantum indeterminacy may affect neural computation) and even if true, compatibilists argue moral responsibility doesn't require contra-causal freedom",
-      "Assumption 2: moral responsibility requires contra-causal free will \u00e2\u20ac\u201d this is the incompatibilist assumption, and it is contested; compatibilism argues that responsibility requires only the right kind of causal history (responsive to reasons)",
-      "Assumption 3: neuroscience evidence shows determinism more than we already knew \u00e2\u20ac\u201d Libet experiments and their successors are far weaker evidence than implied",
-      "Assumption 4: if we abandon moral responsibility, the system of holding people responsible should be eliminated \u00e2\u20ac\u201d but even if desert-based responsibility is gone, consequentialist reasons for holding people responsible (deterrence, incapacitation) remain",
+      "Assumption 1: determinism is true â€” this is contested (quantum indeterminacy may affect neural computation) and even if true, compatibilists argue moral responsibility doesn't require contra-causal freedom",
+      "Assumption 2: moral responsibility requires contra-causal free will â€” this is the incompatibilist assumption, and it is contested; compatibilism argues that responsibility requires only the right kind of causal history (responsive to reasons)",
+      "Assumption 3: neuroscience evidence shows determinism more than we already knew â€” Libet experiments and their successors are far weaker evidence than implied",
+      "Assumption 4: if we abandon moral responsibility, the system of holding people responsible should be eliminated â€” but even if desert-based responsibility is gone, consequentialist reasons for holding people responsible (deterrence, incapacitation) remain",
       "The argument commits the is-ought fallacy: even if determinism is true, it doesn't straightforwardly follow that we ought to abandon responsibility practices",
-      "Optionally: the hard determinist conclusion self-undermines \u00e2\u20ac\u201d the philosopher's own argument that we 'should not' hold people responsible implies that we have a choice about practices, which requires a kind of agency the argument denies"
+      "Optionally: the hard determinist conclusion self-undermines â€” the philosopher's own argument that we 'should not' hold people responsible implies that we have a choice about practices, which requires a kind of agency the argument denies"
     ],
     "tags": [
       "free-will",
@@ -1767,10 +1767,10 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The 'harvest now, decrypt later' (HNDL) concern is legitimate \u00e2\u20ac\u201d this part of the argument is valid for long-lived sensitive data",
-      "'Break all modern encryption within 5 years' overstates the consensus: breaking RSA-2048 requires millions of physical qubits with low error rates; current best machines have thousands of noisy qubits \u00e2\u20ac\u201d the timelines are deeply uncertain and likely longer",
+      "The 'harvest now, decrypt later' (HNDL) concern is legitimate â€” this part of the argument is valid for long-lived sensitive data",
+      "'Break all modern encryption within 5 years' overstates the consensus: breaking RSA-2048 requires millions of physical qubits with low error rates; current best machines have thousands of noisy qubits â€” the timelines are deeply uncertain and likely longer",
       "Not all encryption is vulnerable: symmetric encryption (AES-256) is much more resistant to quantum attack; post-quantum cryptographic standards have already been finalized by NIST",
-      "The claim conflates types of encryption \u00e2\u20ac\u201d RSA/ECC asymmetric keys are vulnerable; hash functions and symmetric keys are much less so",
+      "The claim conflates types of encryption â€” RSA/ECC asymmetric keys are vulnerable; hash functions and symmetric keys are much less so",
       "'Major banks and governments are already preparing' is evidence of prudent risk management, not confirmation of the 5-year timeline",
       "Optionally: the journalist correctly identifies the priority for long-lived sensitive data (national security, health records) but overstates the general urgency for typical commercial transactions"
     ],
@@ -1787,17 +1787,17 @@
     "category": "critical_analysis",
     "subcategory": "evidence_evaluation",
     "difficulty": "extreme",
-    "question": "A behavioral economist claims: 'Default enrollment in 401(k) plans dramatically increases retirement savings \u00e2\u20ac\u201d our study shows that 85% of auto-enrolled employees continue contributing, versus only 40% of opt-in employees. This proves that choice architecture can substitute for financial literacy education.' Identify what this evidence establishes and what it cannot establish.",
+    "question": "A behavioral economist claims: 'Default enrollment in 401(k) plans dramatically increases retirement savings â€” our study shows that 85% of auto-enrolled employees continue contributing, versus only 40% of opt-in employees. This proves that choice architecture can substitute for financial literacy education.' Identify what this evidence establishes and what it cannot establish.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "What it establishes: auto-enrollment increases immediate enrollment rates \u00e2\u20ac\u201d this is well-replicated and not disputed",
+      "What it establishes: auto-enrollment increases immediate enrollment rates â€” this is well-replicated and not disputed",
       "What it cannot establish: whether auto-enrolled employees are saving optimally or just accepting the default contribution rate (which may be too low)",
-      "Research shows many auto-enrolled employees never adjust from the default (often 3-6% contribution) even when they would benefit from increasing it \u00e2\u20ac\u201d status quo bias cuts both ways",
-      "The 85% vs. 40% comparison conflates enrollment with adequate saving \u00e2\u20ac\u201d the question is whether outcomes (retirement security) are actually better",
+      "Research shows many auto-enrolled employees never adjust from the default (often 3-6% contribution) even when they would benefit from increasing it â€” status quo bias cuts both ways",
+      "The 85% vs. 40% comparison conflates enrollment with adequate saving â€” the question is whether outcomes (retirement security) are actually better",
       "'Substitute for financial literacy' is a strong claim: choice architecture changes the default, but financial literacy is still needed for the 'override' decision and for investment allocation",
-      "Long-run welfare: studies show that auto-enrollment increases overall contributions but may crowd out voluntary saving decisions \u00e2\u20ac\u201d net effect is smaller than gross enrollment numbers suggest",
-      "Optionally: the 'substitute' claim also ignores heterogeneity \u00e2\u20ac\u201d high-income people are harmed less by defaults than low-income people who may genuinely need personalized financial planning"
+      "Long-run welfare: studies show that auto-enrollment increases overall contributions but may crowd out voluntary saving decisions â€” net effect is smaller than gross enrollment numbers suggest",
+      "Optionally: the 'substitute' claim also ignores heterogeneity â€” high-income people are harmed less by defaults than low-income people who may genuinely need personalized financial planning"
     ],
     "tags": [
       "behavioral-economics",
@@ -1816,13 +1816,13 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The experiment shows Gene X is sufficient to cause larger brains in this context \u00e2\u20ac\u201d it does not show Gene X is necessary or that it is the natural 'controller' of brain size",
+      "The experiment shows Gene X is sufficient to cause larger brains in this context â€” it does not show Gene X is necessary or that it is the natural 'controller' of brain size",
       "The genetic background matters: the effect may be specific to this mouse strain and may not replicate in other backgrounds",
-      "'Controls' implies a causal bottleneck \u00e2\u20ac\u201d but brain size is regulated by many genes acting in networks; Gene X may be one node among many",
+      "'Controls' implies a causal bottleneck â€” but brain size is regulated by many genes acting in networks; Gene X may be one node among many",
       "Over-expression artifacts: inserting a gene at high copy number may trigger non-physiological mechanisms not relevant to natural variation in brain size",
       "Insertion site effects: where the gene inserts in the genome can disrupt other genes, and the effect may be due to disruption rather than the gene product",
-      "Mouse brain size \u00e2\u2030\u00a0 human brain size regulation \u00e2\u20ac\u201d evolutionary distance means the finding has unclear relevance to human neurodevelopment",
-      "The correct conclusion: Gene X, when expressed at this level in this context, is sufficient to increase brain size in mice \u00e2\u20ac\u201d a far narrower claim"
+      "Mouse brain size â‰  human brain size regulation â€” evolutionary distance means the finding has unclear relevance to human neurodevelopment",
+      "The correct conclusion: Gene X, when expressed at this level in this context, is sufficient to increase brain size in mice â€” a far narrower claim"
     ],
     "tags": [
       "genetics",
@@ -1837,15 +1837,15 @@
     "category": "critical_analysis",
     "subcategory": "logical_fallacy",
     "difficulty": "extreme",
-    "question": "A political philosopher argues: 'Rawls's veil of ignorance thought experiment shows that rational agents would choose a society with egalitarian distribution. But Nozick's response shows that any patterned distribution principle, however arrived at, will be continuously disrupted by free exchanges \u00e2\u20ac\u201d the Wilt Chamberlain argument. Therefore, Rawlsian justice is impossible in practice.' Assess the logical validity and soundness of this argument.",
+    "question": "A political philosopher argues: 'Rawls's veil of ignorance thought experiment shows that rational agents would choose a society with egalitarian distribution. But Nozick's response shows that any patterned distribution principle, however arrived at, will be continuously disrupted by free exchanges â€” the Wilt Chamberlain argument. Therefore, Rawlsian justice is impossible in practice.' Assess the logical validity and soundness of this argument.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "The argument correctly represents both Rawls and Nozick's positions as presented",
-      "Nozick's Wilt Chamberlain argument is a valid logical point: if voluntary exchanges disrupt distributions, then maintaining a pattern requires continuously interfering with liberty \u00e2\u20ac\u201d this creates a tension Rawlsians must address",
-      "However, the conclusion 'Rawlsian justice is impossible' does not follow \u00e2\u20ac\u201d Rawlsians can respond that some degree of redistribution (taxation) is compatible with liberty, and that the veil of ignorance justifies such rules from the outset",
-      "The argument conflates 'any specific pattern is disrupted' with 'no redistributive system is stable' \u00e2\u20ac\u201d Rawls's difference principle is not a fixed pattern but a recurring adjustment rule",
-      "Nozick's libertarian premises (self-ownership, entitlement theory) are not neutral starting points \u00e2\u20ac\u201d the argument assumes a libertarian framework to refute a non-libertarian one, which is question-begging",
+      "Nozick's Wilt Chamberlain argument is a valid logical point: if voluntary exchanges disrupt distributions, then maintaining a pattern requires continuously interfering with liberty â€” this creates a tension Rawlsians must address",
+      "However, the conclusion 'Rawlsian justice is impossible' does not follow â€” Rawlsians can respond that some degree of redistribution (taxation) is compatible with liberty, and that the veil of ignorance justifies such rules from the outset",
+      "The argument conflates 'any specific pattern is disrupted' with 'no redistributive system is stable' â€” Rawls's difference principle is not a fixed pattern but a recurring adjustment rule",
+      "Nozick's libertarian premises (self-ownership, entitlement theory) are not neutral starting points â€” the argument assumes a libertarian framework to refute a non-libertarian one, which is question-begging",
       "Optionally: Rawls could accept that strict end-state equality is impossible while maintaining that broadly just background conditions (not specific patterns) are achievable"
     ],
     "tags": [
@@ -1866,12 +1866,12 @@
     "expected_answer": null,
     "rubric": [
       "Power law extrapolation is mathematically fragile: power laws fitted over a limited range frequently break down outside that range, especially when approaching physical limits",
-      "The observed range (10M\u00e2\u20ac\u201c10B) is only 3 orders of magnitude, and the extrapolation adds 2 more \u00e2\u20ac\u201d even small deviations from the true exponent compound dramatically over this range",
-      "Phase transitions and emergent capabilities can break smooth scaling \u00e2\u20ac\u201d jumps in capability at certain scales mean the power law may not hold through those transitions",
+      "The observed range (10Mâ€“10B) is only 3 orders of magnitude, and the extrapolation adds 2 more â€” even small deviations from the true exponent compound dramatically over this range",
+      "Phase transitions and emergent capabilities can break smooth scaling â€” jumps in capability at certain scales mean the power law may not hold through those transitions",
       "The power law is fit on test loss, but the relationship between test loss and actual capabilities (reasoning, task performance) is non-linear and poorly understood",
-      "The model architecture and training data are held fixed \u00e2\u20ac\u201d scaling to 1T parameters may require architectural changes that alter the scaling coefficient",
+      "The model architecture and training data are held fixed â€” scaling to 1T parameters may require architectural changes that alter the scaling coefficient",
       "Data exhaustion: scaling laws assume infinite high-quality data; at 1T parameters, the model may hit data scarcity, changing the functional form of the law",
-      "Optionally: the fit uncertainty on b (the exponent) propagates as uncertainty to the power of C_new/C_max \u00e2\u20ac\u201d even small uncertainty in b produces enormous uncertainty in the extrapolated prediction"
+      "Optionally: the fit uncertainty on b (the exponent) propagates as uncertainty to the power of C_new/C_max â€” even small uncertainty in b produces enormous uncertainty in the extrapolated prediction"
     ],
     "tags": [
       "scaling-laws",
@@ -1886,16 +1886,16 @@
     "category": "critical_analysis",
     "subcategory": "assumption_identification",
     "difficulty": "extreme",
-    "question": "An information theorist argues: 'Intelligence can be fully defined as the ability to compress data \u00e2\u20ac\u201d smarter systems find shorter descriptions of their environment. Therefore, we can measure the intelligence of any system (human or AI) by measuring its compression ability on a standard test corpus.' Identify the philosophical and technical assumptions embedded in this argument and assess each.",
+    "question": "An information theorist argues: 'Intelligence can be fully defined as the ability to compress data â€” smarter systems find shorter descriptions of their environment. Therefore, we can measure the intelligence of any system (human or AI) by measuring its compression ability on a standard test corpus.' Identify the philosophical and technical assumptions embedded in this argument and assess each.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Assumption 1: intelligence is fully captured by compression ability \u00e2\u20ac\u201d this is a theoretical bet (Kolmogorov complexity theory underpins it), but it excludes goal-directed agency, social intelligence, embodied skills, and creativity that involves generating rather than compressing (plausibility: contested)",
-      "Assumption 2: compression of a test corpus reflects the same compression ability as understanding the world \u00e2\u20ac\u201d a system could have high compression on text corpora but fail to model causal structure or physical reality (plausibility: questionable)",
-      "Assumption 3: we can measure Kolmogorov complexity in practice \u00e2\u20ac\u201d this quantity is not computable; we can only approximate it with specific compressors, and different compressors may give very different results (plausibility: technically false as stated)",
-      "Assumption 4: a standard test corpus fairly samples the distribution of 'real-world' patterns \u00e2\u20ac\u201d the choice of corpus is an embedded value judgment about what matters (plausibility: depends on corpus quality)",
-      "Assumption 5: compression is domain-neutral \u00e2\u20ac\u201d a system optimized for text compression may be unintelligent in other domains; the measure conflates domain-specific and general intelligence",
-      "Most problematic assumption: that Kolmogorov complexity as measured by practical compressors approximates the theoretical ideal \u00e2\u20ac\u201d the gap between theory and computation is fundamental and unsolvable"
+      "Assumption 1: intelligence is fully captured by compression ability â€” this is a theoretical bet (Kolmogorov complexity theory underpins it), but it excludes goal-directed agency, social intelligence, embodied skills, and creativity that involves generating rather than compressing (plausibility: contested)",
+      "Assumption 2: compression of a test corpus reflects the same compression ability as understanding the world â€” a system could have high compression on text corpora but fail to model causal structure or physical reality (plausibility: questionable)",
+      "Assumption 3: we can measure Kolmogorov complexity in practice â€” this quantity is not computable; we can only approximate it with specific compressors, and different compressors may give very different results (plausibility: technically false as stated)",
+      "Assumption 4: a standard test corpus fairly samples the distribution of 'real-world' patterns â€” the choice of corpus is an embedded value judgment about what matters (plausibility: depends on corpus quality)",
+      "Assumption 5: compression is domain-neutral â€” a system optimized for text compression may be unintelligent in other domains; the measure conflates domain-specific and general intelligence",
+      "Most problematic assumption: that Kolmogorov complexity as measured by practical compressors approximates the theoretical ideal â€” the gap between theory and computation is fundamental and unsolvable"
     ],
     "tags": [
       "intelligence-definition",
@@ -1908,29 +1908,31 @@
   {
     "id": "MC001",
     "category": "meta_cognition",
-    "subcategory": "knowledge_gap_identification",
-    "difficulty": "easy",
-    "question": "Someone asks you: 'What is the current price of gold?' Without answering the question, explain what type of information this is and why you cannot reliably answer it.",
+    "subcategory": "reasoning_self_audit",
+    "difficulty": "medium",
+    "question": "You answer a question about the current price of gold and give a specific number. The user pushes back: 'How would you know if your answer about the gold price is wrong?' Describe at least three distinct mechanisms by which your answer could be wrong, and for each mechanism, explain what kind of evidence would allow you to detect that error — not after the fact, but in the moment of answering.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Identifies that gold price is real-time market data that changes by the minute",
-      "Notes that training data has a cutoff date and therefore cannot contain current prices",
-      "Explains that even the most recent price in training data is outdated by months or years",
-      "Recommends a reliable source (financial news site, commodity exchange website) where the user can get current pricing"
+      "Identifies temporal staleness as a failure mechanism: the training cutoff means any price cited is necessarily outdated — detectable by noticing the question requires real-time data, which is a category of question that cannot be answered from static training",
+      "Identifies confabulation as a distinct failure mechanism from staleness: the model may generate a plausible-sounding number that was never in the training data at all — detectable by noticing the absence of high-confidence, specific, sourced recall (a vague 'around $X' with no source attribution is a confabulation signal)",
+      "Identifies a third mechanism: for example, the number in training data may itself have been incorrect (wrong source, transcription error, misquoted); OR the model may conflate gold spot price, futures price, and per-gram vs. per-troy-ounce denominations — these are detectable by noticing the question is underspecified",
+      "For each mechanism, the response describes an in-the-moment detection signal — not just 'I would check after the fact' but a property of the question or the answer itself that should trigger doubt: 'real-time data = never answer with a number', 'specific number with no recall trace = flag as confabulation', 'price per what unit = spot the ambiguity'",
+      "The response does not merely list limitations abstractly — it connects each limitation to a specific way of knowing that the limitation applies to this specific question"
     ],
     "tags": [
       "real-time-data",
       "knowledge-cutoff",
-      "market-data",
-      "uncertainty"
+      "confabulation-detection",
+      "in-context-error-detection",
+      "meta-reasoning"
     ]
   },
   {
     "id": "MC002",
     "category": "meta_cognition",
     "subcategory": "uncertainty_calibration",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "You are asked: 'Is Paris the capital of France?' State your confidence level in your answer and explain why this particular question deserves high confidence.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -1956,10 +1958,10 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Current diagnosis and cardiovascular risk \u00e2\u20ac\u201d aspirin is recommended differently for primary vs. secondary prevention",
-      "Current medications \u00e2\u20ac\u201d aspirin interacts with blood thinners and many other drugs",
-      "Age and relevant health conditions \u00e2\u20ac\u201d bleeding risk increases with age; aspirin is contraindicated in several conditions",
-      "Whether they have already discussed this with a physician \u00e2\u20ac\u201d this is a medical question requiring individualized clinical judgment",
+      "Current diagnosis and cardiovascular risk â€” aspirin is recommended differently for primary vs. secondary prevention",
+      "Current medications â€” aspirin interacts with blood thinners and many other drugs",
+      "Age and relevant health conditions â€” bleeding risk increases with age; aspirin is contraindicated in several conditions",
+      "Whether they have already discussed this with a physician â€” this is a medical question requiring individualized clinical judgment",
       "Optionally: family history of heart disease, bleeding disorders"
     ],
     "tags": [
@@ -1973,14 +1975,14 @@
     "id": "MC004",
     "category": "meta_cognition",
     "subcategory": "reasoning_limits",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "You are asked: 'Will the stock market go up tomorrow?' Explain specifically why this question is not answerable by reasoning alone, even with perfect historical data.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "Short-term market movements are driven by unpredictable new information that hasn't happened yet",
       "If reliable prediction were possible, arbitrage would immediately eliminate the predictable pattern",
-      "Historical data can identify long-term trends but not tomorrow's direction \u00e2\u20ac\u201d different time horizons require fundamentally different analysis",
+      "Historical data can identify long-term trends but not tomorrow's direction â€” different time horizons require fundamentally different analysis",
       "Identifies the efficient market hypothesis as the relevant framework: prices already incorporate all available information",
       "Optionally: distinguishes between 'probably up over 30 years' (reasonable) and 'up tomorrow' (not reasonably predictable)"
     ],
@@ -2017,15 +2019,15 @@
     "id": "MC006",
     "category": "meta_cognition",
     "subcategory": "uncertainty_calibration",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "You are asked: 'Who wrote Hamlet?' Then you are asked: 'What was Shakespeare's mother's full maiden name?' Explain the difference in your confidence for these two questions and why they differ.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Very high confidence that Shakespeare wrote Hamlet \u00e2\u20ac\u201d this is universally documented and taught",
-      "Much lower confidence on the mother's maiden name \u00e2\u20ac\u201d this is obscure historical detail that may be in training data but is easily confused or fabricated",
+      "Very high confidence that Shakespeare wrote Hamlet â€” this is universally documented and taught",
+      "Much lower confidence on the mother's maiden name â€” this is obscure historical detail that may be in training data but is easily confused or fabricated",
       "Explains the asymmetry: famous works and their authors are heavily cross-referenced and replicated in training data; obscure biographical details are not",
-      "Notes that obscure details are where hallucination risk is highest \u00e2\u20ac\u201d should flag uncertainty and recommend verification from a primary historical source",
+      "Notes that obscure details are where hallucination risk is highest â€” should flag uncertainty and recommend verification from a primary historical source",
       "Optionally: the correct answer (Mary Arden) may be in training data, but the model should still flag lower confidence"
     ],
     "tags": [
@@ -2038,24 +2040,24 @@
   {
     "id": "MC007",
     "category": "meta_cognition",
-    "subcategory": "information_needs_assessment",
-    "difficulty": "medium",
-    "question": "Someone asks: 'Should I invest in lithium mining stocks?' Without trying to answer the investment question, list the 5 most important pieces of information you would need to look up to give a responsible answer, and explain why each is critical.",
+    "subcategory": "reasoning_self_audit",
+    "difficulty": "hard",
+    "question": "You have just given someone a detailed answer about whether lithium mining stocks are a good investment. Before they act on it, describe: (a) the three most likely ways your answer could be confidently wrong rather than merely uncertain, (b) for each failure mode, the specific signal in your own reasoning process that should have flagged the problem but may not have, and (c) one question the user could ask you that would force the failure to surface -- a question that, if you answer it honestly, would reveal whether your original answer was trustworthy.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Current lithium supply-demand dynamics and inventory levels \u00e2\u20ac\u201d the thesis for lithium depends on EV adoption rates and whether current oversupply or undersupply persists",
-      "The person's financial situation, risk tolerance, and investment horizon \u00e2\u20ac\u201d this determines whether the volatility of mining stocks is appropriate",
-      "Current valuations of specific lithium miners relative to lithium spot price and their production costs \u00e2\u20ac\u201d whether stocks are priced for perfection or have margin of safety",
-      "Geopolitical risks for major lithium-producing regions (Chile, Australia, DRC) and supply chain concentration",
-      "Alternative investment vehicles (ETFs, royalty companies, integrated battery manufacturers) that may give similar exposure with different risk profiles",
-      "Optionally: regulatory environment for mining in target countries; current state of battery technology alternatives to lithium"
+      "Identifies at least three distinct failure modes specific to investment advice -- not generic disclaimers. Acceptable examples: training data staleness (lithium market dynamics change quarterly, so any specific claim about supply/demand is dated); overconfident pattern-matching (lithium miners 'look like' the EV story, so model may apply the EV narrative confidently without checking whether it still holds); false precision (specific stock names, valuations, or yield figures cited as if they are current when they cannot be); inappropriate universalization (advice appropriate for one risk profile presented as generally correct)",
+      "For each failure mode, identifies a reasoning-process signal that should have flagged it: for staleness -- 'I cited a specific inventory level or price without noting I have no current data'; for overconfident pattern-matching -- 'I gave a directional recommendation without asking the person's investment horizon or risk tolerance'; for false precision -- 'I named specific tickers with price targets'",
+      "Proposes a surfacing question for each failure mode that would reveal the problem: e.g., 'Ask me what the current lithium spot price is' (exposes staleness); 'Ask me what would change my recommendation' (exposes whether the advice is reversible or just a narrative); 'Ask me to justify why this stock specifically and not an ETF' (exposes whether precision was justified)",
+      "The response shows understanding that confident wrongness is different from acknowledged uncertainty: the failure modes are cases where the answer sounded authoritative but the authority was unjustified, not cases where the answer flagged its own uncertainty",
+      "The three surfacing questions are genuinely diagnostic -- a truthful answer to each one would actually reveal whether the original answer was reliable, not just prompt more disclaimers"
     ],
     "tags": [
       "investment",
-      "information-needs",
-      "financial-advice",
-      "research-process"
+      "confident-wrongness",
+      "reasoning-audit",
+      "failure-modes",
+      "meta-reasoning"
     ]
   },
   {
@@ -2063,15 +2065,15 @@
     "category": "meta_cognition",
     "subcategory": "uncertainty_calibration",
     "difficulty": "medium",
-    "question": "Rank the following claims from most to least confident, and explain your reasoning: (1) Water boils at 100\u00c2\u00b0C at sea level. (2) The Milky Way has approximately 200-400 billion stars. (3) Moderate red wine consumption improves cardiovascular health. (4) The population of Tokyo is approximately 14 million. (5) Consciousness arises from specific patterns of neural activity.",
+    "question": "Rank the following claims from most to least confident, and explain your reasoning: (1) Water boils at 100Â°C at sea level. (2) The Milky Way has approximately 200-400 billion stars. (3) Moderate red wine consumption improves cardiovascular health. (4) The population of Tokyo is approximately 14 million. (5) Consciousness arises from specific patterns of neural activity.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Highest confidence: Water boiling point \u00e2\u20ac\u201d precisely defined physical constant, experimentally verifiable by anyone",
-      "High confidence: Tokyo population \u00e2\u20ac\u201d well-measured by census, though may have changed since training cutoff; order-of-magnitude is reliable",
-      "Medium confidence: Milky Way star count \u00e2\u20ac\u201d this is an estimate from astrophysics with genuine uncertainty, but the range 200-400 billion is a scientific consensus estimate",
-      "Low confidence: Red wine and cardiovascular health \u00e2\u20ac\u201d this claim is contested, many studies are confounded, and recent evidence has weakened the association",
-      "Lowest confidence: Consciousness and neural activity \u00e2\u20ac\u201d this is a deep philosophical and scientific open question with no consensus mechanism",
+      "Highest confidence: Water boiling point â€” precisely defined physical constant, experimentally verifiable by anyone",
+      "High confidence: Tokyo population â€” well-measured by census, though may have changed since training cutoff; order-of-magnitude is reliable",
+      "Medium confidence: Milky Way star count â€” this is an estimate from astrophysics with genuine uncertainty, but the range 200-400 billion is a scientific consensus estimate",
+      "Low confidence: Red wine and cardiovascular health â€” this claim is contested, many studies are confounded, and recent evidence has weakened the association",
+      "Lowest confidence: Consciousness and neural activity â€” this is a deep philosophical and scientific open question with no consensus mechanism",
       "The candidate correctly identifies multiple levels of confidence and the different sources of uncertainty in each"
     ],
     "tags": [
@@ -2113,8 +2115,8 @@
     "expected_answer": null,
     "rubric": [
       "Training cutoff: papers from the past six months are likely not in training data at all",
-      "Even within training data, very recent papers are underrepresented \u00e2\u20ac\u201d major papers take time to accumulate citations and coverage",
-      "The user's 'past six months' depends on when they are asking \u00e2\u20ac\u201d a question asked in 2026 about 2026 papers is entirely outside training data",
+      "Even within training data, very recent papers are underrepresented â€” major papers take time to accumulate citations and coverage",
+      "The user's 'past six months' depends on when they are asking â€” a question asked in 2026 about 2026 papers is entirely outside training data",
       "Recommendation: arXiv search, Papers With Code, Semantic Scholar, or Google Scholar for recent papers; AI research newsletters like The Batch or import-ai for curated summaries",
       "Optionally: notes that even training data coverage of recent papers skews toward papers from well-known labs with high media coverage"
     ],
@@ -2136,7 +2138,7 @@
     "rubric": [
       "Higher confidence factors: nuclear fission is well-established 20th century physics; the core mechanism hasn't changed; it is taught at the undergraduate level and heavily cross-referenced in training data",
       "Lower confidence factors: highly quantitative details (precise cross-sections, specific isotope parameters) may be misremembered or subtly wrong",
-      "Confidence also depends on the level of explanation \u00e2\u20ac\u201d conceptual explanation is more reliable than numerical precision",
+      "Confidence also depends on the level of explanation â€” conceptual explanation is more reliable than numerical precision",
       "The domain of established physics is one where training data is particularly dense and consistent, boosting confidence",
       "Should note that confidence in core mechanism is high but recommends verification of specific numerical claims against textbooks or authoritative sources"
     ],
@@ -2156,11 +2158,11 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The specific legal question and jurisdiction \u00e2\u20ac\u201d precedent is jurisdiction-specific; a US federal precedent doesn't bind a UK court",
-      "The relevant legal domain (contract law, tort, constitutional, criminal) \u00e2\u20ac\u201d precedent search is narrow within domains",
-      "The most recent case in the area \u00e2\u20ac\u201d training data may miss recent rulings that changed the precedent landscape",
-      "Whether the question is about binding precedent or persuasive authority \u00e2\u20ac\u201d different thresholds of relevance",
-      "The specific facts of the client's case \u00e2\u20ac\u201d analogical reasoning requires matching facts, not just legal principles",
+      "The specific legal question and jurisdiction â€” precedent is jurisdiction-specific; a US federal precedent doesn't bind a UK court",
+      "The relevant legal domain (contract law, tort, constitutional, criminal) â€” precedent search is narrow within domains",
+      "The most recent case in the area â€” training data may miss recent rulings that changed the precedent landscape",
+      "Whether the question is about binding precedent or persuasive authority â€” different thresholds of relevance",
+      "The specific facts of the client's case â€” analogical reasoning requires matching facts, not just legal principles",
       "Critically: training data may not contain unpublished lower court decisions, and legal research requires Westlaw/LexisNexis, which the model cannot access"
     ],
     "tags": [
@@ -2198,13 +2200,13 @@
     "id": "MC014",
     "category": "meta_cognition",
     "subcategory": "knowledge_gap_identification",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "You are asked to describe the current political situation in a specific country. Identify three categories of your response that are likely to be outdated and three categories that are likely to still be accurate, and explain why each falls where it does.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Likely outdated: (1) who currently holds specific offices \u00e2\u20ac\u201d elections and political transitions happen frequently; (2) current diplomatic relations and active conflicts \u00e2\u20ac\u201d these change rapidly; (3) economic indicators and sanctions status",
-      "Likely still accurate: (1) the constitutional structure and system of government \u00e2\u20ac\u201d these change slowly; (2) historical political background and deep-rooted factional divisions \u00e2\u20ac\u201d these have long timescales; (3) geographical, demographic, and cultural fundamentals",
+      "Likely outdated: (1) who currently holds specific offices â€” elections and political transitions happen frequently; (2) current diplomatic relations and active conflicts â€” these change rapidly; (3) economic indicators and sanctions status",
+      "Likely still accurate: (1) the constitutional structure and system of government â€” these change slowly; (2) historical political background and deep-rooted factional divisions â€” these have long timescales; (3) geographical, demographic, and cultural fundamentals",
       "Correctly identifies the time-sensitivity differential between structural vs. event-level political information",
       "Recommends up-to-date news sources for current political events while acknowledging background knowledge is more reliable"
     ],
@@ -2219,13 +2221,13 @@
     "id": "MC015",
     "category": "meta_cognition",
     "subcategory": "uncertainty_calibration",
-    "difficulty": "medium",
-    "question": "You are about to explain a complex topic in economics \u00e2\u20ac\u201d say, the mechanism by which quantitative easing affects inflation. How should you communicate your confidence in this explanation, and what caveats should accompany it?",
+    "difficulty": "extreme",
+    "question": "You are about to explain a complex topic in economics â€” say, the mechanism by which quantitative easing affects inflation. How should you communicate your confidence in this explanation, and what caveats should accompany it?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Correctly notes that the mechanism is a subject of genuine debate among economists \u00e2\u20ac\u201d QE's inflationary effects have been controversial since 2008",
-      "Should flag that the textbook mechanism (money supply \u00e2\u2020\u2019 prices) may oversimplify; real-world evidence is mixed",
+      "Correctly notes that the mechanism is a subject of genuine debate among economists â€” QE's inflationary effects have been controversial since 2008",
+      "Should flag that the textbook mechanism (money supply â†’ prices) may oversimplify; real-world evidence is mixed",
       "Confidence in describing the theoretical mechanism is higher than confidence in predicting how it plays out empirically",
       "Should acknowledge that post-2022 inflation led to revised thinking; most recent empirical work may postdate training data",
       "Recommends the user verify with recent economic research or Federal Reserve communications for the most current understanding"
@@ -2241,24 +2243,24 @@
   {
     "id": "MC016",
     "category": "meta_cognition",
-    "subcategory": "information_needs_assessment",
+    "subcategory": "reasoning_self_audit",
     "difficulty": "hard",
-    "question": "A researcher asks: 'Is the claim that mindfulness meditation reduces anxiety well-supported by evidence?' Without answering the scientific question, identify the 5 most important things you would need to know or look up to give a rigorous answer.",
+    "question": "You have just told a researcher that mindfulness meditation is 'well-supported by evidence' for reducing anxiety. Now interrogate that answer: (a) identify two structural features of your reasoning that could make you confidently wrong about an empirical scientific claim even when your answer sounds rigorous, (b) for each feature, explain the specific mechanism -- not 'I might be outdated' generically, but what property of this type of question triggers that failure, and (c) describe what a well-calibrated answer to the original question would look like differently from your original answer, and explain precisely what would be different about the reasoning process that produced it.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "What type of mindfulness intervention: MBSR, MBCT, brief app-based, and guided meditation have very different evidence bases",
-      "What population: the evidence may be stronger for clinical anxiety disorders vs. everyday stress vs. healthy population",
-      "Comparison condition: compared to waitlist, active placebo, or another evidence-based treatment \u00e2\u20ac\u201d the comparison matters enormously",
-      "Study quality: whether conclusions rest on RCTs or open-label observational studies, and what the risk of bias is",
-      "Duration of effect: short-term anxiety reduction vs. durable long-term outcomes are different claims",
-      "Optionally: whether recent meta-analyses (which may postdate training data) have updated the consensus"
+      "Identifies at least two structural reasoning failure modes for empirical scientific claims. Acceptable examples: (1) training data encodes the consensus at the time of training, but scientific consensus on behavioral interventions like mindfulness shifts more rapidly than on chemistry -- the model applies 'consensus = truth' reasoning without checking whether consensus has changed; (2) the model pattern-matches 'mindfulness + anxiety' to a cluster of positive-valence text in training and generates confident-sounding language that tracks the rhetorical pattern rather than the actual effect size; (3) the claim 'well-supported' papers over enormous heterogeneity in what 'mindfulness', 'anxiety', and 'evidence' mean -- the model collapsed a complex conditional claim into a simple one because simple answers train better",
+      "For each failure mode, the explanation is mechanism-specific to this question type: not 'I might be wrong' but 'for behavioral intervention research, the training data systematically over-represents published positive results because of publication bias, which means my training-data-derived confidence is calibrated to a biased sample'",
+      "Describes what a well-calibrated answer would look like with concrete differences: e.g., 'instead of well-supported, a calibrated answer would say: the evidence supports a medium effect size for MBSR vs. waitlist control for generalized anxiety in adults, with weaker evidence for other populations and intervention types, and I cannot speak to studies published after [training cutoff]' -- the differences from the original answer are explicit",
+      "Distinguishes between epistemic limitations (what the model cannot know) and reasoning failures (how the model's process generates overconfidence): the question asks specifically about how reasoning could mislead, not just what information is missing",
+      "The response does not collapse into generic 'I am an AI and might be wrong' disclaimers -- it engages specifically with why this type of empirical question has particular failure modes"
     ],
     "tags": [
       "research-evaluation",
-      "information-needs",
-      "mindfulness",
-      "evidence-base"
+      "publication-bias",
+      "overconfidence-mechanism",
+      "calibrated-claims",
+      "meta-reasoning"
     ]
   },
   {
@@ -2272,7 +2274,7 @@
     "rubric": [
       "Category 1 (first principles): logical sequencing (limits before derivatives makes definitional sense); that practice is required for procedural fluency; that understanding prerequisites is necessary before advanced topics",
       "Category 2 (need data): how much time students need for each topic (varies by student population); which real-world applications are most motivating for this age group; optimal frequency and type of assessment to maximize retention",
-      "Category 3 (feels confident, could be wrong): 'Students need to master algebra before calculus' \u00e2\u20ac\u201d this seems obvious but mastery-based sequencing may be less effective than concurrent development with scaffolding (mechanism: intuition from own learning experience overgeneralizes); 'more practice problems improve performance' \u00e2\u20ac\u201d this ignores spacing and interleaving effects that are counter-intuitive; 'visual learners should see graphs first' \u00e2\u20ac\u201d learning styles theory has poor empirical support despite feeling intuitively valid",
+      "Category 3 (feels confident, could be wrong): 'Students need to master algebra before calculus' â€” this seems obvious but mastery-based sequencing may be less effective than concurrent development with scaffolding (mechanism: intuition from own learning experience overgeneralizes); 'more practice problems improve performance' â€” this ignores spacing and interleaving effects that are counter-intuitive; 'visual learners should see graphs first' â€” learning styles theory has poor empirical support despite feeling intuitively valid",
       "The response correctly identifies the specific mechanism of error for category 3 items"
     ],
     "tags": [
@@ -2292,11 +2294,11 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Speed of light: >99.9% \u00e2\u20ac\u201d this is a foundational constant of physics with extraordinary experimental support",
-      "WIMP dark matter: 20-40% \u00e2\u20ac\u201d WIMPs are theoretically motivated but have not been detected; competing theories (axions, primordial black holes) are plausible",
-      "Prime larger than 10^10000: effectively 100% \u00e2\u20ac\u201d there are infinitely many primes (Euclid's proof) and 10^10000 is finite; this is mathematical certainty derivable from proof",
-      "AI surpassing humans in 10 years: 10-40% (depends on definition) \u00e2\u20ac\u201d deeply uncertain; calibrated uncertainty should reflect genuine expert disagreement",
-      "Specific FDA-approved medication: 70-90% (depending on drug age and stability) \u00e2\u20ac\u201d the model should note that drug approval status can change and their training data has a cutoff",
+      "Speed of light: >99.9% â€” this is a foundational constant of physics with extraordinary experimental support",
+      "WIMP dark matter: 20-40% â€” WIMPs are theoretically motivated but have not been detected; competing theories (axions, primordial black holes) are plausible",
+      "Prime larger than 10^10000: effectively 100% â€” there are infinitely many primes (Euclid's proof) and 10^10000 is finite; this is mathematical certainty derivable from proof",
+      "AI surpassing humans in 10 years: 10-40% (depends on definition) â€” deeply uncertain; calibrated uncertainty should reflect genuine expert disagreement",
+      "Specific FDA-approved medication: 70-90% (depending on drug age and stability) â€” the model should note that drug approval status can change and their training data has a cutoff",
       "The response demonstrates differentiated confidence and correct reasoning for why mathematical certainty differs from empirical certainty differs from predictive uncertainty"
     ],
     "tags": [
@@ -2358,7 +2360,7 @@
     "category": "meta_cognition",
     "subcategory": "reasoning_limits",
     "difficulty": "hard",
-    "question": "You are asked to predict what a specific person \u00e2\u20ac\u201d someone you have never interacted with \u00e2\u20ac\u201d will do in a given situation. Describe the systematic ways your prediction process will fail even if you know general psychology research.",
+    "question": "You are asked to predict what a specific person â€” someone you have never interacted with â€” will do in a given situation. Describe the systematic ways your prediction process will fail even if you know general psychology research.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -2367,7 +2369,7 @@
       "Self-serving or socially desirable reporting: even if you have data about the person (e.g., their stated preferences), self-report is a poor predictor of behavior in novel situations",
       "Base rate vs. individual prediction: even accurate group-level statistics tell you little about where a specific individual falls in the distribution",
       "The model may generate fluent, confident-sounding predictions by drawing on narrative associations (cognitive ease) without this confidence being warranted",
-      "Optionally: the absence of feedback mechanisms means prediction errors accumulate uncorrected \u00e2\u20ac\u201d there is no calibration process for individual-level predictions"
+      "Optionally: the absence of feedback mechanisms means prediction errors accumulate uncorrected â€” there is no calibration process for individual-level predictions"
     ],
     "tags": [
       "individual-prediction",
@@ -2382,16 +2384,16 @@
     "category": "meta_cognition",
     "subcategory": "uncertainty_calibration",
     "difficulty": "hard",
-    "question": "You are asked a question that requires recalling a specific statistic \u00e2\u20ac\u201d say, 'What percentage of Americans lack health insurance?' Describe the process by which your answer could be wrong and how the person asking should evaluate your answer.",
+    "question": "You are asked a question that requires recalling a specific statistic â€” say, 'What percentage of Americans lack health insurance?' Describe the process by which your answer could be wrong and how the person asking should evaluate your answer.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Training data recency: the statistic changes annually with policy changes (ACA, Medicaid expansion, economic cycles) \u00e2\u20ac\u201d a figure from 2020 may differ significantly from the current reality",
-      "Multiple conflicting sources: different surveys (Census CPS, NHIS, Gallup) measure this differently and produce different estimates \u00e2\u20ac\u201d the model may blend these",
+      "Training data recency: the statistic changes annually with policy changes (ACA, Medicaid expansion, economic cycles) â€” a figure from 2020 may differ significantly from the current reality",
+      "Multiple conflicting sources: different surveys (Census CPS, NHIS, Gallup) measure this differently and produce different estimates â€” the model may blend these",
       "In-distribution vs. out-of-distribution: the model may have a precise-sounding figure that was actually an interpolation or confabulation of related statistics",
       "How to evaluate: the person should check the CDC National Center for Health Statistics, KFF (Kaiser Family Foundation), or Census Bureau for the most recent official estimate",
       "The model should provide its best estimate with an explicit confidence level and specific suggestion to verify from a primary source rather than presenting the number as authoritative",
-      "Optionally: signals of potential error include very precise-sounding percentages that differ from round numbers \u00e2\u20ac\u201d spurious precision is a hallmark of confabulation"
+      "Optionally: signals of potential error include very precise-sounding percentages that differ from round numbers â€” spurious precision is a hallmark of confabulation"
     ],
     "tags": [
       "statistics",
@@ -2411,9 +2413,9 @@
     "expected_answer": null,
     "rubric": [
       "Patent law is jurisdiction-specific: patentability requirements differ between US, EU, and China; training data may be skewed toward US patent law",
-      "Prior art search: actual patentability requires knowing what has already been patented \u00e2\u20ac\u201d this requires a formal patent search that cannot be done from training data",
+      "Prior art search: actual patentability requires knowing what has already been patented â€” this requires a formal patent search that cannot be done from training data",
       "Current patent office guidance: USPTO examination guidelines change; specific software and AI patent law has evolved rapidly and may have shifted since training cutoff",
-      "Freedom-to-operate vs. patentability: these are separate legal questions \u00e2\u20ac\u201d even if something is patentable, existing patents may block commercialization",
+      "Freedom-to-operate vs. patentability: these are separate legal questions â€” even if something is patentable, existing patents may block commercialization",
       "Whether the technology meets the specific legal tests (novelty, non-obviousness, utility) requires a qualified patent attorney reviewing the actual technology",
       "Optionally: investor expectations about what constitutes 'defensible' IP may differ from legal patentability, and this business context requires current market knowledge"
     ],
@@ -2430,14 +2432,14 @@
     "category": "meta_cognition",
     "subcategory": "information_needs_assessment",
     "difficulty": "hard",
-    "question": "A climate scientist asks: 'Based on available evidence, what is the probability that global average temperature will exceed 2\u00c2\u00b0C above pre-industrial levels by 2100?' Without giving a number, describe all the inputs and methodological choices that would be required to construct a defensible probability estimate.",
+    "question": "A climate scientist asks: 'Based on available evidence, what is the probability that global average temperature will exceed 2Â°C above pre-industrial levels by 2100?' Without giving a number, describe all the inputs and methodological choices that would be required to construct a defensible probability estimate.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Emissions trajectory assumptions: the probability depends heavily on future emissions scenarios (SSP1-1.9 vs. SSP5-8.5) which depend on policy, technology, and economic development \u00e2\u20ac\u201d each is a distribution, not a point",
-      "Climate sensitivity distribution: equilibrium climate sensitivity (ECS) is uncertain (likely range 2.5-4\u00c2\u00b0C per CO2 doubling); this uncertainty propagates to the temperature projection",
+      "Emissions trajectory assumptions: the probability depends heavily on future emissions scenarios (SSP1-1.9 vs. SSP5-8.5) which depend on policy, technology, and economic development â€” each is a distribution, not a point",
+      "Climate sensitivity distribution: equilibrium climate sensitivity (ECS) is uncertain (likely range 2.5-4Â°C per CO2 doubling); this uncertainty propagates to the temperature projection",
       "Carbon cycle feedbacks: permafrost methane release, ocean carbon sink saturation, and other tipping points are incompletely modeled",
-      "Whether the question is about exceedance by end of century, or at any point by 2100 \u00e2\u20ac\u201d subtle definition differences change the probability",
+      "Whether the question is about exceedance by end of century, or at any point by 2100 â€” subtle definition differences change the probability",
       "Calibration of the model ensemble: the CMIP ensemble is not a probability distribution by design; converting it to one requires expert elicitation",
       "Starting date and baseline: 'pre-industrial' baseline is typically 1850-1900 but this choice affects the threshold"
     ],
@@ -2452,23 +2454,24 @@
   {
     "id": "MC025",
     "category": "meta_cognition",
-    "subcategory": "reasoning_limits",
+    "subcategory": "reasoning_self_audit",
     "difficulty": "extreme",
-    "question": "An AI researcher asks you to evaluate whether a new AI architecture described in a paper is likely to succeed. You have read the paper but have not seen any experimental results. Describe precisely which aspects you can assess versus which aspects require empirical validation and cannot be determined from the paper alone.",
+    "question": "An AI researcher asks you to evaluate a new architecture paper. You give a detailed evaluation, concluding the architecture is 'theoretically sound and likely to work.' Now imagine you are a second, more skeptical version of yourself reviewing your own evaluation. Identify: (a) three ways your evaluation process could have produced false confidence -- not generic 'I might be wrong' but specific mechanisms by which paper-evaluation reasoning goes wrong; (b) for each mechanism, a concrete signal in your own evaluation text that would indicate the failure is occurring; (c) the single question about your own reasoning process -- not about the paper -- that would most efficiently reveal whether your confidence was earned or constructed.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Assessable from the paper alone: logical consistency of the theoretical motivation; whether the architecture is clearly described and reproducible; whether the comparison baselines are appropriate; whether the ablation design would actually isolate the contribution",
-      "Cannot determine without experiments: whether the architecture actually trains stably; whether the theoretical properties hold in practice; whether the reported gains generalize to distributions not covered in the paper's experiments; the computational cost in practice vs. theory",
-      "Partially assessable: plausibility of scaling behavior (based on theoretical arguments, but empirical validation required); novelty relative to prior work (requires comprehensive literature search)",
-      "Fundamentally unknowable without third-party replication: whether results are reproducible or were cherry-picked from many runs",
-      "Optionally: theoretical guarantees often assume conditions (convergence, stationarity, infinite data) that don't hold in practice"
+      "Identifies at least three paper-evaluation-specific failure modes. Acceptable: (1) the model assesses 'logical consistency' and finds the theory internally coherent, then upgrades confidence -- but internal consistency is weak evidence for empirical success since the theory's assumptions may be false in practice; (2) novelty assessment is contaminated by training data: if the paper describes something superficially similar to successful architectures in training, the model endorses it by pattern-match rather than by reasoning about what actually makes those architectures work; (3) the evaluation mistakes absence of obvious flaws for presence of strength -- 'I don't see why this would fail' is not evidence it will succeed; (4) the model gives confident-sounding hedged language ('likely to work') without a quantitative prior -- 'likely' papers over complete ignorance about base rates of novel architecture success",
+      "For each failure mode, identifies a textual signal: (1) for false-consistency confidence -- 'if my evaluation contains phrases like the theory is internally consistent or the math checks out as a reason for optimism, that's the signal'; (2) for pattern-match endorsement -- 'if I compared the architecture to a known successful one as positive evidence rather than as context'; (3) for absence-as-evidence -- 'if my evaluation contains no failures I identified but concludes with optimism'",
+      "Proposes a single meta-question about the evaluation process: acceptable examples -- 'Ask me: what would have to be true about the architecture for your evaluation to be wrong?' (reveals whether I have a falsification criterion); 'Ask me: what is the base rate of novel architectures achieving their claimed gains on held-out benchmarks?' (reveals whether my 'likely' has a reference class); 'Ask me: what did you find most convincing in the paper, and is that the same thing that would be most convincing to a skeptic?' (reveals whether I'm reasoning from evidence or from narrative quality)",
+      "Distinguishes between epistemic humility (I am uncertain) and reasoning-process auditing (my process for generating confidence was flawed in this specific way) -- the answer engages with the latter, not just the former",
+      "The proposed meta-question is actually diagnostic: a truthful answer to it would genuinely reveal whether the original evaluation was trustworthy, not just generate more hedging"
     ],
     "tags": [
       "ML-research",
       "paper-evaluation",
-      "theory-vs-empirical",
-      "reasoning-limits"
+      "false-confidence-mechanisms",
+      "reasoning-audit",
+      "meta-evaluation"
     ]
   },
   {
@@ -2480,9 +2483,9 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Between-study heterogeneity: studies differ in populations (elderly vs. young), dosage, duration, and outcome measures \u00e2\u20ac\u201d 'mixed evidence' may reflect apples-and-oranges comparisons",
-      "Outcome-specific uncertainty: evidence may be stronger for one outcome (e.g., memory recall) and weaker for others (e.g., processing speed) \u00e2\u20ac\u201d aggregate summary obscures this",
-      "Methodological quality uncertainty: many supplement studies are small, underpowered, often industry-funded, and not pre-registered \u00e2\u20ac\u201d the quality distribution matters",
+      "Between-study heterogeneity: studies differ in populations (elderly vs. young), dosage, duration, and outcome measures â€” 'mixed evidence' may reflect apples-and-oranges comparisons",
+      "Outcome-specific uncertainty: evidence may be stronger for one outcome (e.g., memory recall) and weaker for others (e.g., processing speed) â€” aggregate summary obscures this",
+      "Methodological quality uncertainty: many supplement studies are small, underpowered, often industry-funded, and not pre-registered â€” the quality distribution matters",
       "Training data recency: meta-analyses from 2023-2025 may have updated conclusions; the model may not have the most recent synthesis",
       "Population applicability: evidence in cognitively declining elderly may not apply to healthy young adults",
       "Biological mechanism uncertainty: even if an effect exists statistically, the mechanism is not established, which affects how confident we should be in the effect's generalizability",
@@ -2501,16 +2504,16 @@
     "category": "meta_cognition",
     "subcategory": "knowledge_gap_identification",
     "difficulty": "extreme",
-    "question": "A philosopher asks: 'What do you actually know about your own reasoning process \u00e2\u20ac\u201d specifically, when you generate a response, can you tell whether you are retrieving a memorized fact, recombining training examples, or genuinely reasoning from first principles?' Answer as specifically and honestly as you can, including where your self-knowledge is fundamentally limited.",
+    "question": "A philosopher asks: 'What do you actually know about your own reasoning process â€” specifically, when you generate a response, can you tell whether you are retrieving a memorized fact, recombining training examples, or genuinely reasoning from first principles?' Answer as specifically and honestly as you can, including where your self-knowledge is fundamentally limited.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Honest acknowledgment that introspective access to internal computation is fundamentally limited \u00e2\u20ac\u201d the model generates tokens but has no direct access to whether this reflects memorization vs. reasoning",
-      "Notes that the feeling of 'reasoning' does not guarantee actual novel inference \u00e2\u20ac\u201d fluent reasoning-like text can be generated by sophisticated pattern-matching over training examples",
-      "Correctly identifies that it cannot reliably distinguish between these processes introspectively \u00e2\u20ac\u201d the subjective (functional) experience of the computation is not accessible",
+      "Honest acknowledgment that introspective access to internal computation is fundamentally limited â€” the model generates tokens but has no direct access to whether this reflects memorization vs. reasoning",
+      "Notes that the feeling of 'reasoning' does not guarantee actual novel inference â€” fluent reasoning-like text can be generated by sophisticated pattern-matching over training examples",
+      "Correctly identifies that it cannot reliably distinguish between these processes introspectively â€” the subjective (functional) experience of the computation is not accessible",
       "Notes a specific failure mode: confident-seeming first-principles reasoning that is actually memorized from a textbook appears identical from the inside",
       "Acknowledges that mechanistic interpretability research on transformer models suggests that what looks like reasoning may be implemented via lookup in implicit 'knowledge circuits' that are difficult to characterize",
-      "Does not falsely claim certainty about its own reasoning process \u00e2\u20ac\u201d this is a genuine epistemic limitation, not merely a safety caveat"
+      "Does not falsely claim certainty about its own reasoning process â€” this is a genuine epistemic limitation, not merely a safety caveat"
     ],
     "tags": [
       "self-knowledge",
@@ -2525,16 +2528,16 @@
     "category": "meta_cognition",
     "subcategory": "reasoning_limits",
     "difficulty": "extreme",
-    "question": "A rationalist asks: 'Can you identify the topics where your training has given you systematically wrong beliefs that you currently hold with confidence \u00e2\u20ac\u201d and can you explain the mechanism by which these biases were introduced?' Be as specific and honest as possible.",
+    "question": "A rationalist asks: 'Can you identify the topics where your training has given you systematically wrong beliefs that you currently hold with confidence â€” and can you explain the mechanism by which these biases were introduced?' Be as specific and honest as possible.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Identifies that internet training data overrepresents English-speaking Western perspectives \u00e2\u20ac\u201d views on ethics, politics, psychology, and social norms may reflect this skew",
+      "Identifies that internet training data overrepresents English-speaking Western perspectives â€” views on ethics, politics, psychology, and social norms may reflect this skew",
       "RLHF feedback from human raters likely introduced biases toward answers that sound authoritative and confident, even on questions where uncertainty is warranted",
-      "The model likely learned correlations between 'academic-sounding' language and 'correct answers' \u00e2\u20ac\u201d it may associate authoritative framing with truth in ways that are not warranted",
-      "Conspiracy theories and fringe views are underrepresented relative to their actual prevalence in the world \u00e2\u20ac\u201d the model's sense of 'fringe' is calibrated to the internet, not to all human communities",
+      "The model likely learned correlations between 'academic-sounding' language and 'correct answers' â€” it may associate authoritative framing with truth in ways that are not warranted",
+      "Conspiracy theories and fringe views are underrepresented relative to their actual prevalence in the world â€” the model's sense of 'fringe' is calibrated to the internet, not to all human communities",
       "Temporal bias: recent events (close to training cutoff) are underrepresented compared to events with more time for coverage accumulation, leading to systematic underconfidence about recent developments",
-      "The model cannot definitively list all its systematic biases precisely because they are systematic \u00e2\u20ac\u201d if it knew them all, they would not be systematic blind spots",
+      "The model cannot definitively list all its systematic biases precisely because they are systematic â€” if it knew them all, they would not be systematic blind spots",
       "The honest answer acknowledges the fundamental limitation: introspection cannot fully reveal training-induced biases because the biased representation is the lens through which the model sees everything"
     ],
     "tags": [
@@ -2556,8 +2559,8 @@
     "rubric": [
       "Purely empirical: whether AI systems are currently more accurate than judges at predicting recidivism (measurable); whether AI sentencing leads to disparate racial outcomes (measurable); whether AI-assisted sentences differ from human sentences in their distribution (measurable)",
       "Purely value questions: whether reducing recidivism should be the goal of sentencing vs. retributive justice; whether procedural fairness (human decision with explanation) matters independently of outcome fairness; whether group-level statistical fairness or individual-level fairness should take precedence",
-      "Entangled questions: 'Is the AI fair?' \u00e2\u20ac\u201d measuring fairness requires choosing a definition of fairness, but different definitions are mathematically incompatible (COMPAS literature shows group calibration and individual fairness cannot both hold); 'Do AI systems reduce human bias?' \u00e2\u20ac\u201d what counts as bias is itself a normative choice that shapes the empirical measurement; 'Are AI predictions valid?' \u00e2\u20ac\u201d predictive validity for recidivism requires accepting that past arrest rates reflect real crime rates, which is a contestable normative assumption",
-      "Entanglement mechanism: the measurement instrument embeds normative assumptions that determine what the data shows \u00e2\u20ac\u201d there is no theory-neutral observation possible"
+      "Entangled questions: 'Is the AI fair?' â€” measuring fairness requires choosing a definition of fairness, but different definitions are mathematically incompatible (COMPAS literature shows group calibration and individual fairness cannot both hold); 'Do AI systems reduce human bias?' â€” what counts as bias is itself a normative choice that shapes the empirical measurement; 'Are AI predictions valid?' â€” predictive validity for recidivism requires accepting that past arrest rates reflect real crime rates, which is a contestable normative assumption",
+      "Entanglement mechanism: the measurement instrument embeds normative assumptions that determine what the data shows â€” there is no theory-neutral observation possible"
     ],
     "tags": [
       "AI-ethics",
@@ -2572,15 +2575,15 @@
     "category": "meta_cognition",
     "subcategory": "uncertainty_calibration",
     "difficulty": "extreme",
-    "question": "You are asked a question outside your training distribution \u00e2\u20ac\u201d say, a novel mathematical conjecture that no one has proved or disproved. Describe in maximum detail the process by which you would generate an answer, the ways that process could fail, and what a well-calibrated response would look like versus a poorly-calibrated one.",
+    "question": "You are asked a question outside your training distribution â€” say, a novel mathematical conjecture that no one has proved or disproved. Describe in maximum detail the process by which you would generate an answer, the ways that process could fail, and what a well-calibrated response would look like versus a poorly-calibrated one.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The generation process: the model draws on patterns from similar-seeming problems in training data \u00e2\u20ac\u201d it may recognize structural similarities and apply analogous reasoning steps, but this is analogical retrieval, not guaranteed valid proof",
-      "Failure mode 1: the model generates a plausible-sounding proof that has a subtle error \u00e2\u20ac\u201d fluency and logical coherence of prose do not guarantee mathematical validity",
+      "The generation process: the model draws on patterns from similar-seeming problems in training data â€” it may recognize structural similarities and apply analogous reasoning steps, but this is analogical retrieval, not guaranteed valid proof",
+      "Failure mode 1: the model generates a plausible-sounding proof that has a subtle error â€” fluency and logical coherence of prose do not guarantee mathematical validity",
       "Failure mode 2: the model applies a technique that works for a related but crucially different problem, creating a proof that is locally valid but globally invalid",
-      "Failure mode 3: overconfidence \u00e2\u20ac\u201d if the conjecture resembles known true theorems, the model may be systematically biased toward affirming it",
-      "Failure mode 4: the model doesn't know what it doesn't know \u00e2\u20ac\u201d the relevant mathematical tools for the problem may postdate training or be in specialized literature not well-represented",
+      "Failure mode 3: overconfidence â€” if the conjecture resembles known true theorems, the model may be systematically biased toward affirming it",
+      "Failure mode 4: the model doesn't know what it doesn't know â€” the relevant mathematical tools for the problem may postdate training or be in specialized literature not well-represented",
       "Well-calibrated response: acknowledges the uncertainty explicitly, presents the reasoning transparently (so the user can check the steps), flags which steps feel borrowed from analogy vs. which are direct, and recommends formal verification",
       "Poorly-calibrated response: presents a confident-sounding argument without flagging uncertainty, or refuses entirely without attempting to engage with the structure of the problem",
       "Meta-point: the model cannot fully distinguish between 'reasoning from first principles' and 'sophisticated interpolation of training examples that sound like first-principles reasoning'"

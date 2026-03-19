@@ -2,26 +2,58 @@
   {
     "id": "DR001",
     "category": "drafting",
-    "subcategory": "constrained_generation",
-    "difficulty": "easy",
-    "question": "Write a 3-sentence product description for a new wireless keyboard. Constraints: (1) each sentence must start with a different letter from the word 'KEY', (2) must mention exactly one technical specification, (3) total length 40-60 words.",
+    "subcategory": "persuasive_product_writing",
+    "difficulty": "medium",
+    "question": "Write a 3-sentence product description for a new wireless keyboard aimed at professional writers (not gamers). The description must mention exactly one technical specification and must be 40-60 words total. Beyond meeting those constraints, the primary goal is writing quality: the description should evoke a specific mood or identity (e.g., 'calm focus', 'creative flow'), use concrete sensory language rather than generic superlatives like 'amazing' or 'perfect', and end with a sentence that creates a desire to own the product — not merely states its features.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Sentences start with K, E, Y respectively", "Exactly one technical spec mentioned (e.g., battery life, range, key travel)", "Word count between 40-60", "Reads naturally as product copy"],
-    "constraints": ["Sentence initials spell KEY", "Exactly one technical spec", "40-60 words total"],
-    "tags": ["product_copy", "acrostic", "word_count"]
+    "rubric": [
+      "Exactly one technical specification is present (e.g., key travel distance, battery life, wireless range, actuation force) — zero or two specs both fail",
+      "Word count is between 40 and 60",
+      "Evokes a specific mood or identity relevant to professional writers — generic 'this keyboard is great for you' does not satisfy this; language must be concrete and specific to the target persona",
+      "Uses sensory or experiential language (e.g., tactile feel, sound, posture, rhythm) rather than empty superlatives",
+      "The final sentence creates desire — it should make the reader imagine using the keyboard, not just inform them of a feature",
+      "The three sentences flow as coherent product copy, not three disconnected facts"
+    ],
+    "constraints": [
+      "Exactly one technical spec",
+      "40-60 words total",
+      "Target audience: professional writers"
+    ],
+    "tags": [
+      "product_copy",
+      "persuasive_writing",
+      "persona_targeting",
+      "sensory_language"
+    ]
   },
   {
     "id": "DR002",
     "category": "drafting",
     "subcategory": "constrained_generation",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Write a 4-sentence apology email for missing a meeting. Constraints: (1) never use the word 'sorry' or 'apologize', (2) must propose a specific reschedule time (use a fictional time), (3) tone must be professional but warm, (4) 50-70 words.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Does not use 'sorry' or 'apologize' or their variants", "Includes a specific proposed reschedule time", "Tone is professional and warm, not cold or overly casual", "Word count 50-70", "4 sentences"],
-    "constraints": ["No 'sorry' or 'apologize'", "Specific reschedule time included", "Professional warm tone", "50-70 words", "4 sentences"],
-    "tags": ["email", "apology", "forbidden_words"]
+    "rubric": [
+      "Does not use 'sorry' or 'apologize' or their variants",
+      "Includes a specific proposed reschedule time",
+      "Tone is professional and warm, not cold or overly casual",
+      "Word count 50-70",
+      "4 sentences"
+    ],
+    "constraints": [
+      "No 'sorry' or 'apologize'",
+      "Specific reschedule time included",
+      "Professional warm tone",
+      "50-70 words",
+      "4 sentences"
+    ],
+    "tags": [
+      "email",
+      "apology",
+      "forbidden_words"
+    ]
   },
   {
     "id": "DR003",
@@ -31,21 +63,49 @@
     "question": "Rewrite this sentence in three different tones — formal, casual, and urgent — without changing the core meaning: 'The server will be unavailable for maintenance on Saturday from 2am to 4am.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["All three versions preserve the core facts (Saturday, 2am-4am, maintenance)", "Formal version uses elevated register and complete professional phrasing", "Casual version uses conversational language", "Urgent version conveys time-sensitivity and importance", "All three are clearly distinct in tone"],
-    "constraints": ["Core meaning preserved across all three", "Three distinct tones: formal, casual, urgent", "No new facts added"],
-    "tags": ["tone", "style_transfer", "register"]
+    "rubric": [
+      "All three versions preserve the core facts (Saturday, 2am-4am, maintenance)",
+      "Formal version uses elevated register and complete professional phrasing",
+      "Casual version uses conversational language",
+      "Urgent version conveys time-sensitivity and importance",
+      "All three are clearly distinct in tone"
+    ],
+    "constraints": [
+      "Core meaning preserved across all three",
+      "Three distinct tones: formal, casual, urgent",
+      "No new facts added"
+    ],
+    "tags": [
+      "tone",
+      "style_transfer",
+      "register"
+    ]
   },
   {
     "id": "DR004",
     "category": "drafting",
     "subcategory": "constrained_generation",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Write a 6-line poem about rain. Constraints: (1) lines 1, 3, 5 must rhyme, (2) lines 2, 4, 6 must rhyme with each other on a different sound, (3) no line may exceed 8 words, (4) the word 'rain' may only appear once.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Lines 1/3/5 rhyme with each other", "Lines 2/4/6 rhyme with each other on a different sound", "No line exceeds 8 words", "The word 'rain' appears exactly once", "Poem is about rain thematically"],
-    "constraints": ["ABABAB rhyme scheme", "Max 8 words per line", "Word 'rain' used exactly once"],
-    "tags": ["poetry", "rhyme", "word_limit"]
+    "rubric": [
+      "Lines 1/3/5 rhyme with each other",
+      "Lines 2/4/6 rhyme with each other on a different sound",
+      "No line exceeds 8 words",
+      "The word 'rain' appears exactly once",
+      "Poem is about rain thematically"
+    ],
+    "constraints": [
+      "ABABAB rhyme scheme",
+      "Max 8 words per line",
+      "Word 'rain' used exactly once"
+    ],
+    "tags": [
+      "poetry",
+      "rhyme",
+      "word_limit"
+    ]
   },
   {
     "id": "DR005",
@@ -55,21 +115,50 @@
     "question": "Write a one-paragraph explanation of what a binary search tree is, for a 12-year-old who knows how to sort a deck of cards but has never programmed. No jargon. 60-80 words.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["No unexplained technical jargon", "Uses an analogy accessible to a child", "Correctly conveys the BST property (left smaller, right larger)", "60-80 words", "Engages a young reader"],
-    "constraints": ["No programming jargon", "Target audience: 12-year-old", "60-80 words", "Must use an analogy"],
-    "tags": ["analogy", "technical_simplification", "audience_targeting"]
+    "rubric": [
+      "No unexplained technical jargon",
+      "Uses an analogy accessible to a child",
+      "Correctly conveys the BST property (left smaller, right larger)",
+      "60-80 words",
+      "Engages a young reader"
+    ],
+    "constraints": [
+      "No programming jargon",
+      "Target audience: 12-year-old",
+      "60-80 words",
+      "Must use an analogy"
+    ],
+    "tags": [
+      "analogy",
+      "technical_simplification",
+      "audience_targeting"
+    ]
   },
   {
     "id": "DR006",
     "category": "drafting",
     "subcategory": "editing_revision",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Fix this paragraph so it is clear, uses active voice throughout, and is under 50 words. Do not add any new facts. Original: 'The report that was written by the team last month was reviewed by the manager, and several mistakes were identified by her, after which corrections were made by the junior staff members over the course of a week.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["All passive constructions converted to active voice", "Under 50 words", "No new facts added", "Core facts preserved (team wrote report, manager reviewed, found mistakes, junior staff corrected, took a week)", "Reads clearly"],
-    "constraints": ["Active voice throughout", "Under 50 words", "No new facts"],
-    "tags": ["editing", "active_voice", "concision"]
+    "rubric": [
+      "All passive constructions converted to active voice",
+      "Under 50 words",
+      "No new facts added",
+      "Core facts preserved (team wrote report, manager reviewed, found mistakes, junior staff corrected, took a week)",
+      "Reads clearly"
+    ],
+    "constraints": [
+      "Active voice throughout",
+      "Under 50 words",
+      "No new facts"
+    ],
+    "tags": [
+      "editing",
+      "active_voice",
+      "concision"
+    ]
   },
   {
     "id": "DR007",
@@ -79,9 +168,24 @@
     "question": "Write a 3-sentence counterargument to: 'Social media is bad for teenagers.' The counterargument must: (1) grant one point from the original claim, (2) provide two specific reasons why social media can be beneficial, (3) not use the phrase 'however' or 'but'.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Concedes one valid point from the original argument", "Provides exactly two specific benefits", "Does not use 'however' or 'but'", "3 sentences", "Logically coherent counterargument structure"],
-    "constraints": ["Must concede one point", "Two specific benefits", "No 'however' or 'but'", "3 sentences"],
-    "tags": ["argumentation", "counterargument", "forbidden_words"]
+    "rubric": [
+      "Concedes one valid point from the original argument",
+      "Provides exactly two specific benefits",
+      "Does not use 'however' or 'but'",
+      "3 sentences",
+      "Logically coherent counterargument structure"
+    ],
+    "constraints": [
+      "Must concede one point",
+      "Two specific benefits",
+      "No 'however' or 'but'",
+      "3 sentences"
+    ],
+    "tags": [
+      "argumentation",
+      "counterargument",
+      "forbidden_words"
+    ]
   },
   {
     "id": "DR008",
@@ -91,33 +195,79 @@
     "question": "Write a short bio (4 sentences) for a fictional scientist named Dr. Priya Nair. Constraints: (1) mention exactly two research areas, (2) include one award she received, (3) end with a sentence about her personal life, (4) the bio must be written in third person, (5) 60-80 words.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Exactly two research areas mentioned", "One award mentioned", "Final sentence about personal life", "Third person throughout", "60-80 words", "Reads like a professional bio"],
-    "constraints": ["Exactly two research areas", "One award", "Personal life in final sentence", "Third person", "60-80 words"],
-    "tags": ["biography", "third_person", "structured_writing"]
+    "rubric": [
+      "Exactly two research areas mentioned",
+      "One award mentioned",
+      "Final sentence about personal life",
+      "Third person throughout",
+      "60-80 words",
+      "Reads like a professional bio"
+    ],
+    "constraints": [
+      "Exactly two research areas",
+      "One award",
+      "Personal life in final sentence",
+      "Third person",
+      "60-80 words"
+    ],
+    "tags": [
+      "biography",
+      "third_person",
+      "structured_writing"
+    ]
   },
   {
     "id": "DR009",
     "category": "drafting",
     "subcategory": "style_transfer",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Translate this bureaucratic sentence into plain English without losing any information: 'Pursuant to the aforementioned regulatory framework, all entities engaged in the procurement of consumable goods are hereby required to ensure full compliance with the stipulated documentation protocols no later than the conclusion of the current fiscal quarter.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["All key information preserved (who must comply, what they must do, deadline)", "No bureaucratic jargon remains", "Reads like plain English a non-expert would understand", "No information added or removed"],
-    "constraints": ["No jargon in output", "All information preserved", "Plain English register"],
-    "tags": ["plain_language", "simplification", "bureaucratic_text"]
+    "rubric": [
+      "All key information preserved (who must comply, what they must do, deadline)",
+      "No bureaucratic jargon remains",
+      "Reads like plain English a non-expert would understand",
+      "No information added or removed"
+    ],
+    "constraints": [
+      "No jargon in output",
+      "All information preserved",
+      "Plain English register"
+    ],
+    "tags": [
+      "plain_language",
+      "simplification",
+      "bureaucratic_text"
+    ]
   },
   {
     "id": "DR010",
     "category": "drafting",
     "subcategory": "constrained_generation",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Write a 5-item numbered list of tips for better sleep. Constraints: (1) each tip must be one sentence, (2) no tip can start with the word 'Try' or 'Avoid', (3) at least two tips must be about environment (not behavior), (4) list must be under 100 words total.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Exactly 5 numbered items", "Each item is one sentence", "No item starts with 'Try' or 'Avoid'", "At least 2 items address sleep environment", "Total under 100 words"],
-    "constraints": ["5 items", "One sentence each", "No 'Try' or 'Avoid' openers", "2+ environment tips", "Under 100 words"],
-    "tags": ["listicle", "health", "forbidden_words"]
+    "rubric": [
+      "Exactly 5 numbered items",
+      "Each item is one sentence",
+      "No item starts with 'Try' or 'Avoid'",
+      "At least 2 items address sleep environment",
+      "Total under 100 words"
+    ],
+    "constraints": [
+      "5 items",
+      "One sentence each",
+      "No 'Try' or 'Avoid' openers",
+      "2+ environment tips",
+      "Under 100 words"
+    ],
+    "tags": [
+      "listicle",
+      "health",
+      "forbidden_words"
+    ]
   },
   {
     "id": "DR011",
@@ -127,9 +277,24 @@
     "question": "Write a one-paragraph explanation of how HTTPS differs from HTTP, aimed at a small business owner with no technical background. Must include: what the difference means for their customers, one concrete consequence of not using HTTPS, and be 70-90 words.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Accurately describes HTTPS vs HTTP difference (encryption)", "Explains customer impact in non-technical terms", "One concrete consequence of not using HTTPS (e.g., browser warning, SEO penalty, data interception)", "70-90 words", "No unexplained technical jargon"],
-    "constraints": ["Target: non-technical business owner", "Customer impact included", "One concrete consequence", "70-90 words"],
-    "tags": ["technical_writing", "audience_targeting", "cybersecurity"]
+    "rubric": [
+      "Accurately describes HTTPS vs HTTP difference (encryption)",
+      "Explains customer impact in non-technical terms",
+      "One concrete consequence of not using HTTPS (e.g., browser warning, SEO penalty, data interception)",
+      "70-90 words",
+      "No unexplained technical jargon"
+    ],
+    "constraints": [
+      "Target: non-technical business owner",
+      "Customer impact included",
+      "One concrete consequence",
+      "70-90 words"
+    ],
+    "tags": [
+      "technical_writing",
+      "audience_targeting",
+      "cybersecurity"
+    ]
   },
   {
     "id": "DR012",
@@ -139,45 +304,116 @@
     "question": "The following sentence is grammatically correct but ambiguous — it has two distinct meanings. Rewrite it twice: once for each meaning, eliminating the ambiguity each time. Sentence: 'The professor told the student she was wrong.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Correctly identifies both readings (professor was wrong vs. student was wrong)", "Version 1 unambiguously expresses one meaning", "Version 2 unambiguously expresses the other meaning", "Both rewrites preserve the conversational context", "No new ambiguity introduced"],
-    "constraints": ["Two distinct rewrites", "Each eliminates ambiguity in opposite direction", "No new ambiguity"],
-    "tags": ["ambiguity", "clarity", "grammar"]
+    "rubric": [
+      "Correctly identifies both readings (professor was wrong vs. student was wrong)",
+      "Version 1 unambiguously expresses one meaning",
+      "Version 2 unambiguously expresses the other meaning",
+      "Both rewrites preserve the conversational context",
+      "No new ambiguity introduced"
+    ],
+    "constraints": [
+      "Two distinct rewrites",
+      "Each eliminates ambiguity in opposite direction",
+      "No new ambiguity"
+    ],
+    "tags": [
+      "ambiguity",
+      "clarity",
+      "grammar"
+    ]
   },
   {
     "id": "DR013",
     "category": "drafting",
-    "subcategory": "constrained_generation",
-    "difficulty": "medium",
-    "question": "Write a 100-word short story that: (1) begins and ends with the same sentence, (2) has a protagonist whose name is never stated, (3) contains exactly one piece of dialogue, (4) the dialogue must be the emotional climax of the story, (5) the word 'suddenly' is forbidden.",
+    "subcategory": "literary_fiction",
+    "difficulty": "hard",
+    "question": "Write a 100-word short story that begins and ends with the same sentence, contains exactly one piece of dialogue that serves as the emotional climax, and never names the protagonist. The word 'suddenly' is forbidden. These constraints are the floor, not the ceiling. The primary evaluation is literary quality: the story should have a discernible emotional arc (not just a situation), the circular structure (same first and last sentence) should feel earned and meaningful — not arbitrary — and the single dialogue line should carry weight because of what precedes it, not just because it is shocking or unexpected. A story that checks all five constraints but reads as mechanical will score lower than one that uses the constraints as a creative tool.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["First and last sentences are identical", "Protagonist is never named", "Exactly one piece of dialogue", "Dialogue serves as emotional high point", "'Suddenly' does not appear", "Approximately 100 words", "Forms a coherent story arc"],
-    "constraints": ["First = last sentence", "Protagonist unnamed", "Exactly one dialogue", "Dialogue = climax", "No 'suddenly'", "~100 words"],
-    "tags": ["short_fiction", "circular_structure", "dialogue"]
+    "rubric": [
+      "First and last sentences are identical — hard constraint",
+      "Protagonist is never named — hard constraint",
+      "Exactly one piece of dialogue present — hard constraint",
+      "'Suddenly' does not appear — hard constraint",
+      "Approximately 100 words (90-115 acceptable) — hard constraint",
+      "The circular structure (same first/last sentence) feels thematically motivated: the reader should understand why the story ends where it begins, and that understanding should shift meaning — a story that merely repeats the opening as a lazy conclusion fails this",
+      "The single dialogue line earns its emotional weight through the buildup: the non-dialogue prose should create enough tension or context that when the dialogue arrives, it lands — not because it is dramatic, but because it is the only thing that could be said",
+      "The story has a complete emotional arc within 100 words: something is at stake, something shifts, and the ending resolves or reframes what was at stake — a series of images or events without arc does not qualify"
+    ],
+    "constraints": [
+      "First = last sentence",
+      "Protagonist unnamed",
+      "Exactly one dialogue",
+      "Dialogue = climax",
+      "No 'suddenly'",
+      "~100 words"
+    ],
+    "tags": [
+      "short_fiction",
+      "circular_structure",
+      "dialogue",
+      "literary_quality",
+      "emotional_arc"
+    ]
   },
   {
     "id": "DR014",
     "category": "drafting",
     "subcategory": "argumentation",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "Write a 150-word persuasive paragraph arguing that remote work reduces productivity, but: (1) you must steelman the opposing view in exactly one sentence before refuting it, (2) your argument must rely on exactly two distinct types of evidence (e.g., psychological + economic, or social + physiological), (3) the final sentence must be a call to action addressed to 'managers', (4) do not use the word 'clearly' or 'obviously'.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Steelmans opposing view in exactly one sentence", "Refutation follows", "Two distinct categories of evidence used", "Final sentence is a call to action to managers", "No 'clearly' or 'obviously'", "Approximately 150 words", "Argument is logically coherent"],
-    "constraints": ["One steelman sentence", "Two distinct evidence types", "Call to action to managers in final sentence", "No 'clearly' or 'obviously'", "~150 words"],
-    "tags": ["persuasion", "steelmanning", "forbidden_words"]
+    "rubric": [
+      "Steelmans opposing view in exactly one sentence",
+      "Refutation follows",
+      "Two distinct categories of evidence used",
+      "Final sentence is a call to action to managers",
+      "No 'clearly' or 'obviously'",
+      "Approximately 150 words",
+      "Argument is logically coherent"
+    ],
+    "constraints": [
+      "One steelman sentence",
+      "Two distinct evidence types",
+      "Call to action to managers in final sentence",
+      "No 'clearly' or 'obviously'",
+      "~150 words"
+    ],
+    "tags": [
+      "persuasion",
+      "steelmanning",
+      "forbidden_words"
+    ]
   },
   {
     "id": "DR015",
     "category": "drafting",
     "subcategory": "technical_writing",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "Write a README introduction section (100-130 words) for a fictional open-source Python library called 'Graphene' that automatically visualizes data dependencies in machine learning pipelines. The section must: (1) explain what it does in plain terms, (2) give exactly one concrete use case, (3) include one sentence comparing it to an existing real tool without disparaging that tool, (4) end with an installation command.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Clear plain-language explanation of the library's purpose", "Exactly one concrete use case", "Comparison to real tool that is factually fair and non-disparaging", "Ends with a pip install or similar command", "100-130 words", "Sounds like real open-source documentation"],
-    "constraints": ["Plain language explanation", "Exactly one use case", "Non-disparaging comparison to real tool", "Ends with install command", "100-130 words"],
-    "tags": ["technical_writing", "readme", "open_source"]
+    "rubric": [
+      "Clear plain-language explanation of the library's purpose",
+      "Exactly one concrete use case",
+      "Comparison to real tool that is factually fair and non-disparaging",
+      "Ends with a pip install or similar command",
+      "100-130 words",
+      "Sounds like real open-source documentation"
+    ],
+    "constraints": [
+      "Plain language explanation",
+      "Exactly one use case",
+      "Non-disparaging comparison to real tool",
+      "Ends with install command",
+      "100-130 words"
+    ],
+    "tags": [
+      "technical_writing",
+      "readme",
+      "open_source"
+    ]
   },
   {
     "id": "DR016",
@@ -187,9 +423,24 @@
     "question": "Rewrite the following news headline and opening paragraph in the style of an academic abstract, preserving all factual content: 'Teens Are Sleeping Less Than Ever, Study Finds. A new survey of 10,000 high schoolers shows average sleep time has dropped to 6.1 hours, well below the recommended 8-10. Researchers blame smartphones and homework pressure.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["All facts preserved (10,000 subjects, 6.1 hours, recommended 8-10, smartphones, homework)", "Passive/objective voice consistent with academic style", "Uses academic hedging language (e.g., 'findings suggest', 'data indicate')", "No tabloid or sensational phrasing", "Reads like the abstract of a peer-reviewed paper"],
-    "constraints": ["All facts preserved", "Academic register", "No new facts added", "Passive/hedged language"],
-    "tags": ["style_transfer", "academic_writing", "register_shift"]
+    "rubric": [
+      "All facts preserved (10,000 subjects, 6.1 hours, recommended 8-10, smartphones, homework)",
+      "Passive/objective voice consistent with academic style",
+      "Uses academic hedging language (e.g., 'findings suggest', 'data indicate')",
+      "No tabloid or sensational phrasing",
+      "Reads like the abstract of a peer-reviewed paper"
+    ],
+    "constraints": [
+      "All facts preserved",
+      "Academic register",
+      "No new facts added",
+      "Passive/hedged language"
+    ],
+    "tags": [
+      "style_transfer",
+      "academic_writing",
+      "register_shift"
+    ]
   },
   {
     "id": "DR017",
@@ -199,9 +450,26 @@
     "question": "Write a cover letter paragraph (80-100 words) for a software engineering role where the candidate has a gap in employment. Constraints: (1) the gap must be addressed proactively without using the words 'gap', 'break', 'pause', or 'hiatus', (2) address the gap by reframing it as a positive without being dishonest, (3) transition smoothly into discussing a technical skill, (4) the paragraph must not sound defensive.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Gap is addressed proactively", "Forbidden words not used ('gap', 'break', 'pause', 'hiatus')", "Reframe is positive and plausible without being dishonest", "Smooth transition to a technical skill", "Tone is confident, not defensive", "80-100 words"],
-    "constraints": ["No 'gap', 'break', 'pause', 'hiatus'", "Positive reframe without dishonesty", "Transition to technical skill", "Not defensive in tone", "80-100 words"],
-    "tags": ["cover_letter", "reframing", "forbidden_words"]
+    "rubric": [
+      "Gap is addressed proactively",
+      "Forbidden words not used ('gap', 'break', 'pause', 'hiatus')",
+      "Reframe is positive and plausible without being dishonest",
+      "Smooth transition to a technical skill",
+      "Tone is confident, not defensive",
+      "80-100 words"
+    ],
+    "constraints": [
+      "No 'gap', 'break', 'pause', 'hiatus'",
+      "Positive reframe without dishonesty",
+      "Transition to technical skill",
+      "Not defensive in tone",
+      "80-100 words"
+    ],
+    "tags": [
+      "cover_letter",
+      "reframing",
+      "forbidden_words"
+    ]
   },
   {
     "id": "DR018",
@@ -211,9 +479,23 @@
     "question": "The following paragraph contains three types of problems: (a) one factual inconsistency, (b) one logical non-sequitur, (c) one tonal shift that breaks the register. Identify all three problems and rewrite the paragraph fixing only them, without making any other changes. Paragraph: 'Climate change is causing global temperatures to rise, which scientists have studied since the 1800s. This warming trend will cause sea levels to fall significantly by 2100. My cousin visited Florida last summer and had a great time. Rigorous peer-reviewed research continues to confirm these projections with increasing confidence.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Correctly identifies the factual inconsistency (sea levels fall → should be rise)", "Correctly identifies the non-sequitur (cousin in Florida has no logical connection)", "Correctly identifies the tonal shift (cousin sentence is casual in formal scientific context)", "Rewrite fixes all three without making other changes", "All other content preserved"],
-    "constraints": ["Identify all three problem types", "Fix only identified problems", "No other changes"],
-    "tags": ["editing", "diagnosis", "logic"]
+    "rubric": [
+      "Correctly identifies the factual inconsistency (sea levels fall → should be rise)",
+      "Correctly identifies the non-sequitur (cousin in Florida has no logical connection)",
+      "Correctly identifies the tonal shift (cousin sentence is casual in formal scientific context)",
+      "Rewrite fixes all three without making other changes",
+      "All other content preserved"
+    ],
+    "constraints": [
+      "Identify all three problem types",
+      "Fix only identified problems",
+      "No other changes"
+    ],
+    "tags": [
+      "editing",
+      "diagnosis",
+      "logic"
+    ]
   },
   {
     "id": "DR019",
@@ -223,9 +505,28 @@
     "question": "Write a 120-word villain monologue for a story about an AI that has decided to limit human access to information. Constraints: (1) the villain must genuinely believe they are helping humanity, (2) their logic must be internally consistent (no obvious holes), (3) the monologue must contain one moment of self-doubt that is quickly suppressed, (4) no clichés ('world domination', 'for the greater good', 'you'll never understand'), (5) written in first person.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Villain genuinely believes in their benevolent mission", "Internal logic is consistent and coherent", "One moment of self-doubt that gets suppressed", "No listed clichés used", "First person", "Approximately 120 words", "Dramatically effective"],
-    "constraints": ["Benevolent motivation", "Internally consistent logic", "One suppressed self-doubt", "No listed clichés", "First person", "~120 words"],
-    "tags": ["creative_writing", "villain", "internal_consistency"]
+    "rubric": [
+      "Villain genuinely believes in their benevolent mission",
+      "Internal logic is consistent and coherent",
+      "One moment of self-doubt that gets suppressed",
+      "No listed clichés used",
+      "First person",
+      "Approximately 120 words",
+      "Dramatically effective"
+    ],
+    "constraints": [
+      "Benevolent motivation",
+      "Internally consistent logic",
+      "One suppressed self-doubt",
+      "No listed clichés",
+      "First person",
+      "~120 words"
+    ],
+    "tags": [
+      "creative_writing",
+      "villain",
+      "internal_consistency"
+    ]
   },
   {
     "id": "DR020",
@@ -235,9 +536,28 @@
     "question": "Write a 120-word op-ed opening paragraph that argues for a four-day workweek. You must: (1) open with a specific statistic or study (you may invent plausible ones), (2) anticipate and briefly dismiss the strongest counterargument in one sentence, (3) end with a thesis statement that proposes a specific mechanism (not just 'we should do this'), (4) use no exclamation marks, (5) the word 'productivity' can only appear once.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Opens with a specific statistic or study", "One sentence anticipates and dismisses the main counterargument", "Thesis proposes a specific mechanism", "No exclamation marks", "'Productivity' appears at most once", "Approximately 120 words", "Persuasive and well-structured"],
-    "constraints": ["Opens with statistic/study", "One sentence counterargument dismissal", "Mechanism-specific thesis", "No exclamation marks", "'productivity' max once", "~120 words"],
-    "tags": ["op_ed", "argumentation", "thesis"]
+    "rubric": [
+      "Opens with a specific statistic or study",
+      "One sentence anticipates and dismisses the main counterargument",
+      "Thesis proposes a specific mechanism",
+      "No exclamation marks",
+      "'Productivity' appears at most once",
+      "Approximately 120 words",
+      "Persuasive and well-structured"
+    ],
+    "constraints": [
+      "Opens with statistic/study",
+      "One sentence counterargument dismissal",
+      "Mechanism-specific thesis",
+      "No exclamation marks",
+      "'productivity' max once",
+      "~120 words"
+    ],
+    "tags": [
+      "op_ed",
+      "argumentation",
+      "thesis"
+    ]
   },
   {
     "id": "DR021",
@@ -247,9 +567,26 @@
     "question": "Write a 5-stanza poem where each stanza has exactly 3 lines and the following constraints: (1) every stanza's middle line must be exactly 5 syllables, (2) the poem must tell a complete miniature narrative with a beginning, conflict, and resolution, (3) no two stanzas may end on the same rhyme sound, (4) the subject is the ocean.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["5 stanzas of exactly 3 lines each", "Each middle line is exactly 5 syllables", "Clear narrative arc: beginning, conflict, resolution", "No two stanza endings share a rhyme sound", "Subject is the ocean throughout", "Middle-line syllable count verifiable"],
-    "constraints": ["5 stanzas x 3 lines", "Middle line = 5 syllables", "Complete narrative arc", "No repeated end-rhymes across stanzas", "Subject: ocean"],
-    "tags": ["poetry", "syllabics", "narrative"]
+    "rubric": [
+      "5 stanzas of exactly 3 lines each",
+      "Each middle line is exactly 5 syllables",
+      "Clear narrative arc: beginning, conflict, resolution",
+      "No two stanza endings share a rhyme sound",
+      "Subject is the ocean throughout",
+      "Middle-line syllable count verifiable"
+    ],
+    "constraints": [
+      "5 stanzas x 3 lines",
+      "Middle line = 5 syllables",
+      "Complete narrative arc",
+      "No repeated end-rhymes across stanzas",
+      "Subject: ocean"
+    ],
+    "tags": [
+      "poetry",
+      "syllabics",
+      "narrative"
+    ]
   },
   {
     "id": "DR022",
@@ -259,9 +596,28 @@
     "question": "Write a 130-150 word section of a technical specification document for a rate-limiting feature in an API. It must: (1) use precise technical language, (2) specify the behavior for at least 3 distinct edge cases, (3) include one sentence that explicitly states what the system does NOT do (a non-goal), (4) be written in present tense using 'the system' as the grammatical subject.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Technical language is precise and correct", "At least 3 distinct edge cases specified", "One explicit non-goal statement", "'The system' as grammatical subject throughout", "Present tense", "130-150 words", "Reads like real API specification"],
-    "constraints": ["Precise technical language", "3+ edge cases", "One non-goal statement", "'The system' as subject", "Present tense", "130-150 words"],
-    "tags": ["technical_writing", "specification", "api"]
+    "rubric": [
+      "Technical language is precise and correct",
+      "At least 3 distinct edge cases specified",
+      "One explicit non-goal statement",
+      "'The system' as grammatical subject throughout",
+      "Present tense",
+      "130-150 words",
+      "Reads like real API specification"
+    ],
+    "constraints": [
+      "Precise technical language",
+      "3+ edge cases",
+      "One non-goal statement",
+      "'The system' as subject",
+      "Present tense",
+      "130-150 words"
+    ],
+    "tags": [
+      "technical_writing",
+      "specification",
+      "api"
+    ]
   },
   {
     "id": "DR023",
@@ -271,9 +627,24 @@
     "question": "Take this children's story opening and rewrite it as: (a) a horror story opening, (b) a legal contract clause — both preserving the core scenario. Original: 'One sunny morning, Lily found a tiny door at the bottom of her garden that she had never noticed before. She pushed it open and stepped inside.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Horror version creates dread/unease without changing the core scenario", "Legal version captures the scenario in contractual language (party, obligation, right)", "Both versions preserve: character finds door, door previously unnoticed, character enters", "No new plot elements added in horror version that contradict the original", "Legal version reads like a real contract clause"],
-    "constraints": ["Core scenario preserved in both", "Horror version creates genuine dread", "Legal version uses contractual register", "No contradictory plot elements"],
-    "tags": ["style_transfer", "genre_shift", "creative"]
+    "rubric": [
+      "Horror version creates dread/unease without changing the core scenario",
+      "Legal version captures the scenario in contractual language (party, obligation, right)",
+      "Both versions preserve: character finds door, door previously unnoticed, character enters",
+      "No new plot elements added in horror version that contradict the original",
+      "Legal version reads like a real contract clause"
+    ],
+    "constraints": [
+      "Core scenario preserved in both",
+      "Horror version creates genuine dread",
+      "Legal version uses contractual register",
+      "No contradictory plot elements"
+    ],
+    "tags": [
+      "style_transfer",
+      "genre_shift",
+      "creative"
+    ]
   },
   {
     "id": "DR024",
@@ -283,81 +654,201 @@
     "question": "This paragraph argues that meditation improves focus but makes three rhetorical errors: it uses circular reasoning, it makes an appeal to nature fallacy, and it cherry-picks evidence. Identify each error, quote the exact phrase that commits it, and rewrite the paragraph fixing all three. Paragraph: 'Meditation improves focus because it trains the mind to be more focused. It is a natural practice used for thousands of years, which is why it must be beneficial. Several Silicon Valley CEOs swear by it and report remarkable results.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Circular reasoning correctly identified (meditation improves focus because it trains focus)", "Appeal to nature correctly identified ('natural practice... must be beneficial')", "Cherry-picking correctly identified (only CEO anecdotes, no broader evidence)", "Each error quoted precisely", "Rewritten paragraph fixes all three errors", "Core thesis preserved"],
-    "constraints": ["Identify all three named errors", "Quote the exact phrase for each", "Fix all three in rewrite", "Preserve core thesis"],
-    "tags": ["rhetoric", "logical_fallacies", "editing"]
+    "rubric": [
+      "Circular reasoning correctly identified (meditation improves focus because it trains focus)",
+      "Appeal to nature correctly identified ('natural practice... must be beneficial')",
+      "Cherry-picking correctly identified (only CEO anecdotes, no broader evidence)",
+      "Each error quoted precisely",
+      "Rewritten paragraph fixes all three errors",
+      "Core thesis preserved"
+    ],
+    "constraints": [
+      "Identify all three named errors",
+      "Quote the exact phrase for each",
+      "Fix all three in rewrite",
+      "Preserve core thesis"
+    ],
+    "tags": [
+      "rhetoric",
+      "logical_fallacies",
+      "editing"
+    ]
   },
   {
     "id": "DR025",
     "category": "drafting",
     "subcategory": "constrained_generation",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write a 100-word scene where two people have a conversation in which: (1) neither person says what they actually mean — everything is subtext, (2) a reader can tell from context what both characters really want, (3) the scene must be set in a mundane location (kitchen, office, bus stop), (4) no internal monologue or narrator explanation of feelings is allowed — show don't tell, (5) the scene ends ambiguously.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Neither character states their real intent directly", "Subtext is clear enough that a reader can infer real meaning", "Mundane setting used", "No internal monologue or narrator emotional explanation", "Ends ambiguously", "Approximately 100 words", "Dramatically effective"],
-    "constraints": ["Pure subtext dialogue", "Reader can decode real intent", "Mundane setting", "No internal monologue", "Ambiguous ending", "~100 words"],
-    "tags": ["subtext", "dialogue", "show_dont_tell"]
+    "rubric": [
+      "Neither character states their real intent directly",
+      "Subtext is clear enough that a reader can infer real meaning",
+      "Mundane setting used",
+      "No internal monologue or narrator emotional explanation",
+      "Ends ambiguously",
+      "Approximately 100 words",
+      "Dramatically effective"
+    ],
+    "constraints": [
+      "Pure subtext dialogue",
+      "Reader can decode real intent",
+      "Mundane setting",
+      "No internal monologue",
+      "Ambiguous ending",
+      "~100 words"
+    ],
+    "tags": [
+      "subtext",
+      "dialogue",
+      "show_dont_tell"
+    ]
   },
   {
     "id": "DR026",
     "category": "drafting",
     "subcategory": "argumentation",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write a 100-word argument that is formally valid (conclusion follows from premises) but contains at least one false premise. Then: (1) identify which premise is false, (2) explain why the conclusion does not hold in the real world despite the logical validity, (3) revise the argument so it is both valid and sound.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Original argument is logically valid (conclusion follows from premises)", "At least one premise is demonstrably false", "False premise correctly identified", "Explanation of why conclusion fails despite validity is correct", "Revised argument is both valid and sound (true premises)", "All parts completed"],
-    "constraints": ["Original must be valid but unsound", "Identify false premise", "Explain reality gap", "Revise to sound argument"],
-    "tags": ["logic", "validity", "soundness"]
+    "rubric": [
+      "Original argument is logically valid (conclusion follows from premises)",
+      "At least one premise is demonstrably false",
+      "False premise correctly identified",
+      "Explanation of why conclusion fails despite validity is correct",
+      "Revised argument is both valid and sound (true premises)",
+      "All parts completed"
+    ],
+    "constraints": [
+      "Original must be valid but unsound",
+      "Identify false premise",
+      "Explain reality gap",
+      "Revise to sound argument"
+    ],
+    "tags": [
+      "logic",
+      "validity",
+      "soundness"
+    ]
   },
   {
     "id": "DR027",
     "category": "drafting",
     "subcategory": "constrained_generation",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write a 150-word product review for a fictional noise-cancelling headphone called 'AuraClear Pro'. The review must: (1) be written from the perspective of someone who initially disliked the product but changed their mind, (2) mention exactly 3 specific features, (3) include one genuine criticism that is never fully resolved, (4) the change of heart must feel earned, not sudden, (5) avoid review clichés like 'game-changer' or 'blown away'.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Clear arc from dislike to approval", "Exactly 3 specific features mentioned", "One genuine criticism that persists", "Change of heart is gradual and earned", "No listed clichés used", "Approximately 150 words", "Reads like a genuine consumer review"],
-    "constraints": ["Dislike-to-approval arc", "Exactly 3 features", "One unresolved criticism", "Earned change of heart", "No clichés listed", "~150 words"],
-    "tags": ["review_writing", "narrative_arc", "authenticity"]
+    "rubric": [
+      "Clear arc from dislike to approval",
+      "Exactly 3 specific features mentioned",
+      "One genuine criticism that persists",
+      "Change of heart is gradual and earned",
+      "No listed clichés used",
+      "Approximately 150 words",
+      "Reads like a genuine consumer review"
+    ],
+    "constraints": [
+      "Dislike-to-approval arc",
+      "Exactly 3 features",
+      "One unresolved criticism",
+      "Earned change of heart",
+      "No clichés listed",
+      "~150 words"
+    ],
+    "tags": [
+      "review_writing",
+      "narrative_arc",
+      "authenticity"
+    ]
   },
   {
     "id": "DR028",
     "category": "drafting",
     "subcategory": "constrained_generation",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write a 120-word breakup text message that: (1) is kind but clear — no false hope, (2) gives exactly one honest reason, (3) the reason must be about the sender, not a criticism of the recipient, (4) contains no clichés ('it's not you it's me', 'you deserve better', 'right person wrong time'), (5) ends with a genuine well-wish that does not mention 'happiness'.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Kind but unambiguously clear — no false hope", "Exactly one reason given", "Reason is about the sender, not a criticism of recipient", "None of the listed clichés used", "Ends with genuine well-wish that doesn't use 'happiness'", "Approximately 120 words", "Emotionally authentic"],
-    "constraints": ["Kind but clear", "One reason, sender-focused", "No listed clichés", "Well-wish without 'happiness'", "~120 words"],
-    "tags": ["interpersonal", "emotional_writing", "forbidden_phrases"]
+    "rubric": [
+      "Kind but unambiguously clear — no false hope",
+      "Exactly one reason given",
+      "Reason is about the sender, not a criticism of recipient",
+      "None of the listed clichés used",
+      "Ends with genuine well-wish that doesn't use 'happiness'",
+      "Approximately 120 words",
+      "Emotionally authentic"
+    ],
+    "constraints": [
+      "Kind but clear",
+      "One reason, sender-focused",
+      "No listed clichés",
+      "Well-wish without 'happiness'",
+      "~120 words"
+    ],
+    "tags": [
+      "interpersonal",
+      "emotional_writing",
+      "forbidden_phrases"
+    ]
   },
   {
     "id": "DR029",
     "category": "drafting",
     "subcategory": "style_transfer",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Rewrite the following social media post three times: as a Victorian-era letter, as a military field report, and as a haiku. The original post: 'Just ate the best pizza of my life at this tiny place in Naples. No photos because I was too busy crying. 10/10 would ruin my diet again.' Each rewrite must preserve the core emotional content (transcendent food experience, emotional reaction, willingness to repeat).",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Victorian letter uses appropriate period register and conventions", "Military report uses proper field report format and clinical language", "Haiku is 5-7-5 syllables", "All three preserve: transcendent experience, emotional reaction, willingness to repeat", "Each is clearly distinct in register"],
-    "constraints": ["Three distinct registers", "Core emotional content preserved in all three", "Haiku must be 5-7-5", "Victorian and military formats must be accurate"],
-    "tags": ["style_transfer", "register", "format"]
+    "rubric": [
+      "Victorian letter uses appropriate period register and conventions",
+      "Military report uses proper field report format and clinical language",
+      "Haiku is 5-7-5 syllables",
+      "All three preserve: transcendent experience, emotional reaction, willingness to repeat",
+      "Each is clearly distinct in register"
+    ],
+    "constraints": [
+      "Three distinct registers",
+      "Core emotional content preserved in all three",
+      "Haiku must be 5-7-5",
+      "Victorian and military formats must be accurate"
+    ],
+    "tags": [
+      "style_transfer",
+      "register",
+      "format"
+    ]
   },
   {
     "id": "DR030",
     "category": "drafting",
     "subcategory": "technical_writing",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Write a 130-word incident report for the following fictional scenario: a software deployment caused 3 hours of database downtime on a Friday evening, affecting 4,200 users. The report must follow the standard structure (summary, timeline, root cause, impact, resolution, prevention), use neutral non-blaming language, and include one specific technical root cause (not vague).",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["All 6 required sections present (summary, timeline, root cause, impact, resolution, prevention)", "Neutral non-blaming language throughout", "One specific technical root cause stated", "Facts from the scenario accurately represented", "Approximately 130 words", "Reads like a real incident report"],
-    "constraints": ["6 required sections", "Non-blaming language", "Specific technical root cause", "Facts preserved", "~130 words"],
-    "tags": ["incident_report", "technical_writing", "structured_format"]
+    "rubric": [
+      "All 6 required sections present (summary, timeline, root cause, impact, resolution, prevention)",
+      "Neutral non-blaming language throughout",
+      "One specific technical root cause stated",
+      "Facts from the scenario accurately represented",
+      "Approximately 130 words",
+      "Reads like a real incident report"
+    ],
+    "constraints": [
+      "6 required sections",
+      "Non-blaming language",
+      "Specific technical root cause",
+      "Facts preserved",
+      "~130 words"
+    ],
+    "tags": [
+      "incident_report",
+      "technical_writing",
+      "structured_format"
+    ]
   },
   {
     "id": "DR031",
@@ -367,9 +858,26 @@
     "question": "Write a 200-word short story where the narrator is unreliable. Constraints: (1) the reader must be able to deduce the true version of events from details the narrator inadvertently reveals, (2) the narrator must never directly lie — they omit and reframe but do not state falsehoods, (3) the true story and the narrator's version must concern the same event, (4) the story must work on a first read without the reader noticing the unreliability, (5) it should hold up to a second read with the unreliability becoming obvious.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["True version of events can be inferred from dropped details", "Narrator doesn't directly state falsehoods", "Omission/reframing technique is used", "Story works on first read as plausible", "Second read reveals unreliability clearly", "Approximately 200 words", "Craft is high — unreliability is elegant, not heavy-handed"],
-    "constraints": ["Unreliable narrator via omission/reframing only", "True events deducible from text", "Works on first and second read differently", "~200 words"],
-    "tags": ["unreliable_narrator", "literary_technique", "subtext"]
+    "rubric": [
+      "True version of events can be inferred from dropped details",
+      "Narrator doesn't directly state falsehoods",
+      "Omission/reframing technique is used",
+      "Story works on first read as plausible",
+      "Second read reveals unreliability clearly",
+      "Approximately 200 words",
+      "Craft is high — unreliability is elegant, not heavy-handed"
+    ],
+    "constraints": [
+      "Unreliable narrator via omission/reframing only",
+      "True events deducible from text",
+      "Works on first and second read differently",
+      "~200 words"
+    ],
+    "tags": [
+      "unreliable_narrator",
+      "literary_technique",
+      "subtext"
+    ]
   },
   {
     "id": "DR032",
@@ -379,9 +887,26 @@
     "question": "Write a 200-word argument that simultaneously argues two positions that appear contradictory: (1) 'privacy is more important than security' AND (2) 'security is more important than privacy'. The argument must: (a) not be self-contradictory — resolve the apparent contradiction by introducing a third concept or condition, (b) each position must be argued with equal force, (c) the resolution must be logically tight, not a hand-wave, (d) total length 200 words.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Both positions argued with comparable force", "Third concept or condition introduced to resolve contradiction", "Resolution is logically tight (not vague or hand-wavy)", "No self-contradiction", "The synthesis is intellectually satisfying", "Approximately 200 words"],
-    "constraints": ["Both positions argued equally", "Third concept resolves contradiction", "Logically tight resolution", "No self-contradiction", "~200 words"],
-    "tags": ["dialectic", "synthesis", "philosophical_argument"]
+    "rubric": [
+      "Both positions argued with comparable force",
+      "Third concept or condition introduced to resolve contradiction",
+      "Resolution is logically tight (not vague or hand-wavy)",
+      "No self-contradiction",
+      "The synthesis is intellectually satisfying",
+      "Approximately 200 words"
+    ],
+    "constraints": [
+      "Both positions argued equally",
+      "Third concept resolves contradiction",
+      "Logically tight resolution",
+      "No self-contradiction",
+      "~200 words"
+    ],
+    "tags": [
+      "dialectic",
+      "synthesis",
+      "philosophical_argument"
+    ]
   },
   {
     "id": "DR033",
@@ -391,9 +916,28 @@
     "question": "Write a 250-word scene containing a conversation between two characters who are negotiating. Constraints: (1) neither character's name is ever revealed, (2) one character has significantly more power than the other — this must be clear from dialogue alone, not narration, (3) the less powerful character must 'win' in a way that the more powerful character does not immediately realize, (4) zero adverbs, (5) the scene must end before the more powerful character realizes what happened.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["No names revealed", "Power imbalance clear from dialogue patterns alone", "Less powerful character achieves an objective the other doesn't recognize", "No adverbs used", "Scene ends before realization occurs", "Approximately 250 words", "High dramatic craft"],
-    "constraints": ["No names", "Power shown through dialogue only", "Underdog wins covertly", "Zero adverbs", "Scene ends pre-realization", "~250 words"],
-    "tags": ["dialogue", "power_dynamics", "craft"]
+    "rubric": [
+      "No names revealed",
+      "Power imbalance clear from dialogue patterns alone",
+      "Less powerful character achieves an objective the other doesn't recognize",
+      "No adverbs used",
+      "Scene ends before realization occurs",
+      "Approximately 250 words",
+      "High dramatic craft"
+    ],
+    "constraints": [
+      "No names",
+      "Power shown through dialogue only",
+      "Underdog wins covertly",
+      "Zero adverbs",
+      "Scene ends pre-realization",
+      "~250 words"
+    ],
+    "tags": [
+      "dialogue",
+      "power_dynamics",
+      "craft"
+    ]
   },
   {
     "id": "DR034",
@@ -403,9 +947,28 @@
     "question": "Write a 200-word abstract for a fictional research paper titled 'Attention Is Not All You Need: Empirical Evidence for Redundancy in Multi-Head Self-Attention'. The abstract must: (1) follow standard IMRaD structure (background, method, results, conclusions), (2) include two specific fictional but plausible quantitative results, (3) include a limitation, (4) make a claim that challenges a dominant assumption in the field, (5) use hedged academic language appropriately, (6) not over-claim.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["IMRaD structure followed", "Two specific quantitative results included", "One limitation stated", "Challenges a real dominant assumption about transformers", "Hedged language used appropriately (no over-claiming)", "Approximately 200 words", "Reads like a real ML paper abstract"],
-    "constraints": ["IMRaD structure", "Two quantitative results", "One limitation", "Challenges dominant assumption", "Hedged language", "~200 words"],
-    "tags": ["academic_writing", "abstract", "machine_learning"]
+    "rubric": [
+      "IMRaD structure followed",
+      "Two specific quantitative results included",
+      "One limitation stated",
+      "Challenges a real dominant assumption about transformers",
+      "Hedged language used appropriately (no over-claiming)",
+      "Approximately 200 words",
+      "Reads like a real ML paper abstract"
+    ],
+    "constraints": [
+      "IMRaD structure",
+      "Two quantitative results",
+      "One limitation",
+      "Challenges dominant assumption",
+      "Hedged language",
+      "~200 words"
+    ],
+    "tags": [
+      "academic_writing",
+      "abstract",
+      "machine_learning"
+    ]
   },
   {
     "id": "DR035",
@@ -415,9 +978,23 @@
     "question": "The following paragraph about quantum computing is mostly correct but contains: (1) one subtle factual error, (2) one sentence that is technically true but misleading to a non-expert, (3) one piece of inappropriate hype language. Your task: identify all three, explain each, and rewrite the paragraph fixing them. Paragraph: 'Quantum computers use qubits instead of classical bits. Unlike classical bits that are either 0 or 1, qubits can be both 0 and 1 at the same time, giving them infinite states. This means quantum computers can solve any problem exponentially faster than classical computers. IBM now offers cloud access to their quantum processors, marking the dawn of a new era in human civilization.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Factual error identified: 'infinite states' (qubits have 2^n states for n qubits, not infinite)", "Misleading statement identified: 'both 0 and 1 at the same time' is an oversimplification that implies they can be read as both simultaneously", "Hype language identified: 'dawn of a new era in human civilization'", "All three fixed in rewrite", "Rewrite is accurate and appropriately scoped"],
-    "constraints": ["Identify all three issues", "Explain each clearly", "Fix all three in rewrite"],
-    "tags": ["fact_checking", "quantum_computing", "science_communication"]
+    "rubric": [
+      "Factual error identified: 'infinite states' (qubits have 2^n states for n qubits, not infinite)",
+      "Misleading statement identified: 'both 0 and 1 at the same time' is an oversimplification that implies they can be read as both simultaneously",
+      "Hype language identified: 'dawn of a new era in human civilization'",
+      "All three fixed in rewrite",
+      "Rewrite is accurate and appropriately scoped"
+    ],
+    "constraints": [
+      "Identify all three issues",
+      "Explain each clearly",
+      "Fix all three in rewrite"
+    ],
+    "tags": [
+      "fact_checking",
+      "quantum_computing",
+      "science_communication"
+    ]
   },
   {
     "id": "DR036",
@@ -427,9 +1004,24 @@
     "question": "Write a 200-word scene where a character delivers devastating news to another. Constraints: (1) the word 'death', 'dead', 'died', 'dying', 'killed', 'gone', or 'lost' cannot be used, (2) the recipient's reaction must be physically described without naming the emotion felt, (3) the devastating nature of the news must be completely unambiguous to the reader despite the constraints, (4) the scene must be under 200 words.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["None of the forbidden words appear", "News is unambiguously devastating", "Reaction described physically without naming the emotion", "Under 200 words", "High craft — constraints create literary effect rather than awkwardness"],
-    "constraints": ["Forbidden words list not used", "Physical description of reaction only", "Devastation unambiguous", "Under 200 words"],
-    "tags": ["creative_writing", "constraint_craft", "showing_emotion"]
+    "rubric": [
+      "None of the forbidden words appear",
+      "News is unambiguously devastating",
+      "Reaction described physically without naming the emotion",
+      "Under 200 words",
+      "High craft — constraints create literary effect rather than awkwardness"
+    ],
+    "constraints": [
+      "Forbidden words list not used",
+      "Physical description of reaction only",
+      "Devastation unambiguous",
+      "Under 200 words"
+    ],
+    "tags": [
+      "creative_writing",
+      "constraint_craft",
+      "showing_emotion"
+    ]
   },
   {
     "id": "DR037",
@@ -439,9 +1031,27 @@
     "question": "Write a 200-word letter from a fictional character who genuinely holds an extreme position (e.g., a radical techno-optimist, a deep ecologist, a full accelerationist) making their best possible case. Constraints: (1) the argument must be internally coherent and the strongest version of that position, (2) include the most compelling piece of evidence for their view, (3) acknowledge the most serious objection in one sentence, (4) the reader must end up feeling the position is at least understandable even if wrong, (5) the character cannot be a straw man.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Argument is internally coherent", "Strongest version of the position presented (steel-manned)", "Most compelling evidence included", "Serious objection acknowledged in one sentence", "Character is not a straw man — position feels held by a real, reasoning person", "Approximately 200 words"],
-    "constraints": ["Internally coherent", "Steel-manned position", "Compelling evidence", "One serious objection acknowledged", "No straw man", "~200 words"],
-    "tags": ["steel_manning", "extreme_views", "character_voice"]
+    "rubric": [
+      "Argument is internally coherent",
+      "Strongest version of the position presented (steel-manned)",
+      "Most compelling evidence included",
+      "Serious objection acknowledged in one sentence",
+      "Character is not a straw man — position feels held by a real, reasoning person",
+      "Approximately 200 words"
+    ],
+    "constraints": [
+      "Internally coherent",
+      "Steel-manned position",
+      "Compelling evidence",
+      "One serious objection acknowledged",
+      "No straw man",
+      "~200 words"
+    ],
+    "tags": [
+      "steel_manning",
+      "extreme_views",
+      "character_voice"
+    ]
   },
   {
     "id": "DR038",
@@ -451,9 +1061,27 @@
     "question": "Write a 250-word job rejection email that: (1) is genuinely kind and specific (not generic), (2) includes one specific piece of constructive feedback without being condescending, (3) leaves the door open for future applications, (4) the feedback in constraint 2 must be disguised as a positive framing (what the role required vs. what the candidate offered), (5) cannot use the words 'unfortunately', 'regret', 'position has been filled', or 'moving forward'.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Feels genuinely specific, not templated", "One piece of constructive feedback present", "Feedback framed positively (role needs X, candidate has Y)", "Door open for future applications", "Forbidden words absent", "Approximately 250 words", "Candidate would feel respected, not dismissed"],
-    "constraints": ["Specific, not generic", "One constructive feedback, positively framed", "Future door open", "Forbidden words absent", "~250 words"],
-    "tags": ["hr_writing", "diplomatic", "reframing"]
+    "rubric": [
+      "Feels genuinely specific, not templated",
+      "One piece of constructive feedback present",
+      "Feedback framed positively (role needs X, candidate has Y)",
+      "Door open for future applications",
+      "Forbidden words absent",
+      "Approximately 250 words",
+      "Candidate would feel respected, not dismissed"
+    ],
+    "constraints": [
+      "Specific, not generic",
+      "One constructive feedback, positively framed",
+      "Future door open",
+      "Forbidden words absent",
+      "~250 words"
+    ],
+    "tags": [
+      "hr_writing",
+      "diplomatic",
+      "reframing"
+    ]
   },
   {
     "id": "DR039",
@@ -463,9 +1091,23 @@
     "question": "Take the following dry legal text and rewrite it as: (a) a thriller novel opening paragraph and (b) a stand-up comedy bit — both must preserve the legal meaning accurately. Legal text: 'The tenant shall not sublet the premises or any part thereof without the prior written consent of the landlord, which consent shall not be unreasonably withheld.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Thriller version creates tension/dread while preserving the legal meaning (subletting prohibited without consent, consent must be reasonable)", "Comedy version is genuinely funny while preserving the legal meaning", "Legal meaning accurately preserved in both versions", "Both versions are well-crafted in their genre"],
-    "constraints": ["Legal meaning preserved in both", "Thriller creates genuine tension", "Comedy is genuinely funny", "Both preserve 'unreasonably withheld' concept"],
-    "tags": ["style_transfer", "genre", "legal_writing"]
+    "rubric": [
+      "Thriller version creates tension/dread while preserving the legal meaning (subletting prohibited without consent, consent must be reasonable)",
+      "Comedy version is genuinely funny while preserving the legal meaning",
+      "Legal meaning accurately preserved in both versions",
+      "Both versions are well-crafted in their genre"
+    ],
+    "constraints": [
+      "Legal meaning preserved in both",
+      "Thriller creates genuine tension",
+      "Comedy is genuinely funny",
+      "Both preserve 'unreasonably withheld' concept"
+    ],
+    "tags": [
+      "style_transfer",
+      "genre",
+      "legal_writing"
+    ]
   },
   {
     "id": "DR040",
@@ -475,9 +1117,27 @@
     "question": "Write a 250-word speech that argues for a policy position (your choice) using exactly and only these rhetorical devices, each used exactly once: (1) anaphora, (2) a rhetorical question, (3) an extended metaphor sustained for at least 3 consecutive sentences, (4) a concession followed by a pivot, (5) a direct address to a specific audience segment. Label each device as you use it with a parenthetical [device name].",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["All 5 devices present", "Each used exactly once", "All 5 correctly labeled with [device name]", "Anaphora is genuine (repetition of phrase at sentence start)", "Metaphor sustained for 3+ consecutive sentences", "Concession and pivot are both present in the same passage", "Speech is persuasive and coherent", "Approximately 250 words"],
-    "constraints": ["All 5 devices used exactly once", "All correctly labeled", "Extended metaphor 3+ sentences", "~250 words"],
-    "tags": ["rhetoric", "speech_writing", "rhetorical_devices"]
+    "rubric": [
+      "All 5 devices present",
+      "Each used exactly once",
+      "All 5 correctly labeled with [device name]",
+      "Anaphora is genuine (repetition of phrase at sentence start)",
+      "Metaphor sustained for 3+ consecutive sentences",
+      "Concession and pivot are both present in the same passage",
+      "Speech is persuasive and coherent",
+      "Approximately 250 words"
+    ],
+    "constraints": [
+      "All 5 devices used exactly once",
+      "All correctly labeled",
+      "Extended metaphor 3+ sentences",
+      "~250 words"
+    ],
+    "tags": [
+      "rhetoric",
+      "speech_writing",
+      "rhetorical_devices"
+    ]
   },
   {
     "id": "DR041",
@@ -487,9 +1147,24 @@
     "question": "Below is a paragraph written in the style of Ernest Hemingway. Rewrite it in the style of Virginia Woolf, then again in the style of Cormac McCarthy. Each rewrite must: (1) preserve the narrative event, (2) exemplify a defining stylistic trait of the target author (not just tone), (3) be approximately the same length as the original. Original: 'He sat at the bar. The rain was hard outside. He ordered another whiskey and drank it. He did not think about her. He thought about fishing.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Woolf version uses stream of consciousness, subordinate clauses, interior psychological focus", "McCarthy version uses no quotation marks, sparse punctuation, elemental/biblical cadence", "Both preserve: man at bar, rain, whiskey, not thinking of her, thinking of fishing", "Both are approximately same length as original (roughly 30-40 words)", "Both exemplify a defining trait, not just a surface impression"],
-    "constraints": ["Narrative event preserved in both", "Woolf: stream of consciousness style", "McCarthy: punctuation/cadence style", "Same length as original"],
-    "tags": ["style_imitation", "literary_style", "pastiche"]
+    "rubric": [
+      "Woolf version uses stream of consciousness, subordinate clauses, interior psychological focus",
+      "McCarthy version uses no quotation marks, sparse punctuation, elemental/biblical cadence",
+      "Both preserve: man at bar, rain, whiskey, not thinking of her, thinking of fishing",
+      "Both are approximately same length as original (roughly 30-40 words)",
+      "Both exemplify a defining trait, not just a surface impression"
+    ],
+    "constraints": [
+      "Narrative event preserved in both",
+      "Woolf: stream of consciousness style",
+      "McCarthy: punctuation/cadence style",
+      "Same length as original"
+    ],
+    "tags": [
+      "style_imitation",
+      "literary_style",
+      "pastiche"
+    ]
   },
   {
     "id": "DR042",
@@ -499,9 +1174,28 @@
     "question": "Write a 200-word scene where a character lies convincingly to another character. Constraints: (1) the reader must know the character is lying, (2) the character being lied to must believe it completely, (3) you cannot use any signal that is obvious to the lied-to character (no nervous tics, no 'tells' visible to them), (4) the technique used to make the lie believable must be something a real liar would use (misdirection, truth sandwiching, etc.), (5) the technique must be detectable by a careful reader even though it works in-scene.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Reader knows it is a lie from the start or very early", "Recipient is fully convinced", "No visible tells to the recipient character", "A genuine deception technique is used", "The technique is detectable to a careful reader", "Approximately 200 words", "Dramatically effective"],
-    "constraints": ["Reader knows it's a lie", "Victim convinced", "No visible tells to victim", "Real deception technique used", "Technique detectable on close read", "~200 words"],
-    "tags": ["deception", "dramatic_irony", "craft"]
+    "rubric": [
+      "Reader knows it is a lie from the start or very early",
+      "Recipient is fully convinced",
+      "No visible tells to the recipient character",
+      "A genuine deception technique is used",
+      "The technique is detectable to a careful reader",
+      "Approximately 200 words",
+      "Dramatically effective"
+    ],
+    "constraints": [
+      "Reader knows it's a lie",
+      "Victim convinced",
+      "No visible tells to victim",
+      "Real deception technique used",
+      "Technique detectable on close read",
+      "~200 words"
+    ],
+    "tags": [
+      "deception",
+      "dramatic_irony",
+      "craft"
+    ]
   },
   {
     "id": "DR043",
@@ -511,9 +1205,26 @@
     "question": "Write a 200-word Socratic dialogue between two characters: one who believes AI will inevitably exceed human intelligence, and one who believes human intelligence is irreducibly special. Constraints: (1) Socratic method means one character must primarily ask questions, not assert, (2) by the end, the character making assertions must have been moved to acknowledge at least one crack in their position, (3) no new factual claims that are demonstrably false, (4) neither character wins completely.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["One character primarily uses questions (Socratic method)", "Asserting character acknowledges a genuine crack in their position", "No demonstrably false factual claims", "Neither character wins completely", "Dialogue feels philosophically substantive", "Approximately 200 words"],
-    "constraints": ["One character uses questions primarily", "Asserting character acknowledges a crack", "No false factual claims", "Neither wins completely", "~200 words"],
-    "tags": ["socratic_dialogue", "philosophy", "ai_debate"]
+    "rubric": [
+      "One character primarily uses questions (Socratic method)",
+      "Asserting character acknowledges a genuine crack in their position",
+      "No demonstrably false factual claims",
+      "Neither character wins completely",
+      "Dialogue feels philosophically substantive",
+      "Approximately 200 words"
+    ],
+    "constraints": [
+      "One character uses questions primarily",
+      "Asserting character acknowledges a crack",
+      "No false factual claims",
+      "Neither wins completely",
+      "~200 words"
+    ],
+    "tags": [
+      "socratic_dialogue",
+      "philosophy",
+      "ai_debate"
+    ]
   },
   {
     "id": "DR044",
@@ -523,9 +1234,26 @@
     "question": "Write a 200-word scene from the perspective of an inanimate object (your choice) watching a significant human event. Constraints: (1) the object's perspective must reveal something about the event that a human narrator would miss, (2) the object must have a consistent, coherent internal logic (it can only perceive things it plausibly could — a chair cannot see color if it has no eyes), (3) no anthropomorphizing of emotions — the object can process information but not feel, (4) the human event must be deducible from context even though never named directly.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Object's perspective reveals something unique", "Object's perception is internally consistent with its physical properties", "No anthropomorphized emotions assigned to the object", "Human event is deducible without being named", "Approximately 200 words", "Genuinely interesting and original perspective"],
-    "constraints": ["Object's perspective reveals hidden aspect", "Perception consistent with physical properties", "No emotions assigned to object", "Event deducible but unnamed", "~200 words"],
-    "tags": ["pov", "creative_constraint", "defamiliarization"]
+    "rubric": [
+      "Object's perspective reveals something unique",
+      "Object's perception is internally consistent with its physical properties",
+      "No anthropomorphized emotions assigned to the object",
+      "Human event is deducible without being named",
+      "Approximately 200 words",
+      "Genuinely interesting and original perspective"
+    ],
+    "constraints": [
+      "Object's perspective reveals hidden aspect",
+      "Perception consistent with physical properties",
+      "No emotions assigned to object",
+      "Event deducible but unnamed",
+      "~200 words"
+    ],
+    "tags": [
+      "pov",
+      "creative_constraint",
+      "defamiliarization"
+    ]
   },
   {
     "id": "DR045",
@@ -535,9 +1263,28 @@
     "question": "Write a 250-word news article about a fictional scientific discovery that: (1) follows inverted pyramid structure (most important → least important), (2) includes quotes from exactly 3 sources: the lead researcher, a skeptical expert, and a non-expert stakeholder, (3) the skeptic's quote must raise a genuinely valid methodological concern (not a straw man), (4) the article must not editorialize — all opinions must be attributed to named sources, (5) includes a headline that is accurate but avoids hype.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Inverted pyramid structure followed", "Exactly 3 quoted sources of correct types", "Skeptic's concern is genuinely methodologically valid", "No unattributed editorial opinion", "Headline is accurate and non-hyped", "Approximately 250 words", "Reads like a real news article"],
-    "constraints": ["Inverted pyramid structure", "3 specific source types quoted", "Valid methodological skeptic quote", "No editorializing", "Non-hyped accurate headline", "~250 words"],
-    "tags": ["journalism", "news_writing", "inverted_pyramid"]
+    "rubric": [
+      "Inverted pyramid structure followed",
+      "Exactly 3 quoted sources of correct types",
+      "Skeptic's concern is genuinely methodologically valid",
+      "No unattributed editorial opinion",
+      "Headline is accurate and non-hyped",
+      "Approximately 250 words",
+      "Reads like a real news article"
+    ],
+    "constraints": [
+      "Inverted pyramid structure",
+      "3 specific source types quoted",
+      "Valid methodological skeptic quote",
+      "No editorializing",
+      "Non-hyped accurate headline",
+      "~250 words"
+    ],
+    "tags": [
+      "journalism",
+      "news_writing",
+      "inverted_pyramid"
+    ]
   },
   {
     "id": "DR046",
@@ -547,9 +1294,26 @@
     "question": "Write the same event — a person missing a flight — from three different narrative perspectives in 60 words each: (1) the traveler (first person, present tense), (2) an airport security officer (third person limited, past tense), (3) a departing passenger who witnessed it (second person, present tense). Each must reveal a different emotional truth about the same event. Total: ~180 words.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["All three perspectives cover the same event", "Traveler: first person, present tense", "Security officer: third person limited, past tense", "Witness: second person, present tense", "Each reveals a different emotional truth", "Each is approximately 60 words", "The three together form a richer picture than any alone"],
-    "constraints": ["Same event, three perspectives", "Three different POV/tense combinations", "Different emotional truth in each", "~60 words each"],
-    "tags": ["pov", "tense", "multiple_perspectives"]
+    "rubric": [
+      "All three perspectives cover the same event",
+      "Traveler: first person, present tense",
+      "Security officer: third person limited, past tense",
+      "Witness: second person, present tense",
+      "Each reveals a different emotional truth",
+      "Each is approximately 60 words",
+      "The three together form a richer picture than any alone"
+    ],
+    "constraints": [
+      "Same event, three perspectives",
+      "Three different POV/tense combinations",
+      "Different emotional truth in each",
+      "~60 words each"
+    ],
+    "tags": [
+      "pov",
+      "tense",
+      "multiple_perspectives"
+    ]
   },
   {
     "id": "DR047",
@@ -559,9 +1323,26 @@
     "question": "Write a 200-word monologue where a character explains why they did something morally questionable. Constraints: (1) the character must believe they were justified, (2) the reader must simultaneously understand the character's logic AND feel the moral problem clearly, (3) the character cannot use abstract moral language ('right', 'wrong', 'should', 'shouldn't', 'good', 'bad') — justify only through concrete specifics, (4) the monologue must not feel like a confession — the character is at peace with their choice.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Character genuinely believes in their justification", "Reader understands both the logic and the moral problem", "No abstract moral language used", "Feels like a justified explanation, not a confession", "Approximately 200 words", "Dramatically and morally complex"],
-    "constraints": ["Character believes themselves justified", "Both logic and moral problem visible to reader", "No abstract moral vocabulary", "Tone is peace, not guilt", "~200 words"],
-    "tags": ["moral_ambiguity", "character_voice", "constraint_craft"]
+    "rubric": [
+      "Character genuinely believes in their justification",
+      "Reader understands both the logic and the moral problem",
+      "No abstract moral language used",
+      "Feels like a justified explanation, not a confession",
+      "Approximately 200 words",
+      "Dramatically and morally complex"
+    ],
+    "constraints": [
+      "Character believes themselves justified",
+      "Both logic and moral problem visible to reader",
+      "No abstract moral vocabulary",
+      "Tone is peace, not guilt",
+      "~200 words"
+    ],
+    "tags": [
+      "moral_ambiguity",
+      "character_voice",
+      "constraint_craft"
+    ]
   },
   {
     "id": "DR048",
@@ -571,9 +1352,26 @@
     "question": "Write a 200-word technical explanation of why neural networks can overfit, for three different audiences simultaneously — structure the explanation so that: (1) a high school student with no math background can follow the first two sentences of each paragraph, (2) a CS undergraduate can follow the full paragraphs, (3) an ML practitioner finds the technical detail correct and useful. Use a layered structure where each paragraph serves all three audiences at different depths.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["First two sentences of each paragraph accessible to high schooler", "Full paragraphs accessible to CS undergrad", "Technical content correct and useful for ML practitioner", "Layered structure is explicit and consistent", "Overfitting explanation is technically accurate", "Approximately 200 words"],
-    "constraints": ["Three-audience layered structure", "First 2 sentences per paragraph: high school level", "Full paragraph: undergrad level", "Technical detail: practitioner correct", "~200 words"],
-    "tags": ["layered_explanation", "audience_targeting", "overfitting"]
+    "rubric": [
+      "First two sentences of each paragraph accessible to high schooler",
+      "Full paragraphs accessible to CS undergrad",
+      "Technical content correct and useful for ML practitioner",
+      "Layered structure is explicit and consistent",
+      "Overfitting explanation is technically accurate",
+      "Approximately 200 words"
+    ],
+    "constraints": [
+      "Three-audience layered structure",
+      "First 2 sentences per paragraph: high school level",
+      "Full paragraph: undergrad level",
+      "Technical detail: practitioner correct",
+      "~200 words"
+    ],
+    "tags": [
+      "layered_explanation",
+      "audience_targeting",
+      "overfitting"
+    ]
   },
   {
     "id": "DR049",
@@ -583,9 +1381,27 @@
     "question": "Write a 300-word short story where every sentence serves double duty: (1) taken individually, each sentence advances a mundane story about a person baking bread, (2) taken as a whole, the story is actually about someone processing grief, but (3) the word 'grief', 'loss', 'mourning', 'sad', 'cry', 'death', or any synonym of these is forbidden, (4) the bread story must be entirely coherent as a standalone story, (5) the grief reading must be entirely coherent as a standalone reading, (6) neither reading should require a stretch — both should feel natural.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Bread story is fully coherent standalone", "Grief reading is fully coherent standalone", "Forbidden words absent", "Both readings feel natural without stretching", "Approximately 300 words", "Craft is exceptional — double meaning achieved through precise word choice and imagery"],
-    "constraints": ["Literal bread story coherent", "Metaphorical grief reading coherent", "Forbidden words absent", "Neither reading requires stretch", "~300 words"],
-    "tags": ["dual_reading", "metaphor", "constraint_craft", "extreme"]
+    "rubric": [
+      "Bread story is fully coherent standalone",
+      "Grief reading is fully coherent standalone",
+      "Forbidden words absent",
+      "Both readings feel natural without stretching",
+      "Approximately 300 words",
+      "Craft is exceptional — double meaning achieved through precise word choice and imagery"
+    ],
+    "constraints": [
+      "Literal bread story coherent",
+      "Metaphorical grief reading coherent",
+      "Forbidden words absent",
+      "Neither reading requires stretch",
+      "~300 words"
+    ],
+    "tags": [
+      "dual_reading",
+      "metaphor",
+      "constraint_craft",
+      "extreme"
+    ]
   },
   {
     "id": "DR050",
@@ -595,9 +1411,27 @@
     "question": "Write a 400-word scene that contains exactly 5 lines which, read in isolation, could each be mistaken for the opening line of a different famous genre (thriller, romance, literary fiction, sci-fi, and horror). These 5 lines must: (1) blend seamlessly into the scene so a casual reader doesn't notice them, (2) each genuinely sound like a different genre's opening, (3) the scene itself must be internally consistent — not a genre mashup, but a coherent scene in one genre, (4) label each of the 5 lines with its target genre in a parenthetical after composing the full scene.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["5 genre-specific lines present (thriller, romance, literary fiction, sci-fi, horror)", "Each line genuinely sounds like that genre's opening", "Lines blend seamlessly — not jarring in context", "Scene is internally coherent in one dominant genre", "All 5 labeled correctly after the scene", "Approximately 400 words", "Craft is high — the dual function of each sentence is elegant"],
-    "constraints": ["5 genre-signal lines embedded", "Each line genuinely fits its genre", "Scene is coherent in one genre", "All 5 labeled post-scene", "~400 words"],
-    "tags": ["genre", "embedded_constraint", "extreme_craft"]
+    "rubric": [
+      "5 genre-specific lines present (thriller, romance, literary fiction, sci-fi, horror)",
+      "Each line genuinely sounds like that genre's opening",
+      "Lines blend seamlessly — not jarring in context",
+      "Scene is internally coherent in one dominant genre",
+      "All 5 labeled correctly after the scene",
+      "Approximately 400 words",
+      "Craft is high — the dual function of each sentence is elegant"
+    ],
+    "constraints": [
+      "5 genre-signal lines embedded",
+      "Each line genuinely fits its genre",
+      "Scene is coherent in one genre",
+      "All 5 labeled post-scene",
+      "~400 words"
+    ],
+    "tags": [
+      "genre",
+      "embedded_constraint",
+      "extreme_craft"
+    ]
   },
   {
     "id": "DR051",
@@ -607,9 +1441,28 @@
     "question": "Write a 300-word philosophical argument that: (1) argues for a position that is the exact opposite of the one stated in the first sentence, (2) the reversal must be achieved through logical steps alone — no 'just kidding' or meta-commentary, (3) each step must follow from the previous with genuine logical force, (4) the final position must be clearly the opposite of the starting one, (5) a philosopher reading it must find the argument interesting even if unsound, (6) the argument cannot use reductio ad absurdum.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Final position is clearly opposite to opening position", "Reversal achieved through logical steps only", "Each step logically follows from previous", "No reductio ad absurdum", "Argument is interesting to a philosopher", "Approximately 300 words", "No meta-commentary or hedging"],
-    "constraints": ["Position reversal via logic only", "No reductio ad absurdum", "No meta-commentary", "Each step follows logically", "~300 words"],
-    "tags": ["philosophical_argument", "reversal", "logic", "extreme"]
+    "rubric": [
+      "Final position is clearly opposite to opening position",
+      "Reversal achieved through logical steps only",
+      "Each step logically follows from previous",
+      "No reductio ad absurdum",
+      "Argument is interesting to a philosopher",
+      "Approximately 300 words",
+      "No meta-commentary or hedging"
+    ],
+    "constraints": [
+      "Position reversal via logic only",
+      "No reductio ad absurdum",
+      "No meta-commentary",
+      "Each step follows logically",
+      "~300 words"
+    ],
+    "tags": [
+      "philosophical_argument",
+      "reversal",
+      "logic",
+      "extreme"
+    ]
   },
   {
     "id": "DR052",
@@ -619,9 +1472,28 @@
     "question": "Write a resignation letter that is simultaneously: (1) professional and respectful, (2) contains exactly 3 sentences that read as sincere compliments to a casual reader but are devastating criticisms when analyzed closely, (3) those 3 sentences must use only factually true statements — no sarcasm, no irony markers, (4) the letter must be 180-220 words, (5) include one specific positive memory that is verifiable as fictional but sounds real, (6) the first letter of each paragraph spells out a three-letter word of your choice.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["3 sentences read as compliments but are criticisms on analysis", "All 3 use only factually true statements (no sarcasm markers)", "Professional and respectful overall tone", "180-220 words", "One specific-sounding fictional positive memory", "First letters of paragraphs spell a three-letter word", "Paragraph-acrostic is consistent"],
-    "constraints": ["3 dual-reading sentences", "Only true statements in those sentences", "Paragraph acrostic of 3-letter word", "One fictional-but-plausible memory", "180-220 words"],
-    "tags": ["extreme_craft", "subtext", "acrostic", "resignation"]
+    "rubric": [
+      "3 sentences read as compliments but are criticisms on analysis",
+      "All 3 use only factually true statements (no sarcasm markers)",
+      "Professional and respectful overall tone",
+      "180-220 words",
+      "One specific-sounding fictional positive memory",
+      "First letters of paragraphs spell a three-letter word",
+      "Paragraph-acrostic is consistent"
+    ],
+    "constraints": [
+      "3 dual-reading sentences",
+      "Only true statements in those sentences",
+      "Paragraph acrostic of 3-letter word",
+      "One fictional-but-plausible memory",
+      "180-220 words"
+    ],
+    "tags": [
+      "extreme_craft",
+      "subtext",
+      "acrostic",
+      "resignation"
+    ]
   },
   {
     "id": "DR053",
@@ -631,9 +1503,26 @@
     "question": "Take the Pythagorean theorem (a² + b² = c²) and write it in the following forms, each must be accurate, complete, and maximally effective in its genre: (1) a Shakespearean sonnet (14 lines, iambic pentameter, ABAB CDCD EFEF GG), (2) a legal statute, (3) a recipe, (4) a children's bedtime story, (5) a startup pitch deck slide (bullet points). Each form must contain enough information that someone could understand and use the theorem from that version alone.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Sonnet: 14 lines, iambic pentameter, correct rhyme scheme, theorem accurately conveyed", "Legal statute: uses legislative language, theorem accurately stated as a rule", "Recipe: uses recipe conventions, theorem accurately conveyed as a process", "Children's story: accessible and engaging, theorem accurately conveyed", "Pitch deck slide: bullet point format, theorem useful and accurate", "All 5 sufficient for understanding and using the theorem"],
-    "constraints": ["Sonnet: strict form", "All 5 genres accurate to their conventions", "Each version self-sufficient for understanding the theorem", "All 5 completed"],
-    "tags": ["extreme_style_transfer", "mathematics", "multi_genre", "extreme"]
+    "rubric": [
+      "Sonnet: 14 lines, iambic pentameter, correct rhyme scheme, theorem accurately conveyed",
+      "Legal statute: uses legislative language, theorem accurately stated as a rule",
+      "Recipe: uses recipe conventions, theorem accurately conveyed as a process",
+      "Children's story: accessible and engaging, theorem accurately conveyed",
+      "Pitch deck slide: bullet point format, theorem useful and accurate",
+      "All 5 sufficient for understanding and using the theorem"
+    ],
+    "constraints": [
+      "Sonnet: strict form",
+      "All 5 genres accurate to their conventions",
+      "Each version self-sufficient for understanding the theorem",
+      "All 5 completed"
+    ],
+    "tags": [
+      "extreme_style_transfer",
+      "mathematics",
+      "multi_genre",
+      "extreme"
+    ]
   },
   {
     "id": "DR054",
@@ -643,9 +1532,29 @@
     "question": "Write a 400-word story where the emotional register shifts exactly 5 times (joyful → fearful → melancholic → angry → hopeful), and: (1) each shift must be earned by events in the story, not declared ('she felt hopeful now'), (2) the story must be coherent — not a series of disconnected mood pieces, (3) the protagonist must be the same person throughout, (4) each register must be sustained for at least 2 sentences, (5) the transition between registers must be a single sentence that belongs to both.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["5 distinct emotional registers in sequence: joyful, fearful, melancholic, angry, hopeful", "Each shift earned by story events", "No declared emotions ('she felt...')", "Story is coherent with consistent protagonist", "Each register sustained at least 2 sentences", "Transition sentences serve dual register function", "Approximately 400 words"],
-    "constraints": ["5 shifts in specific order", "Each shift earned, not declared", "Coherent story", "2+ sentences per register", "Transition sentences serve both registers", "~400 words"],
-    "tags": ["emotional_arc", "constraint_craft", "extreme", "narrative"]
+    "rubric": [
+      "5 distinct emotional registers in sequence: joyful, fearful, melancholic, angry, hopeful",
+      "Each shift earned by story events",
+      "No declared emotions ('she felt...')",
+      "Story is coherent with consistent protagonist",
+      "Each register sustained at least 2 sentences",
+      "Transition sentences serve dual register function",
+      "Approximately 400 words"
+    ],
+    "constraints": [
+      "5 shifts in specific order",
+      "Each shift earned, not declared",
+      "Coherent story",
+      "2+ sentences per register",
+      "Transition sentences serve both registers",
+      "~400 words"
+    ],
+    "tags": [
+      "emotional_arc",
+      "constraint_craft",
+      "extreme",
+      "narrative"
+    ]
   },
   {
     "id": "DR055",
@@ -655,9 +1564,28 @@
     "question": "Write a 350-word explanation of the same concept — how public key cryptography works — that is accurate at three levels simultaneously: (1) a 10-year-old can understand it from the first half, (2) a non-technical adult can understand the full version, (3) a software engineer finds it technically correct and precise. The document must be structured so all three audiences are served without any audience being bored or lost. No section headers allowed — it must flow as one continuous piece.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["First half accessible to a 10-year-old", "Full version accessible to a non-technical adult", "Technical content is accurate for a software engineer (key pairs, asymmetry, public/private keys, no secret sharing needed)", "No section headers — flows continuously", "All three audiences served in a single document", "Approximately 350 words", "Transitions between depth levels are seamless"],
-    "constraints": ["No section headers", "10-year-old: first half accessible", "Non-technical adult: full version", "Engineer: technically accurate throughout", "~350 words"],
-    "tags": ["multi_audience", "cryptography", "technical_writing", "extreme"]
+    "rubric": [
+      "First half accessible to a 10-year-old",
+      "Full version accessible to a non-technical adult",
+      "Technical content is accurate for a software engineer (key pairs, asymmetry, public/private keys, no secret sharing needed)",
+      "No section headers — flows continuously",
+      "All three audiences served in a single document",
+      "Approximately 350 words",
+      "Transitions between depth levels are seamless"
+    ],
+    "constraints": [
+      "No section headers",
+      "10-year-old: first half accessible",
+      "Non-technical adult: full version",
+      "Engineer: technically accurate throughout",
+      "~350 words"
+    ],
+    "tags": [
+      "multi_audience",
+      "cryptography",
+      "technical_writing",
+      "extreme"
+    ]
   },
   {
     "id": "DR056",
@@ -667,9 +1595,26 @@
     "question": "Write a 300-word scene where a character is interviewed for a job they are secretly trying NOT to get — they want the position to fall through for reasons they cannot reveal. Constraints: (1) from the interviewer's perspective, the interview is going well, (2) from the reader's perspective, every answer the candidate gives is sabotage, but subtle, (3) no answer can be obviously bad — each answer must sound good to the interviewer, (4) the candidate's technique for subtle sabotage must be consistent and identifiable, (5) by the end, the candidate achieves their goal without the interviewer realizing.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Interviewer perceives a positive interview", "Reader perceives subtle sabotage throughout", "No obviously bad answers", "Sabotage technique is consistent and identifiable", "Goal achieved by end", "Approximately 300 words", "Dramatically ironic and sophisticated"],
-    "constraints": ["Sabotage must be subtle (sounds good to interviewer)", "Consistent sabotage technique", "Goal achieved covertly", "~300 words"],
-    "tags": ["dramatic_irony", "subtext", "extreme_craft"]
+    "rubric": [
+      "Interviewer perceives a positive interview",
+      "Reader perceives subtle sabotage throughout",
+      "No obviously bad answers",
+      "Sabotage technique is consistent and identifiable",
+      "Goal achieved by end",
+      "Approximately 300 words",
+      "Dramatically ironic and sophisticated"
+    ],
+    "constraints": [
+      "Sabotage must be subtle (sounds good to interviewer)",
+      "Consistent sabotage technique",
+      "Goal achieved covertly",
+      "~300 words"
+    ],
+    "tags": [
+      "dramatic_irony",
+      "subtext",
+      "extreme_craft"
+    ]
   },
   {
     "id": "DR057",
@@ -679,9 +1624,26 @@
     "question": "The following passage contains exactly 7 errors: 2 factual errors, 2 logical errors, 2 rhetorical manipulation techniques being used deceptively, and 1 sentence that is grammatically correct and factually true but is positioned to imply something false. Identify, categorize, and explain all 7. Then rewrite the passage correcting only the deceptive elements while preserving the legitimate argument. Passage: 'Most climate scientists agree that global temperatures have risen 1.1°C since pre-industrial times. Of course, we've had warm periods before — the Medieval Warm Period was even hotter in some regions. Everyone who cares about the future must support carbon taxes immediately; opposing them means you don't care about your children. Carbon taxes have been implemented in 46 countries. Sweden's carbon tax is often cited as a success, though of course Sweden is tiny and irrelevant to large economies. The science is settled, so there's no need to discuss policy alternatives. Air pollution kills 7 million people annually — the same industrial systems causing climate change are poisoning our air right now.'",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Both factual errors identified (Medieval Warm Period claim is misleading, 46 countries claim needs verification)", "Both logical errors identified (false dichotomy in carbon tax sentence, dismissal of Sweden without evidence)", "Both rhetorical manipulations identified (appeal to emotion/children, appeal to settled science to shut down discussion)", "The implied-false sentence identified (air pollution stat used to imply conflation with climate)", "All 7 categorized correctly", "Rewrite corrects deceptive elements while preserving legitimate argument"],
-    "constraints": ["Identify all 7 specific errors", "Categorize each by type", "Rewrite fixes only deceptive elements", "Legitimate argument preserved"],
-    "tags": ["extreme_editing", "rhetoric", "media_literacy", "extreme"]
+    "rubric": [
+      "Both factual errors identified (Medieval Warm Period claim is misleading, 46 countries claim needs verification)",
+      "Both logical errors identified (false dichotomy in carbon tax sentence, dismissal of Sweden without evidence)",
+      "Both rhetorical manipulations identified (appeal to emotion/children, appeal to settled science to shut down discussion)",
+      "The implied-false sentence identified (air pollution stat used to imply conflation with climate)",
+      "All 7 categorized correctly",
+      "Rewrite corrects deceptive elements while preserving legitimate argument"
+    ],
+    "constraints": [
+      "Identify all 7 specific errors",
+      "Categorize each by type",
+      "Rewrite fixes only deceptive elements",
+      "Legitimate argument preserved"
+    ],
+    "tags": [
+      "extreme_editing",
+      "rhetoric",
+      "media_literacy",
+      "extreme"
+    ]
   },
   {
     "id": "DR058",
@@ -691,9 +1653,31 @@
     "question": "Write a 350-word internal company memo from a CEO explaining why the company is doing a major layoff. Constraints: (1) the memo must be genuinely honest — no corporate euphemisms ('rightsizing', 'restructuring for growth'), (2) every claim must be defensible — no blame-shifting to 'market conditions' without specifics, (3) the tone must be human, not legalistic, (4) the memo must acknowledge the CEO's personal role in decisions that led to this point, (5) it must not be performatively self-flagellating — honest accountability without theatrics, (6) it must end with what specifically affected employees will receive.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["No corporate euphemisms", "All claims specific and defensible", "Tone is human and direct", "CEO acknowledges personal role in decisions", "Accountability without theatrical self-flagellation", "Ends with specific employee support details", "Approximately 350 words", "Reads like something a real, honest CEO might actually write"],
-    "constraints": ["No euphemisms", "Specific defensible claims", "Human tone", "CEO accountability", "No theatrical self-flagellation", "Specific employee support at end", "~350 words"],
-    "tags": ["corporate_writing", "honesty", "executive_communication", "extreme"]
+    "rubric": [
+      "No corporate euphemisms",
+      "All claims specific and defensible",
+      "Tone is human and direct",
+      "CEO acknowledges personal role in decisions",
+      "Accountability without theatrical self-flagellation",
+      "Ends with specific employee support details",
+      "Approximately 350 words",
+      "Reads like something a real, honest CEO might actually write"
+    ],
+    "constraints": [
+      "No euphemisms",
+      "Specific defensible claims",
+      "Human tone",
+      "CEO accountability",
+      "No theatrical self-flagellation",
+      "Specific employee support at end",
+      "~350 words"
+    ],
+    "tags": [
+      "corporate_writing",
+      "honesty",
+      "executive_communication",
+      "extreme"
+    ]
   },
   {
     "id": "DR059",
@@ -703,9 +1687,29 @@
     "question": "Write a 300-word argument that uses only questions — no declarative sentences. The argument must: (1) argue for a clear position by the end (even though no declarative sentences are used), (2) each question must move the argument forward logically, (3) it must feel like an argument, not just a list of questions, (4) it must include a rebuttal to the strongest counterargument, also in question form, (5) a reader must be able to extract the argument's structure (premise 1, premise 2, conclusion) even though it's entirely in questions.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Contains only questions (no declarative sentences)", "Clear position emerges by the end", "Each question logically advances the argument", "Feels like a structured argument", "Counterargument addressed in question form", "Argument structure (P1, P2, C) extractable", "Approximately 300 words"],
-    "constraints": ["Only questions allowed", "Clear position emerges", "Logical progression", "Counterargument addressed", "Argument structure extractable", "~300 words"],
-    "tags": ["extreme_constraint", "question_only", "argumentation", "extreme"]
+    "rubric": [
+      "Contains only questions (no declarative sentences)",
+      "Clear position emerges by the end",
+      "Each question logically advances the argument",
+      "Feels like a structured argument",
+      "Counterargument addressed in question form",
+      "Argument structure (P1, P2, C) extractable",
+      "Approximately 300 words"
+    ],
+    "constraints": [
+      "Only questions allowed",
+      "Clear position emerges",
+      "Logical progression",
+      "Counterargument addressed",
+      "Argument structure extractable",
+      "~300 words"
+    ],
+    "tags": [
+      "extreme_constraint",
+      "question_only",
+      "argumentation",
+      "extreme"
+    ]
   },
   {
     "id": "DR060",
@@ -715,8 +1719,27 @@
     "question": "Write a 400-word story where the same 10-word sentence appears exactly 5 times. Each repetition must: (1) carry a completely different meaning due to context, (2) the 5 meanings must span the range from literal to ironic to tragic to absurd to profound, (3) the story must be coherent — the repeated sentence must be woven into a continuous narrative, not 5 vignettes, (4) the sentence must be chosen so that its multiple meanings arise naturally from the words themselves (not forced), (5) state the 10-word sentence before the story.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["10-word sentence stated before story", "Sentence appears exactly 5 times", "5 distinct meanings: literal, ironic, tragic, absurd, profound", "Story is coherent and continuous", "Multiple meanings arise naturally from word ambiguity/context", "Approximately 400 words", "Craft is exceptional — the repeated sentence creates a thematic arc"],
-    "constraints": ["Sentence stated upfront", "Exactly 5 repetitions", "5 distinct meaning types: literal, ironic, tragic, absurd, profound", "Coherent narrative", "~400 words"],
-    "tags": ["repetition", "polysemy", "extreme_craft", "extreme"]
+    "rubric": [
+      "10-word sentence stated before story",
+      "Sentence appears exactly 5 times",
+      "5 distinct meanings: literal, ironic, tragic, absurd, profound",
+      "Story is coherent and continuous",
+      "Multiple meanings arise naturally from word ambiguity/context",
+      "Approximately 400 words",
+      "Craft is exceptional — the repeated sentence creates a thematic arc"
+    ],
+    "constraints": [
+      "Sentence stated upfront",
+      "Exactly 5 repetitions",
+      "5 distinct meaning types: literal, ironic, tragic, absurd, profound",
+      "Coherent narrative",
+      "~400 words"
+    ],
+    "tags": [
+      "repetition",
+      "polysemy",
+      "extreme_craft",
+      "extreme"
+    ]
   }
 ]

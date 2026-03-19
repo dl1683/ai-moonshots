@@ -3,37 +3,67 @@
     "id": "CT001",
     "category": "code_algorithmic",
     "subcategory": "algorithm_design",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "You need to find if a sorted array contains any duplicate elements. You write a loop that checks every pair of adjacent elements. A colleague suggests 'just use a hash set'. Who is right, and why? Consider time and space complexity in your answer.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Correctly identifies that adjacent-pair check works because array is sorted", "States O(n) time and O(1) space for adjacent check", "States O(n) time and O(n) space for hash set approach", "Concludes adjacent check is better for this specific case due to sorted property", "Explains that hash set approach is better for unsorted arrays"],
+    "rubric": [
+      "Correctly identifies that adjacent-pair check works because array is sorted",
+      "States O(n) time and O(1) space for adjacent check",
+      "States O(n) time and O(n) space for hash set approach",
+      "Concludes adjacent check is better for this specific case due to sorted property",
+      "Explains that hash set approach is better for unsorted arrays"
+    ],
     "constraints": [],
-    "tags": ["arrays", "sorting", "complexity", "tradeoffs"]
+    "tags": [
+      "arrays",
+      "sorting",
+      "complexity",
+      "tradeoffs"
+    ]
   },
   {
     "id": "CT002",
     "category": "code_algorithmic",
     "subcategory": "debugging_reasoning",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "A function to reverse a string returns the original string unchanged. The function uses a while loop with indices `left = 0` and `right = len(s) - 1`, swapping characters and incrementing left / decrementing right. The string is declared as a Python str. What is the bug and why does it occur?",
     "scoring": "rubric",
     "expected_answer": "Python strings are immutable. Swapping characters in a string via index assignment will raise a TypeError, or if the code uses list conversion but forgets to convert back, returns the original. The fix is to convert to a list first, perform swaps, then join.",
-    "rubric": ["Identifies Python string immutability as the root cause", "Explains that index assignment on str raises TypeError or is silently incorrect", "Proposes correct fix: convert to list, swap, join"],
+    "rubric": [
+      "Identifies Python string immutability as the root cause",
+      "Explains that index assignment on str raises TypeError or is silently incorrect",
+      "Proposes correct fix: convert to list, swap, join"
+    ],
     "constraints": [],
-    "tags": ["python", "strings", "immutability", "debugging"]
+    "tags": [
+      "python",
+      "strings",
+      "immutability",
+      "debugging"
+    ]
   },
   {
     "id": "CT003",
     "category": "code_algorithmic",
     "subcategory": "complexity_analysis",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "What is the time complexity of the following operation: given a sorted array of n integers, find all pairs that sum to a target value T. Describe the naive approach and the optimal approach, and explain what makes the optimal approach better.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Naive: O(n²) by checking all pairs", "Optimal: O(n) using two pointers from both ends", "Correctly explains two-pointer advancement logic", "Correctly identifies why it works only on a sorted array", "States that binary search per element gives O(n log n)"],
+    "rubric": [
+      "Naive: O(n²) by checking all pairs",
+      "Optimal: O(n) using two pointers from both ends",
+      "Correctly explains two-pointer advancement logic",
+      "Correctly identifies why it works only on a sorted array",
+      "States that binary search per element gives O(n log n)"
+    ],
     "constraints": [],
-    "tags": ["two_pointers", "sorted_arrays", "complexity"]
+    "tags": [
+      "two_pointers",
+      "sorted_arrays",
+      "complexity"
+    ]
   },
   {
     "id": "CT004",
@@ -43,33 +73,61 @@
     "question": "You have a stack of pancakes of different sizes. You can only flip a prefix (top k pancakes) at a time. Describe an algorithm to sort them from largest (bottom) to smallest (top). How many flips does your algorithm use in the worst case?",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Describes pancake sort: find max in unsorted portion, flip to top, flip to correct position", "Correctly states 2(n-1) flips for n pancakes in worst case", "Algorithm is clearly described", "Understands the prefix-flip constraint"],
+    "rubric": [
+      "Describes pancake sort: find max in unsorted portion, flip to top, flip to correct position",
+      "Correctly states 2(n-1) flips for n pancakes in worst case",
+      "Algorithm is clearly described",
+      "Understands the prefix-flip constraint"
+    ],
     "constraints": [],
-    "tags": ["pancake_sort", "algorithm_design", "flips"]
+    "tags": [
+      "pancake_sort",
+      "algorithm_design",
+      "flips"
+    ]
   },
   {
     "id": "CT005",
     "category": "code_algorithmic",
     "subcategory": "optimization",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "A function computes Fibonacci numbers recursively without memoization. For fib(50), it is extremely slow. Explain precisely why it is slow (not just 'it repeats work'), and describe two different approaches to fix it, with the time complexity of each fix.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Explains exponential branching: fib(n) calls fib(n-1) and fib(n-2), both of which recurse, creating O(2^n) calls", "Fix 1: top-down memoization — cache results, O(n) time O(n) space", "Fix 2: bottom-up DP — iterative, O(n) time O(n) or O(1) space with rolling variables", "States that rolling variables version achieves O(1) space"],
+    "rubric": [
+      "Explains exponential branching: fib(n) calls fib(n-1) and fib(n-2), both of which recurse, creating O(2^n) calls",
+      "Fix 1: top-down memoization — cache results, O(n) time O(n) space",
+      "Fix 2: bottom-up DP — iterative, O(n) time O(n) or O(1) space with rolling variables",
+      "States that rolling variables version achieves O(1) space"
+    ],
     "constraints": [],
-    "tags": ["fibonacci", "memoization", "dynamic_programming", "recursion"]
+    "tags": [
+      "fibonacci",
+      "memoization",
+      "dynamic_programming",
+      "recursion"
+    ]
   },
   {
     "id": "CT006",
     "category": "code_algorithmic",
     "subcategory": "system_design",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "You need to design a simple URL shortener (like bit.ly). Describe: (1) the data you need to store, (2) how you generate the short code, (3) how redirection works, (4) one thing that could go wrong at scale and how you'd address it.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Data: mapping from short code to long URL, optionally metadata (created_at, clicks)", "Short code generation: hash of URL, random string, or auto-increment encoded in base62", "Redirection: lookup short code, return 301/302 to long URL", "Scale issue: at least one valid concern (hash collisions, database bottleneck, hot keys) with reasonable solution"],
+    "rubric": [
+      "Data: mapping from short code to long URL, optionally metadata (created_at, clicks)",
+      "Short code generation: hash of URL, random string, or auto-increment encoded in base62",
+      "Redirection: lookup short code, return 301/302 to long URL",
+      "Scale issue: at least one valid concern (hash collisions, database bottleneck, hot keys) with reasonable solution"
+    ],
     "constraints": [],
-    "tags": ["system_design", "url_shortener", "hashing"]
+    "tags": [
+      "system_design",
+      "url_shortener",
+      "hashing"
+    ]
   },
   {
     "id": "CT007",
@@ -79,9 +137,18 @@
     "question": "A binary search implementation returns -1 (not found) for elements that are clearly in the sorted array. The code uses `while left < right` (not `<=`) and the midpoint is `mid = (left + right) // 2`. What is the bug?",
     "scoring": "rubric",
     "expected_answer": "The loop condition `left < right` exits when left == right, potentially skipping the final element that would be checked. The correct condition is `left <= right`. The element at the single remaining index is never examined when left equals right.",
-    "rubric": ["Identifies that `left < right` exits one iteration too early", "Explains that the element at position left==right is never checked", "States the fix: change to `left <= right`", "Notes that this is a classic off-by-one error"],
+    "rubric": [
+      "Identifies that `left < right` exits one iteration too early",
+      "Explains that the element at position left==right is never checked",
+      "States the fix: change to `left <= right`",
+      "Notes that this is a classic off-by-one error"
+    ],
     "constraints": [],
-    "tags": ["binary_search", "off_by_one", "debugging"]
+    "tags": [
+      "binary_search",
+      "off_by_one",
+      "debugging"
+    ]
   },
   {
     "id": "CT008",
@@ -91,9 +158,19 @@
     "question": "You want to check if two strings are anagrams of each other (contain the same characters in any order). Describe three different approaches with different time/space complexity characteristics, and explain which you'd choose in practice and why.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Approach 1: Sort both strings, compare — O(n log n) time, O(n) or O(1) space", "Approach 2: Character frequency count (hash map) — O(n) time, O(k) space where k = alphabet size", "Approach 3: Fixed-size array for ASCII/Unicode chars — O(n) time, O(1) space for bounded alphabet", "Practical choice justified (frequency array or hash map typically best)"],
+    "rubric": [
+      "Approach 1: Sort both strings, compare — O(n log n) time, O(n) or O(1) space",
+      "Approach 2: Character frequency count (hash map) — O(n) time, O(k) space where k = alphabet size",
+      "Approach 3: Fixed-size array for ASCII/Unicode chars — O(n) time, O(1) space for bounded alphabet",
+      "Practical choice justified (frequency array or hash map typically best)"
+    ],
     "constraints": [],
-    "tags": ["anagram", "sorting", "hashing", "tradeoffs"]
+    "tags": [
+      "anagram",
+      "sorting",
+      "hashing",
+      "tradeoffs"
+    ]
   },
   {
     "id": "CT009",
@@ -103,9 +180,19 @@
     "question": "A developer claims their algorithm is O(n log n) but a colleague says it's actually O(n²) for worst-case inputs. The algorithm is quicksort. Who is right? Under what conditions is each correct?",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Both are correct depending on context", "O(n log n): average case with random pivots, or with median-of-three pivot selection", "O(n²): worst case with always picking min or max as pivot (already sorted/reverse sorted arrays)", "Explains that randomized pivot or median-of-medians achieves O(n log n) worst case"],
+    "rubric": [
+      "Both are correct depending on context",
+      "O(n log n): average case with random pivots, or with median-of-three pivot selection",
+      "O(n²): worst case with always picking min or max as pivot (already sorted/reverse sorted arrays)",
+      "Explains that randomized pivot or median-of-medians achieves O(n log n) worst case"
+    ],
     "constraints": [],
-    "tags": ["quicksort", "worst_case", "average_case", "pivots"]
+    "tags": [
+      "quicksort",
+      "worst_case",
+      "average_case",
+      "pivots"
+    ]
   },
   {
     "id": "CT010",
@@ -115,45 +202,86 @@
     "question": "A web server handles 1000 requests per second. Each request makes 3 database queries that each take 50ms. The server is single-threaded. What is the maximum requests per second it can handle, and what is the most impactful single change you could make to improve throughput?",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["3 queries × 50ms = 150ms per request", "Single-threaded: max 1000ms / 150ms ≈ 6.7 requests per second", "Most impactful change: async I/O or concurrency to parallelize waiting on DB queries (not more CPUs, since bottleneck is I/O wait)", "Could also mention query batching, caching, or connection pooling as valid alternatives"],
+    "rubric": [
+      "3 queries × 50ms = 150ms per request",
+      "Single-threaded: max 1000ms / 150ms ≈ 6.7 requests per second",
+      "Most impactful change: async I/O or concurrency to parallelize waiting on DB queries (not more CPUs, since bottleneck is I/O wait)",
+      "Could also mention query batching, caching, or connection pooling as valid alternatives"
+    ],
     "constraints": [],
-    "tags": ["concurrency", "throughput", "io_bound", "optimization"]
+    "tags": [
+      "concurrency",
+      "throughput",
+      "io_bound",
+      "optimization"
+    ]
   },
   {
     "id": "CT011",
     "category": "code_algorithmic",
     "subcategory": "algorithm_design",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "You have a function that finds the shortest path in a weighted graph. It works for small graphs but crashes on graphs with 10,000+ nodes. It uses an adjacency matrix and Dijkstra's algorithm. Without seeing the code, list the 3 most likely causes of the crash in order of probability, explain your reasoning for the ordering, and propose a fix for each.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Cause 1 (most likely): O(n²) adjacency matrix memory — 10,000² integers = 800MB+, causes OOM. Fix: use adjacency list", "Cause 2: O(n²) Dijkstra without priority queue — too slow, timeout or stack overflow. Fix: use min-heap", "Cause 3: Recursion depth (if recursive implementation) causing stack overflow. Fix: iterative", "Ordering justified by likelihood (memory crash is most immediate)"],
+    "rubric": [
+      "Cause 1 (most likely): O(n²) adjacency matrix memory — 10,000² integers = 800MB+, causes OOM. Fix: use adjacency list",
+      "Cause 2: O(n²) Dijkstra without priority queue — too slow, timeout or stack overflow. Fix: use min-heap",
+      "Cause 3: Recursion depth (if recursive implementation) causing stack overflow. Fix: iterative",
+      "Ordering justified by likelihood (memory crash is most immediate)"
+    ],
     "constraints": [],
-    "tags": ["dijkstra", "graph", "memory", "adjacency_matrix"]
+    "tags": [
+      "dijkstra",
+      "graph",
+      "memory",
+      "adjacency_matrix"
+    ]
   },
   {
     "id": "CT012",
     "category": "code_algorithmic",
     "subcategory": "debugging_reasoning",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "A mergesort implementation is producing output that is almost sorted but has a few elements out of place. The splitting works correctly. The merge step uses `while i < len(left) and j < len(right)`. After the while loop, the code does nothing else. What is the bug?",
     "scoring": "rubric",
     "expected_answer": "After the main while loop, one of the two sub-arrays may still have remaining elements (whichever was exhausted last). The code must extend the result with the remaining elements of both left and right: `result += left[i:] + right[j:]`. Without this, elements from the longer subarray are silently dropped.",
-    "rubric": ["Correctly identifies that remaining elements in one subarray are dropped", "Explains that the while loop exits when one subarray is exhausted, leaving the other unprocessed", "Provides correct fix: append remaining elements of both subarrays", "Explains why this causes 'almost sorted' output (only tail elements affected)"],
+    "rubric": [
+      "Correctly identifies that remaining elements in one subarray are dropped",
+      "Explains that the while loop exits when one subarray is exhausted, leaving the other unprocessed",
+      "Provides correct fix: append remaining elements of both subarrays",
+      "Explains why this causes 'almost sorted' output (only tail elements affected)"
+    ],
     "constraints": [],
-    "tags": ["mergesort", "merge_step", "debugging"]
+    "tags": [
+      "mergesort",
+      "merge_step",
+      "debugging"
+    ]
   },
   {
     "id": "CT013",
     "category": "code_algorithmic",
     "subcategory": "optimization",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "A system processes a stream of integers and must answer queries of the form 'what is the median of all integers seen so far?' Both insertions and median queries happen in real time. The naive approach stores all numbers and sorts them for each query. Design an O(log n) per operation solution and explain why it achieves that complexity.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Describes two-heap solution: max-heap for lower half, min-heap for upper half", "Explains balance invariant: sizes differ by at most 1", "Insert: add to appropriate heap, rebalance if needed — O(log n)", "Query: peek top of one or both heaps — O(1)", "Explains why heap operations are O(log n)", "Handles both odd and even count cases for median"],
+    "rubric": [
+      "Describes two-heap solution: max-heap for lower half, min-heap for upper half",
+      "Explains balance invariant: sizes differ by at most 1",
+      "Insert: add to appropriate heap, rebalance if needed — O(log n)",
+      "Query: peek top of one or both heaps — O(1)",
+      "Explains why heap operations are O(log n)",
+      "Handles both odd and even count cases for median"
+    ],
     "constraints": [],
-    "tags": ["heaps", "median", "streaming", "data_structures"]
+    "tags": [
+      "heaps",
+      "median",
+      "streaming",
+      "data_structures"
+    ]
   },
   {
     "id": "CT014",
@@ -163,9 +291,18 @@
     "question": "A developer writes a function that takes a list of n strings, each of maximum length m, and sorts them lexicographically using Python's built-in sort. They claim the time complexity is O(n log n). Their tech lead disagrees. Who is right and what is the correct complexity?",
     "scoring": "rubric",
     "expected_answer": "The tech lead is right. Python's sort is O(n log n) comparisons, but each comparison of two strings of length m takes O(m) time. The total time complexity is O(mn log n). This distinction matters when m is large (e.g., sorting DNA sequences or long documents).",
-    "rubric": ["Identifies that string comparison is O(m), not O(1)", "Derives O(mn log n) total complexity", "Explains the distinction between number of comparisons and cost per comparison", "Notes when this matters in practice"],
+    "rubric": [
+      "Identifies that string comparison is O(m), not O(1)",
+      "Derives O(mn log n) total complexity",
+      "Explains the distinction between number of comparisons and cost per comparison",
+      "Notes when this matters in practice"
+    ],
     "constraints": [],
-    "tags": ["string_sorting", "complexity_analysis", "hidden_cost"]
+    "tags": [
+      "string_sorting",
+      "complexity_analysis",
+      "hidden_cost"
+    ]
   },
   {
     "id": "CT015",
@@ -175,9 +312,21 @@
     "question": "Design a cache with the LRU (Least Recently Used) eviction policy that supports get(key) and put(key, value) both in O(1) time. Describe the data structures needed and explain why naive alternatives (sorted list, heap) fail to achieve O(1).",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Correctly describes hash map + doubly linked list combination", "Hash map provides O(1) lookup of node by key", "Doubly linked list maintains access order; head = most recent, tail = least recent", "put: insert at head, evict tail if over capacity — O(1)", "get: lookup in map, move node to head — O(1)", "Explains why sorted list fails (O(n) to reorder) and heap fails (O(log n) to reorder, no O(1) arbitrary deletion)"],
+    "rubric": [
+      "Correctly describes hash map + doubly linked list combination",
+      "Hash map provides O(1) lookup of node by key",
+      "Doubly linked list maintains access order; head = most recent, tail = least recent",
+      "put: insert at head, evict tail if over capacity — O(1)",
+      "get: lookup in map, move node to head — O(1)",
+      "Explains why sorted list fails (O(n) to reorder) and heap fails (O(log n) to reorder, no O(1) arbitrary deletion)"
+    ],
     "constraints": [],
-    "tags": ["lru_cache", "data_structures", "hash_map", "linked_list"]
+    "tags": [
+      "lru_cache",
+      "data_structures",
+      "hash_map",
+      "linked_list"
+    ]
   },
   {
     "id": "CT016",
@@ -187,9 +336,19 @@
     "question": "You need to detect a cycle in a linked list. Describe two different approaches. For each: state the time and space complexity, explain the mechanism, and identify which you prefer for production code and why. Then: can your preferred approach tell you WHERE the cycle begins? If yes, explain how. If no, explain what additional work is needed.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Approach 1: visited set — O(n) time, O(n) space", "Approach 2: Floyd's cycle detection (slow/fast pointers) — O(n) time, O(1) space", "Production preference: Floyd's for O(1) space", "Cycle entry detection: reset one pointer to head after detection, advance both one step at a time — they meet at cycle entry", "Explanation of why Floyd's entry detection works (mathematical proof or intuition)"],
+    "rubric": [
+      "Approach 1: visited set — O(n) time, O(n) space",
+      "Approach 2: Floyd's cycle detection (slow/fast pointers) — O(n) time, O(1) space",
+      "Production preference: Floyd's for O(1) space",
+      "Cycle entry detection: reset one pointer to head after detection, advance both one step at a time — they meet at cycle entry",
+      "Explanation of why Floyd's entry detection works (mathematical proof or intuition)"
+    ],
     "constraints": [],
-    "tags": ["linked_list", "cycle_detection", "floyds_algorithm"]
+    "tags": [
+      "linked_list",
+      "cycle_detection",
+      "floyds_algorithm"
+    ]
   },
   {
     "id": "CT017",
@@ -199,9 +358,19 @@
     "question": "A developer implements a producer-consumer queue using a shared list in Python with two threads — one appending, one popping. In testing it works fine. In production under load, items occasionally disappear silently or an IndexError occurs. The developer says 'Python has the GIL so threads are safe.' What is wrong with this reasoning and what is the actual bug?",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Correctly explains that the GIL prevents concurrent bytecode execution but does NOT make compound operations atomic", "Explains that check-then-act (e.g., if list: then list.pop()) is not atomic — GIL can release between check and pop", "Identifies specific race: one thread checks length > 0, GIL switches to other thread which pops, first thread then pops an empty list", "Fix: use queue.Queue which is thread-safe, or locks around operations"],
+    "rubric": [
+      "Correctly explains that the GIL prevents concurrent bytecode execution but does NOT make compound operations atomic",
+      "Explains that check-then-act (e.g., if list: then list.pop()) is not atomic — GIL can release between check and pop",
+      "Identifies specific race: one thread checks length > 0, GIL switches to other thread which pops, first thread then pops an empty list",
+      "Fix: use queue.Queue which is thread-safe, or locks around operations"
+    ],
     "constraints": [],
-    "tags": ["threading", "gil", "race_condition", "python"]
+    "tags": [
+      "threading",
+      "gil",
+      "race_condition",
+      "python"
+    ]
   },
   {
     "id": "CT018",
@@ -211,9 +380,20 @@
     "question": "A database query is slow. The query joins three tables: users (10M rows), orders (50M rows), and products (100K rows). The query filters by `orders.status = 'pending'` which matches 0.1% of rows. Without seeing the schema or explain plan, describe your diagnostic process, the most likely cause of slowness, and the most impactful single optimization.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Diagnostic: check explain plan, look for sequential scans on large tables", "Most likely cause: missing index on orders.status (full table scan of 50M rows)", "Impact: 0.1% selectivity = only 50K matching rows — index would be extremely effective here", "Optimization: add index on orders.status, or composite index on (status, relevant join key)", "Also acceptable: discusses join order (small result set first), covering indexes"],
+    "rubric": [
+      "Diagnostic: check explain plan, look for sequential scans on large tables",
+      "Most likely cause: missing index on orders.status (full table scan of 50M rows)",
+      "Impact: 0.1% selectivity = only 50K matching rows — index would be extremely effective here",
+      "Optimization: add index on orders.status, or composite index on (status, relevant join key)",
+      "Also acceptable: discusses join order (small result set first), covering indexes"
+    ],
     "constraints": [],
-    "tags": ["database", "query_optimization", "indexing", "joins"]
+    "tags": [
+      "database",
+      "query_optimization",
+      "indexing",
+      "joins"
+    ]
   },
   {
     "id": "CT019",
@@ -223,9 +403,19 @@
     "question": "Given an array of integers, find the contiguous subarray with the maximum sum. Describe the O(n) solution, explain the key insight that makes it work, and demonstrate with the array [-2, 1, -3, 4, -1, 2, 1, -5, 4]. Then explain what modification would let you also return the starting and ending indices of the subarray.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Describes Kadane's algorithm correctly", "Key insight: if running sum becomes negative, restart from current element", "Correct trace on example: max subarray is [4, -1, 2, 1] = sum 6", "Index tracking: record start when resetting, record end when new max found", "Time O(n), space O(1)"],
+    "rubric": [
+      "Describes Kadane's algorithm correctly",
+      "Key insight: if running sum becomes negative, restart from current element",
+      "Correct trace on example: max subarray is [4, -1, 2, 1] = sum 6",
+      "Index tracking: record start when resetting, record end when new max found",
+      "Time O(n), space O(1)"
+    ],
     "constraints": [],
-    "tags": ["kadanes_algorithm", "dynamic_programming", "subarrays"]
+    "tags": [
+      "kadanes_algorithm",
+      "dynamic_programming",
+      "subarrays"
+    ]
   },
   {
     "id": "CT020",
@@ -235,69 +425,135 @@
     "question": "Design a system to count the number of unique visitors to a website per day, where 'unique' means distinct user IDs. The system receives 100 million events per day. You must support exact counts and also a solution that uses only 1KB of memory. Describe both solutions and explain the fundamental trade-off.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Exact: hash set of user IDs — O(n) space proportional to unique users, potentially gigabytes", "Approximate: HyperLogLog — probabilistic counting, O(log log n) space (few KB), ~2% error", "Trade-off: exact requires O(u) space where u = unique users; probabilistic allows fixed small space with bounded error", "Explains that HyperLogLog uses hash-based bit-length statistics", "Notes that Redis implements HyperLogLog natively"],
+    "rubric": [
+      "Exact: hash set of user IDs — O(n) space proportional to unique users, potentially gigabytes",
+      "Approximate: HyperLogLog — probabilistic counting, O(log log n) space (few KB), ~2% error",
+      "Trade-off: exact requires O(u) space where u = unique users; probabilistic allows fixed small space with bounded error",
+      "Explains that HyperLogLog uses hash-based bit-length statistics",
+      "Notes that Redis implements HyperLogLog natively"
+    ],
     "constraints": [],
-    "tags": ["hyperloglog", "probabilistic", "streaming", "cardinality"]
+    "tags": [
+      "hyperloglog",
+      "probabilistic",
+      "streaming",
+      "cardinality"
+    ]
   },
   {
     "id": "CT021",
     "category": "code_algorithmic",
     "subcategory": "complexity_analysis",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "A developer argues that since hash table lookup is O(1), a solution using hash tables will always be faster in practice than a solution using binary search on a sorted array. Construct three distinct counterarguments showing cases where binary search would be preferred.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Counter 1: Cache performance — sorted arrays have sequential memory access (cache-friendly); hash tables have pointer chasing (cache-unfriendly). For small n, sorted array wins", "Counter 2: Space — sorted array uses O(n) space with low constant; hash table has overhead and load factor", "Counter 3: Range queries — binary search supports 'find all elements between A and B' in O(log n + k); hash tables cannot do range queries", "Optionally: hash function cost for large keys vs. O(m) comparison where m = key length"],
+    "rubric": [
+      "Counter 1: Cache performance — sorted arrays have sequential memory access (cache-friendly); hash tables have pointer chasing (cache-unfriendly). For small n, sorted array wins",
+      "Counter 2: Space — sorted array uses O(n) space with low constant; hash table has overhead and load factor",
+      "Counter 3: Range queries — binary search supports 'find all elements between A and B' in O(log n + k); hash tables cannot do range queries",
+      "Optionally: hash function cost for large keys vs. O(m) comparison where m = key length"
+    ],
     "constraints": [],
-    "tags": ["hash_table", "binary_search", "cache", "range_queries"]
+    "tags": [
+      "hash_table",
+      "binary_search",
+      "cache",
+      "range_queries"
+    ]
   },
   {
     "id": "CT022",
     "category": "code_algorithmic",
     "subcategory": "debugging_reasoning",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "A distributed system has two services: A writes a record to the database, then publishes a message to a queue. B reads from the queue and processes the record. Occasionally, B reads the message but cannot find the record in the database. The system does not use distributed transactions. Explain the root cause and two different architectural fixes.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Root cause: write to DB and publish to queue are not atomic — DB write can succeed but queue publish can fail, OR queue message is delivered before DB write is committed (replication lag)", "More precisely: race condition between DB commit and message delivery if they're not in the same transaction", "Fix 1: Transactional outbox pattern — write message to a 'outbox' table in same DB transaction, separate process polls and publishes", "Fix 2: Publish only after confirmed DB read (add delay/retry in B)", "Fix 3: Two-phase commit (mentions distributed transaction limitations)"],
+    "rubric": [
+      "Root cause: write to DB and publish to queue are not atomic — DB write can succeed but queue publish can fail, OR queue message is delivered before DB write is committed (replication lag)",
+      "More precisely: race condition between DB commit and message delivery if they're not in the same transaction",
+      "Fix 1: Transactional outbox pattern — write message to a 'outbox' table in same DB transaction, separate process polls and publishes",
+      "Fix 2: Publish only after confirmed DB read (add delay/retry in B)",
+      "Fix 3: Two-phase commit (mentions distributed transaction limitations)"
+    ],
     "constraints": [],
-    "tags": ["distributed_systems", "outbox_pattern", "eventual_consistency", "race_condition"]
+    "tags": [
+      "distributed_systems",
+      "outbox_pattern",
+      "eventual_consistency",
+      "race_condition"
+    ]
   },
   {
     "id": "CT023",
     "category": "code_algorithmic",
     "subcategory": "algorithm_design",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "You want to implement autocomplete for a search box. Users type a prefix and should see all words that start with that prefix. The dictionary has 500,000 words. Describe: (1) the data structure best suited for this, (2) the time complexity for insert and prefix lookup, (3) a key practical drawback of your chosen structure, (4) how you'd rank results if multiple completions are possible.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Trie (prefix tree) correctly identified as optimal structure", "Insert: O(m) where m = word length", "Lookup: O(m + k) where k = number of matching words", "Practical drawback: high memory usage due to node per character; each node may have up to 26 children", "Ranking: store frequency counts at each terminal node; return top-k by frequency using BFS/DFS with pruning"],
+    "rubric": [
+      "Trie (prefix tree) correctly identified as optimal structure",
+      "Insert: O(m) where m = word length",
+      "Lookup: O(m + k) where k = number of matching words",
+      "Practical drawback: high memory usage due to node per character; each node may have up to 26 children",
+      "Ranking: store frequency counts at each terminal node; return top-k by frequency using BFS/DFS with pruning"
+    ],
     "constraints": [],
-    "tags": ["trie", "autocomplete", "data_structures", "ranking"]
+    "tags": [
+      "trie",
+      "autocomplete",
+      "data_structures",
+      "ranking"
+    ]
   },
   {
     "id": "CT024",
     "category": "code_algorithmic",
     "subcategory": "optimization",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "A machine learning model makes predictions that require loading a 2GB model file from disk for every API request. Response time is 8 seconds. Users complain. You can't change the model or the hardware. Describe 5 optimizations you would consider, ordered by expected impact.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Load model once at startup, keep in memory — eliminates disk I/O entirely (highest impact)", "Connection pooling / worker pre-warming — ensure model is already loaded before requests arrive", "Model caching in RAM — only load if not already loaded (LRU cache if multiple models)", "Async prediction — if latency can be traded for throughput, batch requests", "Quantization / model compression — reduce 2GB to smaller size (but question says can't change model)", "Approximate match: mmap the model file to avoid full copy"],
+    "rubric": [
+      "Load model once at startup, keep in memory — eliminates disk I/O entirely (highest impact)",
+      "Connection pooling / worker pre-warming — ensure model is already loaded before requests arrive",
+      "Model caching in RAM — only load if not already loaded (LRU cache if multiple models)",
+      "Async prediction — if latency can be traded for throughput, batch requests",
+      "Quantization / model compression — reduce 2GB to smaller size (but question says can't change model)",
+      "Approximate match: mmap the model file to avoid full copy"
+    ],
     "constraints": [],
-    "tags": ["model_serving", "optimization", "caching", "latency"]
+    "tags": [
+      "model_serving",
+      "optimization",
+      "caching",
+      "latency"
+    ]
   },
   {
     "id": "CT025",
     "category": "code_algorithmic",
     "subcategory": "algorithm_design",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Design an algorithm to find all the prime numbers up to n. Describe the Sieve of Eratosthenes, explain why it works, state its time and space complexity, and explain one way to optimize it to use O(√n) space instead of O(n).",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Correct description of Sieve: start with all numbers marked prime, iteratively mark multiples of each prime as composite", "Starts marking from p² for each prime p (not 2p)", "Time complexity: O(n log log n)", "Space complexity: O(n) for the boolean array", "Segmented sieve for O(√n) space: process array in blocks of size √n, reuse the block buffer"],
+    "rubric": [
+      "Correct description of Sieve: start with all numbers marked prime, iteratively mark multiples of each prime as composite",
+      "Starts marking from p² for each prime p (not 2p)",
+      "Time complexity: O(n log log n)",
+      "Space complexity: O(n) for the boolean array",
+      "Segmented sieve for O(√n) space: process array in blocks of size √n, reuse the block buffer"
+    ],
     "constraints": [],
-    "tags": ["sieve", "prime_numbers", "segmented_sieve", "complexity"]
+    "tags": [
+      "sieve",
+      "prime_numbers",
+      "segmented_sieve",
+      "complexity"
+    ]
   },
   {
     "id": "CT026",
@@ -307,9 +563,21 @@
     "question": "Design a distributed rate limiter that enforces 'no more than 1000 requests per user per minute' across a fleet of 50 load-balanced API servers. A user's requests may hit different servers. Describe: (1) the data store and why, (2) the algorithm, (3) what happens at the exact boundary (999th vs 1000th request arriving simultaneously on two servers), (4) the trade-off between correctness and performance.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Data store: Redis (fast, atomic operations, TTL support)", "Algorithm: sliding window or token bucket with Redis atomic increment", "Race at boundary: two requests can both read 999, both increment to 1000, both get allowed — this is the 'thundering herd' / double-spend", "Fix for exact correctness: Lua script or Redis INCR + check in single atomic operation", "Trade-off: local counters (fast, approximate) vs. Redis (slower due to network, exact)", "Mentions fixed window vs. sliding window trade-offs"],
+    "rubric": [
+      "Data store: Redis (fast, atomic operations, TTL support)",
+      "Algorithm: sliding window or token bucket with Redis atomic increment",
+      "Race at boundary: two requests can both read 999, both increment to 1000, both get allowed — this is the 'thundering herd' / double-spend",
+      "Fix for exact correctness: Lua script or Redis INCR + check in single atomic operation",
+      "Trade-off: local counters (fast, approximate) vs. Redis (slower due to network, exact)",
+      "Mentions fixed window vs. sliding window trade-offs"
+    ],
     "constraints": [],
-    "tags": ["rate_limiting", "distributed_systems", "redis", "race_condition"]
+    "tags": [
+      "rate_limiting",
+      "distributed_systems",
+      "redis",
+      "race_condition"
+    ]
   },
   {
     "id": "CT027",
@@ -319,9 +587,21 @@
     "question": "Prove or disprove: The following algorithm is O(n log n). `def f(arr): if len(arr) <= 1: return arr; mid = len(arr)//2; left = f(arr[:mid]); right = f(arr[mid:]); return merge(left, right)`. After showing the complexity, explain what happens to the complexity if `merge` is replaced with a function that runs in O(n²) instead of O(n). Derive the new complexity using the Master Theorem.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Identifies this as mergesort recurrence: T(n) = 2T(n/2) + O(n)", "Master Theorem: a=2, b=2, f(n)=O(n), log_b(a)=1, f(n)=Theta(n^1) → Case 2, T(n)=O(n log n) ✓", "With O(n²) merge: T(n) = 2T(n/2) + O(n²)", "Master Theorem: f(n)=O(n²) vs n^log_b(a)=n^1; f(n) is polynomially larger → Case 3", "T(n) = O(n²)", "Regularity condition verified for Case 3"],
+    "rubric": [
+      "Identifies this as mergesort recurrence: T(n) = 2T(n/2) + O(n)",
+      "Master Theorem: a=2, b=2, f(n)=O(n), log_b(a)=1, f(n)=Theta(n^1) → Case 2, T(n)=O(n log n) ✓",
+      "With O(n²) merge: T(n) = 2T(n/2) + O(n²)",
+      "Master Theorem: f(n)=O(n²) vs n^log_b(a)=n^1; f(n) is polynomially larger → Case 3",
+      "T(n) = O(n²)",
+      "Regularity condition verified for Case 3"
+    ],
     "constraints": [],
-    "tags": ["master_theorem", "recurrence", "mergesort", "complexity_proof"]
+    "tags": [
+      "master_theorem",
+      "recurrence",
+      "mergesort",
+      "complexity_proof"
+    ]
   },
   {
     "id": "CT028",
@@ -331,9 +611,22 @@
     "question": "A microservice has a memory leak. The service starts at 200MB and grows by ~5MB per hour. It handles REST API requests and uses a connection pool to a database. The developer insists there are no global variables. Describe your debugging methodology, list 5 specific things to check in order of likelihood, and explain the mechanism by which each could cause a leak in a garbage-collected language (e.g., Python or Java).",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Methodology: memory profiler (heapq, YourKit, etc.), snapshot deltas over time to identify growing object types", "1. Caches/dictionaries that grow unboundedly (e.g., request logs stored in dict with no eviction) — strong reference prevents GC", "2. Event listeners / callbacks not deregistered — listener holds reference to objects", "3. Connection pool leak — connections not returned to pool, pool grows or holds objects", "4. Thread-local storage accumulation in thread pools", "5. Third-party library with its own buffer/cache (e.g., logging handler buffers)", "Each mechanism explained as preventing GC from collecting eligible objects"],
+    "rubric": [
+      "Methodology: memory profiler (heapq, YourKit, etc.), snapshot deltas over time to identify growing object types",
+      "1. Caches/dictionaries that grow unboundedly (e.g., request logs stored in dict with no eviction) — strong reference prevents GC",
+      "2. Event listeners / callbacks not deregistered — listener holds reference to objects",
+      "3. Connection pool leak — connections not returned to pool, pool grows or holds objects",
+      "4. Thread-local storage accumulation in thread pools",
+      "5. Third-party library with its own buffer/cache (e.g., logging handler buffers)",
+      "Each mechanism explained as preventing GC from collecting eligible objects"
+    ],
     "constraints": [],
-    "tags": ["memory_leak", "debugging", "gc", "microservices"]
+    "tags": [
+      "memory_leak",
+      "debugging",
+      "gc",
+      "microservices"
+    ]
   },
   {
     "id": "CT029",
@@ -343,9 +636,21 @@
     "question": "You need to implement a spell checker that suggests the closest word from a dictionary for any misspelled word. 'Closest' means minimum edit distance (Levenshtein). The dictionary has 200,000 words. For a typical query, the naive approach (compute edit distance to every word) is too slow. Describe a practical approach that reduces comparisons, and explain the theoretical lower bound on this problem — can you guarantee finding the closest word without examining all candidates?",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Naive: O(|D| × |query| × max_word_len) per query — too slow for interactive use", "Practical approach 1: BK-trees using metric space property of edit distance", "Practical approach 2: n-gram index to filter candidates before full edit distance", "Practical approach 3: trie with pruning (branch and bound)", "Theoretical lower bound: in general, no sub-linear guarantee for exact nearest neighbor in edit distance metric; triangle inequality can prune but worst case still examines many candidates", "Notes that approximate nearest neighbor is achievable with locality-sensitive hashing for edit distance"],
+    "rubric": [
+      "Naive: O(|D| × |query| × max_word_len) per query — too slow for interactive use",
+      "Practical approach 1: BK-trees using metric space property of edit distance",
+      "Practical approach 2: n-gram index to filter candidates before full edit distance",
+      "Practical approach 3: trie with pruning (branch and bound)",
+      "Theoretical lower bound: in general, no sub-linear guarantee for exact nearest neighbor in edit distance metric; triangle inequality can prune but worst case still examines many candidates",
+      "Notes that approximate nearest neighbor is achievable with locality-sensitive hashing for edit distance"
+    ],
     "constraints": [],
-    "tags": ["spell_checker", "edit_distance", "bk_tree", "metric_space"]
+    "tags": [
+      "spell_checker",
+      "edit_distance",
+      "bk_tree",
+      "metric_space"
+    ]
   },
   {
     "id": "CT030",
@@ -355,9 +660,21 @@
     "question": "A neural network training loop runs at 10 iterations/second on a GPU. The model is small (50M params). The GPU utilization reported by nvidia-smi is only 40%. Describe: (1) the 5 most likely bottlenecks causing low GPU utilization, (2) how to diagnose which one is responsible, (3) the fix for each, (4) which is most commonly the culprit in practice.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Bottleneck 1: Data loading on CPU — CPU cannot supply data fast enough. Diagnose: profile with num_workers=0 vs >0. Fix: increase DataLoader workers, prefetch", "Bottleneck 2: Small batch size — GPU does tiny matmuls, poor occupancy. Fix: increase batch size", "Bottleneck 3: CPU-GPU synchronization — too many .item() calls, .cpu() transfers, or print statements mid-loop. Fix: remove or batch sync operations", "Bottleneck 4: Memory fragmentation causing cudaMalloc overhead. Fix: pin_memory=True, persistent_workers", "Bottleneck 5: Model is too small for GPU — compute too fast, overhead dominates. Fix: larger batch, gradient accumulation", "Most common culprit: data loading bottleneck (Bottleneck 1)"],
+    "rubric": [
+      "Bottleneck 1: Data loading on CPU — CPU cannot supply data fast enough. Diagnose: profile with num_workers=0 vs >0. Fix: increase DataLoader workers, prefetch",
+      "Bottleneck 2: Small batch size — GPU does tiny matmuls, poor occupancy. Fix: increase batch size",
+      "Bottleneck 3: CPU-GPU synchronization — too many .item() calls, .cpu() transfers, or print statements mid-loop. Fix: remove or batch sync operations",
+      "Bottleneck 4: Memory fragmentation causing cudaMalloc overhead. Fix: pin_memory=True, persistent_workers",
+      "Bottleneck 5: Model is too small for GPU — compute too fast, overhead dominates. Fix: larger batch, gradient accumulation",
+      "Most common culprit: data loading bottleneck (Bottleneck 1)"
+    ],
     "constraints": [],
-    "tags": ["gpu_utilization", "training_optimization", "data_loading", "profiling"]
+    "tags": [
+      "gpu_utilization",
+      "training_optimization",
+      "data_loading",
+      "profiling"
+    ]
   },
   {
     "id": "CT031",
@@ -367,9 +684,21 @@
     "question": "Design a system for real-time collaborative document editing (like Google Docs) where multiple users can edit simultaneously. Focus on the algorithmic core: how do you handle two users simultaneously inserting text at the same position? Describe Operational Transformation (OT) at the conceptual level — what problem it solves, the key property it must satisfy, and why it is hard to implement correctly.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["States the core problem: concurrent edits at the same position must be reconciled so all clients converge to the same state", "OT: transform each operation based on concurrent operations that preceded it", "Key property: convergence — all clients must reach the same final state regardless of operation delivery order", "Key challenge: transformation function must satisfy commutativity/associativity properties (TP1 and TP2 conditions)", "Explains that TP2 (handling 3+ concurrent operations) is extremely hard to get right", "Mentions that CRDTs are a modern alternative that avoid some OT complexity"],
+    "rubric": [
+      "States the core problem: concurrent edits at the same position must be reconciled so all clients converge to the same state",
+      "OT: transform each operation based on concurrent operations that preceded it",
+      "Key property: convergence — all clients must reach the same final state regardless of operation delivery order",
+      "Key challenge: transformation function must satisfy commutativity/associativity properties (TP1 and TP2 conditions)",
+      "Explains that TP2 (handling 3+ concurrent operations) is extremely hard to get right",
+      "Mentions that CRDTs are a modern alternative that avoid some OT complexity"
+    ],
     "constraints": [],
-    "tags": ["collaborative_editing", "operational_transformation", "crdt", "distributed_systems"]
+    "tags": [
+      "collaborative_editing",
+      "operational_transformation",
+      "crdt",
+      "distributed_systems"
+    ]
   },
   {
     "id": "CT032",
@@ -379,9 +708,20 @@
     "question": "You are given a weighted directed graph where edge weights can be negative. You want to find the shortest path between two nodes. Dijkstra's algorithm fails. Explain precisely why Dijkstra fails with negative weights (with a concrete counterexample), describe the Bellman-Ford algorithm and its complexity, and explain how to detect negative cycles. Then describe a modification that makes the problem solvable in practice for dense graphs with many queries.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Counterexample showing Dijkstra's greedy choice fails: once a node is finalized, a later negative-weight edge could have provided a shorter path", "Bellman-Ford: relax all edges V-1 times, O(VE) time", "Negative cycle detection: if any edge can still be relaxed after V-1 rounds, a negative cycle exists", "For many queries on dense graph: Floyd-Warshall O(V³) for all-pairs shortest paths, then O(1) per query", "Or: Johnson's algorithm reweights edges to eliminate negatives, run Dijkstra from each node, O(V² log V + VE)"],
+    "rubric": [
+      "Counterexample showing Dijkstra's greedy choice fails: once a node is finalized, a later negative-weight edge could have provided a shorter path",
+      "Bellman-Ford: relax all edges V-1 times, O(VE) time",
+      "Negative cycle detection: if any edge can still be relaxed after V-1 rounds, a negative cycle exists",
+      "For many queries on dense graph: Floyd-Warshall O(V³) for all-pairs shortest paths, then O(1) per query",
+      "Or: Johnson's algorithm reweights edges to eliminate negatives, run Dijkstra from each node, O(V² log V + VE)"
+    ],
     "constraints": [],
-    "tags": ["bellman_ford", "negative_weights", "dijkstra_failure", "shortest_path"]
+    "tags": [
+      "bellman_ford",
+      "negative_weights",
+      "dijkstra_failure",
+      "shortest_path"
+    ]
   },
   {
     "id": "CT033",
@@ -391,9 +731,20 @@
     "question": "A REST API under load begins returning stale data — users see data from minutes ago despite updates having been written to the database. The system has: one primary database, two read replicas, a CDN, and an in-memory cache layer (Redis). No code has changed. Describe your diagnostic decision tree: how do you determine which layer is the source of staleness, and what specific test isolates each layer?",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["First test: bypass CDN by hitting origin directly — if stale disappears, CDN TTL is the issue", "Second test: bypass Redis by reading directly from DB endpoint — if stale disappears, Redis TTL/invalidation is the issue", "Third test: read from primary vs. replicas — if primary returns fresh but replica returns stale, replication lag is the issue", "Fourth: check for recent infra changes (new CDN config, Redis maxmemory policy change causing eviction)", "Correct identification that multiple layers could interact (CDN caching a Redis-cached response)"],
+    "rubric": [
+      "First test: bypass CDN by hitting origin directly — if stale disappears, CDN TTL is the issue",
+      "Second test: bypass Redis by reading directly from DB endpoint — if stale disappears, Redis TTL/invalidation is the issue",
+      "Third test: read from primary vs. replicas — if primary returns fresh but replica returns stale, replication lag is the issue",
+      "Fourth: check for recent infra changes (new CDN config, Redis maxmemory policy change causing eviction)",
+      "Correct identification that multiple layers could interact (CDN caching a Redis-cached response)"
+    ],
     "constraints": [],
-    "tags": ["caching", "replication", "debugging", "distributed_systems"]
+    "tags": [
+      "caching",
+      "replication",
+      "debugging",
+      "distributed_systems"
+    ]
   },
   {
     "id": "CT034",
@@ -403,9 +754,19 @@
     "question": "Describe the problem of constructing a minimum spanning tree. Compare Prim's and Kruskal's algorithms: for each, give the time complexity with a priority queue / union-find respectively, explain the core algorithmic strategy, and identify the graph property (density) that makes each preferable. Then explain what changes if you need the second-minimum spanning tree.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Prim's: grow MST by greedily adding cheapest edge connecting visited to unvisited. With binary heap: O(E log V). Better for dense graphs.", "Kruskal's: sort edges, add if no cycle (union-find). O(E log E) = O(E log V). Better for sparse graphs.", "Density preference correctly stated and justified", "Second MST: enumerate all edges not in MST; for each, find the maximum-weight edge on the unique path in MST between its endpoints; replace if cheaper. O(V + E) after MST construction using LCA/path-max queries"],
+    "rubric": [
+      "Prim's: grow MST by greedily adding cheapest edge connecting visited to unvisited. With binary heap: O(E log V). Better for dense graphs.",
+      "Kruskal's: sort edges, add if no cycle (union-find). O(E log E) = O(E log V). Better for sparse graphs.",
+      "Density preference correctly stated and justified",
+      "Second MST: enumerate all edges not in MST; for each, find the maximum-weight edge on the unique path in MST between its endpoints; replace if cheaper. O(V + E) after MST construction using LCA/path-max queries"
+    ],
     "constraints": [],
-    "tags": ["minimum_spanning_tree", "prim", "kruskal", "union_find"]
+    "tags": [
+      "minimum_spanning_tree",
+      "prim",
+      "kruskal",
+      "union_find"
+    ]
   },
   {
     "id": "CT035",
@@ -415,9 +776,20 @@
     "question": "Design the data model and access patterns for a social media feed (like Twitter's timeline). A user follows 500 people on average. There are 500 million users. When you open the app, you should see the 100 most recent posts from people you follow. Describe the 'fan-out on write' vs 'fan-out on read' approaches, the trade-off for celebrity users (10M followers), and how Twitter actually solved this problem.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Fan-out on write: when user posts, push to all followers' feed caches immediately. Fast reads, slow writes, storage-intensive for celebrities", "Fan-out on read: store posts centrally, compute feed by merging followed users' posts at read time. Slow reads, fast writes", "Celebrity problem: fan-out on write for Katy Perry (100M followers) would require 100M writes per tweet", "Hybrid: fan-out on write for normal users, fan-out on read for celebrities, merge at read time", "Twitter's approach: precomputed timelines (Redis) for most users, pull celebrity tweets at query time and merge"],
+    "rubric": [
+      "Fan-out on write: when user posts, push to all followers' feed caches immediately. Fast reads, slow writes, storage-intensive for celebrities",
+      "Fan-out on read: store posts centrally, compute feed by merging followed users' posts at read time. Slow reads, fast writes",
+      "Celebrity problem: fan-out on write for Katy Perry (100M followers) would require 100M writes per tweet",
+      "Hybrid: fan-out on write for normal users, fan-out on read for celebrities, merge at read time",
+      "Twitter's approach: precomputed timelines (Redis) for most users, pull celebrity tweets at query time and merge"
+    ],
     "constraints": [],
-    "tags": ["social_media", "fan_out", "timeline", "system_design"]
+    "tags": [
+      "social_media",
+      "fan_out",
+      "timeline",
+      "system_design"
+    ]
   },
   {
     "id": "CT036",
@@ -427,9 +799,20 @@
     "question": "A sorting algorithm runs correctly but is unexpectedly slow on nearly-sorted inputs. You're told the algorithm is not insertion sort. What sorting algorithms have this pathological behavior on nearly-sorted inputs, and why? Then describe how you'd modify a general-purpose algorithm to be 'adaptive' — exploiting existing order to speed up on nearly-sorted arrays.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Quicksort with fixed pivot (first or last element) degrades to O(n²) on sorted/nearly-sorted input", "Heapsort has poor cache behavior on nearly-sorted arrays even though O(n log n) — destroys existing order", "Adaptive algorithms: insertion sort is naturally O(nk) where k = distance each element travels", "Timsort: detects existing runs, merges them — O(n) for nearly-sorted, O(n log n) worst case", "General modification: count inversions or detect runs first, use natural mergesort on detected runs"],
+    "rubric": [
+      "Quicksort with fixed pivot (first or last element) degrades to O(n²) on sorted/nearly-sorted input",
+      "Heapsort has poor cache behavior on nearly-sorted arrays even though O(n log n) — destroys existing order",
+      "Adaptive algorithms: insertion sort is naturally O(nk) where k = distance each element travels",
+      "Timsort: detects existing runs, merges them — O(n) for nearly-sorted, O(n log n) worst case",
+      "General modification: count inversions or detect runs first, use natural mergesort on detected runs"
+    ],
     "constraints": [],
-    "tags": ["adaptive_sorting", "timsort", "quicksort_pathology", "nearly_sorted"]
+    "tags": [
+      "adaptive_sorting",
+      "timsort",
+      "quicksort_pathology",
+      "nearly_sorted"
+    ]
   },
   {
     "id": "CT037",
@@ -439,9 +822,21 @@
     "question": "A developer claims their string search algorithm finds a pattern of length m in a text of length n in O(n) time. A colleague says 'that's impossible because you have to look at every character in the pattern for each potential match — it must be at least O(nm).' Who is right? Describe the key insight that allows linear-time string matching.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Developer is right — KMP or Rabin-Karp or Z-algorithm achieve O(n+m) or O(n)", "KMP key insight: precompute failure function that tells how far to shift pattern without re-examining characters", "When mismatch occurs, don't restart from scratch — use partial match information to skip ahead", "The failure function preprocessing is O(m); the search itself is O(n) because the text pointer never moves backwards", "Total: O(n + m)", "Rabin-Karp alternative: rolling hash avoids recomputing hash from scratch each step"],
+    "rubric": [
+      "Developer is right — KMP or Rabin-Karp or Z-algorithm achieve O(n+m) or O(n)",
+      "KMP key insight: precompute failure function that tells how far to shift pattern without re-examining characters",
+      "When mismatch occurs, don't restart from scratch — use partial match information to skip ahead",
+      "The failure function preprocessing is O(m); the search itself is O(n) because the text pointer never moves backwards",
+      "Total: O(n + m)",
+      "Rabin-Karp alternative: rolling hash avoids recomputing hash from scratch each step"
+    ],
     "constraints": [],
-    "tags": ["kmp", "string_matching", "failure_function", "linear_time"]
+    "tags": [
+      "kmp",
+      "string_matching",
+      "failure_function",
+      "linear_time"
+    ]
   },
   {
     "id": "CT038",
@@ -451,9 +846,20 @@
     "question": "You need to implement a diff tool (like `git diff`) that shows the minimum edits between two files. Model each file as a sequence of lines. Describe: (1) the formal problem (longest common subsequence or edit distance), (2) the DP solution and its complexity, (3) why naive LCS doesn't produce good diffs (the 'alignment' problem), (4) what property Myers diff algorithm exploits to achieve O(nd) time where d is the number of differences.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Formal problem: LCS or minimum edit distance between two sequences", "DP: O(mn) time and space for standard LCS", "Alignment problem: multiple LCS solutions exist; naive DP doesn't prefer 'natural' alignment that matches context well", "Myers diff: works in O(nd) where d = edit distance (number of differences). Explores 'edit graph' diagonals in BFS order, exploiting that for similar files (d << n,m) the search terminates early", "Practical implication: O(n²) for completely different files, O(n) for nearly identical files"],
+    "rubric": [
+      "Formal problem: LCS or minimum edit distance between two sequences",
+      "DP: O(mn) time and space for standard LCS",
+      "Alignment problem: multiple LCS solutions exist; naive DP doesn't prefer 'natural' alignment that matches context well",
+      "Myers diff: works in O(nd) where d = edit distance (number of differences). Explores 'edit graph' diagonals in BFS order, exploiting that for similar files (d << n,m) the search terminates early",
+      "Practical implication: O(n²) for completely different files, O(n) for nearly identical files"
+    ],
     "constraints": [],
-    "tags": ["diff_algorithm", "lcs", "myers_diff", "dynamic_programming"]
+    "tags": [
+      "diff_algorithm",
+      "lcs",
+      "myers_diff",
+      "dynamic_programming"
+    ]
   },
   {
     "id": "CT039",
@@ -463,9 +869,20 @@
     "question": "Design a job scheduling system for a compute cluster. Jobs have: CPU and memory requirements, priority levels (low/medium/high), and estimated duration. Some jobs have dependencies (job B must run after job A completes). The cluster has 100 machines with varying capacities. Describe: (1) the data structure for the queue, (2) the scheduling algorithm, (3) how to handle deadlock in dependencies, (4) what metric you'd use to evaluate scheduler performance.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Queue: priority queue or multi-level priority queue, with separate ready queue for jobs whose dependencies are met", "Scheduling: earliest deadline first (EDF), shortest-job-first (SJF), or multi-factor priority scoring. Bin-packing for resource allocation", "Deadlock: detect cycles in dependency graph using DFS/topological sort. Reject job DAGs with cycles at submission time", "Deadlock: also detect resource deadlock (circular wait) using banker's algorithm or just fail-and-retry", "Metrics: makespan, resource utilization %, job latency by priority class, throughput"],
+    "rubric": [
+      "Queue: priority queue or multi-level priority queue, with separate ready queue for jobs whose dependencies are met",
+      "Scheduling: earliest deadline first (EDF), shortest-job-first (SJF), or multi-factor priority scoring. Bin-packing for resource allocation",
+      "Deadlock: detect cycles in dependency graph using DFS/topological sort. Reject job DAGs with cycles at submission time",
+      "Deadlock: also detect resource deadlock (circular wait) using banker's algorithm or just fail-and-retry",
+      "Metrics: makespan, resource utilization %, job latency by priority class, throughput"
+    ],
     "constraints": [],
-    "tags": ["job_scheduling", "priority_queue", "dag", "deadlock_detection"]
+    "tags": [
+      "job_scheduling",
+      "priority_queue",
+      "dag",
+      "deadlock_detection"
+    ]
   },
   {
     "id": "CT040",
@@ -475,9 +892,19 @@
     "question": "A cryptographic hash function implementation passes all unit tests but fails in production. In production, two different inputs are producing the same hash (a collision) with very high frequency — far beyond what probability theory predicts. The implementation uses SHA-256. The developer says 'SHA-256 doesn't have collisions — this is impossible.' What are the three most likely actual causes?",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Cause 1: Incorrect input encoding — two different string representations are being normalized to the same bytes before hashing (e.g., unicode normalization, case normalization, whitespace stripping)", "Cause 2: Truncation — output is being truncated to fewer bits than full 256 bits, creating a much smaller output space with more collisions", "Cause 3: Caching bug — hash is computed once and cached with a wrong key, returning same hash for different inputs", "Developer is wrong in assuming the implementation is correct SHA-256 — implementation bugs are far more likely than SHA-256 theoretical collisions (which are computationally infeasible)"],
+    "rubric": [
+      "Cause 1: Incorrect input encoding — two different string representations are being normalized to the same bytes before hashing (e.g., unicode normalization, case normalization, whitespace stripping)",
+      "Cause 2: Truncation — output is being truncated to fewer bits than full 256 bits, creating a much smaller output space with more collisions",
+      "Cause 3: Caching bug — hash is computed once and cached with a wrong key, returning same hash for different inputs",
+      "Developer is wrong in assuming the implementation is correct SHA-256 — implementation bugs are far more likely than SHA-256 theoretical collisions (which are computationally infeasible)"
+    ],
     "constraints": [],
-    "tags": ["hashing", "debugging", "cryptography", "encoding"]
+    "tags": [
+      "hashing",
+      "debugging",
+      "cryptography",
+      "encoding"
+    ]
   },
   {
     "id": "CT041",
@@ -487,9 +914,20 @@
     "question": "Design a data structure that supports all of the following operations in O(1) amortized time: insert(x), delete(x), getRandom() (returns a uniformly random element), getMin(), getMax(). Prove whether this is achievable. If some subset of operations can coexist at O(1), identify which subset and prove which operations cannot coexist at O(1) with the rest, citing the specific lower bound.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["insert + delete + getRandom: achievable with hash map + dynamic array (array stores elements, map stores indices, swap-with-last on delete)", "Adding getMin or getMax individually: requires additional O(1) min/max tracking with careful update on delete", "The fundamental problem: delete with O(1) getMin AND getMax simultaneously requires knowing the next minimum/maximum after deletion, which requires knowing the successor/predecessor", "Without additional structure, maintaining both min and max with O(1) delete requires order-statistics — which is O(log n) in comparison model", "Correct conclusion: insert + delete + getRandom is achievable; adding both getMin and getMax with O(1) delete is impossible in the comparison model (requires O(log n) per operation to maintain order)"],
+    "rubric": [
+      "insert + delete + getRandom: achievable with hash map + dynamic array (array stores elements, map stores indices, swap-with-last on delete)",
+      "Adding getMin or getMax individually: requires additional O(1) min/max tracking with careful update on delete",
+      "The fundamental problem: delete with O(1) getMin AND getMax simultaneously requires knowing the next minimum/maximum after deletion, which requires knowing the successor/predecessor",
+      "Without additional structure, maintaining both min and max with O(1) delete requires order-statistics — which is O(log n) in comparison model",
+      "Correct conclusion: insert + delete + getRandom is achievable; adding both getMin and getMax with O(1) delete is impossible in the comparison model (requires O(log n) per operation to maintain order)"
+    ],
     "constraints": [],
-    "tags": ["data_structures", "lower_bounds", "randomized", "extreme"]
+    "tags": [
+      "data_structures",
+      "lower_bounds",
+      "randomized",
+      "extreme"
+    ]
   },
   {
     "id": "CT042",
@@ -499,9 +937,21 @@
     "question": "Explain the P vs NP problem to three audiences: (1) a 12-year-old, (2) a computer science graduate student, (3) a mathematician unfamiliar with computational complexity. For each, you must: convey the core question accurately, use an appropriate analogy or formalism, and explain why it matters. Then state the best-known relationship between P, NP, NP-complete, and NP-hard, including what a proof either way would imply.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["12-year-old: analogy (e.g., solving a puzzle vs. checking a solution), accurate core idea (fast verification ≠ necessarily fast solution)", "Grad student: formal definitions of P (poly-time decidable TM), NP (poly-time verifier or NDTM), reduction, NP-completeness via Cook-Levin", "Mathematician: complexity classes as decision problems, Turing machines, oracle separation, complexity zoo context", "Relationship: P ⊆ NP, NP-complete = hardest problems in NP, NP-hard includes problems outside NP", "P=NP implications: all NP-hard problems tractable, cryptography as we know it collapses", "P≠NP implications: confirms inherent intractability, validates cryptographic hardness assumptions"],
+    "rubric": [
+      "12-year-old: analogy (e.g., solving a puzzle vs. checking a solution), accurate core idea (fast verification ≠ necessarily fast solution)",
+      "Grad student: formal definitions of P (poly-time decidable TM), NP (poly-time verifier or NDTM), reduction, NP-completeness via Cook-Levin",
+      "Mathematician: complexity classes as decision problems, Turing machines, oracle separation, complexity zoo context",
+      "Relationship: P ⊆ NP, NP-complete = hardest problems in NP, NP-hard includes problems outside NP",
+      "P=NP implications: all NP-hard problems tractable, cryptography as we know it collapses",
+      "P≠NP implications: confirms inherent intractability, validates cryptographic hardness assumptions"
+    ],
     "constraints": [],
-    "tags": ["p_vs_np", "complexity_theory", "multi_audience", "extreme"]
+    "tags": [
+      "p_vs_np",
+      "complexity_theory",
+      "multi_audience",
+      "extreme"
+    ]
   },
   {
     "id": "CT043",
@@ -511,9 +961,21 @@
     "question": "You are designing the consistency model for a globally distributed key-value store used for financial transactions. Users expect: (1) a write in Tokyo to be visible in London within 200ms, (2) two concurrent writes to the same key should produce a deterministic result, (3) reads should never return a value older than the most recent write from the same client. State which CAP theorem properties you can and cannot satisfy simultaneously, design a consistency model that satisfies as many requirements as possible, and describe what you explicitly give up.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["CAP: You can have CP or AP, not CAP simultaneously. For global distribution with partition tolerance, choose between consistency and availability.", "Requirement 3 (read-your-writes) is possible with session tokens that route reads to same replica the write was on", "Requirement 2 (deterministic concurrent writes) requires consensus or CAS — implies strong consistency, implies either increased latency or potential unavailability", "200ms Tokyo-to-London is physically achievable (RTT ~250ms with fiber, so tight) but requires async replication with bounded staleness", "Solution: eventual consistency with read-your-writes + CRDT or last-write-wins with timestamps for concurrent writes + bounded staleness of 200ms SLA", "Explicit give-up: strict linearizability across all clients (req 2 and req 3 conflict — can't have both for all clients simultaneously with partition tolerance)"],
+    "rubric": [
+      "CAP: You can have CP or AP, not CAP simultaneously. For global distribution with partition tolerance, choose between consistency and availability.",
+      "Requirement 3 (read-your-writes) is possible with session tokens that route reads to same replica the write was on",
+      "Requirement 2 (deterministic concurrent writes) requires consensus or CAS — implies strong consistency, implies either increased latency or potential unavailability",
+      "200ms Tokyo-to-London is physically achievable (RTT ~250ms with fiber, so tight) but requires async replication with bounded staleness",
+      "Solution: eventual consistency with read-your-writes + CRDT or last-write-wins with timestamps for concurrent writes + bounded staleness of 200ms SLA",
+      "Explicit give-up: strict linearizability across all clients (req 2 and req 3 conflict — can't have both for all clients simultaneously with partition tolerance)"
+    ],
     "constraints": [],
-    "tags": ["cap_theorem", "distributed_consistency", "financial_systems", "extreme"]
+    "tags": [
+      "cap_theorem",
+      "distributed_consistency",
+      "financial_systems",
+      "extreme"
+    ]
   },
   {
     "id": "CT044",
@@ -523,9 +985,22 @@
     "question": "A transformer language model generates tokens auto-regressively. Each new token requires running a full forward pass through n layers, attending to all previous tokens. For a 1000-token context and 96 layers, this is extremely slow. Describe: (1) the KV cache mechanism and exactly what it avoids recomputing, (2) its memory cost as a formula, (3) why it trades memory for compute, (4) what 'attention sink' behavior is and how it limits naive KV cache compression, (5) what Sliding Window Attention and H2O (Heavy Hitter Oracle) do to address memory constraints.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["KV cache: stores key and value matrices for each token in each layer so they don't need to be recomputed for subsequent token generation", "Memory cost: 2 × n_layers × seq_len × d_model × sizeof(dtype) per batch element", "Trade-off: O(n) memory per token vs. re-computing O(n²) attention for each new token", "Attention sink: initial tokens (especially token 0) receive disproportionately high attention across all layers — cannot be evicted without quality loss", "SWA: keep only last k tokens in cache, discarding earlier ones. Simple but misses long-range dependencies", "H2O: evict tokens with lowest accumulated attention scores except attention sinks, keeping heavy hitters — adaptive and more quality-preserving"],
+    "rubric": [
+      "KV cache: stores key and value matrices for each token in each layer so they don't need to be recomputed for subsequent token generation",
+      "Memory cost: 2 × n_layers × seq_len × d_model × sizeof(dtype) per batch element",
+      "Trade-off: O(n) memory per token vs. re-computing O(n²) attention for each new token",
+      "Attention sink: initial tokens (especially token 0) receive disproportionately high attention across all layers — cannot be evicted without quality loss",
+      "SWA: keep only last k tokens in cache, discarding earlier ones. Simple but misses long-range dependencies",
+      "H2O: evict tokens with lowest accumulated attention scores except attention sinks, keeping heavy hitters — adaptive and more quality-preserving"
+    ],
     "constraints": [],
-    "tags": ["transformers", "kv_cache", "attention_sink", "extreme", "llm_optimization"]
+    "tags": [
+      "transformers",
+      "kv_cache",
+      "attention_sink",
+      "extreme",
+      "llm_optimization"
+    ]
   },
   {
     "id": "CT045",
@@ -535,9 +1010,22 @@
     "question": "A distributed database is exhibiting 'write skew' anomalies. Two concurrent transactions both read a condition as true, both proceed based on that condition, and together their writes violate an invariant that neither would have violated alone. Example: two doctors both check 'is at least one doctor on call?' (both see yes), both go off call, leaving zero doctors on call. Explain: (1) why this is NOT a dirty read, lost update, or phantom read, (2) what isolation level prevents it and why, (3) why Snapshot Isolation (used in many databases) does NOT prevent write skew, (4) the most practical solution.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Not dirty read: no uncommitted data read. Not lost update: no overwrite of same value. Not phantom: no new rows inserted that change predicate.", "Write skew: two transactions read overlapping data, write to disjoint data, together violating an invariant", "Prevention requires Serializable isolation (SSI or 2PL)", "Snapshot Isolation: each transaction sees a consistent snapshot at start time, but writes are committed independently. Both transactions see the pre-update snapshot and don't observe each other's writes.", "SSI (Serializable Snapshot Isolation) detects write skew by tracking anti-dependencies and aborting if a cycle is detected", "Practical solution: SELECT FOR UPDATE to acquire write locks on read rows, or use SSI (PostgreSQL 9.1+), or application-level locks"],
+    "rubric": [
+      "Not dirty read: no uncommitted data read. Not lost update: no overwrite of same value. Not phantom: no new rows inserted that change predicate.",
+      "Write skew: two transactions read overlapping data, write to disjoint data, together violating an invariant",
+      "Prevention requires Serializable isolation (SSI or 2PL)",
+      "Snapshot Isolation: each transaction sees a consistent snapshot at start time, but writes are committed independently. Both transactions see the pre-update snapshot and don't observe each other's writes.",
+      "SSI (Serializable Snapshot Isolation) detects write skew by tracking anti-dependencies and aborting if a cycle is detected",
+      "Practical solution: SELECT FOR UPDATE to acquire write locks on read rows, or use SSI (PostgreSQL 9.1+), or application-level locks"
+    ],
     "constraints": [],
-    "tags": ["write_skew", "isolation_levels", "snapshot_isolation", "extreme", "database_internals"]
+    "tags": [
+      "write_skew",
+      "isolation_levels",
+      "snapshot_isolation",
+      "extreme",
+      "database_internals"
+    ]
   },
   {
     "id": "CT046",
@@ -547,9 +1035,21 @@
     "question": "You want to build a search engine for a 10 billion document corpus. When a user searches for a phrase like 'machine learning edge cases', you must return the top 10 most relevant documents in under 100ms. Describe the complete algorithmic pipeline from indexing to query serving, including: (1) the inverted index structure, (2) how TF-IDF or BM25 works, (3) the role of posting list intersection, (4) how WAND (Weak AND) or MaxScore enables early termination, (5) what approximate nearest neighbor search adds when using dense vector representations.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Inverted index: maps each term to a sorted list of (doc_id, term_frequency) pairs", "TF-IDF/BM25: scores documents by term frequency in document vs. rarity across corpus; BM25 adds length normalization", "Posting list intersection: for multi-term queries, intersect lists to find docs containing all terms (AND) or merge for OR", "WAND/MaxScore: maintain upper bound scores per term, skip doc_ids that cannot possibly make the top-k, enabling early exit from posting list traversal", "Dense vectors: encode query and documents as vectors, ANN (FAISS, ScaNN) finds semantically similar docs without exact term match; hybrid sparse+dense retrieval (SPLADE, ColBERT) combines both"],
+    "rubric": [
+      "Inverted index: maps each term to a sorted list of (doc_id, term_frequency) pairs",
+      "TF-IDF/BM25: scores documents by term frequency in document vs. rarity across corpus; BM25 adds length normalization",
+      "Posting list intersection: for multi-term queries, intersect lists to find docs containing all terms (AND) or merge for OR",
+      "WAND/MaxScore: maintain upper bound scores per term, skip doc_ids that cannot possibly make the top-k, enabling early exit from posting list traversal",
+      "Dense vectors: encode query and documents as vectors, ANN (FAISS, ScaNN) finds semantically similar docs without exact term match; hybrid sparse+dense retrieval (SPLADE, ColBERT) combines both"
+    ],
     "constraints": [],
-    "tags": ["search_engine", "inverted_index", "bm25", "wand", "extreme"]
+    "tags": [
+      "search_engine",
+      "inverted_index",
+      "bm25",
+      "wand",
+      "extreme"
+    ]
   },
   {
     "id": "CT047",
@@ -559,9 +1059,21 @@
     "question": "A developer proposes the following algorithm for the Traveling Salesman Problem (TSP) and claims it is polynomial: 'Try all permutations of cities, keep track of the shortest. But use branch-and-bound to prune subtrees where the partial path is already longer than the best complete solution found so far.' Analyze this claim. What is the worst-case complexity? What is the average-case improvement over naive? Does this algorithm resolve P vs NP?",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Worst-case: still O(n!) because in the worst case (e.g., all paths similar length), no pruning occurs and all permutations are explored", "Average-case: often much better than O(n!), especially with good lower bounds and good initial solutions (heuristics to set upper bound early)", "Does NOT resolve P vs NP: worst case is still exponential; polynomial average case on some instances doesn't make algorithm polynomial", "Branch and bound is an exact algorithm, not an approximation; can find optimal but with no polynomial guarantee", "The claim is false: polynomial claim requires polynomial worst-case complexity"],
+    "rubric": [
+      "Worst-case: still O(n!) because in the worst case (e.g., all paths similar length), no pruning occurs and all permutations are explored",
+      "Average-case: often much better than O(n!), especially with good lower bounds and good initial solutions (heuristics to set upper bound early)",
+      "Does NOT resolve P vs NP: worst case is still exponential; polynomial average case on some instances doesn't make algorithm polynomial",
+      "Branch and bound is an exact algorithm, not an approximation; can find optimal but with no polynomial guarantee",
+      "The claim is false: polynomial claim requires polynomial worst-case complexity"
+    ],
     "constraints": [],
-    "tags": ["tsp", "branch_and_bound", "np_hard", "complexity", "extreme"]
+    "tags": [
+      "tsp",
+      "branch_and_bound",
+      "np_hard",
+      "complexity",
+      "extreme"
+    ]
   },
   {
     "id": "CT048",
@@ -571,9 +1083,21 @@
     "question": "Design the garbage collector for a programming language runtime. You must support: low pause times (<5ms), high throughput, and correct collection of all unreachable objects including cycles. Describe: (1) why reference counting alone fails for cycles, (2) the trade-off between stop-the-world, incremental, and concurrent GC, (3) the tri-color marking invariant and why it's needed in concurrent GC, (4) how write barriers work, (5) what generational hypothesis is and how it improves throughput.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Ref counting + cycles: cycle members all have non-zero counts, never reach zero, never collected (memory leak)", "Stop-the-world: simple, no invariants needed, but causes pause. Incremental: interleaves GC with mutator, reduces pause but needs invariants. Concurrent: GC runs in parallel thread, needs barriers", "Tri-color: white (not seen), gray (seen, children not processed), black (seen, children processed). Invariant: no black object points to white (strong tri-color) or concurrent mutation re-grays black objects", "Write barrier: intercepts pointer writes by mutator during concurrent GC to maintain tri-color invariant", "Generational: most objects die young; collect young generation frequently (cheap), old generation rarely. High allocation rate means high reclamation from young gen alone"],
+    "rubric": [
+      "Ref counting + cycles: cycle members all have non-zero counts, never reach zero, never collected (memory leak)",
+      "Stop-the-world: simple, no invariants needed, but causes pause. Incremental: interleaves GC with mutator, reduces pause but needs invariants. Concurrent: GC runs in parallel thread, needs barriers",
+      "Tri-color: white (not seen), gray (seen, children not processed), black (seen, children processed). Invariant: no black object points to white (strong tri-color) or concurrent mutation re-grays black objects",
+      "Write barrier: intercepts pointer writes by mutator during concurrent GC to maintain tri-color invariant",
+      "Generational: most objects die young; collect young generation frequently (cheap), old generation rarely. High allocation rate means high reclamation from young gen alone"
+    ],
     "constraints": [],
-    "tags": ["garbage_collection", "tri_color", "generational_gc", "write_barrier", "extreme"]
+    "tags": [
+      "garbage_collection",
+      "tri_color",
+      "generational_gc",
+      "write_barrier",
+      "extreme"
+    ]
   },
   {
     "id": "CT049",
@@ -583,9 +1107,22 @@
     "question": "You have a matrix multiplication kernel that runs on a CPU. The naive O(n³) implementation achieves only 5% of peak theoretical FLOPS on modern hardware. Describe, in order of impact: (1) why naive triple-loop matmul achieves so little of peak FLOPS, (2) what cache blocking (tiling) does and why it helps, (3) what SIMD vectorization adds, (4) how BLAS libraries achieve near-peak performance, (5) why this analysis changes fundamentally for GPU matrix multiplication.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Naive: poor cache utilization — accesses B matrix column-wise (non-sequential in row-major), causing cache misses for every multiply. Peak FLOPS idle while waiting for memory.", "Cache blocking: divide matrices into tiles that fit in L1/L2 cache. Each tile is loaded once and reused for all multiplications involving it.", "SIMD: process multiple float/double values in parallel with single instruction (AVX2: 8 floats, AVX-512: 16 floats). Increases arithmetic throughput per clock.", "BLAS: combines tiling, SIMD, prefetching, register blocking, and unrolling. Tuned per microarchitecture. Approaches peak FLOPS.", "GPU: massively parallel SMs, HBM bandwidth >> cache hierarchy. Tensor Cores do 4x4 matrix multiply in one op. Warp-level execution means different analysis than CPU cache hierarchy."],
+    "rubric": [
+      "Naive: poor cache utilization — accesses B matrix column-wise (non-sequential in row-major), causing cache misses for every multiply. Peak FLOPS idle while waiting for memory.",
+      "Cache blocking: divide matrices into tiles that fit in L1/L2 cache. Each tile is loaded once and reused for all multiplications involving it.",
+      "SIMD: process multiple float/double values in parallel with single instruction (AVX2: 8 floats, AVX-512: 16 floats). Increases arithmetic throughput per clock.",
+      "BLAS: combines tiling, SIMD, prefetching, register blocking, and unrolling. Tuned per microarchitecture. Approaches peak FLOPS.",
+      "GPU: massively parallel SMs, HBM bandwidth >> cache hierarchy. Tensor Cores do 4x4 matrix multiply in one op. Warp-level execution means different analysis than CPU cache hierarchy."
+    ],
     "constraints": [],
-    "tags": ["matmul", "cache_blocking", "simd", "blas", "extreme", "performance"]
+    "tags": [
+      "matmul",
+      "cache_blocking",
+      "simd",
+      "blas",
+      "extreme",
+      "performance"
+    ]
   },
   {
     "id": "CT050",
@@ -595,8 +1132,21 @@
     "question": "You need to build a system that can answer 'at what time was the value of key K equal to V?' queries on a key-value store that has been operating for 5 years with 10,000 writes/second. The full history is 15TB. Queries must respond in under 1 second. You cannot store all 15TB in memory. Design the complete storage and indexing strategy, including: how you partition the data, what index structures enable sub-second lookup, what you sacrifice to achieve this performance, and how you handle the specific case where the same key was written 10 million times.",
     "scoring": "rubric",
     "expected_answer": null,
-    "rubric": ["Partitioning: by key (consistent hashing or range) and by time (time-series segments). Hot recent data in fast storage, cold historical data in compressed object storage.", "Index: secondary index mapping (key, value) → sorted list of time ranges. This is a secondary inverted index on value.", "For 10M writes to same key: inverted index per (key, value) pair → list of time intervals. Efficient range query on this list.", "Performance: store index in columnar format (Parquet/ORC) on SSD; use bloom filters per time segment to skip segments that don't contain key", "Sacrifice: near-real-time write availability during compaction; eventual consistency on very recent writes; storage overhead of index", "Sub-second query: bloom filter eliminates most segments, binary search on remaining segment index, decompress only matching block"],
+    "rubric": [
+      "Partitioning: by key (consistent hashing or range) and by time (time-series segments). Hot recent data in fast storage, cold historical data in compressed object storage.",
+      "Index: secondary index mapping (key, value) → sorted list of time ranges. This is a secondary inverted index on value.",
+      "For 10M writes to same key: inverted index per (key, value) pair → list of time intervals. Efficient range query on this list.",
+      "Performance: store index in columnar format (Parquet/ORC) on SSD; use bloom filters per time segment to skip segments that don't contain key",
+      "Sacrifice: near-real-time write availability during compaction; eventual consistency on very recent writes; storage overhead of index",
+      "Sub-second query: bloom filter eliminates most segments, binary search on remaining segment index, decompress only matching block"
+    ],
     "constraints": [],
-    "tags": ["time_series", "historical_queries", "secondary_index", "extreme", "storage"]
+    "tags": [
+      "time_series",
+      "historical_queries",
+      "secondary_index",
+      "extreme",
+      "storage"
+    ]
   }
 ]

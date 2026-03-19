@@ -55,9 +55,9 @@ class MiniTransformerBlock(nn.Module):
             nn.Dropout(dropout),
         )
 
-    def forward(self, x, mask=None):
+    def forward(self, x):
         h = self.ln1(x)
-        h, _ = self.attn(h, h, h, attn_mask=mask, is_causal=True)
+        h, _ = self.attn(h, h, h, is_causal=True)
         x = x + h
         x = x + self.ff(self.ln2(x))
         return x

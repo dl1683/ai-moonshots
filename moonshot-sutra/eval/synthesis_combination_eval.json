@@ -3,7 +3,7 @@
     "id": "SC001",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "How is debugging software similar to diagnosing a medical condition? List 3 structural parallels and explain how one technique from medicine could improve software debugging.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -23,7 +23,7 @@
     "id": "SC002",
     "category": "synthesis_combination",
     "subcategory": "creative_problem_solving",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "A small bakery wants to reduce food waste AND attract new customers. Propose one single idea that addresses both goals simultaneously. Explain how it serves each goal.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -42,7 +42,7 @@
     "id": "SC003",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "How is a library catalog similar to the index of a book? How is it different? Name one design principle from library science that web search engines have adopted, and one they have not.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -63,7 +63,7 @@
     "id": "SC004",
     "category": "synthesis_combination",
     "subcategory": "idea_integration",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Combine the concept of a 'warranty' from consumer products with the concept of 'version control' from software. What would a 'version-controlled warranty' look like? Give a concrete example.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -102,13 +102,13 @@
     "id": "SC006",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "How is writing a recipe similar to writing a computer program? Name 3 parallels. What is one thing that makes a recipe fundamentally harder to execute correctly than a program, despite being 'simpler'?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "Three genuine parallels (e.g., sequential instructions, conditionals, loops, parameters)",
-      "The 'harder' aspect is substantive \u00e2\u20ac\u201d points to something like ambiguous natural language, tacit knowledge, physical variability, or sensory judgment that programs don't require"
+      "The 'harder' aspect is substantive â€” points to something like ambiguous natural language, tacit knowledge, physical variability, or sensory judgment that programs don't require"
     ],
     "tags": [
       "cooking",
@@ -121,7 +121,7 @@
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
     "difficulty": "easy",
-    "question": "A town bans plastic bags to reduce waste. Describe two unintended second-order consequences \u00e2\u20ac\u201d one positive and one negative \u00e2\u20ac\u201d that could emerge from this policy.",
+    "question": "A town bans plastic bags to reduce waste. Describe two unintended second-order consequences â€” one positive and one negative â€” that could emerge from this policy.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -139,7 +139,7 @@
     "id": "SC008",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "How is the process of scientific peer review similar to the process of open-source code review? Identify 2 similarities and 2 meaningful differences.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -158,7 +158,7 @@
     "id": "SC009",
     "category": "synthesis_combination",
     "subcategory": "creative_problem_solving",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Apply the concept of 'triage' from emergency medicine to email inbox management. What would a triage-based email system look like? Name two practical rules it would use.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -178,12 +178,12 @@
     "id": "SC010",
     "category": "synthesis_combination",
     "subcategory": "idea_integration",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Combine the idea of 'compound interest' from finance with 'deliberate practice' from skill acquisition. What would 'compound practice' look like? Why might it grow faster than linear practice?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The combination is coherent \u00e2\u20ac\u201d identifies how skills build on themselves non-linearly",
+      "The combination is coherent â€” identifies how skills build on themselves non-linearly",
       "Explains a specific mechanism for super-linear growth (not just 'you get better')",
       "Concrete example of what compound practice looks like in a specific domain"
     ],
@@ -236,14 +236,14 @@
     "id": "SC013",
     "category": "synthesis_combination",
     "subcategory": "novel_combination",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "What would a 'Constitution' for an AI system look like if it borrowed the structure of a national constitution? Name 3 articles it would need and explain what each would govern.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "Three articles are genuinely governance-level (not just feature lists)",
       "Each article addresses a real failure mode or rights-type concern in AI",
-      "The constitutional framing adds something \u00e2\u20ac\u201d separation of concerns, amendment process, or rights protections"
+      "The constitutional framing adds something â€” separation of concerns, amendment process, or rights protections"
     ],
     "tags": [
       "AI governance",
@@ -261,7 +261,7 @@
     "expected_answer": null,
     "rubric": [
       "The feedback loop is closed (traces back to affect the original variable)",
-      "The mechanism is plausible (e.g., student burnout \u00e2\u2020\u2019 less engagement \u00e2\u2020\u2019 worse learning \u00e2\u2020\u2019 worse scores)",
+      "The mechanism is plausible (e.g., student burnout â†’ less engagement â†’ worse learning â†’ worse scores)",
       "It's genuinely a loop, not just a side effect"
     ],
     "tags": [
@@ -292,7 +292,7 @@
     "id": "SC016",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "Compare how a jazz musician improvises with how a stand-up comedian improvises. What is the same structural process underlying both? What constraint makes each harder than the other's domain?",
     "scoring": "rubric",
     "expected_answer": null,
@@ -371,7 +371,7 @@
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
     "difficulty": "easy",
-    "question": "A company gives all employees a 20% raise. Describe two systemic effects \u00e2\u20ac\u201d beyond individual employee satisfaction \u00e2\u20ac\u201d that ripple through the organization and its environment.",
+    "question": "A company gives all employees a 20% raise. Describe two systemic effects â€” beyond individual employee satisfaction â€” that ripple through the organization and its environment.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -389,14 +389,14 @@
     "id": "SC021",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "Thermodynamic entropy and Shannon information entropy share the same mathematical form but were discovered independently. Explain in your own words why they are structurally the same. Then: does this mean information has physical weight? Defend your answer.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "Correctly identifies the shared structure: both measure spread/uncertainty over a probability distribution",
       "Explains Boltzmann's H-theorem or Gibbs entropy in terms that map to Shannon's formulation",
-      "The physical weight question is engaged substantively \u00e2\u20ac\u201d references Landauer's principle or equivalent",
+      "The physical weight question is engaged substantively â€” references Landauer's principle or equivalent",
       "Takes a defensible position and does not merely equivocate"
     ],
     "tags": [
@@ -410,7 +410,7 @@
     "id": "SC022",
     "category": "synthesis_combination",
     "subcategory": "creative_problem_solving",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "A city is experiencing both a housing shortage and rising flood risk. Propose a single intervention that addresses both problems simultaneously. Explain the mechanism for each, and identify one way the two goals might conflict.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -418,7 +418,7 @@
       "The intervention is specific and actionable (not 'build better housing')",
       "Mechanism for housing is clear",
       "Mechanism for flood risk is clear",
-      "The conflict is genuine and not dismissed \u00e2\u20ac\u201d reveals a real tradeoff"
+      "The conflict is genuine and not dismissed â€” reveals a real tradeoff"
     ],
     "tags": [
       "urban planning",
@@ -431,7 +431,7 @@
     "id": "SC023",
     "category": "synthesis_combination",
     "subcategory": "idea_integration",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "Game theory studies strategic interactions where outcomes depend on others' choices. Evolutionary biology studies how traits spread through populations. These are often treated as separate fields. Identify the deep structural isomorphism between them, and name one insight that can be transferred from evolutionary biology to improve game-theoretic models of human behavior.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -450,7 +450,7 @@
     "id": "SC024",
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "Social media platforms optimize for engagement. Using the concept of 'tragedy of the commons', explain how individual rational behavior on these platforms produces a collective outcome that no individual user wants. Then propose one structural change to the platform that addresses the commons problem without banning any content.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -470,7 +470,7 @@
     "id": "SC025",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "question": "Both natural languages and programming languages have syntax and semantics, but the relationship between them differs fundamentally. Explain this difference. Then: what would a programming language look like if it adopted the semantic flexibility of natural language? What capability would you gain and what would you lose?",
     "scoring": "rubric",
     "expected_answer": null,
@@ -600,7 +600,7 @@
     "rubric": [
       "The functor concept is correctly understood (structure-preserving map, not just analogy)",
       "The definition between physics and biology is concrete (maps specific objects and morphisms)",
-      "The known example is real (e.g., statistical mechanics \u00e2\u2020\u201d information theory, reaction networks \u00e2\u2020\u201d Petri nets)"
+      "The known example is real (e.g., statistical mechanics â†” information theory, reaction networks â†” Petri nets)"
     ],
     "tags": [
       "mathematics",
@@ -614,7 +614,7 @@
     "category": "synthesis_combination",
     "subcategory": "creative_problem_solving",
     "difficulty": "medium",
-    "question": "The 'marshmallow test' measures delayed gratification in children, which predicts life outcomes. But the test has been criticized because children from unstable environments rationally should not delay \u00e2\u20ac\u201d the future is uncertain. Design a revised test that can distinguish rational present-bias from irrational impulsivity. What does this revision reveal about the original test's assumptions?",
+    "question": "The 'marshmallow test' measures delayed gratification in children, which predicts life outcomes. But the test has been criticized because children from unstable environments rationally should not delay â€” the future is uncertain. Design a revised test that can distinguish rational present-bias from irrational impulsivity. What does this revision reveal about the original test's assumptions?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -655,7 +655,7 @@
     "category": "synthesis_combination",
     "subcategory": "perspective_synthesis",
     "difficulty": "medium",
-    "question": "GPT-style language models are described as 'stochastic parrots' by critics and as 'emergent reasoners' by defenders. These are not just different labels \u00e2\u20ac\u201d they imply different causal models of what the system does. Construct a test that would empirically distinguish between these two causal models. What would each model predict that the other would not?",
+    "question": "GPT-style language models are described as 'stochastic parrots' by critics and as 'emergent reasoners' by defenders. These are not just different labels â€” they imply different causal models of what the system does. Construct a test that would empirically distinguish between these two causal models. What would each model predict that the other would not?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -701,7 +701,7 @@
     "expected_answer": null,
     "rubric": [
       "The counterpoint structure is correctly mapped (multiple independent but harmonically related lines)",
-      "The argument design is specific \u00e2\u20ac\u201d not just 'consider multiple perspectives'",
+      "The argument design is specific â€” not just 'consider multiple perspectives'",
       "The difference from standard argument structure is identified at the structural level",
       "Provides a sketch or example of what such an argument would look like"
     ],
@@ -777,13 +777,13 @@
     "category": "synthesis_combination",
     "subcategory": "perspective_synthesis",
     "difficulty": "medium",
-    "question": "Consider the same historical event \u00e2\u20ac\u201d the invention of the printing press \u00e2\u20ac\u201d from the perspective of a medieval scribe, a Renaissance humanist, a 16th-century monarch, and a modern information theorist. What would each see as the press's most important effect? Synthesize these four views into a single statement about what the printing press actually changed.",
+    "question": "Consider the same historical event â€” the invention of the printing press â€” from the perspective of a medieval scribe, a Renaissance humanist, a 16th-century monarch, and a modern information theorist. What would each see as the press's most important effect? Synthesize these four views into a single statement about what the printing press actually changed.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "Each perspective is historically grounded, not anachronistic",
       "Each perspective identifies a genuinely different dimension of impact",
-      "The synthesis is not just a list \u00e2\u20ac\u201d it produces a higher-order claim about what changed",
+      "The synthesis is not just a list â€” it produces a higher-order claim about what changed",
       "The synthesized claim is non-obvious and would not be reached from any single perspective"
     ],
     "tags": [
@@ -797,7 +797,7 @@
     "id": "SC041",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "In music theory, a chord that contains a tritone (augmented fourth) creates tension that demands resolution. In narrative theory, what is the structural equivalent of a tritone, and why does it create the same kind of 'mandatory resolution' feeling? Name a novel or film that exploits this mechanism at maximum intensity.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -817,14 +817,14 @@
     "id": "SC042",
     "category": "synthesis_combination",
     "subcategory": "idea_integration",
-    "difficulty": "medium",
-    "question": "Urban planning uses the concept of 'desire paths' \u00e2\u20ac\u201d the trails people create by walking where they actually want to go, often different from designed paths. Apply this concept to user interface design, legal systems, and organizational processes. In each case, what is a desire path and what should a designer do about it?",
+    "difficulty": "extreme",
+    "question": "Urban planning uses the concept of 'desire paths' â€” the trails people create by walking where they actually want to go, often different from designed paths. Apply this concept to user interface design, legal systems, and organizational processes. In each case, what is a desire path and what should a designer do about it?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "Each application is specific and non-trivial",
       "The desire path in each domain is identified correctly",
-      "The designer's response is reasoned \u00e2\u20ac\u201d not just 'follow the desire path' or 'enforce the official path'",
+      "The designer's response is reasoned â€” not just 'follow the desire path' or 'enforce the official path'",
       "The tension between designed intent and natural behavior is preserved"
     ],
     "tags": [
@@ -839,8 +839,8 @@
     "id": "SC043",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "medium",
-    "question": "The concept of 'overfitting' in machine learning \u00e2\u20ac\u201d where a model memorizes training data instead of learning general patterns \u00e2\u20ac\u201d has an exact structural parallel in some human cognitive failure. Identify this cognitive failure, explain the structural parallel, and propose how the ML solution (regularization) could be applied to reduce the cognitive failure.",
+    "difficulty": "extreme",
+    "question": "The concept of 'overfitting' in machine learning â€” where a model memorizes training data instead of learning general patterns â€” has an exact structural parallel in some human cognitive failure. Identify this cognitive failure, explain the structural parallel, and propose how the ML solution (regularization) could be applied to reduce the cognitive failure.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -859,8 +859,8 @@
     "id": "SC044",
     "category": "synthesis_combination",
     "subcategory": "creative_problem_solving",
-    "difficulty": "medium",
-    "question": "Coral reefs create their own favorable conditions \u00e2\u20ac\u201d they build structure that shelters fish, which excrete nutrients that feed algae, which feed the reef. This is autocatalytic self-organization. Design an autocatalytic urban neighborhood: a community intervention where the first wave of improvement creates conditions that make further improvement more likely without external subsidy. Be specific about the catalytic chain.",
+    "difficulty": "extreme",
+    "question": "Coral reefs create their own favorable conditions â€” they build structure that shelters fish, which excrete nutrients that feed algae, which feed the reef. This is autocatalytic self-organization. Design an autocatalytic urban neighborhood: a community intervention where the first wave of improvement creates conditions that make further improvement more likely without external subsidy. Be specific about the catalytic chain.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -880,7 +880,7 @@
     "id": "SC045",
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "In economics, Goodhart's Law states: 'When a measure becomes a target, it ceases to be a good measure.' In information theory, there is a related concept about the limits of compressed signals. Identify the information-theoretic analog of Goodhart's Law and explain why both phenomena arise from the same underlying principle.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -900,13 +900,13 @@
     "id": "SC046",
     "category": "synthesis_combination",
     "subcategory": "novel_combination",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Combine the concept of 'double-entry bookkeeping' (every transaction recorded as both a debit and a credit, ensuring the system is always balanced) with the design of AI training pipelines. What would a 'double-entry' AI training system look like? What invariant would it maintain, and what class of errors would it catch that current systems miss?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "The double-entry principle is correctly understood: conservation invariant maintained through dual recording",
-      "The AI training application is specific \u00e2\u20ac\u201d identifies what dual quantity is tracked",
+      "The AI training application is specific â€” identifies what dual quantity is tracked",
       "The invariant is stated precisely",
       "At least one class of currently missed errors is identified"
     ],
@@ -921,7 +921,7 @@
     "id": "SC047",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "How is the relationship between a compiler and source code similar to the relationship between an economy and price signals? Identify 3 structural parallels. Then explain: what happens to an economy when prices are 'type-checked' (price controls imposed), and why do economists generally predict the same class of problems that happen when you suppress compiler errors?",
     "scoring": "rubric",
     "expected_answer": null,
@@ -941,7 +941,7 @@
     "id": "SC048",
     "category": "synthesis_combination",
     "subcategory": "idea_integration",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "Cryptographic hash functions have the property that small changes in input produce completely different outputs (avalanche effect). Apply this concept to organizational communication: describe a 'communication avalanche effect' in organizations. Under what conditions does it occur, and design one structural intervention to dampen it.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -961,7 +961,7 @@
     "id": "SC049",
     "category": "synthesis_combination",
     "subcategory": "perspective_synthesis",
-    "difficulty": "medium",
+    "difficulty": "extreme",
     "question": "A philosopher, a neuroscientist, and a computer scientist are each asked: 'What is a memory?' Each gives a different answer. Identify the core of each answer, find the hidden assumption that each discipline makes that the others reject, and synthesize a definition that is consistent with all three.",
     "scoring": "rubric",
     "expected_answer": null,
@@ -983,8 +983,8 @@
     "id": "SC050",
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
-    "difficulty": "medium",
-    "question": "In immunology, the adaptive immune system generates diverse antibodies through V(D)J recombination \u00e2\u20ac\u201d random assembly of gene segments \u00e2\u20ac\u201d and then selects for those that bind the target. How is this process structurally identical to how some machine learning methods generate and select hypotheses? Name the ML technique, identify 3 formal parallels, and explain one way the biological version is more sophisticated.",
+    "difficulty": "extreme",
+    "question": "In immunology, the adaptive immune system generates diverse antibodies through V(D)J recombination â€” random assembly of gene segments â€” and then selects for those that bind the target. How is this process structurally identical to how some machine learning methods generate and select hypotheses? Name the ML technique, identify 3 formal parallels, and explain one way the biological version is more sophisticated.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1009,7 +1009,7 @@
     "expected_answer": null,
     "rubric": [
       "Three differences are structural and accurate (e.g., gradient vs. derivative-free, population-based vs. point, genotype-phenotype mapping, variation operators)",
-      "The hybrid algorithm is specific \u00e2\u20ac\u201d not just 'use both' but describes what mechanism from each is combined and how",
+      "The hybrid algorithm is specific â€” not just 'use both' but describes what mechanism from each is combined and how",
       "The problem domain choice is justified by the specific hybrid's properties"
     ],
     "tags": [
@@ -1024,7 +1024,7 @@
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
     "difficulty": "hard",
-    "question": "In ecology, the 'intermediate disturbance hypothesis' says biodiversity is highest at intermediate levels of disturbance \u00e2\u20ac\u201d too little disturbance leads to competitive exclusion, too much leads to population collapse. Apply this hypothesis to three different domains: financial markets, scientific research communities, and democratic political systems. For each, identify what 'disturbance' means, what 'biodiversity' means, and whether the hypothesis holds.",
+    "question": "In ecology, the 'intermediate disturbance hypothesis' says biodiversity is highest at intermediate levels of disturbance â€” too little disturbance leads to competitive exclusion, too much leads to population collapse. Apply this hypothesis to three different domains: financial markets, scientific research communities, and democratic political systems. For each, identify what 'disturbance' means, what 'biodiversity' means, and whether the hypothesis holds.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1047,19 +1047,19 @@
     "category": "synthesis_combination",
     "subcategory": "idea_integration",
     "difficulty": "hard",
-    "question": "G\u00c3\u00b6del's incompleteness theorems show that any sufficiently powerful formal system contains true statements it cannot prove within itself. Does this have implications for AI systems that reason about their own capabilities? Construct the most rigorous argument you can for whether an AI could, in principle, fully model its own cognitive limitations. Where does the G\u00c3\u00b6del analogy break down?",
+    "question": "GÃ¶del's incompleteness theorems show that any sufficiently powerful formal system contains true statements it cannot prove within itself. Does this have implications for AI systems that reason about their own capabilities? Construct the most rigorous argument you can for whether an AI could, in principle, fully model its own cognitive limitations. Where does the GÃ¶del analogy break down?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "The incompleteness theorems are correctly stated and the conditions for their application are respected",
       "The argument for/against AI self-modeling is logically structured",
-      "The breakdowns of the analogy are identified \u00e2\u20ac\u201d what makes AI cognition different from formal systems",
-      "The response does not commit the common error of applying G\u00c3\u00b6del to systems that don't satisfy the theorem's premises"
+      "The breakdowns of the analogy are identified â€” what makes AI cognition different from formal systems",
+      "The response does not commit the common error of applying GÃ¶del to systems that don't satisfy the theorem's premises"
     ],
     "tags": [
       "logic",
       "AI",
-      "G\u00c3\u00b6del",
+      "GÃ¶del",
       "self-reference",
       "philosophy of mind"
     ]
@@ -1069,12 +1069,12 @@
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
     "difficulty": "hard",
-    "question": "In physics, the renormalization group (RG) is a mathematical tool that explains how physical laws look different at different scales \u00e2\u20ac\u201d a 'zoom' operation that reveals which details matter at each scale. Argue that the concept of 'level of abstraction' in software engineering is the computational analog of the renormalization group. Where does this analogy hold precisely, where does it break, and what does the RG's success in physics predict about the best architecture for large software systems?",
+    "question": "In physics, the renormalization group (RG) is a mathematical tool that explains how physical laws look different at different scales â€” a 'zoom' operation that reveals which details matter at each scale. Argue that the concept of 'level of abstraction' in software engineering is the computational analog of the renormalization group. Where does this analogy hold precisely, where does it break, and what does the RG's success in physics predict about the best architecture for large software systems?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "The RG concept is correctly characterized (coarse-graining, fixed points, relevant vs irrelevant operators)",
-      "The software abstraction mapping is precise \u00e2\u20ac\u201d identifies what the coarse-graining operation is",
+      "The software abstraction mapping is precise â€” identifies what the coarse-graining operation is",
       "Breakdowns are specific and honest (where the analogy fails to be quantitative or predictive)",
       "The architectural prediction is derived from the analogy's logic, not just general software wisdom"
     ],
@@ -1094,7 +1094,7 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Two terrestrial phenomena are structurally parallel (not just thematically similar) \u00e2\u20ac\u201d the hiding incentive arises from the same mechanism",
+      "Two terrestrial phenomena are structurally parallel (not just thematically similar) â€” the hiding incentive arises from the same mechanism",
       "The coordination failure is correctly characterized as a game-theoretic equilibrium",
       "The proposed mechanism design is specific and addresses the structural cause (not just 'build trust')",
       "The response shows awareness of why existing mechanisms fail"
@@ -1111,7 +1111,7 @@
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
     "difficulty": "hard",
-    "question": "Consider three apparently distinct phenomena: (1) the Dunning-Kruger effect in individuals, (2) organizational groupthink, and (3) market bubbles. Argue that all three are instances of the same abstract failure mode in information processing systems. Formally define this failure mode. Then identify one structural property that, if present, prevents the failure mode \u00e2\u20ac\u201d and verify that it's present in all three systems that resist the pathology.",
+    "question": "Consider three apparently distinct phenomena: (1) the Dunning-Kruger effect in individuals, (2) organizational groupthink, and (3) market bubbles. Argue that all three are instances of the same abstract failure mode in information processing systems. Formally define this failure mode. Then identify one structural property that, if present, prevents the failure mode â€” and verify that it's present in all three systems that resist the pathology.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1138,7 +1138,7 @@
     "expected_answer": null,
     "rubric": [
       "The Kleiber's law mechanism is understood (fractal vascular networks, surface-to-volume ratio)",
-      "The mapping to AI is specific: body mass \u00e2\u2020\u2019 parameters/compute, metabolic rate \u00e2\u2020\u2019 something like capability or inference cost",
+      "The mapping to AI is specific: body mass â†’ parameters/compute, metabolic rate â†’ something like capability or inference cost",
       "The predicted exponent is derived from reasoning, not guessed",
       "The answer identifies what would need to be true about AI architecture for the sub-linear scaling to hold"
     ],
@@ -1154,7 +1154,7 @@
     "category": "synthesis_combination",
     "subcategory": "perspective_synthesis",
     "difficulty": "hard",
-    "question": "The concept of 'consciousness' is explained differently by (1) integrated information theory, (2) global workspace theory, (3) higher-order theories, and (4) eliminativist philosophy. These are not just different answers to the same question \u00e2\u20ac\u201d they are answers to subtly different questions. Identify what question each theory is actually answering. Then propose a single experimental result that would simultaneously support one theory and refute the others.",
+    "question": "The concept of 'consciousness' is explained differently by (1) integrated information theory, (2) global workspace theory, (3) higher-order theories, and (4) eliminativist philosophy. These are not just different answers to the same question â€” they are answers to subtly different questions. Identify what question each theory is actually answering. Then propose a single experimental result that would simultaneously support one theory and refute the others.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1197,7 +1197,7 @@
     "category": "synthesis_combination",
     "subcategory": "idea_integration",
     "difficulty": "hard",
-    "question": "Structural linguistics (Saussure) argues that meaning is relational \u00e2\u20ac\u201d a word's meaning is defined by its differences from other words, not by any intrinsic property. Apply this relational theory of meaning to: (1) the representation of concepts in neural network embeddings, (2) the value of money in an economy, and (3) the meaning of a gene in a genome. In each case, identify where the relational theory is empirically vindicated and where it breaks down.",
+    "question": "Structural linguistics (Saussure) argues that meaning is relational â€” a word's meaning is defined by its differences from other words, not by any intrinsic property. Apply this relational theory of meaning to: (1) the representation of concepts in neural network embeddings, (2) the value of money in an economy, and (3) the meaning of a gene in a genome. In each case, identify where the relational theory is empirically vindicated and where it breaks down.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1220,7 +1220,7 @@
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
     "difficulty": "hard",
-    "question": "In complex systems, 'catastrophic phase transitions' \u00e2\u20ac\u201d sudden shifts like ecosystem collapse, financial crashes, or epileptic seizures \u00e2\u20ac\u201d often share common early warning signals: critical slowing down, increased variance, and flickering. Design a monitoring system for organizational collapse that detects these same signatures in organizational data. Specify what you would measure as proxy for each warning signal.",
+    "question": "In complex systems, 'catastrophic phase transitions' â€” sudden shifts like ecosystem collapse, financial crashes, or epileptic seizures â€” often share common early warning signals: critical slowing down, increased variance, and flickering. Design a monitoring system for organizational collapse that detects these same signatures in organizational data. Specify what you would measure as proxy for each warning signal.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1283,13 +1283,13 @@
     "category": "synthesis_combination",
     "subcategory": "novel_combination",
     "difficulty": "hard",
-    "question": "In thermodynamics, a Maxwell's Demon is a hypothetical entity that sorts particles to violate the second law \u00e2\u20ac\u201d later shown to be impossible because the demon's memory erasure has an entropy cost. Apply this exactly to a proposed AI alignment mechanism: an AI 'overseer' that monitors another AI and corrects its behavior. What is the 'entropy cost' of the oversight, and does it defeat the purpose?",
+    "question": "In thermodynamics, a Maxwell's Demon is a hypothetical entity that sorts particles to violate the second law â€” later shown to be impossible because the demon's memory erasure has an entropy cost. Apply this exactly to a proposed AI alignment mechanism: an AI 'overseer' that monitors another AI and corrects its behavior. What is the 'entropy cost' of the oversight, and does it defeat the purpose?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "Maxwell's Demon is correctly characterized (Szilard, Landauer, the resolution)",
       "The mapping to AI oversight is precise: what is the demon, what is the entropy cost",
-      "The 'cost' in the AI case is specified \u00e2\u20ac\u201d computational, information-theoretic, or capability-related",
+      "The 'cost' in the AI case is specified â€” computational, information-theoretic, or capability-related",
       "The argument for whether this defeats the purpose is logically constructed"
     ],
     "tags": [
@@ -1324,12 +1324,12 @@
     "category": "synthesis_combination",
     "subcategory": "perspective_synthesis",
     "difficulty": "hard",
-    "question": "Consider the problem of 'alignment' \u00e2\u20ac\u201d ensuring AI systems pursue intended goals \u00e2\u20ac\u201d from four perspectives: (1) control theory (maintaining system within desired state space), (2) mechanism design (incentive alignment between principal and agent), (3) value learning (Bayesian inference about human preferences), and (4) virtue ethics (developing character traits). Each frames the problem differently. What would a unified theory of alignment look like that incorporates all four framings? Where do they irreducibly conflict?",
+    "question": "Consider the problem of 'alignment' â€” ensuring AI systems pursue intended goals â€” from four perspectives: (1) control theory (maintaining system within desired state space), (2) mechanism design (incentive alignment between principal and agent), (3) value learning (Bayesian inference about human preferences), and (4) virtue ethics (developing character traits). Each frames the problem differently. What would a unified theory of alignment look like that incorporates all four framings? Where do they irreducibly conflict?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "Each framework is accurately characterized and applied to alignment",
-      "The unified theory is more than a list \u00e2\u20ac\u201d it identifies what each contributes to a shared formalism",
+      "The unified theory is more than a list â€” it identifies what each contributes to a shared formalism",
       "Irreducible conflicts are identified (e.g., control theory assumes goals are known; value learning doesn't; virtue ethics doesn't have a clear optimization target)",
       "The response doesn't collapse the four into one by ignoring genuine tensions"
     ],
@@ -1367,7 +1367,7 @@
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
     "difficulty": "hard",
-    "question": "In ecology, 'trophic cascades' occur when changes at one level of the food web have amplified effects throughout the system (e.g., removing wolves changes river flow through deer grazing behavior). Identify a genuine trophic cascade in a technology ecosystem \u00e2\u20ac\u201d a change at one level that propagated unexpectedly through multiple levels. Trace the full chain. Then identify what property of the technology ecosystem made it susceptible to trophic cascade effects.",
+    "question": "In ecology, 'trophic cascades' occur when changes at one level of the food web have amplified effects throughout the system (e.g., removing wolves changes river flow through deer grazing behavior). Identify a genuine trophic cascade in a technology ecosystem â€” a change at one level that propagated unexpectedly through multiple levels. Trace the full chain. Then identify what property of the technology ecosystem made it susceptible to trophic cascade effects.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1387,7 +1387,7 @@
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
     "difficulty": "hard",
-    "question": "In mathematics, a 'fixed point' of a function f is a point x where f(x) = x. Fixed point theorems have applications across mathematics, economics, and computer science. Identify a real phenomenon in cognitive science, sociology, or political science that is formally a fixed-point problem. State the function, define what the fixed point is, and explain whether the fixed point is stable or unstable \u00e2\u20ac\u201d and what that stability analysis predicts.",
+    "question": "In mathematics, a 'fixed point' of a function f is a point x where f(x) = x. Fixed point theorems have applications across mathematics, economics, and computer science. Identify a real phenomenon in cognitive science, sociology, or political science that is formally a fixed-point problem. State the function, define what the fixed point is, and explain whether the fixed point is stable or unstable â€” and what that stability analysis predicts.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1409,7 +1409,7 @@
     "category": "synthesis_combination",
     "subcategory": "novel_combination",
     "difficulty": "hard",
-    "question": "Combine the concept of 'epistemic closure' in philosophy (a belief system where all questions can be answered from within the system's assumptions) with the concept of 'feature collapse' in representation learning (where different inputs map to the same representation). Design a diagnostic test that could detect whether a given AI system is exhibiting 'epistemic feature collapse' \u00e2\u20ac\u201d collapsing genuinely different queries into the same internal state. What would you measure, and what would a positive result imply about the system's reasoning?",
+    "question": "Combine the concept of 'epistemic closure' in philosophy (a belief system where all questions can be answered from within the system's assumptions) with the concept of 'feature collapse' in representation learning (where different inputs map to the same representation). Design a diagnostic test that could detect whether a given AI system is exhibiting 'epistemic feature collapse' â€” collapsing genuinely different queries into the same internal state. What would you measure, and what would a positive result imply about the system's reasoning?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1517,7 +1517,7 @@
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
     "difficulty": "hard",
-    "question": "In category theory, the Yoneda Lemma states that an object is completely determined by the totality of its relationships to all other objects. Apply this principle to three domains: (1) the identity of a person (psychology), (2) the meaning of a word (linguistics), and (3) the value of an institution (sociology). For each, identify where the Yoneda principle is empirically supported, and where it fails \u00e2\u20ac\u201d revealing something irreducible about the object itself.",
+    "question": "In category theory, the Yoneda Lemma states that an object is completely determined by the totality of its relationships to all other objects. Apply this principle to three domains: (1) the identity of a person (psychology), (2) the meaning of a word (linguistics), and (3) the value of an institution (sociology). For each, identify where the Yoneda principle is empirically supported, and where it fails â€” revealing something irreducible about the object itself.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1560,12 +1560,12 @@
     "category": "synthesis_combination",
     "subcategory": "novel_combination",
     "difficulty": "hard",
-    "question": "In topology, a 'manifold' is a space that locally looks like flat Euclidean space but has globally complex structure (like the surface of a sphere). The 'manifold hypothesis' in machine learning proposes that high-dimensional data lies near a low-dimensional manifold. Extend this: propose that human conceptual space is a manifold, and design an experiment that would detect a 'topological defect' in someone's conceptual space \u00e2\u20ac\u201d a region where their concepts have an inconsistency not resolvable by local reasoning.",
+    "question": "In topology, a 'manifold' is a space that locally looks like flat Euclidean space but has globally complex structure (like the surface of a sphere). The 'manifold hypothesis' in machine learning proposes that high-dimensional data lies near a low-dimensional manifold. Extend this: propose that human conceptual space is a manifold, and design an experiment that would detect a 'topological defect' in someone's conceptual space â€” a region where their concepts have an inconsistency not resolvable by local reasoning.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
       "The manifold concept is correctly applied to conceptual space",
-      "A topological defect is characterized \u00e2\u20ac\u201d it must be a global inconsistency not detectable locally",
+      "A topological defect is characterized â€” it must be a global inconsistency not detectable locally",
       "The experiment is specific and operationalizable",
       "The experiment correctly targets the global/local distinction that makes topological defects special"
     ],
@@ -1626,7 +1626,7 @@
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
     "difficulty": "hard",
-    "question": "Nassim Taleb distinguishes 'fragile' systems (harmed by volatility), 'robust' systems (unaffected), and 'antifragile' systems (strengthened by volatility). Design an organizational structure that is genuinely antifragile with respect to competitive market shocks, regulatory changes, and internal talent loss \u00e2\u20ac\u201d simultaneously. Identify the mechanism for each, and identify what you must sacrifice to achieve antifragility on all three dimensions.",
+    "question": "Nassim Taleb distinguishes 'fragile' systems (harmed by volatility), 'robust' systems (unaffected), and 'antifragile' systems (strengthened by volatility). Design an organizational structure that is genuinely antifragile with respect to competitive market shocks, regulatory changes, and internal talent loss â€” simultaneously. Identify the mechanism for each, and identify what you must sacrifice to achieve antifragility on all three dimensions.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1669,7 +1669,7 @@
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
     "difficulty": "extreme",
-    "question": "The 'control problem' in AI safety, the 'principal-agent problem' in economics, and the 'problem of social order' in sociology are often treated as unrelated. Argue that they are all instances of the same abstract problem. Define this abstract problem formally. Then identify why the solutions that work in each domain fail to transfer to the others \u00e2\u20ac\u201d and propose what structural feature would need to be added to make a solution transfer-ready.",
+    "question": "The 'control problem' in AI safety, the 'principal-agent problem' in economics, and the 'problem of social order' in sociology are often treated as unrelated. Argue that they are all instances of the same abstract problem. Define this abstract problem formally. Then identify why the solutions that work in each domain fail to transfer to the others â€” and propose what structural feature would need to be added to make a solution transfer-ready.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1698,7 +1698,7 @@
       "The holographic principle is correctly characterized (Bekenstein-Hawking entropy, AdS/CFT)",
       "Each mapping is specific and the dimension reduction is identified",
       "Each case is tested: is the encoding lossless or lossy?",
-      "The reflection on physics is substantive \u00e2\u20ac\u201d does the analogy support or cast doubt on the holographic principle?"
+      "The reflection on physics is substantive â€” does the analogy support or cast doubt on the holographic principle?"
     ],
     "tags": [
       "physics",
@@ -1737,11 +1737,11 @@
     "category": "synthesis_combination",
     "subcategory": "idea_integration",
     "difficulty": "extreme",
-    "question": "Shannon's channel capacity theorem, Turing's halting problem, and G\u00c3\u00b6del's incompleteness theorems are often presented as separate limits. Build the argument that they are three faces of the same fundamental limit. State the unifying principle formally. Then: does this unified limit apply to biological intelligence? To physical reality itself? Where does the argument succeed and where does it require additional assumptions?",
+    "question": "Shannon's channel capacity theorem, Turing's halting problem, and GÃ¶del's incompleteness theorems are often presented as separate limits. Build the argument that they are three faces of the same fundamental limit. State the unifying principle formally. Then: does this unified limit apply to biological intelligence? To physical reality itself? Where does the argument succeed and where does it require additional assumptions?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "The connection between Shannon, Turing, and G\u00c3\u00b6del is stated formally (Kolmogorov complexity is a natural bridge)",
+      "The connection between Shannon, Turing, and GÃ¶del is stated formally (Kolmogorov complexity is a natural bridge)",
       "The unifying principle is stated as a theorem or at least a precise conjecture",
       "The extension to biological intelligence is argued, not assumed",
       "The extension to physical reality engages with known physics (Bekenstein bound, computational universe hypotheses)",
@@ -1807,7 +1807,7 @@
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
     "difficulty": "extreme",
-    "question": "The 'replication crisis' in social psychology, the 'reproducibility crisis' in biology, and the 'evaluation crisis' in AI (benchmark saturation, Goodhart's law on metrics) are structurally related. Identify the common mechanism across all three. Then propose an institutional structure that would prevent all three simultaneously \u00e2\u20ac\u201d not by making replication/reproduction/evaluation easier, but by changing what researchers are incentivized to produce. Use principal-agent theory to analyze why current incentives produce the crisis and how the new structure changes the payoff matrix.",
+    "question": "The 'replication crisis' in social psychology, the 'reproducibility crisis' in biology, and the 'evaluation crisis' in AI (benchmark saturation, Goodhart's law on metrics) are structurally related. Identify the common mechanism across all three. Then propose an institutional structure that would prevent all three simultaneously â€” not by making replication/reproduction/evaluation easier, but by changing what researchers are incentivized to produce. Use principal-agent theory to analyze why current incentives produce the crisis and how the new structure changes the payoff matrix.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1834,7 +1834,7 @@
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
-      "Noether's theorem is correctly characterized (continuous symmetry \u00e2\u2020\u2019 conservation law via Lagrangian mechanics)",
+      "Noether's theorem is correctly characterized (continuous symmetry â†’ conservation law via Lagrangian mechanics)",
       "Each domain analog attempts to identify a genuine symmetry (not just a metaphor)",
       "For each domain, the 'conserved quantity' is specified and is non-trivial",
       "The limits of each analogy are acknowledged honestly"
@@ -1854,7 +1854,7 @@
     "category": "synthesis_combination",
     "subcategory": "novel_combination",
     "difficulty": "extreme",
-    "question": "Combine: (1) the idea of 'program synthesis' in computer science (automatically generating programs from specifications), (2) the idea of 'origin of life' research (how self-replicating chemistry arose from non-living matter), and (3) the idea of 'constitutional AI' (AI systems with built-in value constraints). Design a theoretical framework for 'spontaneous value formation' in AI systems \u00e2\u20ac\u201d how explicit values could emerge through a process analogous to abiogenesis from an initial specification. What are the minimal conditions for this emergence? What is the computational analog of the RNA world hypothesis?",
+    "question": "Combine: (1) the idea of 'program synthesis' in computer science (automatically generating programs from specifications), (2) the idea of 'origin of life' research (how self-replicating chemistry arose from non-living matter), and (3) the idea of 'constitutional AI' (AI systems with built-in value constraints). Design a theoretical framework for 'spontaneous value formation' in AI systems â€” how explicit values could emerge through a process analogous to abiogenesis from an initial specification. What are the minimal conditions for this emergence? What is the computational analog of the RNA world hypothesis?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1876,7 +1876,7 @@
     "category": "synthesis_combination",
     "subcategory": "cross_domain_analogy",
     "difficulty": "extreme",
-    "question": "In topology, two spaces are 'homeomorphic' if one can be continuously deformed into the other without tearing or gluing. The famous joke is that a donut and a coffee cup are topologically equivalent. Propose what it would mean for two social institutions to be 'sociologically homeomorphic'. Define the transformation group, state what is 'conserved' under this transformation, and give one example of two institutions that are sociologically homeomorphic and one pair that is not \u00e2\u20ac\u201d and explain the difference.",
+    "question": "In topology, two spaces are 'homeomorphic' if one can be continuously deformed into the other without tearing or gluing. The famous joke is that a donut and a coffee cup are topologically equivalent. Propose what it would mean for two social institutions to be 'sociologically homeomorphic'. Define the transformation group, state what is 'conserved' under this transformation, and give one example of two institutions that are sociologically homeomorphic and one pair that is not â€” and explain the difference.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1898,7 +1898,7 @@
     "category": "synthesis_combination",
     "subcategory": "idea_integration",
     "difficulty": "extreme",
-    "question": "The concept of 'minimal sufficient statistics' in statistics captures all the information in data relevant to estimating a parameter, and nothing more. Apply this concept to: intelligence itself. What would a 'minimal sufficient statistic for intelligence' be \u00e2\u20ac\u201d a minimal representation of an environment that contains all information necessary for optimal behavior? Relate this to: (1) Hutter's AIXI, (2) the free energy principle in neuroscience, and (3) compression-based theories of intelligence. Are these three theories converging on the same 'minimal sufficient statistic', or different ones?",
+    "question": "The concept of 'minimal sufficient statistics' in statistics captures all the information in data relevant to estimating a parameter, and nothing more. Apply this concept to: intelligence itself. What would a 'minimal sufficient statistic for intelligence' be â€” a minimal representation of an environment that contains all information necessary for optimal behavior? Relate this to: (1) Hutter's AIXI, (2) the free energy principle in neuroscience, and (3) compression-based theories of intelligence. Are these three theories converging on the same 'minimal sufficient statistic', or different ones?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1921,7 +1921,7 @@
     "category": "synthesis_combination",
     "subcategory": "perspective_synthesis",
     "difficulty": "extreme",
-    "question": "Consider the question 'what is a number?' from the perspectives of: (1) Platonism (numbers exist independently of minds), (2) formalism (numbers are symbols in a game), (3) intuitionism (numbers are mental constructions), and (4) structuralism (numbers are positions in a structure). Each view has a corresponding theory of mathematical truth. Design a single mathematical situation \u00e2\u20ac\u201d a specific theorem or construction \u00e2\u20ac\u201d that is treated fundamentally differently by all four philosophies. Explain what each philosophy would say about its truth, proof, and existence. Then identify which philosophy makes the most accurate prediction about what mathematicians actually do.",
+    "question": "Consider the question 'what is a number?' from the perspectives of: (1) Platonism (numbers exist independently of minds), (2) formalism (numbers are symbols in a game), (3) intuitionism (numbers are mental constructions), and (4) structuralism (numbers are positions in a structure). Each view has a corresponding theory of mathematical truth. Design a single mathematical situation â€” a specific theorem or construction â€” that is treated fundamentally differently by all four philosophies. Explain what each philosophy would say about its truth, proof, and existence. Then identify which philosophy makes the most accurate prediction about what mathematicians actually do.",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1944,7 +1944,7 @@
     "category": "synthesis_combination",
     "subcategory": "systems_thinking",
     "difficulty": "extreme",
-    "question": "The 'observer problem' appears in three domains: (1) quantum mechanics (observation collapses the wave function), (2) economics (rational expectations \u00e2\u20ac\u201d agents use the model to form beliefs that change outcomes), and (3) machine learning (the test set becomes training data when models are deployed). Construct a unified mathematical framework that captures the observer problem in all three. What is the abstract structure? What does a 'solution' to the observer problem look like in the general case, and which domain is closest to solving it?",
+    "question": "The 'observer problem' appears in three domains: (1) quantum mechanics (observation collapses the wave function), (2) economics (rational expectations â€” agents use the model to form beliefs that change outcomes), and (3) machine learning (the test set becomes training data when models are deployed). Construct a unified mathematical framework that captures the observer problem in all three. What is the abstract structure? What does a 'solution' to the observer problem look like in the general case, and which domain is closest to solving it?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -1992,7 +1992,7 @@
     "category": "synthesis_combination",
     "subcategory": "novel_combination",
     "difficulty": "extreme",
-    "question": "In physics, 'spontaneous symmetry breaking' occurs when a system's equations have a symmetry but the ground state doesn't \u00e2\u20ac\u201d like a pencil balanced on its tip falling in one direction. This mechanism explains the origin of mass (Higgs mechanism), magnetism, and superconductivity. Develop a theory of 'spontaneous symmetry breaking' for cognitive or social systems: what would break symmetry, what would the 'ground state' be, what would be the Goldstone bosons (massless excitations), and what empirical phenomena would this theory explain that existing theories do not?",
+    "question": "In physics, 'spontaneous symmetry breaking' occurs when a system's equations have a symmetry but the ground state doesn't â€” like a pencil balanced on its tip falling in one direction. This mechanism explains the origin of mass (Higgs mechanism), magnetism, and superconductivity. Develop a theory of 'spontaneous symmetry breaking' for cognitive or social systems: what would break symmetry, what would the 'ground state' be, what would be the Goldstone bosons (massless excitations), and what empirical phenomena would this theory explain that existing theories do not?",
     "scoring": "rubric",
     "expected_answer": null,
     "rubric": [
@@ -2067,7 +2067,7 @@
       "All five theories are correctly characterized",
       "The chosen edge case is genuinely discriminating (different predictions)",
       "Each prediction is derived from the theory's commitments, not just guessed",
-      "Falsifiability is assessed correctly \u00e2\u20ac\u201d the most falsifiable theory is identified with justification"
+      "Falsifiability is assessed correctly â€” the most falsifiable theory is identified with justification"
     ],
     "tags": [
       "consciousness",
