@@ -1484,3 +1484,135 @@ Simplest version: 2-scale BP (bytes + words).
 Compare against: v0.4 (same compute, no belief structure).
 If belief structure helps convergence and prediction: THE idea validated.
 If not: BP adds overhead without benefit. Kill it.
+
+---
+
+## FRESH EXPLORATION #8: What can MUSIC theory teach us about sequence modeling?
+
+### Not "music generation" but "music THEORY as mathematical framework"
+
+Music theory has spent centuries analyzing HOW sequences create meaning:
+- HARMONY: simultaneous compatible notes (= compatible features at same position)
+- COUNTERPOINT: independent voices that complement each other (= multi-stream processing)  
+- RHYTHM: hierarchical temporal structure (= multi-scale timing)
+- TENSION/RESOLUTION: building expectation then satisfying it (= prediction then confirmation)
+- MODULATION: shifting key/context smoothly (= topic transitions)
+
+These are all SEQUENCE PROCESSING concepts, formalized over centuries.
+
+### Counterpoint as Multi-Stream Architecture
+
+In counterpoint, multiple INDEPENDENT melodic lines run simultaneously.
+Each line follows its OWN rules, but they must HARMONIZE at intersection points.
+The beauty emerges from the INTERACTION, not from any single line.
+
+For Sutra: what if we processed MULTIPLE INDEPENDENT streams simultaneously?
+- Stream 1: syntax processing (like a bass line — structural foundation)
+- Stream 2: semantic processing (like a melody — the "meaning")
+- Stream 3: pragmatic processing (like harmony — context/relationship)
+- Stream 4: factual checking (like rhythm — grounding beats)
+
+Each stream follows its own processing rules. They INTERSECT at key points
+(like our Stage 4 routing) to ensure global consistency.
+
+This is the 4-stream output-first idea but from a MUSIC perspective.
+Music theory gives us formal rules for HOW streams should interact
+(harmonic rules, voice-leading rules, resolution rules).
+
+### Tension-Resolution as Prediction Model
+
+Music creates TENSION (dissonance, unexpected notes) and then RESOLVES it.
+Language does the same: "The cat that the dog chased..." creates syntactic
+tension (nested clause) that resolves with "...ran away."
+
+What if the model explicitly tracked TENSION (unresolved elements)?
+Each position carries a "tension score" — how many unresolved dependencies
+point to/from this position. The model actively seeks RESOLUTION
+(routing to resolve open dependencies).
+
+This connects to: the "needs" field in structured representations (#1),
+the "demand" vector in supply/demand routing, and the variance in Kalman.
+All are measures of "unresolved tension" that drives processing.
+
+---
+
+## FRESH EXPLORATION #9: TOPOLOGICAL perspective on representations
+
+### What if we analyzed representations as TOPOLOGICAL spaces?
+
+Current analysis: representations are VECTORS in R^d. Distances, angles, clusters.
+
+Topological analysis: representations have SHAPE — holes, loops, connected
+components. The shape persists even as the space is deformed.
+
+### Persistent Homology of Language Representations
+
+Topological data analysis (TDA) uses persistent homology to find the
+SHAPE of data: which features are "holes" (things that are consistently
+NOT represented) vs "clusters" (things that group together).
+
+For language: the TOPOLOGY of the representation space might reveal:
+- Connected components = major semantic categories
+- 1-cycles (loops) = circular reference chains (pronouns → referents → pronouns)
+- Higher homology = complex relational structures
+
+If we DESIGNED the representation space to have the RIGHT topology
+(matching the topology of language structure), features might be
+more robust and generalizable.
+
+### Topological Regularization
+
+Add a loss term that encourages the representation space to have
+the "right" topological structure:
+- Encourage distinct clusters for distinct concepts (0-homology)
+- Discourage spurious loops in the representation (1-homology)
+- Match the persistence diagram of representations to the persistence
+  diagram of the known language structure
+
+This is VERY speculative but connects to: the geometry = intelligence thesis,
+fractal embeddings (our parent project), and the idea that STRUCTURE in
+the representation is more important than SCALE.
+
+---
+
+## FRESH EXPLORATION #10: What if we treated ATTENTION as the bug, not the feature?
+
+### The Contrarian View
+
+Everyone is trying to KEEP attention but make it cheaper.
+Mamba, RWKV, linear attention — all try to approximate attention.
+
+What if attention is the WRONG MECHANISM ENTIRELY?
+
+Attention says: "every position should look at every other position
+and decide what's relevant." This is SEARCH — brute force content search.
+
+What if the right approach is NOT search but STRUCTURE?
+Instead of searching for relevant positions, BUILD the structure
+that DEFINES which positions are relevant.
+
+### The Analogy: Libraries vs Google
+
+Google (attention): search everything, rank by relevance, return top-k.
+Library (structure): organized by Dewey Decimal, you KNOW where to look.
+
+Google is powerful but expensive. Libraries are efficient because the
+STRUCTURE tells you where information lives.
+
+What if the model built an internal "library" — a structured index
+that organizes information by TYPE and RELATION, so routing is O(1)
+lookup, not O(n) search?
+
+This IS the grown sparsity idea (routing table) but pushed further:
+the routing table isn't just "who connects to whom" but a full
+STRUCTURAL INDEX organized by content type and relation.
+
+### Connection to Other Explorations
+
+- Grown sparsity (#4 from original): the routing table IS the index
+- Belief propagation (#7): the factor graph IS the structure
+- Recursive compression (#2): the compression hierarchy IS the organization
+
+All these explorations keep pointing to the same thing:
+**STRUCTURE over SEARCH.** Build the right structure, and you don't
+need to search. The structure IS the understanding.
