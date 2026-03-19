@@ -371,6 +371,50 @@ Key uncertainties to resolve:
 4. Is energy-based generation practical for text at reasonable speed?
 5. How many parameters does this need to be competitive?
 
+### Theoretical Deep Dive: Long-Range Dependencies Without Global Attention
+
+THE hardest challenge for local-only processing. "The cat that the dog that the rat bit chased ran away" requires matching token 1 with token 11.
+
+**Solution: Multi-scale hierarchy converts long-range to short-range.**
+
+At scale 0 (tokens): dependency spans 11 positions.
+At scale 1 (words): dependency spans ~5 positions.
+At scale 2 (phrases): dependency spans ~2 positions (NP, relative clause, VP).
+
+Each scale only needs LOCAL interaction (window ~5-8). Long-range becomes short-range at higher scales.
+
+**Formal receptive field analysis:**
+- Compression ratio per scale: r (e.g., r=4 for token→word, r=8 for word→phrase)
+- With S scales and window size w at each scale:
+- Effective receptive field = w * r^S
+- With w=8, r=4, S=3: receptive field = 8 * 64 = 512 tokens
+- With w=8, r=4, S=4: receptive field = 8 * 256 = 2048 tokens
+- EXPONENTIAL growth with scales, LINEAR compute per scale
+
+This is EXACTLY the advantage of wavelet transforms over Fourier: local processing with multi-resolution gives O(n) computation with O(n log n) effective connectivity. Transformers use O(n²) to achieve the same connectivity.
+
+**Why this might be strictly BETTER than attention:**
+- Attention gives every position equal access to every other position — most of which is wasted (attention maps are very sparse in practice)
+- Multi-scale hierarchy gives STRUCTURED connectivity: strong at short range, weaker but present at long range — matching the actual dependency structure of language
+- Brain uses exactly this: local dense connections + hierarchical long-range routing
+
+**Trainability:** Standard backprop works. Gradient flows: output → fine scale → medium (via cross-scale connection) → coarse scale → back down. Same as any multi-scale CNN (U-Net, FPN). Well-understood.
+
+**Key insight for Codex discussion:** The stigmergic medium at each scale acts as a "routing table" — agents at the fine scale don't need to see far, they just read the medium which contains COMPRESSED information from far away, deposited by agents that were closer to the source. Information propagates at the speed of the medium, not the speed of local agents. Like how pheromone trails carry information about distant food sources to ants that have never been there.
+
+### GNN Perspective: Why Stigmergic = Local GNN
+
+Transformers are GNNs on COMPLETE graphs (every token connected to every other).
+Stigmergic model is a GNN on a LOCAL 1D lattice (each agent connected to neighbors only).
+Multi-scale adds HIERARCHICAL edges (coarse-scale connections = long-range shortcuts).
+
+This is EXACTLY a small-world network: mostly local connections + a few long-range shortcuts.
+Small-world networks are known to have O(log n) average path length with O(n) edges.
+Complete graphs have O(1) path length but O(n²) edges.
+The question is whether O(log n) path length is sufficient for language modeling.
+
+**Prediction**: For most text, O(log n) is MORE than sufficient. Only pathological nested structures (garden-path sentences, deeply nested recursion) require the full O(1) path length that attention provides. And those are rare in practice.
+
 ### Updated Probe Priority
 
 Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
