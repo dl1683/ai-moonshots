@@ -629,6 +629,58 @@ v0.4: different mechanisms at DIFFERENT SCALES:
 This IS structure-matching: the architecture mirrors language's hierarchical
 structure. No existing hybrid does multi-scale mechanism selection.
 
+---
+
+## Strategic Scenario Planning: What Happens After Production Training?
+
+### Scenario A: Sutra WINS (BPB < Pythia-410M ~0.92)
+If 475M Sutra beats 410M Pythia on BPB with 1.6B tokens (vs Pythia's 300B tokens):
+- **Narrative**: "187x less training data, fewer params, better BPB. Architecture matters."
+- **Next**: Scale to 1B-4B immediately. Download more data (RedPajama, FineWeb).
+- **Paper**: Submit to COLM/NeurIPS with architecture + MI analysis + ablations.
+- **Risk**: BPB doesn't translate to downstream task performance. Need to also test generation.
+
+### Scenario B: Sutra COMPETITIVE (BPB within 10% of Pythia)
+If 475M Sutra gets ~1.0 BPB (within 10% of Pythia's ~0.92):
+- **Narrative**: "Matches Pythia with 187x less data. With equal data, would win."
+- **Next**: Train longer (use all MiniPile, maybe download more data). The architecture
+  works, it just needs more data to shine.
+- **Improvement**: Add mixed precision (2x speed), larger batch, longer training.
+- **Risk**: "Matches with less data" is weaker claim than "beats outright."
+
+### Scenario C: Sutra BEHIND (BPB 1.2-2.0, significantly worse)
+If 475M Sutra can't get below 1.2 BPB:
+- **Diagnosis**: Architecture doesn't scale well from toy to production.
+- **Possible causes**:
+  1. Message passing too slow to propagate info in long sequences
+  2. Sparse retrieval k=16 insufficient at this scale
+  3. GRU patch processing bottlenecks sequential computation
+  4. Byte-level modeling needs much more data than token-level
+- **Action**: Add more attention layers (hybrid), increase k, switch to token-level.
+- **Risk**: May need fundamental architecture changes, not just tuning.
+
+### Scenario D: Training FAILS (diverges, OOM, extremely slow)
+If training crashes or is impractically slow:
+- **Diagnosis**: Architecture doesn't scale to 475M on GPU.
+- **Action**: Scale down to 170M (dim=3072), fix numerical issues, add gradient scaling.
+- **Quick fix**: Mixed precision + gradient accumulation + smaller batch.
+
+### Improvements to Prepare Regardless of Outcome
+
+1. **Mixed precision training script** (AMP/bf16) — 2x speed for next run
+2. **lm-eval custom model wrapper** — for standard benchmark comparison
+3. **Token-level variant** — Sutra with BPE tokenizer as alternative to byte-level
+4. **More training data** — download RedPajama-sample or FineWeb-Edu subset
+5. **Grown sparsity** — implement gradient-driven routing table for v0.5
+
+### Questions for Codex
+
+1. What's the MOST LIKELY outcome given our toy-scale results?
+2. If byte-level BPB doesn't translate to downstream performance, what's plan B?
+3. Should we have a token-level Sutra ready as a fallback?
+4. What's the minimum training compute to be competitive with Pythia-410M?
+5. How do we handle the "less data" narrative honestly? (Our 1.6B tokens vs 300B)
+
 ### Evolutionary Routing Search
 Hybrid training: gradient descent for model, evolution for routing patterns.
 Routing table mutations tested each generation, best kept. Escapes local optima.
