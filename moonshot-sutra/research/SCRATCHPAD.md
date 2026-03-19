@@ -362,8 +362,15 @@ grown routing pattern mirrors the data's dependency structure).
 - Sparse retrieval uses top-k from R[i,:] instead of computing scores from scratch
 - R is a LEARNED persistent structure, not a temporary computation
 
-**Status**: Queue for Experiment C (after A and B from Round 2). Need to design
-"was retrieval useful?" signal first — this is the key design challenge.
+**Status**: Queue for Experiment C (after A and B from Round 2).
+
+**"Was retrieval useful?" signal — SOLVED via gradient magnitude:**
+After backprop, gradient magnitude through each retrieval connection tells us
+how much that connection contributed to loss reduction. Accumulate into routing
+table: high gradient → thicken (increase priority), low gradient → thin (atrophy).
+This IS how fungal tubes work: high nutrient flow → thicken, low flow → atrophy.
+Gradient flow = nutrient flow. Implementation: register backward hook on retrieval
+connections, accumulate abs(grad) into routing table with EMA decay.
 
 ---
 
