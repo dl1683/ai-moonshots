@@ -761,6 +761,27 @@ the weakest link instead of randomly trying things.
 
 ---
 
+---
+
+## !!! SUTRA VISION: STAGE-SUPERPOSITION STATE MACHINE !!!
+
+The 7 stages are NOT a linear pipeline. They form a STATE GRAPH where:
+- Multiple stages ACTIVE SIMULTANEOUSLY on different positions
+- Stages LOOP BACK (Stage 7 verify → Stage 4 reroute → Stage 5 update → retry 7)
+- Each position in SUPERPOSITION of stages (80% constructing, 15% routing, 5% verifying)
+- Like quantum superposition: model state IS a mixture, not one stage at a time
+- Like spiking neural networks: asynchronous, no global clock, waves not layers
+- EACH PATCH at its OWN stage based on content/difficulty
+
+This is FUNDAMENTALLY DIFFERENT from all existing architectures.
+Transformers/SSMs/hybrids process everything through same stage simultaneously.
+Sutra: heterogeneous wavefront through stages at different rates per position.
+
+For EACH stage: derive optimal mechanism FROM MATH. Not from existing models.
+v0.5 attention refresh = copying Jamba. MUST derive novel Stage 4 mechanism instead.
+
+---
+
 ### CODEX R1 CORRECTION: Better 7-Stage Decomposition
 
 Our stages mixed mechanisms with capabilities. Codex proposed:

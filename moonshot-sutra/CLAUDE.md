@@ -101,6 +101,23 @@ colleagues (Codex). Compute time = theory time. ZERO idle time.
 they emerge during research. The task list drives autonomous momentum — never run out of
 things to do.
 
+### THE SUTRA VISION: Stage-Superposition State Machine
+
+The 7 processing stages are NOT a linear pipeline. They form a STATE GRAPH:
+- Multiple stages ACTIVE SIMULTANEOUSLY on different positions
+- Stages LOOP BACK (verify → reroute → retry)
+- Each position in SUPERPOSITION of stages (like quantum states)
+- Each patch progresses at its OWN RATE (like spiking neural networks)
+- Stage 7 (verify) can loop to Stage 4 (reroute) — decode-verify is iterative
+
+The 7 stages (converged through 4 Codex debate rounds):
+1. Segmentation/Compression  2. State Init/Addressing
+3. Local Construction  4. Communication/Routing
+5. State Update/Memory Write  6. Compute Control  7. Readout/Decode/Verify
+
+For EACH stage: derive the optimal mechanism FROM MATH, not from existing models.
+DO NOT copy (adding attention = copying Jamba). DERIVE something better.
+
 ### Data Strategy
 - Open datasets + any files available on this laptop
 - Complete freedom — no constraints on data sources
