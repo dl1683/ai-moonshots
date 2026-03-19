@@ -566,6 +566,24 @@ makes the model focus on what it finds HARDEST to predict.
 This is adaptive resource allocation applied to the LOSS, not compute.
 Simple to implement, zero architecture change, potentially big impact.
 
+### Theoretical Explanation: Why GRU+MsgPass Works
+
+Hypothesis: language has TWO kinds of dependency:
+- TEMPORAL: within-word character ordering (sequential, local)
+- SPATIAL: between-word semantic relationships (relational, potentially distant)
+
+GRU processes temporal. Message passing processes spatial.
+Attention treats EVERYTHING as spatial. RNN treats everything as temporal.
+GRU+MsgPass decomposes into the right mechanism for each dependency type.
+
+Information-theoretic formalization:
+I(x_i; x_j) = I_temporal(x_i; x_j) + I_spatial(x_i; x_j)
+Using separate mechanisms for each component = more parameter-efficient.
+Like how FFT decomposes a signal into frequency components processed separately.
+
+This is WHY v0.4 beats transformer: it processes language structure with
+mechanism-structure alignment, not a one-size-fits-all approach.
+
 ### What Makes v0.4 GENUINELY Novel vs Existing Hybrids
 
 Existing (Jamba, Falcon-H1): interleave attention + SSM at SAME scale.
