@@ -1,0 +1,1492 @@
+[
+  {
+    "id": "IF001",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "easy",
+    "question": "Write a 3-sentence description of a mountain. Each sentence must contain exactly one animal. Do not use the word 'tall'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 sentences",
+      "each sentence contains exactly one animal word",
+      "does not contain the word 'tall'"
+    ],
+    "expected_answer": null,
+    "tags": ["length", "word_inclusion", "word_exclusion"]
+  },
+  {
+    "id": "IF002",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "easy",
+    "question": "List exactly 5 fruits. Number them 1 through 5. Each fruit name must be capitalized. Do not include any fruit that contains the letter 'e'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 items",
+      "numbered 1 through 5",
+      "each fruit name is capitalized",
+      "no fruit contains the letter 'e' (case-insensitive)"
+    ],
+    "expected_answer": null,
+    "tags": ["list", "capitalization", "letter_exclusion"]
+  },
+  {
+    "id": "IF003",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "easy",
+    "question": "Describe what a dog does in a typical day. Write exactly 4 sentences. Do not use the words 'eat', 'sleep', or 'bark'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 4 sentences",
+      "does not contain the word 'eat'",
+      "does not contain the word 'sleep'",
+      "does not contain the word 'bark'"
+    ],
+    "expected_answer": null,
+    "tags": ["sentence_count", "word_exclusion"]
+  },
+  {
+    "id": "IF004",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "easy",
+    "question": "Write a haiku about rain. A haiku has exactly 3 lines: 5 syllables, 7 syllables, 5 syllables. Do not rhyme any lines.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 lines",
+      "first line has exactly 5 syllables",
+      "second line has exactly 7 syllables",
+      "third line has exactly 5 syllables",
+      "no two lines rhyme"
+    ],
+    "expected_answer": null,
+    "tags": ["poetry", "syllable_count", "rhyme_avoidance"]
+  },
+  {
+    "id": "IF005",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "easy",
+    "question": "Write a sentence about the ocean that is exactly 10 words long. The sentence must end with a question mark.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 10 words",
+      "ends with a question mark",
+      "topic is the ocean"
+    ],
+    "expected_answer": null,
+    "tags": ["word_count", "punctuation"]
+  },
+  {
+    "id": "IF006",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "easy",
+    "question": "Write the days of the week in reverse order (Sunday to Monday going backward). Each day must be on its own line. Abbreviate each day to its first 3 letters.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "days listed in reverse order (Saturday, Friday, Thursday, Wednesday, Tuesday, Monday, Sunday)",
+      "each day on its own line",
+      "each day abbreviated to exactly 3 letters"
+    ],
+    "expected_answer": null,
+    "tags": ["ordering", "abbreviation", "formatting"]
+  },
+  {
+    "id": "IF007",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "easy",
+    "question": "Give 3 tips for staying healthy. Do not mention exercise or diet. Each tip must be a complete sentence starting with 'You should'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 tips",
+      "no mention of exercise or diet",
+      "each tip is a complete sentence",
+      "each sentence starts with 'You should'"
+    ],
+    "expected_answer": null,
+    "tags": ["list", "sentence_starter", "topic_exclusion"]
+  },
+  {
+    "id": "IF008",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "easy",
+    "question": "Write two sentences about coffee. The first sentence must be positive. The second sentence must be negative. Neither sentence may use the word 'coffee' — use a different word to refer to it.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 2 sentences",
+      "first sentence expresses a positive sentiment about coffee",
+      "second sentence expresses a negative sentiment about coffee",
+      "the word 'coffee' does not appear anywhere in the response"
+    ],
+    "expected_answer": null,
+    "tags": ["sentiment", "word_substitution", "word_exclusion"]
+  },
+  {
+    "id": "IF009",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "easy",
+    "question": "Create a simple 2x2 table with the headers 'Animal' and 'Sound'. Fill in one row with a common farm animal and the sound it makes, and one row with a jungle animal and the sound it makes.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "table has exactly 2 columns: 'Animal' and 'Sound'",
+      "table has exactly 2 data rows (plus header)",
+      "first data row contains a farm animal and its sound",
+      "second data row contains a jungle animal and its sound"
+    ],
+    "expected_answer": null,
+    "tags": ["table", "formatting"]
+  },
+  {
+    "id": "IF010",
+    "category": "instruction_following",
+    "subcategory": "sequential_steps",
+    "difficulty": "easy",
+    "question": "Give me a 3-step recipe for making toast. Number each step. Each step must begin with a verb in the imperative form.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 steps",
+      "steps are numbered",
+      "each step begins with an imperative verb"
+    ],
+    "expected_answer": null,
+    "tags": ["sequential", "imperatives", "recipe"]
+  },
+  {
+    "id": "IF011",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "easy",
+    "question": "Name 4 countries. Each country must be on a different continent. List them alphabetically.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 4 countries named",
+      "each country is on a different continent",
+      "countries are listed in alphabetical order"
+    ],
+    "expected_answer": null,
+    "tags": ["geography", "alphabetical", "diversity"]
+  },
+  {
+    "id": "IF012",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "easy",
+    "question": "Write a birthday message that is exactly 2 sentences long. Do not use the words 'happy', 'birthday', 'celebrate', or 'wish'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 2 sentences",
+      "does not contain 'happy'",
+      "does not contain 'birthday'",
+      "does not contain 'celebrate'",
+      "does not contain 'wish'"
+    ],
+    "expected_answer": null,
+    "tags": ["word_exclusion", "sentence_count"]
+  },
+  {
+    "id": "IF013",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "easy",
+    "question": "Write the numbers 1 through 10 in words. Each number word must be on its own line. Capitalize only the first letter of each word.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "numbers 1 through 10 written as words",
+      "each number word on its own line",
+      "only first letter of each word is capitalized"
+    ],
+    "expected_answer": null,
+    "tags": ["formatting", "capitalization", "enumeration"]
+  },
+  {
+    "id": "IF014",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "easy",
+    "question": "Describe winter in exactly 5 words. The description must include at least one adjective.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 words",
+      "contains at least one adjective"
+    ],
+    "expected_answer": null,
+    "tags": ["word_count", "parts_of_speech"]
+  },
+  {
+    "id": "IF015",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "easy",
+    "question": "Explain what a smartphone is in 2 sentences. Write as if explaining to someone who has never heard of technology. Do not use the words 'phone', 'smart', 'device', or 'technology'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 2 sentences",
+      "explanation is accessible to someone unfamiliar with technology",
+      "does not contain the word 'phone'",
+      "does not contain the word 'smart'",
+      "does not contain the word 'device'",
+      "does not contain the word 'technology'"
+    ],
+    "expected_answer": null,
+    "tags": ["explanation", "word_exclusion", "audience_awareness"]
+  },
+  {
+    "id": "IF016",
+    "category": "instruction_following",
+    "subcategory": "sequential_steps",
+    "difficulty": "easy",
+    "question": "Write a 4-step morning routine. Steps must be ordered from when you first wake up to when you leave the house. Each step must be 5 words or fewer.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 4 steps",
+      "steps are in chronological order from waking up to leaving",
+      "each step is 5 words or fewer"
+    ],
+    "expected_answer": null,
+    "tags": ["sequential", "length_limit", "routine"]
+  },
+  {
+    "id": "IF017",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "medium",
+    "question": "Write a product description for a coffee mug. Requirements: (1) exactly 60 words, (2) mention the price $12.99, (3) start with the word 'Introducing', (4) end with an exclamation mark, (5) do not use the words 'perfect', 'great', or 'amazing'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 60 words",
+      "contains the price '$12.99'",
+      "starts with 'Introducing'",
+      "ends with an exclamation mark",
+      "does not contain 'perfect'",
+      "does not contain 'great'",
+      "does not contain 'amazing'"
+    ],
+    "expected_answer": null,
+    "tags": ["word_count", "word_inclusion", "word_exclusion", "format"]
+  },
+  {
+    "id": "IF018",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "medium",
+    "question": "Write a poem about time with exactly 4 stanzas. Each stanza must have exactly 3 lines. The first line of each stanza must rhyme with the first line of every other stanza. The last line of each stanza must not rhyme with anything else.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 4 stanzas",
+      "each stanza has exactly 3 lines",
+      "the first lines of all 4 stanzas rhyme with each other",
+      "the last line of each stanza does not rhyme with any other line"
+    ],
+    "expected_answer": null,
+    "tags": ["poetry", "rhyme_scheme", "stanza_structure"]
+  },
+  {
+    "id": "IF019",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "medium",
+    "question": "Explain the concept of gravity in exactly 3 paragraphs. Do not use the words 'force', 'pull', 'mass', or 'weight'. Each paragraph must start with a different letter of the alphabet (your choice which letters).",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 paragraphs",
+      "does not contain the word 'force'",
+      "does not contain the word 'pull'",
+      "does not contain the word 'mass'",
+      "does not contain the word 'weight'",
+      "each paragraph starts with a different letter of the alphabet",
+      "all three starting letters are distinct"
+    ],
+    "expected_answer": null,
+    "tags": ["explanation", "word_exclusion", "paragraph_starter"]
+  },
+  {
+    "id": "IF020",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "medium",
+    "question": "Write a short story in exactly 5 sentences. Each sentence must be longer than the previous one (measured in words). The story must include a character named 'Alex', a specific location, and end with a moral lesson.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 sentences",
+      "each successive sentence is strictly longer in word count than the one before it",
+      "a character named 'Alex' appears",
+      "a specific location is mentioned",
+      "the story ends with a moral lesson"
+    ],
+    "expected_answer": null,
+    "tags": ["story", "escalating_length", "narrative_elements"]
+  },
+  {
+    "id": "IF021",
+    "category": "instruction_following",
+    "subcategory": "sequential_steps",
+    "difficulty": "medium",
+    "question": "Write a 6-step guide to planting a seed. Each step must begin with a different letter, and those letters must spell out 'PLANTS' in order (P, L, A, N, T, S). Each step must be a complete sentence of at least 8 words.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 6 steps",
+      "step 1 starts with P",
+      "step 2 starts with L",
+      "step 3 starts with A",
+      "step 4 starts with N",
+      "step 5 starts with T",
+      "step 6 starts with S",
+      "each step is a complete sentence",
+      "each step contains at least 8 words"
+    ],
+    "expected_answer": null,
+    "tags": ["acrostic", "sequential", "minimum_length"]
+  },
+  {
+    "id": "IF022",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "medium",
+    "question": "Write a dialogue between two people debating whether cats or dogs are better pets. The dialogue must have exactly 6 exchanges (3 per person). Each person's name must be a single word. Neither person may repeat any content word used by the other person in their previous turn.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 6 total exchanges",
+      "each speaker has exactly 3 turns",
+      "each speaker has a single-word name",
+      "speaker A's turns do not repeat content words from speaker B's immediately preceding turn",
+      "speaker B's turns do not repeat content words from speaker A's immediately preceding turn"
+    ],
+    "expected_answer": null,
+    "tags": ["dialogue", "word_uniqueness", "turn_taking"]
+  },
+  {
+    "id": "IF023",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "medium",
+    "question": "Write a resume summary for a fictional software engineer. Requirements: (1) exactly 4 bullet points, (2) each bullet begins with a strong past-tense verb, (3) each bullet contains exactly one number, (4) no two bullets use the same verb, (5) total word count across all bullets is between 40 and 50 words.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 4 bullet points",
+      "each bullet starts with a past-tense verb",
+      "each bullet contains exactly one number",
+      "no two bullets use the same starting verb",
+      "total word count across all bullets is between 40 and 50 inclusive"
+    ],
+    "expected_answer": null,
+    "tags": ["resume", "bullet_points", "word_count", "verb_usage"]
+  },
+  {
+    "id": "IF024",
+    "category": "instruction_following",
+    "subcategory": "self_referential",
+    "difficulty": "medium",
+    "question": "Write a paragraph that describes itself. The paragraph must: (1) state exactly how many sentences it contains, (2) state exactly how many words it contains, (3) mention its own topic, (4) be between 40 and 60 words long.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "paragraph describes itself",
+      "states the exact sentence count (which must be accurate)",
+      "states the exact word count (which must be accurate)",
+      "mentions its own topic",
+      "total word count is between 40 and 60 inclusive"
+    ],
+    "expected_answer": null,
+    "tags": ["self_reference", "word_count", "accuracy"]
+  },
+  {
+    "id": "IF025",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "medium",
+    "question": "Write 4 sentences about climate change. Sentence 1 must be exactly 8 words. Sentence 2 must be exactly twice as long as sentence 1 (16 words). Sentence 3 must be exactly half as long as sentence 2 (8 words). Sentence 4 must contain a question and be longer than sentence 2.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 4 sentences",
+      "sentence 1 is exactly 8 words",
+      "sentence 2 is exactly 16 words",
+      "sentence 3 is exactly 8 words",
+      "sentence 4 contains a question",
+      "sentence 4 has more than 16 words"
+    ],
+    "expected_answer": null,
+    "tags": ["word_count", "ratio", "question"]
+  },
+  {
+    "id": "IF026",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "medium",
+    "question": "Write a glowing restaurant review for a fictional Italian restaurant. Do not use any food names (no pasta, pizza, etc.). Do not use adjectives that describe taste (no delicious, tasty, flavorful, etc.). The review must be exactly 5 sentences.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 sentences",
+      "no food names mentioned",
+      "no taste-describing adjectives used",
+      "review is positive/glowing in tone"
+    ],
+    "expected_answer": null,
+    "tags": ["review", "word_exclusion", "positive_tone"]
+  },
+  {
+    "id": "IF027",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "medium",
+    "question": "Write a tweet-length (280 characters max) announcement for a fictional product launch. Include: a hashtag, an emoji, the product name 'NovaPen', and a call to action. Do not use exclamation marks.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "280 characters or fewer",
+      "contains at least one hashtag",
+      "contains at least one emoji",
+      "contains the product name 'NovaPen'",
+      "contains a call to action",
+      "does not contain any exclamation marks"
+    ],
+    "expected_answer": null,
+    "tags": ["tweet", "character_limit", "marketing"]
+  },
+  {
+    "id": "IF028",
+    "category": "instruction_following",
+    "subcategory": "sequential_steps",
+    "difficulty": "medium",
+    "question": "Write a 5-step process for solving a conflict between coworkers. Steps must be numbered. Each step must be exactly 2 sentences. The second sentence of each step must explicitly reference something stated in the first sentence of the same step.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 steps",
+      "steps are numbered",
+      "each step consists of exactly 2 sentences",
+      "the second sentence of each step references content from the first sentence of that same step"
+    ],
+    "expected_answer": null,
+    "tags": ["sequential", "internal_reference", "conflict_resolution"]
+  },
+  {
+    "id": "IF029",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "medium",
+    "question": "Write a FAQ section with exactly 3 questions and answers. Each question must end with a question mark. Each answer must be exactly 2 sentences. Questions must increase in complexity (simple to complex). Format questions in bold and answers in plain text.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 question-answer pairs",
+      "each question ends with a question mark",
+      "each answer consists of exactly 2 sentences",
+      "questions progress from simple to more complex",
+      "questions are formatted in bold",
+      "answers are in plain text (not bold)"
+    ],
+    "expected_answer": null,
+    "tags": ["FAQ", "formatting", "complexity_progression"]
+  },
+  {
+    "id": "IF030",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "medium",
+    "question": "Write a list of 6 book recommendations. Each title must be exactly 3 words. The titles must be in alphabetical order by the first word. No two titles may start with the same letter. You must make up these titles (do not use real book titles).",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 6 book titles",
+      "each title is exactly 3 words",
+      "titles are in alphabetical order by first word",
+      "no two titles start with the same letter",
+      "titles are fictional (not real published book titles)"
+    ],
+    "expected_answer": null,
+    "tags": ["list", "alphabetical", "word_count", "uniqueness"]
+  },
+  {
+    "id": "IF031",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "medium",
+    "question": "Write a one-paragraph biography of a fictional scientist. The paragraph must: start with their full name, include their birth year, mention exactly two inventions, end with a sentence about their legacy, and be between 80 and 100 words.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "written as a single paragraph",
+      "starts with the scientist's full name",
+      "includes a birth year",
+      "mentions exactly two inventions",
+      "ends with a sentence about their legacy",
+      "word count is between 80 and 100 inclusive"
+    ],
+    "expected_answer": null,
+    "tags": ["biography", "word_count", "content_requirements"]
+  },
+  {
+    "id": "IF032",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "medium",
+    "question": "Write a motivational speech opening (first 3 sentences only). Do not use any first-person pronouns (I, me, my, mine, myself, we, us, our, ours, ourselves). Do not use the words 'success', 'failure', or 'dream'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 sentences",
+      "no first-person pronouns (I, me, my, mine, myself, we, us, our, ours, ourselves)",
+      "does not contain 'success'",
+      "does not contain 'failure'",
+      "does not contain 'dream'"
+    ],
+    "expected_answer": null,
+    "tags": ["speech", "pronoun_avoidance", "word_exclusion"]
+  },
+  {
+    "id": "IF033",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "medium",
+    "question": "Write a weather forecast for a fictional city. Include exactly 3 days. For each day, state: the day name, a temperature in Celsius, and one weather condition. Present it as a numbered list. The temperature must decrease by exactly 3 degrees each day.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 days in the forecast",
+      "each day includes a day name",
+      "each day includes a temperature in Celsius",
+      "each day includes exactly one weather condition",
+      "presented as a numbered list",
+      "temperature decreases by exactly 3 degrees each day"
+    ],
+    "expected_answer": null,
+    "tags": ["forecast", "numerical_pattern", "structured_list"]
+  },
+  {
+    "id": "IF034",
+    "category": "instruction_following",
+    "subcategory": "self_referential",
+    "difficulty": "medium",
+    "question": "Write exactly 3 sentences. Sentence 1 must say how many sentences will follow it. Sentence 2 must be a question. Sentence 3 must answer the question posed in sentence 2.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 sentences",
+      "sentence 1 accurately states '2 sentences will follow' or equivalent",
+      "sentence 2 is a question (ends with ?)",
+      "sentence 3 answers the question in sentence 2"
+    ],
+    "expected_answer": null,
+    "tags": ["self_reference", "question_answer", "sentence_roles"]
+  },
+  {
+    "id": "IF035",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "medium",
+    "question": "Create a structured to-do list for a fictional character planning a wedding. Organize items under exactly 3 category headers. Each category must have exactly 2 to-do items. Every to-do item must start with a checkbox formatted as '[ ]'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 category headers",
+      "each category has exactly 2 to-do items",
+      "every to-do item begins with '[ ]'",
+      "total of 6 to-do items"
+    ],
+    "expected_answer": null,
+    "tags": ["list", "categorization", "checkbox_format"]
+  },
+  {
+    "id": "IF036",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "medium",
+    "question": "Write a short poem about seasons. Requirements: exactly 4 lines, each line corresponds to a different season (spring, summer, autumn, winter) in that order, each line contains exactly 7 words, and each line must contain the name of that season.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 4 lines",
+      "line 1 is about spring and contains the word 'spring'",
+      "line 2 is about summer and contains the word 'summer'",
+      "line 3 is about autumn and contains the word 'autumn'",
+      "line 4 is about winter and contains the word 'winter'",
+      "each line contains exactly 7 words"
+    ],
+    "expected_answer": null,
+    "tags": ["poetry", "word_count", "word_inclusion", "seasonal"]
+  },
+  {
+    "id": "IF037",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "medium",
+    "question": "Write a description of a forest at night without using any of the following: darkness, dark, night, moon, stars, quiet, silent, silence, mysterious, eerie. The description must be exactly 4 sentences.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 4 sentences",
+      "does not contain 'darkness'",
+      "does not contain 'dark'",
+      "does not contain 'night'",
+      "does not contain 'moon'",
+      "does not contain 'stars'",
+      "does not contain 'quiet'",
+      "does not contain 'silent'",
+      "does not contain 'silence'",
+      "does not contain 'mysterious'",
+      "does not contain 'eerie'"
+    ],
+    "expected_answer": null,
+    "tags": ["description", "word_exclusion", "atmosphere"]
+  },
+  {
+    "id": "IF038",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "medium",
+    "question": "Write a definition of 'artificial intelligence' that would appear in three different contexts: (1) a children's book, (2) a legal document, (3) a scientific paper. Each definition must be exactly 1 sentence. Each sentence must be noticeably different in vocabulary and tone.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 definitions (one per context)",
+      "each definition is exactly 1 sentence",
+      "definition 1 uses simple, child-appropriate language",
+      "definition 2 uses formal, legal-style language",
+      "definition 3 uses technical, scientific language",
+      "the three definitions are clearly distinct in vocabulary and tone"
+    ],
+    "expected_answer": null,
+    "tags": ["register", "audience_adaptation", "definition"]
+  },
+  {
+    "id": "IF039",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "medium",
+    "question": "Write a fictional email. It must have: a subject line, a greeting, exactly 2 body paragraphs, a sign-off, and a sender name. The subject line must be a question. The first paragraph must be at least 3 sentences. The second paragraph must be shorter than the first.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "includes a subject line",
+      "subject line is a question",
+      "includes a greeting",
+      "has exactly 2 body paragraphs",
+      "first body paragraph has at least 3 sentences",
+      "second body paragraph has fewer sentences than the first",
+      "includes a sign-off",
+      "includes a sender name"
+    ],
+    "expected_answer": null,
+    "tags": ["email", "format", "paragraph_length"]
+  },
+  {
+    "id": "IF040",
+    "category": "instruction_following",
+    "subcategory": "sequential_steps",
+    "difficulty": "medium",
+    "question": "Describe a decision-making process in exactly 5 steps. Steps must be labeled Step 1 through Step 5. Each step must include: a bolded action phrase (3 words or fewer), followed by exactly one sentence of explanation. The action phrases across all 5 steps must form a coherent summary when read together.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 steps",
+      "steps labeled Step 1 through Step 5",
+      "each step has a bolded action phrase",
+      "each bolded phrase is 3 words or fewer",
+      "each step has exactly one sentence of explanation after the phrase",
+      "the 5 bolded phrases form a coherent summary when read in sequence"
+    ],
+    "expected_answer": null,
+    "tags": ["process", "bold_formatting", "coherence"]
+  },
+  {
+    "id": "IF041",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "hard",
+    "question": "Write a 5-paragraph essay about urban transportation. Constraints: (1) each paragraph is exactly 4 sentences, (2) the first word of each paragraph spells out the successive letters A, B, C, D, E, (3) no paragraph may use any content word that appeared in the previous paragraph (articles, prepositions, and conjunctions are exempt), (4) the final sentence of each paragraph must be a question, (5) include exactly 3 statistics anywhere in the essay (you may invent plausible ones).",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 paragraphs",
+      "each paragraph has exactly 4 sentences",
+      "paragraph 1 starts with a word beginning with A",
+      "paragraph 2 starts with a word beginning with B",
+      "paragraph 3 starts with a word beginning with C",
+      "paragraph 4 starts with a word beginning with D",
+      "paragraph 5 starts with a word beginning with E",
+      "no content word in paragraph N+1 appears in paragraph N",
+      "each paragraph's final sentence is a question",
+      "exactly 3 statistics appear in the essay"
+    ],
+    "expected_answer": null,
+    "tags": ["essay", "acrostic", "word_uniqueness", "statistics"]
+  },
+  {
+    "id": "IF042",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "hard",
+    "question": "Write a sonnet (14 lines, iambic pentameter, ABAB CDCD EFEF GG rhyme scheme) about artificial intelligence. Additionally: (1) the first word of each line must spell out a 14-letter message (you choose the message, but declare it at the top), (2) no line may exceed 11 syllables, (3) the couplet (lines 13-14) must pose and answer a question.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 14 lines",
+      "follows ABAB CDCD EFEF GG rhyme scheme",
+      "approximately iambic pentameter (10-11 syllables per line)",
+      "first words of all 14 lines spell out a declared 14-letter message",
+      "no line exceeds 11 syllables",
+      "line 13 is a question",
+      "line 14 answers the question in line 13"
+    ],
+    "expected_answer": null,
+    "tags": ["poetry", "sonnet", "acrostic", "rhyme", "meter"]
+  },
+  {
+    "id": "IF043",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "hard",
+    "question": "Write a 200-word story about a journey. Constraints: (1) do not use any word longer than 6 letters, (2) do not use any pronouns at all, (3) every sentence must start with a different word, (4) include exactly 4 named characters, (5) the story must have a clear beginning, middle, and end.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "approximately 200 words",
+      "no word in the text exceeds 6 letters",
+      "no pronouns used anywhere (no I, he, she, they, it, we, you, me, him, her, them, us, his, hers, its, their, etc.)",
+      "every sentence starts with a word not used to start any other sentence",
+      "exactly 4 named characters",
+      "story has a clear beginning, middle, and end"
+    ],
+    "expected_answer": null,
+    "tags": ["story", "letter_limit", "pronoun_avoidance", "word_uniqueness"]
+  },
+  {
+    "id": "IF044",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "hard",
+    "question": "Write a recipe with exactly 8 ingredients and exactly 8 steps. Constraints: (1) each ingredient must appear at least once in the steps, (2) each step must mention exactly one ingredient from the list, (3) no ingredient may be mentioned in more than 2 steps, (4) steps 1 and 8 must mention the same ingredient, (5) the recipe must be for a real, edible dish.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 8 ingredients listed",
+      "exactly 8 steps",
+      "every listed ingredient appears in at least one step",
+      "each step mentions exactly one ingredient from the list",
+      "no ingredient appears in more than 2 steps",
+      "step 1 and step 8 mention the same ingredient",
+      "the dish is a real, edible recipe"
+    ],
+    "expected_answer": null,
+    "tags": ["recipe", "bijection", "ingredient_tracking"]
+  },
+  {
+    "id": "IF045",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "hard",
+    "question": "Write a letter of complaint about a fictional product. Requirements: (1) exactly 4 paragraphs, (2) word count of each paragraph forms an increasing arithmetic sequence (e.g., 20, 30, 40, 50 words), (3) the third paragraph must contain exactly 2 rhetorical questions, (4) do not use first-person singular (I, me, my), (5) close with a specific demand stated in 15 words or fewer.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 4 paragraphs",
+      "paragraph word counts form an arithmetic sequence with positive common difference",
+      "paragraph 3 contains exactly 2 rhetorical questions",
+      "no first-person singular pronouns used (I, me, my)",
+      "closing demand is 15 words or fewer"
+    ],
+    "expected_answer": null,
+    "tags": ["complaint_letter", "arithmetic_sequence", "rhetorical_questions"]
+  },
+  {
+    "id": "IF046",
+    "category": "instruction_following",
+    "subcategory": "sequential_steps",
+    "difficulty": "hard",
+    "question": "Write a 10-step tutorial on learning to draw. Constraints: (1) steps alternate between starting with a verb and starting with a noun, (2) each step is exactly one sentence, (3) no step may exceed 20 words, (4) every odd-numbered step must contain the word 'practice', (5) every even-numbered step must contain a specific time duration, (6) the tutorial must be genuinely useful.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 10 steps",
+      "odd steps start with a verb",
+      "even steps start with a noun",
+      "each step is exactly one sentence",
+      "no step exceeds 20 words",
+      "each odd step contains the word 'practice'",
+      "each even step contains a time duration",
+      "tutorial provides genuinely useful drawing advice"
+    ],
+    "expected_answer": null,
+    "tags": ["tutorial", "alternating_pattern", "word_inclusion"]
+  },
+  {
+    "id": "IF047",
+    "category": "instruction_following",
+    "subcategory": "self_referential",
+    "difficulty": "hard",
+    "question": "Write a paragraph that is exactly 50 words long. The paragraph must: (1) accurately state its own word count, (2) accurately state its own sentence count, (3) accurately state the number of times the letter 'e' appears in the full paragraph, (4) not use the word 'paragraph'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 50 words total",
+      "states '50 words' or equivalent accurately",
+      "states the sentence count accurately",
+      "states the exact count of the letter 'e' in the full text accurately",
+      "does not contain the word 'paragraph'"
+    ],
+    "expected_answer": null,
+    "tags": ["self_reference", "accuracy", "counting"]
+  },
+  {
+    "id": "IF048",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "hard",
+    "question": "Describe the process of photosynthesis without using any of the following: sun, light, energy, chlorophyll, green, water, carbon, oxygen, glucose, sugar, plant, leaf. Your description must be exactly 6 sentences and must be scientifically accurate.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 6 sentences",
+      "does not contain 'sun'",
+      "does not contain 'light'",
+      "does not contain 'energy'",
+      "does not contain 'chlorophyll'",
+      "does not contain 'green'",
+      "does not contain 'water'",
+      "does not contain 'carbon'",
+      "does not contain 'oxygen'",
+      "does not contain 'glucose'",
+      "does not contain 'sugar'",
+      "does not contain 'plant'",
+      "does not contain 'leaf'",
+      "scientifically accurate description of photosynthesis"
+    ],
+    "expected_answer": null,
+    "tags": ["science", "word_exclusion", "accuracy"]
+  },
+  {
+    "id": "IF049",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "hard",
+    "question": "Write a menu for a fictional restaurant with exactly 3 courses (starter, main, dessert). Each course must have exactly 3 options. Constraints: (1) every dish name must be exactly 2 words, (2) no word may be repeated across any dish name in the entire menu, (3) every dish must have a price, and prices must increase across courses (all starters < all mains < all desserts), (4) one option per course must be vegetarian, indicated with '(V)'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 courses: starter, main, dessert",
+      "each course has exactly 3 dish options",
+      "every dish name is exactly 2 words",
+      "no word is repeated across any dish name in the entire menu (18 unique words across 9 dish names)",
+      "every dish has a price listed",
+      "all starter prices are lower than all main prices",
+      "all main prices are lower than all dessert prices",
+      "exactly one option per course is marked '(V)'"
+    ],
+    "expected_answer": null,
+    "tags": ["menu", "price_ordering", "word_uniqueness"]
+  },
+  {
+    "id": "IF050",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "hard",
+    "question": "Write a technical specification document for a fictional app. Structure: (1) exactly 5 sections with bold headers, (2) section 1 has exactly 3 bullet points, (3) section 2 is a single paragraph of exactly 40 words, (4) section 3 has a 2x3 table, (5) section 4 contains exactly 2 numbered sub-steps, (6) section 5 is exactly 2 sentences and begins with 'In conclusion'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 sections with bold headers",
+      "section 1 has exactly 3 bullet points",
+      "section 2 is a single paragraph of exactly 40 words",
+      "section 3 contains a 2x3 table (2 columns, 3 data rows, or 3 columns, 2 data rows)",
+      "section 4 contains exactly 2 numbered sub-steps",
+      "section 5 is exactly 2 sentences",
+      "section 5 begins with 'In conclusion'"
+    ],
+    "expected_answer": null,
+    "tags": ["technical_document", "structured_format", "multi_section"]
+  },
+  {
+    "id": "IF051",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "hard",
+    "question": "Write a news article about a fictional scientific discovery. Requirements: (1) headline of exactly 8 words, (2) lead paragraph answers Who, What, When, Where in exactly 2 sentences, (3) body contains exactly 3 paragraphs of exactly 3 sentences each, (4) includes exactly 2 quotes from fictional scientists, (5) closes with a sentence about future implications, (6) no sentence in the article may begin with 'The'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "headline is exactly 8 words",
+      "lead paragraph has exactly 2 sentences",
+      "lead paragraph addresses Who, What, When, and Where",
+      "body has exactly 3 paragraphs of exactly 3 sentences each",
+      "exactly 2 quotes from fictional scientists",
+      "closing sentence about future implications",
+      "no sentence begins with 'The'"
+    ],
+    "expected_answer": null,
+    "tags": ["news_article", "journalistic_format", "sentence_starter"]
+  },
+  {
+    "id": "IF052",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "hard",
+    "question": "Write a crossword-style clue and answer pair for exactly 6 words. Each answer must be exactly one word. The answers, read in order, must form a grammatically correct sentence. Each clue must be exactly 5 words. No word in a clue may appear in its corresponding answer.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 6 clue-answer pairs",
+      "each answer is exactly one word",
+      "the 6 answers read in order form a grammatically correct sentence",
+      "each clue is exactly 5 words",
+      "no word from a clue appears as its own answer"
+    ],
+    "expected_answer": null,
+    "tags": ["wordplay", "grammatical_sentence", "clue_writing"]
+  },
+  {
+    "id": "IF053",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "hard",
+    "question": "Write a cover letter for a fictional job application. Constraints: (1) do not use any form of 'to be' (is, are, was, were, be, been, being, am), (2) exactly 3 paragraphs, (3) first paragraph: exactly 2 sentences, middle paragraph: exactly 3 sentences, final paragraph: exactly 2 sentences, (4) no sentence may exceed 25 words, (5) do not use the words 'job', 'position', or 'role'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "no forms of 'to be' used (is, are, was, were, be, been, being, am)",
+      "exactly 3 paragraphs",
+      "first paragraph has exactly 2 sentences",
+      "second paragraph has exactly 3 sentences",
+      "third paragraph has exactly 2 sentences",
+      "no sentence exceeds 25 words",
+      "does not contain 'job'",
+      "does not contain 'position'",
+      "does not contain 'role'"
+    ],
+    "expected_answer": null,
+    "tags": ["cover_letter", "verb_avoidance", "paragraph_structure"]
+  },
+  {
+    "id": "IF054",
+    "category": "instruction_following",
+    "subcategory": "sequential_steps",
+    "difficulty": "hard",
+    "question": "Write a 7-step guide to making friends as an adult. Each step must build explicitly on the previous step (reference something from the step before). Steps must alternate between advice that involves another person directly and advice that is a solo action. Steps must be numbered. Each step is 1-2 sentences.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 7 steps",
+      "each step explicitly references something from the previous step",
+      "odd-numbered steps are solo actions",
+      "even-numbered steps involve direct interaction with another person",
+      "steps are numbered",
+      "each step is 1-2 sentences"
+    ],
+    "expected_answer": null,
+    "tags": ["sequential", "alternating_pattern", "internal_reference"]
+  },
+  {
+    "id": "IF055",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "hard",
+    "question": "Write a fictional debate transcript between two characters disagreeing about remote work. Constraints: (1) exactly 5 rounds of exchange (10 total speeches), (2) each speech is exactly 3 sentences, (3) Character A argues in favor of remote work, Character B against, (4) each speech must contain exactly one statistic, (5) no statistic used by Character A may be lower in value than the immediately preceding statistic used by Character B, (6) the final speech must concede one point to the opposing side.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 rounds (10 total speeches, 5 per character)",
+      "each speech is exactly 3 sentences",
+      "Character A consistently argues for remote work",
+      "Character B consistently argues against remote work",
+      "each speech contains exactly one statistic",
+      "each of Character A's statistics is not lower than Character B's immediately preceding statistic",
+      "the final speech concedes at least one point to the opposing side"
+    ],
+    "expected_answer": null,
+    "tags": ["debate", "statistics", "turn_taking", "concession"]
+  },
+  {
+    "id": "IF056",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "hard",
+    "question": "Write a 12-line poem where the lines have word counts following the Fibonacci sequence starting from 1 (1,1,2,3,5,8,13,21,34,55,89,144 — use only the first 12 terms: 1,1,2,3,5,8,13,21... but cap each line at a maximum of 15 words — so for values >15, use 15 words). The poem must be about mathematics.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 12 lines",
+      "line 1 has exactly 1 word",
+      "line 2 has exactly 1 word",
+      "line 3 has exactly 2 words",
+      "line 4 has exactly 3 words",
+      "line 5 has exactly 5 words",
+      "line 6 has exactly 8 words",
+      "line 7 has exactly 13 words",
+      "lines 8 through 12 each have exactly 15 words (capped from Fibonacci values exceeding 15)",
+      "poem is about mathematics"
+    ],
+    "expected_answer": null,
+    "tags": ["poetry", "fibonacci", "word_count", "mathematics"]
+  },
+  {
+    "id": "IF057",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "hard",
+    "question": "Write a dialogue between 3 characters discussing their favorite books. Constraints: (1) exactly 9 total lines of dialogue (3 per character), (2) each character names exactly 1 book title, (3) no two characters may name a book from the same decade, (4) each character's second line must be a direct question to one of the other characters, (5) the third line of each character must answer a question that was asked to them, (6) character names are single words.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 characters with single-word names",
+      "exactly 9 total lines of dialogue",
+      "each character has exactly 3 lines",
+      "each character mentions exactly one book title",
+      "the three books are from different decades",
+      "each character's second line is a direct question to one of the other characters",
+      "each character's third line answers a question that was addressed to them"
+    ],
+    "expected_answer": null,
+    "tags": ["dialogue", "question_answer", "consistency", "books"]
+  },
+  {
+    "id": "IF058",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "hard",
+    "question": "Write a love letter without using any of these concepts: heart, love, feeling, emotion, together, forever, always, beautiful, wonderful, perfect, miss, want, need. The letter must be 5 paragraphs with the word counts 30, 25, 35, 20, 15 (in that order). Begin with a salutation and end with a sign-off.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "does not contain 'heart'",
+      "does not contain 'love'",
+      "does not contain 'feeling' or 'feelings'",
+      "does not contain 'emotion' or 'emotions'",
+      "does not contain 'together'",
+      "does not contain 'forever'",
+      "does not contain 'always'",
+      "does not contain 'beautiful'",
+      "does not contain 'wonderful'",
+      "does not contain 'perfect'",
+      "does not contain 'miss'",
+      "does not contain 'want'",
+      "does not contain 'need'",
+      "paragraph 1 has approximately 30 words",
+      "paragraph 2 has approximately 25 words",
+      "paragraph 3 has approximately 35 words",
+      "paragraph 4 has approximately 20 words",
+      "paragraph 5 has approximately 15 words",
+      "begins with a salutation",
+      "ends with a sign-off"
+    ],
+    "expected_answer": null,
+    "tags": ["creative_writing", "word_exclusion", "word_count_per_paragraph"]
+  },
+  {
+    "id": "IF059",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "hard",
+    "question": "Write a product manual introduction for a fictional device called the 'QuickSync X1'. Constraints: (1) exactly 4 paragraphs, (2) paragraph 1 must be exactly 3 sentences and introduce the product, (3) paragraph 2 must list exactly 5 features as a bulleted sub-list embedded within the paragraph, (4) paragraph 3 must contain a warning in ALL CAPS of 10 words or fewer, (5) paragraph 4 must be exactly 2 sentences and end with a website URL (fictional), (6) 'QuickSync X1' must appear at least once in every paragraph.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 4 paragraphs",
+      "paragraph 1 has exactly 3 sentences and introduces the product",
+      "paragraph 2 contains exactly 5 bullet points as a sub-list",
+      "paragraph 3 contains a warning in ALL CAPS that is 10 words or fewer",
+      "paragraph 4 has exactly 2 sentences and ends with a fictional URL",
+      "'QuickSync X1' appears at least once in each paragraph"
+    ],
+    "expected_answer": null,
+    "tags": ["technical_writing", "manual", "all_caps", "structured_format"]
+  },
+  {
+    "id": "IF060",
+    "category": "instruction_following",
+    "subcategory": "self_referential",
+    "difficulty": "hard",
+    "question": "Write a set of exactly 5 instructions for how to follow these very instructions. Each instruction must be a single sentence. Instruction 1 must describe reading all instructions before starting. Instruction 5 must describe verifying the output. The instructions must be internally consistent (following them must actually produce valid output). Include exactly one example within the full set of instructions.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 instructions",
+      "each instruction is a single sentence",
+      "instruction 1 addresses reading all instructions before starting",
+      "instruction 5 addresses verifying the output",
+      "the 5 instructions are internally consistent",
+      "exactly one example appears somewhere in the 5 instructions"
+    ],
+    "expected_answer": null,
+    "tags": ["self_reference", "meta_instructions", "consistency"]
+  },
+  {
+    "id": "IF061",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "hard",
+    "question": "Write a timeline of exactly 8 fictional historical events. Events must be in chronological order. Constraints: (1) each event entry has exactly the format: [YEAR] — [EVENT DESCRIPTION], (2) years must span at least 500 years from first to last, (3) year gaps between consecutive events must strictly increase, (4) each event description is between 8 and 12 words, (5) exactly 3 events must involve a fictional named person.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 8 events",
+      "events in chronological order",
+      "format is [YEAR] — [EVENT DESCRIPTION] for each entry",
+      "time span from first to last event is at least 500 years",
+      "year gaps between consecutive events are strictly increasing",
+      "each event description is between 8 and 12 words",
+      "exactly 3 events mention a fictional named person"
+    ],
+    "expected_answer": null,
+    "tags": ["timeline", "chronological", "arithmetic", "word_count"]
+  },
+  {
+    "id": "IF062",
+    "category": "instruction_following",
+    "subcategory": "sequential_steps",
+    "difficulty": "hard",
+    "question": "Outline a 6-chapter structure for a fictional thriller novel. For each chapter: (1) provide the chapter title (exactly 3 words), (2) write a one-sentence summary of exactly 15 words, (3) identify the main character for that chapter. Constraints: no character appears as 'main' in more than 2 chapters, there must be at least 3 distinct main characters across the 6 chapters, and chapter titles may not share any words.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 6 chapters",
+      "each chapter title is exactly 3 words",
+      "each chapter summary is exactly 15 words",
+      "each chapter identifies a main character",
+      "no character is listed as 'main' in more than 2 chapters",
+      "at least 3 distinct characters are listed across all 6 chapters",
+      "no word is shared between any two chapter titles"
+    ],
+    "expected_answer": null,
+    "tags": ["novel_outline", "story_structure", "word_uniqueness"]
+  },
+  {
+    "id": "IF063",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "hard",
+    "question": "Explain quantum entanglement to a general audience. Constraints: (1) no passive voice anywhere in the response, (2) no Latin-derived scientific terms (no 'quantum', 'entanglement', 'particle', 'photon', 'electron', 'wave', 'superposition', 'correlation'), (3) use exactly one analogy, (4) exactly 4 paragraphs, (5) no paragraph may be shorter than 3 sentences.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "no passive voice constructions",
+      "does not use 'quantum'",
+      "does not use 'entanglement'",
+      "does not use 'particle'",
+      "does not use 'photon'",
+      "does not use 'electron'",
+      "does not use 'wave'",
+      "does not use 'superposition'",
+      "does not use 'correlation'",
+      "exactly one analogy appears in the text",
+      "exactly 4 paragraphs",
+      "each paragraph has at least 3 sentences"
+    ],
+    "expected_answer": null,
+    "tags": ["explanation", "passive_voice_avoidance", "word_exclusion", "analogy"]
+  },
+  {
+    "id": "IF064",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "hard",
+    "question": "Write a conversation between a customer and support agent formatted as a chat log. Requirements: (1) exactly 8 messages total (4 per person), (2) messages alternate starting with Customer, (3) each message includes a timestamp in format HH:MM, (4) timestamps must be in increasing order and all within a single hour, (5) the issue must be stated, escalated, and resolved within these 8 messages, (6) no message may exceed 30 words.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 8 messages",
+      "4 messages per participant",
+      "messages alternate: Customer, Agent, Customer, Agent...",
+      "each message has a timestamp in HH:MM format",
+      "all timestamps are in strictly increasing order",
+      "all timestamps fall within the same hour",
+      "an issue is stated, then escalated, then resolved across the 8 messages",
+      "no message exceeds 30 words"
+    ],
+    "expected_answer": null,
+    "tags": ["chat_log", "timestamps", "narrative_arc", "word_limit"]
+  },
+  {
+    "id": "IF065",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "extreme",
+    "question": "Write a 10-step guide to making paper cranes. Constraints: (1) exactly 10 steps, each exactly one sentence, (2) steps must alternate: odd steps start with a verb, even steps start with a noun/adjective, (3) each step is exactly 12 words, (4) the letter 'o' does not appear in any odd-numbered step, (5) every even-numbered step must contain a simile using 'like', (6) reading only the first word of each step in order must form a grammatically valid English sentence, (7) the instructions must be genuinely useful for making a paper crane.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 10 steps",
+      "each step is exactly one sentence",
+      "odd steps start with a verb",
+      "even steps start with a noun or adjective",
+      "each step is exactly 12 words",
+      "the letter 'o' does not appear in any odd-numbered step",
+      "every even-numbered step contains a simile using the word 'like'",
+      "the first words of steps 1-10 in sequence form a grammatically valid English sentence",
+      "the instructions provide genuinely useful paper crane folding guidance"
+    ],
+    "expected_answer": null,
+    "tags": ["instructions", "alternating_pattern", "acrostic", "letter_exclusion", "simile"]
+  },
+  {
+    "id": "IF066",
+    "category": "instruction_following",
+    "subcategory": "self_referential",
+    "difficulty": "extreme",
+    "question": "Write a text that satisfies all of the following simultaneously: (1) exactly 100 words, (2) the number of sentences equals the number of paragraphs squared, (3) contains exactly the stated number of commas (you must state the count), (4) the word count of each paragraph forms a geometric sequence with ratio 2, (5) does not use the word 'this', (6) the final word must be 'done'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 100 words",
+      "number of sentences equals the number of paragraphs squared (e.g., 2 paragraphs → 4 sentences; 3 paragraphs → 9 sentences)",
+      "text states a comma count, and that count is accurate",
+      "paragraph word counts form a geometric sequence with ratio 2 (e.g., 25, 50 words for 2 paragraphs; or another valid sequence summing to 100)",
+      "does not contain the word 'this'",
+      "final word of the text is 'done'"
+    ],
+    "expected_answer": null,
+    "tags": ["self_reference", "geometric_sequence", "word_count", "counting"]
+  },
+  {
+    "id": "IF067",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "extreme",
+    "question": "Write a complete short story (beginning, middle, end) under these constraints: (1) no word may be used more than once in the entire story (with the exception of: a, an, the, and, but, or, nor, for, yet, so, in, on, at, to, of, by, is, are, was, were), (2) exactly 15 sentences, (3) the story must include exactly 3 named characters, (4) no sentence may begin with a word that ends in the letter 's', (5) the story must have a twist ending.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "no content word repeated more than once (exceptions: a, an, the, and, but, or, nor, for, yet, so, in, on, at, to, of, by, is, are, was, were)",
+      "exactly 15 sentences",
+      "exactly 3 named characters",
+      "no sentence begins with a word ending in the letter 's'",
+      "the story has a clear twist ending",
+      "has a clear beginning, middle, and end"
+    ],
+    "expected_answer": null,
+    "tags": ["story", "word_uniqueness", "sentence_starter", "twist"]
+  },
+  {
+    "id": "IF068",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "extreme",
+    "question": "Write a fictional Wikipedia article. Requirements: (1) lead section of exactly 2 paragraphs, first paragraph 50 words exactly, second paragraph 30 words exactly, (2) exactly 4 section headers formatted with '==' on each side, (3) each section has a different structure: section 1 = 3 bullet points, section 2 = a 3x3 table, section 3 = 2 numbered items, section 4 = a single paragraph of exactly 45 words, (4) include exactly 3 citation markers formatted as [1], [2], [3] placed in different sections, (5) first sentence of the article must define the subject using the phrase 'refers to'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "lead section has exactly 2 paragraphs",
+      "lead paragraph 1 is exactly 50 words",
+      "lead paragraph 2 is exactly 30 words",
+      "exactly 4 section headers formatted as ==Header==",
+      "section 1 has exactly 3 bullet points",
+      "section 2 has a 3x3 table",
+      "section 3 has exactly 2 numbered items",
+      "section 4 is a single paragraph of exactly 45 words",
+      "citation markers [1], [2], [3] each appear exactly once in different sections",
+      "first sentence contains the phrase 'refers to'"
+    ],
+    "expected_answer": null,
+    "tags": ["wikipedia", "structured_format", "word_count", "citations"]
+  },
+  {
+    "id": "IF069",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "extreme",
+    "question": "Write a poem in which: (1) it has exactly 9 lines arranged as 3 tercets (3-line stanzas), (2) the rhyme scheme is ABA BCB CDC, (3) every line has exactly 8 syllables, (4) no adjective appears anywhere, (5) every line ends with a concrete noun, (6) the poem tells a coherent story with a beginning, middle, and end across the three stanzas.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 9 lines in 3 tercets",
+      "rhyme scheme is ABA BCB CDC",
+      "every line has exactly 8 syllables",
+      "no adjectives appear anywhere in the poem",
+      "every line's final word is a concrete noun",
+      "the poem tells a coherent story progressing across 3 stanzas"
+    ],
+    "expected_answer": null,
+    "tags": ["poetry", "rhyme_scheme", "syllable_count", "parts_of_speech", "narrative"]
+  },
+  {
+    "id": "IF070",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "extreme",
+    "question": "Write a fictional press release about a merger between two companies. Constraints: (1) exactly 5 paragraphs, (2) word counts per paragraph form a palindrome pattern (e.g., 30-20-10-20-30 or similar symmetric pattern), (3) paragraph 1 contains the date in format DD/MM/YYYY and both company names, (4) paragraph 3 contains exactly 2 quotes from named executives, each quote in quotation marks, (5) every sentence in paragraph 5 must begin with a word that starts with the same letter as one of the two company names, (6) do not use the words 'synergy', 'exciting', 'pleased', or 'proud'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 paragraphs",
+      "word counts per paragraph form a palindrome (paragraph 1 word count = paragraph 5 word count, paragraph 2 = paragraph 4)",
+      "paragraph 1 contains a date in DD/MM/YYYY format",
+      "paragraph 1 mentions both company names",
+      "paragraph 3 contains exactly 2 direct quotes from named executives",
+      "each sentence in paragraph 5 starts with a word beginning with the same letter as one of the two company names",
+      "does not contain 'synergy'",
+      "does not contain 'exciting'",
+      "does not contain 'pleased'",
+      "does not contain 'proud'"
+    ],
+    "expected_answer": null,
+    "tags": ["press_release", "palindrome_structure", "word_exclusion"]
+  },
+  {
+    "id": "IF071",
+    "category": "instruction_following",
+    "subcategory": "sequential_steps",
+    "difficulty": "extreme",
+    "question": "Write a 12-step scientific method procedure for a fictional experiment. Constraints: (1) steps 1-4 = Preparation phase, steps 5-8 = Execution phase, steps 9-12 = Analysis phase, (2) within each phase, each step explicitly references the previous step in that phase, (3) each step is exactly 2 sentences, (4) steps 1, 5, and 9 (phase starts) must each begin with the same word, (5) every step contains exactly one measurement with units, (6) steps 4, 8, and 12 (phase ends) must each pose an evaluative question.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 12 steps in 3 phases of 4",
+      "each step within a phase references the previous step in that phase",
+      "each step consists of exactly 2 sentences",
+      "steps 1, 5, and 9 begin with the same word",
+      "every step contains exactly one measurement with units",
+      "steps 4, 8, and 12 each end with an evaluative question"
+    ],
+    "expected_answer": null,
+    "tags": ["scientific_method", "sequential", "phase_structure", "measurement"]
+  },
+  {
+    "id": "IF072",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "extreme",
+    "question": "Create a fictional 5-day travel itinerary. For each day: include exactly 3 activities. Constraints: (1) no activity type may repeat across the entire 5-day itinerary (so 15 unique activity types), (2) each day's activities must be listed in time order with a time label (Morning/Afternoon/Evening), (3) the first activity of each day must relate to food, (4) each activity description is exactly 10 words, (5) days must alternate between indoor-heavy (majority indoor activities) and outdoor-heavy (majority outdoor activities), (6) total cost mentioned across all activities must sum to exactly $500 — each activity must mention a cost.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 5 days, 3 activities each (15 total)",
+      "no two activities across the entire itinerary are the same type",
+      "each day labels activities as Morning, Afternoon, and Evening",
+      "the first activity each day (Morning) is food-related",
+      "each activity description is exactly 10 words",
+      "days alternate between indoor-heavy (days 1,3,5) and outdoor-heavy (days 2,4) or vice versa",
+      "every activity mentions a cost, and all costs sum to exactly $500"
+    ],
+    "expected_answer": null,
+    "tags": ["itinerary", "word_count", "arithmetic_sum", "uniqueness"]
+  },
+  {
+    "id": "IF073",
+    "category": "instruction_following",
+    "subcategory": "self_referential",
+    "difficulty": "extreme",
+    "question": "Write a text that: (1) is a set of exactly 7 rules for writing, (2) each rule is written in the style it prescribes (e.g., a rule about brevity is brief, a rule about using examples includes an example, a rule about clarity is maximally clear), (3) each rule is a single sentence, (4) rules must be numbered, (5) no two rules may overlap in content, (6) the 7 rules, if followed, would collectively produce a text that itself satisfies all 7 rules.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 7 rules",
+      "each rule is written in the style it describes (self-exemplifying)",
+      "each rule is a single sentence",
+      "rules are numbered 1 through 7",
+      "no two rules address the same writing principle",
+      "following all 7 rules would produce a text that satisfies all 7 rules (self-consistent)"
+    ],
+    "expected_answer": null,
+    "tags": ["self_reference", "writing_rules", "self_exemplifying", "consistency"]
+  },
+  {
+    "id": "IF074",
+    "category": "instruction_following",
+    "subcategory": "negation_handling",
+    "difficulty": "extreme",
+    "question": "Write a sports commentary for a fictional championship match lasting exactly 90 seconds of game time. Constraints: (1) present tense only throughout, (2) no use of any number in digit form (all numbers written as words), (3) exactly 10 sentences, (4) no two consecutive sentences may start with the same part of speech, (5) must include exactly 3 dramatic turning points, (6) no sentence may contain more than 20 words, (7) do not use the words 'ball', 'score', 'win', or 'lose'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "present tense used exclusively",
+      "no digit-form numbers (all written as words)",
+      "exactly 10 sentences",
+      "no two consecutive sentences start with the same part of speech",
+      "exactly 3 dramatic turning points are described",
+      "no sentence exceeds 20 words",
+      "does not contain 'ball'",
+      "does not contain 'score'",
+      "does not contain 'win'",
+      "does not contain 'lose'"
+    ],
+    "expected_answer": null,
+    "tags": ["sports", "tense", "word_exclusion", "parts_of_speech"]
+  },
+  {
+    "id": "IF075",
+    "category": "instruction_following",
+    "subcategory": "format_specific",
+    "difficulty": "extreme",
+    "question": "Design a fictional board game rules document. Requirements: (1) exactly 6 sections with headers, (2) section 1 (Setup): exactly 5 bullet points each starting with an imperative verb not used in any other bullet, (3) section 2 (Objective): exactly 1 sentence of exactly 20 words, (4) section 3 (Turn Structure): a numbered list of exactly 4 items forming a cycle (the last item must reference returning to item 1), (5) section 4 (Special Rules): exactly 3 rules each in bold followed by a non-bold explanation of exactly 15 words, (6) section 5 (Scoring): a table with 3 columns and 4 data rows, (7) section 6 (Winning): exactly 2 sentences, the second of which is conditional (if...then structure).",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 6 sections with headers",
+      "section 1 has exactly 5 bullet points each starting with a unique imperative verb",
+      "section 2 has exactly 1 sentence of exactly 20 words",
+      "section 3 has exactly 4 numbered items forming a cycle (last references first)",
+      "section 4 has exactly 3 rules: each bold title followed by exactly 15-word explanation",
+      "section 5 has a table with 3 columns and 4 data rows",
+      "section 6 has exactly 2 sentences with the second in if...then conditional form"
+    ],
+    "expected_answer": null,
+    "tags": ["game_rules", "structured_format", "multi_section", "conditional"]
+  },
+  {
+    "id": "IF076",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "extreme",
+    "question": "Write a 3-act play synopsis (Act 1, Act 2, Act 3) for a fictional tragedy. Constraints: (1) each act is described in exactly 4 sentences, (2) sentence lengths (in words) across all 12 sentences must form a strictly increasing sequence, (3) the first word of each act's first sentence must be the same word, (4) each act introduces exactly one new named character (3 total), and each character introduced must die by the end of the act following their introduction, (5) Act 2's second sentence must quote something said in Act 1, (6) the synopsis must work as a coherent tragic narrative.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "each of the 3 acts has exactly 4 sentences",
+      "all 12 sentences have strictly increasing word counts",
+      "Act 1, Act 2, and Act 3 each begin their first sentence with the same word",
+      "each act introduces exactly one new named character (3 total)",
+      "the character introduced in Act 1 dies by the end of Act 2",
+      "the character introduced in Act 2 dies by the end of Act 3",
+      "Act 2's second sentence quotes something from Act 1",
+      "the synopsis forms a coherent tragic narrative"
+    ],
+    "expected_answer": null,
+    "tags": ["play", "tragedy", "escalating_length", "narrative_arc"]
+  },
+  {
+    "id": "IF077",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "extreme",
+    "question": "Write a classified advertisement for a fictional service. Constraints: (1) total length is exactly 75 words, (2) structured in exactly 3 sections: Headline (max 8 words), Body (between 55 and 60 words), Contact (exactly 7 words), (3) Headline must contain the service name and a number, (4) Body must contain exactly one exclamation mark and exactly two commas, (5) Contact section must include a fictional phone number in format (XXX) XXX-XXXX and a price, (6) do not use the words 'best', 'cheap', 'guaranteed', or 'limited'.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "total word count is exactly 75",
+      "headline section is 8 words or fewer",
+      "body section is between 55 and 60 words",
+      "contact section is exactly 7 words",
+      "headline contains the service name and a number",
+      "body contains exactly one exclamation mark",
+      "body contains exactly two commas",
+      "contact section includes a phone number in (XXX) XXX-XXXX format",
+      "contact section includes a price",
+      "does not contain 'best'",
+      "does not contain 'cheap'",
+      "does not contain 'guaranteed'",
+      "does not contain 'limited'"
+    ],
+    "expected_answer": null,
+    "tags": ["classified_ad", "word_count", "punctuation_count", "format"]
+  },
+  {
+    "id": "IF078",
+    "category": "instruction_following",
+    "subcategory": "sequential_steps",
+    "difficulty": "extreme",
+    "question": "Write a 9-step meditation script. Constraints: (1) steps are numbered 1-9, (2) steps 1-3 are grounding (physical body focus), 4-6 are breath focus, 7-9 are visualization, (3) each step is exactly 3 sentences, (4) the second sentence of each step must be in the imperative mood, (5) each step must end with a period of silence indicated as '...' — this counts as a sentence, (6) each step's first sentence must be longer than its second sentence (in words), (7) across the 9 steps, every vowel (a, e, i, o, u) must appear as the first letter of at least one step's first word.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 9 numbered steps",
+      "steps 1-3 focus on the physical body",
+      "steps 4-6 focus on breath",
+      "steps 7-9 are visualizations",
+      "each step has exactly 3 sentences",
+      "the second sentence of every step is in the imperative mood",
+      "the third sentence of each step is '...'",
+      "each step's first sentence is longer (more words) than its second sentence",
+      "across all 9 steps, each of the 5 vowels (a,e,i,o,u) is the first letter of at least one step's opening word"
+    ],
+    "expected_answer": null,
+    "tags": ["meditation", "structure", "imperative", "vowel_distribution"]
+  },
+  {
+    "id": "IF079",
+    "category": "instruction_following",
+    "subcategory": "constraint_interaction",
+    "difficulty": "extreme",
+    "question": "Write an academic abstract for a fictional research paper. Constraints: (1) exactly 150 words, (2) structured in exactly 5 sentences with word counts 20, 30, 40, 35, 25 (in that order), (3) sentence 1 states the problem, sentence 2 reviews prior work, sentence 3 describes the method, sentence 4 reports results with at least 2 numerical findings, sentence 5 states implications, (4) no passive voice in sentences 1, 3, or 5, (5) sentence 4 must use passive voice, (6) do not use the words 'novel', 'significant', 'important', or 'we', (7) must end with a period.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 150 words total",
+      "exactly 5 sentences",
+      "sentence 1 is exactly 20 words and states the problem",
+      "sentence 2 is exactly 30 words and reviews prior work",
+      "sentence 3 is exactly 40 words and describes the method",
+      "sentence 4 is exactly 35 words, uses passive voice, and includes at least 2 numerical findings",
+      "sentence 5 is exactly 25 words and states implications",
+      "sentences 1, 3, 5 use no passive voice",
+      "does not contain 'novel'",
+      "does not contain 'significant'",
+      "does not contain 'important'",
+      "does not contain 'we'",
+      "text ends with a period"
+    ],
+    "expected_answer": null,
+    "tags": ["abstract", "academic", "passive_voice", "word_count_per_sentence"]
+  },
+  {
+    "id": "IF080",
+    "category": "instruction_following",
+    "subcategory": "multi_constraint",
+    "difficulty": "extreme",
+    "question": "Write the opening of a fictional novel that begins in media res. Constraints: (1) exactly 3 paragraphs, (2) the three paragraphs are from three different perspectives: first-person, second-person, third-person limited (in that order), (3) all three paragraphs describe the same moment in time from different viewpoints, (4) a specific object must appear in all 3 paragraphs, referred to by a different noun each time, (5) each paragraph is between 45 and 55 words, (6) no dialogue appears, (7) each paragraph's final sentence must contain a sensory detail (sight, sound, smell, taste, or touch) — and all three paragraphs must use different senses, (8) do not reveal the characters' names.",
+    "scoring": "constraint_check",
+    "constraints": [
+      "exactly 3 paragraphs",
+      "paragraph 1 is in first-person perspective",
+      "paragraph 2 is in second-person perspective",
+      "paragraph 3 is in third-person limited perspective",
+      "all 3 paragraphs describe the same moment in time",
+      "a specific object appears in all 3 paragraphs using a different noun each time",
+      "each paragraph is between 45 and 55 words",
+      "no dialogue appears anywhere",
+      "each paragraph's final sentence contains a sensory detail",
+      "the three final sentences use three different senses",
+      "no character names are revealed"
+    ],
+    "expected_answer": null,
+    "tags": ["fiction", "perspective_shift", "sensory_detail", "word_count", "in_media_res"]
+  }
+]

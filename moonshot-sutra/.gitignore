@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Data artifacts
+*.npz
+*.npy
+*.h5
+*.hdf5
+*.ckpt
+*.pt
+*.bin
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+*.log
+
+# Codex review outputs (ingested into RESEARCH.md then deleted)
+results/codex_*.md
