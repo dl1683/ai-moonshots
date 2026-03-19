@@ -155,9 +155,10 @@ class MessagePassingWithHalting(nn.Module):
     Halting: geometric distribution decides when to stop.
     """
 
-    def __init__(self, dim, max_rounds=8, window=3, lambda_p=0.2):
+    def __init__(self, dim, max_rounds=8, window=3, lambda_p=0.2, min_rounds=2):
         super().__init__()
         self.max_rounds = max_rounds
+        self.min_rounds = min_rounds  # Force at least this many rounds (prevents collapse)
         self.window = window
         self.lambda_p = lambda_p
 
@@ -196,9 +197,12 @@ class MessagePassingWithHalting(nn.Module):
 
             h = self.ln(new_h)
 
-            # Halting probability
-            halt_prob = torch.sigmoid(self.halt(h.mean(dim=1, keepdim=True)))  # (B, 1, 1)
-            halt_prob = halt_prob.expand(-1, N, -1)
+            # Halting probability (skip for first min_rounds to prevent collapse)
+            if step < self.min_rounds:
+                halt_prob = torch.zeros(B, N, 1, device=h.device)  # Never halt early
+            else:
+                halt_prob = torch.sigmoid(self.halt(h.mean(dim=1, keepdim=True)))
+                halt_prob = halt_prob.expand(-1, N, -1)
 
             if step == self.max_rounds - 1:
                 halt_prob = torch.ones_like(halt_prob)
