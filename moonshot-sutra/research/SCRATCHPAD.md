@@ -558,6 +558,14 @@ BROADCAST BACK + PREDICT (standard CE loss)
 5. PonderNet adaptive depth (from DeepMind)
 6. Sparse top-k retrieval (from efficient attention literature)
 
+### Information-Weighted Loss (Focal Loss for Language)
+Weight loss by per-position information content: surprising bytes get higher
+weight, predictable bytes get lower. Like MP3 removes unhearable frequencies.
+Implementation: focal loss — weight = (CE_per_position)^gamma where gamma>0
+makes the model focus on what it finds HARDEST to predict.
+This is adaptive resource allocation applied to the LOSS, not compute.
+Simple to implement, zero architecture change, potentially big impact.
+
 ### Evolutionary Routing Search
 Hybrid training: gradient descent for model, evolution for routing patterns.
 Routing table mutations tested each generation, best kept. Escapes local optima.
