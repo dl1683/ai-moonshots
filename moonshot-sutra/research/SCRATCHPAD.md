@@ -494,6 +494,28 @@ These are CONFOUNDED. Patch=4 beating patch=16 could be either or both.
 Disentangle with: same patch size, vary summary dimension. If larger summary
 helps → bottleneck matters. If not → it's the rounds.
 
+---
+
+## Alternative Architecture Concepts (Wild Exploration)
+
+### Graph Language Model
+Instead of processing SEQUENCES, learn the dependency GRAPH and process it.
+Model simultaneously discovers text structure AND processes it.
+The graph IS the understanding. Prototype running on CPU.
+
+### Text as Physics Field
+Treat text as a continuous field, not discrete tokens. Apply field theory:
+Fourier analysis, Green's functions, renormalization group.
+Connects to CTI universal law (alpha = critical exponent?).
+Diffusion LLMs are a primitive version of this.
+
+### Learned Compression (No Tokenizer)
+Replace tokenization with learned byte-to-concept compression.
+Multi-scale convolutions + importance scoring + adaptive pooling.
+The model learns its own tokenization end-to-end. Prototype running.
+
+---
+
 **Regularization IS compression**: L1/L2/dropout force simpler representations.
 Sutra's patch structure provides STRUCTURAL regularization — info must flow through
 summary bottleneck. This is why smaller Sutra (1.2M) beats larger transformer (6.5M)
