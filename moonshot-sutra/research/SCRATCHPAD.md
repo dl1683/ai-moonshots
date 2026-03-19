@@ -1727,3 +1727,102 @@ memorizes (complex). The objective ENCODES our thesis.
 Grokking = phase transition from memorization to generalization.
 MDL objective = explicit pressure toward the generalizing solution.
 Prediction: MDL-trained models grok FASTER than CE-trained models.
+
+---
+
+## FRESH EXPLORATION #12: What can THERMODYNAMICS teach us about training dynamics?
+
+### Free Energy Minimization as Training
+
+In thermodynamics: systems evolve to minimize free energy F = E - TS.
+E = internal energy (how well the system fits data).
+T = temperature (how much randomness/exploration).
+S = entropy (how disordered the state is).
+
+Training a neural net IS free energy minimization:
+- E = loss (prediction error)
+- T = learning rate (controls exploration vs exploitation)
+- S = weight entropy (model complexity)
+
+Low T (low LR): system freezes into local minimum. Exploits.
+High T (high LR): system explores broadly. Doesn't converge.
+Annealing (decrease T over time): explore first, then settle.
+
+### Phase Transitions in Training
+
+At critical temperature T_c: the system undergoes phase transition.
+Above T_c: disordered (memorization, random weights).
+Below T_c: ordered (generalization, structured weights).
+AT T_c: maximum fluctuations, maximum learning rate.
+
+Grokking IS a phase transition. The system stays disordered (memorizing)
+until it crosses T_c, then rapidly crystallizes into the generalizing solution.
+
+### Design Implication: Temperature-Aware Architecture
+
+What if different parts of the model had different TEMPERATURES?
+- Stage 3 (local): low temperature (stable, well-understood patterns)
+- Stage 4 (routing): medium temperature (exploring connections)
+- Stage 5 (memory): high temperature initially, cooling as confidence grows
+- Stage 7 (verify): very low temperature (need reliable checking)
+
+The Kalman variance IS a form of per-position temperature.
+High variance = high temperature = exploring.
+Low variance = low temperature = settled.
+
+### Simulated Annealing for Architecture Search
+
+Instead of gradient descent for routing: simulated annealing.
+High temperature: try random routings. Accept bad ones sometimes.
+Low temperature: only accept improvements. Converge to optimal.
+
+The grown sparsity routing table could use annealing:
+- Early training: high temperature, routing table changes rapidly
+- Late training: low temperature, routing table stabilizes
+- The routing table CRYSTALLIZES during training, like a physical crystal
+
+---
+
+## FRESH EXPLORATION #13: What if we built DUAL representations?
+
+### The Premise: Primal and Dual Spaces
+
+In optimization, every problem has a DUAL. The dual provides:
+- A different VIEW of the same problem
+- BOUNDS on the optimal solution
+- Sometimes EASIER to solve
+
+What if each position maintained TWO representations?
+- PRIMAL: what this position IS (content, features)
+- DUAL: what this position NEEDS (constraints, requirements)
+
+The primal is the standard hidden state.
+The dual is the demand vector from supply/demand routing.
+
+### Why Dual Representations Help
+
+Processing alternates between primal and dual updates:
+1. Given current primal → compute what's needed (dual update)
+2. Given current dual → find what satisfies it (primal update)
+
+This is EXACTLY how primal-dual optimization works:
+alternating between improving the solution and tightening the constraints.
+
+### Connection to Belief Propagation
+
+In BP, messages FROM variables and messages TO variables are the
+primal/dual pair. Variable beliefs = primal. Factor messages = dual.
+BP alternates between updating both.
+
+So: primal-dual representations = BP in disguise.
+Another road leading to the same destination.
+
+### Practical Implementation
+
+State at position i: (h_primal_i, h_dual_i) ∈ R^(2d)
+Primal update: h_primal ← route(h_primal, h_dual_neighbors)
+Dual update: h_dual ← constraints(h_primal, h_primal_neighbors)
+
+This doubles the state size (like Kalman mean+variance)
+but the dual explicitly represents WHAT'S MISSING — exactly
+the information that routing (Stage 4) needs.
