@@ -566,6 +566,18 @@ makes the model focus on what it finds HARDEST to predict.
 This is adaptive resource allocation applied to the LOSS, not compute.
 Simple to implement, zero architecture change, potentially big impact.
 
+### What Makes v0.4 GENUINELY Novel vs Existing Hybrids
+
+Existing (Jamba, Falcon-H1): interleave attention + SSM at SAME scale.
+
+v0.4: different mechanisms at DIFFERENT SCALES:
+- Level 1 (bytes): GRU sequential processing within patches
+- Level 2 (words/phrases): message passing between patches
+- Level 3 (sentences/documents): sparse content-addressable retrieval
+
+This IS structure-matching: the architecture mirrors language's hierarchical
+structure. No existing hybrid does multi-scale mechanism selection.
+
 ### Evolutionary Routing Search
 Hybrid training: gradient descent for model, evolution for routing patterns.
 Routing table mutations tested each generation, best kept. Escapes local optima.
