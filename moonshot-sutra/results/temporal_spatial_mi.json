@@ -1,0 +1,1 @@
+{"experiment":"temporal_spatial_mi","adjacent_mi":1.1229,"mi_by_distance":{"1":1.1229,"2":0.6736,"5":0.2813,"10":0.1479,"25":0.0812,"50":0.0544,"100":0.0426,"500":0.035},"conclusion":"75% of MI within 5 bytes (temporal/local), 25% spread across all distances (spatial/sparse). Validates GRU+message_passing(75%) + sparse_retrieval(25%) decomposition."}
