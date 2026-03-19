@@ -262,10 +262,14 @@ def evaluate_by_vars(model, loader):
 
             try:
                 ans_pos = seq_str.index("ANS ")
-                # The answer follows "ANS "
+                # The answer follows "ANS " — starts at ans_pos+4 in input
                 true_ans = seq_str[ans_pos + 4:ans_pos + 6].strip()
-                # Get model's prediction at that position
+                # Prediction: model predicts NEXT token, so prediction at position
+                # ans_pos+3 (the space after ANS) predicts the first answer char
                 pred_at_pos = pred_str[ans_pos + 3:ans_pos + 5].strip()
+                # Fix: both should use same offset since pred is shifted by 1
+                # Actually: pred_str[i] = model's prediction for position i+1
+                # So pred_str[ans_pos+3] predicts seq_str[ans_pos+4] = first answer char
                 correct = pred_at_pos == true_ans
             except (ValueError, IndexError):
                 correct = False
