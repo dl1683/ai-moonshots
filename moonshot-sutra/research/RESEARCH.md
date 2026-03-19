@@ -415,6 +415,31 @@ The question is whether O(log n) path length is sufficient for language modeling
 
 **Prediction**: For most text, O(log n) is MORE than sufficient. Only pathological nested structures (garden-path sentences, deeply nested recursion) require the full O(1) path length that attention provides. And those are rare in practice.
 
+### Immune System Insight: V(D)J Compositional Agents
+
+The immune system achieves 10^11 unique antibodies from ~300 gene segments via V(D)J recombination.
+Small library of PARTS combined combinatorially → exponential coverage from linear parameters.
+
+**Direct application to Sutra:**
+
+Instead of fixed agents, use COMPOSITIONAL agents assembled from a small library:
+- V segments (10): input encoding modules (how to read from medium)
+- D segments (10): processing modules (compression strategies)
+- J segments (10): output modules (how to write to medium)
+- 10 × 10 × 10 = 1000 agent configurations from only 30 modules
+
+Agent configuration SELECTED per-input (like antibody selection for antigens). This is MoE at the
+module level — exponentially more combinations than standard MoE with linearly many parameters.
+
+**Additional immune principles:**
+- Affinity maturation → fine-tuning: small random perturbations to selected agent improve fit
+- Clonal expansion → adaptive compute: well-matching agents get amplified in the medium
+- Negative selection → safety: agents that match "self" (training distribution) too specifically are suppressed to prevent overfitting
+
+**Potential upgrade to Sutra v0.2:** Replace fixed shared-weight agents with V(D)J compositional agents.
+Test: does compositional assembly outperform shared-weight or independent-weight agents at matched params?
+This could be its own probe (Probe G).
+
 ### Updated Probe Priority
 
 Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
