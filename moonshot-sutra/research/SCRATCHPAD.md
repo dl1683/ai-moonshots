@@ -1315,3 +1315,96 @@ with an even slower decay — the paragraph/discourse level.
 Measure MI at very long ranges (d=1000-10000) on MiniPile.
 If there's a third regime transition, it validates the multi-level RG.
 If MI is flat beyond d~500, two levels are enough.
+
+---
+
+## FRESH EXPLORATION #7: Belief Propagation / Constraint Satisfaction (Codex-suggested)
+
+### The Premise
+
+Language understanding = finding a globally consistent interpretation
+that satisfies many LOCAL constraints simultaneously.
+
+"The cat that the dog chased ran away."
+Constraints:
+- "cat" is subject of "ran" (syntactic)
+- "dog" is subject of "chased" (syntactic)
+- "cat" is object of "chased" (semantic)
+- "chased" happened before "ran" (temporal)
+- all referents are animate (world knowledge)
+
+Understanding = finding the assignment of roles/relations that satisfies ALL constraints.
+This is CONSTRAINT SATISFACTION, not next-token prediction.
+
+### Connection to Graphical Models
+
+In probabilistic graphical models, belief propagation (BP) finds the
+most probable assignment of variables given observed evidence and
+factor constraints. The BP algorithm:
+
+1. Each variable sends BELIEFS to its neighbors
+2. Each factor sends MESSAGES based on constraint compatibility
+3. Iterate until convergence
+4. Read off the most probable assignment
+
+This IS message passing! Our Stage 4 IS belief propagation!
+But we never framed it that way.
+
+### What BP Gives Us That Generic Message Passing Doesn't
+
+BP messages have a SPECIFIC meaning: "given my constraint, I believe
+variable X should be in state S with probability P."
+
+Generic message passing: "here's some information from my neighborhood."
+BP message passing: "based on what I know, you should be X because of constraint C."
+
+The difference: BP messages are STRUCTURED (carry beliefs, not just features).
+And BP has a CONVERGENCE guarantee (on trees; approximate on loopy graphs).
+
+### The BP-Sutra Architecture
+
+Instead of generic message passing between patches:
+
+```
+Each patch maintains BELIEFS: distribution over possible interpretations.
+Each pair of connected patches shares FACTORS: compatibility constraints.
+
+Message from patch j to patch i:
+  m_{j→i} = Σ_{x_j} factor(x_i, x_j) · belief_j(x_j) / m_{i→j}
+
+Updated belief at patch i:
+  belief_i(x_i) ∝ Π_j m_{j→i}(x_i) · local_evidence_i(x_i)
+```
+
+The beliefs are DISTRIBUTIONS, not point estimates.
+The messages carry STRUCTURED information about compatibility.
+Convergence can be measured: when beliefs stop changing, the model is "done."
+
+### Why This Might Be The Core Idea
+
+It unifies:
+- Message passing (BP IS message passing, but structured)
+- Uncertainty (beliefs ARE probability distributions)
+- Convergence/halting (stop when beliefs converge)
+- Routing (send messages along factor graph edges, not everywhere)
+- Verification (check global consistency of converged beliefs)
+
+AND it's derived from mathematics (probability theory, not biology).
+
+### The Challenge
+
+Standard BP is for DISCRETE variables. Language positions have
+CONTINUOUS high-dimensional representations. Need CONTINUOUS BP.
+
+This EXISTS: Gaussian BP, expectation propagation, variational message passing.
+These are well-studied in the probabilistic programming community.
+
+### Connection to Kalman
+
+Kalman filter IS Gaussian belief propagation on a chain graph!
+Our Kalman state updates (mean, variance) ARE BP messages for a
+linear-Gaussian model. So the Kalman idea from the stage framework
+IS a special case of BP.
+
+This means: BP is the GENERAL version of what we were already doing
+with Kalman. Kalman = BP on a chain. Full BP = BP on the full factor graph.
