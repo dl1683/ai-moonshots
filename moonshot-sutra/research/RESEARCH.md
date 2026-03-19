@@ -840,6 +840,23 @@ like how the brain develops specialized areas (Broca's area for language, etc.).
 
 **Deferred to post-MVP.** Need working model first.
 
+### Training Optimization: PonderNet-Driven Curriculum (v0.4+)
+
+Phi-4 insight: data QUALITY matters more than quantity for small models.
+What if the architecture itself does data curation during training?
+
+PonderNet tells us which inputs are "hard" (more halting rounds needed).
+Use this as curriculum signal: in next epoch, sample MORE of the hard
+examples. Self-reinforcing loop: model trains harder on what confuses it.
+
+This is biological: immune system expands antibodies for NEW threats.
+Only Sutra has this naturally — transformers don't know which inputs are hard
+at the architecture level.
+
+Simple implementation: after epoch N, compute mean halting depth per example.
+Weight sampling in epoch N+1 proportional to halting depth.
+Cost: zero extra compute. Just smarter data sampling.
+
 **For Sutra**: Maybe the architecture should have TWO parts:
 1. A LIBRARY of learned primitives (small, fixed after pre-training)
 2. A COMPOSER that assembles primitives into reasoning chains (this is what scales)
