@@ -1411,3 +1411,47 @@ objective applied per-stage.
 Everything connects. The 7-stage architecture IS a learned, adaptive,
 multi-step information bottleneck that compresses raw text into predictions
 while preserving exactly the information needed for each output stream.
+
+---
+
+## CURRICULUM-AS-STAGE-PROGRESSION
+
+### The Insight
+
+If stages represent compression levels (raw → local → contextual → reasoned),
+then training should BUILD stages bottom-up:
+
+**Phase 1 (Epochs 1-30%)**: Build Stage 3 (local construction)
+- Simple text, high repetition
+- Aux loss: local next-byte prediction from patch features alone
+- Goal: learn char→word patterns. Master local compression.
+
+**Phase 2 (Epochs 30-70%)**: Build Stage 4 (routing)
+- Text with clear long-range structure (code, structured prose)
+- Aux loss: does retrieval IMPROVE prediction? (Compare with/without routing)
+- Goal: learn cross-position dependencies. Master information routing.
+
+**Phase 3 (Epochs 70-100%)**: Build Stages 5-7 (memory, control, verify)
+- Challenging text (ambiguous, reasoning-heavy, adversarial)
+- Aux loss: calibration (variance correlates with correctness?)
+- Goal: selective retention, adaptive depth, self-correction.
+
+### Why This Should Work
+
+Children learn bottom-up: sounds → words → sentences → arguments → self-checking.
+Neural networks exhibit similar phasing: memorize → generalize → specialize.
+Grokking IS a phase transition from early to late training.
+
+By ALIGNING the curriculum with the stage structure, we help the network
+discover each compression level in the RIGHT ORDER.
+
+### Connection to PonderNet Curriculum
+
+Our earlier idea: use PonderNet halting depth as curriculum signal (train
+harder on examples the model finds hard). This COMBINES with stage curriculum:
+- Phase 1: model stays in Stage 3 (short halting) → train on easy
+- Phase 2: model reaches Stage 4 (longer halting) → train on structured
+- Phase 3: model reaches Stage 5+ (longest halting) → train on hard
+
+The curriculum EMERGES from the model's own stage distribution.
+No manual phase switching needed.
