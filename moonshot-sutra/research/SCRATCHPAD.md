@@ -759,6 +759,25 @@ the weakest link instead of randomly trying things.
 **Our opportunity**: For now, standard AR is fine. Later: could add verifier/reranker
   (generate multiple, score, pick best) for better reasoning quality.
 
+---
+
+### CODEX R1 CORRECTION: Better 7-Stage Decomposition
+
+Our stages mixed mechanisms with capabilities. Codex proposed:
+
+1. **Segmentation / Compression**: raw stream → patches/tokens
+2. **State Init / Addressing**: embeddings + position (underleveraged by us)
+3. **Local State Construction**: within-patch GRU, convs (our strength)
+4. **Communication / Routing**: msg passing + retrieval + scratchpad (4+5 merged)
+5. **State Update / Memory Write**: MLP, residual, memory retain/overwrite
+6. **Compute Control / Deliberation**: depth, halting, adaptive compute
+7. **Readout / Decode / Verify**: logits, sampling, reranking, verification
+
+KEY INSIGHT: **Reasoning = repeated (4+5+6), not a standalone box.**
+Memory needs READ and WRITE, not just retrieval.
+BOTTLENECK: Stage 4+5 interface (local diffusion + global routing).
+"Extra depth cannot recover missing evidence" — fix 4+5 FIRST.
+
 ### WHERE IS SUTRA WEAKEST?
 
 Looking at this breakdown, Stage 4 (Context Integration) is the riskiest.
