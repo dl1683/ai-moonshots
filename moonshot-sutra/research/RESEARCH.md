@@ -554,6 +554,39 @@ If Probe F fails, we know local-only doesn't work and need the global scratchpad
 
 **The goal is ONE simple mechanism that works, not five coupled mechanisms that might.**
 
+### Theoretical Insight: Phase Synchronization as O(n) Long-Range Communication
+
+The over-squashing problem (Codex critique): local message passing compresses exponentially many
+distant signals into fixed-width states. The brain faces the same constraint (fixed-width neurons).
+
+Brain's solutions: (1) hierarchical routing, (2) thalamic gating, (3) oscillatory synchronization.
+
+**Option 3 is novel for AI:** Gamma oscillations create "virtual wires" between distant neurons
+through phase locking. No physical connection needed.
+
+**Application to Sutra:** Each chunk representation is COMPLEX-VALUED (magnitude + phase).
+Chunks that need to communicate synchronize their phases. Information flows preferentially
+between phase-aligned chunks regardless of distance.
+
+Mathematically: attention weight w_ij = |cos(phase_i - phase_j)| (phase alignment).
+Phase is learned/evolved during message passing. Chunks with similar content develop similar
+phases automatically. This is content-based routing WITHOUT quadratic attention.
+
+Complexity: O(n) if implemented as:
+1. Each chunk computes its phase from content (local operation)
+2. A global phase signal is broadcast (O(n) computation: just an average or FFT)
+3. Each chunk reads the global signal and adjusts (local operation)
+
+This is DIFFERENT from both attention (O(n²) pairwise) and scratchpad (fixed slots).
+It's O(n) broadcast-based routing. Like how radio works: everyone transmits on different
+frequencies, and you tune to the channel you want.
+
+**Testable prediction:** Complex-valued representations with phase-based routing should
+outperform real-valued + scratchpad for long-range dependencies at matched parameters.
+This could be Probe H.
+
+NOTE: Mamba-3 already showed gains from complex-valued SSMs. This might be WHY.
+
 ### Updated Probe Priority
 
 Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
