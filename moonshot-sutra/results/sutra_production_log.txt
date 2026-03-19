@@ -10,4 +10,25 @@ Training: 100,000 steps, effective batch=32
 Tokens: ~1.6B
 VRAM: 1.9GB initial
 
-Step    100/100000: loss=2.6291 lr=1.48e-05 4193 tok/s 10.4GB
+Step    100/100000: loss=2.6291 lr=1.48e-05 4258 tok/s 10.4GB
+Step    200/100000: loss=0.7567 lr=2.98e-05 4259 tok/s 10.4GB
+Step    300/100000: loss=0.7281 lr=4.48e-05 4403 tok/s 10.4GB
+Step    400/100000: loss=0.6513 lr=5.98e-05 4700 tok/s 10.4GB
+Step    500/100000: loss=0.6286 lr=7.49e-05 4914 tok/s 10.4GB
+Step    600/100000: loss=0.6459 lr=8.98e-05 5080 tok/s 10.4GB
+Step    700/100000: loss=0.6822 lr=1.05e-04 5212 tok/s 10.4GB
+Step    800/100000: loss=0.6413 lr=1.20e-04 5304 tok/s 10.4GB
+Step    900/100000: loss=0.5736 lr=1.35e-04 5334 tok/s 10.4GB
+Step   1000/100000: loss=0.5769 lr=1.50e-04 5334 tok/s 10.4GB
+Step   1100/100000: loss=0.5974 lr=1.65e-04 5319 tok/s 10.4GB
+Step   1200/100000: loss=0.5857 lr=1.80e-04 5288 tok/s 10.4GB
+Step   1300/100000: loss=0.5644 lr=1.95e-04 5246 tok/s 10.4GB
+Step   1400/100000: loss=0.5653 lr=2.10e-04 5198 tok/s 10.4GB
+Step   1500/100000: loss=0.5431 lr=2.25e-04 5162 tok/s 10.4GB
+Step   1600/100000: loss=0.5661 lr=2.40e-04 5119 tok/s 10.4GB
+Step   1700/100000: loss=0.5702 lr=2.55e-04 5076 tok/s 10.4GB
+Step   1800/100000: loss=0.5631 lr=2.70e-04 5035 tok/s 10.4GB
+Step   1900/100000: loss=0.5389 lr=2.85e-04 4997 tok/s 10.4GB
+Step   2000/100000: loss=0.5554 lr=3.00e-04 4663 tok/s 10.4GB
+  EVAL Step 2000: BPB=1.3776 *BEST*
+Step   2100/100000: loss=0.5551 lr=3.00e-04 3837 tok/s 10.4GB
