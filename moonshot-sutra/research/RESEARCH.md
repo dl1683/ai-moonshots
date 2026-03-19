@@ -473,6 +473,87 @@ The real gains come from PROCESSING, not SPLITTING.
 **Decision**: Adaptive segmenter is a nice-to-have, not critical path. Focus probes on
 processing architecture (stigmergic, variable depth, working memory) first.
 
+---
+
+## Codex Hard Challenge of Sutra v0.1 — 4/10 (2026-03-19)
+
+### The Core Criticism (ACCEPTED)
+"You are spending the entire complexity budget on control machinery before you have shown
+a base language-modeling primitive that is competitive."
+
+Five components stacked = five hard problems at once. None individually proven. This is overengineering.
+
+### Valid Criticisms (ACCEPTED, updating design):
+1. **Over-squashing**: local message passing compresses exponentially many signals into fixed-width
+   states. This IS the GNN over-squashing problem. Hierarchy helps but doesn't eliminate it.
+2. **Multi-scale isn't free**: language isn't a clean tree. Bad coarse summary destroys fine-scale info.
+3. **Predictive coding ≈ backprop**: either standard backprop through cross-scale links (which is what
+   we'd actually do) or a slower approximation. Not a new learning principle.
+4. **Energy-based generation has no clear advantage NOW**: AR+reranking at matched compute may match it.
+5. **"Provably suboptimal" claims are asserted, not derived**: need actual proofs.
+
+### Invalid / Debatable:
+1. "Content-addressable retrieval needs global attention" — SSMs (Mamba) achieve competitive perplexity
+   with NO content-addressable retrieval. The question is HOW MUCH global attention is needed, not WHETHER.
+2. "No theorem that language admits scale-separable factorization" — true, but empirical evidence
+   (MEGABYTE, HM-RNN) shows multi-scale helps even without a theorem.
+
+### The 10/10 Criterion (Codex):
+ONE simple core mechanism that:
+- Beats a matched 10M-100M transformer on perplexity
+- Beats it on long-range/state-tracking probes
+- Preserves O(n) scaling
+- Works with ordinary training
+- Does NOT need hidden global attention
+
+### REDESIGNED MVP: Sutra v0.2-MVP
+
+Based on Codex feedback, strip to the MINIMUM that tests the core hypothesis:
+
+```
+BYTE INPUT
+    |
+FIXED-WINDOW CHUNKING (no adaptive segmentation)
+    |
+LOCAL COMPRESSOR (shared weights, processes one chunk)
+    |
+CHUNK-LEVEL RECURRENT MESSAGE PASSING
+    - Each chunk reads from neighboring chunk summaries
+    - Multiple rounds of message passing
+    - PLUS: tiny global scratchpad (8-16 memory tokens)
+    |
+AUTOREGRESSIVE PREDICTION (standard next-byte loss)
+    |
+OPTIONAL: ADAPTIVE NUMBER OF MESSAGE-PASSING ROUNDS
+```
+
+**What changed from v0.1:**
+- REMOVED: multi-scale (test two-scale only: bytes + chunks)
+- REMOVED: energy-based generation (standard AR)
+- REMOVED: adaptive segmentation (fixed windows)
+- REMOVED: cross-scale predictive coding (standard backprop)
+- ADDED: tiny global scratchpad (Codex's compromise for long-range)
+- SIMPLIFIED: one mechanism to test — local compression + message passing
+
+**This is essentially MEGABYTE but with message-passing between chunks instead of a global
+patch-level transformer.** The hypothesis: message passing (O(n)) can replace the global
+transformer (O(n²)) at the chunk level with minimal quality loss.
+
+**Probe F tests exactly this.** If Probe F shows stigmergic ≈ transformer, we have the core.
+If Probe F fails, we know local-only doesn't work and need the global scratchpad.
+
+### Immediate Action Plan (based on ALL feedback so far):
+
+1. WAIT for Probe A (compression↔capability) and Probe F (stigmergic) results
+2. If Probe F fails: implement v0.2-MVP WITH global scratchpad
+3. If Probe F succeeds: implement v0.2-MVP WITHOUT scratchpad (pure local)
+4. Run Probes B (depth) and C (memory) to inform depth and memory components
+5. Build v0.2-MVP at 10-50M params
+6. If v0.2-MVP matches transformer baseline on perplexity: SCALE UP
+7. If v0.2-MVP fails: analyze WHY, iterate
+
+**The goal is ONE simple mechanism that works, not five coupled mechanisms that might.**
+
 ### Updated Probe Priority
 
 Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
