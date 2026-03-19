@@ -1,0 +1,103 @@
+{
+  "probe": "C_working_memory",
+  "timestamp": "2026-03-19T12:38:43.916307",
+  "hypothesis": "Different architectures have different state-tracking capacity",
+  "results": [
+    {
+      "model": "transformer",
+      "params": 1255424,
+      "accuracy_by_vars": {
+        "1": {
+          "correct": 14,
+          "total": 405,
+          "accuracy": 0.0345679012345679
+        },
+        "2": {
+          "correct": 7,
+          "total": 427,
+          "accuracy": 0.01639344262295082
+        },
+        "20": {
+          "correct": 5,
+          "total": 368,
+          "accuracy": 0.01358695652173913
+        },
+        "10": {
+          "correct": 5,
+          "total": 404,
+          "accuracy": 0.012376237623762377
+        },
+        "5": {
+          "correct": 6,
+          "total": 396,
+          "accuracy": 0.015151515151515152
+        }
+      },
+      "train_time_s": 29.3
+    },
+    {
+      "model": "external_memory",
+      "params": 1346048,
+      "accuracy_by_vars": {
+        "1": {
+          "correct": 18,
+          "total": 405,
+          "accuracy": 0.044444444444444446
+        },
+        "2": {
+          "correct": 13,
+          "total": 427,
+          "accuracy": 0.03044496487119438
+        },
+        "20": {
+          "correct": 6,
+          "total": 368,
+          "accuracy": 0.016304347826086956
+        },
+        "10": {
+          "correct": 6,
+          "total": 404,
+          "accuracy": 0.01485148514851485
+        },
+        "5": {
+          "correct": 3,
+          "total": 396,
+          "accuracy": 0.007575757575757576
+        }
+      },
+      "train_time_s": 38.0
+    },
+    {
+      "model": "recurrent_gru",
+      "params": 429312,
+      "accuracy_by_vars": {
+        "1": {
+          "correct": 4,
+          "total": 405,
+          "accuracy": 0.009876543209876543
+        },
+        "2": {
+          "correct": 5,
+          "total": 427,
+          "accuracy": 0.0117096018735363
+        },
+        "20": {
+          "correct": 5,
+          "total": 368,
+          "accuracy": 0.01358695652173913
+        },
+        "10": {
+          "correct": 3,
+          "total": 404,
+          "accuracy": 0.007425742574257425
+        },
+        "5": {
+          "correct": 3,
+          "total": 396,
+          "accuracy": 0.007575757575757576
+        }
+      },
+      "train_time_s": 9.4
+    }
+  ]
+}
