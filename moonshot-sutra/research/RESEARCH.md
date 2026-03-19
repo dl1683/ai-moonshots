@@ -209,4 +209,84 @@ missing critical probes (compression↔capability, working memory). See results/
 
 **Total: 5 probes, ~20 hours, all 10-20M params. Results determine which primitives combine into Sutra.**
 
-**Status**: READY TO IMPLEMENT AND RUN.
+**Status**: Probe A running. Probes B-E in implementation.
+
+---
+
+## Chrome Cycle 4: Cross-Domain Intelligence Patterns (2026-03-19)
+
+### Universal Patterns Across Intelligent Systems
+
+Surveyed: brains, immune systems, ant colonies, slime molds, gene regulatory networks, plant/mycorrhizal networks, thermodynamics of computation, category theory, power laws. The same structural patterns keep recurring:
+
+#### Pattern 1: Prediction = Compression = Intelligence (UNIVERSAL)
+- **Brain (Friston)**: Free energy principle — the brain minimizes surprise (prediction error). Perception IS prediction. Learning IS model compression. This is mathematically identical to variational inference.
+- **Immune system**: Antibodies are compressed models of pathogen structure. Affinity maturation IS compression — refining the model until it captures the essential features with minimum complexity.
+- **Gene regulatory networks**: Boolean networks converge to attractors — stable compressed states that represent cell phenotypes. The attractor IS the compressed representation of a developmental program.
+- **Thermodynamics (Landauer)**: Erasing one bit costs kT*ln(2) energy minimum. Intelligence has a physical cost. The most efficient intelligence is the one that compresses the most with the least erasure.
+- **INSIGHT FOR SUTRA**: Compression isn't just A property of intelligence — it IS intelligence. Every intelligent system we observe in nature is fundamentally a compression engine. Our architecture should have compression as its PRIMARY operation, not a byproduct.
+
+#### Pattern 2: No Central Controller (UNIVERSAL)
+- **Ant colonies**: Shortest paths emerge from local pheromone rules. No ant knows the global optimal path. Intelligence emerges from local interactions + environmental modification (stigmergy).
+- **Immune system**: No central controller decides which antibody to produce. Clonal selection + hypermutation = distributed search with local feedback.
+- **Slime mold (Physarum)**: Solves TSP in linear time, no neurons. Flow dynamics in a tube network. Each tube expands/contracts based on LOCAL nutrient flow.
+- **Plant/mycorrhizal networks**: Scale-free topology, small-world properties. Each root segment makes semi-autonomous decisions. Network-level intelligence from local computation.
+- **Gene regulatory networks**: Boolean attractor dynamics. No master gene. Cell fate is determined by the NETWORK topology, not any individual node.
+- **INSIGHT FOR SUTRA**: Current models have a fundamentally centralized architecture — everything passes through a global attention mechanism or hidden state. What if intelligence emerged from LOCAL interactions between components? Not "one big model" but "many small interacting agents." This is fundamentally different from any existing architecture.
+
+#### Pattern 3: Adaptive Resource Allocation (UNIVERSAL)
+- **Brain**: Predictive coding allocates precision (computational resources) to surprising signals. Expected inputs get minimal processing. Surprises get maximum attention.
+- **Immune system**: Clonal expansion — cells that recognize a threat multiply 10,000x. Resources flow to where they're needed.
+- **Ant colonies**: Pheromone concentration builds on successful paths, evaporates from failed ones. Resources (ants) naturally flow to productive activities.
+- **Slime mold**: Tubes on productive paths thicken (more flow). Tubes on dead-end paths thin and retract.
+- **INSIGHT FOR SUTRA**: Every efficient intelligent system in nature allocates compute dynamically. Current models give equal compute to every token. This is provably wasteful. Our architecture MUST allocate more computation to harder/more informative tokens and less to predictable ones.
+
+#### Pattern 4: Multi-Scale Structure (UNIVERSAL)
+- **Fractals/power laws**: The same patterns appear at every scale in nature. Coastlines, galaxies, vascular networks, neural networks, social networks — all scale-free.
+- **Gene regulatory networks**: Operate at molecular scale, cell scale, tissue scale, organism scale — same Boolean logic at each level.
+- **Mycorrhizal networks**: Local root decisions, tree-level strategies, forest-level resource sharing — intelligence at every scale.
+- **Category theory**: Functors map between scales while preserving structure. Compositionality IS the mathematical expression of multi-scale invariance.
+- **INSIGHT FOR SUTRA**: Representations should be multi-scale by construction. Not "one embedding per token" but "representations at character, word, phrase, sentence, paragraph, document level" — with the SAME operations applying at each scale (self-similarity). This is exactly what fractals are: the same structure at every scale.
+
+#### Pattern 5: Learning Without Backpropagation (UNIVERSAL)
+- **Immune system**: Clonal selection + somatic hypermutation = evolutionary search, not gradient descent.
+- **Gene regulatory networks**: Attractor dynamics = convergence to stable states without gradient computation.
+- **Ant colonies**: Reinforcement via pheromone = environmental modification, not weight updates.
+- **Slime mold**: Flow dynamics converge to optimal networks via physical forces, not learning algorithms.
+- **INSIGHT FOR SUTRA**: Gradient descent is ONE way to learn, not THE way. What if parts of our system learned through evolution (architecture search), parts through energy minimization (attractor dynamics), and parts through gradient descent? Hybrid learning strategies might find solutions that gradient descent alone cannot.
+
+### Revised Hypothesis: The Stigmergic Compression Engine
+
+Based on cross-domain patterns, I now think the most promising Sutra direction is:
+
+**A system of many small, locally-interacting compression agents that:**
+1. Each compress their local input (Pattern 1)
+2. Communicate through a shared medium, not central attention (Pattern 2)
+3. Allocate more agents/iterations to surprising inputs (Pattern 3)
+4. Operate at multiple scales simultaneously (Pattern 4)
+5. Use hybrid learning: gradient descent for local compression + evolutionary search for agent topology (Pattern 5)
+
+This is NOT a transformer. NOT an SSM. NOT a neural network in the traditional sense. It's more like a colony of compression agents — a "Physarum of text" where:
+- Each agent receives a local window of text
+- Agents compress their window and deposit "pheromone" (compressed features) on a shared medium
+- Other agents read nearby pheromone to build larger-scale representations
+- The system naturally routes computation to surprising/hard passages
+- The shared medium has multi-scale structure (like a fractal)
+
+**Key theoretical prediction**: If this works, it would achieve O(n) scaling (like SSMs) with dynamic-depth reasoning (like adaptive transformers) and compositional generalization (from the multi-scale structure) — the best of all worlds from first principles.
+
+**This needs probing IMMEDIATELY.** Can a system of locally-interacting agents learn to model text at all? This is the foundational question before any optimization.
+
+### Updated Probe Priority
+
+Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
+
+**Probe F: Stigmergic Text Modeling** (NEW — highest priority)
+- Question: Can a system of locally-interacting agents (no global attention) learn to model text?
+- Design: 10M params. Instead of one model, create N=16 small "agents" each with ~600K params.
+  Each agent sees a 32-token window. Agents write compressed features to a shared 1D "medium."
+  Agents read from their local neighborhood on the medium. Multiple passes (like message passing).
+  Compare perplexity against a single 10M-param transformer on same data.
+- Controls: Random medium (agents write but read random positions), single-agent baseline.
+- Kill: If stigmergic model perplexity is >2x the transformer baseline, local interaction is insufficient.
+- Time: ~4 hours
