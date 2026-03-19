@@ -1,0 +1,13 @@
+SUTRA PRODUCTION TRAINING
+Target: compete with Qwen3-0.6B, SmolLM-360M, Pythia-410M
+Device: cuda
+============================================================
+Model: Sutra v0.4
+Params: 474,618,881
+dim=5120, patch=4, rounds=6, k=16
+Data: 6.0GB MiniPile
+Training: 100,000 steps, effective batch=32
+Tokens: ~1.6B
+VRAM: 1.9GB initial
+
+Step    100/100000: loss=2.6291 lr=1.48e-05 4193 tok/s 10.4GB
