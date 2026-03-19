@@ -754,6 +754,24 @@ Word repetition distances on real corpus (50K words):
   dependencies (agreement, pronouns, topic) are much shorter.
 - Supports v0.3: message passing for local, sparse retrieval for long-range
 
+### Cross-Domain Insights Round 2 (2026-03-19)
+
+**DNA error correction → quantization-native design**: DNA uses 64 codons for 20 amino
+acids — redundant encoding where most single-base mutations are SILENT. This is error
+correction built into the representation. For Sutra: design representation space with
+built-in redundancy so quantization (INT4/INT8) doesn't degrade output. Not post-hoc
+quantization but quantization-native from the start.
+
+**Integrated Information Theory → architecture metric**: Phi measures how much a system's
+information exceeds sum of parts. Message passing CREATES integration (combines patch info).
+Question: does our architecture maximize Phi? If message passing creates more integrated
+representations than independent attention heads, that's measurable.
+
+**Markets as decentralized intelligence**: Markets aggregate dispersed information through
+prices (shared medium) without central controller. Each trader = local agent. Price = medium.
+This IS our stigmergic architecture. Key insight: markets work because traders are DIVERSE.
+Homogeneous traders don't discover prices. Supports V(D)J diversity for post-MVP.
+
 ### Over-Smoothing Mitigation
 
 v0.3 already has correct mitigations from GNN literature:
