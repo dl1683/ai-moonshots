@@ -1616,3 +1616,51 @@ STRUCTURAL INDEX organized by content type and relation.
 All these explorations keep pointing to the same thing:
 **STRUCTURE over SEARCH.** Build the right structure, and you don't
 need to search. The structure IS the understanding.
+
+---
+
+## META-PATTERN: Structure Over Search
+
+Across 10 explorations, one principle keeps emerging:
+
+**Don't SEARCH for relevant information (attention = brute force search).
+BUILD the STRUCTURE that defines relevance (our approach = organized index).**
+
+Library vs Google. Dewey Decimal vs keyword search.
+The structure IS the understanding. Building it IS the intelligence.
+
+This IS "Intelligence = Geometry" taken to its logical conclusion:
+not just better embedding spaces but the COMPUTATION STRUCTURE itself
+should mirror the PROBLEM STRUCTURE.
+
+Transformers: flat search over all positions (Google).
+Sutra: multi-scale structured processing where structure = understanding (Library).
+
+---
+
+## PRACTICAL: Minimum Viable Multi-Scale BP (When Compute Frees)
+
+### The 100-Line Test
+
+Two scales: bytes (fine) and words/patches (coarse).
+BP at each scale: precision-weighted message passing.
+Cross-scale: compress fine→coarse (abstraction), coarse→fine (prediction).
+Compare: does BP structure beat generic message passing at matched params?
+
+```
+class MinimalMSBP(nn.Module):
+    # Scale 0: byte-level GRU (local beliefs)
+    # Scale 1: patch-level BP (global beliefs)
+    # Cross-scale: compress up, predict down
+    # Halting: when beliefs converge (norm of update < threshold)
+```
+
+This test isolates THE core claim: structured (BP) messages > generic messages.
+If YES: multi-scale BP is the architecture direction.
+If NO: structure doesn't help, go back to generic routing.
+
+### What We'll Measure
+1. BPB on test set (quality)
+2. Convergence speed (how many rounds to stabilize)
+3. Belief quality (do beliefs correlate with correctness?)
+4. Cross-scale benefit (does scale 1 actually help scale 0?)
