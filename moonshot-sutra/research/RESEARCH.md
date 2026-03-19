@@ -709,6 +709,20 @@ feeding better representations to the retrieval), should reach much higher.
 
 **v0.3 retrieval mechanism VALIDATED.** k=4 is sufficient to provide retrieval signal.
 
+### Extended MQAR (500 epochs) — BOTH learn, transformer 2x faster
+
+- Transformer: 21.0% (steady learning throughout)
+- GRU: 11.7% (LEARNS! Was 0% at 100ep, develops retrieval by 300-500ep)
+- Sparse k=4: 16.0% at 300ep (between GRU and full attention)
+
+**Key update**: Recurrence is NOT fundamentally incapable of retrieval. It's just 2x
+slower to learn. Given enough training, GRU develops some retrieval. But attention
+ACCELERATES retrieval learning significantly.
+
+**For v0.3**: Message passing backbone will develop some retrieval on its own.
+Sparse retrieval supplements this, ACCELERATING learning and improving ceiling.
+The combination should exceed either alone.
+
 ### Deep Insight: Why Biology Achieves Few-Shot Learning (2026-03-19)
 
 The immune system does few-shot learning because the THREAT SPACE HAS STRUCTURE it has
