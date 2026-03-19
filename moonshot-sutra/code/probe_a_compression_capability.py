@@ -56,8 +56,11 @@ class MiniTransformerBlock(nn.Module):
         )
 
     def forward(self, x):
+        B, T, D = x.shape
         h = self.ln1(x)
-        h, _ = self.attn(h, h, h, is_causal=True)
+        # Generate causal mask
+        mask = torch.nn.Transformer.generate_square_subsequent_mask(T, device=x.device)
+        h, _ = self.attn(h, h, h, attn_mask=mask)
         x = x + h
         x = x + self.ff(self.ln2(x))
         return x
@@ -183,7 +186,7 @@ def get_text_data():
              "think", "know", "see", "find", "give", "take", "make", "come", "go", "say"]
 
     sentences = []
-    for _ in range(50000):
+    for _ in range(5000):
         length = random.randint(5, 20)
         sent = " ".join(random.choices(words, k=length))
         sentences.append(sent + ".")
@@ -402,8 +405,8 @@ def main():
     train_text, test_text = get_text_data()
     train_ds = CharDataset(train_text, seq_len=256)
     test_ds = CharDataset(test_text, seq_len=256)
-    train_loader = DataLoader(train_ds, batch_size=32, shuffle=True, num_workers=0)
-    test_loader = DataLoader(test_ds, batch_size=32, shuffle=False, num_workers=0)
+    train_loader = DataLoader(train_ds, batch_size=256, shuffle=True, num_workers=0)
+    test_loader = DataLoader(test_ds, batch_size=256, shuffle=False, num_workers=0)
 
     # Prepare reasoning tasks
     reasoning_tasks = generate_reasoning_dataset(200)
@@ -411,17 +414,17 @@ def main():
     # Define the 6 training conditions
     conditions = [
         ("CE_standard", lambda: MiniTransformer(256, dim=256, n_layers=6, n_heads=4).to(DEVICE),
-         lambda m, tl: train_ce(m, tl, epochs=15)),
+         lambda m, tl: train_ce(m, tl, epochs=5)),
         ("CE_L2_heavy", lambda: MiniTransformer(256, dim=256, n_layers=6, n_heads=4).to(DEVICE),
-         lambda m, tl: train_ce_l2(m, tl, epochs=15, l2_weight=0.1)),
+         lambda m, tl: train_ce_l2(m, tl, epochs=5, l2_weight=0.1)),
         ("CE_dropout", lambda: MiniTransformer(256, dim=256, n_layers=6, n_heads=4, dropout=0.3).to(DEVICE),
-         lambda m, tl: train_ce_dropout(m, tl, epochs=15)),
+         lambda m, tl: train_ce_dropout(m, tl, epochs=5)),
         ("label_smoothing", lambda: MiniTransformer(256, dim=256, n_layers=6, n_heads=4).to(DEVICE),
-         lambda m, tl: train_label_smoothing(m, tl, epochs=15, smoothing=0.1)),
+         lambda m, tl: train_label_smoothing(m, tl, epochs=5, smoothing=0.1)),
         ("MDL_approx", lambda: MiniTransformer(256, dim=256, n_layers=6, n_heads=4).to(DEVICE),
-         lambda m, tl: train_mdl_approx(m, tl, epochs=15)),
+         lambda m, tl: train_mdl_approx(m, tl, epochs=5)),
         ("noisy_labels", lambda: MiniTransformer(256, dim=256, n_layers=6, n_heads=4).to(DEVICE),
-         lambda m, tl: train_noisy(m, tl, epochs=15, noise_rate=0.3)),
+         lambda m, tl: train_noisy(m, tl, epochs=5, noise_rate=0.3)),
     ]
 
     results = []

@@ -71,7 +71,7 @@ def get_text_data():
              "is", "was", "has", "had", "will", "can", "may", "should", "could", "would",
              "think", "know", "see", "find", "give", "take", "make", "come", "go", "say"]
     sentences = []
-    for _ in range(50000):
+    for _ in range(5000):
         length = random.randint(5, 20)
         sent = " ".join(random.choices(words, k=length))
         sentences.append(sent + ".")
@@ -388,8 +388,8 @@ def main():
     train_text, test_text = get_text_data()
     train_ds = CharDataset(train_text, seq_len=256)
     test_ds = CharDataset(test_text, seq_len=256)
-    train_loader = DataLoader(train_ds, batch_size=32, shuffle=True, num_workers=0)
-    test_loader = DataLoader(test_ds, batch_size=32, shuffle=False, num_workers=0)
+    train_loader = DataLoader(train_ds, batch_size=256, shuffle=True, num_workers=0)
+    test_loader = DataLoader(test_ds, batch_size=256, shuffle=False, num_workers=0)
 
     results = []
 
