@@ -554,6 +554,39 @@ If Probe F fails, we know local-only doesn't work and need the global scratchpad
 
 **The goal is ONE simple mechanism that works, not five coupled mechanisms that might.**
 
+### Core Philosophical Insight: Structure-Matching (2026-03-19)
+
+**Key realization**: Biology is optimized by billions of years of evolution under HARD physical
+constraints. Every biological intelligent system has an architecture that MIRRORS the structure
+of the problems it solves:
+- Brain hierarchy mirrors perceptual hierarchy
+- Immune system combinatorial diversity mirrors pathogen diversity
+- Ant colony pheromone trails mirror spatial foraging structure
+
+Current AI does the OPPOSITE: builds generic architectures and hopes they discover domain
+structure during training. This is like building a car before studying roads.
+
+**Sutra's real question**: What is the STRUCTURE of language and reasoning, and what architecture
+naturally MIRRORS that structure? Not "what's the best generic architecture" but "what shape
+should the computation be to match the shape of the problem?"
+
+**Language structure (what we know):**
+1. Hierarchical: characters < words < phrases < sentences < paragraphs < documents
+2. Compositional: meaning of whole = function of meaning of parts + structure
+3. Sequential with long-range: mostly local dependencies, occasional long-range
+4. Variable complexity: some tokens trivial to predict, others require deep reasoning
+5. Multi-modal internally: code ≠ prose ≠ dialogue ≠ argument (different structures)
+
+**Architecture should match:**
+1. Multi-scale processing (matches hierarchy)
+2. Compositional operations (matches compositionality)
+3. Mostly local + sparse long-range (matches dependency structure)
+4. Variable depth (matches complexity variation)
+5. Content-dependent routing (matches internal multi-modality)
+
+**This is not a new observation but it's the RIGHT framing.** We're not looking for "the best
+attention replacement." We're looking for "the computation that mirrors language structure."
+
 ### Theoretical Insight: Phase Synchronization as O(n) Long-Range Communication
 
 The over-squashing problem (Codex critique): local message passing compresses exponentially many
