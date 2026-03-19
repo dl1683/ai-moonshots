@@ -587,6 +587,12 @@ This could be Probe H.
 
 NOTE: Mamba-3 already showed gains from complex-valued SSMs. This might be WHY.
 
+**UPDATE: KILLED BY CODEX (2/10 as attention replacement, 5/10 as hybrid auxiliary).**
+Phase sync IS linear attention with rank-2 feature map: cos(θ_i-θ_j) = cos(θ_i)cos(θ_j) + sin(θ_i)sin(θ_j).
+Not novel. Creates aliasing when multiple bindings interfere. Low capacity: O(r*d_v) vs O(n*d_v) for attention.
+Language needs sparse, exact retrieval (copy names, match brackets, bind variables) — global sketch superposes.
+**Keep as potential hybrid bias. Not the core mechanism.**
+
 ### Decision Tree: What We Build Based on Probe Results
 
 ```
