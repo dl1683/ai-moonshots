@@ -1510,3 +1510,39 @@ attention) as long as it produces tagged messages.
 
 This is MODULAR ARCHITECTURE: interchangeable stages connected by contracts.
 Like LEGO blocks — any block fits any slot as long as the interface matches.
+
+---
+
+## FALSIFICATION CONDITIONS: When to Kill Each Theory
+
+### Kill Condition 1: Stage-Superposition Is Unnecessary
+IF: a fixed-sequence model (same operations, fixed order) with the SAME
+per-stage mechanisms matches adaptive-sequence performance at matched params,
+THEN: the superposition/adaptive-sequence idea adds complexity without benefit.
+TEST: Combo 5 (fixed order) vs Combo 6 (with adaptive sequences) on same data.
+
+### Kill Condition 2: Kalman Variance Is Not Calibrated
+IF: Kalman variance does NOT correlate with prediction correctness
+(AUROC < 0.55, barely above chance),
+THEN: variance tracks "processing steps" not "confidence." Kill Kalman.
+TEST: Train Combo 2, measure variance-vs-correctness AUROC on held-out data.
+
+### Kill Condition 3: OT Routing Cannot Beat Attention on Retrieval
+IF: even with proper features (not mean-pooled), OT routing still loses
+to standard attention on scarce-source retrieval at matched compute,
+THEN: supply/demand budgets don't help. Kill OT for Stage 4.
+TEST: Improved TinySutra with GRU features (not mean-pool) vs attention baseline.
+
+### Kill Condition 4: The 7-Stage Framework Doesn't Emerge
+IF: after training, the model does NOT develop identifiable stage-like
+behavior (all positions do the same thing regardless of content/difficulty),
+THEN: gradient descent ignores the staged structure. Framework is academic.
+TEST: Measure stage distribution diversity across positions. If std < 0.1, dead.
+
+### Kill Condition 5: No Combo Beats Standard Transformer at Scale
+IF: at 500M params on MiniPile, NO combo beats a matched standard transformer
+on BPB AND downstream tasks,
+THEN: the entire Sutra direction has insufficient advantage to justify complexity.
+TEST: Head-to-head against Pythia-410M / SmolLM-360M.
+
+### The Meta-Kill: IF conditions 1+3+5 ALL trigger, the project pivots.
