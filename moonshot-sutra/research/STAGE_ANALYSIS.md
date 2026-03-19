@@ -768,11 +768,75 @@ No auxiliary loss needed — the language modeling loss ITSELF trains the routin
 4. **Interpretability**: visualize supply/demand vectors — do they correspond
    to semantic roles? (e.g., "I have a subject" / "I need a subject")
 
-### Key Unknowns
+---
 
-1. Can the stage distribution be LEARNED stably with gradient descent?
-2. Does supply/demand routing converge or oscillate?
-3. How do we handle BATCHING if each position is at a different stage?
-4. Is soft stage mixing expressive enough, or do we need hard routing?
-5. What's the training objective for the stage classifier?
+## CODEX HARD CHALLENGE: Critical Flaws Identified
+
+**Novelty 7/10. Practicality 3/10. Chance 4/10 (modest) / 2/10 (robust).**
+
+### Flaw 1: Stage Collapse
+softmax(W·h) router will collapse to uniform or single-stage domination.
+Nothing prevents all positions from converging to same stage distribution.
+**Fix needed**: load balancing, capacity constraints, monotonic advancement,
+routing noise, or explicit supervision.
+
+### Flaw 2: Supply/Demand ≈ Attention Without Global Constraints
+Without column constraints (supply budgets) and competition between queries
+for scarce supply, information-gradient routing IS attention with different names.
+**What makes it genuinely new**: ENTROPIC OPTIMAL TRANSPORT formulation.
+Route = argmax Σ R_ij · match_ij - ε·H(R) subject to supply/demand constraints.
+This IS different from attention because it has BUDGETS — a source can't be
+overused by many queries simultaneously.
+
+### Flaw 3: Bayesian Write ≈ GRU Unless Uncertainty Is Real
+Adding "confidence" as just another input to a gate = GRU with extra feature.
+**What makes it genuinely different**: track (mean, variance) as the state.
+Updates become PRECISION-WEIGHTED Kalman updates, not just gated averages.
+High variance state + low variance evidence → large update (correct Bayes).
+
+### Flaw 4: GPU Batching Kills Free Per-Token Assignment
+**Fix**: monotonic constrained routing. Tokens only STAY or ADVANCE one stage
+per step. Chunk-level batching (whole chunks at same stage). This gives
+coarse-grained routing that hardware can handle.
+
+### Flaw 5: Underconstraint (BIGGEST)
+End-to-end gradient descent doesn't care about staged interpretation.
+Will find degenerate solutions that ignore the structure.
+**Fix**: combine structural constraints (monotonic advancement) with
+explicit stage objectives (e.g., Stage 3 loss = local prediction quality,
+Stage 5 loss = state retention accuracy).
+
+### REVISED ARCHITECTURE: Constrained Stage-Superposition
+
+Based on Codex challenge, the viable version is Architecture B+E hybrid:
+
+```
+MONOTONIC STAGE ADVANCEMENT with SOFT INTENSITY:
+
+Each position starts at Stage 1. Each step, it can:
+- STAY at current stage (if not ready to advance)
+- ADVANCE to next stage (if promotion criterion met)
+- NEVER go backward (monotonic constraint)
+
+Within current stage, INTENSITY is soft (how much of that stage's
+operation to apply). But the STAGE ITSELF advances monotonically.
+
+Load balancing: cap on how many positions can be at each stage.
+Chunk-level: whole patches advance together (GPU-friendly).
+```
+
+This addresses ALL five flaws:
+1. No collapse: monotonic advancement prevents staying in one stage
+2. Supply/demand with budgets: optimal transport formulation
+3. Real uncertainty: (mean, variance) state with Kalman updates
+4. GPU-friendly: chunk-level advancement, batch by stage
+5. Constrained: monotonic + per-stage losses fight degenerate solutions
+
+### Key Unknowns (Updated)
+
+1. Does monotonic advancement lose expressiveness vs free movement?
+2. Can optimal transport routing be computed efficiently? (Sinkhorn: O(n²) iterative)
+3. Does tracking (mean, variance) double the state size (2x memory)?
+4. How granular should chunks be for stage advancement? (patch-level? sentence-level?)
+5. What per-stage auxiliary losses work best?
 6. Does separating routing dims from content dims ACTUALLY help at scale?

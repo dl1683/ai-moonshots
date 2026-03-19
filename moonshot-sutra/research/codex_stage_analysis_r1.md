@@ -1,0 +1,20 @@
+I couldn’t actually open `research/STAGE_ANALYSIS.md` here because local file reads are blocked by policy in this session. The critique below is therefore provisional, based only on the formulations in your prompt. If you paste the document, I can do a file-grounded pass.
+
+1. `σ_i^t = softmax(W_stage h_i^t)` is learnable in the weak sense, but not stable by itself. If the routed output is `y_i = Σ_k σ_{ik} F_k(h_i)`, then the router gradient is `∂L/∂z_{ik} = σ_{ik}(g_{ik} - Σ_m σ_{im} g_{im})`, where `g_{ik}` is the downstream utility of stage `k`. That means it only learns relative advantage. If stages start similar, gradients are tiny and symmetry persists; if one stage gets a slight early edge, positive feedback drives collapse. Nothing in `softmax(W h)` prevents all positions from converging to similar stage distributions. You need explicit anti-collapse structure: load balancing, capacity constraints, stage priors, transition constraints, routing noise, or supervision.
+
+2. Stage 4 is only meaningfully different from attention if supply/demand creates global coupling. Standard attention is `A_{ij} = softmax_j(q_i^T k_j / √d)`, `o_i = Σ_j A_{ij} v_j`; each row normalizes independently. A true supply/demand matcher looks more like `max_R Σ_ij R_{ij} s_{ij} - εH(R)` subject to `Σ_j R_{ij} = d_i` and `Σ_i R_{ij} ≤ s_j`. That is closer to entropic optimal transport. If your mechanism has no column constraints, no budgets, and no global competition, it is just attention with different names. The only real information-theoretic advantage is bandwidth-constrained allocation: preventing many queries from overusing the same source. Without that, “information-gradient routing” is branding, not a new primitive.
+
+3. The Bayesian gated write is not automatically more expressive than a GRU. If the write is `m' = (1-g)⊙m + g⊙m_tilde` and `g` depends on input, state, and a confidence scalar/vector, that is just a GRU-style update gate with one more feature. The function class is basically unchanged. It becomes genuinely different only if uncertainty is part of the state and the update is precision-weighted in a Bayes-consistent way, like a Kalman update over `(μ, Σ)`. If “confidence” is just another learned signal, the model can ignore calibration entirely.
+
+4. The GPU batching problem is real and could absolutely kill the design. Free per-token stage assignment means packing tokens by stage, launching different kernels on irregular micro-batches, and scattering back every step. That is MoE-style dispatch overhead, except worse if stages are semantically different operators rather than replicated FFNs. If stages are lightweight, routing overhead dominates. If stage counts are imbalanced, occupancy tanks. If stages include cross-token ops, you lose locality and fused kernels. This only becomes hardware-friendly if routing is coarse: chunk-level, block-level, or heavily constrained transitions.
+
+5. The single biggest flaw is underconstraint. End-to-end gradient descent does not care about your seven-stage interpretation. It will happily find degenerate solutions: uniform mixtures, one-stage domination, or a disguised version of ordinary attention/recurrent computation. The architecture may optimize the task while completely failing to realize the intended staged cognition. That is the core scientific flaw.
+
+6. Ratings:
+1. Novelty: `7/10`
+2. Practicality: `3/10`
+3. Chance of working: `4/10` for modest empirical gains, `2/10` if the goal is robust emergent seven-stage reasoning
+
+7. The one change I’d make is to replace free stage superposition with monotonic constrained routing. Let each token only stay in its current stage or advance one stage per layer/time step, with stage capacity/load-balancing and chunk-level batching. That one change improves identifiability, reduces routing collapse, and gives you a path to efficient execution.
+
+If you paste `research/STAGE_ANALYSIS.md`, I’ll do the exact same critique against the actual equations and claims in the document rather than the abstractions above.
