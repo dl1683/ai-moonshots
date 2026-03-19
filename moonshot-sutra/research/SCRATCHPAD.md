@@ -1915,3 +1915,44 @@ Train on MiniPile + TinyStories (~6GB).
 This should be 2-4x faster AND produce better quality from tokenization alone.
 
 Prepare this script NOW so it launches immediately after current run + eval.
+
+---
+
+## EXPLORATION #14: Structure Over Search — Routing Table as Learned Grammar
+
+### The Implementation
+
+Instead of attention scores (search everything):
+1. Classify each position's TYPE (from features): noun, verb, pronoun, etc.
+2. Look up ROUTING TABLE: "pronouns → nearest noun, verbs → subject"
+3. Route information via table lookup: O(n × types²) not O(n²)
+
+The routing table IS a learned grammar. Fixed at inference.
+Like how a compiler parses with grammar rules, not brute-force search.
+
+### Why This Could Work
+
+- types² << n² for reasonable type counts (e.g., 64 types: 4096 << 16384 for n=128)
+- The table is INTERPRETABLE: can read "type 5 routes to type 12"
+- The table is GROWN during training (from our fungal biology work)
+- Type classification is O(n) (one MLP per position)
+- Lookup is O(1) per routing decision
+
+### Connection to Grown Sparsity
+
+The routing table from grown sparsity IS this, but over POSITIONS not TYPES.
+Position-level: routing_table[i][j] = connection strength between positions i,j.
+Type-level: routing_table[type_i][type_j] = connection strength between types.
+
+Type-level is MORE GENERAL: a new sentence with the same syntactic structure
+uses the SAME routing table entries. The table TRANSFERS across inputs.
+
+### This Is Actually Just Graph Attention with Learned Edge Types
+
+In graph attention networks, edge types determine how nodes communicate.
+Our routing table = learned edge types. Types = node types.
+This IS a well-studied approach (Relational GAT, R-GCN).
+
+BUT: applying it to LANGUAGE with LEARNED types (not predefined) at
+the PATCH level with multi-scale structure is a specific combination
+that hasn't been explored for language modeling.
