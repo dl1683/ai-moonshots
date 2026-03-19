@@ -676,6 +676,25 @@ performance gains on trivial data. Need structured data where routing MATTERS.
 This is expected — you don't need content-dependent processing for random digits.
 The real test is on language with genuine structure (the v0.2-MVP test).
 
+### MQAR Retrieval Test (CPU, 2026-03-19)
+
+5 KV pairs, 2 queries, 100 epochs, 5K train samples:
+- Transformer (1.2M params): 2% accuracy — WEAK signal, beginning to learn at epoch 60
+- GRU (314K params): 0% accuracy — ZERO signal, completely flat
+
+**Key finding**: Attention provides a weak but REAL signal for retrieval that recurrence lacks.
+Neither model solved MQAR in this budget, but the transformer is directionally learning.
+
+**Implication for Sutra**: Pure recurrence (stigmergic message passing without ANY retrieval
+mechanism) may fundamentally lack the ability to do content-addressable lookup. This supports
+Codex's recommendation for a scratchpad or sparse attention.
+
+**Caveat**: Models are tiny, training short. MQAR with 5 KV pairs SHOULD be solvable by both
+with enough training. The question is whether recurrence EVER catches up. Need longer run.
+
+**Action**: Run MQAR with 500 epochs and compare. If transformer solves it and GRU doesn't
+even after 500 epochs, attention IS fundamentally required for retrieval.
+
 ### Paper Deep Dives: MEGABYTE + PonderNet (2026-03-19)
 
 **MEGABYTE design parameters for Sutra:**
