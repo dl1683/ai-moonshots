@@ -732,6 +732,22 @@ and makes the core claim falsifiable."
 
 Primitive discovery probe CONFIRMS: library overhead not justified on simple tasks (0.5701 vs 0.5624 with 4x fewer params). Save library for v0.4 after core works.
 
+### Corpus Dependency Analysis (2026-03-19)
+
+Word repetition distances on real corpus (50K words):
+- 50% within 42 words, 75% within 241 words, 90% within 2409 words
+- CAVEAT: word repetition != semantic dependency. Actual prediction-relevant
+  dependencies (agreement, pronouns, topic) are much shorter.
+- Supports v0.3: message passing for local, sparse retrieval for long-range
+
+### Over-Smoothing Mitigation
+
+v0.3 already has correct mitigations from GNN literature:
+1. Residual connections in message update
+2. PonderNet halting stops before over-smoothing
+3. Pre-LN configuration
+4. Sparse retrieval provides fresh non-local signal each round
+
 ### FINAL v0.3-MVP (the thing we actually build):
 1. Byte input -> 8-byte patches (MEGABYTE validated)
 2. Shared-weight MLP per patch (local processing)
