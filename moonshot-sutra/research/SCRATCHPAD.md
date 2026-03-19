@@ -460,3 +460,17 @@ While the edge-primary idea is conceptually interesting, there are SIMPLER wins:
 
 Not everything needs to be a paradigm shift. Sometimes you need to tighten the
 bolts before reinventing the engine.
+
+---
+
+## Critical: Parameter Mismatch in Experiments (2026-03-19)
+
+Audit: Sutra v0.3 has 5.5x FEWER params than transformer at same dim=256:
+- Sutra (dim=256): 1.2M params
+- Transformer (8 layers): 6.5M params
+
+Previous "wins" partly from natural regularization (smaller → less overfitting).
+BUT: matched-param test (112K vs 100K) still showed 34% Sutra win → architecture IS better.
+
+**Fix**: Sutra dim=608 ≈ 6.2M params matches transformer. Run matched-param at 10M scale.
+Current test still valuable: if 1.2M Sutra ≈ 6.5M transformer, that's 5.5x efficiency.
