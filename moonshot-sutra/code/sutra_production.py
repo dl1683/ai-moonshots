@@ -31,17 +31,18 @@ random.seed(SEED)
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 REPO = Path(__file__).parent.parent
 
-# Production hyperparameters
-DIM = 3072          # 300M+ params
+# Production hyperparameters — targeting 350M-500M param class
+# Competitors: IBM Granite-4.0-Micro (350M), SmolLM-360M, Pythia-410M, Qwen3-0.6B
+DIM = 5120          # 475M params — fights Qwen3-0.6B (600M) with 21% fewer params
 PATCH_SIZE = 4      # Validated as best
-MAX_ROUNDS = 4      # Balanced depth
+MAX_ROUNDS = 6      # More depth for production
 K_RETRIEVAL = 16    # Strong retrieval for long-range
 SEQ_LEN = 512       # Standard context
-BATCH_SIZE = 8      # Fits in VRAM with gradient accumulation
-GRAD_ACCUM = 4      # Effective batch = 32
-LR = 1e-4           # Conservative for larger model
-WARMUP_STEPS = 1000
-MAX_STEPS = 50000   # ~50K steps × 32 effective batch × 512 seq = ~800M tokens
+BATCH_SIZE = 4      # Fits in VRAM with gradient accumulation
+GRAD_ACCUM = 8      # Effective batch = 32
+LR = 3e-4           # Standard for this scale
+WARMUP_STEPS = 2000
+MAX_STEPS = 100000  # ~100K steps × 32 eff batch × 512 seq = ~1.6B tokens (most of MiniPile)
 EVAL_EVERY = 2000
 SAVE_EVERY = 10000
 
