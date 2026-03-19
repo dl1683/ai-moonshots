@@ -518,6 +518,12 @@ Each message = structured composition, not black-box transformation.
 NOVEL: nobody has used VSA as message-passing primitive for language modeling.
 Connects to category theory (2025 paper: VSA ops = right Kan extensions).
 
+### Evolutionary Routing Search
+Hybrid training: gradient descent for model, evolution for routing patterns.
+Routing table mutations tested each generation, best kept. Escapes local optima.
+Finer-grained than NAS — searches routing within fixed architecture.
+Continuous during training, not separate preprocessing.
+
 ### Learned Compression (No Tokenizer)
 Replace tokenization with learned byte-to-concept compression.
 Multi-scale convolutions + importance scoring + adaptive pooling.
