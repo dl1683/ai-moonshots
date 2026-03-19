@@ -1352,3 +1352,62 @@ by its corresponding output head, the system is maximally coherent:
 
 No information is wasted. Every stage knows EXACTLY what it's producing for.
 This is the ultimate coherence: output-driven stage design.
+
+---
+
+## INFORMATION BOTTLENECK VIEW: Each Stage as Compression
+
+### The Chain of Compressions
+
+```
+Raw bytes → segments → addressed → local features →
+routed features → updated memory → controlled output → predictions
+```
+
+Each stage COMPRESSES: loses useless info, gains useful structure.
+
+### Tishby's Information Bottleneck
+
+Optimal representation at stage s:
+- MINIMIZE I(representation; raw_input) = compress well
+- MAXIMIZE I(representation; target) = predict well
+
+Each stage moves along the information plane from high-input-MI to high-target-MI.
+
+### Connection to EVERYTHING
+
+- MI analysis: the two-regime structure shows WHERE compression happens
+  (local info compresses fast, global info compresses slow)
+- Kalman variance: HIGH variance = under-compressed (still noisy).
+  LOW variance = well-compressed (clean representation).
+- Compression = Intelligence thesis: each stage IS a compression step.
+  Better compression per stage = more intelligent system.
+- Stage-superposition: positions at earlier stages are LESS compressed.
+  Positions at later stages are MORE compressed. The stage distribution
+  IS a compression schedule.
+
+### Design Implication
+
+Design each stage to be EXPLICITLY on the information bottleneck frontier:
+- Stage 3: compress bytes → word features (lossy but structured)
+- Stage 4: compress local features → context-integrated (lose local detail, gain cross-position)
+- Stage 5: compress routed info → stable memory (lose transient noise, gain durable knowledge)
+
+The LOSS FUNCTION for each stage's auxiliary should be: maximize I(output; target)
+while minimizing I(output; input_to_this_stage). This IS the information bottleneck
+objective applied per-stage.
+
+### This Unifies the Entire Theoretical Framework
+
+| Theory | What It Says | Stage Connection |
+|--------|-------------|-----------------|
+| MI two-regime | 75% local + 25% global info | Stage 3 (local) + Stage 4 (global) |
+| Kalman variance | Uncertainty → confidence | Compression progress tracker |
+| OT routing | Optimal info transport under budgets | Stage 4 maximizes I(routed; target) |
+| Adaptive sequences | Different strategies for different inputs | Different compression paths |
+| Output-first | 4 info streams | 4 types of predictive information to preserve |
+| Compression = intelligence | Better compression = better model | Each stage IS compression |
+
+Everything connects. The 7-stage architecture IS a learned, adaptive,
+multi-step information bottleneck that compresses raw text into predictions
+while preserving exactly the information needed for each output stream.
