@@ -1247,3 +1247,71 @@ valuable: use energy as a VERIFIER (Stage 7) even if generation is AR.
 
 Score: is this response LOW ENERGY (coherent, consistent)?
 If not: regenerate or edit.
+
+---
+
+## CODEX TRIAGE RESULTS
+
+| Exploration | Novelty | Feasibility | Potential | Verdict |
+|------------|---------|-------------|-----------|---------|
+| #1 Code-like reps | 3 | 2 | 3 | Later auxiliary, not core |
+| #2 Recursive compression | 4 | 4 | **5** | **CORE BET** |
+| #3 Differentiable DB | 2 | 3 | 3 | Subsystem only |
+| #4 Position-free | 3 | 1 | 1 | **KILL** |
+| #5 World simulator | (not triaged yet) | | | Connects to #1 |
+| #6 Energy functions | (not triaged yet) | | | Verifier role |
+
+**Codex missing angle**: Iterative constraint satisfaction / belief propagation.
+Language understanding = finding globally consistent state under local constraints.
+This IS message passing in graphical models. Connects to everything naturally.
+
+## DEEP DIVE: Recursive Compression (The Core Bet)
+
+If recursive compression IS the one core idea, what does the architecture look like?
+
+### The Renormalization Group Architecture
+
+```
+Level 0: raw bytes                    [N positions, d dims]
+    ↓ compress_0 (character → word)
+Level 1: word features                [N/4 positions, d dims]
+    ↓ compress_1 (word → phrase)
+Level 2: phrase features              [N/16 positions, d dims]
+    ↓ compress_2 (phrase → meaning)
+Level 3: meaning features             [N/64 positions, d dims]
+
+Cross-level information flow (both UP and DOWN):
+Level 0 ←→ Level 1 ←→ Level 2 ←→ Level 3
+```
+
+Each level has its OWN effective processor (different compressions at different scales).
+Information flows UP (abstraction) and DOWN (prediction/verification).
+
+### This IS Sutra v0.4 But Formalized as RG
+
+v0.4 has:
+- Level 0: bytes → patches (our 4-byte chunking = compress_0)
+- Level 1: patch processing (GRU = compress_1 within patch)
+- Level 1→2: message passing between patches (cross-patch = compress_2)
+- Only 2 levels! Missing levels 2→3 and deeper.
+
+The v0.4 architecture is a SHALLOW renormalization — only 2 levels of
+compression. A deeper architecture would add more levels:
+- Level 2: groups of patches (sentences/paragraphs)
+- Level 3: groups of groups (sections/documents)
+
+### Why More Levels Might Help
+
+The MI two-regime finding: local alpha=0.94, global alpha=0.26.
+The TRANSITION at d~10 is where Level 0→1 compression happens.
+But there might be ANOTHER transition at d~100 (Level 1→2)
+and another at d~1000 (Level 2→3).
+
+If we measured MI at even longer ranges, we might find a THIRD regime
+with an even slower decay — the paragraph/discourse level.
+
+### The Experiment
+
+Measure MI at very long ranges (d=1000-10000) on MiniPile.
+If there's a third regime transition, it validates the multi-level RG.
+If MI is flat beyond d~500, two levels are enough.
