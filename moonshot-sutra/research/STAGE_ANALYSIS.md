@@ -1032,3 +1032,191 @@ The representation flowing between stages must be designed HOLISTICALLY:
 
 This means: design the INTER-STAGE INTERFACE FIRST, then design each stage
 to satisfy that interface. Like designing API contracts before implementations.
+
+---
+
+## ARCHITECTURE EXPLORATION: Playing With Combinations
+
+### The Variables We Can Mix
+
+For each stage, there are multiple mechanism OPTIONS. The space of possible
+architectures is the PRODUCT of choices across stages. Let's enumerate the
+most promising options per stage, then explore interesting combinations.
+
+**Stage 1 Options:**
+- A1a: Fixed byte patches (current v0.4)
+- A1b: BPE token patches (token-level branch)
+- A1c: Entropy-gradient adaptive patches (novel)
+- A1d: Learned Gumbel-Softmax boundaries (end-to-end)
+
+**Stage 2 Options:**
+- A2a: Learned embeddings only (current)
+- A2b: + RoPE on inter-patch interactions
+- A2c: + Content-modulated dynamic addressing
+- A2d: Hierarchical multi-level (byte + patch + section)
+
+**Stage 3 Options:**
+- A3a: GRU within patches (current v0.4)
+- A3b: Conv + GRU (multi-grain)
+- A3c: Tiny within-patch attention (2-head, 4 tokens)
+- A3d: Mamba-style selective SSM within patch
+
+**Stage 4 Options:**
+- A4a: Local message passing + sparse top-k (current v0.4)
+- A4b: Optimal transport routing with supply/demand budgets
+- A4c: Information-gradient supply/demand (without OT constraint)
+- A4d: Grown sparsity (routing table evolves via gradient magnitude)
+- A4e: Hybrid: local msg pass + periodic OT global refresh
+
+**Stage 5 Options:**
+- A5a: Additive merge + MLP (current v0.4)
+- A5b: GRUCell gated write
+- A5c: Kalman (mean, variance) with precision-weighted updates
+- A5d: DeltaNet-style explicit erase/write gates
+
+**Stage 6 Options:**
+- A6a: PonderNet with min_rounds (current v0.4)
+- A6b: Implicit via Kalman variance (if using A5c)
+- A6c: Sequence-level controller {2,4,8} passes
+- A6d: No explicit control (fixed depth)
+
+**Stage 7 Options:**
+- A7a: Linear head + AR decoding (current)
+- A7b: + Variance-based abstention (if using A5c)
+- A7c: + Verifier head + reranking N=4
+- A7d: Decode-verify loop (verify fails → back to Stage 4)
+
+### Candidate Architecture Combinations
+
+#### COMBO 1: "The Conservative" (Lowest Risk)
+A1b + A2b + A3a + A4a + A5b + A6d + A7a
+BPE tokens, RoPE, GRU patches, current msg+sparse, GRUCell write, fixed depth, standard AR.
+This is basically v0.4 with tokens instead of bytes + two small fixes.
+
+**Coherence analysis**: HIGH. Each change is small and independent.
+BPE helps Stage 3 (GRU processes meaningful tokens). RoPE helps Stage 4
+(sparse retrieval has distance info). GRUCell helps Stage 5 (selective update).
+No component fights another.
+
+**Expected outcome**: Modest improvement over v0.4. ~10-20% better BPB from
+tokenization alone. Not revolutionary but safe.
+
+**Experiments needed**: 1 run. Compare against v0.4 byte-level.
+
+---
+
+#### COMBO 2: "The Kalman Machine" (Novel + Coherent)
+A1b + A2c + A3b + A4a + A5c + A6b + A7b
+BPE tokens, content-modulated addressing, conv+GRU, current routing,
+Kalman states, implicit variance control, variance-based abstention.
+
+**Coherence analysis**: VERY HIGH. The Kalman variance is the UNIFYING SIGNAL:
+- Stage 5 produces variance → Stage 6 uses it for depth → Stage 7 uses it for abstention
+- Content-modulated addressing (Stage 2) uses the state uncertainty to adjust positions
+- Three stages share ONE signal. Maximum coherence.
+
+**Expected outcome**: Better calibration, natural adaptive depth, honest abstention.
+May not improve raw BPB much but should improve RESPONSE QUALITY on hard tasks.
+
+**Experiments needed**:
+1. BPB comparison against Combo 1
+2. Calibration test: does variance actually correlate with correctness?
+3. Abstention test: does variance-thresholded output improve accuracy?
+
+---
+
+#### COMBO 3: "The Transport Network" (Most Novel)
+A1c + A2d + A3b + A4b + A5c + A6b + A7d
+Adaptive entropy patches, hierarchical addressing, conv+GRU, OT routing,
+Kalman states, implicit control, decode-verify loop.
+
+**Coherence analysis**: MEDIUM-HIGH. The OT routing needs good features
+from Stage 3 (the lesson from our negative result). Conv+GRU provides
+richer features than mean-pooling. Adaptive patches (Stage 1) match the
+entropy structure. Kalman states flow through control and verification.
+
+BUT: adaptive patches (A1c) creates variable-length chunks which complicates
+Stage 3 (GRU expects fixed-length). Need padding or variable-length GRU.
+
+**Expected outcome**: If it works, the most defensible novelty claim.
+OT routing is mathematically derived. Kalman states are principled.
+Adaptive segmentation matches MI analysis. Everything from first principles.
+
+**Risk**: HIGH. Three novel components (entropy patches, OT routing, Kalman)
+interacting. Any one failure cascades. The OT prototype already showed weakness.
+
+**Experiments needed**:
+1. Fix OT routing on retrieval task (don't mean-pool, use raw features)
+2. Test adaptive segmentation alone (does it find real word boundaries?)
+3. Test Kalman alone (does variance track correctness?)
+4. Then combine the winners.
+
+---
+
+#### COMBO 4: "The Biological" (Cross-Domain Inspired)
+A1d + A2c + A3a + A4d + A5c + A6b + A7d
+Learned Gumbel boundaries, content-modulated addressing, GRU patches,
+GROWN SPARSITY routing, Kalman states, implicit control, verify loop.
+
+**Coherence analysis**: HIGH. The grown sparsity (routing table evolves like
+fungal tubes) naturally produces routing patterns that Stage 5 can use.
+The Kalman variance tells the routing WHERE to invest effort. Learned
+boundaries adapt to the grown routing patterns.
+
+This is the most BIOLOGICALLY faithful: grown connections (fungi),
+Bayesian updating (brain), adaptive segmentation (retina), verification
+(immune system double-check).
+
+**Expected outcome**: Potentially the most parameter-efficient if grown
+sparsity discovers good routing patterns. The routing table becomes a
+learned structure that encodes text dependency geometry.
+
+**Risk**: MEDIUM-HIGH. Grown sparsity needs many training steps to develop
+meaningful structure. Early training may be poor because routing table
+starts random. Need curriculum or warm-start.
+
+**Experiments needed**:
+1. Does grown sparsity develop meaningful patterns? (Measure KL between
+   routing table at epoch 1 vs epoch 10 — should show structure)
+2. Does gradient-driven routing match MI-measured dependency structure?
+3. Compare Combo 4 routing patterns against learned attention patterns.
+
+---
+
+#### COMBO 5: "The Pragmatist" (Ship Fastest)
+A1b + A2b + A3a + A4a + A5b + A6a + A7c
+BPE tokens, RoPE, GRU patches, current msg+sparse, GRUCell write,
+PonderNet halting, verifier reranking.
+
+This is v0.4 with: tokens, RoPE, gated write, verifier head. Four small
+improvements, each well-understood, no novel risk.
+
+**Coherence analysis**: HIGH. All changes are additive, none conflicts.
+The verifier head (Stage 7) is independent of other stages.
+
+**Expected outcome**: Best BPB of any combination (tokenization helps most).
+Verifier improves response quality. Not novel but PRACTICAL.
+
+**Experiments needed**: 1 run. This should be the FIRST thing we train
+after v0.4 production finishes. It's the highest-probability win.
+
+---
+
+### COMPARISON MATRIX
+
+| Combo | Novelty | Coherence | Risk | Ship Speed | Expected Win |
+|-------|---------|-----------|------|------------|-------------|
+| 1: Conservative | LOW | HIGH | LOW | FAST | Modest (~20% BPB) |
+| 2: Kalman Machine | MEDIUM | VERY HIGH | MEDIUM | MEDIUM | Better calibration |
+| 3: Transport Network | HIGH | MEDIUM-HIGH | HIGH | SLOW | Most defensible if works |
+| 4: Biological | HIGH | HIGH | MEDIUM-HIGH | SLOW | Most efficient if works |
+| 5: Pragmatist | LOW | HIGH | LOW | FASTEST | Best BPB + response quality |
+
+### RECOMMENDED SEQUENCE
+
+1. **FIRST**: Ship Combo 5 (Pragmatist) — fastest path to competitive model
+2. **SECOND**: Test Combo 2 (Kalman Machine) — adds novelty without high risk
+3. **THIRD**: Test individual novel components from Combo 3/4 in isolation
+4. **LONG-TERM**: Build toward Combo 3 or 4 as the full vision
+
+This way we ALWAYS have a working competitive model while exploring novelty.
