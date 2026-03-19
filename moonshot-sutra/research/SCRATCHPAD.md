@@ -1408,3 +1408,79 @@ IS a special case of BP.
 
 This means: BP is the GENERAL version of what we were already doing
 with Kalman. Kalman = BP on a chain. Full BP = BP on the full factor graph.
+
+---
+
+## CONVERGENCE: Multi-Scale Belief Propagation (Explorations #2 + #7 Merged)
+
+### The Synthesis
+
+Recursive compression (#2) = WHAT (compress at multiple scales).
+Belief propagation (#7) = HOW (structured messages with convergence).
+
+Combined: **at each scale, BP finds the consistent interpretation.
+Moving to a coarser scale compresses the beliefs from the finer scale.**
+
+### The Architecture (One Unified Principle)
+
+```
+Scale 0 (bytes):    [N positions]
+  BP at scale 0: find consistent character-level interpretation
+  Beliefs_0 converge → compress into:
+
+Scale 1 (words):    [N/4 positions]
+  BP at scale 1: find consistent word-level interpretation
+  Uses compressed beliefs from Scale 0 as evidence
+  Beliefs_1 converge → compress into:
+
+Scale 2 (phrases):  [N/16 positions]
+  BP at scale 2: find consistent phrase-level interpretation
+  Uses compressed beliefs from Scale 1 as evidence
+  Beliefs_2 converge → compress into:
+
+Scale 3 (meaning):  [N/64 positions]
+  BP at scale 3: find consistent semantic interpretation
+```
+
+Information flows BOTH directions:
+- UP: beliefs compress into coarser scales (abstraction)
+- DOWN: coarser beliefs constrain finer scales (prediction/verification)
+
+### Why This Is THE Core Idea
+
+ONE mechanism (Gaussian BP) at EVERY scale.
+Different scales handle different MI regimes:
+- Scale 0-1: local MI regime (alpha=0.94, fast convergence)
+- Scale 1-2: transition regime
+- Scale 2-3: global MI regime (alpha=0.26, slow convergence)
+
+The BP convergence time at each scale MATCHES the MI decay:
+- Local BP: fast (few iterations needed, strong local constraints)
+- Global BP: slow (many iterations, weak long-range constraints)
+
+Adaptive depth EMERGES: positions converge at different rates.
+Local positions: BP converges fast → done early.
+Complex positions: BP converges slow → needs more iterations.
+No PonderNet needed — convergence IS the halting criterion.
+
+### Comparison to Existing Architectures
+
+- Transformer: flat, all-to-all, no scale hierarchy, no beliefs
+- Mamba: sequential, single scale, no beliefs
+- Jamba: hybrid but same-scale, no beliefs
+- U-Net: multi-scale but no BP, different domain (images)
+- Factor graph NN: BP-inspired but single scale, not for language
+
+**Multi-scale BP for language modeling: genuinely novel.**
+
+### The Experiment to Test This
+
+Simplest version: 2-scale BP (bytes + words).
+- Scale 0: local GRU (captures byte-level beliefs)
+- Scale 1: message passing with BELIEF messages (not just features)
+- Messages: (mean, precision) pairs, combined via precision-weighted averaging
+- Convergence: stop when beliefs stop changing (norm of update < threshold)
+
+Compare against: v0.4 (same compute, no belief structure).
+If belief structure helps convergence and prediction: THE idea validated.
+If not: BP adds overhead without benefit. Kill it.
