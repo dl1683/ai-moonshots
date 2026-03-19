@@ -41,8 +41,8 @@ PATCH_SIZE = 4  # Smaller patches = more message passing = better (from sweep)
 MAX_ROUNDS = 4
 K_RETRIEVAL = 8
 SEQ_LEN = 512
-BATCH_SIZE = 16
-EPOCHS = 5
+BATCH_SIZE = 64
+EPOCHS = 3
 LR = 3e-4
 
 
@@ -82,9 +82,9 @@ def main():
         print("ERROR: corpus not built. Run code/build_training_corpus.py first.")
         return
 
-    # Use first 10M bytes for training (manageable on GPU)
-    train_ds = ByteDataset(corpus_train, seq_len=SEQ_LEN, max_bytes=10_000_000)
-    test_ds = ByteDataset(corpus_test, seq_len=SEQ_LEN, max_bytes=1_000_000)
+    # Use first 2M bytes for training (reasonable GPU time)
+    train_ds = ByteDataset(corpus_train, seq_len=SEQ_LEN, max_bytes=2_000_000)
+    test_ds = ByteDataset(corpus_test, seq_len=SEQ_LEN, max_bytes=500_000)
     train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=0,
                               pin_memory=False)
     test_loader = DataLoader(test_ds, batch_size=BATCH_SIZE, shuffle=False, num_workers=0,
