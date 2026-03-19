@@ -22,27 +22,52 @@ Every moonshot here questions a foundational assumption. When an assumption brea
 
 | Moonshot | What It Questions | Status | Repo |
 |----------|------------------|--------|------|
-| **CTI Universal Law** | *Can we derive a universal law governing learned representations from first principles?* | Paper submitted | [moonshot-cti-universal-law](https://github.com/dl1683/moonshot-cti-universal-law) |
-| **Fractal Embeddings** | *Are flat embedding spaces fundamentally wrong for hierarchical data?* | Validated | [moonshot-fractal-embeddings](https://github.com/dl1683/moonshot-fractal-embeddings) |
+| **CTI Universal Law** | *Can we derive a universal law governing learned representations from first principles?* | COLM 2026 submission ready | [moonshot-cti-universal-law](https://github.com/dl1683/moonshot-cti-universal-law) |
+| **Latent Space Reasoning** | *Can random untrained tokens unlock hidden reasoning capabilities in small models?* | NeurIPS paper ready | [Latent-Space-Reasoning](https://github.com/dl1683/Latent-Space-Reasoning) |
+| **Fractal Embeddings** | *Are flat embedding spaces fundamentally wrong for hierarchical data?* | Validated (5-seed, causal) | [moonshot-fractal-embeddings](https://github.com/dl1683/moonshot-fractal-embeddings) |
 
-### CTI Universal Law — *The Compute Thermodynamics of Intelligence*
+### [CTI Universal Law](https://github.com/dl1683/moonshot-cti-universal-law) — *The Compute Thermodynamics of Intelligence*
 
-A first-principles derivation (via Extreme Value Theory and Gumbel statistics) of a universal law governing how representation quality determines task performance across architectures, modalities, and even biological neural systems. Pre-registered, reproducible, validated on 19+ architectures and 10 datasets.
+A first-principles derivation (via Extreme Value Theory and Gumbel statistics) of a universal law governing how representation quality determines task performance — validated across 19 architectures, 10 datasets, 4 modality families, and biological neural systems. 28-page paper targeting COLM 2026.
+
+**The law:** `logit(q) = alpha * kappa_nearest + C` where q is normalized accuracy and kappa is nearest-class signal-to-noise ratio.
 
 **Key results:**
-- Universal law `logit(q) = alpha * kappa + C` holds across transformers, SSMs, CNNs, and hybrids
-- Equicorrelation `rho ~ 0.45` is constant across all architecture families AND mouse visual cortex (V1)
-- First-principles EVT/Gumbel derivation — not curve fitting, but a derived physical law
-- Leave-one-model-family-out validation: all 4 families pass `r >= 0.84`
+- **Universal functional form** holds across transformers, SSMs, CNNs, hybrids, and mouse visual cortex
+- **Cross-architecture**: LOAO across 12 NLP architectures — alpha=1.477, CV=2.3%, R²=0.955
+- **Holdout validation**: 11 holdout models × 8 datasets — r=0.879, MAE=0.077
+- **Leave-one-family-out**: all 4 architecture families pass (r >= 0.84)
+- **Biological generalization**: 30/32 mouse V1 Neuropixels sessions pass; multi-area (5 cortical areas) all ≥87%
+- **Equicorrelation**: rho ~ 0.45 is constant across all families AND biological V1 (CV=1.65%)
+- **Causal**: confusion-matrix prediction r=0.842, frozen do-interventions, orthogonal factorial design
+- **Cross-modal**: ViT-Large R²=0.964, ResNet-50, alpha varies by family (decoders 1.48, ViT 0.63, CNN 4.4)
+- **Practical**: cross-model architecture ranking rho=0.833 (p=0.005)
 
-### Fractal Embeddings — *When Structure Matters*
+### [Latent Space Reasoning](https://github.com/dl1683/Latent-Space-Reasoning) — *Hidden Capabilities, Unlocked by Noise*
 
-Multi-scale embeddings where different prefix lengths specialize for different hierarchy levels. Proves that correct geometric structure causally improves representations — wrong structure hurts.
+Prepending random embedding-scale tokens to a small language model's input dramatically improves reasoning — with zero training, zero fine-tuning, and zero parameter changes. This is a new axis of improvement orthogonal to scaling, fine-tuning, prompting, RAG, and sampling.
+
+**The finding:** Small models aren't failing because they lack capability — they're stuck in suboptimal output policies. Two random tokens are enough to break the default.
+
+**Key results:**
+- **Qwen3-4B arithmetic**: 32% → 51.6% (+19.6pp) with just 2 random tokens
+- **Direction-agnostic**: random noise matches optimized projections (p=1.0) — the direction doesn't matter
+- **Non-monotonic dose-response**: 2 tokens optimal; more tokens degrade (sweet spot, not "more is better")
+- **100% oracle coverage**: 10 random directions collectively solve every task
+- **Attention sink rescue**: model collapse (14 words) → complete diagnostic plan (650+ words)
+- **Cross-model validated**: positive on 3/4 models (Qwen3-4B, Qwen3-8B, phi-2); mechanism splits into convergence aid vs computation aid depending on model capacity
+- **Chain-of-thought mediates**: disable thinking, effect vanishes entirely — perturbation works *through* reasoning
+
+### [Fractal Embeddings](https://github.com/dl1683/moonshot-fractal-embeddings) — *When Structure Matters*
+
+Multi-scale embeddings where hierarchy-aligned prefix supervision forces different embedding scales to specialize for different hierarchy levels. Proves that correct geometric structure *causally* improves representations — wrong structure hurts. Includes V5 architecture with block dropout and head-only training.
 
 **Key results:**
 - **+5.36% coarse, +6.47% fine-grained** accuracy on Yahoo Answers (5-seed validation)
+- **+0.70%** on 20 Newsgroups (p=0.0232, statistically significant)
 - **Correct hierarchy helps, wrong hierarchy hurts** — 95% CI excludes zero (causal proof)
-- Full theoretical foundation: minimax bounds, sample complexity separations
+- **Scaling validated**: consistent 1-2.5% gains across hierarchy depths 2-5
+- **Theoretical foundation**: minimax generalization bounds, sample complexity separations, access complexity advantage Ω(k/(j+1)) vs isotropic embeddings
 
 ---
 
@@ -50,6 +75,7 @@ Multi-scale embeddings where different prefix lengths specialize for different h
 
 | Moonshot | What It Questions | Description |
 |----------|------------------|-------------|
+| **Sutra** | *Can a from-scratch model with novel math beat scaled-down architectures on edge?* | Building the world's best edge model from first principles — custom representations, pre-training, extreme multimodal |
 | **Fractal Mind** | *Can shared-weight blocks with learned halting achieve unbounded reasoning depth?* | Reached 10x iteration efficiency with no accuracy loss on Copy/Reverse/Sort/LM tasks |
 | **Self-Constructing Intelligence** | *Can intelligence build itself from minimal seeds without training?* | Evolutionary emergence from random initialization — XOR, AND, OR solved through pure evolution |
 | **Tokenization Limits** | *What are the information-theoretic limits of tokenization?* | Empirical Fano bounds and collision mining across 7 model families |
@@ -65,9 +91,10 @@ These moonshots are connected. They build toward five paradigm-shifting question
 
 1. **Can we derive intelligence from first principles?** (CTI, Fractal Embeddings)
 2. **Can intelligence construct itself?** (Self-Construction, Fractal Mind)
-3. **Can we compute meaning exactly?** (Tokenization Limits, Knowledge Structure)
-4. **What are the fundamental limits of neural networks?** (CTI, Fractal Mind)
-5. **Can we make intelligence a public utility?** (Open Intelligence Infrastructure)
+3. **Are small models more capable than we think?** (Latent Space Reasoning)
+4. **Can we compute meaning exactly?** (Tokenization Limits, Knowledge Structure)
+5. **What are the fundamental limits of neural networks?** (CTI, Fractal Mind)
+6. **Can we make intelligence a public utility?** (Open Intelligence Infrastructure)
 
 See the [model directory](models/MODEL_DIRECTORY.md) for the full set of models used across experiments.
 

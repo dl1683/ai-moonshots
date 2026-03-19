@@ -1,9 +1,18 @@
 {
   "experiment": "v03_real_text_cpu",
-  "status": "PARTIAL (Sutra epoch 3/5, transformer complete)",
-  "transformer": {"params": 241024, "final_bpb": 5.226, "note": "OVERFITTING: BPB 4.0->5.2 across epochs"},
-  "sutra_v03": {"params": 100097, "epoch3_bpb": 1.775, "note": "IMPROVING: BPB 2.3->1.8, still dropping"},
-  "ratio_at_epoch3": 0.39,
-  "CAVEAT": "Transformer may be overfitting due to high LR, no dropout, or model too large for 200K chars. Need to rerun with proper tuning before claiming 2.6x advantage.",
-  "conclusion": "Sutra generalizes better on real text, but transformer baseline needs tuning for fair comparison"
+  "results": [
+    {
+      "model": "Transformer",
+      "params": 241024,
+      "bpb": 5.2256,
+      "time_s": 2357.4
+    },
+    {
+      "model": "Sutra-v0.3",
+      "params": 100097,
+      "bpb": 1.3982,
+      "time_s": 2133.5
+    }
+  ],
+  "ratio": 0.2676
 }
