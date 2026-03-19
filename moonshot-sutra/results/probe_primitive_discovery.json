@@ -1,0 +1,18 @@
+{
+  "probe": "primitive_discovery",
+  "results": [
+    {
+      "model": "Composer",
+      "params": 146608,
+      "test_loss": 0.5701,
+      "depth_0_active": 2,
+      "depth_1_active": 1,
+      "depth_2_active": 4
+    },
+    {
+      "model": "Flat",
+      "params": 35328,
+      "test_loss": 0.5624
+    }
+  ]
+}
