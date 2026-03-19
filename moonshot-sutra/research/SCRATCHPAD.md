@@ -111,4 +111,62 @@ signals. Like brain development — Broca's area specializes for language, V1 fo
 
 ## Codex Debate Log
 
-*(Debates will be appended here as they happen)*
+### Round 1 (2026-03-19)
+
+**Codex verdict**: Focus on Ideas 3+6 (sparse k sweep + minimum global mechanism).
+These are directly on Sutra's core thesis.
+
+**Promoted to test**:
+- Idea 3 (Priority 5): Sweep k={2,4,8,16,32,adaptive} on MQAR + BPB + long-range
+- Idea 6 (Priority 5): Three variants — local-only vs local+sparse vs local+scratchpad
+- Idea 5 (Priority 4): PonderNet calibration after min_rounds fix
+
+**Killed/Parked**:
+- Idea 1: "just iterative refinement, error signal destabilizes" → PARKED
+- Idea 2: "cache contradicts edge thesis, ~1GB for 1M states" → PARKED
+- Idea 4: "shared-weight rounds not diverse enough for real ensemble" → KILLED
+- Idea 7: "highest upside but worst use of current compute" → PARKED
+
+**Key Codex insight**: "Prove language = mostly local + tiny sparse global.
+Identify the minimum global mechanism that closes the long-range gap."
+
+**For Round 2**: Experimental designs below.
+
+---
+
+## Round 2 Proposal: Two Priority-5 Experiments
+
+### Experiment A: Sparse-k Sweep (Idea 3)
+
+**Question**: What k captures most of the performance of dense attention under
+Sutra's message-passing backbone?
+
+**Design**: Same v0.3 architecture, same data (2M bytes real corpus), same epochs.
+Vary ONLY k in sparse retrieval: {0 (no retrieval), 2, 4, 8, 16, 32, N (full attention)}.
+Also test adaptive-k: router outputs k per-patch via Gumbel-softmax.
+
+**Measurements**: BPB on test set, MQAR accuracy (5 KV pairs), training time.
+**Controls**: k=0 (message passing only) and k=N (full attention) are the bounds.
+**Kill**: If k=4 already gets >90% of k=N performance, larger k adds nothing.
+**Interesting**: If adaptive-k learns different k for different patches.
+
+**Estimated compute**: 8 variants × ~30 min each = ~4 hours GPU.
+Run after 10M test completes.
+
+### Experiment B: Minimum Global Mechanism (Idea 6)
+
+**Question**: What is the cheapest global mechanism that closes the long-range gap?
+
+**Design**: v0.3 backbone, same data, same epochs. Three variants:
+1. LOCAL ONLY: message passing, no sparse retrieval, no scratchpad
+2. LOCAL + SPARSE: message passing + top-k retrieval (k=8)
+3. LOCAL + SCRATCHPAD: message passing + 8-16 global memory tokens
+4. LOCAL + SPARSE + SCRATCHPAD: everything
+5. FULL ATTENTION baseline (transformer)
+
+**Measurements**: BPB, MQAR, structured reasoning accuracy, long-range copy task.
+**Controls**: Matched params across all variants.
+**Kill**: If LOCAL+SPARSE matches FULL ATTENTION within 10%, scratchpad is unnecessary.
+**Interesting**: Where does each variant fail? Which task type needs which mechanism?
+
+**Estimated compute**: 5 variants × ~30 min each = ~2.5 hours GPU.
