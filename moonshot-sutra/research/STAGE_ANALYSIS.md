@@ -503,6 +503,123 @@ No global clock, no synchronous layers, no fixed depth.
 5. **Interpretable**: can read the stage distribution to understand what the model is doing
 6. **Biologically plausible**: matches cortical processing (asynchronous, multi-scale, recurrent)
 
+---
+
+## ALTERNATIVE ARCHITECTURES (Same Vision, Different Implementations)
+
+### Architecture A: "The Wavefront" (Pure Stage-Superposition)
+
+The design above. Each position carries a stage distribution.
+Soft mixture of all stage operations per position per step.
+
+**Pros**: Maximally expressive. Continuous. Elegant math.
+**Cons**: GPU batching nightmare. Every position does different work.
+May collapse to uniform stage distribution (everything converges).
+
+### Architecture B: "The Pipeline" (Hard Stage Assignment)
+
+Instead of soft superposition, HARD-ASSIGN each position to one stage.
+Positions advance through stages explicitly. At each step:
+- Positions in Stage 3 → all run GRU together (batched efficiently)
+- Positions in Stage 4 → all run routing together (batched efficiently)
+- Positions in Stage 7 → all run readout together
+
+A position advances when its "promotion score" exceeds a threshold.
+Like an assembly line: each station processes a different batch of items.
+
+**Pros**: GPU-friendly (batch by stage). Clear, debuggable. No collapse risk.
+**Cons**: Less expressive (hard boundaries). Positions can get "stuck" at a stage.
+Needs explicit promotion mechanism.
+
+**Implementation**:
+```
+for each step:
+    groups = group_positions_by_stage(stage_assignments)
+    for stage_id, positions in groups:
+        features[positions] = F_stage(features[positions], context)
+    stage_assignments = update_stages(features, promotion_scores)
+```
+
+### Architecture C: "The Wave Pool" (Fixed Stages, Variable Frequency)
+
+All positions go through ALL stages in fixed order (like a transformer).
+BUT: the NUMBER OF ROUNDS at each stage varies per position.
+Easy positions: 1 round of Stage 4. Hard positions: 8 rounds.
+
+This is MEGABYTE-like but with per-position adaptive depth AT EACH STAGE.
+The stage order is fixed; the TIME SPENT at each stage is variable.
+
+**Pros**: Standard batching works. Stage order is well-defined.
+Compatible with existing GPU kernels.
+**Cons**: Less flexible than A or B. Still sequential at the stage level.
+
+**Implementation**: PonderNet-style halting per stage, not per model.
+
+### Architecture D: "The Market" (Decentralized Stigmergic)
+
+No explicit stages at all. Each position is an AGENT in a market.
+Agents have: state (features), inventory (what info they have),
+needs (what info they want), budget (remaining compute).
+
+Each step:
+1. All agents POST their needs to the medium (O(n) broadcast)
+2. All agents CHECK the medium for matching supply (O(n) scan)
+3. Matched pairs TRADE information (O(k) per agent)
+4. Each agent UPDATES its state based on received info
+5. Agents with empty needs and full confidence → output
+
+The "stages" EMERGE from agent behavior:
+- Early: agents need everything → lots of trading (= Stage 4)
+- Middle: agents have info, refining → selective trading (= Stage 5)
+- Late: agents are done → outputting (= Stage 7)
+
+**Pros**: Truly decentralized. No explicit stages. Most biologically faithful.
+Elegantly simple at the concept level. Grown sparsity is natural.
+**Cons**: Hard to train (reward signal is sparse). May not converge.
+Market dynamics can oscillate. Very novel = very risky.
+
+### Architecture E: "The Hybrid Wave" (Best of A + C)
+
+Fixed stage ORDER but soft stage MIXING within each step.
+Each step runs stages 3→4→5 in order, but the INTENSITY of each
+stage operation is modulated by the position's stage distribution.
+
+```
+for each step:
+    h = σ[3] * F_3(h) + (1-σ[3]) * h  # Soft local construction
+    h = σ[4] * F_4(h) + (1-σ[4]) * h  # Soft routing
+    h = σ[5] * F_5(h) + (1-σ[5]) * h  # Soft memory write
+```
+
+Positions that are "past" Stage 3 have σ[3] ≈ 0 (skip it).
+Positions that need more routing have σ[4] ≈ 1 (full routing).
+
+**Pros**: GPU-friendly (fixed order, batched). Soft modulation gives
+expressiveness. No collapse risk (bounded by stage order).
+Compatible with standard training.
+**Cons**: Less flexible than A (fixed order). Stage mixing is simple.
+The intensity modulation might not capture complex dependencies.
+
+### COMPARISON TABLE
+
+| Architecture | GPU-Friendly | Expressiveness | Novelty | Risk | Trainability |
+|-------------|-------------|---------------|---------|------|-------------|
+| A: Wavefront | LOW | HIGHEST | HIGH | HIGH | UNKNOWN |
+| B: Pipeline | HIGH | MEDIUM | MEDIUM | MEDIUM | GOOD |
+| C: Wave Pool | HIGHEST | LOW | LOW | LOW | BEST |
+| D: Market | LOW | HIGH | HIGHEST | HIGHEST | UNKNOWN |
+| E: Hybrid Wave | HIGH | MEDIUM-HIGH | MEDIUM | LOW | GOOD |
+
+### RECOMMENDATION
+
+**Start with E (Hybrid Wave).** It's GPU-friendly, trainable, and captures
+the stage-superposition vision in a practical form. The intensity modulation
+gives per-position adaptive processing without the batching nightmare.
+
+**If E works**: graduate to A (full Wavefront) for maximum expressiveness.
+**If E fails**: fall back to C (Wave Pool) which is just per-stage PonderNet.
+**D (Market)** is the long-term moonshot — save for when the basic idea is proven.
+
 ### Key Unknowns
 
 1. Can the stage distribution be LEARNED stably with gradient descent?
