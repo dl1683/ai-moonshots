@@ -1,0 +1,1 @@
+{"finding":"broken_power_law","local_regime":{"range":"d<10","alpha":0.943,"description":"fast decay, within-word structure"},"global_regime":{"range":"d>10","alpha":0.263,"description":"slow decay, persistent semantic tail"},"architecture_match":"GRU(local alpha=0.94) + message_passing(transition) + sparse_retrieval(global alpha=0.26)"}
