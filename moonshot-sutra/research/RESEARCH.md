@@ -840,6 +840,185 @@ like how the brain develops specialized areas (Broca's area for language, etc.).
 
 **Deferred to post-MVP.** Need working model first.
 
+---
+
+## SCALING PLAYBOOK (Execute when 10M validates)
+
+### Phase 1: 10M → 100M (immediate, ~12 hours GPU)
+- Code: code/sutra_100m.py (READY)
+- Data: MiniPile 5.6GB (DOWNLOADED)
+- Architecture: dim=512, patch=4, 6 rounds, k=16
+- Expected: competitive BPB with transformer at matched params
+- Gate: Sutra BPB within 1.2x of transformer → proceed to Phase 2
+
+### Phase 2: 100M → 500M (1-2 days GPU)
+- Scale dim=768, 8 rounds, k=32
+- Add PonderNet min_rounds=2 fix
+- Train on full MiniPile + TinyStories + local corpus
+- Evaluate on our 500-question eval + standard benchmarks via lm-eval
+- Gate: competitive with Gemma-3-1B or SmolLM-1.7B → Phase 3
+
+### Phase 3: 500M → 4B (target, 3-7 days GPU)
+- Scale dim=2048, 8 rounds, k=32
+- Need more data: download additional HuggingFace corpora
+- Evaluate head-to-head with Qwen3-4B, Phi-4, Gemma-3-4B
+- Add V(D)J primitives if Phase 2 shows routing helps
+- Add PonderNet curriculum (train harder on hard examples)
+- Gate: competitive with Phi-4 on reasoning → SUCCESS
+
+### Data Requirements
+| Scale | Params | Tokens needed | Data size | Status |
+|-------|--------|--------------|-----------|--------|
+| 10M | 6-10M | 100M | 400MB | HAVE (corpus) |
+| 100M | ~100M | 2B | 8GB | HAVE (MiniPile) |
+| 500M | ~500M | 10B | 40GB | NEED (download more) |
+| 4B | ~4B | 40B+ | 160GB+ | NEED (major download) |
+
+---
+
+## Industry Survey: Intuitions, Not Templates (2026-03-19)
+
+### 1. Why XGBoost STILL Beats Deep Learning on Tabular Data
+
+**The finding**: Tree-based models beat neural nets on tabular data because their inductive
+bias MATCHES the data structure. The "Data-Model Structure Matching Hypothesis" proves:
+optimal performance requires the model's algorithmic structure to align with the data's
+generative mechanism.
+
+**Deep intuition for Sutra**: This is EXACTLY our thesis. The reason transformers work well
+for language is because attention partially matches language structure (any-to-any dependency).
+But it overfits the structure — it gives EQUAL capacity to all pairwise connections when most
+are irrelevant. XGBoost wins on tabular data because trees naturally handle heterogeneous
+features, irregular patterns, and uninformative dimensions. Sutra should win on language
+because patches + message passing + sparse retrieval naturally handles hierarchy, locality,
+and sparse long-range dependencies.
+
+**Concept to borrow**: Tree-based models are ROBUST TO UNINFORMATIVE FEATURES. Most positions
+in a text sequence are uninformative for predicting a given target — only a few distant tokens
+actually matter. Sutra's sparse retrieval (k=4-16) naturally ignores uninformative positions,
+like how trees ignore uninformative features. This is a STRUCTURAL advantage.
+
+### 2. Where LLMs Systematically Fail
+
+**The findings** (2025-2026 research):
+- **Compositional reasoning**: 2-hop combining facts fails systematically, worsens with depth
+- **Counting and symbolic ops**: fundamental, even reasoning models fail
+- **Planning beyond ~100 steps**: performance collapses, state memory lost
+- **Root cause**: "Transformer architecture biases induce surface-level pattern-matching
+  over global compositional structure"
+
+**Deep intuition for Sutra**: These failures are all ARCHITECTURAL. Transformers match surface
+patterns, not compositional structure. Our message passing + adaptive depth COULD help:
+- Composition: message passing naturally composes local features into global representations
+- Counting: explicit patch structure gives natural counting units
+- Planning: adaptive depth allocates more compute to planning steps
+- State tracking: sparse retrieval provides content-addressable memory for state
+
+BUT: our Probe C showed state tracking fails at tiny scale for ALL architectures. This is a
+SCALE issue, not architecture. The question: does Sutra SCALE better on these tasks?
+
+### 3. Bayesian Uncertainty → Architecture-Level Calibration
+
+**The finding**: Behavioral calibration lets small models (Qwen3-4B-Instruct) SURPASS frontier
+models on uncertainty quantification. The trick: incentivize the model to ABSTAIN when not
+confident, not just always produce an answer.
+
+**Deep intuition for Sutra**: PonderNet halting IS a form of calibration. When the model halts
+after few rounds, it's "confident" (easy input). When it uses many rounds, it's "uncertain"
+(hard input). The halting distribution IS a confidence signal built into the architecture.
+
+**Concept to borrow**: Train Sutra to ABSTAIN on hard questions (output "I don't know")
+rather than hallucinate. Use the halting depth as a calibration signal:
+- Few rounds → high confidence → generate normally
+- Many rounds → low confidence → express uncertainty or abstain
+This is NATIVE to our architecture. Transformers need post-hoc calibration.
+
+### 4. RAG vs Parametric Memory → Sutra's Scratchpad
+
+**The finding**: The field is converging on HYBRID approaches — "Self-Route" decides when to
+retrieve externally vs use parametric knowledge. Parametric RAG temporarily updates model
+parameters based on retrieved documents.
+
+**Deep intuition for Sutra**: Our sparse retrieval IS an internal RAG mechanism. Each patch
+"retrieves" from other patches via top-k attention. The question: should Sutra also have
+EXTERNAL retrieval (tool use, database lookup)? Yes, but that's a v1.0+ feature.
+
+The deeper insight: knowledge should NOT all be in parameters. Some knowledge is better
+stored as retrievable facts (external), some as learned patterns (parametric). Sutra's
+architecture naturally separates these: message passing = pattern processing, sparse
+retrieval = fact lookup within context.
+
+### 5. Neuro-Symbolic AI → Compositional Reasoning
+
+**The findings**: Neuro-symbolic pipelines improve GSM8K by 15-20% vs pure LLMs. Proof
+generation jumps from 10% to 80% with analogy+verifier. But integration complexity is high,
+symbol grounding errors degrade performance, and it lacks scalability.
+
+**Deep intuition for Sutra**: The neuro-symbolic insight is right (combine pattern matching
+with structured reasoning) but the IMPLEMENTATION is wrong (bolting symbolic systems onto
+neural networks). Sutra's approach is better: build the structured reasoning INTO the
+neural architecture. Message passing IS structured message exchange. Sparse retrieval IS
+symbol lookup. Adaptive depth IS iterative reasoning. We get the benefits of neuro-symbolic
+without the integration nightmare.
+
+**Concept to borrow**: The VERIFIER pattern. In neuro-symbolic, a symbolic verifier checks
+neural outputs for logical consistency. For Sutra: use the message passing as an implicit
+verifier — each round CHECKS the previous round's output against the global context.
+This is already what cross-scale predictive coding does (deferred from MVP).
+
+### 6. Ensemble Methods → Sutra's Multi-Round Consensus
+
+**The finding**: Ensemble methods (stacking XGBoost + LightGBM + CatBoost) boost accuracy
+by 15% over single models. Different models have different biases; combining them cancels out
+individual weaknesses.
+
+**Deep intuition for Sutra**: Each round of message passing sees the data DIFFERENTLY (because
+the medium state has changed). Multiple rounds = implicit ensemble, where each round's
+"model" (same weights, different context) contributes a different perspective. This is why
+our patch sweep showed more rounds = better: it's not just more processing, it's more
+DIVERSE processing of the same data.
+
+**Concept to borrow**: Could we explicitly encourage DIVERSITY across message passing rounds?
+E.g., add dropout or noise to the medium between rounds, so each round gets a slightly
+different "view." This is essentially "Monte Carlo message passing" — multiple stochastic
+passes averaged for the final prediction. Like how deep ensembles work but within a single model.
+
+### Summary of Borrowed Concepts
+
+| Old-School Technique | Concept Borrowed | Application in Sutra |
+|---------------------|-----------------|---------------------|
+| XGBoost/Trees | Structure matching, ignore uninformative features | Sparse retrieval ignores irrelevant positions |
+| Bayesian uncertainty | Native calibration from architecture | PonderNet halting depth = confidence signal |
+| RAG / external memory | Separate pattern processing from fact lookup | Message passing = patterns, retrieval = facts |
+| Neuro-symbolic | Implicit verification through structure | Message passing rounds as implicit verifier |
+| Ensemble methods | Diversity across multiple views | Multi-round message passing = implicit ensemble |
+| Kernel methods (SVM) | Implicit high-dimensional feature space | Sparse retrieval = learned kernel for similarity |
+
+### Deep Original Insights (Not in Papers)
+
+**Boosting applied to processing depth**: Each message passing round focuses on what PREVIOUS
+rounds got wrong. Round 1: easy local patterns. Round 2: fix Round 1's errors. Round 3: residual.
+Implementation: feed the prediction error from round N as input to round N+1.
+This IS predictive coding but derived from boosting — makes it concrete and implementable.
+
+**Episodic memory via activation caching**: During training, cache the medium states for each
+input. During inference, retrieve similar cached states via sparse retrieval. This is neural KNN
+— the model retrieves its own past computations for similar inputs. Connects to neuroscience
+episodic memory (specific experiences) vs semantic memory (generalized knowledge in weights).
+Could dramatically improve few-shot learning without increasing parameters.
+
+**Bias-variance for architecture design**: Sutra's strong local+sparse bias matches MOST of
+language (why it wins on structured tasks). But the ~20% that needs global reasoning causes
+the sequential reasoning loss. The architecture needs enough flexibility for this 20% without
+losing the efficiency of the 80% bias. k=16-32 sparse retrieval may suffice. Or a small
+attention layer every N rounds. Data will tell.
+
+**The "uninformative feature" insight from trees**: In tabular data, most features are
+uninformative for any given prediction. Trees naturally ignore them. In language, most tokens
+are uninformative for predicting any given target token. Sparse retrieval (k=4-32) naturally
+ignores them. This is WHY sparse attention works — it's not a "degraded" version of full
+attention, it's APPROPRIATE attention that filters noise.
+
 ### Training Optimization: PonderNet-Driven Curriculum (v0.4+)
 
 Phi-4 insight: data QUALITY matters more than quantity for small models.
