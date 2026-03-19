@@ -1,1 +1,23 @@
-{"experiment":"mi_universality","mixed":{"d5_pct":33.1,"d50_pct":5.8},"stories":{"d5_pct":11.3,"d50_pct":2.3},"code":{"d5_pct":31.4,"d50_pct":8.6},"finding":"NOT universal — stories more local, code more global. Validates theorem prediction: optimal config should vary by domain."}
+{
+  "mixed": {
+    "d5_pct": 33.1,
+    "d10_pct": 18.1,
+    "d50_pct": 5.8,
+    "d100_pct": 4.3,
+    "alpha": 0.757
+  },
+  "stories": {
+    "d5_pct": 11.3,
+    "d10_pct": 4.3,
+    "d50_pct": 2.3,
+    "d100_pct": 2.3,
+    "alpha": 0.689
+  },
+  "code": {
+    "d5_pct": 31.4,
+    "d10_pct": 19.3,
+    "d50_pct": 8.6,
+    "d100_pct": 7.0,
+    "alpha": 0.565
+  }
+}
