@@ -623,6 +623,20 @@ Insufficient for: specific binding (pronoun resolution, variable tracking).
 
 Probe C will tell us if specific binding requires attention or can be done otherwise.
 
+### Prototype Results Summary (CPU experiments, 2026-03-19)
+
+| Prototype | Result | Signal |
+|-----------|--------|--------|
+| Phase sync | Phases self-organize (diff=1.18, >>0.5) | POSITIVE |
+| V(D)J routing | Routes specialize strongly (KL=11.95) | POSITIVE |
+| Phase+V(D)J combined | Routes specialize by token, perf ≈ baseline on random data | NEUTRAL |
+| Gumbel segmenter | Differentiable, gradients flow | POSITIVE (but deprioritized) |
+
+**Pattern**: Mechanisms WORK (routes specialize, phases organize) but don't show
+performance gains on trivial data. Need structured data where routing MATTERS.
+This is expected — you don't need content-dependent processing for random digits.
+The real test is on language with genuine structure (the v0.2-MVP test).
+
 ### Updated Probe Priority
 
 Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
