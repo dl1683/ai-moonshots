@@ -695,6 +695,41 @@ with enough training. The question is whether recurrence EVER catches up. Need l
 **Action**: Run MQAR with 500 epochs and compare. If transformer solves it and GRU doesn't
 even after 500 epochs, attention IS fundamentally required for retrieval.
 
+### Deep Insight: Why Biology Achieves Few-Shot Learning (2026-03-19)
+
+The immune system does few-shot learning because the THREAT SPACE HAS STRUCTURE it has
+pre-computed. Proteins fold from 20 amino acids, lipid membranes have limited configs,
+metabolic pathways are constrained. V(D)J recombination generates a library biased toward
+thermodynamically likely protein surface shapes. It doesn't need infinite diversity —
+just enough to cover the CONSTRAINED space of realistic threats.
+
+**Direct parallel to language/reasoning:**
+Language is also constrained. There are only so many:
+- Ways to express causal relationships
+- Argument structures (premise→conclusion, claim→evidence)
+- Syntactic patterns (SVO, embedded clauses, coordination)
+- Reasoning chains (deduction, induction, analogy, abduction)
+
+Current LLMs brute-force by memorizing billions of examples. But the CONSTRAINT SPACE of
+reasoning may have far fewer dimensions. If we identified ~100 fundamental "reasoning
+primitives" (like V/D/J segments), a model composing them combinatorially could handle
+novel reasoning with FAR fewer parameters.
+
+**Category theory connection**: If reasoning has a finite set of morphisms and any chain
+is a composition of morphisms, the model only needs to learn morphisms, not all compositions.
+The number of morphisms is small. The number of compositions is exponentially large.
+This IS the compression thesis: learn the GENERATORS, not the generated space.
+
+**Testable prediction**: A model with 100 compositional reasoning primitives should generalize
+to novel reasoning tasks that brute-force models of equal size cannot solve. This is
+essentially what ProgramSynthesis / DreamCoder tried with program induction.
+
+**For Sutra**: Maybe the architecture should have TWO parts:
+1. A LIBRARY of learned primitives (small, fixed after pre-training)
+2. A COMPOSER that assembles primitives into reasoning chains (this is what scales)
+The library is like V/D/J segments. The composer is like the recombination machinery.
+Training = learning the primitives. Inference = composing them.
+
 ### Paper Deep Dives: MEGABYTE + PonderNet (2026-03-19)
 
 **MEGABYTE design parameters for Sutra:**
