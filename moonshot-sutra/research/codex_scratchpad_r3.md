@@ -1,0 +1,10 @@
+Based on the fungal section in [SCRATCHPAD.md](/C:/Users/devan/OneDrive/Desktop/Projects/AI%20Moonshots/moonshot-sutra/research/SCRATCHPAD.md#L199):
+
+**Concept A**
+This is mostly “shared leaky hidden state across examples.” If the medium persists globally, it is less clean than an RNN state because it mixes unrelated samples and makes behavior batch-order dependent. Gradient-wise, EMA gives exponential decay across inputs, so either gradients vanish as `alpha^k`, or you detach and it stops being learned memory and becomes a running statistic. Closest precedents already exist: recurrent latent state, fast weights, temporal graph memories, persistent global states in graph/recurrent systems. The “persistent message-passing medium” angle is a presentation difference, not a sharp algorithmic break. Generalization risk is high: it can act like train-order leakage or domain priming. It helps only if deployment has real local stationarity and you explicitly want online adaptation.
+
+**Concept D**
+As written, D is A plus better framing. “Fast hidden state + medium trace + slow weights” is old territory: fast weights, Hebbian traces, multi-timescale RNNs, adaptive memories, state-space views. A plain EMA buffer is basically a cache of recent activations with no selective write/read, so it will mostly encode recent topic mix, not useful latent state. Simplest test: alternate two synthetic regimes with conflicting rules, compare reset vs EMA vs gated EMA, then shuffle eval order. If the gain disappears under shuffle, it was cheap priming, not real memory. For state tracking: probably not the missing piece. Probe C likely needs precise within-sequence write/read and compositional updates; a blurry cross-input average is the wrong mechanism.
+
+**Best Bet**
+`B: grown sparsity` has the best chance of being both novel and useful. It changes routing structure, compute allocation, and inductive bias in a measurable way. `C` is more novel but much harder to make work. `A` and `D` are easy to test but weak on novelty and very vulnerable to spurious gains.

@@ -332,3 +332,35 @@ These concepts range from immediately testable to deeply speculative:
 
 **For Codex Round 3**: Challenge A and D — these are testable and could be added to
 the v0.3 architecture with minimal changes.
+
+### Codex Round 3 Verdict
+
+A (persistent medium): "shared leaky hidden state" — not novel, gradient vanishes, batch-order
+dependent. PARKED.
+
+D (multi-timescale): "A plus better framing" — fast weights exist, EMA buffer is blurry priming.
+PARKED.
+
+**SURPRISE: B (grown sparsity) is the BEST BET.** Changes routing, compute, and inductive bias
+in measurable way. More novel than A/D, more practical than C/E.
+
+**Grown sparsity = routing table evolves like fungal tubes:**
+- Connections that carry useful info → thicken (higher retrieval priority)
+- Connections that carry garbage → atrophy (pruned from routing table)
+- Over training, the sparse pattern GROWS to reflect true text dependency structure
+- At inference: near-free retrieval (just look up the routing table)
+- The routing pattern IS the model's learned understanding of language structure
+
+This connects to: geometry AS information (fungi), attention pattern AS representation
+(the connections are more important than the nodes), and structure matching (the
+grown routing pattern mirrors the data's dependency structure).
+
+**Implementation sketch**:
+- Maintain a soft routing matrix R of size (max_patches × max_patches)
+- Each forward pass: R[i,j] += alpha * (was patch j useful when patch i retrieved it?)
+- R[i,j] *= decay (tubes atrophy without reinforcement)
+- Sparse retrieval uses top-k from R[i,:] instead of computing scores from scratch
+- R is a LEARNED persistent structure, not a temporary computation
+
+**Status**: Queue for Experiment C (after A and B from Round 2). Need to design
+"was retrieval useful?" signal first — this is the key design challenge.
