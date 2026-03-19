@@ -1826,3 +1826,52 @@ Dual update: h_dual ← constraints(h_primal, h_primal_neighbors)
 This doubles the state size (like Kalman mean+variance)
 but the dual explicitly represents WHAT'S MISSING — exactly
 the information that routing (Stage 4) needs.
+
+---
+
+## CONVERGENCE MAP: Where Do All 13 Explorations Point?
+
+### Three Distinct Clusters Emerged
+
+**Cluster A: Structured Processing (The Core)**
+#2 (recursive compression), #7 (belief propagation), #10 (structure over search),
+#13 (primal-dual)
+→ ALL point to: process through STRUCTURE, not through brute-force search.
+→ The computation should BUILD and REFINE a structure (factor graph, hierarchy,
+   routing table) rather than search through all possibilities.
+
+**Cluster B: Adaptive Compute (The Mechanism)**
+#5 (world simulator), #6 (energy functions), #12 (thermodynamics)
+→ ALL point to: the amount of processing should ADAPT to difficulty.
+→ Convergence, energy minimization, and temperature all provide natural
+   adaptive compute without explicit halting mechanisms.
+
+**Cluster C: Richer Representations (The Foundation)**
+#1 (code-like), #3 (differentiable DB), #8 (music counterpoint), #9 (topology)
+→ ALL point to: the REPRESENTATION should carry more structure than a flat vector.
+→ Types, relations, beliefs, streams — some form of structured state.
+
+**Killed:**
+#4 (position-free): language needs order. Dead.
+#11 (training objectives): useful engineering, not core architecture.
+
+### The Unified Architecture (All Three Clusters)
+
+IF we combine the best from each cluster:
+- FROM A: multi-scale hierarchy where structure IS understanding
+- FROM B: convergence-driven adaptive compute (Kalman variance or BP residual)
+- FROM C: state carries (mean, uncertainty) not just flat vector
+
+This IS the Kalman Machine (Combo 2) or hybrid MSBP, depending on framing.
+
+### The Honest Assessment
+
+After 13 explorations and extensive Codex debate:
+- Novelty: MODERATE. No single mechanism is brand-new.
+- Combination novelty: HIGH. This specific integration hasn't been done.
+- Chance of beating transformers: LOW-MEDIUM (Codex consistently rates 4-5/10).
+- The VALUE is in the FRAMEWORK, not any single mechanism.
+
+The real question is whether structured-processing architectures can
+match brute-force-search architectures (transformers) on quality.
+That's an EMPIRICAL question. Theory can't answer it. Experiments can.
