@@ -119,32 +119,66 @@ class SparseRetrieval(nn.Module):
         self.v_proj = nn.Linear(dim, dim)
         self.out_proj = nn.Linear(dim, dim)
 
-    def forward(self, summaries):
-        """summaries: (B, N, dim) -> (B, N, dim) with sparse retrieval."""
+    def forward(self, summaries, efficient=False):
+        """summaries: (B, N, dim) -> (B, N, dim) with sparse retrieval.
+
+        efficient=False: exact top-k via full N×N scores (fine for N<1000)
+        efficient=True: approximate O(N*k) via sliding window + random global
+        """
         B, N, D = summaries.shape
         q = self.q_proj(summaries)  # (B, N, D)
         k = self.k_proj(summaries)  # (B, N, D)
         v = self.v_proj(summaries)  # (B, N, D)
 
-        # Compute all pairwise scores (this is O(N^2) but N = seq/8 is small)
-        # For production, would use approximate top-k (LSH, etc.)
-        scores = torch.bmm(q, k.transpose(1, 2)) / math.sqrt(D)  # (B, N, N)
+        if not efficient or N <= self.k * 4:
+            # Exact: compute full N×N scores, then top-k (O(N²) but fine for small N)
+            scores = torch.bmm(q, k.transpose(1, 2)) / math.sqrt(D)
+            causal = torch.triu(torch.ones(N, N, device=summaries.device) * float("-inf"), diagonal=1)
+            scores = scores + causal
 
-        # Causal masking: can only attend to past patches
-        causal = torch.triu(torch.ones(N, N, device=summaries.device) * float("-inf"), diagonal=1)
-        scores = scores + causal
+            if N > self.k:
+                topk_vals, topk_idx = scores.topk(self.k, dim=-1)
+                sparse_scores = torch.full_like(scores, float("-inf"))
+                sparse_scores.scatter_(2, topk_idx, topk_vals)
+                attn = F.softmax(sparse_scores, dim=-1)
+            else:
+                attn = F.softmax(scores, dim=-1)
 
-        # Top-k selection per query
-        if N > self.k:
-            topk_vals, topk_idx = scores.topk(self.k, dim=-1)  # (B, N, k)
-            # Create sparse attention mask
-            sparse_scores = torch.full_like(scores, float("-inf"))
-            sparse_scores.scatter_(2, topk_idx, topk_vals)
-            attn = F.softmax(sparse_scores, dim=-1)
+            retrieved = torch.bmm(attn, v)
         else:
-            attn = F.softmax(scores, dim=-1)
+            # Efficient O(N*k): sliding window (k//2 local) + random global (k//2)
+            # True O(N*k) — no full N×N computation
+            k_local = self.k // 2
+            k_global = self.k - k_local
+            retrieved = torch.zeros_like(summaries)
 
-        retrieved = torch.bmm(attn, v)  # (B, N, D)
+            for i in range(N):
+                # Local candidates: k_local nearest causal neighbors
+                local_start = max(0, i - k_local)
+                local_idx = list(range(local_start, i))
+
+                # Global candidates: k_global random causal positions
+                if i > k_local:
+                    global_pool = list(range(0, local_start))
+                    global_idx = random.sample(global_pool, min(k_global, len(global_pool)))
+                else:
+                    global_idx = []
+
+                # Combine candidates
+                cand_idx = local_idx + global_idx
+                if not cand_idx:
+                    continue
+
+                cand_idx_t = torch.tensor(cand_idx, device=summaries.device)
+                cand_k = k[:, cand_idx_t, :]  # (B, n_cand, D)
+                cand_v = v[:, cand_idx_t, :]
+
+                # Score only against candidates (O(k) per query, not O(N))
+                q_i = q[:, i:i+1, :]  # (B, 1, D)
+                cand_scores = torch.bmm(q_i, cand_k.transpose(1, 2)) / math.sqrt(D)  # (B, 1, n_cand)
+                cand_attn = F.softmax(cand_scores, dim=-1)
+                retrieved[:, i:i+1, :] = torch.bmm(cand_attn, cand_v)
+
         return self.out_proj(retrieved)
 
 
