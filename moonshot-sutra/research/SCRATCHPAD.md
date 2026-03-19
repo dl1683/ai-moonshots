@@ -170,3 +170,26 @@ Run after 10M test completes.
 **Interesting**: Where does each variant fail? Which task type needs which mechanism?
 
 **Estimated compute**: 5 variants × ~30 min each = ~2.5 hours GPU.
+
+---
+
+## Codex Round 2 Feedback (Integrated)
+
+**Execution order**: A first (find right k), then B (with chosen k).
+
+**Experiment A fixes**:
+- Fixed k ONLY first. Adaptive-k is a separate follow-up.
+- Match FLOPs not just epochs (k=N does more compute per step)
+- Add tasks: MQAR difficulty sweep, passkey/needle, selective copy
+- Add: 3 seeds, random-retrieval control, retrieved-distance histograms
+- 2M pilot → rerun top 2-3 k values on 10M+ if differences are small
+
+**Experiment B fixes**:
+- Add variant: periodic global refresh (non-content-addressable) — tests if
+  SPARSITY specifically matters or just "any global signal"
+- Match params TWO ways: strict (shrink width) AND matched FLOPs
+- Add tasks: passkey/needle, bracket matching, state tracking
+- 3 seeds, 2 scales minimum for publishable
+- Target claim: "sparse k=X recovers Y% of dense attention at Z% compute"
+
+**STATUS**: Designs finalized. Run A pilot immediately after 10M completes.
