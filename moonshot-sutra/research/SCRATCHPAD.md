@@ -474,3 +474,20 @@ BUT: matched-param test (112K vs 100K) still showed 34% Sutra win → architectu
 
 **Fix**: Sutra dim=608 ≈ 6.2M params matches transformer. Run matched-param at 10M scale.
 Current test still valuable: if 1.2M Sutra ≈ 6.5M transformer, that's 5.5x efficiency.
+
+---
+
+## Quick Ideas (Not Full Concepts, Just Notes)
+
+**Patch size controls TWO things simultaneously:**
+1. Number of message passing opportunities (more patches = more rounds of info exchange)
+2. Bottleneck width (more patches = more summaries = wider bottleneck = less compression)
+
+These are CONFOUNDED. Patch=4 beating patch=16 could be either or both.
+Disentangle with: same patch size, vary summary dimension. If larger summary
+helps → bottleneck matters. If not → it's the rounds.
+
+**Regularization IS compression**: L1/L2/dropout force simpler representations.
+Sutra's patch structure provides STRUCTURAL regularization — info must flow through
+summary bottleneck. This is why smaller Sutra (1.2M) beats larger transformer (6.5M)
+on small data — the bottleneck prevents overfitting naturally.
