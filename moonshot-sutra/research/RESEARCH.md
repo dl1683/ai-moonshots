@@ -277,6 +277,20 @@ This is NOT a transformer. NOT an SSM. NOT a neural network in the traditional s
 
 **This needs probing IMMEDIATELY.** Can a system of locally-interacting agents learn to model text at all? This is the foundational question before any optimization.
 
+---
+
+## Probe Results (as they come in)
+
+### Probe E: Tokenization Analysis — COMPLETED
+
+**Result**: Whitespace tokenization (BPB=1.48) beats BPE (1.65), morpheme (1.58), and all character/byte methods (4.27). Compression range 2.88x across methods.
+
+**Key insight**: Natural word boundaries are already excellent compression units for this corpus. BPE's learned merges don't add much over word-level splitting. Entropy-optimal greedy character-level segmentation FAILS (4.27 BPB, same as raw bytes) — because it can't capture word-level structure from character-level decisions.
+
+**Implication for Sutra**: Word/phrase-level computation is more efficient than subword. H5 (concept-level) has directional support — but the real test is model quality, not just tokenizer compression. A model that processes WORDS rather than subword tokens could be inherently more efficient.
+
+**Caveat**: This is a synthetic corpus with limited vocabulary. Real English with rare words, names, code, etc. would shift the balance toward BPE/subword for handling OOV.
+
 ### Updated Probe Priority
 
 Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
