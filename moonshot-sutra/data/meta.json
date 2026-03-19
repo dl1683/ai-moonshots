@@ -1,0 +1,14 @@
+{
+  "total_examples": 25000,
+  "train_examples": 22500,
+  "test_examples": 2500,
+  "train_chars": 2139047,
+  "test_chars": 234575,
+  "categories": {
+    "arithmetic_chains": 5000,
+    "logic_chains": 5000,
+    "hierarchical_descriptions": 5000,
+    "compositional_sentences": 5000,
+    "pattern_sequences": 5000
+  }
+}
