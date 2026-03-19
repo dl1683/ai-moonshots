@@ -724,6 +724,25 @@ This IS the compression thesis: learn the GENERATORS, not the generated space.
 to novel reasoning tasks that brute-force models of equal size cannot solve. This is
 essentially what ProgramSynthesis / DreamCoder tried with program induction.
 
+### Codex v0.3 Quick Review: 4/10, drop primitive library from MVP
+
+Codex: "Drop the primitive library from the MVP. Keep one shared patch processor +
+adaptive message passing + sparse retrieval. That removes a major source of coupling
+and makes the core claim falsifiable."
+
+Primitive discovery probe CONFIRMS: library overhead not justified on simple tasks (0.5701 vs 0.5624 with 4x fewer params). Save library for v0.4 after core works.
+
+### FINAL v0.3-MVP (the thing we actually build):
+1. Byte input -> 8-byte patches (MEGABYTE validated)
+2. Shared-weight MLP per patch (local processing)
+3. Local message passing between patches (O(n))
+4. Sparse top-k attention to k=4 distant patches (content-addressable retrieval)
+5. PonderNet adaptive depth on message passing (1-8 rounds, geometric halting)
+6. Standard CE + KL halting loss
+
+THREE mechanisms: message passing + sparse retrieval + adaptive depth. Clean. Falsifiable.
+Test against transformer baseline at matched params on real corpus + MQAR.
+
 **For Sutra**: Maybe the architecture should have TWO parts:
 1. A LIBRARY of learned primitives (small, fixed after pre-training)
 2. A COMPOSER that assembles primitives into reasoning chains (this is what scales)
