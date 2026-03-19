@@ -1,0 +1,1 @@
+{"theorem":"MI_power_law","fit":"I(d) = 0.637 * d^(-0.547)","alpha":0.547,"R2":0.900,"d0_75pct":5,"predicted_k":5,"conclusion":"Power law with alpha=0.55 validates 75/25 local/global split and k=4-8 retrieval"}
