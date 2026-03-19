@@ -681,6 +681,103 @@ If training crashes or is impractically slow:
 4. What's the minimum training compute to be competitive with Pythia-410M?
 5. How do we handle the "less data" narrative honestly? (Our 1.6B tokens vs 300B)
 
+---
+
+## SYSTEMATIC AI PIPELINE BREAKDOWN
+
+Every model, from GPT-4 to a 100K param toy, goes through the SAME abstract stages.
+Improving ANY stage improves the whole. Understanding each stage lets us target
+the weakest link instead of randomly trying things.
+
+### Stage 1: INPUT REPRESENTATION
+**What it does**: Convert raw text into numbers the model can process.
+**Current approaches**: BPE (GPT/Llama), SentencePiece (T5), byte-level (ByT5/MEGABYTE)
+**Sutra v0.4**: Raw bytes (vocab=256)
+**What works**: BPE balances vocab size vs sequence length well
+**What fails**: Fixed tokenization loses information at boundaries ("New" + "York")
+**Theoretical best**: Learned, adaptive tokenization (model decides its own chunking)
+**Our opportunity**: Token-level branch with BPE, OR keep bytes with our patch structure
+  as a LEARNED tokenizer that groups bytes into concepts
+
+### Stage 2: INITIAL ENCODING
+**What it does**: Map input IDs to rich feature vectors (embeddings + position)
+**Current approaches**: Learned embeddings + RoPE/ALiBi/sinusoidal position encoding
+**Sutra v0.4**: Learned byte embeddings + patch-level GRU
+**What works**: RoPE (rotation) gives good length generalization
+**What fails**: Absolute position embeddings don't generalize to new lengths
+**Our opportunity**: The GRU within patches gives us RELATIVE position encoding for
+  free — GRU state naturally tracks position within each patch. For between-patch
+  position, we could add RoPE to the message passing.
+
+### Stage 3: LOCAL FEATURE EXTRACTION
+**What it does**: Build features from nearby tokens (n-gram patterns, local syntax)
+**Current approaches**: First few attention layers, convolutions, local attention
+**Sutra v0.4**: GRU within patches (processes 4 bytes sequentially)
+**What works**: Convolutions are fast and effective for local patterns
+**What fails**: Fixed receptive field can't adapt to content
+**Our opportunity**: GRU gives adaptive local processing. Could ADD convolutions
+  (Canon layers: +1-2% factuality) as a cheap complement.
+
+### Stage 4: CONTEXT INTEGRATION
+**What it does**: Combine information across positions (the "understanding" step)
+**Current approaches**: Self-attention (O(n^2)), SSMs (O(n)), linear attention
+**Sutra v0.4**: Message passing between patches (O(n) with window)
+**What works**: Full attention for complex reasoning, SSMs for efficiency
+**What fails**: Attention is too expensive for long contexts, SSMs lose info
+**Our opportunity**: Message passing IS attention-lite with structural bias.
+  The two-regime MI finding says ~75% of info is local (message passing handles)
+  and ~25% is sparse long-range (Stage 5 handles).
+  KEY QUESTION: is our message passing doing enough? Or do we need some
+  attention here too (hybrid like Jamba's 1:7 ratio)?
+
+### Stage 5: LONG-RANGE RETRIEVAL
+**What it does**: Find and use information from distant context
+**Current approaches**: Full attention, sparse attention, KV-cache, RAG
+**Sutra v0.4**: Sparse top-k retrieval (k=16, content-addressable)
+**What works**: Full attention for exact retrieval, RAG for external knowledge
+**What fails**: Full attention too expensive, RAG adds latency
+**Our opportunity**: Sparse retrieval IS the right mechanism per MI analysis.
+  GROWN SPARSITY could make it even better (routing table evolves).
+  Could also add 8-16 GLOBAL MEMORY TOKENS as scratchpad (Codex recommended).
+
+### Stage 6: DEPTH / REASONING
+**What it does**: Iterative refinement for complex reasoning
+**Current approaches**: More transformer layers, chain-of-thought, test-time compute
+**Sutra v0.4**: PonderNet adaptive halting (1-8 message passing rounds)
+**What works**: More layers = more reasoning depth. CoT = explicit reasoning steps.
+**What fails**: Fixed depth wastes compute on easy inputs.
+**Our opportunity**: PonderNet gives ADAPTIVE depth (per-input). But it collapsed
+  in Probe B. min_rounds=2 fix helps. Could also explore: different KINDS of
+  processing per round (first rounds = syntax, later = semantics, like compilers).
+
+### Stage 7: OUTPUT GENERATION
+**What it does**: Convert internal representations to text output
+**Current approaches**: Linear head + softmax (autoregressive), diffusion, energy-based
+**Sutra v0.4**: Linear head + standard autoregressive sampling
+**What works**: AR generation is simple and effective
+**What fails**: Left-to-right commit prevents look-ahead planning
+**Our opportunity**: For now, standard AR is fine. Later: could add verifier/reranker
+  (generate multiple, score, pick best) for better reasoning quality.
+
+### WHERE IS SUTRA WEAKEST?
+
+Looking at this breakdown, Stage 4 (Context Integration) is the riskiest.
+Our message passing with window=4 means each round propagates info by 4 positions.
+With 6 rounds: effective receptive field = 4^6... no wait, it's additive not
+multiplicative. 6 rounds × window 4 = reach of ~24 patches = ~96 bytes.
+For 512 byte sequences, that's only 19% of the sequence per round of local msg.
+
+The sparse retrieval (Stage 5) compensates, but k=16 out of 128 patches is
+only 12.5% of positions. Combined: ~19% local + ~12.5% retrieval = ~30% of
+positions are reachable per forward pass.
+
+A transformer reaches 100% of positions. We reach ~30%. Is 30% enough?
+The MI analysis says 75% local + 25% sparse ≈ we should reach ~100% of the
+information. But the IMPLEMENTATION reaches fewer POSITIONS than ideal.
+
+**Fix**: Increase window to 8-16 (doubles local reach) OR add a single
+global attention layer every N rounds (like Jamba's hybrid approach).
+
 ### Evolutionary Routing Search
 Hybrid training: gradient descent for model, evolution for routing patterns.
 Routing table mutations tested each generation, best kept. Escapes local optima.

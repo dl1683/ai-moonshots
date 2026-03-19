@@ -121,9 +121,22 @@ def main():
 
     opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=0.01, betas=(0.9, 0.95))
 
+    # Resume from checkpoint if available
+    checkpoint_dir = REPO / "results" / "checkpoints"
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    start_step = 0
+
+    latest_ckpt = sorted(checkpoint_dir.glob("step_*.pt"), key=lambda p: int(p.stem.split("_")[1]))
+    if latest_ckpt:
+        ckpt = torch.load(latest_ckpt[-1], weights_only=False, map_location=DEVICE)
+        model.load_state_dict(ckpt["model"])
+        opt.load_state_dict(ckpt["optimizer"])
+        start_step = ckpt["step"]
+        print(f"RESUMED from step {start_step} ({latest_ckpt[-1].name})")
+
     # Training loop
     model.train()
-    step = 0
+    step = start_step
     total_loss = 0
     start = time.time()
     best_bpb = float("inf")
@@ -181,7 +194,15 @@ def main():
                 model.train()
 
             if step % SAVE_EVERY == 0:
+                # Full checkpoint for resume (model + optimizer + step)
+                ckpt = {"model": model.state_dict(), "optimizer": opt.state_dict(), "step": step}
+                torch.save(ckpt, checkpoint_dir / f"step_{step}.pt")
+                # Also save just model weights for eval
                 torch.save(model.state_dict(), REPO / "results" / f"sutra_production_step{step}.pt")
+                # Clean old checkpoints (keep last 3)
+                old_ckpts = sorted(checkpoint_dir.glob("step_*.pt"), key=lambda p: int(p.stem.split("_")[1]))
+                for old in old_ckpts[:-3]:
+                    old.unlink()
 
             if step >= MAX_STEPS:
                 break
