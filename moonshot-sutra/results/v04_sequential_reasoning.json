@@ -1,0 +1,1 @@
+{"experiment":"v04_sequential_reasoning","sutra_v04":{"loss":0.1027,"params":91841},"transformer":{"loss":0.2821,"params":220544},"v03_comparison":{"sutra_v03":0.91,"transformer":0.43},"improvement":"v0.3 was 2.1x WORSE, v0.4 is 2.7x BETTER. Complete reversal."}
