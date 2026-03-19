@@ -518,6 +518,12 @@ Each message = structured composition, not black-box transformation.
 NOVEL: nobody has used VSA as message-passing primitive for language modeling.
 Connects to category theory (2025 paper: VSA ops = right Kan extensions).
 
+### GRU Inside Patches — VALIDATED
+GRU patch beats MLP patch by 8.7% on sequential arithmetic (0.367 vs 0.402).
+Adding recurrence WITHIN patches gives sequential processing capability.
+For v0.4: swap MLP patch processor for GRU. Closes sequential reasoning gap
+while keeping message passing + sparse retrieval for inter-patch.
+
 ### Evolutionary Routing Search
 Hybrid training: gradient descent for model, evolution for routing patterns.
 Routing table mutations tested each generation, best kept. Escapes local optima.
