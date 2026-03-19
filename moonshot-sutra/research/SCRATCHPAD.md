@@ -509,6 +509,15 @@ Fourier analysis, Green's functions, renormalization group.
 Connects to CTI universal law (alpha = critical exponent?).
 Diffusion LLMs are a primitive version of this.
 
+### VSA-Based Message Passing (Structured Composition)
+Vector Symbolic Architectures: bind = elementwise multiply, bundle = add, unbind = inverse.
+Can represent ANY compositional structure as a single vector, decomposable.
+What if message passing used VSA operations instead of MLPs?
+Each message = structured composition, not black-box transformation.
+"dog(agent) + chase(action) + cat(patient)" = one decomposable vector.
+NOVEL: nobody has used VSA as message-passing primitive for language modeling.
+Connects to category theory (2025 paper: VSA ops = right Kan extensions).
+
 ### Learned Compression (No Tokenizer)
 Replace tokenization with learned byte-to-concept compression.
 Multi-scale convolutions + importance scoring + adaptive pooling.
