@@ -957,3 +957,40 @@ This gives NATIVE calibration — the model KNOWS what it doesn't know.
 2x state size (mean + variance). 2x memory. ~1.5x compute
 (extra ops for variance update). Worthwhile if it eliminates
 over-smoothing AND gives free calibration AND enables adaptive depth.
+
+---
+
+## DEEP DIVE: Entropy-Gradient Segmentation (Stage 1)
+
+The optimal boundary placement maximizes I(segment; future) - lambda*|segments|.
+Approximation: boundary where model's OWN prediction entropy spikes.
+Connection to superposition: boundaries REFINE during processing (dynamic segments).
+
+## DEEP DIVE: Content-Modulated Addressing (Stage 2)
+
+Multi-level: RoPE(position) + LEARNED_ROLE(content) + CONTEXT_SHIFT(h, global).
+Dynamic addressing: positions shift in semantic space during processing.
+Connects to OT routing: match score = content_match + address_proximity.
+This naturally implements two-regime MI: local favored, content overrides distance.
+
+---
+
+## THE COMPLETE SUTRA NEXT-GEN SYSTEM (All Stages Unified)
+
+Combining all deep dives:
+
+1. **Segmentation**: Entropy-gradient boundaries, soft, end-to-end learned, dynamic
+2. **Addressing**: Multi-level (position + role + context-shift), feeds into routing
+3. **Local Construction**: Multi-grain (conv + GRU), parallel kernel sizes
+4. **Communication**: Optimal transport routing with supply/demand budgets,
+   separate routing dims (d_route << d_model), Sinkhorn solver
+5. **State Update**: Kalman (mean, variance), precision-weighted, anti-over-smoothing
+6. **Compute Control**: IMPLICIT via variance — high variance = keep processing
+7. **Readout/Verify**: Variance-based abstention + decode-verify loop back to Stage 4
+
+Execution: Constrained Stage-Superposition (monotonic advancement, chunk-level batching)
+Architecture E (Hybrid Wave): fixed stage ORDER, soft intensity MODULATION
+
+Novel mechanisms: OT routing (from transport theory), Kalman states (from Bayes),
+entropy segmentation (from info theory), supply/demand (from market theory).
+ALL derived from first principles. NONE copied from existing architectures.
