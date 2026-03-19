@@ -122,7 +122,14 @@ def main():
     results.append(train_and_eval(sutra, train_loader, test_loader, "Sutra-6.2M", use_kl=True))
     del sutra; torch.cuda.empty_cache() if torch.cuda.is_available() else None
 
-    # Sutra SMALL (original dim=256) for comparison = ~1.2M params
+    # Sutra LOCAL-ONLY: message passing, NO retrieval (k=0 equivalent)
+    # Use k=1 with large dim to match params, effectively minimal retrieval
+    print(f"\n{'='*40}\nSutra LOCAL-ONLY (dim=620, k=1)\n{'='*40}")
+    sutra_local = SutraV03(dim=620, patch_size=4, max_rounds=4, k_retrieval=1, max_seq=SEQ_LEN).to(DEVICE)
+    results.append(train_and_eval(sutra_local, train_loader, test_loader, "Sutra-local-only", use_kl=True))
+    del sutra_local; torch.cuda.empty_cache() if torch.cuda.is_available() else None
+
+    # Sutra SMALL (original dim=256) for efficiency comparison = ~1.2M params
     print(f"\n{'='*40}\nSutra SMALL (dim=256) for efficiency comparison\n{'='*40}")
     sutra_s = SutraV03(dim=256, patch_size=4, max_rounds=4, k_retrieval=8, max_seq=SEQ_LEN).to(DEVICE)
     results.append(train_and_eval(sutra_s, train_loader, test_loader, "Sutra-1.2M", use_kl=True))
