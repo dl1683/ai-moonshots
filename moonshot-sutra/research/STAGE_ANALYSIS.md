@@ -994,3 +994,41 @@ Architecture E (Hybrid Wave): fixed stage ORDER, soft intensity MODULATION
 Novel mechanisms: OT routing (from transport theory), Kalman states (from Bayes),
 entropy segmentation (from info theory), supply/demand (from market theory).
 ALL derived from first principles. NONE copied from existing architectures.
+
+---
+
+## CRITICAL DESIGN PRINCIPLE: System Coherence
+
+Every stage's design must consider: does this HELP or HURT the other stages?
+
+### The Coherence Test
+
+For any proposed mechanism at Stage N, ask:
+1. Does Stage N's OUTPUT format match what Stage N+1 NEEDS as input?
+2. Does Stage N PRESERVE information that later stages require?
+3. Does Stage N CREATE signals that other stages can USE?
+4. Do the inductive biases of Stage N ALIGN with those of other stages?
+
+Example of INCOHERENCE (from OT routing test):
+- Stage 3 (chunk pool) averaged features, destroying key-value associations
+- Stage 4 (OT routing) needed key-value associations to route correctly
+- Result: Stage 3's bias (averaging) fought Stage 4's need (specificity)
+
+Example of COHERENCE (from Kalman + compute control):
+- Stage 5 (Kalman) tracks variance as part of state update
+- Stage 6 (compute control) uses variance to decide depth
+- Stage 7 (verify) uses variance to decide abstention
+- Result: ONE signal serves THREE stages. They lift each other.
+
+### Design Rule: Every Stage's Output IS the Next Stage's Input
+
+The representation flowing between stages must be designed HOLISTICALLY:
+- After Stage 3 (local): features should preserve BOTH local patterns AND
+  information needed for routing (keys, queries, content types)
+- After Stage 4 (routing): received info should be tagged with SOURCE
+  identity so Stage 5 can gate appropriately
+- After Stage 5 (write): updated state should include calibrated uncertainty
+  so Stage 6 can allocate compute correctly
+
+This means: design the INTER-STAGE INTERFACE FIRST, then design each stage
+to satisfy that interface. Like designing API contracts before implementations.

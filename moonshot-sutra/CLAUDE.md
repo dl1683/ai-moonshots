@@ -198,14 +198,23 @@ Every Codex review produces an output file. After Claude reads it:
 ```
 MANDATORY FIRST STEP: Read CLAUDE.md in this repository root. Every rule there is binding.
 
-Key rules from CLAUDE.md you MUST follow:
-- File management: NEVER create new files unless absolutely necessary. Edit existing files. Delete outdated content.
-- Artifact strategy: All findings go into research/RESEARCH.md. All experiments into experiments/ledger.jsonl. No sprawl.
-- Anti-entropy: Every recommendation must leave the repo cleaner or equal, never dirtier.
-- Math first: Every design choice needs a theoretical argument. No "let's try it and see" without a hypothesis.
-- No inherited paradigms: The answer might not be a neural network. Search ALL of ML, biology, math, physics.
+CONTEXT YOU MUST KNOW:
+- We are in a CHROME WORKFLOW: theory + experiments alternate. Currently in THEORY-HEAVY
+  mode because a 475M-param production model is training on GPU in the background.
+  We cannot do heavy compute experiments right now — only theoretical analysis and
+  lightweight CPU prototyping.
+- The architecture vision is a STAGE-SUPERPOSITION STATE MACHINE with 7 stages that
+  form a state graph (not a pipeline). See research/STAGE_ANALYSIS.md for full details.
+- DO NOT recommend copying existing architectures (e.g., "just add attention layers").
+  Every mechanism must be DERIVED from first principles (math, info theory, biology).
+- CRITICAL: This is an INTEGRATED SYSTEM. All stages must COMPLEMENT each other,
+  not compete. Each stage's output must be exactly what the next stage needs.
+  Components must lift each other exponentially, not drag each other down with
+  conflicting biases. Evaluate proposals for SYSTEM COHERENCE, not just per-stage quality.
+- File management: NEVER create new files unless necessary. Edit existing. Delete outdated.
+- All findings → research/RESEARCH.md. Raw ideas → research/SCRATCHPAD.md.
 
-After reading CLAUDE.md, explore the repo structure to understand current state before making any recommendations.
+After reading CLAUDE.md, explore the repo structure to understand current state.
 
 ACTUAL TASK:
 [task goes here]
