@@ -589,7 +589,15 @@ Predicts EXACTLY our v0.4 configuration.
 - Per-domain alphas: mixed=0.757, stories=0.689, code=0.565
 - Code has SLOWEST decay = most long-range deps (as predicted)
 
-**Codex reviewing whether this is trivial or publishable.**
+**Codex R4 verdict: 5/10 as written, 7/10 if reframed properly.**
+NOT novel — Li (1989), Ebeling (1994) already measured this.
+Single power law DOESN'T FIT — tail is much heavier (broken power law or stretched exp).
+My prediction direction was WRONG (code shallower, not steeper as I claimed).
+DO NOT CLAIM "theorem predicts v0.4 exactly." That's overclaim.
+
+REFRAME AS: "Text shows local MI core + weak long-range tail. Domain-dependent shape.
+Architectures matching measured dependency geometry perform better at fixed FLOPs."
+This is credible and 7/10 if backed by ablation data.
 
 ### Theoretical Explanation: Why GRU+MsgPass Works
 
