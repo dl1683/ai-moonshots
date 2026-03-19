@@ -291,6 +291,86 @@ This is NOT a transformer. NOT an SSM. NOT a neural network in the traditional s
 
 **Caveat**: This is a synthetic corpus with limited vocabulary. Real English with rare words, names, code, etc. would shift the balance toward BPE/subword for handling OOV.
 
+---
+
+## Deep Theory Session: Rethinking Every Assumption (2026-03-19)
+
+### The Tokenization Problem — What's Actually Wrong?
+
+Every current tokenizer makes the same assumption: segmentation is fixed BEFORE the model sees the data. The model has no say in how input is chunked. This forces the model to waste capacity undoing bad segmentation decisions.
+
+**Insight from neuroscience (predictive coding)**: The brain doesn't process fixed chunks. It processes at the granularity that minimizes prediction error — coarse for predictable, fine for surprising. A truly intelligent tokenizer would be:
+1. Part of the model itself (learned, not predetermined)
+2. Dynamic (different segmentation for different contexts)
+3. Adaptive (resolution proportional to information content)
+
+**Radical direction**: Treat text as a continuous 1D signal, not discrete tokens. Model learns its own "sampling rate" adaptively. Like the cochlea for audio — frequency decomposition, not fixed windows.
+
+### In-Generation Verification — Three Biological Models
+
+**1. Immune System Model (Generate and Test)**: Generate many candidate continuations, select best via internal coherence function. In stigmergic framework: each agent generates a candidate, medium amplifies high-quality ones, suppresses garbage. Natural selection in real-time.
+
+**2. Energy Landscape Model (Roll Downhill)**: Define energy function over complete sequences. Generation = finding minimum energy configuration. Like protein folding — don't assemble left-to-right, explore landscape and settle. Energy function could be SIMPLER than autoregressive model because it evaluates static coherence, not sequential dependence.
+
+**3. Predictive Coding Model (Error-Driven Refinement)**: Hierarchical model predicts top-down, errors propagate bottom-up. High level: "express [concept]." Mid level: "[sentence structure]." Low level: "[specific words]." Verification is BUILT IN — every level checks the one below against the plan.
+
+### Multi-Scale Processing — Why Single-Scale Is Provably Suboptimal
+
+Language has at least 6 scales: character, word, phrase, sentence, paragraph, document. Current models are single-scale (one token at a time). The visual cortex processes V1→V2→V4→IT simultaneously with bidirectional flow. A model that processes ALL scales simultaneously with both up (abstraction) and down (prediction/verification) flow should be fundamentally more efficient.
+
+This is fractal computation: the SAME compression operation at every scale, with cross-scale error signals.
+
+### Draft Architecture Concept: Sutra v0.1
+
+```
+CONTINUOUS INPUT (byte stream)
+    |
+ADAPTIVE SEGMENTER (learned, dynamic granularity — resolution ~ surprise)
+    |
+MULTI-SCALE REPRESENTATION
+    +-- Fine (char/subword)
+    +-- Medium (word/phrase)
+    +-- Coarse (sentence/paragraph)
+    |
+STIGMERGIC PROCESSING (at each scale independently)
+    - Local compression agents (shared weights within scale)
+    - Shared medium for agent communication
+    - No global attention — O(n) not O(n^2)
+    - Multiple message-passing rounds
+    |
+CROSS-SCALE INTERACTION (predictive coding)
+    - Fine -> Coarse (abstraction / error propagation up)
+    - Coarse -> Fine (prediction / verification down)
+    |
+ENERGY-BASED SELECTION (for generation)
+    - Multiple candidate outputs scored by coherence energy
+    - Best candidate selected (immune-system-like)
+    |
+ADAPTIVE DEPTH
+    - Easy: 2-3 processing rounds
+    - Hard: 10-20+ rounds
+    - Halting learned per-input
+    |
+OUTPUT
+```
+
+**Why each component (theoretical justification):**
+- Adaptive segmenter: fixed tokenization wastes capacity (Probe E: word boundaries beat BPE)
+- Multi-scale: language IS multi-scale; single-scale provably suboptimal for hierarchical data
+- Stigmergic: O(n) local interaction matches biological efficiency; global attention unnecessary (Pattern 2)
+- Cross-scale predictive coding: verification built into the architecture (Friston free energy)
+- Energy-based: left-to-right commit provably suboptimal for global coherence
+- Adaptive depth: reasoning difficulty varies by orders of magnitude (Pattern 3)
+
+**STATUS: THEORETICAL DRAFT. Needs Codex review + empirical probes before committing.**
+
+Key uncertainties to resolve:
+1. Can stigmergic processing at any scale match transformer quality? (Probe F tests this)
+2. Does adaptive segmentation actually help or just add complexity?
+3. Can cross-scale interaction be trained stably with gradient descent?
+4. Is energy-based generation practical for text at reasonable speed?
+5. How many parameters does this need to be competitive?
+
 ### Updated Probe Priority
 
 Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
