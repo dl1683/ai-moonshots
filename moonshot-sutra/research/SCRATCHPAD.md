@@ -582,8 +582,14 @@ Predicts EXACTLY our v0.4 configuration.
 3. Optimal architecture config should CHANGE with the text domain
 4. Architecture that matches MI profile should beat one that doesn't
 
-**Status**: Need Codex to check if this is trivial, known, or genuinely new.
-MI universality test running on 3 text types.
+**QUANTIFIED (2026-03-19):**
+- Fit: I(d) = 0.637 * d^(-0.547), R^2 = 0.900
+- d_0 = 5 bytes (75% cumulative MI)
+- Predicted optimal k = 5 (matches v0.4 k=4-8)
+- Per-domain alphas: mixed=0.757, stories=0.689, code=0.565
+- Code has SLOWEST decay = most long-range deps (as predicted)
+
+**Codex reviewing whether this is trivial or publishable.**
 
 ### Theoretical Explanation: Why GRU+MsgPass Works
 
