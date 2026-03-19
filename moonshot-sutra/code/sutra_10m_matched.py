@@ -129,11 +129,19 @@ def main():
     results.append(train_and_eval(sutra_local, train_loader, test_loader, "Sutra-local-only", use_kl=True))
     del sutra_local; torch.cuda.empty_cache() if torch.cuda.is_available() else None
 
-    # Sutra SMALL (original dim=256) for efficiency comparison = ~1.2M params
-    print(f"\n{'='*40}\nSutra SMALL (dim=256) for efficiency comparison\n{'='*40}")
-    sutra_s = SutraV03(dim=256, patch_size=4, max_rounds=4, k_retrieval=8, max_seq=SEQ_LEN).to(DEVICE)
-    results.append(train_and_eval(sutra_s, train_loader, test_loader, "Sutra-1.2M", use_kl=True))
-    del sutra_s; torch.cuda.empty_cache() if torch.cuda.is_available() else None
+    # Sutra v0.4 MATCHED: GRU patches + msg passing + retrieval
+    from sutra_v04 import SutraV04
+    print(f"\n{'='*40}\nSutra v0.4 MATCHED\n{'='*40}")
+    # Find matching dim for v0.4
+    for d in range(300, 700, 10):
+        test_m = SutraV04(dim=d, patch_size=4, max_rounds=4, k_retrieval=8, max_seq=SEQ_LEN)
+        if abs(test_m.count_params() - 6500000) < 650000:
+            print(f"  Using dim={d}, params={test_m.count_params():,}")
+            sutra_v4 = test_m.to(DEVICE)
+            break
+        del test_m
+    results.append(train_and_eval(sutra_v4, train_loader, test_loader, "Sutra-v0.4-matched", use_kl=True))
+    del sutra_v4; torch.cuda.empty_cache() if torch.cuda.is_available() else None
 
     # Summary
     print(f"\n{'='*60}\nMATCHED-PARAM RESULTS\n{'='*60}")
