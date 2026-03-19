@@ -840,3 +840,61 @@ This addresses ALL five flaws:
 4. How granular should chunks be for stage advancement? (patch-level? sentence-level?)
 5. What per-stage auxiliary losses work best?
 6. Does separating routing dims from content dims ACTUALLY help at scale?
+
+---
+
+## DEEP DIVE: Entropic Optimal Transport as Routing
+
+### Why This IS Different From Attention
+
+Standard attention: R_ij = softmax_j(q_i · k_j / √d). Each row normalized
+independently. No constraint on how much any key is used. Popular keys
+accessed by ALL queries simultaneously → attention sinks.
+
+Optimal transport: find R that maximizes total match quality UNDER CONSTRAINTS:
+
+```
+max_R Σ_ij R_ij · match(s_j, d_i) - ε · Σ_ij R_ij log R_ij
+s.t.  Σ_j R_ij = demand_i    (each query gets exactly its demand)
+      Σ_i R_ij ≤ supply_j    (each source gives at most its supply)
+      R_ij ≥ 0
+```
+
+### The Key Differences (Mathematical)
+
+1. **Column constraints**: source j has LIMITED supply. Can't serve everyone.
+   In attention: no limit, popular keys attract unlimited attention.
+
+2. **Global coupling**: routing of query i affects all other queries
+   (through shared supply constraints). In attention: queries are independent.
+
+3. **Balanced routing**: prevents attention sinks. Information is DISTRIBUTED
+   across sources, not concentrated in a few popular ones.
+
+4. **Information-theoretic**: entropy term maximizes info transfer under capacity.
+
+### Sinkhorn Algorithm (Efficient Computation)
+
+Solve via alternating row/column normalization:
+
+```
+K = exp(match_matrix / ε)  # Kernel matrix
+for _ in range(n_iter):     # ~10-20 iterations
+    u = demand / (K @ v)    # Row normalization
+    v = supply / (K^T @ u)  # Column normalization
+R = diag(u) @ K @ diag(v)   # Optimal transport matrix
+```
+
+Complexity: O(n² × n_iter). For n=128 patches: 128² × 20 = 327K ops.
+Comparable to attention but with GLOBAL optimality guarantees.
+
+### Why This Matters for Sutra
+
+At the PATCH level (n=128, not token n=512), the cost is manageable.
+And the quality improvement from balanced, constrained routing could be
+significant — preventing the failure modes that make pure message passing
+insufficient (over-squashing, attention sinks, information concentration).
+
+This IS mathematically derived, NOT copied from existing architectures.
+Optimal transport theory predates modern ML. Applying it to neural routing
+is principled and novel for language modeling.
