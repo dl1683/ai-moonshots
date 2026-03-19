@@ -790,6 +790,55 @@ BOTTLENECK: Stage 4+5 interface (local diffusion + global routing).
   - Each stage: definition, best approach, Sutra approach, gap, fix, priority
   - Signed off by Codex as the guide for all future research
 
+### CROSS-STAGE AMPLIFICATION ANALYSIS (for R3)
+
+**Key insight: earlier stages amplify ALL downstream stages.**
+
+Improving Stage 1 (Segmentation/tokenization):
+→ Stage 3: GRU processes semantic units not characters → better features
+→ Stage 4: fewer patches → less communication needed → cheaper
+→ Stage 5: richer per-position state → better memory
+→ Stage 6: shorter sequences → fewer rounds needed
+→ AMPLIFICATION: HIGH (4 downstream stages improved)
+
+Improving Stage 4 (Communication/routing):
+→ Stage 5: better info = better updates
+→ Stage 6: more evidence available = better halting decisions
+→ AMPLIFICATION: MEDIUM (2 downstream stages)
+
+Improving Stage 6 (Compute control/depth):
+→ Nothing downstream to amplify
+→ AMPLIFICATION: LOW (terminal stage)
+→ Codex: "Extra depth cannot recover missing evidence"
+
+**CONCLUSION: Fix stages UPSTREAM first for maximum leverage.**
+Priority order: 1 (tokenization) → 2 (addressing) → 4 (communication) → 6 (depth)
+NOT: 6 → 4 → 1
+
+**This is the strongest argument for token-level branch:**
+Fixing Stage 1 amplifies EVERYTHING downstream.
+
+### THEORETICAL OPTIMAL PER STAGE (for R4 convergence)
+
+| Stage | Theoretical Optimal | Current Best | Sutra v0.4 | Gap |
+|-------|-------------------|-------------|-----------|-----|
+| 1. Segmentation | MDL-optimal learned | BPE (corpus stats) | Raw bytes | HIGH |
+| 2. Addressing | Hierarchical + relative | RoPE | GRU implicit | MEDIUM |
+| 3. Local | Tiny attention within unit | Conv+attention | GRU | LOW |
+| 4. Communication | Exact routing at min cost | Full attention O(n²) | MsgPass+sparse O(n) | MEDIUM |
+| 5. State Update | Bayesian updating | Gated MLP+residual | MLP+residual | LOW |
+| 6. Compute Control | Exact difficulty-matched | Fixed depth | PonderNet | MEDIUM |
+| 7. Readout | Quality-optimal selection | AR+reranking | Standard AR | LOW |
+
+**Biggest gaps**: Stage 1 (bytes vs optimal), Stage 4 (local-only vs full routing).
+**Sutra's strengths**: Stage 3 (GRU is good for local), Stage 5 (standard works).
+
+**Biological parallel**: every stage has a biological "optimal" too:
+- Brain: retina (1), topographic maps (2), V1 (3), cortical connectivity (4),
+  synaptic plasticity (5), attention allocation (6), motor output (7)
+- All evolved over 500M years to be near-optimal for their data distribution.
+- Our architecture is days old. The gap is expected.
+
 ### WHERE IS SUTRA WEAKEST?
 
 Looking at this breakdown, Stage 4 (Context Integration) is the riskiest.
