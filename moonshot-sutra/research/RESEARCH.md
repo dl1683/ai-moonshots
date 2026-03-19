@@ -440,6 +440,39 @@ module level — exponentially more combinations than standard MoE with linearly
 Test: does compositional assembly outperform shared-weight or independent-weight agents at matched params?
 This could be its own probe (Probe G).
 
+### Statistical Mechanics of Training: Phase Transitions and Grokking
+
+Research findings (2025-2026):
+- Grokking is a FIRST-ORDER phase transition (discontinuous jump from memorization to generalization)
+- Critical exponents exist: exact analytic expressions for grokking probability and time distribution
+- Singular Learning Theory (SLT) explains: properly regularized networks exhibit sharp complexity phase
+  transition where complexity rises during memorization, then FALLS as network discovers simpler patterns
+- Complexity dynamics: the LOCAL LEARNING COEFFICIENT (LLC) correlates linearly with compressibility
+
+**Connection to Sutra thesis**: If compression = intelligence, and grokking = compression phase transition,
+then Sutra's architecture should be designed to MAXIMIZE grokking likelihood. This means:
+1. Strong regularization (MDL-style, not just L2) to push toward simpler representations
+2. Architecture that supports sharp phase transitions (discrete state changes, not just smooth gradients)
+3. Training schedule that encourages exploration before exploitation (high temp → low temp, simulated annealing)
+
+**Testable prediction**: A model trained with MDL-style objectives should grok FASTER than one trained
+with standard CE, because MDL explicitly penalizes complexity. This is an extension of Probe A.
+
+### Adaptive Segmenter Prototype Results
+
+Gumbel-Softmax segmenter confirmed:
+- Differentiable: gradients flow through discrete boundary decisions
+- Temperature controls sharpness: T=5 (soft) → T=0.1 (hard)
+- 66K parameters — negligible overhead
+- Trainable end-to-end with rest of model
+
+BUT: Probe E analysis shows tokenization may not be the highest-value component.
+Whitespace (1.48 BPB) already beats theoretical word-level entropy (1.82 BPB).
+The real gains come from PROCESSING, not SPLITTING.
+
+**Decision**: Adaptive segmenter is a nice-to-have, not critical path. Focus probes on
+processing architecture (stigmergic, variable depth, working memory) first.
+
 ### Updated Probe Priority
 
 Given the cross-domain insights, I'm adding a new probe that's potentially more important than any existing one:
