@@ -1546,3 +1546,33 @@ THEN: the entire Sutra direction has insufficient advantage to justify complexit
 TEST: Head-to-head against Pythia-410M / SmolLM-360M.
 
 ### The Meta-Kill: IF conditions 1+3+5 ALL trigger, the project pivots.
+
+---
+
+## CODEX REALITY CHECK: "One real core idea, not six"
+
+**Codex honest assessment: 4/10 for beating a transformer.**
+
+"There is probably ONE real core idea here, not six."
+The core: better ROUTING + maybe uncertainty-aware compute allocation.
+Everything else is scaffolding, not the source of the win.
+
+**The danger**: too many ideas supporting each other = elegant but fragile.
+When everything justifies everything, nothing is independently testable.
+
+**The prescription: AGGRESSIVE PRUNING.**
+- Keep ONE control mechanism
+- Keep ONE routing hypothesis
+- Keep ONE output decomposition only IF it measurably helps
+- Treat curriculum and contracts as training aids, not theory pillars
+
+**What survives the pruning:**
+1. The 7-stage FRAMEWORK (useful for organizing thought, not theory itself)
+2. Better routing/communication (THE core bet)
+3. Uncertainty-aware updates (secondary, needs variance-correctness proof)
+4. Everything else: nice ideas, test later if core works
+
+**The honest next step**: stop adding theory. START TESTING.
+When production v0.4 finishes, build Combo 5 (Pragmatist) with
+token-level + GRU + current routing + gated write. Ship it. Evaluate.
+THEN test better routing mechanisms one at a time.
