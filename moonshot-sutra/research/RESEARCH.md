@@ -825,6 +825,21 @@ v0.3 already has correct mitigations from GNN literature:
 THREE mechanisms: message passing + sparse retrieval + adaptive depth. Clean. Falsifiable.
 Test against transformer baseline at matched params on real corpus + MQAR.
 
+### Future Direction: Self-Growing Architecture (v0.5+)
+
+Inspired by embryonic development: cells start identical, differentiate based on position
+and neighbor signals. What if patches started identical but SPECIALIZED during training?
+Some become "memory patches" (more retrieval), some "processing patches" (more local).
+
+This goes beyond V(D)J routing: not just routing to modules, but modules EVOLVING.
+Neural architecture search meets biological development. The architecture designs itself.
+
+Key biological precedent: no organism has a fixed architecture at birth — it GROWS.
+A 1B-param Sutra might start as uniform patches and develop specialized regions,
+like how the brain develops specialized areas (Broca's area for language, etc.).
+
+**Deferred to post-MVP.** Need working model first.
+
 **For Sutra**: Maybe the architecture should have TWO parts:
 1. A LIBRARY of learned primitives (small, fixed after pre-training)
 2. A COMPOSER that assembles primitives into reasoning chains (this is what scales)
