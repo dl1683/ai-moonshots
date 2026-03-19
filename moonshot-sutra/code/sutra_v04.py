@@ -69,14 +69,28 @@ class LocalMessagePassing(nn.Module):
         kl_loss = 0.0
 
         for step in range(self.max_rounds):
-            new_h = torch.zeros_like(h)
-            for i in range(N):
-                start = max(0, i - self.window)
-                nb = h[:, start:i + 1, :]
-                sr = h[:, i:i + 1, :].expand_as(nb)
-                msgs = self.msg(torch.cat([sr, nb], dim=-1)).mean(dim=1)
-                new_h[:, i, :] = h[:, i, :] + self.update(torch.cat([h[:, i, :], msgs], dim=-1))
-            h = self.ln(new_h)
+            # VECTORIZED message passing (replaces per-patch for-loop)
+            # Each patch aggregates messages from its causal window neighbors
+            # Using 1D causal convolution as efficient local aggregation
+
+            # Build neighbor features via shift-and-stack (O(N*W) not O(N^2))
+            padded = F.pad(h, (0, 0, self.window, 0))  # Pad left with window zeros
+            # Stack shifted versions: each position sees its window of predecessors
+            neighbors = torch.stack([
+                padded[:, self.window - w:self.window - w + N, :]
+                for w in range(self.window + 1)
+            ], dim=2)  # (B, N, window+1, D)
+
+            # Self-expanded for message computation
+            self_exp = h.unsqueeze(2).expand_as(neighbors)  # (B, N, window+1, D)
+
+            # Compute messages for all patches at once
+            msg_input = torch.cat([self_exp, neighbors], dim=-1)  # (B, N, W+1, 2D)
+            msgs = self.msg(msg_input).mean(dim=2)  # (B, N, D)
+
+            # Update all patches at once
+            upd_input = torch.cat([h, msgs], dim=-1)  # (B, N, 2D)
+            h = self.ln(h + self.update(upd_input))
 
             if step < self.min_rounds:
                 halt_prob = torch.zeros(B, N, 1, device=h.device)
@@ -162,11 +176,10 @@ class SutraV04(nn.Module):
         x_pad = F.pad(x, (0, n_patches * P - T))
         patches = x_pad.view(B, n_patches, P)
 
-        local_features = []
-        for i in range(n_patches):
-            feat = self.patch_proc(patches[:, i, :])
-            local_features.append(feat)
-        local_features = torch.stack(local_features, dim=1)
+        # VECTORIZED: process all patches at once (no per-patch loop)
+        flat_patches = patches.reshape(B * n_patches, P)  # (B*N, P)
+        flat_features = self.patch_proc(flat_patches)  # (B*N, P, D)
+        local_features = flat_features.reshape(B, n_patches, P, -1)  # (B, N, P, D)
 
         summaries = self.summarize(local_features.mean(dim=2))
         msg_out, kl_loss = self.msg_pass(summaries)
