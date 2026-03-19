@@ -620,11 +620,159 @@ gives per-position adaptive processing without the batching nightmare.
 **If E fails**: fall back to C (Wave Pool) which is just per-stage PonderNet.
 **D (Market)** is the long-term moonshot — save for when the basic idea is proven.
 
+---
+
+## DEEP DIVE: Information-Gradient Routing (The Core Novel Mechanism)
+
+### Why This Is THE Most Important Component
+
+Stage 4 determines whether the right evidence reaches the right position.
+If we solve Stage 4 with a genuinely novel mechanism (not attention, not
+message passing, not sparse attention), we have a REAL contribution.
+
+### Mathematical Formalization
+
+Each position i has:
+- SUPPLY vector: s_i ∈ R^d_route (what information this position offers)
+- DEMAND vector: d_i ∈ R^d_route (what information this position needs)
+- VALUE vector: v_i ∈ R^d_model (the actual information to transmit)
+
+Routing weight from j to i:
+
+```
+w_{ij} = max(0, <s_j, d_i> / √d_route)  [ReLU, not softmax]
+```
+
+ReLU instead of softmax because:
+1. Not all positions NEED external info (some demands are satisfied → w=0)
+2. A position can receive from ZERO sources (no forced normalization)
+3. Sparsity is NATURAL (most supply/demand pairs don't match)
+
+The received information at position i:
+
+```
+received_i = Σ_j w_{ij} · v_j / (Σ_j w_{ij} + ε)
+```
+
+Normalized by total weight received (not total positions).
+
+### How This Differs From Attention — Mathematically
+
+**Standard attention:**
+```
+Q = W_Q · h,  K = W_K · h,  V = W_V · h
+attn_{ij} = softmax_j(Q_i · K_j / √d)
+output_i = Σ_j attn_{ij} · V_j
+```
+
+**Information-gradient routing:**
+```
+S = W_S · h,  D = W_D · h,  V = W_V · h
+route_{ij} = ReLU(S_j · D_i / √d_route)
+output_i = Σ_j route_{ij} · V_j / (Σ_j route_{ij} + ε)
+```
+
+The differences:
+1. **ReLU vs softmax**: routing can be ZERO (no forced attention to something)
+2. **Supply vs Key**: supply is what you HAVE, key is what you ARE.
+   Supply is a FUNCTION of the content — "I have information about cats."
+   Key is the content itself — "I am the word cat."
+3. **Demand vs Query**: demand is what you NEED, query is what you WANT.
+   Demand reflects the GAP — "I need a subject for my verb."
+   Query reflects the current state — "I am looking for something."
+4. **Asymmetry**: supply/demand is fundamentally asymmetric. Position j may
+   supply to i without i supplying to j. Attention is also asymmetric but
+   doesn't frame it as supply/demand.
+
+### The Deeper Difference: ROUTING DIMENSIONS ≠ CONTENT DIMENSIONS
+
+This is the KEY insight. In attention, Q and K live in the SAME space as V
+(or a projection of it). Routing decisions and content are entangled.
+
+In information-gradient routing, supply/demand live in a SEPARATE low-dimensional
+routing space (d_route << d_model). This means:
+- Routing is CHEAP (d_route × d_route operations, e.g., 32×32)
+- Content is RICH (d_model × d_model, e.g., 5120×5120)
+- The routing can be computed FIRST, then only matched pairs exchange content
+
+This is like a postal system: the ADDRESS (routing) is small, the PACKAGE
+(content) is large. You don't need to examine every package to route mail —
+you just read the address.
+
+### Computational Complexity
+
+**Naive**: O(n² · d_route) for all pairwise supply/demand scores.
+Still quadratic, but with d_route << d_model, the constant is much smaller.
+
+**Efficient**: If supply/demand vectors are sparse or structured:
+- LSH on supply/demand vectors → O(n · k_bucket) per position
+- Product quantization → O(n · sqrt(n)) approximate routing
+- For Sutra: broadcast supply to medium, each position scans medium → O(n · d_route)
+
+**With the medium**:
+1. All positions WRITE supply to shared medium: O(n)
+2. Medium aggregates supplies (e.g., by clustering): O(n)
+3. Each position READS from medium to find matching supplies: O(n · k)
+4. Total: O(n · k) where k = number of matches per position
+
+This IS O(n) if k is constant (which it is — each position needs ~k supplies).
+
+### Connection to Biological Systems
+
+**Brain**: Neurotransmitter signaling IS supply/demand. Dopamine neurons
+SUPPLY a signal. Target neurons have RECEPTORS (demand). Connection
+strength depends on receptor-ligand match, not pairwise computation.
+
+**Immune**: Antigen-presenting cells SUPPLY pathogen fragments on MHC molecules.
+T-cells DEMAND matching fragments via their TCR. Connection = recognition.
+This is literally supply/demand matchmaking in biology.
+
+**Market**: Sellers supply goods, buyers demand them. Price discovery happens
+through the medium (the market), not pairwise negotiation between all
+seller-buyer pairs.
+
+### Training Signal
+
+The supply/demand vectors are learned end-to-end through the language modeling loss.
+When a routing decision helps prediction (correct info reaches the right place),
+the gradient reinforces the supply/demand alignment. When routing fails,
+the gradient adjusts supply/demand to route differently next time.
+
+No auxiliary loss needed — the language modeling loss ITSELF trains the routing.
+
+### Potential Failure Modes
+
+1. **Routing collapse**: all positions learn the same supply/demand → no differentiation.
+   Fix: diversity regularization on supply vectors (like V(D)J diversity).
+
+2. **Routing oscillation**: supply/demand keeps changing each round → no stable routing.
+   Fix: momentum on supply/demand (EMA of previous rounds).
+
+3. **Dead routing**: some positions never match anything → isolated.
+   Fix: guaranteed minimum connectivity (always route to k nearest neighbors as fallback).
+
+4. **Gradient sparsity**: ReLU routing means zero gradient for non-matched pairs.
+   Fix: use smooth approximation of ReLU (softplus) or straight-through estimator.
+
+### Proposed Experiments (When Compute Is Available)
+
+1. **Supply/demand vs attention**: matched params, same model, swap ONLY Stage 4.
+   Compare BPB, MQAR accuracy, and routing patterns.
+
+2. **Routing dimension sweep**: d_route = {8, 16, 32, 64, d_model}.
+   Does separating routing from content actually help?
+
+3. **Sparsity analysis**: measure how sparse the routing matrix is in practice.
+   If >90% sparse, the O(n·k) claim holds.
+
+4. **Interpretability**: visualize supply/demand vectors — do they correspond
+   to semantic roles? (e.g., "I have a subject" / "I need a subject")
+
 ### Key Unknowns
 
 1. Can the stage distribution be LEARNED stably with gradient descent?
 2. Does supply/demand routing converge or oscillate?
 3. How do we handle BATCHING if each position is at a different stage?
-   (GPU parallelism requires uniform computation per position)
 4. Is soft stage mixing expressive enough, or do we need hard routing?
 5. What's the training objective for the stage classifier?
+6. Does separating routing dims from content dims ACTUALLY help at scale?
