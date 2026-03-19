@@ -364,3 +364,99 @@ grown routing pattern mirrors the data's dependency structure).
 
 **Status**: Queue for Experiment C (after A and B from Round 2). Need to design
 "was retrieval useful?" signal first — this is the key design challenge.
+
+---
+
+## Deep Think: Edges > Nodes (2026-03-19)
+
+### The Observation
+
+In graph theory, social networks, neural networks, mycorrhizal networks — the EDGE
+structure often contains more information than the node features.
+
+"The bank by the river was muddy." Understanding isn't in "bank" (ambiguous) — it's
+in the CONNECTION between "bank" and "river" that disambiguates. The relationship IS
+the meaning. The edge IS the understanding.
+
+### Current AI Treats Edges as Disposable
+
+In transformers:
+- Node features (embeddings, hidden states) = primary, persisted, analyzed
+- Edge features (attention weights) = computed on the fly, immediately discarded
+- Nobody saves attention patterns. Nobody treats them as the model's output.
+
+This is backwards if edges carry more information than nodes.
+
+### What If We Flipped This?
+
+**Edge-primary architecture**: Instead of updating NODE representations and computing
+edges temporarily, update EDGE representations and derive nodes from them.
+
+Concrete version for Sutra:
+- The message passing medium stores EDGE weights between patches (not patch features)
+- Each patch's representation is DERIVED from its edges: "I am the node connected to
+  patches 3, 7, and 12 with weights 0.8, 0.3, 0.6"
+- Message passing updates the EDGES, not the nodes
+- Prediction uses the edge structure to compose node features on-the-fly
+
+This is actually how GNNs can work — edge-centric message passing where edges are the
+primary objects and nodes are just aggregation points.
+
+### Practical Benefits (not just theory)
+
+1. **Interpretability for free**: The edge structure IS the model's understanding of
+   the text. You can literally READ it: "the model thinks position 5 is strongly
+   connected to position 23" = "the model thinks these words are related."
+
+2. **Compression**: Edges are SPARSE. A 256-token sequence has 256 nodes but only
+   ~256×k = 1024 meaningful edges (with k=4). Storing 1024 edges is cheaper than
+   storing 256 d-dimensional vectors.
+
+3. **Compositionality**: Edges compose naturally. If A→B and B→C, there's an implicit
+   A→C path. This is how transitive reasoning works — you don't need to represent it
+   explicitly, it emerges from the edge structure.
+
+4. **Grown sparsity is natural**: In edge-primary, the routing table IS the model's
+   state. Growing and pruning edges IS learning. No separate mechanism needed.
+
+5. **Transfer**: The edge PATTERNS (not specific edges) transfer across inputs.
+   "Adjective always connects to nearest noun" is an edge pattern, not a node pattern.
+   Learning edge patterns = learning linguistic structure directly.
+
+### Connection to Graph Neural Networks
+
+This isn't totally new — edge-conditioned GNNs exist. But applying edge-primary
+processing to LANGUAGE (where the graph changes per input) would be novel.
+
+The key difference from attention: attention computes edges FROM nodes (Q×K^T).
+Edge-primary STARTS with edges and derives nodes. The causal arrow is reversed.
+
+### Is This Practical or Just Elegant?
+
+PRACTICAL test: take our v0.3 architecture, but instead of storing patch features
+in the medium, store EDGE WEIGHTS between patches. Each patch's feature is computed
+by aggregating its incoming edge weights × neighbor features. Compare BPB.
+
+If edge-primary matches or beats node-primary at same params, it validates the
+principle AND gives us interpretability AND enables grown sparsity naturally.
+
+### Things That Don't Need to Be Revolutionary to Be Useful
+
+While the edge-primary idea is conceptually interesting, there are SIMPLER wins:
+
+1. **Just increasing k from 4 to 16** could close the sequential reasoning gap.
+   No fancy concepts needed. Just more retrieval bandwidth.
+
+2. **Adding a simple GRU layer** after message passing could give sequential
+   processing capability. Old tech, proven, straightforward.
+
+3. **Better training data** (synthetic reasoning chains from local LLMs) would
+   help more than any architectural change at this scale.
+
+4. **Gradient accumulation** to increase effective batch size would stabilize training.
+
+5. **Learning rate warmup** was missing from some of our experiments — adding it
+   consistently would improve all results.
+
+Not everything needs to be a paradigm shift. Sometimes you need to tighten the
+bolts before reinventing the engine.
