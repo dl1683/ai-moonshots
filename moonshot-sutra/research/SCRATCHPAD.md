@@ -1875,3 +1875,43 @@ After 13 explorations and extensive Codex debate:
 The real question is whether structured-processing architectures can
 match brute-force-search architectures (transformers) on quality.
 That's an EMPIRICAL question. Theory can't answer it. Experiments can.
+
+---
+
+## PRACTICAL: Next Training Run Improvements (based on current run observations)
+
+### What We're Seeing
+- Loss oscillating 0.54-0.57, BPB ~0.78
+- LR still warming up (hasn't peaked at 3e-4 yet)
+- 5K tok/s throughput
+- 10.4GB VRAM (of 24GB available)
+
+### What To Change For Next Run
+
+1. **Mixed precision (bf16)**: Would nearly 2x throughput. Currently fp32.
+   Save ~5GB VRAM, enable larger batch size.
+
+2. **Larger batch**: Current effective batch=32. With bf16 + freed VRAM,
+   could do effective batch=128. Larger batch = more stable gradients.
+
+3. **Token-level input**: BPE instead of bytes. 4x shorter sequences
+   at same information density. More compute-efficient.
+
+4. **Gradient accumulation with torch.compile**: compile the forward pass
+   for additional speedup on RTX 5090.
+
+5. **More aggressive LR schedule**: Current warmup is 2000 steps (13 min of
+   training). Could do 500 steps and spend more time at peak LR.
+
+6. **Mixed data**: Add TinyStories to MiniPile for better narrative quality.
+
+7. **Checkpoint EVERY 2K steps** not 10K (current: 65 min between saves).
+
+### The FASTEST Path to Competitive
+
+Based on Codex (Combo 5 Pragmatist):
+Token-level Sutra v0.4 + bf16 + larger batch + GRUCell write + RoPE.
+Train on MiniPile + TinyStories (~6GB).
+This should be 2-4x faster AND produce better quality from tokenization alone.
+
+Prepare this script NOW so it launches immediately after current run + eval.
