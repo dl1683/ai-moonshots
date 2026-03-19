@@ -1455,3 +1455,58 @@ harder on examples the model finds hard). This COMBINES with stage curriculum:
 
 The curriculum EMERGES from the model's own stage distribution.
 No manual phase switching needed.
+
+---
+
+## INTER-STAGE INTERFACE CONTRACTS
+
+### Why Define Interfaces FIRST
+
+Like API contracts in software: define what flows between stages BEFORE
+implementing each stage. This prevents the coherence failures (like
+Stage 3 mean-pooling destroying key-value info that Stage 4 needed).
+
+### The Contracts
+
+**Stage 1 → Stage 2 Output**: `segments: list[ByteSpan]`
+Each segment: start_idx, end_idx, raw_bytes.
+Contract: segments are NON-OVERLAPPING and COVER the entire input.
+Variable length is OK. Empty segments are NOT OK.
+
+**Stage 2 → Stage 3 Output**: `addressed_units: Tensor[N, d_model + d_address]`
+Each unit: feature vector + address vector.
+Contract: address encodes BOTH absolute position AND content-dependent shift.
+Features are raw embeddings (not yet processed).
+
+**Stage 3 → Stage 4 Output**: `local_features: Tensor[N, d_model], variance: Tensor[N, d_model]`
+Each position: processed feature + uncertainty estimate.
+Contract: features preserve KEY-VALUE structure from raw input.
+Variance initialized HIGH (uncertain) — decreases as processing continues.
+
+**Stage 4 → Stage 5 Input**: `messages: Tensor[N, d_model], source_ids: Tensor[N, k]`
+Each position: aggregated messages from routing + which sources contributed.
+Contract: messages are TAGGED with source identity so Stage 5 can gate by source.
+
+**Stage 5 → Stage 6 Output**: `updated_state: (mean: Tensor[N, d_model], log_var: Tensor[N, d_model])`
+Each position: updated mean + updated log-variance.
+Contract: variance MONOTONICALLY DECREASES (each update reduces uncertainty).
+If an update INCREASES variance, the gating was wrong.
+
+**Stage 6 → Inner Loop**: `continue_mask: Tensor[N]`
+Each position: 0 = done (advance to output), 1 = continue processing.
+Contract: monotonic (once done, stays done).
+
+**Stage 7 → Output or Loop**: `predictions: Tensor[N, vocab], verify_score: Tensor[N]`
+Each position: predicted distribution + confidence score.
+Contract: if verify_score < threshold, LOOP BACK to Stage 4 (re-route).
+If verify_score ≥ threshold, emit prediction.
+
+### The Key Insight
+
+By defining these contracts, each stage can be INDEPENDENTLY optimized
+and tested. Stage 3 can be swapped (GRU → Mamba → conv) as long as it
+satisfies the output contract. Stage 4 can be swapped (msg pass → OT → 
+attention) as long as it produces tagged messages.
+
+This is MODULAR ARCHITECTURE: interchangeable stages connected by contracts.
+Like LEGO blocks — any block fits any slot as long as the interface matches.
