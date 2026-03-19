@@ -193,3 +193,142 @@ Run after 10M test completes.
 - Target claim: "sparse k=X recovers Y% of dense attention at Z% compute"
 
 **STATUS**: Designs finalized. Run A pilot immediately after 10M completes.
+
+---
+
+## Deep Think: What Can Fungi Teach Us About Intelligence? (2026-03-19)
+
+### The Biological Facts
+
+Mycorrhizal networks and slime molds do things that SHOULD be impossible:
+
+1. **Physarum stores memory in tube diameter.** When it finds food, the tubes leading
+   to that food THICKEN. When a path is unproductive, tubes THIN and retract. The
+   GEOMETRY of the network IS the memory. No separate memory storage — the network
+   topology itself encodes what the organism has learned.
+
+2. **Fungi solve optimization problems through flow dynamics.** Nutrient transport
+   through the network follows local conservation laws at each junction. But these
+   local laws COUPLE behavior across the whole network, achieving GLOBAL optimization
+   through purely LOCAL rules. February 2025 research showed fungi use TRAVELLING
+   WAVES for resource transport — pulses of nutrients that propagate through the network.
+
+3. **Mycorrhizal networks have "hub and spoke" topology.** Not uniform — some nodes
+   (hub trees, "mother trees") have many connections, most have few. Scale-free network.
+   This topology allows EXACTLY SOLVABLE flow solutions. The network self-organizes
+   to create this topology through growth and pruning.
+
+4. **Slime molds learn WITHOUT neurons.** Physarum shows habituation (learns to ignore
+   repeated harmless stimuli), retains learning through 1-month dormancy, and stores
+   information in THREE ways simultaneously:
+   - Chemical (absorbed substances = "circulating memory")
+   - Electrical oscillations (frequency changes = short/long-term memory)
+   - Network morphology (tube diameters = structural memory)
+
+5. **Fungi make DECISIONS about trade.** Mycorrhizal fungi modulate which trees get
+   resources based on the tree's contribution to the network. Trees that provide more
+   carbon get more nutrients. This is a market-like mechanism without any central broker.
+
+### What This Means for Sutra (Deep Original Thinking)
+
+**Concept A: Memory IN the Network, Not Separate FROM It**
+
+Current AI: model weights store knowledge, activations are temporary. Memory and
+computation are SEPARATE — weights persist, activations are discarded after each forward pass.
+
+Fungi: the network IS the memory. Tube diameters encode past experience. The "weights"
+(tube widths) are continuously modified by the "activations" (nutrient flow).
+
+**For Sutra**: What if the shared medium in our message passing wasn't just a temporary
+communication buffer that resets each forward pass, but a PERSISTENT state that accumulates
+across inputs? The medium state would encode what the model has "learned" from recent
+context — like a continuously updated working memory that's part of the architecture,
+not separate from it.
+
+This is different from KV-cache (which stores past attention outputs) because the medium
+would be PROCESSED between rounds, not just stored. It's a living, evolving memory that
+gets refined through message passing, like how fungal tube diameters get refined through
+nutrient flow.
+
+**Implementation**: Between batches, carry forward a fraction of the medium state (exponential
+moving average). Each batch starts from a "warm" medium, not zeros. Over time, the medium
+develops persistent structure that reflects the training data distribution.
+
+**Concept B: Geometry as Information (Tube Diameter = Weight)**
+
+Fungi don't store information in a separate data structure. The PHYSICAL SHAPE of the
+network encodes information. Thick tubes = important paths. Thin tubes = unimportant.
+
+**For Sutra**: What if the sparse retrieval pattern itself was informative? Instead of
+computing top-k from scratch each time, maintain a PERSISTENT routing table that records
+which patches typically retrieve from which others. Over time, this table reflects the
+statistical structure of the data — like how fungal networks grow thick connections
+between frequently-exchanging nodes.
+
+This is essentially a LEARNED sparse attention pattern that evolves during training.
+Not random sparsity, not fixed sparsity, but GROWN sparsity that reflects the data.
+
+**Concept C: Travelling Waves for Information Propagation**
+
+February 2025 research: fungi use TRAVELLING WAVES — pulses that propagate through
+the network — for nutrient transport. Not steady-state flow, but PULSES.
+
+**For Sutra**: What if message passing used wave-like propagation instead of uniform
+rounds? Each "wave" of information propagates outward from its source, carrying a
+specific signal. Multiple waves from different sources can overlap and interact.
+
+This is different from standard message passing (which updates ALL nodes simultaneously
+each round). Wave propagation is SEQUENTIAL and DIRECTED — information travels FROM
+sources TO destinations, like how sound waves propagate from a speaker to a listener.
+
+**Implementation**: Instead of uniform rounds, process patches in order of their
+"surprise" (prediction error). High-surprise patches generate waves first, which
+propagate outward through the medium. Low-surprise patches receive waves but generate
+little. This naturally allocates compute to where it's needed.
+
+**Concept D: Multi-Modal Memory (Chemical + Electrical + Structural)**
+
+Physarum stores information THREE ways simultaneously: chemical, electrical, structural.
+Each modality has different timescales: electrical = fast (seconds), chemical = medium
+(minutes), structural = slow (hours/days).
+
+**For Sutra**: What if we had three memory timescales?
+- FAST: the current hidden state (resets each input) — like electrical oscillations
+- MEDIUM: a running average of recent medium states (persists across a few inputs) —
+  like chemical circulation
+- SLOW: the learned weights themselves (persist across all inputs) — like tube structure
+
+This is essentially: working memory (fast) + episodic buffer (medium) + long-term memory (slow).
+Current transformers only have fast + slow. The MEDIUM timescale is missing.
+
+The medium timescale could capture things like: "we've been processing Python code for
+the last 50 inputs, so prime the medium for Python patterns." This is context-dependent
+priming — exactly what the brain does when you're in a specific environment.
+
+**Concept E: Market-Based Resource Allocation (Fungal Trading)**
+
+Mycorrhizal fungi trade resources based on contribution. Trees that give more carbon
+get more nutrients. This creates INCENTIVES for cooperation — a market without a broker.
+
+**For Sutra**: The message passing medium could implement a TOKEN ECONOMY where patches
+"pay" for retrieval with the quality of their own contributions. Patches that produce
+good summaries (low prediction error) get priority retrieval access. Patches that produce
+garbage get deprioritized.
+
+This would naturally allocate retrieval bandwidth to the most competent patches,
+like how markets allocate capital to the most productive companies.
+
+### Priority Assessment
+
+These concepts range from immediately testable to deeply speculative:
+
+| Concept | Testability | Novelty | Priority |
+|---------|------------|---------|----------|
+| A: Persistent medium | HIGH (simple EMA) | MEDIUM | **Test soon** |
+| B: Grown sparsity | MEDIUM (need routing table) | HIGH | Test after k-sweep |
+| C: Wave propagation | LOW (complex implementation) | HIGH | Defer |
+| D: Multi-timescale memory | MEDIUM (add EMA buffer) | MEDIUM | **Test soon** |
+| E: Token economy | LOW (complex incentive design) | HIGH | Defer |
+
+**For Codex Round 3**: Challenge A and D — these are testable and could be added to
+the v0.3 architecture with minimal changes.
