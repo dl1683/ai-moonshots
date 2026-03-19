@@ -778,6 +778,18 @@ Memory needs READ and WRITE, not just retrieval.
 BOTTLENECK: Stage 4+5 interface (local diffusion + global routing).
 "Extra depth cannot recover missing evidence" — fix 4+5 FIRST.
 
+### PIPELINE DEBATE QUEUE (3-4 rounds to converge)
+
+**R2 (running)**: Per-stage best-in-class, Sutra gaps, concrete fixes.
+**R3 (queued)**: Cross-stage interactions — how do stages COMPOSE?
+  - Does improving Stage 1 (tokenization) reduce pressure on Stage 4 (communication)?
+  - Are there stages where improvement in one AMPLIFIES another?
+  - What's the optimal ORDER of improvement?
+**R4 (queued)**: Final convergence — one unified framework.
+  - Merge all rounds into a single definitive pipeline document
+  - Each stage: definition, best approach, Sutra approach, gap, fix, priority
+  - Signed off by Codex as the guide for all future research
+
 ### WHERE IS SUTRA WEAKEST?
 
 Looking at this breakdown, Stage 4 (Context Integration) is the riskiest.
