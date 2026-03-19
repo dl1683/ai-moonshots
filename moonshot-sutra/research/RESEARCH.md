@@ -730,6 +730,25 @@ essentially what ProgramSynthesis / DreamCoder tried with program induction.
 The library is like V/D/J segments. The composer is like the recombination machinery.
 Training = learning the primitives. Inference = composing them.
 
+**Prior art (supports direction):**
+- DreamCoder (MIT): wake-sleep library learning. Mine synthesized programs for common
+  patterns → add to library → use library to solve harder tasks. Rediscovers physics
+  and programming from scratch. E-graph matching finds shared substructures.
+- Neural Module Networks (Berkeley): dynamically assemble networks from module catalog.
+  Each module = primitive operation. Router decides composition per input.
+  Challenge: scaling to broader module inventories → meta-module architectures.
+
+**Key difference for Sutra**: DreamCoder uses SYMBOLIC programs. NMNs use NEURAL modules
+but with hand-designed module types. Sutra would learn BOTH the primitives AND the
+composition rules end-to-end from data. The primitives are neural but discoverable.
+
+**Training algorithm idea (DreamCoder-inspired):**
+1. WAKE: Train model on text prediction using current primitive library
+2. SLEEP: Analyze learned representations for common patterns (clustering in activation space)
+3. CONSOLIDATE: Crystallize common patterns as new explicit primitives in the library
+4. Repeat: model gets more efficient as library grows
+This is biologically plausible: sleep consolidation IS library learning.
+
 ### Paper Deep Dives: MEGABYTE + PonderNet (2026-03-19)
 
 **MEGABYTE design parameters for Sutra:**
