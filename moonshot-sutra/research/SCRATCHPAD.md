@@ -896,3 +896,247 @@ The model learns its own tokenization end-to-end. Prototype running.
 Sutra's patch structure provides STRUCTURAL regularization — info must flow through
 summary bottleneck. This is why smaller Sutra (1.2M) beats larger transformer (6.5M)
 on small data — the bottleneck prevents overfitting naturally.
+
+---
+
+## FRESH EXPLORATION #1: What if we approached this as a CODING problem?
+
+### The Premise
+
+Code execution is a SOLVED problem. Computers run programs perfectly.
+Language understanding is an UNSOLVED problem. Models hallucinate constantly.
+
+What if we designed a model that THINKS in something closer to code?
+Not symbolic AI (too rigid) but a model whose INTERNAL representation
+is more program-like than vector-like.
+
+### What Makes Programs Different From Vectors?
+
+1. Programs are COMPOSITIONAL (functions call functions)
+2. Programs have EXPLICIT control flow (if/else, loops)
+3. Programs maintain EXPLICIT state (variables, memory)
+4. Programs are VERIFIABLE (you can trace execution)
+5. Programs are INTERPRETABLE (you can read them)
+
+Current neural nets have NONE of these properties in their internals.
+Sutra's stages TRY to add some (explicit state, verification) but
+the internal representations are still opaque vectors.
+
+### What if the Representation Itself Was Structured?
+
+Instead of h_i ∈ R^d (opaque vector), what if:
+
+```
+h_i = {
+    type: "noun_phrase",           # Categorical type
+    content: R^128,                 # Dense content vector
+    bindings: {agent: ptr_to_5},   # Explicit variable bindings
+    confidence: 0.85,               # Calibrated uncertainty
+    needs: ["verb", "complement"],  # What this position still needs
+}
+```
+
+A STRUCTURED representation that carries typed, inspectable information.
+Not pure symbolic (the content is still a dense vector) but HYBRID:
+symbolic structure + neural content.
+
+### Why This Might Work
+
+1. Variable binding becomes EXPLICIT (not implicit in hidden states)
+2. The model can CHECK its own state ("do I have a verb? no → route for one")
+3. Type information helps routing ("nouns route to verbs, not to other nouns")
+4. Confidence is built-in (not just Kalman variance but explicit)
+5. The "needs" field IS the demand signal for routing
+
+### Why This Might NOT Work
+
+1. Structured representations are hard to optimize with gradient descent
+2. Discrete types require Gumbel-Softmax or REINFORCE
+3. Pointer-based bindings are non-differentiable
+4. The representation space is much more complex to navigate
+5. Current models work FINE with opaque vectors at scale
+
+### Connection to Neuro-Symbolic AI
+
+This is in the neuro-symbolic family but different:
+- Standard neuro-symbolic: neural perception → symbolic reasoning
+- Our proposal: the REPRESENTATION is hybrid, not the processing pipeline
+- Each position carries BOTH symbolic structure AND neural content
+- Processing is still neural (differentiable) but on structured states
+
+---
+
+## FRESH EXPLORATION #2: What if intelligence is COMPRESSION applied recursively?
+
+### The Core Claim (Stronger Than Before)
+
+Not just "compression = intelligence" but "RECURSIVE compression = intelligence."
+
+A single compression step: raw text → features (what transformers do).
+RECURSIVE compression: raw → local features → patterns of features →
+patterns of patterns → ... → the simplest possible description.
+
+Each level of recursion discovers HIGHER-ORDER structure.
+Level 0: character frequencies (trivial)
+Level 1: word patterns (basic language model)
+Level 2: phrase structures (syntactic understanding)
+Level 3: argument patterns (reasoning capability)
+Level N: increasingly abstract reasoning primitives
+
+### The Mathematical Structure
+
+Iterated function system: f applied recursively.
+h_{level+1} = compress(h_{level})
+where compress removes redundancy while preserving predictive info.
+
+This is EXACTLY what deep networks do layer by layer.
+But current networks use FIXED compression (same attention/MLP at every level).
+What if the COMPRESSION FUNCTION itself changed at each level?
+
+Level 0 compression: character → word (needs local patterns)
+Level 1 compression: word → phrase (needs syntax)
+Level 2 compression: phrase → meaning (needs semantics)
+Level 3 compression: meaning → argument (needs logic)
+
+Different information types at each level → different compression optimal.
+
+### Connection to Renormalization Group (Physics)
+
+In statistical mechanics, renormalization group (RG) is EXACTLY recursive
+compression: zoom out one step, integrate out fine-grained details, get
+a coarser description. Repeat. At each scale, the EFFECTIVE THEORY changes.
+
+Language RG:
+- Scale 0: bytes. Effective theory: character n-grams.
+- Scale 1: words. Effective theory: syntax + morphology.
+- Scale 2: sentences. Effective theory: semantics + pragmatics.
+- Scale 3: paragraphs. Effective theory: discourse + argumentation.
+
+Each scale has its own "effective theory" — the compression function that
+works best at that scale. This IS the multi-grain processing we proposed
+for Stage 3, but now framed as a PHYSICAL PRINCIPLE.
+
+### What This Means for Architecture
+
+Instead of "7 stages in a pipeline," think of it as:
+"Multiple RG scales, each with its own effective processor."
+
+The model doesn't process in stages — it simultaneously maintains
+representations at MULTIPLE compression levels, and information flows
+both UP (abstraction) and DOWN (prediction/verification) between levels.
+
+This is U-Net for language: encoder compresses, decoder expands,
+skip connections bridge scales. But with DIFFERENT operations at each scale.
+
+### Why This Might Be THE Core Idea
+
+Codex said: "there's probably one real core idea, not six."
+What if recursive compression IS that one idea?
+
+It naturally explains:
+- Why local processing matters (Level 0-1 compression)
+- Why routing matters (cross-level information flow)
+- Why depth matters (more recursion = higher-level abstraction)
+- Why uncertainty tracks quality (well-compressed = confident)
+- Why the MI has two regimes (local compression is fast, global is slow)
+
+Everything else (routing mechanism, memory, halting) is IMPLEMENTATION
+of recursive compression. The theory IS the compression.
+
+---
+
+## FRESH EXPLORATION #3: What if we built a DIFFERENTIABLE DATABASE?
+
+### The Premise
+
+Language models store knowledge in weights. Databases store knowledge in tables.
+Weights: fast access, poor precision, non-updatable at inference.
+Tables: precise, updatable, slow sequential access.
+
+What if the model's memory was structured like a DATABASE?
+Keys, values, indexes — but all differentiable and trainable.
+
+### Structure
+
+```
+Memory = {
+    table_1: {keys: Tensor[M, d_key], values: Tensor[M, d_val]},  # facts
+    table_2: {keys: ..., values: ...},                               # rules
+    index: learned hash function for O(1) lookup
+}
+```
+
+At each step, the model can:
+- QUERY: look up a key → get a value (like SELECT in SQL)
+- INSERT: add a new key-value pair (like INSERT)
+- UPDATE: modify an existing value (like UPDATE)
+- DELETE: remove a pair (like DELETE)
+
+### Why This Is Different From KV-Cache / RAG
+
+KV-cache: stores past activations, read-only at inference.
+RAG: external retrieval from a document store.
+Our database: PART OF THE MODEL, differentiable, trained end-to-end,
+supports all CRUD operations, and the INDEX is learned.
+
+The database IS the model's long-term memory. The GRU/routing is the
+model's working memory. Two memory systems, like hippocampus (episodic)
+and neocortex (semantic) in the brain.
+
+### Connection to Stage 5 (Memory Write)
+
+Stage 5 IS the database write operation. But currently it's just a
+gated vector update. A structured database gives:
+- NAMED entries (not just vectors)
+- SELECTIVE access (query for specific info, not attend to everything)
+- PERSISTENT storage (doesn't decay through layers)
+- UPDATABLE at inference (can learn from context)
+
+---
+
+## FRESH EXPLORATION #4: What if position doesn't matter?
+
+### The Radical Question
+
+Current models encode position EVERYWHERE. But does a model NEED to
+know that "cat" is at position 5? Or does it only need to know:
+- "cat" is the subject of "sat"
+- "cat" comes before "sat"
+- "cat" is near "the"
+
+These are RELATIONAL facts, not positional ones.
+
+### Position-Free Architecture
+
+What if instead of position embeddings, we encoded RELATIONSHIPS?
+Each token gets features based on its RELATIONS to other tokens,
+not its absolute or relative position.
+
+Implementation: start with no position info. Let the model DISCOVER
+that position matters (if it does) through the routing mechanism.
+The routing table (from grown sparsity) IS the relational structure.
+Position emerges from relationships, not the other way around.
+
+### Why This Might Work
+
+1. Language IS relational. "The cat sat" works regardless of position 5 or 500.
+2. Removes the length generalization problem entirely (no position to extrapolate).
+3. The model only learns what ACTUALLY matters for prediction.
+4. Simpler — fewer inductive biases, more room for the model to discover structure.
+
+### Why This Probably Won't Work
+
+1. Word ORDER matters in most languages ("dog bites man" ≠ "man bites dog")
+2. Without ANY positional signal, the model can't distinguish permutations
+3. GRU within patches already provides implicit position (sequential processing)
+4. Every successful model uses position encoding — there's a reason
+
+### The Compromise
+
+Use position encoding ONLY within patches (GRU provides this naturally).
+Between patches: NO position encoding. Let routing discover which patches
+are related, not assume nearby patches are more related.
+
+This IS what our v0.4 does for the message passing (window-based = implicit
+position) but NOT for the sparse retrieval (which uses RoPE or top-k scores).
+What if sparse retrieval was PURELY content-based, no position bias at all?
