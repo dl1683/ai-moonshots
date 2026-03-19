@@ -1220,3 +1220,135 @@ after v0.4 production finishes. It's the highest-probability win.
 4. **LONG-TERM**: Build toward Combo 3 or 4 as the full vision
 
 This way we ALWAYS have a working competitive model while exploring novelty.
+
+---
+
+## NOVEL CONCEPT: Adaptive Operation Sequences
+
+### The Insight
+
+All architectures use FIXED operation sequences:
+- Transformer: attention→MLP→attention→MLP→... (same pattern every layer)
+- Jamba: SSM→SSM→SSM→attn→SSM→SSM→SSM→attn→... (fixed alternation)
+- Our v0.4: construct→route→write→construct→route→write→... (fixed loop)
+
+What if the operation sequence was DYNAMIC and CONTENT-DEPENDENT?
+
+Simple input: construct→construct→route→write→readout (5 ops, mostly local)
+Complex input: construct→route→write→route→write→verify→route→readout (8 ops)
+
+The model learns not just WHAT to compute but the META-STRATEGY of HOW.
+
+### Mathematical Formulation
+
+At each step t, a controller outputs a distribution over operations:
+
+```
+op_t = softmax(W_controller · h_global_t)  # Distribution over {F_1..F_7}
+h^{t+1} = Σ_s op_t[s] · F_s(h^t, context)  # Soft mixture (training)
+h^{t+1} = F_{argmax(op_t)}(h^t, context)    # Hard selection (inference)
+```
+
+The operation SEQUENCE is emergent. Different inputs produce different sequences.
+
+### Why This Might Be Better Than Fixed Sequences
+
+1. PARAMETER SHARING: same operations reused in different orders. Fewer params.
+2. ADAPTIVE DEPTH PER OPERATION: more routing rounds for complex text,
+   more construction for novel vocabulary, more verification for reasoning.
+3. OPERATION SEQUENCES ARE INTERPRETABLE: can read "this input used
+   construct→route→route→verify" and understand the model's strategy.
+4. NATURAL CURRICULUM: easy inputs discover short sequences first,
+   complex inputs gradually develop longer sequences during training.
+
+### Connection to Biological Computing
+
+The brain doesn't process in fixed layers. Different cortical circuits
+activate in different SEQUENCES depending on the task:
+- Visual recognition: V1→V2→V4→IT (feedforward)
+- Visual search: V1→V2→V4→IT→attention→V4→V2→V1 (feedback loop)
+- The SEQUENCE changes based on what the task requires.
+
+### Connection to Program Synthesis
+
+An adaptive operation sequence IS a program. The model learns to WRITE
+a program (sequence of operations) for each input. This is differentiable
+program synthesis at the architectural level.
+
+DreamCoder discovers reusable subroutines. Our operations ARE the subroutines.
+The controller learns to compose them into task-specific programs.
+
+### Coherence with Other Components
+
+This NATURALLY integrates with:
+- Kalman variance (Stage 5): variance tells the controller what to do next
+  ("high variance → route more" or "low variance → ready to output")
+- Monotonic advancement: can be soft — mostly advance but occasionally
+  loop back if verification fails
+- OT routing: only invoked WHEN the controller decides routing is needed
+
+### Experiments Needed
+
+1. Does the controller learn NON-TRIVIAL sequences? (Not just "always route")
+2. Do different input types produce different sequences? (Code vs prose)
+3. Does adaptive sequencing beat fixed sequencing at matched compute?
+4. What's the minimum set of operations needed? (Can we prune to 3-4?)
+
+---
+
+## OUTPUT-FIRST DESIGN: What Does Each Prediction Actually Need?
+
+### Decomposition of a Next-Token Prediction
+
+Every prediction requires four information streams:
+1. **Local syntax** (1-5 tokens back): morphology, grammar, punctuation
+2. **Semantic context** (10-50 tokens): topic, theme, narrative flow
+3. **Long-range bindings** (anywhere): pronouns→referents, variables→values
+4. **Parametric knowledge** (in weights): facts, common patterns, reasoning rules
+
+### Mapping to Stages
+
+Each stream maps to a specific stage(s):
+- Stream 1 → Stage 3 (local construction) — GRU within patches
+- Stream 2 → Stage 4 (local msg passing) — neighborhood communication
+- Stream 3 → Stage 4 (sparse retrieval) — content-addressed long-range
+- Stream 4 → Stage 5 (memory/weights) — parametric knowledge in model params
+
+### Design Implication: Separate Heads Per Stream
+
+What if the output head had FOUR sub-heads, each responsible for one stream?
+
+```
+logits = w1*head_syntax(local_features) +
+         w2*head_semantic(msg_features) +
+         w3*head_binding(retrieved_features) +
+         w4*head_knowledge(memory_state)
+```
+
+Each head can be small and specialized. The WEIGHTS (w1-w4) could be
+position-dependent — syntax matters more at function words, bindings
+matter more at pronouns, knowledge matters more at factual claims.
+
+This is like a MIXTURE OF HEADS where each head handles one information stream.
+The mixture weights are determined by the content (what kind of prediction this is).
+
+### Connection to MI Two-Regime Finding
+
+Our MI analysis showed 75% local + 25% long-range. This maps to:
+- Streams 1+2 = ~75% of prediction info (local, handled by Stages 3+4 local)
+- Streams 3+4 = ~25% of prediction info (long-range + parametric)
+
+The architecture should allocate ~75% of compute to local processing
+and ~25% to retrieval/memory — which is what v0.4 already does.
+
+### Why This Matters for System Coherence
+
+If we design each stage to produce the SPECIFIC information stream needed
+by its corresponding output head, the system is maximally coherent:
+- Stage 3 produces syntax features → head_syntax uses them
+- Stage 4 local produces semantic features → head_semantic uses them
+- Stage 4 retrieval produces binding features → head_binding uses them
+- Stage 5 produces knowledge state → head_knowledge uses them
+
+No information is wasted. Every stage knows EXACTLY what it's producing for.
+This is the ultimate coherence: output-driven stage design.
