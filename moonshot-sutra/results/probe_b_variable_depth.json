@@ -1,0 +1,149 @@
+{
+  "probe": "B_variable_depth",
+  "timestamp": "2026-03-19T12:36:42.891444",
+  "hypothesis": "Adaptive depth helps reasoning when compute is matched",
+  "results": [
+    {
+      "model": "fixed_12",
+      "params": 2428672,
+      "accuracy_by_depth": {
+        "2": {
+          "correct": 22,
+          "total": 231,
+          "accuracy": 0.09523809523809523
+        },
+        "1": {
+          "correct": 42,
+          "total": 229,
+          "accuracy": 0.18340611353711792
+        },
+        "7": {
+          "correct": 15,
+          "total": 269,
+          "accuracy": 0.055762081784386616
+        },
+        "8": {
+          "correct": 19,
+          "total": 260,
+          "accuracy": 0.07307692307692308
+        },
+        "5": {
+          "correct": 20,
+          "total": 252,
+          "accuracy": 0.07936507936507936
+        },
+        "6": {
+          "correct": 29,
+          "total": 248,
+          "accuracy": 0.11693548387096774
+        },
+        "4": {
+          "correct": 26,
+          "total": 251,
+          "accuracy": 0.10358565737051793
+        },
+        "3": {
+          "correct": 32,
+          "total": 260,
+          "accuracy": 0.12307692307692308
+        }
+      },
+      "train_time_s": 41.3
+    },
+    {
+      "model": "fixed_24",
+      "params": 4807936,
+      "accuracy_by_depth": {
+        "2": {
+          "correct": 24,
+          "total": 231,
+          "accuracy": 0.1038961038961039
+        },
+        "1": {
+          "correct": 28,
+          "total": 229,
+          "accuracy": 0.1222707423580786
+        },
+        "7": {
+          "correct": 19,
+          "total": 269,
+          "accuracy": 0.07063197026022305
+        },
+        "8": {
+          "correct": 10,
+          "total": 260,
+          "accuracy": 0.038461538461538464
+        },
+        "5": {
+          "correct": 18,
+          "total": 252,
+          "accuracy": 0.07142857142857142
+        },
+        "6": {
+          "correct": 13,
+          "total": 248,
+          "accuracy": 0.05241935483870968
+        },
+        "4": {
+          "correct": 24,
+          "total": 251,
+          "accuracy": 0.09561752988047809
+        },
+        "3": {
+          "correct": 24,
+          "total": 260,
+          "accuracy": 0.09230769230769231
+        }
+      },
+      "train_time_s": 75.7
+    },
+    {
+      "model": "adaptive_24",
+      "params": 247809,
+      "avg_steps": 1.0,
+      "accuracy_by_depth": {
+        "2": {
+          "correct": 11,
+          "total": 231,
+          "accuracy": 0.047619047619047616
+        },
+        "1": {
+          "correct": 20,
+          "total": 229,
+          "accuracy": 0.08733624454148471
+        },
+        "7": {
+          "correct": 8,
+          "total": 269,
+          "accuracy": 0.02973977695167286
+        },
+        "8": {
+          "correct": 7,
+          "total": 260,
+          "accuracy": 0.026923076923076925
+        },
+        "5": {
+          "correct": 8,
+          "total": 252,
+          "accuracy": 0.031746031746031744
+        },
+        "6": {
+          "correct": 8,
+          "total": 248,
+          "accuracy": 0.03225806451612903
+        },
+        "4": {
+          "correct": 13,
+          "total": 251,
+          "accuracy": 0.05179282868525897
+        },
+        "3": {
+          "correct": 8,
+          "total": 260,
+          "accuracy": 0.03076923076923077
+        }
+      },
+      "train_time_s": 70.8
+    }
+  ]
+}
