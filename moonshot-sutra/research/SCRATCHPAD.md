@@ -1140,3 +1140,110 @@ are related, not assume nearby patches are more related.
 This IS what our v0.4 does for the message passing (window-based = implicit
 position) but NOT for the sparse retrieval (which uses RoPE or top-k scores).
 What if sparse retrieval was PURELY content-based, no position bias at all?
+
+---
+
+## FRESH EXPLORATION #5: What if the model was a SIMULATOR, not a predictor?
+
+### The Premise
+
+Current models predict P(next_token | context). They're PREDICTORS.
+But understanding language requires SIMULATING: building a mental model
+of the situation described and running it forward.
+
+"John picked up the ball. He threw it to Mary."
+A predictor: P("Mary" | "He threw it to") = high (pattern matching).
+A simulator: builds a WORLD MODEL with {John: has ball → throws → Mary: catches}.
+The prediction comes FROM the simulation, not from token statistics.
+
+### What's Different
+
+A predictor uses CORRELATIONS: "after 'threw it to', names are likely."
+A simulator uses CAUSATION: "John had the ball, threw it, so Mary has it now."
+
+Correlations break on novel situations. Causation generalizes.
+This is why LLMs hallucinate: they predict plausible-sounding tokens
+without maintaining a consistent world model.
+
+### Architecture Implications
+
+The model's hidden state IS the world model. At each token:
+1. UPDATE the world model (new info from the token)
+2. RUN the world model forward (what follows from current state?)
+3. PREDICT from the simulation (what token describes the next state?)
+
+This is NOT a new idea (world models, JEPA, etc.) but the specific
+framing for LANGUAGE is: the hidden state must be a SIMULATOR STATE,
+not just a feature vector. It tracks entities, relations, and dynamics.
+
+### Connection to Our Work
+
+- Stage 5 (memory write) = world model update
+- Stage 4 (routing) = finding which entities/relations need updating
+- Stage 3 (local) = parsing input into entity/relation changes
+- Stage 7 (verify) = checking simulation consistency
+
+The 7 stages COULD be reinterpreted as a simulation loop.
+But the key insight is: the REPRESENTATION should be a world state
+(entities + relations + dynamics), not an opaque vector.
+
+### Why This Connects to Exploration #1 (Structured Representations)
+
+Exploration #1 proposed: type + content + bindings + confidence + needs.
+That IS a world model state: entities (typed), relationships (bindings),
+uncertainty about the model (confidence), what's missing (needs).
+
+Maybe #1 and #5 are the SAME idea from different angles:
+structured representations = world model states.
+
+---
+
+## FRESH EXPLORATION #6: What if we used ENERGY FUNCTIONS instead of next-token prediction?
+
+### The Premise
+
+Next-token prediction forces LEFT-TO-RIGHT generation.
+But understanding isn't left-to-right. You often need the END
+of a sentence to understand the BEGINNING.
+
+"The bank by the river..." — "bank" is ambiguous until "river" resolves it.
+
+Energy-based models define E(entire_sequence) and find low-energy configs.
+Generation = finding the sequence with lowest energy.
+Understanding = checking that the observed sequence has low energy.
+
+### What's Different From Autoregressive
+
+AR: commit to each token, can't go back. One-directional.
+Energy: evaluate the WHOLE sequence at once. Bidirectional.
+
+This means: the model can use FUTURE context to understand PAST tokens.
+"The bank" at position 1 gets resolved when "river" at position 8 is processed.
+
+### Architecture: Iterative Refinement
+
+Start with noisy/random sequence. Each step: reduce energy everywhere.
+After enough steps: converge to a coherent, low-energy sequence.
+
+This IS diffusion for language (MDLM, SEDD, etc.) but the framing
+is different: not "denoise" but "find the minimum energy configuration."
+
+### Connection to Our Stages
+
+Energy minimization IS our inner loop (Stages 3-5 repeated):
+- Stage 3: local energy reduction (fix local inconsistencies)
+- Stage 4: global energy reduction (fix long-range inconsistencies)
+- Stage 5: update state to reflect lower energy
+
+The "energy" IS the prediction loss at each position.
+Iterative refinement = multiple rounds of message passing.
+Convergence to low energy = our model processing until confident.
+
+### The Problem
+
+Energy-based text generation is SLOW and currently worse than AR.
+But energy-based UNDERSTANDING (scoring existing text) might be
+valuable: use energy as a VERIFIER (Stage 7) even if generation is AR.
+
+Score: is this response LOW ENERGY (coherent, consistent)?
+If not: regenerate or edit.
