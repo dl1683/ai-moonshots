@@ -1522,6 +1522,29 @@ From S7, code reroutes 58% vs prose 44% — code needs more iteration.
 3. Current fixed 8 steps wastes ~50% compute for ~1% quality gain
 4. Immediate optimization: reduce max_steps to 5 (2x faster, ~1% cost)
 
+### Chrome Probe: Entropy Predicts Halting (2026-03-20)
+
+What predicts which positions benefit from more recurrent steps?
+
+| Signal | Correlation with improvement | Direction |
+|--------|-----|-----------|
+| **Entropy at step 2** | **r=0.228** | High entropy → needs more steps |
+| Confidence at step 2 | r=-0.198 | Low confidence → needs more |
+| Loss at step 2 | r=-0.008 | Not predictive |
+
+**Entropy IS the halting signal.** No separate halting network needed — the model's own uncertainty at an intermediate step tells it when to stop. Phase 2 adaptive depth: `if entropy < threshold: freeze position`.
+
+### Stage Differentiation Grows with Training (2026-03-20)
+
+| Training Steps | Kernel Diff (prose vs code) |
+|---------------|---------------------------|
+| 0 | 0.013 |
+| 200 | 0.037 |
+| 1000 | 0.059 |
+| 2000 | **0.074** |
+
+5.8x increase — model learns MORE content-specific strategies over time, not converging to a fixed pattern.
+
 ### CRITICAL BUG: Causal Leakage in Patch Broadcast (2026-03-20)
 
 **Codex audit discovered**: Patch summary (`mean(dim=2)` of all tokens in a patch) was broadcast back to the SAME patch. This means token 0 of a patch sees tokens 1-3 — **future information leaks into current predictions**.
