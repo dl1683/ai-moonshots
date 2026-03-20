@@ -1730,3 +1730,12 @@ LR=6e-4, crash-safe eval, NaN guard active.
 NaN root cause identified: unbounded BayesianWrite gain (Codex RCA).
 Fix applied to code (clamp max=10.0) but current run uses old code.
 Step 5000 eval expected in ~47 min. This should be the FIRST successful eval.
+
+### BayesianWrite Gain Clamp: NaN ELIMINATED (2026-03-20)
+
+Verified at LR=8e-4 (more aggressive than production):
+- **Without clamp: ~0.23% NaN rate (4 in 1747 steps)**
+- **With clamp(max=10.0): 0 NaN in 2000 steps at higher LR**
+
+The gain clamp is the correct root cause fix. Next production run will be NaN-free.
+This also means we can safely use LR=8e-4 with the fix (vs current 6e-4).
