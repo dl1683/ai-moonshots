@@ -1503,6 +1503,25 @@ From S7, code reroutes 58% vs prose 44% — code needs more iteration.
 
 **No other architecture learns different processing strategies per content type with shared parameters.**
 
+### Chrome Probe: Diminishing Returns per Step (2026-03-20)
+
+| Steps | Loss | Marginal Gain |
+|-------|------|--------------|
+| 1 | 8.25 | — |
+| 2 | 7.51 | -9.0% |
+| 3 | 7.18 | -4.4% |
+| 4 | 7.03 | -2.2% |
+| 5 | 6.95 | -1.1% |
+| 8 | 6.90 | -0.1% |
+
+**Steps 1-4: 91% of benefit. Steps 5-8: 9%.** 30% of positions are HURT by more steps.
+
+**Implications:**
+1. Adaptive depth is essential (not optional) — 30% of positions need LESS compute, not more
+2. The verify→reroute loop (Phase 2) would fix the "hurt" positions by detecting when to stop
+3. Current fixed 8 steps wastes ~50% compute for ~1% quality gain
+4. Immediate optimization: reduce max_steps to 5 (2x faster, ~1% cost)
+
 ### CRITICAL BUG: Causal Leakage in Patch Broadcast (2026-03-20)
 
 **Codex audit discovered**: Patch summary (`mean(dim=2)` of all tokens in a patch) was broadcast back to the SAME patch. This means token 0 of a patch sees tokens 1-3 — **future information leaks into current predictions**.
