@@ -1425,6 +1425,20 @@ Combo 5 target: beat Pythia-70m (BPB 1.259) at 49M params.
 
 **Trend: extreme overtraining on curated data is the dominant lever.** SmolLM2-1.7B sees 11T tokens (6.5x Chinchilla). Architecture innovation is secondary to data at this scale — which is precisely the gap Sutra aims to exploit.
 
+### Synthetic Two-Scale Source Test (Controlled Validation)
+
+Source: Two-Scale HMM with K_L=16 local states (p_flip=0.3), K_G=4 global states (p_flip=0.02), vocab=64. Known two-regime MI: crossover at d~3.
+
+| dim | Sutra BPB | Trans BPB | Advantage | Sutra Params | Trans Params |
+|-----|-----------|-----------|-----------|-------------|-------------|
+| 32 | **0.725** | 2.500 | **+71%** | 23K | 71K |
+| 64 | **0.594** | 2.307 | **+74%** | 84K | 241K |
+| 128 | **0.569** | 2.191 | **+74%** | 315K | 875K |
+
+**Sutra is 3.4-3.9x better on a source with designed two-regime structure.** The advantage is consistent (~74%) and independent of scale. The transformer barely learns the pattern because it uses the same attention mechanism for both local and global correlations, wasting capacity.
+
+This is exactly the Codex-recommended controlled source test. Next: vary the MI profile (p_L, p_G) and show the advantage correlates with the local/global separation.
+
 ### Combo 5 Production Training LAUNCHED (2026-03-19)
 
 Config: 49.2M params, dim=768, tied weights, fixed 4 rounds, bf16
