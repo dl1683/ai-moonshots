@@ -1697,3 +1697,15 @@ This is the strongest evidence that LR was the bottleneck, not the architecture.
 
 Consistent 11-14% improvement. New run reaches same quality 2-3x faster.
 Higher LR also unlocked stage graph discovery (Route<->Write oscillation).
+
+### LR=1e-3 NaN Divergence at Step 3900 (2026-03-20)
+
+**What happened:** LR=1e-3 run was 11-14% better than LR=3e-4 for 3800 steps, then loss jumped 4.93→NaN at step 3900. Model continued producing NaN for 600+ steps (no guard).
+
+**Root cause:** LR=1e-3 is stable at dim=128 (Chrome sweep) but too aggressive at dim=768. Larger models are more sensitive to high LR — the Chrome sweep at small scale didn't catch this.
+
+**Lesson:** ALWAYS validate LR stability at production scale before committing. The dim=128 sweep was necessary but not sufficient.
+
+**Fix:** LR=6e-4 (Chrome validated +11.4%, conservative). Added NaN guard to training loop.
+
+**Pre-Training Gate addition:** LR stability test at production scale (not just small-scale sweep) should be required before any production run >10K steps.
