@@ -34,7 +34,7 @@ K_RETRIEVAL = 8
 SEQ_LEN = 512
 BATCH_SIZE = 8         # v0.5 needs more VRAM than v0.4 (6 recurrent steps)
 GRAD_ACCUM = 8         # Effective batch = 64 (same, more accumulation)
-LR = 1e-3                # Chrome validated: +13.2% BPT over 3e-4, matches Pythia-70m
+LR = 6e-4                # 1e-3 caused NaN at step 3900. 6e-4: +11.4% BPT, stable
 WARMUP_STEPS = 1000
 MAX_STEPS = 100000
 EVAL_EVERY = 5000
@@ -192,6 +192,16 @@ def main():
         loss_count += 1
 
         if loss_count % GRAD_ACCUM == 0:
+            # NaN guard (learned from LR=1e-3 divergence at step 3900)
+            if torch.isnan(loss) or any(
+                p.grad is not None and torch.isnan(p.grad).any()
+                for p in model.parameters()
+            ):
+                print(f"WARNING: NaN at step {step}, skipping", flush=True)
+                opt.zero_grad()
+                loss_count = 0
+                running_loss = 0
+                continue
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             opt.zero_grad()
