@@ -2311,3 +2311,15 @@ Let STAR-style search find the optimal stage processors rather than hand-designi
 - [Fruit fly brains inform search engines (Salk Institute)](https://www.salk.edu/news-release/fruit-fly-brains-inform-search-engines-future/)
 - [Sparse coding in mushroom body (eNeuro)](https://www.eneuro.org/content/7/2/ENEURO.0305-18.2020)
 - [LIV operators topic](https://www.emergentmind.com/topics/linear-input-varying-systems-livs)
+
+### Chrome v0.5.4: Complex Embeddings HURT at Small Scale (2026-03-20)
+
+| Arm | BPT | vs baseline |
+|-----|-----|-------------|
+| A: v0.5.3 baseline | 10.85 | — |
+| B: Complex embeddings | 14.81 | **-36.4%** |
+| C: Complex + Hermitian | 13.26 | **-22.2%** |
+
+Complex phase encoding adds too much optimization difficulty at dim=128/300 steps.
+Does NOT kill the idea — may work at larger scale — but NOT a quick win.
+Next Chrome: try P0 (CfC time constants) or P2 (expand-then-sparsify) instead.
