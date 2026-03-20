@@ -2335,3 +2335,14 @@ Input-dependent transition speed adds optimization difficulty at small scale.
 Pattern: ALL new mechanisms (complex, CfC, halting) hurt at dim=128/300 steps.
 Only scratchpad (+10.2%) works at small scale.
 Hypothesis: novel mechanisms need LARGER models + LONGER training to pay off.
+
+### IMPORTANT: Retest at Scale (DO NOT DROP) (2026-03-20)
+
+These mechanisms FAILED at dim=128/300 steps but MUST be retested at dim=1024+:
+- Complex phase embeddings (-36%): may work when model has capacity for complex math
+- CfC liquid time constants (-14%): may work when stages are more differentiated
+- Lambda halting (AUROC 0.36): may calibrate after longer training
+- Dual-teacher absorption (no benefit at 67M): designed for 200M+
+
+DO NOT reflexively drop these at scale. Retest each when dim=1024.
+Small-scale Chrome probes have a BIAS against complex mechanisms.
