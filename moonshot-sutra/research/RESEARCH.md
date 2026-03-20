@@ -1342,3 +1342,39 @@ Bug found and fixed: tied weights caused logit explosion (std=27.7). Fix: scale 
 | **Pythia-160m** | **162M** | **3.855** | **1.063** |
 
 Combo 5 target: beat Pythia-70m (BPB 1.259) at 49M params.
+
+---
+
+## Chrome Cycle 6: Competitive Landscape (2026-03-19)
+
+### Research Sweep: Latest Efficient LM Architectures (Jan-Mar 2025)
+
+**Key competitors at our scale:**
+- SmolLM2-360M (4T tokens): HellaSwag 54.5%, ARC 53% — our nearest competitor
+- RWKV-7 "Goose" 430M: Pile perplexity 13.6, competitive with transformers
+- Ouro/LoopLM 1.4B: looped model matches 4B transformer (2-3x param efficiency)
+
+**Critical insight: Message passing in LMs is UNEXPLORED territory.**
+"Nobody appears to have published a pure language model where the core computation is message-passing between token representations." — This is Sutra's unique lane.
+
+**Ouro validates our approach:** Recurrence doesn't increase knowledge storage (~2 bits/param for both looped and non-looped) but dramatically enhances **knowledge manipulation** on multi-hop reasoning. Sutra's iterative message passing rounds ARE this kind of iterative refinement.
+
+**Key papers to reference:**
+- Ouro/LoopLM (arXiv 2510.25741): looped 1.4B matches 4B, recurrence = manipulation
+- RWKV-7 (arXiv 2503.14456): 2.9B matches Qwen2.5 on 1/3 the tokens
+- Mamba-3 (arXiv 2603.15569): complex SSMs, half state size for same quality
+- minGRU (arXiv 2410.01201): stripped GRUs, 175x faster, competitive with Mamba
+- SmolLM2 (arXiv 2502.02737): extreme overtraining (11T tokens for 1.7B)
+- MiniCPM (ICLR 2025): WSD scheduler, optimal data/model ratios much higher than Chinchilla
+- DEER (arXiv 2504.15895): dynamic early exit, 19-80% CoT reduction + accuracy improvement
+- MoR (NeurIPS 2025): mixture of recursions, 2x inference throughput
+
+**Trend: extreme overtraining on curated data is the dominant lever.** SmolLM2-1.7B sees 11T tokens (6.5x Chinchilla). Architecture innovation is secondary to data at this scale — which is precisely the gap Sutra aims to exploit.
+
+### Combo 5 Production Training LAUNCHED (2026-03-19)
+
+Config: 49.2M params, dim=768, tied weights, fixed 4 rounds, bf16
+Data: 1.697B GPT-2 BPE tokens (full MiniPile)
+Speed: 41K tok/s (10x faster than byte-level 475M model)
+Running alongside byte-level training (both on same GPU, 19.9/24.5GB VRAM)
+First eval at step 5000 (~1 hour), full training ~22 hours
