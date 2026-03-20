@@ -170,11 +170,15 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained("gpt2")
 
     # Model (fixed rounds per Codex review: PonderNet halt was broken)
+    # Weight tying saves 44% params; freed budget goes to 2-layer GRU
+    # (theorem-optimal: 72% local params, achieved with deeper GRU)
     model = SutraV04(
         vocab_size=VOCAB_SIZE, dim=DIM, patch_size=PATCH_SIZE,
         max_rounds=MAX_ROUNDS, k_retrieval=K_RETRIEVAL, max_seq=SEQ_LEN,
         use_kan=False,         # MLP for token-level (KAN neutral at token scale)
-        adaptive_halt=False    # Fixed rounds (Codex: halt math was wrong)
+        adaptive_halt=False,   # Fixed rounds (Codex: halt math was wrong)
+        tie_weights=True,      # Share emb/head (saves 44% params)
+        n_gru_layers=2,        # More local capacity (theorem: 72% local optimal)
     ).to(DEVICE)
 
     params = model.count_params()

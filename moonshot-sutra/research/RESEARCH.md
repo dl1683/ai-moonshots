@@ -1280,3 +1280,29 @@ Then the ratio of scaling exponents between a hierarchical architecture (separat
 3. If a strong transformer baseline (flash attention, RoPE, etc.) closes the gap, it's a baseline artifact
 
 **Status: Promising but unproven.** Need rigorous derivation of the MI-to-loss-exponent connection. The key step missing is: why does processing local/global MI with matched-regime params give e_L/e_G loss scaling? This requires an approximation theory result (e.g., how many params to approximate a function with alpha-decaying correlations).
+
+### Matched-Param Scaling Results (3 seeds, 1000 steps)
+
+| dim | Sutra BPB | Trans BPB | Advantage | z-score | Sutra Params | Trans Params |
+|-----|-----------|-----------|-----------|---------|-------------|-------------|
+| 64  | 8.914+/-0.006 | 10.104+/-0.026 | **+11.8%** | 44.6 | 6,508,288 | 6,515,648 |
+| 128 | 7.664+/-0.014 | 9.562+/-0.036 | **+19.8%** | 49.1 | 13,164,032 | 13,129,600 |
+| 256 | 6.070+/-0.079 | 9.009+/-0.043 | **+32.6%** | 32.7 | 26,917,888 | 26,652,416 |
+
+**Scaling exponents**: Sutra N^(-0.271), Transformer N^(-0.081). Ratio: 3.33 (theorem pred: 2.35, 42% error).
+
+**CAVEAT**: At these scales, embedding+head are ~96% of params. Transformer gets only 1 layer at matched params, making it structurally crippled. This is partly unfair — need to test at larger scales where transformer gets 4+ layers. But it IS a valid comparison of "what architecture works best at this budget?"
+
+**Key insight**: At small scales where embedding dominates, the architecture's INDUCTIVE BIAS matters enormously because there are so few processing params. Sutra's GRU+MsgPass structure extracts much more from those few processing params than a single attention layer.
+
+### Weight Tying Discovery
+
+v0.4 at dim=768 with 50K vocab: **87.9% of params are in embedding + head** (38.6M each). Only 10.6M (12.1%) are processing params.
+
+Weight tying (sharing embedding/head weights) saves 44% of total params:
+- Original: 87.8M
+- Tied: 49.2M
+- Tied + 2-layer GRU: 52.8M
+- Tied + 3-layer GRU: 56.3M
+
+**Implication**: With weight tying, we can have a 53M model with MORE processing capacity than the original 88M model. This is being tested in the Combo 5 production script.
