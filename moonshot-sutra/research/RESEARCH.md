@@ -1595,3 +1595,17 @@ Verified: changing token 6 has zero effect on positions 0-5 (strict causality co
 
 **Restarted training from scratch** with causal fix. v2 training at 102K tok/s (full GPU).
 Step 200 loss 8.52 (higher than v1's 7.04 — expected since no cheating).
+
+### v0.5 SSM Step 5000 Eval (2026-03-20)
+
+**Test BPT: 7.0663** (67M params, 5000 steps, ~160M tokens seen)
+**Generation: COHERENT** — real English phrases, no collapse
+
+Sample: "even though the United States was the best... the trial court... however..."
+
+Compare:
+- Pythia-70m: BPT 3.56 (70M params, 300B tokens — 1800x more data)
+- v0.5 SSM needs ~100K steps to approach Pythia quality
+
+The Stage-Superposition State Machine produces coherent text at step 5000.
+No "!!!" collapse, no padding bug, no causality leak. The vision WORKS.
