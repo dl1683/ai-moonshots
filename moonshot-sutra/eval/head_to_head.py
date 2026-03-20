@@ -1,17 +1,18 @@
 """Head-to-head BPB comparison: Sutra vs competitors on same test set.
 
 Runs ALL models on the SAME test text and computes byte-level perplexity.
-This is the only fair comparison between byte-level and token-level models.
+Supports both byte-level Sutra and token-level Combo 5.
 
 Usage:
-    python eval/head_to_head.py --sutra-model results/sutra_production_best.pt
+    python eval/head_to_head.py --sutra-model results/combo5_best.pt --mode token
+    python eval/head_to_head.py --competitors EleutherAI/pythia-160m,EleutherAI/pythia-410m
 """
 
+import argparse
 import json
 import math
 import sys
 import time
-import urllib.request
 from pathlib import Path
 
 import torch
@@ -21,10 +22,11 @@ REPO = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO / "code"))
 
 
-def compute_sutra_bpb(model_path, test_text, dim=5120, seq_len=512):
-    """Compute BPB for Sutra model."""
+def compute_sutra_bpb_byte(model_path, test_text, dim=5120, seq_len=512):
+    """Compute BPB for byte-level Sutra model."""
     from sutra_v04 import SutraV04
-    model = SutraV04(dim=dim, patch_size=4, max_rounds=6, k_retrieval=16, max_seq=seq_len)
+    model = SutraV04(dim=dim, patch_size=4, max_rounds=6, k_retrieval=16,
+                     max_seq=seq_len, adaptive_halt=False)
     model.load_state_dict(torch.load(model_path, weights_only=True, map_location="cuda"))
     model = model.cuda().eval()
 
@@ -37,7 +39,8 @@ def compute_sutra_bpb(model_path, test_text, dim=5120, seq_len=512):
             y = data[i + 1:i + seq_len + 1].unsqueeze(0).cuda()
             logits, _ = model(x)
             Tc = min(logits.size(1), y.size(1))
-            loss = F.cross_entropy(logits[:, :Tc].reshape(-1, 256), y[:, :Tc].reshape(-1), reduction="sum")
+            loss = F.cross_entropy(logits[:, :Tc].reshape(-1, 256),
+                                   y[:, :Tc].reshape(-1), reduction="sum")
             total_loss += loss.item()
             total_bytes += y[:, :Tc].numel()
 
@@ -46,19 +49,50 @@ def compute_sutra_bpb(model_path, test_text, dim=5120, seq_len=512):
     return total_loss / (total_bytes * math.log(2))
 
 
-def compute_ollama_bpb(model_name, test_text, chunk_size=2000):
-    """Compute BPB for an ollama model by measuring log-probability of test text.
+def compute_sutra_bpb_token(model_path, test_text, dim=768, seq_len=512,
+                            tie_weights=True, n_gru_layers=2):
+    """Compute BPB for token-level Combo 5 model."""
+    from sutra_v04 import SutraV04
+    from transformers import AutoTokenizer
 
-    We use the completion API and measure cross-entropy on the model's predictions.
-    This is an APPROXIMATION since we can't get per-token log-probs from ollama easily.
-    Instead we measure: can the model predict the next chunk given context?
-    """
-    # For now: use generation quality as proxy
-    # TODO: compute actual log-probs via HuggingFace for fair comparison
+    tokenizer = AutoTokenizer.from_pretrained("gpt2")
+    vocab_size = tokenizer.vocab_size
 
-    # Instead, let's use HuggingFace models directly for accurate BPB
-    print(f"  {model_name}: using HuggingFace for accurate BPB (TODO)")
-    return None
+    model = SutraV04(vocab_size=vocab_size, dim=dim, patch_size=4, max_rounds=4,
+                     k_retrieval=8, max_seq=seq_len, use_kan=False,
+                     adaptive_halt=False, tie_weights=tie_weights,
+                     n_gru_layers=n_gru_layers)
+    state = torch.load(model_path, weights_only=True, map_location="cuda")
+    model.load_state_dict(state)
+    model = model.cuda().eval()
+
+    # Tokenize test text
+    tokens = tokenizer.encode(test_text)
+    data = torch.tensor(tokens, dtype=torch.long)
+
+    total_loss = total_tokens = 0
+    with torch.no_grad():
+        for i in range(0, len(data) - seq_len - 1, seq_len):
+            x = data[i:i + seq_len].unsqueeze(0).cuda()
+            y = data[i + 1:i + seq_len + 1].unsqueeze(0).cuda()
+            with torch.amp.autocast("cuda", dtype=torch.bfloat16):
+                logits, _ = model(x)
+            Tc = min(logits.size(1), y.size(1))
+            loss = F.cross_entropy(logits[:, :Tc].float().reshape(-1, vocab_size),
+                                   y[:, :Tc].reshape(-1), reduction="sum")
+            total_loss += loss.item()
+            total_tokens += y[:, :Tc].numel()
+
+    # Convert token-level CE to byte-level BPB
+    text_bytes = len(test_text.encode("utf-8"))
+    text_tokens = len(tokens)
+    bytes_per_token = text_bytes / text_tokens
+    bpt = total_loss / (total_tokens * math.log(2))
+    bpb = bpt / bytes_per_token
+
+    del model
+    torch.cuda.empty_cache()
+    return {"bpb": bpb, "bpt": bpt, "bytes_per_token": bytes_per_token}
 
 
 def compute_hf_bpb(model_name, test_text, max_chars=50000):
@@ -69,7 +103,7 @@ def compute_hf_bpb(model_name, test_text, max_chars=50000):
         print("  transformers not installed")
         return None
 
-    print(f"  Loading {model_name}...")
+    print(f"  Loading {model_name}...", flush=True)
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(
         model_name, torch_dtype=torch.float16, device_map="auto", trust_remote_code=True
@@ -91,65 +125,76 @@ def compute_hf_bpb(model_name, test_text, max_chars=50000):
             y = chunk[:, 1:]
             outputs = model(x)
             logits = outputs.logits
-            loss = F.cross_entropy(logits.reshape(-1, logits.size(-1)), y.reshape(-1), reduction="sum")
+            loss = F.cross_entropy(logits.reshape(-1, logits.size(-1)),
+                                   y.reshape(-1), reduction="sum")
             total_loss += loss.item()
             total_tokens += y.numel()
 
     # Convert token-level CE to byte-level BPB
-    # BPB = CE_tokens * tokens_per_byte / ln(2)
     text_bytes = len(text.encode("utf-8"))
     text_tokens = total_tokens
-    tokens_per_byte = text_tokens / text_bytes
-    bpb = (total_loss / total_tokens) * tokens_per_byte / math.log(2)
+    bytes_per_token = text_bytes / text_tokens if text_tokens > 0 else 1
+    bpt = total_loss / (total_tokens * math.log(2)) if total_tokens > 0 else 0
+    bpb = bpt / bytes_per_token
 
     del model
     torch.cuda.empty_cache()
-    return bpb
+    return {"bpb": bpb, "bpt": bpt, "bytes_per_token": bytes_per_token}
 
 
 def main():
-    import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--sutra-model", help="Path to Sutra checkpoint")
+    parser.add_argument("--mode", default="token", choices=["byte", "token"])
+    parser.add_argument("--dim", type=int, default=768)
     parser.add_argument("--test-text", default=str(REPO / "data" / "corpus_test.txt"))
-    parser.add_argument("--competitors", default="EleutherAI/pythia-410m",
+    parser.add_argument("--competitors",
+                        default="EleutherAI/pythia-160m,EleutherAI/pythia-410m",
                         help="Comma-separated HF model names")
     args = parser.parse_args()
 
     # Load test text
     with open(args.test_text, "r", encoding="utf-8") as f:
         test_text = f.read()[:50000]
-    print(f"Test text: {len(test_text):,} chars")
+    print(f"Test text: {len(test_text):,} chars, {len(test_text.encode('utf-8')):,} bytes")
 
     results = {}
 
     # Sutra
     if args.sutra_model and Path(args.sutra_model).exists():
-        print(f"\nEvaluating Sutra...")
-        bpb = compute_sutra_bpb(args.sutra_model, test_text)
-        results["Sutra-475M"] = bpb
-        print(f"  Sutra-475M BPB: {bpb:.4f}")
+        print(f"\nEvaluating Sutra ({args.mode}-level)...", flush=True)
+        if args.mode == "byte":
+            bpb = compute_sutra_bpb_byte(args.sutra_model, test_text, dim=args.dim)
+            results["Sutra (byte)"] = {"bpb": bpb}
+        else:
+            r = compute_sutra_bpb_token(args.sutra_model, test_text, dim=args.dim)
+            results["Sutra Combo5 (token)"] = r
+        print(f"  BPB: {results[list(results.keys())[0]]['bpb']:.4f}")
 
     # Competitors
     for model_name in args.competitors.split(","):
         model_name = model_name.strip()
         if not model_name:
             continue
-        print(f"\nEvaluating {model_name}...")
-        bpb = compute_hf_bpb(model_name, test_text)
-        if bpb is not None:
-            results[model_name] = bpb
-            print(f"  {model_name} BPB: {bpb:.4f}")
+        print(f"\nEvaluating {model_name}...", flush=True)
+        r = compute_hf_bpb(model_name, test_text)
+        if r is not None:
+            results[model_name] = r
+            print(f"  BPB: {r['bpb']:.4f}")
 
     # Summary
-    print(f"\n{'='*50}")
-    print(f"HEAD-TO-HEAD BPB COMPARISON")
-    print(f"{'='*50}")
-    for name, bpb in sorted(results.items(), key=lambda x: x[1]):
-        print(f"  {name:30s}: {bpb:.4f}")
+    print(f"\n{'='*60}")
+    print(f"HEAD-TO-HEAD BPB COMPARISON (lower is better)")
+    print(f"{'='*60}")
+    for name, r in sorted(results.items(), key=lambda x: x[1]["bpb"]):
+        bpb = r["bpb"]
+        bpt = r.get("bpt", "N/A")
+        bpt_str = f"{bpt:.4f}" if isinstance(bpt, float) else bpt
+        print(f"  {name:40s}: BPB={bpb:.4f}  BPT={bpt_str}")
 
     with open(REPO / "results" / "head_to_head.json", "w") as f:
         json.dump(results, f, indent=2)
+    print(f"\nSaved to results/head_to_head.json")
 
 
 if __name__ == "__main__":

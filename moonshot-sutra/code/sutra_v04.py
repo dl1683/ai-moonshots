@@ -265,7 +265,8 @@ class SutraV04(nn.Module):
         final = self.ln(final)
         if self.tie_weights:
             # Use embedding weight matrix transposed as output projection
-            return F.linear(final, self.patch_proc.emb.weight), kl_loss
+            # Scale by 1/sqrt(dim) to prevent logit explosion from N(0,1) embeddings
+            return F.linear(final, self.patch_proc.emb.weight) / math.sqrt(self.dim), kl_loss
         return self.head(final), kl_loss
 
     def count_params(self):
