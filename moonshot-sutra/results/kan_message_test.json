@@ -1,0 +1,1 @@
+{"experiment":"kan_vs_mlp_messages","mlp":{"bpb":2.4072,"params":82624},"kan_style":{"bpb":2.1921,"params":107328},"improvement":"9% better BPB with 30% more params","verdict":"KAN-style edges improve message quality. Worth exploring at scale."}
