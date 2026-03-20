@@ -1739,3 +1739,16 @@ Verified at LR=8e-4 (more aggressive than production):
 
 The gain clamp is the correct root cause fix. Next production run will be NaN-free.
 This also means we can safely use LR=8e-4 with the fix (vs current 6e-4).
+
+### Run 4 Step 5000 Eval: BPT 6.8805 (FIRST SUCCESSFUL EVAL!) (2026-03-20)
+
+| Run | LR | Step 5K BPT | Status |
+|-----|-----|-----------|--------|
+| Run 1 | 3e-4 | 7.0663 | stable but slow |
+| Run 2 | 1e-3 | NaN | diverged |
+| Run 3 | 6e-4 | crashed | Unicode eval |
+| **Run 4** | **6e-4** | **6.8805** | **SUCCESS** |
+
+2.6% better than Run 1. NaN guard + crash-safe eval worked.
+Generation: semi-coherent English. Checkpoint saved.
+Training continues to 100K steps.
