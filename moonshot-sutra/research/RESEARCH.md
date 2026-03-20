@@ -1684,3 +1684,16 @@ Pragmatic next step: restart v0.5 with LR=1e-3, defer v0.5.1.
 **The old LR was suppressing the architecture's potential.** At 1e-3, the model
 organically discovers the stage graph structure. At 3e-4, it hides in Local stage.
 This is the strongest evidence that LR was the bottleneck, not the architecture.
+
+### v0.5 LR=1e-3 Restart: 3x Faster Convergence (2026-03-20)
+
+| Step | New (1e-3) | Old (3e-4) | Improvement | Old equivalent step |
+|------|-----------|-----------|-------------|-------------------|
+| 500 | 6.45 | 7.45 | +13.4% | ~1100 (2.2x) |
+| 1000 | 5.50 | 6.18 | +11.0% | ~2000 (2.0x) |
+| 1400 | 5.08 | 5.91 | +14.0% | ~3600 (2.6x) |
+| 1900 | 4.82 | 5.55 | +13.2% | ~5600 (3.0x) |
+| 2500 | 4.71 | 5.34 | +11.8% | ~6500 (2.6x) |
+
+Consistent 11-14% improvement. New run reaches same quality 2-3x faster.
+Higher LR also unlocked stage graph discovery (Route<->Write oscillation).
