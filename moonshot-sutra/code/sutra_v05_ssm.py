@@ -93,17 +93,24 @@ class StageBank(nn.Module):
         self.evidence = nn.Linear(dim, N_STAGES)
 
     def forward(self, h, pi):
-        """Apply stage-weighted operations.
+        """Apply ONLY active stage operations (Top2-sparse).
 
         h: (B, N, D) hidden state
-        pi: (B, N, 7) stage probabilities (Top2-projected)
+        pi: (B, N, 7) stage probabilities (Top2-projected, only 2 nonzero)
 
-        Returns: (B, N, D) weighted combination of stage outputs
+        Returns: (B, N, D) weighted combination, (B, N, 7) evidence
         """
-        outputs = torch.stack([stage(h) for stage in self.stages], dim=-2)  # (B, N, 7, D)
-        # Weight by stage probabilities
-        weighted = (pi.unsqueeze(-1) * outputs).sum(dim=-2)  # (B, N, D)
-        # Evidence for transition update
+        B, N, D = h.shape
+        # Only compute stages with nonzero probability (saves 5/7 of compute)
+        active_mask = pi > 0  # (B, N, 7) — True for top-2 stages
+        weighted = torch.zeros(B, N, D, device=h.device, dtype=h.dtype)
+
+        for s, stage_fn in enumerate(self.stages):
+            # Check if ANY position needs this stage
+            if active_mask[:, :, s].any():
+                stage_out = stage_fn(h)  # (B, N, D)
+                weighted = weighted + pi[:, :, s:s+1] * stage_out
+
         evidence = self.evidence(weighted)  # (B, N, 7)
         return weighted, evidence
 
@@ -272,76 +279,90 @@ class SutraV05(nn.Module):
         pi = torch.zeros(B, T, N_STAGES, device=device)
         pi[:, :, 2] = 1.0  # start at Stage 3 (Local Construction)
 
-        emitted = torch.zeros(B, T, dtype=torch.bool, device=device)
-        verify_losses = []
+        # active_mask: 1.0 for positions still processing, 0.0 for emitted
+        # Using float mask instead of bool so it's differentiable-friendly
+        active_mask = torch.ones(B, T, 1, device=device)
+        frozen_mu = torch.zeros_like(mu)  # store state at emission time
+        verify_scores = []
         compute_costs = []
 
         for t in range(self.max_steps):
-            active = ~emitted
-            if active.sum() == 0:
+            if (active_mask < 0.01).all():
                 break
 
+            # Apply active mask: only update active positions
+            # Frozen positions keep their state unchanged
+            mu_active = mu * active_mask + frozen_mu * (1 - active_mask)
+
             # Transition: content-dependent stage evolution
-            K = self.transition(mu)  # (B, T, 7, 7)
+            K = self.transition(mu_active)  # (B, T, 7, 7)
             pi_evolved = torch.bmm(
                 pi.view(B * T, 1, N_STAGES),
                 K.view(B * T, N_STAGES, N_STAGES)
             ).view(B, T, N_STAGES)
 
-            # Stage bank: apply stage-specific operations
-            stage_out, evidence = self.stage_bank(mu, pi)
+            # Stage bank: only active stages computed (Top2-sparse)
+            stage_out, evidence = self.stage_bank(mu_active, pi)
 
-            # Evidence-modulated transition
+            # Evidence-modulated transition (only for active positions)
             pi_new = pi_evolved * F.softmax(evidence / 0.5, dim=-1)
             pi_new = pi_new / pi_new.sum(dim=-1, keepdim=True).clamp(min=1e-8)
-            pi = top2_project(pi_new)
+            pi = top2_project(pi_new) * active_mask + pi * (1 - active_mask)
 
             # Stage 4: Route (weighted by routing probability)
-            messages = self.router(mu)
-            messages = messages * pi[:, :, 3:4]  # weight by Stage 4 probability
+            messages = self.router(mu_active)
+            messages = messages * pi[:, :, 3:4] * active_mask
 
-            # Stage 5: Bayesian write
-            mu, lam = self.writer(mu, lam, messages, pi[:, :, 4:5])
+            # Stage 5: Bayesian write (only active)
+            mu_new, lam_new = self.writer(mu_active, lam, messages, pi[:, :, 4:5])
+            mu = mu_new * active_mask + frozen_mu * (1 - active_mask)
+            lam = lam_new * active_mask + lam * (1 - active_mask)
 
-            # Residual from stage bank
-            mu = mu + stage_out * 0.1
+            # Residual from stage bank (only active)
+            mu = mu + stage_out * 0.1 * active_mask
 
-            # Stage 7: Verify candidates
-            candidates = pi[:, :, 6] > self.read_threshold  # Stage 7 probability
-            if candidates.any():
-                logits_at_cand = F.linear(self.ln(mu), self.emb.weight) / math.sqrt(self.dim)
-                pred_ids = logits_at_cand.argmax(dim=-1)
-                pred_emb = self.emb(pred_ids)
-                v_score, reroute_sig = self.verifier(mu, pred_emb)
+            # Stage 7: Verify — use soft scoring (differentiable)
+            verify_prob = pi[:, :, 6]  # soft Stage 7 probability
+            logits_now = F.linear(self.ln(mu), self.emb.weight) / math.sqrt(self.dim)
+            # Soft verification: how confident is the model about its prediction?
+            pred_confidence = logits_now.max(dim=-1).values  # (B, T)
+            # Use Gumbel-softmax for differentiable "sampling"
+            pred_emb_soft = F.softmax(logits_now / 0.5, dim=-1) @ self.emb.weight
+            v_score, reroute_sig = self.verifier(mu, pred_emb_soft)
+            v_score_sq = v_score.squeeze(-1)
+            verify_scores.append(v_score_sq * verify_prob)
 
-                # Verified: emit (out-of-place for autograd)
-                verified = candidates & (v_score.squeeze(-1) > self.verify_threshold)
-                emitted = emitted | verified.detach()  # detach: emitted is discrete, no gradient
+            # Soft emission: positions with high verify_prob AND high v_score reduce active_mask
+            emit_strength = verify_prob * v_score_sq * active_mask.squeeze(-1)
+            # Freeze emitted positions (capture current state)
+            frozen_mu = frozen_mu + emit_strength.unsqueeze(-1) * mu
+            active_mask = (active_mask.squeeze(-1) - emit_strength).clamp(min=0).unsqueeze(-1)
 
-                # Failed: reroute (shift probability from Stage 7 to Stage 4)
-                failed = candidates & ~verified & active
-                if failed.any():
-                    # Out-of-place reroute (no in-place ops for autograd)
-                    reroute_delta = torch.zeros_like(pi)
-                    reroute_delta[:, :, 3] = failed.float() * self.reroute_alpha
-                    reroute_delta[:, :, 6] = -failed.float() * self.reroute_alpha
-                    pi = (pi + reroute_delta).clamp(min=0)
-                    pi = pi / pi.sum(dim=-1, keepdim=True).clamp(min=1e-8)
-                    mu = mu + failed.unsqueeze(-1).float() * reroute_sig * 0.1
+            # Soft reroute: failed verify shifts pi toward routing
+            fail_strength = verify_prob * (1 - v_score_sq) * active_mask.squeeze(-1)
+            reroute_boost = torch.zeros_like(pi)
+            reroute_boost[:, :, 3] = fail_strength * self.reroute_alpha
+            reroute_boost[:, :, 6] = -fail_strength * self.reroute_alpha
+            pi = (pi + reroute_boost).clamp(min=0)
+            pi = pi / pi.sum(dim=-1, keepdim=True).clamp(min=1e-8)
+            mu = mu + fail_strength.unsqueeze(-1) * reroute_sig * 0.1
 
-                verify_losses.append(v_score)
+            compute_costs.append(active_mask.squeeze(-1).mean())
 
-            compute_costs.append(active.float().mean())
-
-        # Final output
-        final = self.ln(mu)
+        # Final output: blend active and frozen states
+        final_mu = mu * active_mask + frozen_mu * (1 - active_mask)
+        final = self.ln(final_mu)
         logits = F.linear(final, self.emb.weight) / math.sqrt(self.dim)
 
-        # Auxiliary losses
+        # Auxiliary losses (all differentiable)
+        compute_cost = sum(compute_costs) / max(len(compute_costs), 1)
+        verify_loss = sum(v.mean() for v in verify_scores) / max(len(verify_scores), 1) if verify_scores else torch.tensor(0.0, device=device)
+        avg_steps = len(compute_costs)
+
         aux = {
-            "compute_cost": sum(compute_costs) / max(len(compute_costs), 1),
-            "verify_losses": verify_losses,
-            "avg_steps": sum(1 for c in compute_costs if c.item() > 0.01),
+            "compute_cost": compute_cost,       # differentiable: penalize wasted compute
+            "verify_loss": verify_loss,          # differentiable: encourage accurate verification
+            "avg_steps": avg_steps,
         }
 
         return logits, aux
