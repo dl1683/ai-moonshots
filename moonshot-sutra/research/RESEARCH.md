@@ -1791,3 +1791,13 @@ Lesson: small-scale probes can be WRONG about recurrence depth.
 The Bayesian precision system isn't calibrated at step 5000.
 **DEPRIORITIZE adaptive halting.** Focus on making the base model better first.
 May revisit at step 50K+ when the model is more trained.
+
+### Step 10000 Eval: BPT 6.7841 (2026-03-20)
+
+| Step | BPT | Improvement | Generation Quality |
+|------|-----|-----------|-------------------|
+| 5K | 6.8805 | baseline | semi-coherent fragments |
+| **10K** | **6.7841** | **-1.4%** | scientific language, better coherence |
+
+Fit predicted 6.59 at 10K, actual 6.78 — model slightly slower than extrapolation.
+Training continues toward 100K. Next eval at step 15K.
