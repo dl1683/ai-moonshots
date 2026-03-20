@@ -1,0 +1,1 @@
+{"experiment":"kalman_calibration","pearson_r":-0.119,"auroc":0.479,"verdict":"KILL. Variance does NOT predict errors. Below chance (0.5). Kill Kalman direction."}
