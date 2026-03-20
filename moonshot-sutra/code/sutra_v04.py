@@ -256,9 +256,8 @@ class SutraV04(nn.Module):
 
         # Masked mean pooling: exclude padding positions in last patch
         if pad_len > 0:
-            # Create mask: 1 for real tokens, 0 for padding
             mask = torch.ones(B, n_patches, P, 1, device=x.device)
-            mask[:, -1, P - pad_len:, :] = 0  # mask padding in last patch
+            mask[:, -1, P - pad_len:, :] = 0
             summaries = self.summarize((local_features * mask).sum(dim=2) / mask.sum(dim=2).clamp(min=1))
         else:
             summaries = self.summarize(local_features.mean(dim=2))
@@ -266,8 +265,13 @@ class SutraV04(nn.Module):
         retrieved = self.retrieval(msg_out)
         combined = msg_out + retrieved
 
-        broad = self.broadcast(combined).unsqueeze(2).expand(-1, -1, P, -1)
-        final = local_features + broad
+        # CAUSAL FIX: shift broadcast so patch N's summary only affects patch N+1+
+        # Without this, tokens see future tokens within their own patch (leakage).
+        # Shift right: prepend zeros, drop last patch's broadcast
+        broad = self.broadcast(combined)  # (B, N, D)
+        broad_shifted = F.pad(broad[:, :-1, :], (0, 0, 1, 0))  # shift right by 1 patch
+        broad_exp = broad_shifted.unsqueeze(2).expand(-1, -1, P, -1)
+        final = local_features + broad_exp
         final = final.view(B, n_patches * P, -1)[:, :T, :]
 
         final = self.ln(final)
