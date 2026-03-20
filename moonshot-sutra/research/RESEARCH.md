@@ -1177,3 +1177,106 @@ Extrapolated to 88M params: BPB ~5.9 (but much lower after full training with 1.
 | Grown sparsity | ALIVE but modest | 10.8x local/far ratio, -3% BPB vs standard |
 | KAN edges (token-level) | NEUTRAL | 9% win at byte-level, 0% at token-level |
 | PonderNet adaptive halt | BROKEN | Global mean halt, wrong KL math. Fixed but disabled |
+
+### Sutra vs Transformer Head-to-Head Scaling (500 steps each, token-level)
+
+| dim | Sutra BPB | Transformer BPB | Sutra Params | Trans Params | Advantage |
+|-----|-----------|----------------|-------------|-------------|-----------|
+| 64  | 9.693     | 10.308         | 6.5M        | 6.7M        | **+6.0%** |
+| 128 | 8.759     | 9.818          | 13.2M       | 13.7M       | **+10.8%** |
+| 256 | 7.596     | 9.176          | 26.9M       | 29.0M       | **+17.2%** |
+
+**Scaling exponents**: Sutra BPB ~ N^(-0.172), Transformer BPB ~ N^(-0.079).
+
+**The advantage GROWS with scale**: 6% -> 11% -> 17%. Extrapolated:
+- 88M: 26% advantage
+- 360M: 35% advantage
+- 1000M: 41% advantage
+
+**WHY does this happen? (Theorem sketch)**
+
+The key is parameter allocation efficiency. Consider a model with N total params:
+
+1. **Transformer**: Must allocate O(D^2) params to each attention head (Q,K,V projections). At dim D with H heads, attention alone costs ~4D^2 params per layer. The FFN costs ~8D^2 per layer. Total per layer: ~12D^2. These params are GLOBAL — they process every token position the same way.
+
+2. **Sutra (GRU+MsgPass)**: GRU costs ~12D^2 per layer (3 gates x 2 matrices x 2D). Message passing costs ~6D^2 per round (msg_net + update_net). But crucially:
+   - GRU operates WITHIN patches (P=4 tokens), amortizing sequential structure
+   - MsgPass operates BETWEEN patch summaries, reducing sequence by P×
+   - Sparse retrieval operates on top-k summaries only
+
+The effective information processing per parameter is higher because:
+- **Locality exploitation**: GRU captures within-patch patterns with shared weights, while transformer's attention must learn this from data
+- **Hierarchical processing**: patches→summaries→messages is a natural coarse-graining that matches language structure (chars→words→phrases)
+- **Message passing convergence**: Multiple rounds of fixed-point iteration with O(window*D) params achieves similar communication to O(D^2) attention
+
+**Formal conjecture**: For language with two-regime MI (local alpha ~1, global alpha ~0.3), an architecture that separately handles local and global correlations with O(D) and O(D^2/P) params respectively will have scaling exponent alpha_arch = alpha_local/P + alpha_global, which is steeper than a uniform architecture's alpha_global alone.
+
+This needs formal proof. If proven, it would explain WHY hierarchical processing is more parameter-efficient for language — because language itself has hierarchical MI structure.
+
+### Codex Review of Scaling Theorem (2026-03-19)
+
+**Verdict: Real signal, not yet publishable. 8/10 Turing potential if confirmed.**
+
+Key issues:
+1. Only 3 sizes, 500 steps, single seed — measuring early optimization, not asymptotic scaling
+2. Theorem sketch is not a theorem: no defined source model, no approximation theorem, MI-to-exponent jump not derived
+3. O(D) local claim wrong — GRU is O(D^2). Need to fix param accounting
+4. Biggest threat: **transient optimization advantage**, not true asymptotic scaling difference
+
+What's needed for publication:
+- 6-8 sizes, matched FLOPs (not just params), 3-5 seeds
+- Stronger baselines: decoder-only transformer + Mamba/xLSTM
+- Confidence intervals on exponent fits, leave-one-out sensitivity
+- Cross-domain runs (prose, code, mixed, synthetic two-scale)
+- Component ablations (no GRU, no retrieval, no patches, k sweep, patch sweep)
+- Loss vs params, loss vs FLOPs, throughput, memory — all reported
+
+Theorem rewrite path (Codex-recommended):
+1. Define source family: banded local + sparse/low-rank global dependencies
+2. Prove approximation/sample-complexity SEPARATION for hierarchical vs uniform architectures
+3. If using MI, derive state-size or dependency-capacity requirement, not direct exponent identity
+4. Reference L2M (arXiv 2503.04725, March 2025) — closest theoretical neighbor
+
+Related work:
+- Kaplan et al. 2020: architecture details mostly shift constants, not exponents (our claim is stronger)
+- Shen et al. 2024: linear-complexity models have similar scaling to transformers up to 7B
+- Zoology 2023: efficient attention-free models lose mainly on recall/retrieval
+- xLSTM 2024: recurrent alternatives scale competitively but no clean exponent advantage
+- L2M 2025: MI scaling law for long-context modeling (closest to our approach)
+
+### Formal Theorem: Two-Scale Optimal Compute Allocation (v2)
+
+**Definition (Two-Scale Source):** A stationary process X_1, X_2, ... has conditional MI profile:
+- I(X_t; X_{t+d} | X_{t+1:t+d-1}) = C_L * d^(-alpha_L) for d <= d_cross
+- I(X_t; X_{t+d} | X_{t+1:t+d-1}) = C_G * d^(-alpha_G) for d > d_cross
+
+where alpha_L > alpha_G > 0. (Empirically: alpha_L = 0.94, alpha_G = 0.26 for English text.)
+
+**Theorem (Scaling Exponent Ratio):**
+
+For a two-scale source, define:
+- e_L = alpha_L / (1 + alpha_L) (local loss exponent)
+- e_G = alpha_G / (1 + alpha_G) (global loss exponent)
+
+Then the ratio of scaling exponents between a hierarchical architecture (separate local/global processing) and a uniform architecture (same mechanism for all distances) is:
+
+**R = alpha_L(1 + alpha_G) / (alpha_G(1 + alpha_L))**
+
+**Prediction:** R = 0.94 * 1.26 / (0.26 * 1.94) = **2.348**
+**Measurement:** 0.172 / 0.079 = **2.177**
+**Error: 7.9%**
+
+**Proof sketch:**
+1. For a model with N total params, loss reduction L(N) = H(X) - L_achieved(N)
+2. Uniform architecture: all params process all distances equally, loss reduction scales as N^(e_G) since global correlations dominate the bottleneck
+3. Hierarchical architecture: N_L local + N_G global params, loss reduction = N_L^(e_L) + N_G^(e_G). Optimal allocation: 72.4% local, giving effective exponent ~e_L at large N
+4. Ratio of effective exponents = e_L/e_G = alpha_L(1+alpha_G)/(alpha_G(1+alpha_L))
+
+**Architectural prediction:** Sutra currently allocates ~35% local (GRU). Optimal is 72.4%. A v0.5 with bigger GRU and smaller message passing should improve.
+
+**Falsification conditions:**
+1. If the exponent ratio doesn't hold for a DIFFERENT two-scale source (e.g., code has alpha_L=0.57, alpha_G=0.15), the theorem is wrong
+2. If the advantage disappears with more training (transient optimization effect), the theorem is aspirational
+3. If a strong transformer baseline (flash attention, RoPE, etc.) closes the gap, it's a baseline artifact
+
+**Status: Promising but unproven.** Need rigorous derivation of the MI-to-loss-exponent connection. The key step missing is: why does processing local/global MI with matched-regime params give e_L/e_G loss scaling? This requires an approximation theory result (e.g., how many params to approximate a function with alpha-decaying correlations).
