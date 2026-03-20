@@ -1306,3 +1306,39 @@ Weight tying (sharing embedding/head weights) saves 44% of total params:
 - Tied + 3-layer GRU: 56.3M
 
 **Implication**: With weight tying, we can have a 53M model with MORE processing capacity than the original 88M model. This is being tested in the Combo 5 production script.
+
+### Cross-Domain Scaling Validation (500 steps, single seed, 2 dims)
+
+**Theorem predicts: code benefits most from hierarchical processing (strongest local MI).**
+
+| Domain | Sutra d64 | Trans d64 | Sutra d128 | Trans d128 | Advantage | R |
+|--------|-----------|-----------|------------|------------|-----------|---|
+| Code   | 8.271     | 8.782     | 7.122      | 8.418      | +5.8→15.4% | **3.622** |
+| Prose  | 9.443     | 9.905     | 8.470      | 9.288      | +4.7→8.8%  | **1.733** |
+
+Ordering: Code R (3.622) > Mixed R (2.177) > Prose R (1.733) — **matches theorem prediction perfectly**.
+
+Why code benefits more: code has very strong local structure (function bodies, loops, indentation) that GRU captures efficiently. Prose has complex global dependencies (narrative, argument) that message passing handles.
+
+Note: absolute R values don't match theorem well (30% errors). Needs: proper two-regime MI fits per domain, more data points, multiple seeds.
+
+### Weight Tying Validation (300 steps, dim=256, with logit fix)
+
+| Config | BPB | Params (M) | BPB Improvement |
+|--------|-----|-----------|-----------------|
+| Untied, 1-layer GRU | 8.463 | 26.9 | baseline |
+| **Tied, 1-layer GRU** | **7.678** | **14.0** | **+9.3%, 48% fewer params** |
+| Tied, 2-layer GRU | 7.715 | 14.5 | +8.8%, 46% fewer params |
+
+**Weight tying is a clear win.** The tied model achieves better BPB with nearly half the parameters. The 2-layer GRU doesn't help at this training budget.
+
+Bug found and fixed: tied weights caused logit explosion (std=27.7). Fix: scale by 1/sqrt(dim).
+
+### Pythia Baselines (on corpus_test.txt, 50K chars)
+
+| Model | Params | BPT | BPB |
+|-------|--------|-----|-----|
+| **Pythia-70m** | **70M** | **4.566** | **1.259** |
+| **Pythia-160m** | **162M** | **3.855** | **1.063** |
+
+Combo 5 target: beat Pythia-70m (BPB 1.259) at 49M params.

@@ -33,8 +33,8 @@ PATCH_SIZE = 4
 MAX_ROUNDS = 4
 K_RETRIEVAL = 8
 SEQ_LEN = 512        # Longer context (Codex: 256 too short for routing architecture)
-BATCH_SIZE = 8        # Smaller batch to fit longer seq in VRAM with bf16
-GRAD_ACCUM = 8        # Effective batch = 64
+BATCH_SIZE = 16       # 49M model fits easily in 24GB with bf16
+GRAD_ACCUM = 4        # Effective batch = 64 (fewer forward passes than bs=8 acc=8)
 LR = 3e-4
 WARMUP_STEPS = 1000   # Longer warmup for stability
 MAX_STEPS = 100000    # 100K steps * 32K tok/step = 3.2B tokens (~2 epochs)
