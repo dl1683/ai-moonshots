@@ -1446,3 +1446,19 @@ Data: 1.697B GPT-2 BPE tokens (full MiniPile)
 Speed: 41K tok/s (10x faster than byte-level 475M model)
 Running alongside byte-level training (both on same GPU, 19.9/24.5GB VRAM)
 First eval at step 5000 (~1 hour), full training ~22 hours
+
+### Step 5000 Eval Results (2026-03-20)
+
+**Fair comparison on same test data (corpus_test.txt, 50K chars):**
+
+| Model | Params | BPT | Top-1 Accuracy |
+|-------|--------|-----|---------------|
+| **Sutra Combo5** | **49.2M** | **1.856** | **79.7%** |
+| Pythia-70m | 70.4M | 4.566 | ~35% (est) |
+| Pythia-160m | 162.3M | 3.855 | ~40% (est) |
+
+**BPT advantage is REAL**: content tokens (98.1% of test) have BPT 1.87. No punctuation gaming. Model correctly predicts next token 79.7% of the time at both content and punctuation positions.
+
+**Generation quality is DEGENERATE** (outputs "!!!"). Diagnosis: exposure bias. At 80% accuracy, 1/5 tokens is wrong; errors cascade in autoregressive generation. Needs >95% accuracy for coherent text. Expected to resolve with more training steps.
+
+**Byte-level model update**: step 6000 eval BPB = 1.2935 (improved from 1.3519 at step 4000)
