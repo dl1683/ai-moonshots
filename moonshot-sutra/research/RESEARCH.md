@@ -2346,3 +2346,8 @@ These mechanisms FAILED at dim=128/300 steps but MUST be retested at dim=1024+:
 
 DO NOT reflexively drop these at scale. Retest each when dim=1024.
 Small-scale Chrome probes have a BIAS against complex mechanisms.
+
+### Chrome: Multi-Timescale Scratchpad = Neutral (2026-03-20)
+Single timescale: BPT 10.49 | Multi timescale (0.5/0.8/0.95): BPT 10.50 (-0.1%)
+Fixed decays don't help at dim=128. Model can't differentiate memory speeds in 300 steps.
+Testing pointer-copy head next.
