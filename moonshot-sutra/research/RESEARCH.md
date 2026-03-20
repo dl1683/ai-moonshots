@@ -1709,3 +1709,16 @@ Higher LR also unlocked stage graph discovery (Route<->Write oscillation).
 **Fix:** LR=6e-4 (Chrome validated +11.4%, conservative). Added NaN guard to training loop.
 
 **Pre-Training Gate addition:** LR stability test at production scale (not just small-scale sweep) should be required before any production run >10K steps.
+
+### LR Stability Sweep at dim=256 (Production-Scale Proxy) (2026-03-20)
+
+| LR | BPT | Stable? |
+|----|-----|---------|
+| 3e-4 | 10.07 | YES |
+| **6e-4** | **9.57** | **YES (optimal)** |
+| 8e-4 | 9.56 | YES |
+| 1e-3 | 9.66 | YES (degrading) |
+| 1.5e-3 | NaN@574 | NO |
+
+**6e-4 confirmed optimal.** Matches our production choice exactly.
+At dim=768, stability boundary is lower (NaN at 1e-3 step 3900).
