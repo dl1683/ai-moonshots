@@ -1,0 +1,107 @@
+{
+  "v053_baseline": {
+    "name": "v0.5.3 Baseline",
+    "test_bpt": 7.3166,
+    "step_bpts": [
+      9.6422,
+      8.7529,
+      8.347,
+      8.1615,
+      8.09,
+      8.0735
+    ],
+    "time": 106.5,
+    "params": 7505148,
+    "grokfast": false
+  },
+  "peri_ln": {
+    "name": "Peri-LN",
+    "test_bpt": 6.8884,
+    "step_bpts": [
+      9.3219,
+      8.6244,
+      8.2034,
+      7.9699,
+      7.8567,
+      7.8212
+    ],
+    "time": 62.1,
+    "params": 7506684,
+    "grokfast": false,
+    "delta_pct": 5.85,
+    "late_drop": 0.0355,
+    "verdict": "PASS"
+  },
+  "peri_surprise": {
+    "name": "Peri-LN + Surprise",
+    "test_bpt": 7.0044,
+    "step_bpts": [
+      9.413,
+      8.7224,
+      8.3123,
+      8.0896,
+      7.9831,
+      7.9595
+    ],
+    "time": 65.0,
+    "params": 7573372,
+    "grokfast": false,
+    "delta_pct": 4.27,
+    "late_drop": 0.0236,
+    "verdict": "KILL"
+  },
+  "peri_pheromone": {
+    "name": "Peri-LN + Pheromone",
+    "test_bpt": 6.8877,
+    "step_bpts": [
+      9.3336,
+      8.6288,
+      8.2074,
+      7.9718,
+      7.8542,
+      7.8119
+    ],
+    "time": 64.7,
+    "params": 7506684,
+    "grokfast": false,
+    "delta_pct": 5.86,
+    "late_drop": 0.0423,
+    "verdict": "KILL"
+  },
+  "full_v054": {
+    "name": "Full v0.5.4",
+    "test_bpt": 7.0359,
+    "step_bpts": [
+      9.407,
+      8.7182,
+      8.3065,
+      8.0821,
+      7.9784,
+      7.9559
+    ],
+    "time": 68.5,
+    "params": 7573372,
+    "grokfast": false,
+    "delta_pct": 3.84,
+    "late_drop": 0.0225,
+    "verdict": "PASS"
+  },
+  "v054_grokfast": {
+    "name": "v0.5.4 + Grokfast",
+    "test_bpt": 6.3246,
+    "step_bpts": [
+      9.0386,
+      8.3135,
+      7.8373,
+      7.5636,
+      7.439,
+      7.4045
+    ],
+    "time": 70.8,
+    "params": 7573372,
+    "grokfast": true,
+    "delta_pct": 13.56,
+    "late_drop": 0.0345,
+    "verdict": "PASS"
+  }
+}
