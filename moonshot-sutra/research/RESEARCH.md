@@ -1835,3 +1835,479 @@ Need to test at production scale for meaningful absorption.
 6. 300-step warm-start training: loss 8.63→7.00, stable ✓
 7. Generation after training: "The president, I felt like..." ✓
 8. Ready to launch from step 10K checkpoint
+
+---
+
+## Deep Research: Liquid AI Architecture + Fruit Fly Olfactory Computing (2026-03-20)
+
+Two deep dives into biologically-inspired architectures with concrete mechanisms for Sutra's Stage-Superposition State Machine.
+
+### PART 1: Liquid AI — From C. elegans to Edge Foundation Models
+
+#### 1.1 The Biological Foundation: C. elegans Nervous System
+
+Liquid Neural Networks originate from modeling the nervous system of *C. elegans*, a roundworm with only 302 neurons. Despite this extreme minimality, C. elegans exhibits complex behaviors: chemotaxis, thermotaxis, touch avoidance, learning. The key insight: intelligence emerges from the DYNAMICS of neural interactions, not from scale.
+
+Two critical biological properties:
+1. **Graded potential neurons** (not just spiking): C. elegans neurons communicate through graded potentials — continuous analog signals, not binary spikes. This is computationally richer per neuron.
+2. **Conductance-based synapses**: Synaptic transmission is modeled by ion flow through channels with reversal potentials. The driving force (A - x(t)) naturally implements bounded dynamics.
+
+#### 1.2 Liquid Time-Constant Networks (LTC) — The Core ODE
+
+The LTC neuron follows a conductance-based ODE inspired by Hodgkin-Huxley dynamics:
+
+```
+dx(t)/dt = (A - x(t)) * f(x(t), I(t), t, theta)
+```
+
+Where:
+- `x(t)` = postsynaptic membrane potential (hidden state)
+- `A` = synapse reversal potential (learnable constant, determines equilibrium)
+- `f(x(t), I(t), t, theta)` = nonlinear synaptic transmission function
+- `I(t)` = external input at time t
+- `theta` = learnable parameters
+
+**Why this is different from standard RNNs:**
+- The `(A - x(t))` term is a DRIVING FORCE that naturally bounds dynamics (as x approaches A, the driving force vanishes)
+- The time constant is INPUT-DEPENDENT: how fast the neuron responds depends on what it's receiving
+- This is a continuous-time system, not discrete steps
+
+**The problem:** Computing the output requires a numerical ODE solver (Runge-Kutta, etc.), which makes training 100-1000x slower than standard RNNs.
+
+#### 1.3 Closed-form Continuous-time Networks (CfC) — The Breakthrough
+
+CfC solves the ODE solver bottleneck by deriving an approximate closed-form solution. The actual implementation (from `torch_cfc.py` source code):
+
+```python
+def forward(self, input, hx, ts):
+    x = torch.cat([input, hx], 1)  # Concat input + hidden state
+    x = self.backbone(x)           # Backbone MLP processes joint input
+
+    # Three-head architecture:
+    ff1 = self.tanh(self.ff1(x))   # Head 1: "where to go" (target state)
+    ff2 = self.tanh(self.ff2(x))   # Head 2: "where else to go" (alternative)
+    t_a = self.time_a(x)           # Time coefficient A
+    t_b = self.time_b(x)           # Time coefficient B
+
+    # Sigmoid time interpolation — THIS is the liquid time constant
+    t_interp = self.sigmoid(t_a * ts + t_b)
+
+    # Hidden state = blend of two targets based on time
+    new_hidden = ff1 * (1.0 - t_interp) + t_interp * ff2
+```
+
+**The key equation:** `h_new = ff1 * (1 - sigma(a*t + b)) + ff2 * sigma(a*t + b)`
+
+This is a TIME-GATED INTERPOLATION between two learned state targets. The sigmoid gate's position depends on:
+- `t_a`: input-dependent time sensitivity (how much time matters)
+- `t_b`: input-dependent time offset (when the transition happens)
+- `ts`: actual elapsed time
+
+**Minimal variant** (even simpler, direct ODE solution):
+```python
+new_hidden = -A * exp(-ts * (|w_tau| + |ff1|)) * ff1 + A
+```
+
+This IS the closed-form solution of the LTC ODE with exponential decay toward reversal potential A, with input-dependent time constant `1/(|w_tau| + |ff1|)`.
+
+**Performance:** 1-5 orders of magnitude faster than ODE-based LTC, <2% accuracy drop.
+
+#### 1.4 Neural Circuit Policies (NCP) — Biologically-Structured Wiring
+
+Instead of fully-connected layers, NCPs use a 4-layer hierarchy inspired by C. elegans connectome:
+
+```
+SENSORY NEURONS → INTER NEURONS → COMMAND NEURONS → MOTOR NEURONS
+       (input)       (processing)     (decision)       (output)
+```
+
+Connectivity rules:
+- ~90% sparsity overall (like C. elegans)
+- Predominantly feedforward: sensory→inter→command→motor
+- Highly recurrent connections WITHIN command layer (decision-making loop)
+- Number of connections per neuron: drawn from binomial distribution
+- Excitatory/inhibitory: drawn from Bernoulli distribution
+
+**Why this matters:** The wiring itself encodes computational structure. Different wiring = different computational capability. This is architecturally significant for Sutra — the topology of connections is a first-class design parameter.
+
+#### 1.5 STAR: Synthesis of Tailored Architectures (ICLR 2025 Oral)
+
+STAR introduces the most important theoretical contribution from Liquid AI: **Linear Input-Varying (LIV) operators** as a UNIFYING framework.
+
+**LIV Definition:** An operator `y = T(x) * x` where `T` is a weight matrix that is itself a function of the input x. This is "linear" in the sense that the operation on x is linear for any fixed T, but "input-varying" because T changes with x.
+
+**Unification of ALL major operators:**
+
+| Operator | How it's a special case of LIV |
+|----------|-------------------------------|
+| Self-attention | T(x) = softmax(QK^T/sqrt(d)) * V, featurizer = softmax(dot product) |
+| Linear attention | T(x) = phi(Q)*phi(K)^T * V, featurizer = feature map phi |
+| Gated convolution | T(x) = gate(x) * Conv(x), featurizer = element-wise gate |
+| SSM (Mamba) | T(x) = input-dependent A,B,C matrices, featurizer = selection mechanism |
+| Gated linear unit | T(x) = sigma(Wx) * Vx, featurizer = sigmoid gate |
+
+**LIV is characterized at three hierarchical levels:**
+1. **Featurizer**: How the linear computation is modulated by input (softmax, sigmoid, feature map, etc.)
+2. **Operator structure**: Token mixing (how positions interact) + channel mixing (how features interact)
+3. **Backbone**: How operators are composed (sequential, parallel, skip connections)
+
+**Token mixing structures** (from STAR genome):
+- `DIAGONAL`: Element-wise scaling (no position interaction)
+- `LOW_RANK`: Attention-like Q/K/V projections
+- `SCALED_TOEPLITZ`: Convolution-based local mixing
+- `SEQUENTIAL_SEMI_SEPARABLE`: Recurrent processing with gating
+
+**Genome encoding:** Each layer is specified by 5 integers:
+```
+[operator_class_id, featurizer_sharing_group, reserved, feature_sharing_group, reserved]
+```
+
+**Evolutionary algorithm:** Populations of architectures evolve through assessment, recombination, mutation. After 2-3 generations, most architectures already outperform transformers. Cache sizes up to 90% smaller.
+
+**CRITICAL FINDING for Sutra:** The STAR search repeatedly converges on the same result for edge deployment: **mostly gated short convolutions (~63%) + a small minority of GQA attention blocks (~37%)**. Adding SSMs, linear attention, or extra convolutions did NOT improve quality under device budgets. This empirically validates that the optimal edge architecture is a minimal hybrid.
+
+#### 1.6 LFM2: The Production Architecture (Nov 2025)
+
+LFM2 is the production outcome of STAR-guided architecture search.
+
+**Core building block — Gated Short Convolution:**
+```
+(B, C, h_tilde) = Linear(h)      # Project to gate, content, input
+y = B * h_tilde                    # Element-wise gating
+z = Conv_k(y)                      # Depthwise 1D convolution (k=3)
+o = Linear_out(C * z)              # Output gating + projection
+```
+
+This is INPUT-DEPENDENT convolution via multiplicative gating. It's a LIV with gated featurizer and Toeplitz (convolution) token mixing.
+
+**Architecture dimensions:**
+
+| Model | Params | Layers | Hidden | Attn Blocks | Conv Kernel | Vocab |
+|-------|--------|--------|--------|-------------|-------------|-------|
+| LFM2-350M | 350M | 16 | 1024 | 6/16 | 3 | 65536 |
+| LFM2-700M | 700M | 16 | 1536 | 6/16 | 3 | 65536 |
+| LFM2-1.2B | 1.2B | 16 | 2048 | 6/16 | 3 | 65536 |
+| LFM2-2.6B | 2.6B | 30 | 2048 | 8/30 | 3 | 65536 |
+| LFM2-MoE-8B | 8.3B/1.5B active | 24 | 2048 | 6/24 | 3 | 65536 |
+
+**Key performance (Samsung Galaxy S25, Q4_0):**
+- LFM2-1.2B: 335 tok/s prefill, 70 tok/s decode (2-3x faster than comparable models)
+- LFM2-2.6B: 143 tok/s prefill, 34 tok/s decode (2-3x faster than Qwen3-4B)
+- LFM2-MoE-8B: 85 tok/s prefill, 49 tok/s decode at 1.5B active params
+
+**Benchmark results (selected):**
+
+| Benchmark | LFM2-1.2B | Qwen3-1.7B | LFM2-2.6B | Llama-3.2-3B |
+|-----------|-----------|-----------|-----------|-------------|
+| MMLU | 55.23 | 59.11 | 64.42 | 60.35 |
+| IFEval | 74.89 | 73.98 | 79.56 | 71.43 |
+| GSM8K | 58.30 | 51.40 | 82.41 | 75.21 |
+| MATH 500 | 42.40 | 70.00 | 63.60 | 41.20 |
+
+**Novel training technique — Decoupled Top-K Distillation:**
+```
+L_DTK = KL(Bern(P_T(T|x)) || Bern(P_S(T|x)))
+      + P_T(T|x) * KL_tau(P_T(.|T,x) || P_S(.|T,x))
+```
+Two-term decomposition: (1) binary term matching probability mass in top-K set, (2) conditional top-K term with temperature scaling. Avoids support mismatch when truncating teacher logits.
+
+**Post-training pipeline (3 stages):**
+1. SFT with curriculum learning (5.39M samples, easy-to-hard ordering)
+2. Preference alignment with length-normalized DPO variant (~700K pairs)
+3. Model merging (best of Model Soup, TIES-Merging, DARE, DELLA)
+
+#### 1.7 Key Lessons from Liquid AI for Sutra
+
+| Liquid AI Finding | Implication for Sutra |
+|---|---|
+| Input-dependent time constants | Stage transition probabilities should be input-dependent (already planned) |
+| Gated short convolutions beat SSMs on device | Our local processing (patch GRU) could be replaced with gated conv — simpler, faster |
+| ~37% attention sufficient | Our sparse retrieval (k=8) is already more aggressive than LFM2 |
+| LIV unifies all operators | Our stage processors should be LIV instances with different featurizers |
+| NCP 4-layer hierarchy | Stage-superposition could use NCP-style wiring between stages |
+| CfC sigmoid time interpolation | Per-position stage probability could use CfC-style time gating |
+| STAR genome encoding | We could evolve our stage configurations rather than hand-design |
+| 90% sparsity works | Our message passing is already sparse — push further |
+
+---
+
+### PART 2: Fruit Fly Olfactory Computing — Comply and Fly-LSH
+
+#### 2.1 The Biological Circuit: Drosophila Olfactory System
+
+The fruit fly's olfactory system is a 3-stage computational pipeline that converts chemical signals into sparse, searchable memory codes:
+
+**Stage 1: Olfactory Receptor Neurons (ORNs) → Projection Neurons (PNs)**
+- ~50 types of ORNs in the antenna, each responding to different odorant features
+- ORNs fire with HETEROGENEOUS temporal patterns: different latencies, durations, firing rates depending on BOTH the odor AND the ORN type
+- ~50 PNs in the antennal lobe receive convergent ORN input
+- Result: each odor is represented by a 50-dimensional vector of firing rates (exponential distribution)
+
+**Stage 2: Projection Neurons (PNs) → Kenyon Cells (KCs) — DIMENSIONALITY EXPANSION**
+- ~50 PNs project to ~2000 Kenyon cells in the mushroom body
+- The projection is SPARSE and BINARY: each KC receives input from ~6 randomly chosen PNs
+- This is a 40x dimensionality expansion (50 → 2000)
+- The random sparse binary projection PRESERVES similarity structure while SEPARATING representations
+
+**Stage 3: Kenyon Cells (KCs) → Winner-Take-All via APL Neuron**
+- The Anterior Paired Lateral (APL) neuron provides GLOBAL inhibition
+- APL receives excitatory input from ALL KCs and sends inhibitory output back
+- This implements a k-Winner-Take-All (k-WTA) mechanism
+- Only the top ~5% of KCs (about 100 out of 2000) remain active
+- The resulting binary vector of 100 active positions IS the odor's hash code
+
+**Key biological insight: temporal coding.** ORN responses are NOT just spatial (which neurons fire) but TEMPORAL (when they fire, how long, at what rate). Different odors arrive at different times, and the olfactory system uses this timing for segregation. This temporal information is LOST in standard one-hot word embeddings.
+
+#### 2.2 Dasgupta et al. 2017: Fly-LSH (the foundational algorithm)
+
+The 2017 Science paper by Dasgupta, Stevens, and Navlakha showed that the fruit fly olfactory circuit implements a novel form of locality-sensitive hashing (LSH) that differs from classical LSH in three critical ways:
+
+| Property | Classical LSH | Fly-LSH |
+|----------|--------------|---------|
+| Projection type | Dense random (Gaussian) | Sparse binary random |
+| Dimensionality | REDUCTION (d → m, m < d) | EXPANSION (d → m, m >> d) |
+| Hash construction | Sign of projection | k-WTA (top 5% of m) |
+| Sparsity of hash | Dense (m/2 ones expected) | Very sparse (k << m) |
+
+**Why dimensionality EXPANSION helps** (the key counterintuitive insight):
+
+Analogy from the paper: "People clustered in a crowded room are hard to separate. Spread them on a football field — relationship structures become visible." In higher dimensions, similar items remain close but DISSIMILAR items spread apart more. The sparse binary projection preserves local structure while amplifying differences.
+
+**Performance:** Fly-LSH achieves ~3x better mean Average Precision (mAP) than classical LSH on standard nearest-neighbor benchmarks, and is ~20x faster.
+
+#### 2.3 FlyVec: From Odors to Words
+
+FlyVec (Liang et al. 2021) applied the fly circuit to word embeddings:
+
+**Biological → Computational mapping:**
+
+| Biological | Computational |
+|-----------|---------------|
+| Odor molecules | Words (one-hot encoded) |
+| ORN responses | Word frequency vectors |
+| PN activations | Input projections |
+| KC activations | Hash code neurons |
+| APL inhibition | k-WTA activation |
+| Sparse KC code | Binary word embedding |
+
+**The energy function (training objective):**
+```
+E = -sum_{v in Data} <W_mu_hat, v/p> / <W_mu_hat, W_mu_hat>^(1/2)
+```
+Where:
+- `W` is the parameter matrix (K x 2*N_voc), K = number of Kenyon cells
+- `v` = input vector (context + target one-hot encoding)
+- `p` = word frequency normalization vector
+- `mu_hat = argmax_mu <W_mu, v>` = winning neuron (highest inner product)
+
+**Lateral inhibition during training:** Only the SINGLE winning neuron updates its weights per sample. This is extreme sparsity — gradient flows to exactly one row of W.
+
+**Hash generation:** For inference, compute all K inner products, keep top-k as binary hash.
+
+#### 2.4 Comply: Complex-Valued Extension for Sequences
+
+Comply (Figueroa et al. 2025, the paper at arxiv:2502.01706) extends FlyVec with a critical innovation: **complex-valued weights encode positional (temporal) information**, inspired by the temporal coding in fruit fly ORNs.
+
+**The complex phase encoding:**
+
+Each word at position `l` in a sentence of length `L` receives a phase factor:
+```
+z_l = one_hot(word_l) * e^(i*pi*l/L)
+```
+
+Phases are restricted to [0, pi) to prevent ambiguity. This maps position to a half-rotation in the complex plane.
+
+**Complex parameter matrix:** `W in C^{K x N_voc}` — same total parameter count as FlyVec (2*K*N_voc real numbers), but now encoding both magnitude (semantic similarity) AND phase (positional preference).
+
+**The Comply energy function:**
+```
+E = -sum_{z in Data} [
+    sum_{l in L} |<W_mu_hat, z_l/p_{s_l}>_H| / <W_mu_hat, W_mu_hat>_H^(1/2)
+    + sum_{l in L} |Arg<W_mu_hat, z_l/p_{s_l}>_H|
+]
+```
+
+Where `<.,.>_H` is the Hermitian inner product and `Arg` extracts the phase angle.
+
+**Two-component scoring (magnitude + phase):**
+1. **Magnitude** `|<W_mu, z_l>_H|`: How well the word's IDENTITY matches the neuron's preference
+2. **Phase** `|Arg<W_mu, z_l>_H|`: How well the word's POSITION matches the neuron's temporal preference
+
+**Winner selection combines BOTH:**
+```
+mu_hat = argmax_mu sum_{l in L} [|<W_mu, z_l>_H| + |Arg<W_mu, z_l>_H|]
+```
+
+**Binary hash (same k-WTA as FlyVec):**
+```
+h_mu = 1 if (combined score for mu is in top-k), else 0
+```
+
+**ComplyM variant:** Uses multiplication instead of addition to combine magnitude and phase:
+```
+score = |<W_mu, z_l>_H| * |Arg<W_mu, z_l>_H|
+```
+
+#### 2.5 Comply Performance Results
+
+**Semantic Textual Similarity (13 tasks):**
+- Comply outperforms FlyVec on 12/13 tasks
+- Comply outperforms BERT (110M params) on 7/13 tasks
+- Comply uses only ~16M params (14.6% of BERT)
+
+**Selected benchmark numbers:**
+
+| Task | BERT (110M) | FlyVec (16M) | Comply (16M) |
+|------|-------------|-------------|-------------|
+| SICK-R | 51.4 | 42.0 | **53.9** |
+| STS14 | 44.3 | 42.1 | **53.6** |
+| STS15 | 57.3 | 53.5 | **60.4** |
+| STS17 | 64.5 | 52.3 | **67.7** |
+| Sprint Duplicate Q | 31.6 | 40.4 | **56.2** |
+
+**Speed:** ~10x faster than BERT (runs on CPU, no GPU needed). TwitterURLCorpus: 8 seconds vs BERT's 85 seconds.
+
+**Reinforcement Learning (DDxGym):** Comply outperforms Transformer baseline after 15M steps, reaching reward ~600+ vs Transformer's ~400.
+
+**Interpretability:** Each neuron's complex weights can be inspected to extract LEARNED SUBSEQUENCES. Example: for input about "Senate majority leader", the winning neuron shows memorized patterns like [house, representative], [senate, bill], [plays, major, role]. The phase component shows WHERE in the sentence each word typically appears.
+
+#### 2.6 Why This Matters: The Computational Principles
+
+Five principles from the fruit fly circuit that are relevant to general AI:
+
+**Principle 1: Dimensionality Expansion + Sparsification > Dimensionality Reduction**
+- Classical ML: reduce dimensions (PCA, autoencoders). Biology: EXPAND then sparsify.
+- Expansion creates SEPARABILITY. Sparsification creates ADDRESSABILITY.
+- This is the same principle as kernel methods (project to higher dim, linear separate) but with BINARY SPARSE representations instead of dense continuous ones.
+
+**Principle 2: k-WTA is a Universal Nonlinearity**
+- ReLU keeps positive activations (continuous). k-WTA keeps top-k activations (binary/sparse).
+- k-WTA has explicit COMPETITION between neurons — similar to lateral inhibition.
+- k-WTA naturally produces DISTRIBUTED representations where similar inputs share active neurons.
+- Hash collision = shared active neurons = similar representations. This is geometric similarity by construction.
+
+**Principle 3: Complex-Valued Representations Encode Richer Structure**
+- Real-valued: one number per dimension (magnitude only).
+- Complex-valued: two numbers per dimension (magnitude + phase).
+- Magnitude captures WHAT (semantic identity). Phase captures WHERE/WHEN (position, order, timing).
+- This is NOT complex-valued neural networks (CVNNs). This is using complex numbers as a REPRESENTATION DEVICE, not as a computational substrate.
+
+**Principle 4: Single-Layer Networks Can Be Powerful**
+- Comply is ONE linear layer (complex projection + k-WTA). NO hidden layers. NO attention. NO recurrence.
+- Yet it matches BERT on 7/13 tasks with 14.6% of parameters.
+- The computational power comes from the REPRESENTATION (complex + sparse + high-dimensional), not from the network DEPTH.
+
+**Principle 5: Temporal Coding Via Phase is Free**
+- Adding position information through complex phase COSTS ZERO ADDITIONAL PARAMETERS (same 2*K*N_voc).
+- The phase angles are not learned separately — they emerge from the complex weight structure.
+- This is more parameter-efficient than learned positional embeddings (which add D*L parameters).
+
+#### 2.7 Integration with Sutra's Stage-Superposition Architecture
+
+**Mapping to the 7 Stages:**
+
+| Sutra Stage | Fruit Fly Analog | Liquid AI Analog | Proposed Mechanism |
+|-------------|-----------------|-----------------|-------------------|
+| 1. Segmentation/Compression | ORN → PN (50d representation) | Gated short conv (local feature extraction) | Complex-valued patch embedding with phase = position |
+| 2. State Init/Addressing | PN → KC (sparse expansion) | CfC backbone initialization | Dimensionality expansion + k-WTA for sparse state initialization |
+| 3. Local Construction | KC activation patterns | Gated convolution blocks | Input-dependent gated local processing |
+| 4. Communication/Routing | APL global inhibition | GQA attention blocks | Phase-based content routing (complex inner products) |
+| 5. State Update/Memory Write | KC → MBON synaptic modification | CfC time-gated interpolation | `h_new = h_old * (1-sigma) + h_target * sigma`, sigma input-dependent |
+| 6. Compute Control | Temporal ORN dynamics (when to fire) | PonderNet/adaptive halt | CfC-style liquid time constants for per-position halting |
+| 7. Readout/Decode/Verify | MBON memory readout | Output projection | Sparse binary hash comparison for verification |
+
+**Specific mechanisms to prototype:**
+
+**A. Complex-Valued Patch Embeddings (Stage 1)**
+Replace real-valued patch embeddings with complex-valued:
+```
+z_patch = embed(tokens) * e^(i*pi*position/seq_len)
+```
+- Magnitude = semantic content
+- Phase = position within sequence
+- ZERO additional parameters (same embedding table, just complex-multiply by phase)
+- Matches Mamba-3's finding that complex-valued SSMs improve state tracking
+
+**B. Expand-Then-Sparsify State Initialization (Stage 2)**
+Instead of direct projection to hidden dim, do FlyVec-style:
+```
+x_expanded = sparse_binary_project(x_patch, expansion=4x)  # e.g., 768 → 3072
+x_state = k_WTA(x_expanded, k=top_10%)                      # Keep 307 active dims
+```
+- Creates naturally sparse, addressable states
+- Similar items have overlapping active dimensions (LSH property)
+- Enables fast approximate nearest-neighbor for retrieval (Hamming distance on binary vectors)
+
+**C. CfC-Style Liquid Time Constants for Stage Transitions (Stage 6)**
+Instead of fixed transition probabilities, use input-dependent time constants:
+```
+t_a = linear(concat(state, input))      # Time sensitivity
+t_b = linear(concat(state, input))      # Time offset
+stage_prob = sigmoid(t_a * stage_counter + t_b)  # Liquid transition
+```
+- Each position has its OWN time constant (how fast it progresses through stages)
+- Hard inputs linger longer in processing stages (more rounds)
+- Easy inputs skip through quickly
+- This IS the CfC equation applied to stage control
+
+**D. NCP-Style Wiring Between Stages (Architecture)**
+Instead of all-to-all connections between stages, use NCP-inspired sparse wiring:
+```
+Stage 1 (Sensory) → Stage 2,3 (Inter) → Stage 4,5 (Command) → Stage 6,7 (Motor)
+- Command stages (4,5) have RECURRENT connections (decision loops)
+- ~90% sparsity in inter-stage connections
+- Excitatory/inhibitory balance (some stages inhibit others)
+```
+
+**E. Phase-Based Communication Without Attention (Stage 4)**
+Use complex-valued representations with Hermitian inner products:
+```
+communication_weight_ij = |<h_i, h_j>_H|  # Magnitude of Hermitian inner product
+routing_preference_ij = Arg<h_i, h_j>_H    # Phase difference
+```
+- Positions with aligned phases communicate strongly (same "frequency")
+- Different stages could operate at different "frequencies" (phase offsets)
+- This is the Comply mechanism applied to inter-position routing
+
+**F. STAR-Style Architecture Evolution (Meta-Design)**
+Encode Sutra's stage configurations as a genome:
+```
+stage_genome = [
+    [operator_class, featurizer, token_mixing, channel_mixing, sparsity],  # Stage 1
+    [operator_class, featurizer, token_mixing, channel_mixing, sparsity],  # Stage 2
+    ...  # Stage 7
+]
+```
+Evolve populations of stage configurations using evolutionary algorithms.
+Let STAR-style search find the optimal stage processors rather than hand-designing them.
+
+### Priority Ranking for Sutra Integration
+
+| Mechanism | Effort | Expected Impact | Priority |
+|-----------|--------|-----------------|----------|
+| C. CfC liquid time constants for stage control | LOW (few lines) | HIGH (adaptive compute) | **P0 — do first** |
+| A. Complex-valued patch embeddings | LOW (multiply by phase) | MEDIUM (better position encoding) | **P1** |
+| E. Phase-based communication | MEDIUM (refactor routing) | HIGH (O(n) global info flow) | **P1** |
+| D. NCP sparse wiring between stages | LOW (mask connections) | MEDIUM (efficiency) | **P2** |
+| B. Expand-then-sparsify initialization | MEDIUM (new layer type) | MEDIUM (sparse states) | **P2** |
+| F. STAR genome evolution | HIGH (infrastructure) | HIGH (automatic design) | **P3 (post-MVP)** |
+
+### Sources
+
+- [Liquid Neural Networks overview](https://deepgram.com/learn/liquid-neural-networks)
+- [Liquid at ICLR 2025](https://www.liquid.ai/blog/liquid-at-iclr-2025)
+- [CfC implementation (GitHub)](https://github.com/raminmh/CfC)
+- [CfC paper (Nature Machine Intelligence / arXiv:2106.13898)](https://arxiv.org/abs/2106.13898)
+- [LFM2 Technical Report (arXiv:2511.23404)](https://arxiv.org/abs/2511.23404)
+- [STAR: Synthesis of Tailored Architectures (arXiv:2411.17800)](https://arxiv.org/abs/2411.17800)
+- [NCP implementation (GitHub)](https://github.com/mlech26l/ncps)
+- [Liquid Foundation Models](https://www.liquid.ai/models)
+- [LFM2 blog post](https://www.liquid.ai/blog/liquid-foundation-models-v2-our-second-series-of-generative-ai-models)
+- [STAR architecture search](https://www.liquid.ai/research/automated-architecture-synthesis-via-targeted-evolution)
+- [Dasgupta et al. 2017 — Fly-LSH (Science)](https://www.science.org/doi/10.1126/science.aam9868)
+- [Comply paper (arXiv:2502.01706)](https://arxiv.org/abs/2502.01706)
+- [FlyVec project](https://flyvec.org/)
+- [Fly-LSH implementation](https://github.com/tian-kun/Fly-LSH)
+- [Fruit fly brains inform search engines (Salk Institute)](https://www.salk.edu/news-release/fruit-fly-brains-inform-search-engines-future/)
+- [Sparse coding in mushroom body (eNeuro)](https://www.eneuro.org/content/7/2/ENEURO.0305-18.2020)
+- [LIV operators topic](https://www.emergentmind.com/topics/linear-input-varying-systems-livs)
