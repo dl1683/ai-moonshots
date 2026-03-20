@@ -44,7 +44,7 @@ VOCAB_SIZE = 50257
 
 import sys
 sys.path.insert(0, str(REPO / "code"))
-from launch_v052 import create_v052 as _create_model
+from launch_v053 import create_v053 as _create_model
 
 
 def load_tokens():
@@ -139,17 +139,17 @@ def main():
     print()
 
     # Checkpoint resume
-    ckpt_dir = REPO / "results" / "checkpoints_v052"
+    ckpt_dir = REPO / "results" / "checkpoints_v053"
     ckpt_dir.mkdir(parents=True, exist_ok=True)
-    log_file = REPO / "results" / "v052_log.txt"
-    metrics_file = REPO / "results" / "v052_metrics.json"
+    log_file = REPO / "results" / "v053_log.txt"
+    metrics_file = REPO / "results" / "v053_metrics.json"
 
     start_step = 0
     best_bpt = float("inf")
     metrics_history = []
 
     latest = sorted(ckpt_dir.glob("step_*.pt"), key=lambda p: int(p.stem.split("_")[1]))
-    warmstart = REPO / "results" / "v052_warmstart.pt"
+    warmstart = REPO / "results" / "v053_warmstart.pt"
     if latest:
         ckpt = torch.load(latest[-1], weights_only=False, map_location=DEVICE)
         model.load_state_dict(ckpt["model"])
@@ -235,7 +235,7 @@ def main():
                     is_best = bpt < best_bpt
                     if is_best:
                         best_bpt = bpt
-                        torch.save(model.state_dict(), REPO / "results" / "v052_best.pt")
+                        torch.save(model.state_dict(), REPO / "results" / "v053_best.pt")
 
                     gen = {"prompt": "(eval)", "output": "(eval)"}
                     try:
