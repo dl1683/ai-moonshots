@@ -1,0 +1,1 @@
+{"experiment":"token_vs_byte_v04","byte":{"bpb":1.6009,"params":108225},"token":{"bpb":1.0748,"params":6508353},"improvement":"33% BPB improvement from tokenization","caveat":"token model 60x more params due to 50K vocab embedding"}
