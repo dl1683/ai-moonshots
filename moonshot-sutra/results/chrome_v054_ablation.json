@@ -10,7 +10,7 @@
       8.09,
       8.0735
     ],
-    "time": 106.5,
+    "time": 59.7,
     "params": 7505148,
     "grokfast": false
   },
@@ -25,7 +25,7 @@
       7.8567,
       7.8212
     ],
-    "time": 62.1,
+    "time": 63.0,
     "params": 7506684,
     "grokfast": false,
     "delta_pct": 5.85,
@@ -43,7 +43,7 @@
       7.9831,
       7.9595
     ],
-    "time": 65.0,
+    "time": 68.9,
     "params": 7573372,
     "grokfast": false,
     "delta_pct": 4.27,
@@ -61,7 +61,7 @@
       7.8542,
       7.8119
     ],
-    "time": 64.7,
+    "time": 65.3,
     "params": 7506684,
     "grokfast": false,
     "delta_pct": 5.86,
@@ -79,7 +79,7 @@
       7.9784,
       7.9559
     ],
-    "time": 68.5,
+    "time": 72.8,
     "params": 7573372,
     "grokfast": false,
     "delta_pct": 3.84,
@@ -97,7 +97,7 @@
       7.439,
       7.4045
     ],
-    "time": 70.8,
+    "time": 71.2,
     "params": 7573372,
     "grokfast": true,
     "delta_pct": 13.56,
