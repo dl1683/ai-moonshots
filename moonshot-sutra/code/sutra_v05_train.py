@@ -32,8 +32,8 @@ MAX_STEPS_PER_POSITION = 8
 WINDOW = 4
 K_RETRIEVAL = 8
 SEQ_LEN = 512
-BATCH_SIZE = 16
-GRAD_ACCUM = 4        # Effective batch = 64
+BATCH_SIZE = 8         # v0.5 needs more VRAM than v0.4 (6 recurrent steps)
+GRAD_ACCUM = 8         # Effective batch = 64 (same, more accumulation)
 LR = 3e-4
 WARMUP_STEPS = 1000
 MAX_STEPS = 100000

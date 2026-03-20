@@ -264,7 +264,11 @@ class SutraV05(nn.Module):
         self.ln = nn.LayerNorm(dim)
 
     def forward(self, x):
-        """Stage-Superposition forward pass.
+        """Stage-Superposition forward pass (simplified v1).
+
+        Core innovation: per-position stage probabilities evolve via
+        content-dependent transitions. No verify/reroute yet — add after
+        basics work. Fixed number of recurrent steps.
 
         x: (B, T) token indices
         Returns: (logits, aux_losses)
@@ -275,94 +279,43 @@ class SutraV05(nn.Module):
         # Stage 1-2: Embed and initialize state
         h = self.emb(x) + self.pos_emb(torch.arange(T, device=device))
         mu = self.init_mu(h)
-        lam = F.softplus(self.init_lam(h)) + 0.1  # initial low precision
+        lam = F.softplus(self.init_lam(h)) + 0.1
         pi = torch.zeros(B, T, N_STAGES, device=device)
         pi[:, :, 2] = 1.0  # start at Stage 3 (Local Construction)
 
-        # active_mask: 1.0 for positions still processing, 0.0 for emitted
-        # Using float mask instead of bool so it's differentiable-friendly
-        active_mask = torch.ones(B, T, 1, device=device)
-        frozen_mu = torch.zeros_like(mu)  # store state at emission time
-        verify_scores = []
-        compute_costs = []
-
         for t in range(self.max_steps):
-            if (active_mask < 0.01).all():
-                break
-
-            # Apply active mask: only update active positions
-            # Frozen positions keep their state unchanged
-            mu_active = mu * active_mask + frozen_mu * (1 - active_mask)
-
-            # Transition: content-dependent stage evolution
-            K = self.transition(mu_active)  # (B, T, 7, 7)
+            # Stage transition: content-dependent Markov evolution
+            K = self.transition(mu)  # (B, T, 7, 7)
             pi_evolved = torch.bmm(
                 pi.view(B * T, 1, N_STAGES),
                 K.view(B * T, N_STAGES, N_STAGES)
             ).view(B, T, N_STAGES)
 
-            # Stage bank: only active stages computed (Top2-sparse)
-            stage_out, evidence = self.stage_bank(mu_active, pi)
+            # Stage bank: weighted combination of stage-specific transforms
+            stage_out, evidence = self.stage_bank(mu, pi)
 
-            # Evidence-modulated transition (only for active positions)
+            # Evidence-modulated transition + Top2 projection
             pi_new = pi_evolved * F.softmax(evidence / 0.5, dim=-1)
             pi_new = pi_new / pi_new.sum(dim=-1, keepdim=True).clamp(min=1e-8)
-            pi = top2_project(pi_new) * active_mask + pi * (1 - active_mask)
+            pi = top2_project(pi_new)
 
-            # Stage 4: Route (weighted by routing probability)
-            messages = self.router(mu_active)
-            messages = messages * pi[:, :, 3:4] * active_mask
+            # Stage 4: Route (weighted by routing stage probability)
+            messages = self.router(mu)
+            messages = messages * pi[:, :, 3:4]
 
-            # Stage 5: Bayesian write (only active)
-            mu_new, lam_new = self.writer(mu_active, lam, messages, pi[:, :, 4:5])
-            mu = mu_new * active_mask + frozen_mu * (1 - active_mask)
-            lam = lam_new * active_mask + lam * (1 - active_mask)
+            # Stage 5: Bayesian write (weighted by write stage probability)
+            mu, lam = self.writer(mu, lam, messages, pi[:, :, 4:5])
 
-            # Residual from stage bank (only active)
-            mu = mu + stage_out * 0.1 * active_mask
+            # Residual from stage bank
+            mu = mu + stage_out * 0.1
 
-            # Stage 7: Verify — use soft scoring (differentiable)
-            verify_prob = pi[:, :, 6]  # soft Stage 7 probability
-            logits_now = F.linear(self.ln(mu), self.emb.weight) / math.sqrt(self.dim)
-            # Soft verification: how confident is the model about its prediction?
-            pred_confidence = logits_now.max(dim=-1).values  # (B, T)
-            # Use Gumbel-softmax for differentiable "sampling"
-            pred_emb_soft = F.softmax(logits_now / 0.5, dim=-1) @ self.emb.weight
-            v_score, reroute_sig = self.verifier(mu, pred_emb_soft)
-            v_score_sq = v_score.squeeze(-1)
-            verify_scores.append(v_score_sq * verify_prob)
-
-            # Soft emission: positions with high verify_prob AND high v_score reduce active_mask
-            emit_strength = verify_prob * v_score_sq * active_mask.squeeze(-1)
-            # Freeze emitted positions (capture current state)
-            frozen_mu = frozen_mu + emit_strength.unsqueeze(-1) * mu
-            active_mask = (active_mask.squeeze(-1) - emit_strength).clamp(min=0).unsqueeze(-1)
-
-            # Soft reroute: failed verify shifts pi toward routing
-            fail_strength = verify_prob * (1 - v_score_sq) * active_mask.squeeze(-1)
-            reroute_boost = torch.zeros_like(pi)
-            reroute_boost[:, :, 3] = fail_strength * self.reroute_alpha
-            reroute_boost[:, :, 6] = -fail_strength * self.reroute_alpha
-            pi = (pi + reroute_boost).clamp(min=0)
-            pi = pi / pi.sum(dim=-1, keepdim=True).clamp(min=1e-8)
-            mu = mu + fail_strength.unsqueeze(-1) * reroute_sig * 0.1
-
-            compute_costs.append(active_mask.squeeze(-1).mean())
-
-        # Final output: blend active and frozen states
-        final_mu = mu * active_mask + frozen_mu * (1 - active_mask)
-        final = self.ln(final_mu)
+        # Final output
+        final = self.ln(mu)
         logits = F.linear(final, self.emb.weight) / math.sqrt(self.dim)
 
-        # Auxiliary losses (all differentiable)
-        compute_cost = sum(compute_costs) / max(len(compute_costs), 1)
-        verify_loss = sum(v.mean() for v in verify_scores) / max(len(verify_scores), 1) if verify_scores else torch.tensor(0.0, device=device)
-        avg_steps = len(compute_costs)
-
         aux = {
-            "compute_cost": compute_cost,       # differentiable: penalize wasted compute
-            "verify_loss": verify_loss,          # differentiable: encourage accurate verification
-            "avg_steps": avg_steps,
+            "compute_cost": torch.tensor(0.0, device=device),
+            "avg_steps": self.max_steps,
         }
 
         return logits, aux
