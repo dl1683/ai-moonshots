@@ -1825,3 +1825,13 @@ Need to test at production scale for meaningful absorption.
 - Biggest single architectural improvement found this session
 - Addresses coherence: model maintains discourse-level state
 - v0.5.3 = v0.5.2 + scratchpad memory
+
+### v0.5.3 Pre-Training Gate: ALL 8 CHECKS PASS (2026-03-20)
+1. Causality <1e-5 at T=512 ✓
+2. Smoke test: loss drops ✓
+3. Warm-start: 91% transfer, BPT 6.12 (better than v0.5.2) ✓
+4. Generation: real English with topic coherence ✓
+5. NaN: zero ✓
+6. 300-step warm-start training: loss 8.63→7.00, stable ✓
+7. Generation after training: "The president, I felt like..." ✓
+8. Ready to launch from step 10K checkpoint
