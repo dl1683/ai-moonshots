@@ -26,7 +26,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 REPO = Path(__file__).parent.parent
 
 # Combo 5 hyperparameters
-DIM = 1024
+DIM = 1024          # 122M params. Full MiniPile ~1.4B tokens: 11 tok/param
 PATCH_SIZE = 4       # 4 BPE tokens per patch ~ 4-5 words
 MAX_ROUNDS = 4
 K_RETRIEVAL = 8
