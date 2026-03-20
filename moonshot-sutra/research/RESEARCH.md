@@ -2323,3 +2323,15 @@ Let STAR-style search find the optimal stage processors rather than hand-designi
 Complex phase encoding adds too much optimization difficulty at dim=128/300 steps.
 Does NOT kill the idea — may work at larger scale — but NOT a quick win.
 Next Chrome: try P0 (CfC time constants) or P2 (expand-then-sparsify) instead.
+
+### Chrome v0.5.4b: CfC Liquid Time Constants HURT -14% (2026-03-20)
+
+| Arm | BPT | vs baseline |
+|-----|-----|-------------|
+| Fixed transition | 10.86 | baseline |
+| CfC liquid | 12.42 | **-14.4%** |
+
+Input-dependent transition speed adds optimization difficulty at small scale.
+Pattern: ALL new mechanisms (complex, CfC, halting) hurt at dim=128/300 steps.
+Only scratchpad (+10.2%) works at small scale.
+Hypothesis: novel mechanisms need LARGER models + LONGER training to pay off.
