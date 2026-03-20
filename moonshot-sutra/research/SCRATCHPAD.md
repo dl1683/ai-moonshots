@@ -2008,3 +2008,46 @@ Experiment 5: 24-48 hours (full combo training)
 
 Total: ~3-5 days of compute for the full experimental plan.
 First results (Exp 1 + 2) within 1-2 days.
+
+---
+
+## ALTERNATIVE AI BRANCHES TO CONSIDER
+
+### Kolmogorov-Arnold Networks (KANs) — ICLR 2025
+Learnable activation functions ON EDGES instead of fixed activations on nodes.
+100x more parameter-efficient than MLPs on PDEs.
+KEY INSIGHT: what if our message passing used KAN-style learnable edge functions
+instead of fixed MLPs? Each edge learns its own transformation. This IS the
+grown sparsity idea but with FUNCTION learning, not just weight learning.
+
+Connection to Sutra: replace msg_net MLP with KAN-style spline edges.
+Each patch-pair connection learns a unique transformation function.
+Could be massively more parameter-efficient.
+
+### Liquid Neural Networks / Neural ODEs
+Continuous-time dynamics where hidden state evolves via ODE.
+Brain-inspired: neurons have continuous dynamics, not discrete layers.
+KEY INSIGHT: our message passing rounds ARE discrete time steps.
+What if we made them CONTINUOUS (Neural ODE on the message passing)?
+The number of "rounds" becomes a continuous variable, not discrete {1,2,...,8}.
+
+Connection to Sutra: replace discrete message passing rounds with
+Neural ODE integration. Adaptive depth becomes continuous (ODE solver
+decides when to stop based on convergence, not PonderNet).
+
+### Reservoir Computing / Echo State Networks
+Fixed random weights in the reservoir, only train the readout.
+KEY INSIGHT: most of our architecture's value may be in the READOUT
+(language head), not the processing (message passing). What if the
+message passing were random/fixed and only the head was trained?
+This would be maximally parameter-efficient.
+
+### What These Suggest
+
+All three point to: **the FUNCTIONS on edges/connections matter more than
+the topology.** KANs: learn edge functions. Liquid: continuous dynamics.
+Reservoir: random processing, learned readout. The MESSAGE is more
+important than the routing.
+
+For Sutra: maybe focus less on WHERE to route (routing table, sparse retrieval)
+and more on WHAT to transmit (message function quality).
