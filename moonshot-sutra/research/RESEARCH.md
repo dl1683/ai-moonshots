@@ -1660,3 +1660,15 @@ All 5 stage modules verified as independently swappable:
 **Sutra is infrastructure, not a model.** Any stage can be replaced, subdivided,
 or domain-specialized. Community members improve specific stages for their domains.
 The graph handles composition. Everything builds on everything else.
+
+### Chrome: v0.5.1 vs v0.5 Combined Comparison (2026-03-20)
+
+| Config | BPT (500 steps, dim=128) | vs baseline |
+|--------|--------------------------|-------------|
+| v0.5 LR=3e-4 | 11.14 | baseline |
+| **v0.5 LR=1e-3** | **9.67** | **+13.2%** |
+| v0.5.1 LR=1e-3 | 10.19 | +8.5% |
+
+**LR alone beats v0.5.1 complexity at small scale/short training.**
+v0.5.1 halting/verify overhead needs more training to pay off.
+Pragmatic next step: restart v0.5 with LR=1e-3, defer v0.5.1.
