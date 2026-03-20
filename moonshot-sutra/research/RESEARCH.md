@@ -1311,26 +1311,29 @@ satisfies the L2M condition with FEWER total parameters than a uniform architect
 
 **Formal theorem rewrite using L2M framework:**
 
-**Theorem (Hierarchical L2M Efficiency):** Given a two-scale source with BMI:
-- I_BP(L) = A_L * L^{beta_L} + A_G * L^{beta_G} where beta_L > beta_G
+**Conjecture (Hierarchical History Compression):** [Revised per Codex review]
 
-A hierarchical architecture with separate local (dim z_L) and global (dim z_G) state satisfying:
-- z_L >= L^{beta_L} (local L2M condition)
-- z_G >= L^{beta_G} (global L2M condition)
+The defensible claim is NOT that Sutra minimizes L2M's asymptotic bound. It IS that:
 
-requires total state dim(z) = L^{beta_L} + L^{beta_G}, which is strictly less than a uniform architecture's requirement of dim(z) = L^{max(beta_L, beta_G)} = L^{beta_L} when the uniform architecture cannot decompose its state.
+1. L2M motivates why fixed-state architectures (SSMs/RNNs) fail at long context
+2. A hierarchical architecture that compresses local context within patches (GRU) before global routing (MsgPass) can reduce the **constant factor** cost of satisfying L2M
+3. This is because local MI (fast-decaying) can be compressed cheaply by recurrence, freeing the expensive global mechanism to focus on slow-decaying long-range correlations
+4. The resulting architecture is more parameter-efficient at any fixed context length, with gains proportional to the local/global MI ratio
 
-The parameter efficiency ratio is:
-**R = (L^{beta_L} + L^{beta_G}) / L^{beta_L} → 1 as L → inf**
+**Key corrections from Codex review:**
+- ~~L^beta_L + L^beta_G < L^beta_L~~ WRONG. This is > not <. The benefit is in PARAMETER COST per unit of state, not state size itself.
+- Two-point MI ≠ Bipartite MI (L2M explicitly warns). Our regime decomposition needs a separate proof connecting to BMI.
+- State dimension lower bounds ≠ parameter efficiency. Need separate approximation theorem.
+- Sutra's state is O(L/P), not O(L^beta). It's constant-factor compression, not asymptotic minimum.
 
-BUT the key is that the hierarchical architecture can use DIFFERENT mechanisms (cheap GRU vs expensive attention-like) for each regime, so the PARAMETER COST per unit of state is:
-- GRU: O(D) params for O(D) state (weight sharing across positions within patch)
-- Attention/MsgPass: O(D^2) params for O(D) state
+**What IS supported empirically:**
+- Hierarchical processing (GRU+MsgPass) has steeper scaling exponent than flat transformers
+- The advantage is larger on domains with stronger local regularity (code > prose)
+- Weight tying further improves efficiency (separating representation from computation)
 
-Total params: hierarchical = O(D + D^2/P) vs uniform = O(D^2)
-Effective scaling exponent ratio: O(D/P + D^2/P) / O(D^2) = O(1/P + 1) → depends on patch size
+**Paper-worthy claim (Codex-approved):** "Hierarchical patch memory reduces the constant cost of local compression before global routing, improving parameter efficiency. This is a theory-guided empirical response to L2M, not an asymptotic solution."
 
-**This needs formal proof but the framework from L2M makes it achievable.**
+**NOT yet supported:** "We answer L2M's open question" or "Our theorem proves hierarchical > uniform."
 
 ### Matched-Param Scaling Results (3 seeds, 1000 steps)
 
