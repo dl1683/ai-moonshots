@@ -83,6 +83,20 @@ Before ANY production training run (>1000 steps), ALL must pass:
 6. **Causality formal test** — changing token N has zero effect on logits 0..N-1
 7. **Eval alignment** — training and benchmark evals use same methodology
 
+### Multi-Codex Review at Every Eval Checkpoint (MANDATORY)
+At every eval step (every 5K steps), run parallel Codex reviews:
+1. **Code Reviewer** — any new bugs, regressions, or issues since last eval?
+2. **Chrome Experimenter** — given these results, what CPU experiments next?
+3. **Competitive Analyst** — where do we stand now vs Pythia/SmolLM2?
+4. **Architecture Designer** — should we change anything for the next phase?
+
+### Sutra = Infrastructure, Not a Model
+Design for modularity: each stage is a swappable, independently improvable component.
+Stage interfaces: (mu, lam, pi) in → (mu, lam, pi) out. Always.
+Future: stages become sub-graphs (e.g., Memory → {short_term, long_term, domain}).
+The transition kernel routes to sub-stages automatically.
+Community members improve specific stages for their domains.
+
 ### Exploration = Building
 There are no separate "research" and "implementation" phases. Research drives data, data drives research. They are coupled. Mix long shots with close-to-home approaches. Codex decides when the design is sound.
 
