@@ -1722,3 +1722,11 @@ Higher LR also unlocked stage graph discovery (Route<->Write oscillation).
 
 **6e-4 confirmed optimal.** Matches our production choice exactly.
 At dim=768, stability boundary is lower (NaN at 1e-3 step 3900).
+
+### Run 4 Status: Stable with NaN Guard (2026-03-20 ~07:30)
+
+Step ~2400, loss 5.17, 4 NaN events (all caught, same pattern as Run 3).
+LR=6e-4, crash-safe eval, NaN guard active.
+NaN root cause identified: unbounded BayesianWrite gain (Codex RCA).
+Fix applied to code (clamp max=10.0) but current run uses old code.
+Step 5000 eval expected in ~47 min. This should be the FIRST successful eval.
