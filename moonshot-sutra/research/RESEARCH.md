@@ -1644,3 +1644,19 @@ Pattern: Local→Write→Route→Ctrl emerges naturally from the graph.
 **Current production run uses 3e-4 — leaving 16% BPT on the table.**
 2e-3 didn't diverge. v0.5.1 should use LR=1e-3 (matching Pythia-70m).
 This alone projects 100K BPT from ~5.98 to ~5.0.
+
+### Modular Infrastructure Audit (2026-03-20)
+
+All 5 stage modules verified as independently swappable:
+
+| Module | Input | Output | Swappable |
+|--------|-------|--------|-----------|
+| StageBank | (mu, pi) | (out, evidence) | YES |
+| BayesianWrite | (mu, lam, msg, pi_w) | (mu_new, lam_new) | YES |
+| LocalRouter | (mu) | (messages) | YES |
+| Verifier | (mu, pred_emb) | (score, reroute) | YES |
+| HaltingHead | (mu, lam, verify) | (halt_prob) | YES |
+
+**Sutra is infrastructure, not a model.** Any stage can be replaced, subdivided,
+or domain-specialized. Community members improve specific stages for their domains.
+The graph handles composition. Everything builds on everything else.
