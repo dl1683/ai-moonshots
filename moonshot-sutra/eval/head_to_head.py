@@ -50,7 +50,7 @@ def compute_sutra_bpb_byte(model_path, test_text, dim=5120, seq_len=512):
 
 
 def compute_sutra_bpb_token(model_path, test_text, dim=768, seq_len=512,
-                            tie_weights=True, n_gru_layers=2):
+                            tie_weights=True, n_gru_layers=1):
     """Compute BPB for token-level Combo 5 model."""
     from sutra_v04 import SutraV04
     from transformers import AutoTokenizer
