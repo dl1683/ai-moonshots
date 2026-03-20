@@ -3671,7 +3671,25 @@ Full synthesis in results/master_research_synthesis.md. Key findings:
 7. Epsilon-machines: adaptive state complexity is optimal
 8. Spatial coupling: suboptimal local becomes optimal global
 
-Codex master synthesis designing v0.5.4 from all 15 domains + Chrome results.
+### v0.5.4 Ablation (6-arm, Chrome-validated, FINAL)
+
+| Arm | Test BPT | vs Baseline | Late-Step | Verdict |
+|-----|----------|-------------|-----------|---------|
+| v0.5.3 Baseline | 7.317 | -- | 0.016 | -- |
+| **Peri-LN** | **6.888** | **+5.9%** | **0.036 (2.2x)** | **PASS** |
+| Peri-LN + Surprise | 7.004 | +4.3% | 0.024 | KILL |
+| **Peri-LN + Pheromone** | **6.888** | **+5.9%** | **0.042 (2.6x)** | **PASS** |
+| Full v0.5.4 (all 3) | 7.036 | +3.8% | 0.023 | KILL |
+| **v0.5.4 + Grokfast** | **6.325** | **+13.6%** | -- | **WINNER** |
+
+**DECISION**: v0.5.4 = Peri-LN + Delayed Pheromone + Grokfast (NO Surprise Bank).
+Surprise Bank KILLED — hurts every arm it touches (-1.7% to -2.1% drag).
+
+Production code ready:
+- code/launch_v054.py — model (Peri-LN + Pheromone)
+- code/grokfast.py — gradient filter module
+- code/train_v054.py — production trainer (Grokfast + re-warmup)
+Waiting for v0.5.3 step 5K checkpoint to deploy.
 
 ---
 
