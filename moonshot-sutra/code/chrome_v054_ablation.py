@@ -326,94 +326,94 @@ def train_and_eval(name, model, use_grokfast=False):
     }
 
 
-# ============================================================
-# RUN 5-ARM ABLATION
-# ============================================================
-results = {}
+if __name__ == "__main__":
+    # ============================================================
+    # RUN 5-ARM ABLATION
+    # ============================================================
+    results = {}
 
-# Arm 0: v0.5.3 baseline (reference)
-torch.manual_seed(42)
-m0 = SutraV054(use_peri_ln=False, use_surprise=False, use_pheromone=False)
-results["v053_baseline"] = train_and_eval("v0.5.3 Baseline", m0)
+    # Arm 0: v0.5.3 baseline (reference)
+    torch.manual_seed(42)
+    m0 = SutraV054(use_peri_ln=False, use_surprise=False, use_pheromone=False)
+    results["v053_baseline"] = train_and_eval("v0.5.3 Baseline", m0)
 
-# Arm 1: + Peri-LN
-torch.manual_seed(42)
-m1 = SutraV054(use_peri_ln=True, use_surprise=False, use_pheromone=False)
-results["peri_ln"] = train_and_eval("Peri-LN", m1)
+    # Arm 1: + Peri-LN
+    torch.manual_seed(42)
+    m1 = SutraV054(use_peri_ln=True, use_surprise=False, use_pheromone=False)
+    results["peri_ln"] = train_and_eval("Peri-LN", m1)
 
-# Arm 2: + Peri-LN + Delayed Surprise
-torch.manual_seed(42)
-m2 = SutraV054(use_peri_ln=True, use_surprise=True, use_pheromone=False)
-results["peri_surprise"] = train_and_eval("Peri-LN + Surprise", m2)
+    # Arm 2: + Peri-LN + Delayed Surprise
+    torch.manual_seed(42)
+    m2 = SutraV054(use_peri_ln=True, use_surprise=True, use_pheromone=False)
+    results["peri_surprise"] = train_and_eval("Peri-LN + Surprise", m2)
 
-# Arm 3: + Peri-LN + Delayed Pheromone
-torch.manual_seed(42)
-m3 = SutraV054(use_peri_ln=True, use_surprise=False, use_pheromone=True)
-results["peri_pheromone"] = train_and_eval("Peri-LN + Pheromone", m3)
+    # Arm 3: + Peri-LN + Delayed Pheromone
+    torch.manual_seed(42)
+    m3 = SutraV054(use_peri_ln=True, use_surprise=False, use_pheromone=True)
+    results["peri_pheromone"] = train_and_eval("Peri-LN + Pheromone", m3)
 
-# Arm 4: Full v0.5.4
-torch.manual_seed(42)
-m4 = SutraV054(use_peri_ln=True, use_surprise=True, use_pheromone=True)
-results["full_v054"] = train_and_eval("Full v0.5.4", m4)
+    # Arm 4: Full v0.5.4
+    torch.manual_seed(42)
+    m4 = SutraV054(use_peri_ln=True, use_surprise=True, use_pheromone=True)
+    results["full_v054"] = train_and_eval("Full v0.5.4", m4)
 
-# Arm 5: Full v0.5.4 + Grokfast
-torch.manual_seed(42)
-m5 = SutraV054(use_peri_ln=True, use_surprise=True, use_pheromone=True)
-results["v054_grokfast"] = train_and_eval("v0.5.4 + Grokfast", m5, use_grokfast=True)
+    # Arm 5: Full v0.5.4 + Grokfast
+    torch.manual_seed(42)
+    m5 = SutraV054(use_peri_ln=True, use_surprise=True, use_pheromone=True)
+    results["v054_grokfast"] = train_and_eval("v0.5.4 + Grokfast", m5, use_grokfast=True)
 
 
-# ============================================================
-# ANALYSIS
-# ============================================================
-print("\n" + "=" * 70)
-print("CHROME v0.5.4 ABLATION RESULTS")
-print("=" * 70)
+    # ============================================================
+    # ANALYSIS
+    # ============================================================
+    print("\n" + "=" * 70)
+    print("CHROME v0.5.4 ABLATION RESULTS")
+    print("=" * 70)
 
-base_bpt = results["v053_baseline"]["test_bpt"]
-print(f"\nv0.5.3 Baseline: {base_bpt:.4f} BPT")
-print(f"\n{'Arm':<30s} {'BPT':>8s} {'Delta':>8s} {'%':>8s} {'Late':>8s} {'Verdict':>10s}")
-print("-" * 78)
+    base_bpt = results["v053_baseline"]["test_bpt"]
+    print(f"\nv0.5.3 Baseline: {base_bpt:.4f} BPT")
+    print(f"\n{'Arm':<30s} {'BPT':>8s} {'Delta':>8s} {'%':>8s} {'Late':>8s} {'Verdict':>10s}")
+    print("-" * 78)
 
-for key in ["peri_ln", "peri_surprise", "peri_pheromone", "full_v054", "v054_grokfast"]:
-    r = results[key]
-    delta = base_bpt - r["test_bpt"]
-    pct = delta / base_bpt * 100
-    late = 0
-    if r["step_bpts"] and len(r["step_bpts"]) >= 2:
-        late = r["step_bpts"][-2] - r["step_bpts"][-1]
+    for key in ["peri_ln", "peri_surprise", "peri_pheromone", "full_v054", "v054_grokfast"]:
+        r = results[key]
+        delta = base_bpt - r["test_bpt"]
+        pct = delta / base_bpt * 100
+        late = 0
+        if r["step_bpts"] and len(r["step_bpts"]) >= 2:
+            late = r["step_bpts"][-2] - r["step_bpts"][-1]
 
-    # Verdicts per Codex kill criteria
-    if key == "peri_ln":
-        verdict = "PASS" if pct >= 1.0 else "KILL"
-    elif key == "peri_surprise":
-        peri_bpt = results["peri_ln"]["test_bpt"]
-        peri_late = 0
-        if results["peri_ln"]["step_bpts"] and len(results["peri_ln"]["step_bpts"]) >= 2:
-            peri_late = results["peri_ln"]["step_bpts"][-2] - results["peri_ln"]["step_bpts"][-1]
-        surp_gain = (peri_bpt - r["test_bpt"]) / peri_bpt * 100
-        late_ratio = late / max(peri_late, 0.001)
-        verdict = "PASS" if surp_gain >= 0.5 and late_ratio >= 1.5 else "KILL"
-    elif key == "peri_pheromone":
-        phero_gain = (results["peri_ln"]["test_bpt"] - r["test_bpt"]) / results["peri_ln"]["test_bpt"] * 100
-        verdict = "PASS" if phero_gain >= 0.3 else "KILL"
-    elif key == "full_v054":
-        full_gain = (results["peri_ln"]["test_bpt"] - r["test_bpt"]) / results["peri_ln"]["test_bpt"] * 100
-        verdict = "PASS" if pct >= 1.0 else "MARGINAL" if pct >= 0 else "KILL"
-    elif key == "v054_grokfast":
-        verdict = "PASS" if pct >= 2.0 else "MARGINAL"
+        if key == "peri_ln":
+            verdict = "PASS" if pct >= 1.0 else "KILL"
+        elif key == "peri_surprise":
+            peri_bpt = results["peri_ln"]["test_bpt"]
+            peri_late = 0
+            if results["peri_ln"]["step_bpts"] and len(results["peri_ln"]["step_bpts"]) >= 2:
+                peri_late = results["peri_ln"]["step_bpts"][-2] - results["peri_ln"]["step_bpts"][-1]
+            surp_gain = (peri_bpt - r["test_bpt"]) / peri_bpt * 100
+            late_ratio = late / max(peri_late, 0.001)
+            verdict = "PASS" if surp_gain >= 0.5 and late_ratio >= 1.5 else "KILL"
+        elif key == "peri_pheromone":
+            phero_gain = (results["peri_ln"]["test_bpt"] - r["test_bpt"]) / results["peri_ln"]["test_bpt"] * 100
+            verdict = "PASS" if phero_gain >= 0.3 else "KILL"
+        elif key == "full_v054":
+            full_gain = (results["peri_ln"]["test_bpt"] - r["test_bpt"]) / results["peri_ln"]["test_bpt"] * 100
+            verdict = "PASS" if pct >= 1.0 else "MARGINAL" if pct >= 0 else "KILL"
+        elif key == "v054_grokfast":
+            verdict = "PASS" if pct >= 2.0 else "MARGINAL"
 
-    r["delta_pct"] = round(pct, 2)
-    r["late_drop"] = round(late, 4)
-    r["verdict"] = verdict
-    print(f"  {r['name']:<28s} {r['test_bpt']:>8.4f} {delta:>+8.4f} {pct:>+7.1f}% {late:>8.4f} {verdict:>10s}")
+        r["delta_pct"] = round(pct, 2)
+        r["late_drop"] = round(late, 4)
+        r["verdict"] = verdict
+        print(f"  {r['name']:<28s} {r['test_bpt']:>8.4f} {delta:>+8.4f} {pct:>+7.1f}% {late:>8.4f} {verdict:>10s}")
 
-# Promotion rule
-print(f"\n{'='*70}")
-best_key = min(results, key=lambda k: results[k]["test_bpt"])
-best = results[best_key]
-print(f"BEST ARM: {best['name']} ({best['test_bpt']:.4f} BPT, {best.get('delta_pct', 0):+.1f}%)")
+    # Promotion rule
+    print(f"\n{'='*70}")
+    best_key = min(results, key=lambda k: results[k]["test_bpt"])
+    best = results[best_key]
+    print(f"BEST ARM: {best['name']} ({best['test_bpt']:.4f} BPT, {best.get('delta_pct', 0):+.1f}%)")
 
-# Save
-out = REPO / "results" / "chrome_v054_ablation.json"
-json.dump(results, open(out, "w"), indent=2)
-print(f"Saved: {out}")
+    # Save
+    out = REPO / "results" / "chrome_v054_ablation.json"
+    json.dump(results, open(out, "w"), indent=2)
+    print(f"Saved: {out}")
