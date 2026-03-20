@@ -1816,3 +1816,12 @@ Switching kernel + gain clamp + higher LR = 8.3% combined improvement.
 CE-only BPT=8.528 vs Dual-teacher BPT=9.259 (-8.6%). Stage entropy unchanged.
 At tiny scale, absorption adds noise. Architecture improvements > teacher signal.
 Need to test at production scale for meaningful absorption.
+
+### Chrome: Scratchpad Memory +10.2% BPT (Biggest Single Win!) (2026-03-20)
+
+8 shared memory slots (read/write each recurrent step):
+- Baseline: BPT 12.09
+- With scratchpad: BPT 10.86 (+10.2%)
+- Biggest single architectural improvement found this session
+- Addresses coherence: model maintains discourse-level state
+- v0.5.3 = v0.5.2 + scratchpad memory
