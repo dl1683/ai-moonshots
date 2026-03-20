@@ -245,7 +245,8 @@ class SutraV04(nn.Module):
         B, T = x.shape
         P = self.patch_size
         n_patches = math.ceil(T / P)
-        x_pad = F.pad(x, (0, n_patches * P - T))
+        pad_len = n_patches * P - T
+        x_pad = F.pad(x, (0, pad_len))
         patches = x_pad.view(B, n_patches, P)
 
         # VECTORIZED: process all patches at once (no per-patch loop)
@@ -253,7 +254,14 @@ class SutraV04(nn.Module):
         flat_features = self.patch_proc(flat_patches)  # (B*N, P, D)
         local_features = flat_features.reshape(B, n_patches, P, -1)  # (B, N, P, D)
 
-        summaries = self.summarize(local_features.mean(dim=2))
+        # Masked mean pooling: exclude padding positions in last patch
+        if pad_len > 0:
+            # Create mask: 1 for real tokens, 0 for padding
+            mask = torch.ones(B, n_patches, P, 1, device=x.device)
+            mask[:, -1, P - pad_len:, :] = 0  # mask padding in last patch
+            summaries = self.summarize((local_features * mask).sum(dim=2) / mask.sum(dim=2).clamp(min=1))
+        else:
+            summaries = self.summarize(local_features.mean(dim=2))
         msg_out, kl_loss = self.msg_pass(summaries)
         retrieved = self.retrieval(msg_out)
         combined = msg_out + retrieved
