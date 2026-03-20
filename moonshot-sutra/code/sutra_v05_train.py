@@ -222,38 +222,40 @@ def main():
                 loss_count = 0
 
             if step % EVAL_EVERY == 0:
-                metrics = evaluate(model, test_tokens)
-                bpt = metrics["bpt"]
-                is_best = bpt < best_bpt
-                if is_best:
-                    best_bpt = bpt
-                    torch.save(model.state_dict(), REPO / "results" / "v05_best.pt")
-
-                gen = generate_sample(model, test_tokens, tokenizer)
-                print(f"\n{'='*60}")
-                print(f"GENERATION @ step {step}")
                 try:
-                    print(f"PROMPT: {gen['prompt'][:150]}")
-                    print(f"OUTPUT: {gen['output'][:300]}")
-                except UnicodeEncodeError:
-                    print("(generation contains non-ASCII)")
-                print(f"{'='*60}\n")
+                    metrics = evaluate(model, test_tokens)
+                    bpt = metrics["bpt"]
+                    is_best = bpt < best_bpt
+                    if is_best:
+                        best_bpt = bpt
+                        torch.save(model.state_dict(), REPO / "results" / "v05_best.pt")
 
-                entry = {
-                    "step": step, "test_bpt": round(bpt, 4),
-                    "best_bpt": round(best_bpt, 4), "is_best": is_best,
-                    "lr": lr, "avg_steps": aux["avg_steps"],
-                    "generation": gen,
-                    "timestamp": datetime.now().isoformat(),
-                }
-                metrics_history.append(entry)
-                json.dump(metrics_history, open(metrics_file, "w"), indent=2)
+                    gen = {"prompt": "(eval)", "output": "(eval)"}
+                    try:
+                        gen = generate_sample(model, test_tokens, tokenizer)
+                        # Sanitize for Windows cp1252
+                        gen = {k: v.encode("ascii", errors="replace").decode("ascii") for k, v in gen.items()}
+                        print(f"\nGENERATION @ step {step}: {gen['output'][:200]}", flush=True)
+                    except Exception as e:
+                        print(f"\nGeneration failed: {e}", flush=True)
 
-                best_marker = " *BEST*" if is_best else ""
-                eval_msg = f"  EVAL Step {step}: BPT={bpt:.4f}{best_marker}"
-                print(eval_msg, flush=True)
-                with open(log_file, "a") as f:
-                    f.write(eval_msg + "\n")
+                    entry = {
+                        "step": step, "test_bpt": round(bpt, 4),
+                        "best_bpt": round(best_bpt, 4), "is_best": is_best,
+                        "lr": lr, "avg_steps": aux["avg_steps"],
+                        "generation": gen,
+                        "timestamp": datetime.now().isoformat(),
+                    }
+                    metrics_history.append(entry)
+                    json.dump(metrics_history, open(metrics_file, "w"), indent=2)
+
+                    best_marker = " *BEST*" if is_best else ""
+                    eval_msg = f"  EVAL Step {step}: BPT={bpt:.4f}{best_marker}"
+                    print(eval_msg, flush=True)
+                    with open(log_file, "a") as f:
+                        f.write(eval_msg + "\n")
+                except Exception as e:
+                    print(f"EVAL FAILED at step {step}: {e}", flush=True)
 
             if step % SAVE_EVERY == 0:
                 ckpt = {
