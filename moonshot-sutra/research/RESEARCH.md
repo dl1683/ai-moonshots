@@ -1462,3 +1462,18 @@ First eval at step 5000 (~1 hour), full training ~22 hours
 **Generation quality is DEGENERATE** (outputs "!!!"). Diagnosis: exposure bias. At 80% accuracy, 1/5 tokens is wrong; errors cascade in autoregressive generation. Needs >95% accuracy for coherent text. Expected to resolve with more training steps.
 
 **Byte-level model update**: step 6000 eval BPB = 1.2935 (improved from 1.3519 at step 4000)
+
+### CRITICAL BUG: Causal Leakage in Patch Broadcast (2026-03-20)
+
+**Codex audit discovered**: Patch summary (`mean(dim=2)` of all tokens in a patch) was broadcast back to the SAME patch. This means token 0 of a patch sees tokens 1-3 — **future information leaks into current predictions**.
+
+**Impact**:
+- All BPT/BPB numbers from v1 training are INFLATED (model was cheating)
+- Generation collapsed because during autoregressive decode, no future context available
+- The "2.5x better than Pythia" claim is INVALID
+
+**Fix**: Shift broadcast right by 1 patch. Patch N's summary only affects patches N+1+.
+Verified: changing token 6 has zero effect on positions 0-5 (strict causality confirmed).
+
+**Restarted training from scratch** with causal fix. v2 training at 102K tok/s (full GPU).
+Step 200 loss 8.52 (higher than v1's 7.04 — expected since no cheating).
