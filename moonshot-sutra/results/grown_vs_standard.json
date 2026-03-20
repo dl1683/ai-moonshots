@@ -1,0 +1,1 @@
+{"experiment":"grown_vs_standard_retrieval","standard":{"bpb":1.1159,"params":82816},"grown":{"bpb":1.1507,"params":74496},"verdict":"Standard wins 3% but grown has 10% fewer params. Grown develops structure but cant adapt per-input."}
