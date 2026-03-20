@@ -1,0 +1,5 @@
+The complete v0.5.4 design is in [results/codex_v054_master_design.md](C:/Users/devan/OneDrive/Desktop/Projects/AI%20Moonshots/moonshot-sutra/results/codex_v054_master_design.md). I also logged the condensed decision in [research/RESEARCH.md](C:/Users/devan/OneDrive/Desktop/Projects/AI%20Moonshots/moonshot-sutra/research/RESEARCH.md).
+
+The design call is conservative by construction: keep the v0.5.3 backbone, add `Peri-LN`, add a delayed surprise-memory bank, add a delayed pheromone bias only on the global router branch, and upgrade training with `Grokfast(alpha=0.95, lambda=2.0)` plus a `70/20/10` MiniPile/code/prose mix after a short stabilization phase. Controller-heavy or geometry-swapping ideas are explicitly deferred.
+
+I did not implement the architecture or run new experiments in this turn; this pass was the synthesis and write-up the prompt requested. The score I assigned for this exact v0.5.4 design is `6.5/10` on Nobel/Turing/Fields potential: strong trajectory, but this version is still a disciplined compression step rather than the final theorem.

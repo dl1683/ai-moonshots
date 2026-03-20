@@ -3647,24 +3647,31 @@ v0.5.3 at step 2,500 BEATS v0.5.2 at step 10,000 (+1.1%). This means:
 | v0.5.3 Baseline | 7.317 | -- | -- |
 | Error Scratchpad | 7.343 | -0.4% | KILL (BPT worse) |
 | Pheromone Router | (running) | -- | -- |
-| Depth-Drop Bootstrap | (running) | -- | -- |
-| Grokfast | (running) | -- | -- |
-| Peri-LN | (running) | -- | -- |
+| Depth-Drop Bootstrap | NaN | -- | KILL (diverged) |
+| **Grokfast(a=0.95,l=2.0)** | **6.468** | **+11.0%** | **STRONG PASS** |
+| **Peri-LN** | **6.995** | **+2.6%** | **PASS** |
 
-Error Scratchpad: BPT slightly worse but late-step value 2.2x better (0.0367 vs 0.0164).
-The error signal helps late recurrence but hurts early steps. May need different integration
-strategy (e.g., only inject error memory after step 3, not from step 0).
+Error Scratchpad: late-step value 2.2x better but early noise kills overall BPT.
+Depth-Drop: KL to teacher diverged to NaN at step 169.
+Grokfast: +11% BPT via 5-line gradient EMA filter. BEST result this session.
+Peri-LN: +2.6% from pre+post LayerNorm. Zero new params.
+
+**PATTERN**: At 67M, training tricks + normalization WIN. Architecture mechanisms FAIL.
+Grokfast module ready at code/grokfast.py.
 
 ### Cross-Domain Research Synthesis (15 agents)
 
-Full synthesis in results/master_research_synthesis.md. Top convergent findings:
-1. Wave-PDE Nets: O(n log n) attention replacement, 30% faster
-2. nGPT hypersphere normalization: 4-20x fewer training steps
-3. Tropical attention: 3-9x faster, superior OOD generalization
-4. Grokfast: 50x grokking acceleration via gradient filtering
-5. NCA pre-pre-training: 164M NCA tokens > 1.6B CommonCrawl tokens
+Full synthesis in results/master_research_synthesis.md. Key findings:
+1. **Grokfast: +11% validated on Sutra** (gradient spectral filtering)
+2. Wave-PDE Nets: O(n log n) attention replacement, 30% faster
+3. nGPT hypersphere normalization: 4-20x fewer training steps
+4. Tropical attention: 3-9x faster, superior OOD generalization
+5. NCA pre-pre-training: 164M NCA tokens > 1.6B CommonCrawl
+6. BP on LDPC proves sparse local iterative = near Shannon limit
+7. Epsilon-machines: adaptive state complexity is optimal
+8. Spatial coupling: suboptimal local becomes optimal global
 
-All pending Codex master synthesis once Chrome probes complete.
+Codex master synthesis designing v0.5.4 from all 15 domains + Chrome results.
 
 ---
 
@@ -4356,3 +4363,734 @@ The brain does NOT use one computational principle everywhere. It uses DIFFERENT
 - **STDP** = local temporal learning rule (for unsupervised circuit self-organization)
 
 Sutra's 7 stages should each derive from the biological mechanism most suited to that stage's computational role, not force one mechanism (e.g., attention) onto all stages.
+
+---
+
+## Topology and Geometric Deep Learning: Mathematical Foundations for Representation Design (2026-03-20)
+
+### Purpose
+
+This section synthesizes rigorous mathematical frameworks from topology and geometric deep learning that are directly relevant to Sutra's architecture design. The question: what geometric and topological structure should representations have, and how does that structure constrain/enable the architecture?
+
+---
+
+### 1. The Manifold Hypothesis and Intrinsic Dimensionality
+
+#### Core Mathematical Structure
+
+The manifold hypothesis states that high-dimensional data X in R^D lies on or near a smooth d-dimensional submanifold M where d << D. Formally: there exists a smooth manifold M of intrinsic dimension d and a smooth embedding f: M -> R^D such that supp(P_X) is contained in a tubular neighborhood of f(M).
+
+**Whitney Embedding Theorem**: Any smooth compact m-dimensional manifold can be smoothly embedded in R^(2m). This is TIGHT: real projective spaces of dimension m (where m is a power of 2) cannot embed in R^(2m-1). Implication: the MINIMUM ambient dimension to faithfully represent an m-dimensional data manifold is at most 2m. For neural networks, this means the hidden dimension need not exceed 2d where d is the intrinsic dimension of the data manifold.
+
+**Reach (tau)**: The reach of a manifold M embedded in R^D is the largest r such that every point within distance r of M has a unique nearest point on M. Reach measures curvature regularity. A manifold with large reach is "flat" (easy to learn); small reach means high curvature (hard). The condition number 1/tau controls sample complexity and network size.
+
+#### Intrinsic Dimension Estimation Methods
+
+1. **MLE (Levina-Bickel)**: Models distances between k-nearest neighbors as a Poisson process. ID estimated from the rate parameter. Robust baseline across manifold types.
+
+2. **TWO-NN**: Uses ONLY the ratio of distances to the 1st and 2nd nearest neighbors. Reduces effects of curvature and density variation. Computationally cheapest.
+
+3. **PCA-based**: Detects spectral gap in sorted eigenvalues of the covariance matrix. Works when N >> d*log(d). Linear methods that fail on highly curved manifolds.
+
+4. **ABID (Angle-Based ID)**: Uses angles between triplets of nearby points. More robust to curvature than distance-based methods.
+
+Recent 2024-2025 finding: for neural network layers, intrinsic dimension progressively decreases along depth. Early layers preserve ambient structure; later layers compress to task-relevant dimensions. This empirically validates the "compression = intelligence" thesis -- the network IS learning lower-dimensional manifold structure.
+
+#### Network Size Bounds from Manifold Properties (2024)
+
+Key result (Theorem 2 from "Neural Network Expressive Power via Manifold Topology"):
+
+Network size <= O(d^2 * beta^2 / epsilon + tau^(-d^2/2) * log^(d/2)(1/(tau*delta)) + D * tau^(-d) * log(1/(tau*delta)))
+
+Where:
+- d = intrinsic dimension
+- beta = sum of Betti numbers (topological complexity)
+- tau = reach (geometric regularity)
+- D = ambient dimension
+- epsilon = approximation error
+- delta = confidence parameter
+
+**Critical insight**: Intrinsic dimension d appears as d^2 in the dominant term. The ambient dimension D appears only linearly and only in the geometric (not topological) term. This proves: network size should scale with INTRINSIC dimension, not AMBIENT dimension. Architectures that exploit low-dimensional manifold structure need exponentially fewer parameters.
+
+**Depth bound**: O(log(beta) + d*log(1/tau) + log(log(1/(tau*delta)))). Depth scales logarithmically in topological complexity and linearly in intrinsic dimension. This supports the "deep and narrow" finding from Chrome Cycle 2.
+
+#### Implications for Sutra
+
+1. **Representation dimension**: Hidden dimensions should be proportional to 2d (Whitney bound), not D. If language manifold has intrinsic dimension ~50-100, hidden dimension ~100-200 may suffice per scale level (much smaller than typical 768-4096).
+
+2. **Multi-scale manifold structure**: Language likely has different intrinsic dimensions at different scales. Character-level: high d (many possible next chars). Word-level: lower d (grammatical constraints). Sentence-level: even lower d (topic/discourse constraints). This supports Sutra's multi-scale architecture where different levels can have different dimensions.
+
+3. **Adaptive precision**: Regions of high curvature (small local reach) need more parameters/precision. Predictable text = flat manifold region = low precision sufficient. Surprising text = high curvature = more compute needed. This is exactly PonderNet's adaptive depth.
+
+---
+
+### 2. Fiber Bundles and Connections
+
+#### Core Mathematical Structure
+
+A **fiber bundle** is a tuple (E, pi, B, F) where:
+- E = total space (all data)
+- B = base space (positions, contexts, or categories)
+- F = typical fiber (the feature space "above" each point in B)
+- pi: E -> B = projection map (smooth surjection)
+- Local triviality: each point b in B has a neighborhood U where pi^(-1)(U) is homeomorphic to U x F
+
+**Transition functions**: On overlaps U_i intersect U_j, there exist smooth maps g_ij: U_i intersect U_j -> G (where G is the structure group acting on F) satisfying the cocycle condition: g_ij * g_jk = g_ik on triple overlaps.
+
+A **principal G-bundle** P(M, G): the fiber IS the group G, with G acting freely and transitively on fibers. Points u in P_x represent choices of "frame" or "gauge" at x in M.
+
+A **section** s: B -> E with pi(s(b)) = b. In ML terms: a section assigns a feature vector to each position in a way that is compatible with the bundle structure.
+
+#### Connection (Parallel Transport)
+
+A **connection 1-form** omega is a g-valued 1-form on P satisfying:
+1. omega(v^sharp_p) = v for each v in g (the Lie algebra) -- reproduces fundamental vector fields
+2. omega((R_g)_* v) = Ad(g^(-1)) * omega(v) -- equivariance under right action
+
+The connection decomposes each tangent space into vertical (along the fiber) and horizontal (along the base): T_e(E) = V_e(E) + H_e(E), where H_e = ker(omega).
+
+**Parallel transport equation**: For a path gamma in M, the transport element a_gamma: [0,1] -> G satisfies:
+a'_gamma(t) = -A(gamma'(t)) * a_gamma(t), with a_gamma(0) = identity
+
+Solution: a_gamma(t) = P*exp(integral_0^t -A(gamma'(s)) ds) (path-ordered exponential)
+
+**Parallel transport convolution** (PTC): Defines convolution on manifolds by transporting filter weights along geodesics. The filter at point x is TRANSPORTED to point y before inner product. This makes convolution coordinate-independent.
+
+#### Curvature
+
+The **curvature 2-form** Omega measures failure of parallel transport around infinitesimal loops:
+
+Omega(v, w) = d*omega(v^H, w^H)
+
+Structure equation (Cartan): Omega = d*omega + (1/2)[omega wedge omega]
+
+Or in local coordinates: F = dA + A wedge A (physicists' notation)
+
+Under gauge transformation g: F_bar = g * F * g^(-1) (curvature transforms covariantly)
+
+**Bianchi identity**: D*Omega = 0 (covariant derivative of curvature vanishes)
+
+The curvature measures how much information is LOST or DISTORTED when transporting features between positions. Zero curvature = lossless transport (flat connection). High curvature = features at distant positions are fundamentally incomparable without accounting for the curvature.
+
+#### Gauge Equivariance in Neural Networks
+
+The key insight from Weiler-Cohen (2024 book: "Equivariant and Coordinate Independent CNNs"):
+
+A neural network on a manifold is **gauge equivariant** if its output is independent of the choice of local coordinates (gauges). Formally: for any gauge transformation g, the network f satisfies:
+
+f(rho_in(g) * input) = rho_out(g) * f(input)
+
+where rho_in, rho_out are representations of the gauge group on input/output spaces.
+
+This is not optional decoration -- it is a CONSTRAINT that prevents the network from wasting capacity learning coordinate artifacts. A gauge equivariant network automatically generalizes across coordinate systems.
+
+**Group convolution**:
+- Discrete: (f * psi)(x) = sum_{g in G} f(g*x) * psi(g^(-1))
+- Continuous: (f * psi)(x) = integral_G f(g*x) * psi(g^(-1)) dg
+
+The typical blueprint: sequence of equivariant layers followed by invariant global pooling.
+
+#### Implications for Sutra
+
+1. **Token representations as sections of a bundle**: Each position in a sequence has a "fiber" of possible features. The connection determines how to COMPARE features at different positions. Current models (attention) implicitly define a flat connection (direct dot product). But language has CURVATURE: the meaning of a word depends on its context (position in the base space). A connection-aware architecture would TRANSPORT features before comparing them, accounting for contextual curvature.
+
+2. **Message passing IS parallel transport**: In Sutra's stigmergic architecture, message passing between patches is conceptually parallel transport along the 1D sequence manifold. The message update rule defines the connection. The question: does our message passing rule define a good connection (low curvature, faithful transport) or a bad one?
+
+3. **Gauge invariance = position invariance**: Sutra should produce the same output regardless of how we "coordinatize" positions. Shared weights across patches already provides translational gauge invariance. But rotational/scaling gauge invariance (invariance to how we orient the feature space at each position) is not built in. This could matter.
+
+---
+
+### 3. Hyperbolic Geometry for Hierarchies
+
+#### Core Mathematical Structure
+
+**Hyperbolic space** H^n is the unique simply connected Riemannian manifold of constant negative curvature -1. It is the natural geometry for tree-like and hierarchical data.
+
+**Poincare ball model** B^n_kappa = {x in R^n : kappa*||x||^2 < 1} with metric tensor:
+
+g_x = lambda_x^2 * g_E, where lambda_x = 2/(1 + kappa*||x||^2)
+
+(kappa < 0 for hyperbolic curvature)
+
+**Distance formula**:
+
+d(u, v) = arcosh(1 + 2 * ||u - v||^2 / ((1 - ||u||^2)(1 - ||v||^2)))
+
+**Mobius addition** (the "vector addition" of hyperbolic space):
+
+x +_kappa y = ((1 - 2*kappa*<x,y> - kappa*||y||^2)*x + (1 + kappa*||x||^2)*y) / (1 - 2*kappa*<x,y> + kappa^2*||x||^2*||y||^2)
+
+**Exponential map** (tangent space -> manifold):
+
+exp^kappa_x(u) = x +_kappa tan_kappa(lambda^kappa_x * ||u|| / 2) * u/||u||
+
+**Logarithmic map** (manifold -> tangent space):
+
+log^kappa_x(y) = (2/lambda^kappa_x) * arctan_kappa(||(-x) +_kappa y||) * ((-x) +_kappa y) / ||(-x) +_kappa y||
+
+**Mobius scalar multiplication**:
+
+r *_kappa x = tan_kappa(r * arctan_kappa(||x||)) * x/||x||
+
+#### The Volume Growth Advantage
+
+In Euclidean space: Vol(B_r) ~ r^n (polynomial growth)
+In hyperbolic space: Vol(B_r) ~ exp((n-1)*r) (EXPONENTIAL growth)
+
+This means hyperbolic space has exponentially more "room" at the boundary than the center. A tree with branching factor b and depth d has b^d leaves -- exactly matching hyperbolic volume growth. Embedding a tree in Euclidean space requires dimension proportional to log(number of nodes) to avoid distortion; in hyperbolic space, it embeds with ZERO distortion in dimension 2.
+
+Formally (Sarkar 2011): any weighted tree on n nodes can be embedded in 2D hyperbolic space with multiplicative distortion 1+epsilon using precision O(log(n/epsilon)).
+
+#### Riemannian Optimization
+
+Standard SGD doesn't work in curved space. Riemannian SGD update:
+
+theta_{t+1} = proj(theta_t - eta_t * (lambda^kappa_{theta_t})^(-2)/4 * nabla_E)
+
+where lambda is the conformal factor scaling Euclidean gradients to Riemannian ones, and proj projects back onto the manifold. The (1-||theta||^2)^2/4 factor means gradients SHRINK near the boundary -- objects deep in the hierarchy move slowly, preserving structure.
+
+Riemannian Adam provides accelerated convergence. Recent 2025 work shows: growing embedding norms destabilize training in both Poincare Ball and Hyperboloid models, causing trust-region violations despite PPO's clipping. Numerical stability near the boundary (||x|| -> 1/sqrt(-kappa)) remains a practical challenge.
+
+#### Recent Results (2024-2026)
+
+1. **Hierarchical Mamba (HiM, May 2025)**: Integrates Mamba2 with hyperbolic geometry. Sequences projected to Poincare ball with LEARNABLE curvature. Hierarchy-aware language embeddings.
+
+2. **HyperbolicRAG (Feb 2026)**: Dual-space retrieval fusing Euclidean and hyperbolic rankings. Projects embeddings into Poincare ball to encode hierarchical depth within knowledge graphs.
+
+3. **GGBall (June 2025)**: First graph generation framework on the Poincare ball. Exploits exponential volume growth to preserve hierarchical structure in generated graphs.
+
+4. **Hyperbolic deep RL (Dec 2025)**: Identifies instability from growing norms as a fundamental challenge, not just an engineering problem.
+
+#### Implications for Sutra
+
+1. **Language IS hierarchical**: Characters < morphemes < words < phrases < clauses < sentences < paragraphs < documents. This hierarchy is tree-like, and Sutra's multi-scale architecture already encodes it. But the REPRESENTATIONS at each level are Euclidean. Hyperbolic representations would naturally encode the hierarchical relationships WITHIN each level (e.g., hypernym/hyponym at word level, topic/subtopic at paragraph level).
+
+2. **Message passing in hyperbolic space**: Replace Euclidean message passing with Mobius addition. Each message is transported via exp/log maps. This is mathematically coherent and would naturally preserve hierarchical structure during message propagation. Cost: Mobius operations are ~3x more expensive than Euclidean, but the representational efficiency may compensate.
+
+3. **Learnable curvature**: Different parts of the sequence may have different hierarchical depth. Learnable curvature kappa per scale level (or even per patch) could let the model adaptively "flatten" representations where hierarchy is irrelevant and "curve" them where hierarchy matters.
+
+4. **Quantization challenge**: Hyperbolic operations near the boundary are numerically sensitive. INT4/INT8 quantization would catastrophically clip boundary representations (which encode the deepest hierarchy). This is a FUNDAMENTAL tension with Sutra's quantization-native constraint. Solutions: (a) work in the Lorentz/hyperboloid model (more numerically stable than Poincare ball), (b) use mixed precision (hyperbolic ops in FP16, everything else in INT8), (c) regularize to keep embeddings away from boundary.
+
+---
+
+### 4. Persistent Homology and Betti Numbers
+
+#### Core Mathematical Structure
+
+**Simplicial complex** K: a collection of simplices (vertices, edges, triangles, tetrahedra, ...) closed under taking faces. A k-simplex is defined by k+1 vertices.
+
+**Filtration**: A nested sequence of subcomplexes K_0 subset K_1 subset ... subset K_n. Typically constructed from a distance parameter epsilon: the Vietoris-Rips complex VR(X, epsilon) includes a simplex for every set of points with pairwise distance <= epsilon.
+
+**Boundary operator** d_k: C_k(K) -> C_{k-1}(K), mapping k-chains to (k-1)-chains. Satisfies d_{k-1} * d_k = 0 (boundary of a boundary is zero).
+
+**Homology groups** H_k(K) = ker(d_k) / im(d_{k+1}). Elements of H_k represent k-dimensional "holes":
+- H_0: connected components (beta_0 = number of components)
+- H_1: loops (beta_1 = number of independent loops)
+- H_2: voids (beta_2 = number of enclosed cavities)
+- beta_k = rank(H_k) = k-th Betti number
+
+**Persistent homology**: As epsilon increases in the filtration, topological features are BORN (first appear) and DIE (get filled in). Each feature has a birth time b and death time d. The persistence d - b measures the "significance" of the feature. Short-lived features are noise; long-lived features are genuine topological structure.
+
+**Persistence diagram**: A multiset of points (b_i, d_i) in R^2. Points far from the diagonal (high persistence) represent significant topological features. The diagram is stable under perturbation: small changes in data produce small changes in the diagram (bottleneck stability theorem).
+
+**Computation**: The standard algorithm reduces the boundary matrix to Smith normal form. Worst case O(n^3) where n = number of simplices. Ripser (2021) achieves dramatic speedups via implicit coboundary representation and apparent pairs, making computation practical for datasets with thousands of points.
+
+#### What TDA Reveals About Neural Network Representations
+
+1. **Layer-wise topology**: Persistent homology of activation spaces shows topological complexity (total persistence) first INCREASES then DECREASES through network layers. Early layers create topological features; later layers simplify them. This is consistent with "compression = intelligence."
+
+2. **Network similarity**: The Betti curve similarity (from persistence diagrams) can distinguish between different DNN architectures and training procedures, even when traditional metrics (accuracy, loss) are similar. Topology captures structural properties that scalar metrics miss.
+
+3. **Loss landscape topology**: Persistent homology of the loss landscape reveals the structure of local minima, saddle points, and mode connectivity. Networks that find "flatter" minima (topologically simpler loss basins) generalize better.
+
+4. **Topological loss functions**: Differentiable persistent homology enables loss functions that penalize unwanted topological features. For segmentation: penalize spurious connected components or missing loops. This forces the network to learn topologically correct representations.
+
+#### Extended TDA: Beyond Persistent Homology (2024-2025)
+
+1. **Persistent Laplacians**: Combine persistent homology with spectral information. The persistent topological Laplacian captures both topological invariants AND homotopic shape evolution, providing richer features than Betti numbers alone.
+
+2. **Persistent Dirac operators**: Provide spectral representations that simultaneously capture harmonic (topological) and non-harmonic (geometric) information.
+
+3. **Persistent Khovanov homology (2024-2025)**: Extends TDA to 1D data embedded in 3D, bridging geometric and algebraic topology. Relevant for understanding how 1D sequences (text) embed in high-dimensional representation spaces.
+
+#### Implications for Sutra
+
+1. **Monitoring representation quality**: Compute persistent homology of Sutra's patch representations during training. Track: (a) total persistence (should decrease at deeper message-passing rounds = compression), (b) number of significant features (should stabilize = the model has found the "right" topology), (c) Betti numbers (connected components = number of distinct "concepts" the model tracks, loops = circular dependency structures).
+
+2. **Topological regularization**: Add a differentiable topological loss that penalizes excessive topological complexity in the representation space. This directly enforces compression: simpler topology = fewer bits to describe the representation geometry.
+
+3. **Detecting over-smoothing**: In GNN literature, over-smoothing collapses all representations to a single point (beta_0 -> 1, all higher Betti numbers -> 0). Monitoring Betti numbers during message passing rounds can DETECT over-smoothing before it kills performance and trigger PonderNet halting.
+
+4. **The deep connection**: Persistent homology operates across SCALES. So does Sutra. A persistence diagram of Sutra's representations would naturally capture multi-scale structure. Features that persist across many message-passing rounds are the "real" structure; features that appear and disappear quickly are noise. This is mathematically equivalent to Sutra's adaptive depth deciding what to keep processing.
+
+---
+
+### 5. Message Passing on Simplicial and Cell Complexes
+
+#### Core Mathematical Structure
+
+**Graph neural networks** operate on graphs: nodes (0-cells) connected by edges (1-cells). Message passing updates node features using neighbor features. But graphs only capture PAIRWISE interactions.
+
+**Simplicial complexes** add HIGHER-ORDER structure:
+- 0-simplices: nodes
+- 1-simplices: edges (pairwise)
+- 2-simplices: filled triangles (3-way interaction)
+- k-simplices: (k+1)-way interaction
+
+**CW complexes** generalize simplicial complexes: cells of dimension k can be attached along any continuous map of their boundary, not just as simplices. More flexible topology.
+
+**Combinatorial complexes** (Hajij et al. 2023): the most general framework. A set X with a rank function and neighborhood structure, unifying graphs, hypergraphs, simplicial complexes, and cell complexes.
+
+#### Hodge Laplacian: The Key Operator
+
+For a simplicial complex K, the **k-th Hodge Laplacian** is:
+
+L_k = B_{k+1} * B_{k+1}^T + B_k^T * B_k = L_k^up + L_k^down
+
+Where B_k is the k-th boundary operator matrix.
+
+- L_k^down = B_k^T * B_k: captures connections through shared FACES (two triangles sharing an edge)
+- L_k^up = B_{k+1} * B_{k+1}^T: captures connections through shared CO-FACES (two edges in the same triangle)
+
+For k=0 (nodes), L_0 = B_1 * B_1^T is the standard graph Laplacian.
+
+**Hodge decomposition**: The space of k-cochains decomposes into three orthogonal subspaces:
+- im(B_k^T): exact cochains (gradients)
+- im(B_{k+1}): coexact cochains (curls)
+- ker(L_k): harmonic cochains (represent true k-th homology)
+
+This decomposition separates signals into components that flow "downward" (from k-simplices to faces), "upward" (from k-simplices to cofaces), and "circular" (harmonic, representing topological holes).
+
+#### Higher-Order Message Passing
+
+Standard GNN: x_i^{t+1} = phi(x_i^t, AGG({x_j^t : j in N(i)}))
+
+Simplicial message passing (on k-simplices):
+
+h_sigma^{t+1} = phi(h_sigma^t, AGG_down({h_tau : tau in B(sigma)}), AGG_up({h_rho : sigma in B(rho)}), AGG_adj({h_sigma' : sigma' adj sigma}))
+
+Each k-simplex receives messages from:
+1. Its boundary (lower-dimensional faces) -- "what are my parts doing?"
+2. Its coboundary (higher-dimensional cofaces) -- "what larger structure am I part of?"
+3. Its adjacency (other k-simplices sharing a face) -- "what are my peers doing?"
+
+This is a RICHER message structure than standard GNN, which only has adjacency messages.
+
+#### Recent Architectures (2024-2025)
+
+1. **TopoMamba (Sept 2024)**: Replaces traditional message passing with Mamba SSM processing of topological sequences. For each node, collects neighboring simplices by rank, aggregates, and processes as a sequence from highest to lowest rank. Avoids Hodge Laplacian computation entirely.
+
+2. **Directed Simplicial Neural Networks (Sept 2024)**: Message passing on DIRECTED simplicial complexes. Captures asymmetric interactions (e.g., causal relationships where A->B != B->A).
+
+3. **TopoTune (Oct 2024)**: Framework for generalized combinatorial complex neural networks. Lifts any graph-based GNN to operate on simplicial/cell/combinatorial complexes.
+
+4. **Demystifying Topological Message-Passing (June 2025)**: Theoretical analysis of oversquashing in simplicial message passing. Shows that higher-order interactions can MITIGATE oversquashing that plagues standard GNNs, because simplicial structure provides additional "shortcuts" for information flow.
+
+5. **TopoX software suite**: TopoNetX (topology computation), TopoEmbedX (embedding), TopoModelX (neural networks). JMLR 2024 publication. The standard toolkit.
+
+#### What Higher-Order Interactions Capture That Pairwise Misses
+
+Consider three words A, B, C where A-B is related, B-C is related, but A-C is NOT related in isolation -- yet the TRIPLE A-B-C has a specific combined meaning (e.g., "hot dog stand" where "hot"+"dog" = pet, "dog"+"stand" = posture, but "hot"+"dog"+"stand" = street vendor). Pairwise edges cannot represent this. A 2-simplex {A,B,C} captures the irreducible 3-way interaction.
+
+More generally: any phenomenon where the whole is not equal to the sum of pairwise parts requires higher-order structure. In language: idioms, collocations, multi-word expressions, syntactic constructions, compositional semantics.
+
+#### Implications for Sutra
+
+1. **Patches as simplices**: Sutra's patches are currently 0-cells (nodes) in a 1D graph. But ADJACENT patches form natural 1-simplices (edges). Triples of patches form 2-simplices. Multi-scale structure naturally creates a simplicial complex: a character patch + its containing word patch + its containing phrase patch form a 2-simplex across scales.
+
+2. **Hodge decomposition for message types**: Instead of one message type, use Hodge decomposition to separate messages into: (a) "gradient" messages flowing from fine to coarse (abstraction), (b) "curl" messages flowing from coarse to fine (prediction/verification), (c) "harmonic" messages representing persistent structure (long-term context). This is a principled way to implement cross-scale interaction.
+
+3. **Over-squashing mitigation**: Simplicial structure provides ADDITIONAL communication channels beyond the 1D sequence graph. If patches can communicate not just with adjacent patches but also through shared higher-order simplices, information has more paths to travel, reducing over-squashing. This is the theoretical justification for Sutra's sparse retrieval: it adds "higher-order edges" to the communication graph.
+
+4. **The Mamba connection**: TopoMamba shows that SSM-style processing can replace traditional simplicial message passing. Sutra's recurrent message passing is conceptually similar. The question: would explicit simplicial structure (boundary operators, Hodge decomposition) improve over our current ad-hoc message passing?
+
+---
+
+### 6. Diffeomorphism and Equivariance
+
+#### Core Mathematical Structure
+
+A **symmetry group** G acts on a space X. A function f: X -> Y is:
+- **Invariant** if f(g*x) = f(x) for all g in G (output unchanged by transformation)
+- **Equivariant** if f(g*x) = g'*f(x) for all g in G (output transforms consistently)
+
+The choice of G determines the architecture:
+
+| Symmetry Group G | Domain | Architecture |
+|-----------------|--------|-------------|
+| Translations R^n | Grids, images | CNNs |
+| Euclidean E(n) | Point clouds | EGNN, SchNet |
+| Rotations SO(3) | 3D shapes, molecules | Spherical CNNs, e3nn |
+| Permutations S_n | Sets, graphs | GNNs, DeepSets |
+| Scale + translation | Multi-resolution | Scattering networks |
+| Gauge group (local) | Manifolds | Gauge equivariant CNNs |
+
+**The blueprint** (Bronstein et al.): nearly all successful deep learning architectures can be understood as:
+1. Choose the domain and its symmetry group G
+2. Build equivariant layers (intertwining maps between G-representations)
+3. Stack equivariant layers
+4. Apply invariant pooling for prediction
+
+The network is CONSTRAINED to respect symmetries, which massively reduces the hypothesis space (= better generalization from less data = compression).
+
+#### Gauge Equivariance on Manifolds
+
+On a general manifold (no global symmetry), the relevant symmetry is LOCAL: gauge transformations (changes of local coordinates/frames). A gauge equivariant network:
+
+1. Defines features as sections of associated vector bundles
+2. Uses parallel transport (via the connection) to compare features at different points
+3. Ensures the output is independent of the choice of local frames
+
+**Key equations** (Weiler-Cohen):
+
+Left group action: alpha: G x X -> X, satisfying e*x = x and (g*a)*x = g*(a*x)
+
+Equivariance condition: f(g *_X x) = g *_Y f(x) for all g in G, x in X
+
+Under gauge transformation g: U -> G:
+- Connection transforms: A_bar(v) = Ad(g(x)) * A(v) - (R_{g(x)^(-1)})_* g_* v
+- Curvature transforms: F_bar = g * F * g^(-1)
+
+Recent application (2025): gauge equivariant CNNs for diffusion MRI achieve coordinate-independent processing of signals on the sphere.
+
+#### Implications for Sutra
+
+1. **What symmetries does language have?**: This is the KEY question. Language has:
+   - **Translation invariance** (approximately): "The cat sat" means the same whether it starts at position 0 or position 100. Shared weights already exploit this.
+   - **NO rotation/reflection symmetry**: word order matters ("dog bites man" != "man bites dog").
+   - **Permutation invariance of set elements**: "I like apples, oranges, and bananas" vs "I like bananas, apples, and oranges" -- same meaning, different order. Only within certain syntactic structures.
+   - **Scale invariance** (approximately): the same compositional operations apply at word, phrase, sentence, paragraph level. This is Sutra's multi-scale hypothesis.
+
+2. **Equivariance as compression**: Every symmetry the architecture respects is a CONSTRAINT that reduces the parameter space. If Sutra's architecture is equivariant to the true symmetries of language, it needs fewer parameters. The question: what ARE the true symmetries of language beyond translation? Compositional structure (tree-like substitution) may be the key symmetry.
+
+3. **The Bronstein blueprint for Sutra**: (a) Domain = 1D sequence with hierarchical structure. (b) Symmetry group = translations + hierarchical substitutions (replacing a subtree with an equivalent one). (c) Equivariant layers = shared-weight message passing (translation equivariant) + cross-scale operations (hierarchical equivariance). (d) Invariant pooling = output prediction.
+
+---
+
+### 7. Curvature in Discrete Spaces
+
+#### Core Mathematical Structure
+
+**Ollivier-Ricci curvature** (ORC) for graphs: measures curvature of an edge (x, y) using optimal transport between the neighborhoods of x and y.
+
+kappa(x, y) = 1 - W_1(mu_x, mu_y) / d(x, y)
+
+Where:
+- mu_x = probability measure on neighbors of x (typically uniform or lazy random walk)
+- mu_y = probability measure on neighbors of y
+- W_1 = Wasserstein-1 distance (optimal transport cost)
+- d(x, y) = graph distance
+
+Interpretation:
+- kappa > 0 (positive curvature): neighborhoods OVERLAP strongly. Dense clustering. Balls at x and y are CLOSER than x and y themselves. Think: sphere.
+- kappa = 0 (flat): neighborhoods match perfectly. Think: grid.
+- kappa < 0 (negative curvature): neighborhoods DIVERGE. Bottleneck region. Balls at x and y are FARTHER apart than x and y. Think: saddle, bridge between clusters.
+
+**Triangles raise curvature**: A triangle (x, y, z) provides a "shortcut" for transporting mass from N(x) to N(y), lowering the Wasserstein cost and raising curvature. Dense, clustered regions have positive curvature; sparse bridges have negative curvature.
+
+**Forman-Ricci curvature**: A combinatorial approximation, computationally cheaper:
+
+F(e) = w_e * (w_v1/w_e + w_v2/w_e - sum_triangle(w_e/w_triangle) - sum_parallel(w_e * max(1/w_e1, 1/w_e2)))
+
+More combinatorial (counts parallel edges and triangles), less geometrically precise, but O(1) per edge vs O(n^2) for ORC.
+
+**Balanced Forman Curvature** (BFC): a lower bound for ORC that is computationally efficient. Used in SDRF rewiring algorithm.
+
+#### Connection to Over-Squashing
+
+**Over-squashing** occurs when an exponentially growing neighborhood of information must pass through a fixed-width bottleneck. Formally (Di Giovanni et al. 2023): the Jacobian |partial h_i^L / partial h_j^0| decays exponentially with graph distance when the graph has bottlenecks.
+
+Key relationships:
+- **Negative ORC** <-> **bottleneck edges** <-> **over-squashing**
+- **Positive ORC** <-> **dense clustering** <-> **over-smoothing**
+- **Cheeger constant** = min-cut / min(volume of sides) = global bottleneck measure
+- **Spectral gap** = second smallest eigenvalue of Laplacian = algebraic connectivity
+
+Cheeger inequality: (lambda_1)/2 <= h(G) <= sqrt(2*lambda_1) links spectral gap to Cheeger constant.
+
+**Effective resistance** R_eff(u, v): alternative bottleneck measure. Over-squashing occurs between nodes with high effective resistance (long commute time). R_eff is computable in O(n^2) and directly gives the bottleneck severity.
+
+#### Curvature-Based Rewiring (2024-2025)
+
+1. **BORF (Batch ORC Flow)**: Add edges between nodes connected to negatively curved edges; remove edges from highly positively curved regions. Addresses BOTH over-squashing (negative curvature) and over-smoothing (positive curvature).
+
+2. **SDRF (Stochastic Discrete Ricci Flow)**: Uses BFC to identify bottleneck edges and adds edges to reduce negative curvature. O(n) per iteration.
+
+3. **Forman-Ricci structural lifting (2025)**: Uses Forman curvature to identify the network's BACKBONE -- coarse structure-preserving geometry connecting major communities. Lifts the graph to a hypergraph to remedy over-squashing.
+
+4. **Spectral gap maximization**: Adding edges that maximize lambda_1 (spectral gap) improves expansion properties and information diffusion. A small number of strategic edges can dramatically increase the spectral gap.
+
+#### Implications for Sutra
+
+1. **Diagnosing Sutra's communication graph**: Compute ORC on Sutra's message-passing graph. The 1D chain has ZERO curvature (flat lattice). Sparse retrieval edges add positive curvature (creating triangles when two retrieved patches are also adjacent). PonderNet's multi-round processing effectively rewires by adding temporal edges. Question: does the resulting curvature profile match the dependency structure of language?
+
+2. **Adaptive graph rewiring during inference**: Instead of fixed sparse retrieval patterns, use curvature to decide WHERE to add retrieval edges. Compute local curvature at each patch; patches in negatively curved regions (bottlenecks) get more retrieval connections. This is curvature-based rewiring adapted to sequence processing.
+
+3. **Over-squashing IS the core challenge**: Codex identified over-squashing as Sutra v0.1's fatal flaw. Curvature theory gives us the EXACT mathematical framework to quantify and mitigate it. The spectral gap of Sutra's communication graph directly determines how fast information propagates. Design goal: maximize spectral gap while maintaining O(n) edge count.
+
+4. **Connection to effective resistance**: The effective resistance between two patches in Sutra's communication graph determines how well they can share information. For long-range dependencies, we need low effective resistance. Sparse retrieval edges reduce effective resistance between distant patches. The OPTIMAL retrieval pattern is the one that minimizes maximum effective resistance across all pairs.
+
+---
+
+### 8. Optimal Transport Geometry
+
+#### Core Mathematical Structure
+
+**Monge problem** (1781): Given source distribution mu and target distribution nu on R^d, find a transport map T: R^d -> R^d that pushes mu forward to nu (T#mu = nu) and minimizes:
+
+inf_T integral c(x, T(x)) d*mu(x)
+
+where c(x, y) is the transport cost (typically c(x,y) = ||x-y||^2).
+
+**Kantorovich relaxation** (1942): Relax to transport PLANS (couplings) gamma in Pi(mu, nu):
+
+W_p^p(mu, nu) = inf_{gamma in Pi(mu,nu)} integral c(x, y)^p d*gamma(x, y)
+
+where Pi(mu, nu) = {gamma : marginals of gamma are mu and nu}. This is a LINEAR PROGRAM.
+
+**Kantorovich dual**:
+
+W_1(mu, nu) = sup_{f : Lip(f)<=1} integral f d(mu - nu)
+
+For W_2: W_2^2(mu, nu) = sup_{(f,g) : f(x)+g(y)<=c(x,y)} integral f d*mu + integral g d*nu
+
+The dual functions f, g are called Kantorovich potentials.
+
+**Brenier's theorem**: When c(x,y) = ||x-y||^2 and mu has a density (absolutely continuous w.r.t. Lebesgue), there exists a UNIQUE optimal transport map T = nabla*phi where phi is a convex function. The map satisfies the Monge-Ampere equation:
+
+det(nabla^2 phi(x)) = mu(x) / nu(nabla*phi(x))
+
+This is foundational: the optimal way to transform one distribution into another is the GRADIENT OF A CONVEX FUNCTION.
+
+#### Displacement Interpolation
+
+McCann's displacement interpolation: given optimal map T from mu_0 to mu_1:
+
+T_t(x) = (1-t)*x + t*T(x), for t in [0,1]
+mu_t = (T_t)#mu_0
+
+This traces the GEODESIC in Wasserstein space between mu_0 and mu_1. Each particle moves in a straight line from its starting position to its destination.
+
+**Displacement convexity** (McCann 1997): A functional F on probability measures is displacement convex if F(mu_t) <= (1-t)*F(mu_0) + t*F(mu_1) along displacement interpolations. The Boltzmann entropy H(mu) = integral mu*log(mu) is displacement convex. This means: the entropy along the optimal transport path is CONCAVE UP -- the "interpolated" distribution is simpler than the endpoints.
+
+#### Wasserstein Barycenter
+
+Given measures mu_1, ..., mu_N with weights w_1, ..., w_N (summing to 1), the Wasserstein barycenter is:
+
+mu_bar = argmin_mu sum_i w_i * W_2^2(mu, mu_i)
+
+This is the "average distribution" in Wasserstein space. Unlike Euclidean averaging of densities (which blurs), Wasserstein barycenters preserve geometric structure. Applications: averaging shapes, distributions, point clouds.
+
+**Computation**: Free-support barycenters are non-convex but can be computed via:
+1. Fixed-support LP (linear program) -- exact but scales poorly
+2. Entropic regularization + Sinkhorn iterations -- O(n^2 / epsilon^2) per iteration
+3. Input-convex neural networks (ICNNs) -- learn the Brenier potential, scalable to high dimensions
+4. Wasserstein gradient flows (2025) -- mini-batch sampling, regularization via internal/potential/interaction energies
+
+#### Entropic Regularization and Sinkhorn Algorithm
+
+Regularized OT: min_{T >= 0, T*1=p, T^T*1=q} <T, C> - epsilon * H(T)
+
+where H(T) = -sum_{ij} T_ij * log(T_ij) is the Shannon entropy.
+
+The solution has the form T_ij = u_i * K_ij * v_j where K_ij = exp(-C_ij / epsilon).
+
+**Sinkhorn algorithm**: Alternating normalization of rows and columns of K:
+1. u <- p ./ (K * v)
+2. v <- q ./ (K^T * u)
+Repeat until convergence. Each iteration is O(n^2). Converges linearly.
+
+As epsilon -> 0, the solution approaches the true OT plan. epsilon > 0 provides a smooth, differentiable approximation -- crucial for backpropagation through OT computations.
+
+#### Connection to Neural Networks
+
+1. **ResNets as OT flows**: Residual networks x_{t+1} = x_t + f(x_t) approximate the ODE dx/dt = f(x, t). In the continuous limit, this is a neural ODE whose flow defines a transport map. Training the flow = learning the optimal transport between input and output distributions.
+
+2. **Wasserstein gradient flows**: Many PDEs (heat equation, Fokker-Planck, porous medium) can be written as gradient flows in Wasserstein space: d*mu/dt = -nabla_{W_2} F(mu). This connects neural network training dynamics to gradient flows in distribution space.
+
+3. **JKO scheme**: Discretize the gradient flow as iterated proximal steps:
+   mu_{k+1} = argmin_mu {F(mu) + (1/2*tau) * W_2^2(mu, mu_k)}
+   Each step moves the distribution a small distance in Wasserstein space while decreasing the energy F. Neural network layers can be interpreted as JKO steps.
+
+4. **Transformers as OT**: Recent work interprets attention as an OT operation. Softmax attention computes a (regularized) coupling between query and key distributions. The value output is the "transported" representation. Token dynamics in transformers trace paths in Wasserstein space.
+
+5. **Neural OT solvers (2024-2025)**: Input-convex neural networks (ICNNs) parameterize Brenier potentials. Monotone Gradient Networks (mGradNets) directly parameterize the space of monotone gradient maps. GradNetOT (2025) learns OT maps via gradient networks with structural bias from the Monge-Ampere equation.
+
+#### Implications for Sutra
+
+1. **Message passing as optimal transport**: Each round of message passing REDISTRIBUTES information across patches. This is literally a transport problem: move information from where it IS to where it's NEEDED. The optimal message-passing scheme is the one that minimizes the total transport cost of information redistribution. OT theory provides the OBJECTIVE FUNCTION for designing the message passing rule.
+
+2. **Layers as JKO steps**: Each message-passing round in Sutra can be interpreted as a JKO proximal step. The "energy" F is the language modeling loss. Each round moves the patch representations in Wasserstein space toward a lower-energy configuration. This gives a principled interpretation of "how many rounds are enough": halt when the JKO step size drops below a threshold (= the representation has converged to an energy minimum). This could REPLACE PonderNet's geometric halting with a physically motivated halting criterion.
+
+3. **Sinkhorn attention**: Replace the sparse top-k retrieval with Sinkhorn-normalized attention. Instead of hard top-k selection, use entropic OT to compute a smooth transport plan between patches. Benefits: differentiable everywhere, natural sparsity (entropy regularization), principled way to control sparsity (tune epsilon). Cost: O(n * k * iterations) where k is support size and iterations is Sinkhorn steps.
+
+4. **Wasserstein barycenter for multi-scale fusion**: When combining information from different scales (fine, medium, coarse), compute the Wasserstein barycenter instead of simple averaging or concatenation. The barycenter preserves geometric structure of each scale's representation. This is a principled way to implement cross-scale interaction.
+
+5. **Displacement convexity and training stability**: If Sutra's loss function is displacement convex in the space of patch representations, then there are NO local minima in representation space -- every local minimum is global. Designing the architecture to ensure displacement convexity of the training objective would guarantee convergence. This is a strong theoretical desideratum.
+
+---
+
+### Synthesis: How These Frameworks Connect to Sutra
+
+#### The Unified Geometric Picture
+
+All eight frameworks converge on a single insight: **the geometry of the representation space determines the efficiency of information processing**.
+
+| Framework | What It Tells Architecture Design |
+|-----------|----------------------------------|
+| Manifold hypothesis | Hidden dim should scale with INTRINSIC dim, not ambient dim |
+| Fiber bundles | Features at different positions live in different fibers; connections define how to compare them |
+| Hyperbolic geometry | Hierarchical data needs non-Euclidean geometry for distortion-free embedding |
+| Persistent homology | Multi-scale topological features should be tracked; complexity should decrease through processing |
+| Simplicial complexes | Higher-order interactions (beyond pairwise) capture irreducible multi-way relationships |
+| Equivariance | Architecture should respect data symmetries; this is FREE compression |
+| Discrete curvature | Communication graph curvature determines information flow; over-squashing occurs at bottlenecks |
+| Optimal transport | Message passing IS information transport; optimal transport gives the right objective |
+
+#### Priority Actions for Sutra
+
+**HIGH PRIORITY** (directly actionable, probe-ready):
+
+1. **Curvature-aware retrieval**: Replace fixed top-k with curvature-guided edge selection. Compute local ORC on the message-passing graph; add retrieval edges where curvature is most negative (worst bottlenecks). This directly addresses the over-squashing problem that Codex flagged as fatal in v0.1.
+
+2. **Intrinsic dimension tracking**: Measure intrinsic dimension of patch representations at each message-passing round. Verify that ID decreases (compression happening). Use ID to set hidden dimensions: no need for hidden_dim >> 2*ID.
+
+3. **Topological monitoring**: Compute persistence diagrams of patch representations during training. Track total persistence and Betti numbers as diagnostic tools for representation quality and over-smoothing detection.
+
+**MEDIUM PRIORITY** (requires design work, potential v0.4+ features):
+
+4. **Hyperbolic patch representations**: Replace Euclidean feature space with Poincare ball at the coarser scale levels where hierarchical structure is strongest. Keep fine-scale Euclidean (less hierarchical). Mixed-curvature architecture.
+
+5. **Hodge-decomposed messages**: Separate message passing into gradient (abstraction), curl (verification), and harmonic (persistent context) components using a simplified Hodge decomposition. This gives principled multi-channel message passing.
+
+6. **OT-based halting**: Replace PonderNet geometric halting with JKO-motivated halting: stop when the Wasserstein distance between consecutive round representations drops below threshold.
+
+**EXPLORATORY** (theoretical interest, long-term):
+
+7. **Gauge equivariant message passing**: Ensure message passing is equivariant to local feature rotations at each patch. This would prevent the network from wasting capacity on coordinate artifacts.
+
+8. **Sinkhorn retrieval**: Replace hard top-k with Sinkhorn-regularized attention for smooth, differentiable, and principled sparse retrieval.
+
+9. **Simplicial Sutra**: Lift the 1D patch graph to a simplicial complex using multi-scale adjacency. Higher-order message passing could capture multi-word interactions more naturally.
+
+#### The Overarching Thesis
+
+Sutra's architecture should not just process sequences -- it should RESPECT THE GEOMETRY of language. Language has:
+- Low intrinsic dimension (manifold hypothesis) -> small hidden dims per scale
+- Hierarchical structure (hyperbolic geometry) -> curved representation spaces
+- Multi-scale organization (persistent homology) -> multi-resolution processing
+- Compositional semantics (higher-order interactions) -> simplicial message passing
+- Mostly local dependencies (discrete curvature) -> sparse, curvature-guided connectivity
+- Translation symmetry (equivariance) -> shared weights
+
+An architecture that matches ALL of these geometric properties would be provably more efficient (fewer parameters per unit of capability) than one that ignores them. This is the mathematical formalization of "Intelligence = Geometry" from the Manifesto.
+
+### Sources
+
+- [Manifold hypothesis](https://en.wikipedia.org/wiki/Manifold_hypothesis)
+- [Neural Network Expressive Power via Manifold Topology](https://arxiv.org/html/2410.16542v2) (2024)
+- [Hardness of Learning Neural Networks under the Manifold Hypothesis](https://arxiv.org/pdf/2406.01461) (2024)
+- [Fiber Bundle Networks](https://arxiv.org/abs/2512.01151) (2025)
+- [Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges](https://arxiv.org/abs/2104.13478) (Bronstein et al.)
+- [Geometric Deep Learning and Equivariant Neural Networks](https://link.springer.com/article/10.1007/s10462-023-10502-7) (2023)
+- [Equivariant and Coordinate Independent CNNs](https://maurice-weiler.gitlab.io/cnn_book/EquivariantAndCoordinateIndependentCNNs.pdf) (Weiler, 2024)
+- [Gauge Equivariant Convolutional Networks](https://arxiv.org/abs/1902.04615) (Cohen-Weiler, 2019)
+- [Gauge equivariant CNNs for diffusion MRI](https://www.nature.com/articles/s41598-025-93033-1) (2025)
+- [Poincare Embeddings for Learning Hierarchical Representations](https://arxiv.org/pdf/1705.08039) (Nickel-Kiela, 2017)
+- [Hyperbolic Neural Networks](https://arxiv.org/abs/1805.09112) (Ganea et al., 2018)
+- [Hierarchical Mamba Meets Hyperbolic Geometry](https://arxiv.org/html/2505.18973v1) (2025)
+- [HypRAG: Hyperbolic Dense Retrieval for RAG](https://arxiv.org/html/2602.07739) (2026)
+- [Understanding and Improving Hyperbolic Deep RL](https://arxiv.org/html/2512.14202) (2025)
+- [Geoopt Poincare Ball](https://deepwiki.com/geoopt/geoopt/4.4-poincare-ball)
+- [Hyperbolic Geometry and Poincare Embeddings](https://bjlkeng.io/posts/hyperbolic-geometry-and-poincare-embeddings/)
+- [Connections Crash Course](https://nicf.net/articles/connections-crash-course/)
+- [Topological Deep Learning: Going Beyond Graph Data](https://arxiv.org/abs/2206.00606) (Hajij et al., 2022)
+- [Position: TDL is the New Frontier](https://pmc.ncbi.nlm.nih.gov/articles/PMC11973457/) (2024)
+- [Demystifying Topological Message-Passing](https://arxiv.org/abs/2506.06582) (2025)
+- [TopoMamba: Mamba on Simplicial Complexes](https://arxiv.org/abs/2409.12033) (2024)
+- [TopoX Software Suite](https://dl.acm.org/doi/10.5555/3722577.3722951) (JMLR 2024)
+- [Topological Deep Learning Beyond Persistent Homology](https://arxiv.org/html/2507.19504v1) (2025)
+- [Persistent Homology for High-dimensional Data via Spectral Methods](https://proceedings.neurips.cc/paper_files/paper/2024/file/4a32a646254d2e37fc74a38d65796552-Paper-Conference.pdf) (NeurIPS 2024)
+- [Hodge Laplacians on Graphs](https://www.stat.uchicago.edu/~lekheng/work/hodge-graph.pdf)
+- [Exploring Simplicial Complexes for Deep Learning](https://patricknicolas.substack.com/p/exploring-simplicial-complexes-for)
+- [Mathematical Foundations of Geometric Deep Learning](https://arxiv.org/html/2508.02723v1) (2025)
+- [Over-squashing in GNNs: A Comprehensive Survey](https://www.sciencedirect.com/science/article/abs/pii/S0925231225010616) (2025)
+- [Understanding over-squashing via curvature](https://arxiv.org/abs/2111.14522) (Topping et al.)
+- [Revisiting Over-smoothing and Over-squashing Using ORC](https://arxiv.org/abs/2211.15779)
+- [Efficient Curvature-aware Graph Network](https://arxiv.org/pdf/2511.01443) (2025)
+- [Forman-Ricci Curvature Structural Lifting](https://arxiv.org/html/2508.11390) (2025)
+- [Rewiring Techniques Survey](https://arxiv.org/html/2411.17429v1) (2024)
+- [Ollivier-Ricci Curvature on Graphs](https://www.emergentmind.com/topics/ollivier-ricci-curvature)
+- [Optimal Transport for Machine Learners](https://arxiv.org/abs/2505.06589) (2025)
+- [GradNetOT: Learning OT Maps with GradNets](https://arxiv.org/abs/2507.13191) (2025)
+- [Optimal and Diffusion Transports in ML](https://arxiv.org/html/2512.06797v1) (2025)
+- [Wasserstein Gradient Flows for Barycenter Computation](https://arxiv.org/html/2510.04602v1) (2025)
+- [A Short Introduction to Optimal Transport](https://alexhwilliams.info/itsneuronalblog/2020/10/09/optimal-transport/)
+- [Strongly Isomorphic Neural OT Across Incomparable Spaces](https://arxiv.org/html/2407.14957) (2024)
+- [Convex PINNs for Monge-Ampere OT](https://arxiv.org/html/2501.10162) (2025)
+
+---
+
+## v0.5.4 Master Design Decision (2026-03-20)
+
+Canonical design doc: `results/codex_v054_master_design.md`
+
+### Final call
+
+v0.5.4 should be a **late-bias refinement** of v0.5.3, not a new backbone.
+
+Keep:
+- Stage-superposition core
+- 2-mode switching kernel
+- 8-step recurrence
+- BayesianWrite gain clamp
+- 8-slot shared scratchpad
+
+Add:
+1. **Peri-LN** around StageBank, Router, and Writer
+2. **Delayed surprise memory**: a second, smaller scratchpad bank that stores `LayerNorm(mu_t - stopgrad(mu_{t-1}))`
+3. **Delayed pheromone bias** on the global sparse retrieval scores
+4. **Grokfast(alpha=0.95, lambda=2.0)** in production training
+5. **Data mixing** using local corpora: `70%` MiniPile, `20%` code, `10%` prose after a short stabilization phase
+
+### Governing principle
+
+At `69.4M` params, Sutra accepts:
+- simple shared state
+- coarse global bias
+
+It rejects:
+- learned high-entropy control
+- geometry overhauls
+- new controllers whose usefulness depends on already-calibrated intermediate states
+
+This explains the Chrome pattern:
+- scratchpad works
+- switching works
+- Peri-LN works
+- Grokfast works
+- pointer-copy, CfC time constants, complex embeddings, and depth-drop do not
+
+### Delayed-start rule
+
+Both Error Scratchpad and Pheromone Router improved late recurrence `2.2x` but hurt early steps.
+
+Interpretation:
+- early recurrent steps build a provisional hypothesis
+- surprise and stigmergic traces are only informative after that hypothesis exists
+
+Production rule:
+- `late_gate(t) = 0 if t < 3 else 1`
+
+### Deferred to larger scale
+
+Deferred, not killed:
+- discrete broadcast packets
+- entropy-driven clonal expansion
+- depth-drop bootstrap
+- dendritic StageBank
+- nGPT hypersphere normalization
+- tropical / wave-PDE / unitary routing
+- multi-token prediction
+
+These are either controller-heavy, topology-swapping, or too disruptive for a clean warm-start from v0.5.3.
