@@ -1752,3 +1752,14 @@ This also means we can safely use LR=8e-4 with the fix (vs current 6e-4).
 2.6% better than Run 1. NaN guard + crash-safe eval worked.
 Generation: semi-coherent English. Checkpoint saved.
 Training continues to 100K steps.
+
+### Mechanism Attribution: ALL Components CORE (2026-03-20)
+
+| Ablation | BPT Impact | Status |
+|----------|-----------|--------|
+| No Router | **+23.1%** | CORE |
+| No Stage Transitions | **+67.3%** | CORE (THE architecture) |
+| No Recurrence (8→1 step) | **+67.8%** | CORE |
+
+Stage transitions ARE the architecture. Without them, model is 67% worse.
+Router alone contributes 23.1%. No component is scaffolding — all are essential.
