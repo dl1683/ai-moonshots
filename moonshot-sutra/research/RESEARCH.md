@@ -1552,6 +1552,24 @@ What predicts which positions benefit from more recurrent steps?
 **Key insight:** Adaptive depth must be part of TRAINING, not just inference.
 Phase 2 needs intermediate-step loss: train the model to produce good outputs at ANY step, not just the last one. Then entropy-based halting becomes effective.
 
+### Chrome Experiment: Precision (Lambda) as Halting Signal (2026-03-20)
+
+Bayesian write IS working — precision monotonically grows per step:
+
+| Step | Lambda Mean | Lambda Std | Range |
+|------|-----------|----------|-------|
+| 0 | 0.87 | 0.49 | [0.12, 4.27] |
+| 3 | 2.87 | 1.11 | [0.13, 8.50] |
+| 5 | **4.75** | **2.21** | [0.30, **19.17**] |
+
+**Key:** Lambda is a BETTER halting signal than entropy because:
+1. It's already part of the state (no extra computation)
+2. It grows monotonically (theoretically grounded: Bayesian evidence accumulation)
+3. It's differential across positions (0.30 to 19.17 = 64x range)
+4. High lambda = high precision = position is "done"
+
+Phase 2 adaptive depth should use `if lambda_i > threshold: freeze position_i`.
+
 ### CRITICAL BUG: Causal Leakage in Patch Broadcast (2026-03-20)
 
 **Codex audit discovered**: Patch summary (`mean(dim=2)` of all tokens in a patch) was broadcast back to the SAME patch. This means token 0 of a patch sees tokens 1-3 — **future information leaks into current predictions**.
