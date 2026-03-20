@@ -91,6 +91,7 @@ At every eval step (every 5K steps), run parallel Codex reviews:
 4. **Architecture Designer** — should we change anything for the next phase?
 
 ### Sutra = Infrastructure, Not a Model
+**Full vision: research/VISION.md** — read this document every session.
 Design for modularity: each stage is a swappable, independently improvable component.
 Stage interfaces: (mu, lam, pi) in → (mu, lam, pi) out. Always.
 Future: stages become sub-graphs (e.g., Memory → {short_term, long_term, domain}).
