@@ -2051,3 +2051,30 @@ important than the routing.
 
 For Sutra: maybe focus less on WHERE to route (routing table, sparse retrieval)
 and more on WHAT to transmit (message function quality).
+
+---
+
+## CRITICAL DISCOVERY: LLMs = Solomonoff Induction (arXiv 2505.15784, May 2025)
+
+LLM training FORMALLY proven to approximate Solomonoff prior:
+- Loss minimization = searching for shortest programs generating training data
+- Next-token prediction = approximate Solomonoff induction
+- Scaling laws emerge from algorithmic compressibility theory
+
+THIS VALIDATES SUTRA'S THESIS AT THE DEEPEST LEVEL:
+Compression = intelligence is not a heuristic. It's a formal connection
+to algorithmic information theory. Better compression = closer to
+Solomonoff-optimal prediction = more intelligent.
+
+IMPLICATION: the BEST architecture is the one that finds the SHORTEST
+description of the training data. This IS MDL. This IS our thesis.
+The question becomes: does Sutra's architecture find shorter descriptions
+than a transformer at the same parameter budget?
+
+If yes: Sutra IS more intelligent (in the Solomonoff sense).
+If no: the architecture doesn't help compression, just rearranges it.
+
+This connects to the CompressARC work: converting combinatorial search
+for programs into differentiable optimization. Our architecture could be
+viewed as a STRUCTURED program search space where message passing
+explores programs more efficiently than flat attention.
