@@ -1552,6 +1552,13 @@ What predicts which positions benefit from more recurrent steps?
 **Key insight:** Adaptive depth must be part of TRAINING, not just inference.
 Phase 2 needs intermediate-step loss: train the model to produce good outputs at ANY step, not just the last one. Then entropy-based halting becomes effective.
 
+### v0.5.1 Prototype: Inter-Step Loss VALIDATED (2026-03-20)
+
+With multi-step training (0.7*final_CE + 0.3*weighted_inter_CE), the model learns good outputs at EVERY step:
+- Step 1→4 loss gap: only 6.4% (7.52→7.04) — adaptive halting IS viable
+- Switching kernel adds +4.1% BPT at 0.2% param cost
+- Combined: v0.5.1 = switching kernel + inter-step loss, ready for v0.5.2 production
+
 ### Chrome Experiment: Precision (Lambda) as Halting Signal (2026-03-20)
 
 Bayesian write IS working — precision monotonically grows per step:
