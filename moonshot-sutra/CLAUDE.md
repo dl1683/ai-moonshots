@@ -73,15 +73,16 @@ This moonshot uses the **Chrome workflow aggressively** — deep theoretical rea
 
 Inspired by Chrome from Dr. Stone: the self-taught scientist who builds understanding through disciplined experimentation grounded in theory. No pure armchair derivation. No blind trial-and-error. Theory proposes, experiment disposes, theory refines.
 
-### Pre-Training Gate (MANDATORY — learned from 5 mid-training bugs)
+### Pre-Training Gate (MANDATORY — learned from 7 mid-training bugs)
 Before ANY production training run (>1000 steps), ALL must pass:
 1. **Codex architecture audit** — causality, leakage, numerical stability
 2. **Codex pipeline audit** — data loading, loss, checkpointing, eval
 3. **Checkpoint resume test** — save step 10, kill, resume, verify
 4. **500-step smoke test** — loss drops, no NaN/Inf
-5. **Generation sanity** — greedy decode produces real words
+5. **Generation sanity** — greedy decode produces real words (ASCII-safe!)
 6. **Causality formal test** — changing token N has zero effect on logits 0..N-1
-7. **Eval alignment** — training and benchmark evals use same methodology
+7. **LR stability test** — validate at production dim, not just small-scale
+8. **NaN guard active** — training loop catches and skips NaN loss/gradients
 
 ### Multi-Codex Review at Every Eval Checkpoint (MANDATORY)
 At every eval step (every 5K steps), run parallel Codex reviews:
