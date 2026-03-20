@@ -142,7 +142,8 @@ class BayesianWrite(nn.Module):
         kappa = F.softplus(self.gain_proj(combined))  # evidence gain >= 0
 
         # Only update positions proportional to their write-stage probability
-        effective_gain = pi_write * kappa
+        # Clamp gain to prevent unbounded precision growth (NaN root cause per Codex)
+        effective_gain = (pi_write * kappa).clamp(max=10.0)
 
         lam_new = lam + effective_gain
         mu_new = (lam * mu + effective_gain * m) / lam_new.clamp(min=1e-6)

@@ -82,7 +82,7 @@ class BayesianWrite(nn.Module):
         combined = torch.cat([mu, message], dim=-1)
         m = self.msg_proj(combined)
         kappa = F.softplus(self.gain_proj(combined))
-        effective_gain = pi_write * kappa
+        effective_gain = (pi_write * kappa).clamp(max=10.0)  # prevent NaN from unbounded precision
         lam_new = lam + effective_gain
         mu_new = (lam * mu + effective_gain * m) / lam_new.clamp(min=1e-6)
         return mu_new, lam_new
