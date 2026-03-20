@@ -48,8 +48,8 @@ class GRUPatchProcessor(nn.Module):
     def forward(self, x):
         B, P = x.shape
         h = self.emb(x) + self.pos(torch.arange(P, device=x.device))
-        out, _ = self.gru(h)
-        return self.ln(out)
+        out, h_n = self.gru(h)
+        return self.ln(out), h_n[-1]  # (B, P, D), (B, D) final hidden state
 
 
 class KANEdgeFunction(nn.Module):
@@ -234,6 +234,7 @@ class SutraV04(nn.Module):
                                             adaptive_halt=adaptive_halt)
         self.retrieval = SparseRetrieval(dim, k=k_retrieval)
         self.broadcast = nn.Linear(dim, dim)
+        self.gate_proj = nn.Linear(dim, dim)  # token-conditional gating of global context
         self.ln = nn.LayerNorm(dim)
         if tie_weights:
             # Share embedding weights with output head (saves ~44% params)
@@ -251,27 +252,25 @@ class SutraV04(nn.Module):
 
         # VECTORIZED: process all patches at once (no per-patch loop)
         flat_patches = patches.reshape(B * n_patches, P)  # (B*N, P)
-        flat_features = self.patch_proc(flat_patches)  # (B*N, P, D)
+        flat_features, flat_states = self.patch_proc(flat_patches)  # (B*N, P, D), (B*N, D)
         local_features = flat_features.reshape(B, n_patches, P, -1)  # (B, N, P, D)
+        patch_states = flat_states.reshape(B, n_patches, -1)  # (B, N, D) - GRU final hidden
 
-        # Masked mean pooling: exclude padding positions in last patch
-        if pad_len > 0:
-            mask = torch.ones(B, n_patches, P, 1, device=x.device)
-            mask[:, -1, P - pad_len:, :] = 0
-            summaries = self.summarize((local_features * mask).sum(dim=2) / mask.sum(dim=2).clamp(min=1))
-        else:
-            summaries = self.summarize(local_features.mean(dim=2))
+        # Use GRU final hidden state as patch summary (Codex: better than mean pooling)
+        summaries = self.summarize(patch_states)
         msg_out, kl_loss = self.msg_pass(summaries)
         retrieved = self.retrieval(msg_out)
         combined = msg_out + retrieved
 
-        # CAUSAL FIX: shift broadcast so patch N's summary only affects patch N+1+
-        # Without this, tokens see future tokens within their own patch (leakage).
-        # Shift right: prepend zeros, drop last patch's broadcast
+        # CAUSAL: shift right so patch N's context only affects patch N+1+
         broad = self.broadcast(combined)  # (B, N, D)
         broad_shifted = F.pad(broad[:, :-1, :], (0, 0, 1, 0))  # shift right by 1 patch
-        broad_exp = broad_shifted.unsqueeze(2).expand(-1, -1, P, -1)
-        final = local_features + broad_exp
+
+        # TOKEN-CONDITIONAL injection: each token gates how much global context to use
+        # (Codex: don't broadcast identical vector, let tokens query what they need)
+        broad_exp = broad_shifted.unsqueeze(2).expand(-1, -1, P, -1)  # (B, N, P, D)
+        gate = torch.sigmoid(self.gate_proj(local_features))  # (B, N, P, D)
+        final = local_features + gate * broad_exp
         final = final.view(B, n_patches * P, -1)[:, :T, :]
 
         final = self.ln(final)
