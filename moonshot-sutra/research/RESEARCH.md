@@ -1763,3 +1763,19 @@ Training continues to 100K steps.
 
 Stage transitions ARE the architecture. Without them, model is 67% worse.
 Router alone contributes 23.1%. No component is scaffolding — all are essential.
+
+### Production Step-Budget Sweep: Step 7 is MOST Important! (2026-03-20)
+
+| Steps | BPT | Marginal |
+|-------|-----|----------|
+| 4 | 8.46 | +4.0% |
+| 5 | 8.10 | +4.2% |
+| 6 | 7.48 | +7.8% |
+| **7** | **6.28** | **+16.0%** |
+| 8 | 6.06 | +3.5% |
+
+**REVERSES small-model finding.** At production scale, step 7 gives 16% marginal gain
+(the biggest single step). The model NEEDS deep recurrence. Do NOT reduce max_steps.
+
+Earlier Chrome probe (dim=128) said 91% in steps 1-4. At dim=768, steps 6-7 are critical.
+Lesson: small-scale probes can be WRONG about recurrence depth.
