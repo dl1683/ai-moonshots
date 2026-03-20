@@ -1,1 +1,0 @@
-{"experiment":"v04_real_text_fair_cpu","transformer":{"params":236928,"bpb":4.6427,"dropout":0.1,"note":"barely learning, capacity-starved at 237K"},"sutra_v04":{"params":108225,"bpb":1.4907,"note":"3.1x better BPB, 2.2x fewer params"},"caveat":"transformer may do much better at matched 6.5M params (GPU ablation running)"}

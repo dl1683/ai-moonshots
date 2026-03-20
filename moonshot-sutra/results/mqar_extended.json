@@ -1,8 +1,0 @@
-{
-  "probe": "mqar_extended",
-  "epochs": 500,
-  "results": {
-    "Transformer": 0.21,
-    "GRU": 0.1175
-  }
-}

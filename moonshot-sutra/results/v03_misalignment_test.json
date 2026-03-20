@@ -1,1 +1,0 @@
-{"experiment":"misalignment_test","aligned":{"transformer":4.580,"sutra":3.307,"improvement":"28%"},"misaligned":{"transformer":4.953,"sutra":3.556,"improvement":"28%"},"conclusion":"advantage is NOT from patch alignment"}

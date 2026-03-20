@@ -1,1 +1,0 @@
-{"experiment":"patch_size_sweep","transformer":{"loss":4.947,"params":186944},"sutra":{"patch_4":{"loss":2.665,"improvement":"46.1%"},"patch_8":{"loss":3.581,"improvement":"27.6%"},"patch_12":{"loss":3.967,"improvement":"19.8%"},"patch_16":{"loss":4.160,"improvement":"15.9%"}},"conclusion":"ALL patch sizes beat transformer. Advantage is architectural, NOT from alignment."}

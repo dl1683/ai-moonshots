@@ -1,1 +1,0 @@
-{"experiment":"matched_params_test","tiny_transformer":{"params":112560,"loss":4.907},"sutra_v03":{"params":100097,"loss":3.244},"improvement":"34% lower loss with 11% fewer params","conclusion":"advantage is purely architectural"}

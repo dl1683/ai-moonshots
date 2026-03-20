@@ -1,9 +1,0 @@
-{
-  "model": "Sutra Combo5 (step 5000)",
-  "params_M": 49.2,
-  "test_bpt": 1.8558,
-  "test_bpb": 0.6255,
-  "test_data": "corpus_test.txt (50K chars)",
-  "test_tokens": 16896,
-  "test_bytes": 50127
-}

@@ -1,1 +1,0 @@
-{"experiment":"msbp_vs_genericmp","msbp":{"bpb":3.0822,"params":49664},"genericmp":{"bpb":3.1357,"params":57984},"verdict":"MSBP 1.7% better with 14% fewer params. Directionally positive, not decisive."}

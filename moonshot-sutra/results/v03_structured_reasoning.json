@@ -1,1 +1,0 @@
-{"experiment":"structured_reasoning","transformer":{"params":241024,"bpb":0.4257},"sutra_v03":{"params":100097,"bpb":0.9116},"ratio":2.14,"verdict":"Transformer WINS on sequential reasoning. Sutra needs more sequential processing capability."}

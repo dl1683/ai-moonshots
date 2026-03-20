@@ -1,1 +1,0 @@
-{"experiment":"matched_param_cpu_v04","tf":{"params":236928,"bpb":4.737},"sutra_v04":{"params":233901,"bpb":1.830},"ratio":0.386,"improvement":"2.6x better at exact matched params"}
