@@ -1,0 +1,38 @@
+{
+  "baseline": {
+    "name": "Baseline (no Grokfast)",
+    "test_bpt": 7.2651,
+    "time": 215.5,
+    "last_50_avg": 7.9501,
+    "grokfast": false,
+    "alpha": null,
+    "lam": null
+  },
+  "Grokfast(a=0.98,l=5.0)": {
+    "name": "Grokfast(a=0.98,l=5.0)",
+    "test_bpt": NaN,
+    "time": 187.8,
+    "last_50_avg": 9.9318,
+    "grokfast": true,
+    "alpha": 0.98,
+    "lam": 5.0
+  },
+  "Grokfast(a=0.95,l=2.0)": {
+    "name": "Grokfast(a=0.95,l=2.0)",
+    "test_bpt": 6.468,
+    "time": 397.8,
+    "last_50_avg": 7.1011,
+    "grokfast": true,
+    "alpha": 0.95,
+    "lam": 2.0
+  },
+  "Grokfast(a=0.99,l=10.0)": {
+    "name": "Grokfast(a=0.99,l=10.0)",
+    "test_bpt": 7.2619,
+    "time": 229.4,
+    "last_50_avg": 7.7731,
+    "grokfast": true,
+    "alpha": 0.99,
+    "lam": 10.0
+  }
+}

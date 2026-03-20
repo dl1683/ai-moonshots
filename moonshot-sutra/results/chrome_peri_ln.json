@@ -1,0 +1,18 @@
+{
+  "baseline": {
+    "name": "Pre-LN Baseline",
+    "test_bpt": 7.1816,
+    "time": 296.9,
+    "last50": 7.8308,
+    "params": 7483449
+  },
+  "peri_ln": {
+    "name": "Peri-LN",
+    "test_bpt": 6.9952,
+    "time": 468.2,
+    "last50": 7.664,
+    "params": 7435448
+  },
+  "delta_pct": 2.6,
+  "verdict": "PASS"
+}

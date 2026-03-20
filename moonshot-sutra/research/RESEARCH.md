@@ -2367,3 +2367,1992 @@ Summary of ALL small-scale Chrome this session:
 
 CONCLUSION: At 67M, architecture is mature. Only simple shared state (scratchpad)
 helps. ALL other mechanisms need scale. NEXT STEP = scale to 105M on FineWeb.
+
+---
+
+## Information Theory & Compression Research Sweep (2026-03-20)
+
+### Purpose
+
+Deep internet research into information-theoretic and compression-based techniques that could be applied as training modifications or architectural additions to Sutra. Covers 8 major directions plus 3 broad searches.
+
+### 1. Information Bottleneck Applied to Layer Design
+
+**State of the art (2024-2025):**
+- **Structured IB (AAAI 2024)**: Introduces auxiliary feature Z', expanding feature space with training stages that encourage feature independence between subspaces. Practical improvement for regression tasks using Cauchy-Schwarz divergence.
+- **Generalized IB (arXiv 2509.26327, 2025)**: Reformulates IB through synergy lens. Synergistic functions achieve superior generalization vs non-synergistic. New theoretical perspective.
+- **Flexible VIB (arXiv 2402.01238, 2024)**: Key practical advance: obtains optimal models for ALL values of beta with SINGLE training run. Eliminates the expensive beta-search that made IB impractical.
+- **Deep Variational Multivariate IB (JMLR 2026)**: DVSIB generalizes to shared+private latent variables. Framework for deriving variational losses from IB principles.
+
+**Persistent problems**: MI estimation in high dimensions is unreliable. Compression phase may be measurement artifact. No universal link between IB compression and generalization established.
+
+**Sutra relevance**: VIB could be added as auxiliary loss on patch representations (compress patch→summary while preserving prediction-relevant info). The Flexible VIB single-training approach makes this practical. But at dim=128 scale, may add optimization difficulty like other complex mechanisms.
+
+### 2. Minimum Description Length (MDL) as Training Objective
+
+**Key papers:**
+- **MDL Regularization (arXiv 2505.13398, Abudy et al. 2025)**: Shows MDL is equivalent to standard CE + regularization term reflecting information content (complexity) of the network. Critical finding: standard L1/L2 fails because weights can "smuggle" information through high-precision values. MDL penalizes ALL forms of information smuggling. Problem: complexity term is non-differentiable, requires genetic algorithm optimization. NOT gradient-compatible.
+- **MDL for Formal Languages (arXiv 2402.10013, 2024)**: MDL objective leads to CORRECT solutions for learning context-free languages where CE and MSE fail. Networks optimizing MDL master tasks involving memory challenges and go beyond context-free languages.
+- **Bridging Kolmogorov Complexity and Deep Learning (arXiv 2509.22445, Shaw et al. 2025, ICLR 2026 poster)**: Proves asymptotically optimal description length objectives EXIST for Transformers. Constructs tractable, differentiable variational objective based on adaptive Gaussian mixture prior. THIS IS THE KEY PAPER for practical MDL in neural networks.
+- **Singular MDL / Compressibility Measures Complexity (arXiv 2510.12077, Timaeus 2025)**: Extends MDL to singular models (neural networks) via singular learning theory. Local learning coefficient (LLC) correlates linearly with compressibility on Pythia suite. The LLC is a principled measure of model complexity for neural networks.
+- **Bridging Predictive Coding and MDL (arXiv 2505.14635, 2025)**: Two-part code framework connecting predictive coding to MDL for deep learning.
+
+**Practical implementations:**
+- Shaw et al.'s variational Gaussian mixture prior IS differentiable and trainable with standard gradient descent. This could replace or augment CE as training objective.
+- Prequential coding (online MDL): encode data sequentially, each point compressed using model trained on previous points. ICLR 2024 "Language Modeling is Compression" shows this leads to better compression with overparameterized neural networks.
+
+**Sutra relevance**: HIGH. Sutra's thesis is compression = intelligence. MDL is the formal training objective for that thesis. Shaw et al.'s variational objective is the most promising practical path. Could be tested as: CE + lambda * variational_MDL_penalty on weight complexity.
+
+### 3. Rate-Distortion Theory for Learned Representations
+
+**Key papers:**
+- **Geometry of Efficient Codes (PLOS Comp Bio 2025)**: Rate-distortion trade-offs create three characteristic distortions in latent representations: prototypization (averaging within categories), specialization (exaggerating between categories), orthogonalization (decorrelating dimensions). These emerge as signatures of information compression under capacity constraints.
+- **Semantic Rate-Distortion (arXiv 2509.10061, 2025)**: Extends classical R-D to semantic domains. Allows reducing rate by accepting certain semantic distortions.
+- **Rate-Distortion-Perception (PMC 2025)**: Integrates perceptual quality into R-D framework. Key for generative models where perceptual fidelity matters beyond MSE.
+- **Balanced R-D Optimization (CVPR 2025)**: Addresses imbalanced progress between rate and distortion objectives during training. Uses gradient descent techniques for balanced optimization.
+
+**Sutra relevance**: The three distortion signatures (prototypization, specialization, orthogonalization) predict what Sutra's patch representations SHOULD look like if they are efficiently compressed. Could design probes to measure whether patch representations exhibit these signatures, and add regularization to encourage them if not.
+
+### 4. Kolmogorov Complexity Inspired Architectures
+
+**Key development: KAN (Kolmogorov-Arnold Networks, ICLR 2025)**
+- Replace fixed activation functions with learnable univariate functions (B-splines) on edges.
+- More accurate than MLPs for function fitting with better scaling laws.
+- Variants: Wav-KAN (wavelet), TKAN (temporal), X-KAN (local), VQKAN (quantum).
+- KALLM project: KAN-based Transformer LLM (SmolLM2 replacement). In progress.
+
+**Sutra-specific results (already tested):**
+- KAN edges at byte level: +9% BPB improvement
+- KAN edges at token level: NEUTRAL (0% improvement)
+- Verdict: With 50K vocab, embeddings already capture semantic content. KAN adds nothing at token level.
+
+**Sutra relevance**: KAN is already tested and killed at token level. The underlying Kolmogorov-Arnold representation theorem is more relevant as theory (any multivariate function = composition of univariate functions) than as architecture for language modeling.
+
+### 5. Arithmetic Coding / ANS Inspired Neural Network Layers
+
+**Findings**: Very sparse research. No papers found directly using ANS or arithmetic coding as neural network layer design inspiration in 2024-2025. One tangential paper (IWCMC 2024) uses arithmetic coding to encode representative tags into word vectors for IoT traffic detection.
+
+**Key theoretical connection**: The prediction-compression duality (arithmetic codes assign codelengths based on log-probabilities) is already the foundation of language modeling. Cross-entropy loss IS the expected codelength under arithmetic coding. There is nothing additional to gain from "ANS-inspired layers" because the training objective already IS the coding-theoretic objective.
+
+**Sutra relevance**: LOW for architecture. Already captured by CE loss. The interesting direction is LZ-based penalties (see section 7).
+
+### 6. Channel Coding Theory for Robust Representations
+
+**Key papers:**
+- **ECCT (Error Correction Code Transformer, 2024)**: Code-structure-aware attention mechanisms improve neural decoding of error-correcting codes.
+- **CrossMPT (2024)**: Masked cross-attention between magnitude and syndrome representations improves BP decoding.
+- **GNN-based LDPC Decoders (2024)**: Leverage bipartite Tanner graph structure. Learn data-driven message-passing strategies that outperform belief propagation.
+- **Pseudorandom Codes (STOC 2025)**: Error-correcting codes indistinguishable from random. Used for watermarking generative AI models.
+
+**DNA error correction insight (already in RESEARCH.md)**: DNA uses 64 codons for 20 amino acids — redundant encoding where most single-base mutations are silent. Sutra should design quantization-native representations with similar built-in redundancy.
+
+**Sutra relevance**: MEDIUM. The GNN message-passing decoder for LDPC codes is structurally identical to Sutra's message passing. The Tanner graph bipartite structure (variable nodes + check nodes) could inspire a variant where some patches are "check patches" that verify consistency of neighboring patch representations. This is an error-correction mechanism built into the architecture.
+
+### 7. Source Coding (Huffman, LZ) Inspired Mechanisms
+
+**Key papers:**
+- **LZ Penalty (arXiv 2504.20131, 2025)**: Uses LZ77 sliding-window compression to penalize repetitive generation. Simulates LZ compression over generated tokens, computes codelength change for each candidate next token, uses as logit penalty. Enables greedy decoding without repetition (industry-standard frequency/repetition penalties fail at 4% degenerate rate). State-of-the-art for repetition prevention.
+- **AlphaZip (arXiv 2409.15046, 2024)**: LLM-enhanced lossless compression. Uses transformer predictions + Huffman/LZ77/Gzip for compression. Demonstrates prediction-compression duality in practice.
+- **Huff-LLM (arXiv 2502.00922, 2025)**: End-to-end Huffman coding for efficient LLM inference. Compresses exponent bits of FP16/BF16 weights via Huffman, achieving 17-33% compression.
+- **ZipNN (2024)**: Lossless compression method tailored to neural networks. Chunking approach for independent processing suitable for GPU architectures.
+
+**Sutra relevance**: HIGH for the LZ penalty. During generation, Sutra could use an LZ-style penalty to prevent repetition without temperature/sampling tricks. This is a direct, simple, implementable improvement. For training, the prediction-compression duality is already captured by CE loss, but LZ-style EVALUATION of compression ratio could be a useful metric alongside BPB.
+
+### 8. Mutual Information Maximization/Minimization as Auxiliary Objectives
+
+**Key papers:**
+- **MINE (Belghazi et al., ICML 2018)**: MI neural estimation via gradient descent. Linearly scalable. Can maximize or minimize MI.
+- **Deep InfoMax (DIM, 2018)**: MI maximization between input and encoder output for unsupervised representation learning. Global + local MI objectives.
+- **Important caveat (ICLR 2020)**: Maximizing MI does NOT necessarily lead to useful representations. Encoders that provably maximize MI can have poor downstream performance.
+- **Limited recent progress**: 2024-2025 search returned mostly 2018-2020 papers. The MI maximization approach appears to have plateaued or been absorbed into contrastive learning.
+
+**Sutra relevance**: LOW for direct MI maximization/minimization. The IB approach (section 1) is more principled. However, MI between patch representations at different message-passing rounds could be a diagnostic metric: if MI increases monotonically, rounds are building information; if it plateaus, later rounds are redundant (supports PonderNet halting).
+
+### 9. "Compression Represents Intelligence Linearly" (COLM 2024)
+
+**Huang et al., 2024**: Tested 31 public LLMs across 12 benchmarks. Found linear correlation (Pearson r ~ -0.95) between compression efficiency and downstream performance. First to document this across varying model sizes, tokenizers, context windows, and pretraining distributions.
+
+**Sutra relevance**: CRITICAL validation of Sutra's core thesis. If compression = intelligence linearly, then a model designed from first principles to maximize compression should be proportionally more intelligent. This paper should be cited prominently. Also suggests compression ratio on external corpus as a zero-shot evaluation metric for Sutra (no benchmarks needed — just compress text and measure).
+
+### 10. Local Information-Theoretic Goal Functions (PNAS 2025, ICLR 2025 Oral)
+
+**"What should a neuron aim for?" / Infomorphic Networks**
+- Derives local learning rules from Partial Information Decomposition (PID).
+- Each neuron has a parameterized goal function spanning redundancy, uniqueness, and synergy.
+- Networks of infomorphic neurons solve supervised, unsupervised, and memory tasks.
+- MNIST accuracy comparable to logistic regression with fully local learning.
+- Published in PNAS (March 2025) and ICLR 2025 (oral presentation).
+
+**Sutra relevance**: HIGH for post-MVP. Infomorphic learning rules could replace backprop for Sutra's local processing within patches. Each patch processor becomes an infomorphic neuron with its own local information-theoretic objective. This aligns with Pattern 2 (no central controller) and Pattern 5 (learning without backprop) from Chrome Cycle 4. However, current results are MNIST-level — not yet validated for language modeling.
+
+### 11. Grokking as Compression Phase Transition
+
+**Complexity Dynamics of Grokking (arXiv 2412.09810, 2024-2025)**
+- Framework measures complexity based on rate-distortion theory and Kolmogorov complexity.
+- Sharp phase transition: complexity rises (memorization) then falls (generalization = compression).
+- Unregularized networks stay trapped in high-complexity memorization phase.
+- **Grokfast (arXiv 2405.20233, June 2024)**: Spectral filtering of gradients amplifies slow, generalization-inducing components. Accelerates grokking by >50x with a few lines of code. Low-pass filter on gradient time series.
+- **Egalitarian Gradient Descent (arXiv 2510.04930, 2025)**: Simplified Grokfast. Down-weights high-frequency gradient components, preserves slow symmetry-aligned modes.
+
+**Sutra relevance**: HIGH and IMMEDIATELY IMPLEMENTABLE. Grokfast is ~5 lines of code. It low-pass filters the gradient signal to amplify generalization-inducing slow modes. This should be tested on Sutra v0.5 training immediately. If Sutra's thesis is right (compression = intelligence), and Grokfast accelerates the compression phase transition, then Grokfast should disproportionately help Sutra compared to standard transformers.
+
+### 12. Entropy Regularization of Hidden Representations
+
+**Key papers:**
+- **Batch-Entropy Regularization (arXiv 2208.01134, 2022, GitHub available)**: Quantifies information flow through each layer via batch entropy. Adding batch-entropy regularization to loss enables training 500-layer vanilla networks WITHOUT skip connections, batch norm, or dropout. Works on CNNs, residual nets, autoencoders, transformers. Simple implementation.
+- **High-Entropy Generalization (arXiv 2503.13145, March 2025)**: Among all states that fit training data well, highest-entropy ones are most generalizable. Entropy = log(parameter-space volume). Generalizable states occupy larger volume.
+- **Adaptive Entropy Regularization for LLM RL (arXiv 2510.10959, 2025)**: AER achieves +7.2% pass@1 over vanilla GRPO on Qwen3-4B-Base. Adaptive entropy coefficient for exploration.
+- **Entropic Regularization (Cambridge, 2024)**: Self-similar layerwise training for neural networks with near-identity layers. Connects entropic regularization to generalization bounds.
+
+**Sutra relevance**: MEDIUM-HIGH. Batch-entropy regularization on patch representations could ensure information flows properly through message-passing rounds (preventing over-smoothing, a known GNN problem). The implementation is simple (GitHub: peerdavid/layerwise-batch-entropy). Could be tested as auxiliary loss on patch embeddings at each round.
+
+### 13. Rate-Distortion Optimal Quantization
+
+**Key papers:**
+- **Information-Entropy Bit Allocation (Nature Sci Reports 2025)**: Calculates entropy of each layer's output during forward pass. Allocates adaptive bit-widths using dynamic thresholds based on smoothed average entropy. Layers with higher entropy (more information) get more bits.
+- **Water-Filling Solutions (2024)**: Sensitive layers receive more bits than insensitive ones. Model accuracy degradation bounded as weighted sum of per-layer contributions.
+- **Rate/Distortion Constrained Quantization (OpenReview 2024)**: Extends OPTQ with tunable rate/distortion trade-off. Achieves <0.5 bits per weight with predictive models.
+
+**Sutra relevance**: HIGH for quantization-native design. Instead of post-hoc quantization, Sutra could train with information-entropy-aware bit allocation from the start. Layers/rounds where entropy is low (predictable) get fewer bits. This directly implements the DNA error-correction insight: put redundancy where it matters.
+
+### Summary: Actionable Items Ranked by Implementability
+
+| Priority | Technique | Implementation Effort | Expected Benefit | Risk |
+|----------|-----------|----------------------|-----------------|------|
+| **P0** | **Grokfast gradient filtering** | 5 lines of code | Faster generalization, >50x grokking acceleration | Very low |
+| **P1** | **LZ penalty for generation** | ~100 lines | Eliminate repetition in greedy decoding | Low |
+| **P2** | **Batch-entropy regularization** | ~50 lines, GitHub reference | Better information flow through rounds, prevent over-smoothing | Low |
+| **P3** | **Compression ratio as eval metric** | ~30 lines | Zero-shot model quality assessment (r=-0.95 with benchmarks) | None |
+| **P4** | **Variational MDL objective (Shaw et al.)** | ~200 lines | Better compression = better intelligence per thesis | Medium |
+| **P5** | **Entropy-aware bit allocation** | ~150 lines | Quantization-native from training | Medium |
+| **P6** | **VIB auxiliary loss on patches** | ~100 lines | Better patch compression | Medium (may hurt at small scale) |
+| **P7** | **Rate-distortion representation probes** | ~100 lines | Diagnostic: do patches show prototypization/specialization/orthogonalization? | None (diagnostic) |
+| **P8** | **Infomorphic local learning rules** | Major rewrite | Biologically plausible local learning, no backprop | HIGH (research-level) |
+
+### Key References
+
+- [Structured IB (AAAI 2024)](https://ojs.aaai.org/index.php/AAAI/article/view/35499/37654)
+- [Generalized IB (arXiv 2509.26327)](https://arxiv.org/abs/2509.26327)
+- [MDL Regularization (arXiv 2505.13398)](https://arxiv.org/abs/2505.13398)
+- [Bridging Kolmogorov and Deep Learning (arXiv 2509.22445)](https://arxiv.org/abs/2509.22445)
+- [Compressibility Measures Complexity / Singular MDL (arXiv 2510.12077)](https://arxiv.org/abs/2510.12077)
+- [Rate-Distortion Representation Geometry (PLOS Comp Bio 2025)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1012952)
+- [Compression Represents Intelligence Linearly (COLM 2024)](https://arxiv.org/abs/2404.09937)
+- [Language Modeling is Compression (ICLR 2024)](https://arxiv.org/abs/2309.10668)
+- [LZ Penalty (arXiv 2504.20131)](https://arxiv.org/abs/2504.20131)
+- [Grokfast (arXiv 2405.20233)](https://arxiv.org/abs/2405.20233)
+- [Egalitarian Gradient Descent (arXiv 2510.04930)](https://arxiv.org/abs/2510.04930)
+- [Infomorphic Networks (PNAS 2025)](https://www.pnas.org/doi/10.1073/pnas.2408125122)
+- [What Should a Neuron Aim For? (ICLR 2025 Oral)](https://arxiv.org/abs/2412.02482)
+- [Batch-Entropy Regularization (arXiv 2208.01134)](https://arxiv.org/abs/2208.01134)
+- [Batch-Entropy GitHub](https://github.com/peerdavid/layerwise-batch-entropy)
+- [High-Entropy Generalization (arXiv 2503.13145)](https://arxiv.org/abs/2503.13145)
+- [KAN (ICLR 2025)](https://arxiv.org/abs/2404.19756)
+- [Complexity Dynamics of Grokking (arXiv 2412.09810)](https://arxiv.org/abs/2412.09810)
+- [Flexible VIB (arXiv 2402.01238)](https://arxiv.org/abs/2402.01238)
+- [Semantic Rate-Distortion (arXiv 2509.10061)](https://arxiv.org/abs/2509.10061)
+- [Huff-LLM (arXiv 2502.00922)](https://arxiv.org/abs/2502.00922)
+- [AlphaZip (arXiv 2409.15046)](https://arxiv.org/abs/2409.15046)
+- [MDL Predictive Coding Bridge (arXiv 2505.14635)](https://arxiv.org/abs/2505.14635)
+- [Entropy-Aware Bit Allocation (Nature Sci Reports 2025)](https://www.nature.com/articles/s41598-025-91684-8)
+- [LMCompress (Nature Machine Intelligence 2025)](https://www.nature.com/articles/s42256-025-01033-7)
+
+---
+
+## Collective Intelligence & Self-Organization Research Sweep (2026-03-20)
+
+### Motivation
+
+The stage-superposition architecture needs mechanisms where SIMPLE LOCAL RULES produce GLOBAL INTELLIGENT BEHAVIOR. This research sweep covers collective intelligence, swarm intelligence, and self-organization applied to neural networks — biological systems that achieve complex computation through decentralized local interactions.
+
+### 1. Ant Colony Optimization (ACO) for Neural Network Routing
+
+**Core mechanism**: Pheromone trails create positive feedback loops — successful paths get reinforced, unsuccessful paths decay. No central coordinator.
+
+**State of the art**:
+- **DeepACO** (NeurIPS 2023, arXiv:2309.14032): Neural-enhanced ACO that uses deep RL to automatically learn heuristic measures, replacing hand-designed pheromones. Outperforms traditional ACO on 8 combinatorial optimization problems with a SINGLE architecture and SINGLE hyperparameter set. 67% faster than standard ACO on vehicle routing.
+- **GNN-Enhanced ACO** (2024): Graph neural networks embedded into ant colony optimization for security strategy orchestration — learned heuristic metrics adapted to current situations.
+- **Graph Q-learning + ACO** (2023): Combining Q-learning with ACO for vehicle routing with time windows.
+
+**Relevance to Sutra**: ACO's pheromone mechanism is a natural fit for Sutra's Communication/Routing stage (Stage 4). Instead of learned attention weights, routing decisions could emerge from accumulated "pheromone" signals — tokens that have been successfully processed leave traces that guide future routing. The DeepACO approach of learning the heuristic function (rather than hand-designing it) maps directly to our derive-from-math philosophy.
+
+**Key insight**: Pheromone = stigmergic shared state. This IS our scratchpad mechanism, viewed through a different lens. The scratchpad already showed +10.2% improvement — ACO theory explains WHY it works and how to make it better.
+
+### 2. Stigmergy (Indirect Communication Through Environment)
+
+**Core mechanism**: Agents communicate not by direct messaging but by modifying a shared environment. Traces left by one action stimulate succeeding actions.
+
+**State of the art**:
+- **Stigmergic Memory for RNNs** (arXiv:1903.01341): Uses stigmergy as computational memory in recurrent neural networks. Basic principle: deposit/removal of quantities in a Stigmergic Memory (SM) stimulates next deposit/removal activities. Dynamically increases/decreases connection strength or activation level when stimulated.
+- **Stigmergic Independent RL** (arXiv:1911.12504): Digital pheromones as indirect communication bridges between independent learning agents. Federal training method optimizes each agent's embedded neural network in decentralized manner.
+- **Emergent Collective Memory** (arXiv:2512.10166, Dec 2024): Multi-agent systems achieving shared memory through stigmergic interactions without centralized control.
+
+**Relevance to Sutra**: Stigmergy is THE theoretical framework for our scratchpad. Instead of attention (direct pairwise communication, O(n^2)), positions communicate INDIRECTLY through shared state modifications. Each position reads from and writes to the scratchpad — classic stigmergic coordination. This gives us O(n) communication with emergent global coherence.
+
+### 3. Global Workspace Theory (GWT) — The Neuroscience Connection
+
+**Core mechanism**: Multiple specialized modules compete for access to a shared broadcast workspace. Write access is limited; read access is universal.
+
+**State of the art**:
+- **Coordination Among Neural Modules Through a Shared Global Workspace** (ICLR 2022, arXiv:2103.01197): Replaces pairwise attention between specialists with a shared workspace. Specialists compete to write, then workspace broadcasts to all. Computational complexity is LINEAR in the number of specialists (vs quadratic for attention). Key claim: creates global coherence between different specialists.
+- Two-step process per computational stage: (1) specialists compete and write to shared workspace, (2) workspace broadcasts to all specialists.
+
+**Relevance to Sutra**: THIS IS EXACTLY OUR ARCHITECTURE. The scratchpad IS a global workspace. Sutra's 7 stages ARE the specialists. The scratchpad mediates between them. GWT provides the neuroscience grounding for why this should work: consciousness/integration in biological brains uses exactly this pattern. Our architecture independently converged on the same solution that neuroscience identifies as the mechanism for conscious integration.
+
+**Critical theoretical validation**: The fact that GWT is linear-complexity (like our scratchpad) while attention is quadratic means we're not just copying transformers with extra steps — we genuinely have a different, more efficient communication pattern.
+
+### 4. Flocking/Boids for Coordinating Neural Network Components
+
+**Core mechanism**: Three local rules produce global coherent motion: (1) separation — avoid crowding neighbors, (2) alignment — steer toward average heading of neighbors, (3) cohesion — steer toward average position of neighbors.
+
+**State of the art**:
+- **Boids-PE** (2024): Combines Boids behavioral dynamics with deep reinforcement learning for pursuit, path planning, obstacle avoidance, and formation stability.
+- **GNN Swarm Scalability** (2024): Graph neural networks learning decentralized policies from local interactions, with key challenge being whether policies trained on one swarm size transfer to different population scales.
+- **Evolved Flocking** (2024): Neural networks evolve to control agents' behavior — simpler behaviors show more linear network operations, complex behaviors (swarming/flocking) show highly non-linear neural processing.
+
+**Relevance to Sutra**: Boids' three rules map to position-level dynamics in our architecture:
+- **Separation** = positions maintaining distinct representations (avoid collapse)
+- **Alignment** = positions within a context window aligning their states (local construction)
+- **Cohesion** = positions gravitating toward coherent global meaning (readout)
+This could inform the State Update/Memory Write stage (Stage 5) — positions update their hidden states using boid-like local rules that produce coherent global representations.
+
+### 5. Physarum (Slime Mold) Networks for Optimal Routing
+
+**Core mechanism**: Positive feedback loop between flow and conductivity. Tubes carrying more material grow thicker; unused tubes shrink and die. Solves shortest path, Steiner tree, and traveling salesman problems WITHOUT any central control or optimization algorithm.
+
+**State of the art**:
+- **Physarum-Powered Differentiable LP Layers** (PMC 2021): A differentiable solver for general linear programming problems based on Physarum dynamics, usable as a plug-and-play layer within deep neural networks. Beautiful link between slime mold dynamics and mathematical optimization.
+- **Slime Mold Algorithm (SMA)** (2020, heavily cited): Stochastic optimization simulating foraging behavior and morphological changes. Over 50 variants published by 2023. Applications in feature selection, intrusion detection, engineering optimization.
+- **Flow-Lenia** (Artificial Life, 2025): Mass-conservative continuous cellular automata with emergent evolutionary dynamics — extending slime mold principles to continuous domains.
+
+**Relevance to Sutra**: Physarum's adaptive network is the biological exemplar for Sutra's Communication/Routing stage. The tube-conductivity feedback loop is a model for how routing weights should adapt:
+- Tokens that successfully contribute to prediction -> their routing pathways strengthen
+- Tokens that don't contribute -> their pathways attenuate
+- The network self-organizes optimal information flow WITHOUT explicit routing decisions
+- This is naturally sparse (most tubes die) — built-in efficiency
+
+**Key theoretical connection**: Physarum dynamics converge to the solution of linear programs. If our routing stage implements Physarum-like dynamics, it's PROVABLY optimal for linear flow problems. This is the kind of mathematical guarantee we want.
+
+### 6. Immune System Inspired Learning
+
+**Core mechanism**: Clonal selection (best-matching antibodies proliferate), affinity maturation (hypermutation + selection tightens the match), danger theory (context determines whether to respond).
+
+**State of the art**:
+- **Clonal Selection Algorithms**: Applied to optimization and pattern recognition. Share properties with neural networks but use mutation instead of gradient descent.
+- **Pretrainable GNN for Antibody Affinity Maturation** (Nature Communications, Aug 2024): Geometric graph neural network for modeling antibody maturation — ML learning FROM the immune system.
+- **DeepDCA**: Deep Learning + Dendritic Cell Algorithm for anomaly detection — Self-Normalizing Neural Networks for signal categorization combined with DCA.
+- **Danger Theory in ML**: Danger signals (environmental changes) guide immune response levels. Analogous to attention mechanisms that flag unusual inputs.
+
+**Relevance to Sutra**: The immune system's key insight is ADAPTIVE DIVERSITY MAINTENANCE:
+- Clonal selection = keeping multiple hypotheses (like mixture of experts)
+- Affinity maturation = refining hypotheses through targeted mutation (like fine-tuning)
+- Danger theory = context-dependent activation (like gating mechanisms)
+- Most relevant for the Compute Control stage (Stage 6): the model should allocate more compute to "dangerous" (novel/difficult) inputs and less to familiar ones. The immune system does this naturally — it doesn't process every antigen equally.
+
+### 7. Cellular Automata as Neural Network Layers
+
+**Core mechanism**: Grid of cells, each updating its state based ONLY on local neighbors, using a shared update rule. Simple local rules -> complex global patterns.
+
+**State of the art**:
+- **Training Language Models via NCA** (arXiv:2603.10055, March 2026): PRE-PRE-TRAINING LLMs on NCA-generated synthetic data. 164M NCA tokens improve downstream LM by up to 6% and accelerate convergence by 1.6x. OUTPERFORMS 1.6B tokens of Common Crawl. Key finding: since every NCA sequence has a unique latent rule, the model must infer rules in-context — this teaches IN-CONTEXT LEARNING.
+- **NCA for ARC-AGI** (arXiv:2506.15746, 2025): Neural Cellular Automata applied to ARC benchmark. NCAs solved 23/400 tasks through pure self-organization — first time NCAs used for 2D ARC-AGI.
+- **Universal Neural Cellular Automata** (arXiv:2505.13058, 2025): Exploring whether NCA can develop continuous universal computation through gradient descent training.
+- **Photonic NCA** (Nature, 2024): Deep learning with sparse connectivity through local interactions for photonic hardware.
+- **Differentiable Logic CA** (Google Research, 2025): Implementing self-organizing systems using differentiable logic gates on standard digital hardware.
+- **Lenia** (continuous CA): Differentiable via backpropagation when using continuous states. Flow-Lenia adds mass conservation. ParticleLenia extends to particle-based substrates.
+
+**Relevance to Sutra**: THIS IS THE MOST DIRECTLY RELEVANT FINDING. The NCA pre-pre-training paper (March 2026) shows that:
+1. NCA dynamics teach IN-CONTEXT LEARNING — the core capability we need
+2. NCA data has "statistics resembling natural language" — there's a deep structural connection
+3. Attention layers are the most transferable component — even in NCA-pretrained models
+4. Sutra's Local Construction stage (Stage 3) IS a cellular automaton: each position updates based on local neighbors using a learned rule. We should explicitly design it as an NCA.
+
+**Sutra-specific design implication**: Our entire architecture can be viewed as a multi-channel NCA:
+- Each position = a cell
+- Hidden state = cell state
+- Local Construction = CA update rule (learned neural network)
+- Scratchpad = shared environment for stigmergic communication
+- Multiple stages = multiple update channels operating simultaneously
+The difference from standard NCA: our cells also have access to non-local information through the scratchpad (global workspace).
+
+### 8. Reaction-Diffusion Systems for Pattern Formation
+
+**Core mechanism**: Two coupled processes — local reactions (production/consumption) and diffusion (spatial spreading). Turing showed in 1952 that this produces spontaneous pattern formation through instability of homogeneous states.
+
+**State of the art**:
+- **Turing Patterns Without Imposed Feedback** (Nature Communications, Sep 2024): Ten simple biochemical reaction networks can generate Turing patterns without needing explicit activator/inhibitor assignment. Shows that pattern formation is MORE COMMON than previously thought.
+- **Pattern Formation on Temporal Networks** (Royal Society, 2020): Topology-driven instabilities in reaction-diffusion systems on dynamic graphs — the network structure itself can drive pattern formation.
+- **Reaction-Diffusion Neural Networks**: Studies of Turing instability and Hopf bifurcation in neural networks with reaction-diffusion terms and leakage delay.
+
+**Relevance to Sutra**: Reaction-diffusion provides a mathematical framework for how structured representations EMERGE in our hidden states:
+- **Activator** = information that reinforces itself (attention-like amplification)
+- **Inhibitor** = information that suppresses nearby competing representations (lateral inhibition)
+- **Diffusion** = information spreading through local connectivity (our Local Construction stage)
+- Turing instability = the mechanism by which uniform hidden states SPONTANEOUSLY break symmetry into structured patterns
+
+This explains WHY local rules produce structured global representations: it's a Turing instability. The mathematical conditions for pattern formation (diffusion rate ratio, reaction kinetics) could be used to DERIVE optimal hyperparameters for our local construction stage.
+
+### 9. Self-Organized Criticality (SOC) in Neural Network Training
+
+**Core mechanism**: Systems naturally evolve toward a critical state (edge of chaos) where they exhibit power-law distributions, maximal information processing, and optimal sensitivity. No external tuning needed — the system SELF-ORGANIZES to this state.
+
+**State of the art**:
+- **Edge of Chaos as Guiding Principle** (2022): Optimal deep neural network performance occurs near the transition between stable and chaotic attractors. Training naturally moves networks TOWARD the edge of chaos.
+- **Network Structure and SOC** (Frontiers, 2025): How network topology influences self-organized criticality in spiking neural networks with dynamical synapses.
+- **Exploiting Chaotic Dynamics as DNNs** (Physical Review Research, 2025): Directly leveraging chaotic dynamics for deep learning — superior results in accuracy, convergence speed, and efficiency compared to conventional DNNs.
+- **Astrocyte-Modulated Criticality** (2023): Biological brains use non-neuronal cells (astrocytes) to tune networks to the computationally optimal critical phase transition between order and chaos.
+- **Mean Field Theory**: Networks exhibit order-to-chaos transition as a function of weight/bias variances. Characteristic depth scale DIVERGES at the edge of chaos. Exponential expressivity through transient chaos.
+- **Evolved Critical NCA** (2025): Neural cellular automata evolved to operate at criticality achieve perfect performance on memory tasks in reservoir computing.
+
+**Relevance to Sutra**: SOC is THE mechanism for optimal information processing:
+1. **Initialization**: We should initialize Sutra at the edge of chaos (mean field theory gives exact conditions for weight variances)
+2. **Training dynamics**: Learning rate should be chosen to keep the system near criticality (the region where convergence time is minimized)
+3. **Architecture**: Our multi-timescale design (fast local + slow global) naturally creates the conditions for SOC — fast processes create local order, slow processes prevent the system from freezing
+4. **Compute Control (Stage 6)**: Should act like astrocytes — monitoring system dynamics and adjusting gain/gating to maintain criticality
+5. **Verification**: We can MEASURE whether Sutra operates near criticality by checking for power-law distributions in activation magnitudes, avalanche sizes, etc.
+
+**Key theoretical connection**: The edge of chaos maximizes three things simultaneously:
+- Information transmission (sensitivity to input)
+- Dynamical range (ability to represent many patterns)
+- Storage capacity (memory)
+These are exactly the three capabilities a language model needs. If Sutra self-organizes to criticality, it gets all three for free.
+
+### 10. Gene Regulatory Network (GRN) Dynamics
+
+**Core mechanism**: Genes regulate each other's expression through complex feedback loops. The same genome produces wildly different cell types through regulatory dynamics alone.
+
+**State of the art**:
+- **Hybrid NN + ML for GRN** (2025): CNNs + ML achieving 95%+ accuracy on GRN prediction. Attention-based architectures for context-dependent GRN identification.
+- **Temporal Models**: RNNs and 1D-CNNs for capturing dynamic regulatory processes that static models miss.
+- **Hypergraph Learning** (Cell Reports Methods, 2025): GRN inference through hypergraph generative models — going beyond pairwise interactions to higher-order relationships.
+
+**Relevance to Sutra**: GRN dynamics offer a model for ADAPTIVE ARCHITECTURES:
+- The same "genome" (parameters) producing different "cell types" (processing modes) = our stage-superposition concept
+- Regulatory feedback loops = our verify-reroute cycle (Stage 7 -> Stage 4)
+- Context-dependent gene expression = tokens activating different processing pathways based on content
+- The hypergraph perspective is interesting: our stages don't interact pairwise — they interact through the shared scratchpad, which is a higher-order interaction structure.
+
+### 11. Bonus Findings: Breakthrough Papers
+
+#### "Self-Organizing Language" (arXiv:2506.23293, June 2025)
+- **Novel paradigm**: emergent local memory that is continuous-learning, completely-parallel, content-addressable, encoding GLOBAL ORDER through LOCAL constraints
+- "Global order is built locally, through a hierarchical memory called the retokenizer"
+- Even trained on NOISE, it self-organizes into structure with universal sub-word distributions and finite word length
+- Can produce human language WITHOUT DATA by exploiting self-organizing dynamics
+- **This validates Sutra's thesis**: local rules + self-organization = language structure. We don't need to IMPOSE structure — it EMERGES.
+
+#### Forward-Forward Algorithm and Local Learning (2024-2025)
+- **Forward-Forward (Hinton 2022)**: Learning through purely local objectives — two forward passes, no backpropagation. More biologically plausible.
+- **Self-Contrastive Forward-Forward** (Nature Communications, 2025): Enhances FF with contrastive learning for unsupervised training.
+- **Predictive Coding**: Energy function from forward prediction errors, optimization via local layered errors. Emerges as most promising BP alternative.
+- **Hebbian CNNs** (2025): Networks trained with Hebbian learning competitive with backpropagation.
+- **Relevance**: If Sutra's local update rules can be trained with local learning rules (not just backpropagation), the architecture becomes MORE biologically plausible AND more hardware-friendly (no need for global gradient flow).
+
+#### Model Swarms (arXiv:2410.11163, Oct 2024)
+- LLM experts collaboratively move in WEIGHT SPACE guided by swarm intelligence
+- Tuning-free adaptation, works with as few as 200 examples
+- Up to 21% improvement over 12 model composition baselines
+- Weak experts discover previously unseen capabilities through collaboration
+- **Relevance**: Ensemble/composition strategy for Sutra variants — multiple small models could swarm-optimize in weight space.
+
+#### NCA Pre-Pre-Training for LLMs (arXiv:2603.10055, March 2026)
+- 164M NCA tokens -> 6% downstream improvement, 1.6x faster convergence
+- OUTPERFORMS 1.6B tokens of Common Crawl natural language
+- Teaches IN-CONTEXT LEARNING from synthetic data
+- Attention layers are the most transferable
+- **Relevance**: We should consider NCA pre-pre-training for Sutra — it could dramatically accelerate training.
+
+### Synthesis: What This Means for Sutra's Architecture
+
+The collective intelligence research converges on a single, powerful insight:
+
+**THE SCRATCHPAD IS THE KEY.**
+
+Every successful collective intelligence system has the same structure:
+1. **Simple local agents** (ants, slime mold tubes, neurons, cells, boids)
+2. **A shared environment** (pheromone trails, tube network, global workspace, regulatory signals)
+3. **Positive/negative feedback** (reinforcement of successful paths, decay of unsuccessful ones)
+4. **Self-organization to criticality** (the system naturally finds the optimal operating point)
+
+Sutra already has elements 1 (positions with local update rules) and 2 (the scratchpad). What we need to strengthen:
+
+| Element | Current Sutra | Enhancement from This Research |
+|---------|--------------|-------------------------------|
+| Local agents | Positions with SSM states | Explicitly model as NCA cells |
+| Shared environment | 8-slot scratchpad | Increase to stigmergic memory with decay/reinforcement dynamics |
+| Positive feedback | None explicit | Add Physarum-like flow-conductivity coupling to routing |
+| Negative feedback | None explicit | Add lateral inhibition (reaction-diffusion inhibitor) |
+| Self-organization | Not designed for | Initialize at edge of chaos, add SOC monitoring to Compute Control |
+| Adaptive routing | Static | ACO-inspired pheromone trails for dynamic routing |
+
+### Specific Design Proposals (For Codex Review)
+
+1. **Stigmergic Scratchpad**: Replace fixed scratchpad with one that has temporal dynamics — writes decay over time (like pheromone evaporation), frequently-accessed slots get reinforced. This naturally handles memory management without explicit garbage collection.
+
+2. **Physarum Routing**: The Communication/Routing stage implements tube-like dynamics — information flow between positions strengthens pathways, unused pathways attenuate. Provably converges to optimal flow for linear problems.
+
+3. **Edge-of-Chaos Initialization**: Use mean field theory to initialize weight variances at the critical point. Monitor activation statistics during training to verify criticality is maintained.
+
+4. **Reaction-Diffusion Local Construction**: Model the Local Construction stage as a reaction-diffusion system — activators (self-reinforcing patterns) and inhibitors (lateral suppression) create Turing-instability-driven representation structure.
+
+5. **Immune-Inspired Compute Control**: Stage 6 acts like the immune system's danger detection — novel/difficult inputs trigger more compute (more iterations through the stage graph), familiar inputs get fast-tracked.
+
+6. **NCA Pre-Pre-Training**: Before training on text, pre-train on NCA-generated synthetic data to teach in-context learning from scratch. The March 2026 paper shows this works.
+
+### Dead Ends (From This Research)
+
+- **Pure ACO for routing**: Too slow for real-time inference. Need the DeepACO approach (learned heuristics) rather than runtime pheromone simulation.
+- **Pure cellular automata as the WHOLE architecture**: NCA alone solved only 23/400 ARC tasks. Local rules alone are insufficient — the scratchpad/global workspace is necessary for non-local coordination.
+- **Immune system algorithms as optimizers**: Clonal selection algorithms are essentially parallel hill climbing without recombination — gradient descent is strictly better for differentiable systems. The VALUE is in the immune system's ARCHITECTURE (adaptive diversity, danger detection), not its optimization algorithm.
+- **Gene regulatory dynamics as adaptive architecture**: While theoretically appealing, GRN-inspired dynamic architectures have no demonstrated advantage over static architectures in current literature. The concept maps better to TRAINING dynamics (curriculum, learning rate schedules) than to inference-time architecture.
+
+### References
+
+Key papers, in priority order for deeper reading:
+
+1. Training Language Models via NCA (arXiv:2603.10055) — MUST READ
+2. Self-Organizing Language (arXiv:2506.23293) — MUST READ
+3. Coordination Among Neural Modules Through a Shared Global Workspace (ICLR 2022, arXiv:2103.01197)
+4. DeepACO: Neural-enhanced Ant Systems (NeurIPS 2023, arXiv:2309.14032)
+5. Edge of Chaos as Guiding Principle for Modern NN Training (2022)
+6. Exploiting Chaotic Dynamics as DNNs (Physical Review Research, 2025)
+7. Model Swarms (arXiv:2410.11163)
+8. Physarum-Powered Differentiable LP Layers (2021)
+9. Evolved Critical Neural Cellular Automata (2025)
+10. Self-Contrastive Forward-Forward (Nature Communications, 2025)
+11. Turing Patterns Without Imposed Feedback (Nature Communications, Sep 2024)
+12. Stigmergic Memory for RNNs (arXiv:1903.01341)
+
+---
+
+## Quantum Physics: How Nature Organizes Information (2026-03-20)
+
+### Purpose
+
+Deep research into how quantum physics itself organizes and processes information. NOT "quantum ML" -- the actual physics. The goal: understand the fundamental information-processing principles that nature uses at the deepest level. Each mechanism reveals a principle about how information can be organized, stored, protected, or transmitted under fundamental physical constraints.
+
+---
+
+### 1. SUPERPOSITION: Information as Amplitude, Not State
+
+**The Mechanism:**
+
+A quantum system is described by a wavefunction |psi> = c1|A> + c2|B> + ... where the coefficients c_i are complex numbers called probability amplitudes. The system does not "pick" one state -- it genuinely exists as this linear combination. The Schrodinger equation governing time evolution is a linear differential equation, so any linear combination of solutions is also a solution. This is not an approximation or a convenience -- it is the fundamental description.
+
+The critical difference from classical probability: classical uncertainty means "we don't know which state it's in." Quantum superposition means "it is in all of them simultaneously, with complex-valued weights." The complex phases matter -- they cause interference.
+
+**Interference -- The Computational Engine:**
+
+When multiple amplitude paths lead to the same outcome, they combine as complex numbers (not probabilities). If two amplitudes are in phase (aligned), they constructively interfere -- the outcome becomes MORE probable. If out of phase, they destructively interfere -- the outcome becomes LESS probable or even impossible. This is observable in the double-slit experiment: single particles, sent one at a time through two slits, build up an interference pattern over many trials. The particle interferes with itself.
+
+The Born rule converts amplitudes to probabilities: P(outcome) = |amplitude|^2. But the computation happens in amplitude space, where cancellation and reinforcement occur. The probabilities are the final readout, not the processing medium.
+
+**Measurement and Collapse:**
+
+Upon measurement, the superposition collapses to a single eigenstate with probability given by Born's rule. This transition is abrupt and non-unitary -- fundamentally different from the smooth, deterministic Schrodinger evolution. The measurement problem (what constitutes "measurement"? what causes collapse?) remains unsolved after ~100 years. Whether collapse is a physical process (objective collapse theories, possibly gravitational) or a change in our description (many-worlds, epistemic interpretations) is an open question.
+
+What IS settled experimentally: before measurement, the system behaves as if it explores all branches simultaneously. After measurement, it is definitively in one.
+
+**INFORMATION PRINCIPLE: Information is stored as complex amplitudes, not discrete states. Processing happens via interference in amplitude space, where paths can cancel or reinforce. The readout (measurement) is lossy -- it projects the full amplitude information down to a single classical outcome. Nature computes in a richer space than it reports.**
+
+---
+
+### 2. ENTANGLEMENT: Non-Local Correlation Without Communication
+
+**The Mechanism:**
+
+When two particles interact and then separate, their joint quantum state cannot always be written as a product of individual states. For a spin singlet: |psi> = (1/sqrt(2))(|up_A>|down_B> - |down_A>|up_B>). Neither particle A nor particle B has a definite spin individually -- only the PAIR has a definite state (total spin = 0).
+
+When you measure particle A and get "up," particle B is INSTANTLY "down" -- regardless of distance. Einstein called this "spooky action at a distance" and believed it proved quantum mechanics was incomplete (hidden variables must predetermine the outcomes).
+
+**Bell's Theorem -- The Death of Local Hidden Variables:**
+
+Bell (1964) proved mathematically that ANY local hidden variable theory predicts correlations bounded by an inequality (the Bell inequality). Quantum mechanics predicts STRONGER correlations that violate this bound. Specifically: for measurements along different axes, local theories predict at most 67% agreement. Quantum mechanics predicts 75%.
+
+Every experiment since the 1970s confirms the quantum prediction. The 2022 Nobel Prize in Physics was awarded for the definitive closure of experimental loopholes. Local realism is dead.
+
+**Monogamy of Entanglement:**
+
+Entanglement cannot be freely shared. The CKW (Coffman-Kundu-Wootters) inequality: if A and B are maximally entangled, A has ZERO entanglement capacity left for C. This is fundamentally different from classical correlation, which can be freely copied. Entanglement is a conserved resource -- sharing it with more parties dilutes it.
+
+**No Faster-Than-Light Communication:**
+
+Despite the nonlocal correlations, entanglement CANNOT transmit information. The key: A's measurement outcome is random (50/50 up/down). B's outcome is also random. The correlations only become visible when A and B compare their results (which requires classical communication). Entanglement creates correlations in randomness, not in information.
+
+**INFORMATION PRINCIPLE: Nature allows correlations that are stronger than any local mechanism can produce, but prevents those correlations from carrying information. Information can be globally correlated without being locally present -- the whole contains information that is not in any part. Entanglement is a resource that obeys conservation (monogamy) -- you cannot duplicate it or share it without limit. This is fundamentally different from classical information, which can be freely copied.**
+
+---
+
+### 3. DECOHERENCE: How Classical Reality Emerges from Quantum Reality
+
+**The Mechanism:**
+
+A quantum system interacting with its environment becomes entangled with it. If a system is in superposition |A> + |B>, and environmental particles (photons, air molecules, dust) scatter off it differently depending on whether it's in state A or B, the joint state becomes:
+
+|A>|env_A> + |B>|env_B>
+
+The interference between A and B is now encoded in the JOINT system+environment state. If you trace out (ignore) the environment, the interference terms vanish. The system APPEARS to be in a classical mixture of A or B -- not because it collapsed, but because the coherence leaked into the environment.
+
+**Timescales:**
+
+Decoherence is astonishingly fast for macroscopic objects. A dust speck (10^-5 cm radius) in air loses quantum coherence over 10^-13 cm distance scales within microseconds. For a macroscopic object like a cat, decoherence is effectively instantaneous. This explains why we never observe macroscopic superpositions -- they decohere before we could possibly detect them.
+
+The timescale depends on: object size (larger = faster decoherence), environmental density (more particles = faster), and interaction strength. Quantum coherence is fragile precisely because information leaks to the environment.
+
+**Einselection (Environment-Induced Superselection):**
+
+Not all states decohere equally. States that get LEAST entangled with the environment under the given interaction survive longest. Zurek calls these "pointer states." For position-dependent interactions (which dominate in nature), spatial localization becomes the preferred basis -- this is why we observe objects in definite positions, not in definite momentum states.
+
+The selection mechanism is Darwinian: states that survive environmental monitoring are the ones that are most robust to it. The environment acts as a filter, selecting which quantum states get to become "classical reality."
+
+**Quantum Darwinism:**
+
+Information about the surviving pointer states gets imprinted redundantly in many environmental degrees of freedom. When a photon bounces off an object, it carries information about the object's position. Millions of photons do this, creating millions of copies of the same information in the environment. This is why multiple observers can agree on "what's there" -- they're all reading different copies of the same redundantly stored information.
+
+**INFORMATION PRINCIPLE: Classicality is an emergent property of information spreading. When a system's information leaks into the environment, the system appears classical. The environment acts as a Darwinian filter, selecting which states survive (pointer states) and broadcasting them redundantly. Information is not destroyed by decoherence -- it is DISPERSED into the environment beyond practical recovery. The transition from quantum to classical is a transition in information accessibility, not in information existence.**
+
+---
+
+### 4. QUANTUM ERROR CORRECTION: Protecting Information in a Subspace
+
+**The Mechanism:**
+
+Quantum error correction encodes logical information into a subspace of a larger Hilbert space, such that local errors move the state OUT of the code subspace in detectable ways without revealing the encoded information.
+
+The simplest example: encode 1 logical qubit into 5+ physical qubits. The logical information is stored NON-LOCALLY across all 5 qubits -- no single qubit carries the information. If any single qubit suffers an error (bit flip, phase flip, or both), the error creates a detectable "syndrome" (a pattern of check measurements) that identifies which qubit erred and how, WITHOUT revealing what the logical qubit's state is.
+
+**Stabilizer Codes:**
+
+The dominant framework. Define a set of commuting operators (stabilizers) that all return +1 when acting on valid codewords. The code space = subspace where all stabilizers are satisfied. Errors move the state to a different eigenvalue of some stabilizer, creating a detectable syndrome. Measure the stabilizers (not the logical qubits) to detect errors without disturbing the encoded information.
+
+**Topological Codes (Surface/Toric Code):**
+
+The most physically promising approach. Qubits arranged on a 2D lattice. Logical information stored in GLOBAL topological features -- whether chains of errors wrap around the torus or not. Local errors create detectable "anyonic" excitations (like point defects). Only errors forming complete non-trivial loops around the torus cause logical failures.
+
+The key insight: information is protected by being stored NON-LOCALLY. An adversary (noise) that can only affect local patches of the lattice cannot reach the globally stored information without creating detectable signatures.
+
+**The Quantum Hamming Bound:**
+
+At minimum, 5 physical qubits are needed to encode 1 logical qubit with single-error correction. This is the fundamental cost of quantum redundancy -- similar to classical coding theory but with the additional constraint of no-cloning (you cannot simply copy the qubit).
+
+**INFORMATION PRINCIPLE: Information can be protected against noise by encoding it NON-LOCALLY in a larger space, such that local perturbations are detectable without revealing the encoded information. The protection comes from a separation between the "syndrome space" (where errors are visible) and the "logical space" (where information lives). Nature provides a mechanism where you can ask "did an error happen?" without asking "what is the information?" This is possible because of the geometric structure of Hilbert space -- orthogonal subspaces can be probed independently.**
+
+---
+
+### 5. QUANTUM TUNNELING: Information Leaking Through Barriers
+
+**The Mechanism:**
+
+A particle encountering a potential energy barrier that it classically lacks the energy to overcome does NOT have its wavefunction go to zero at the barrier. Instead, the wavefunction decays exponentially INSIDE the barrier: psi ~ exp(-kappa * x), where kappa depends on the barrier height and particle energy. If the barrier is thin enough, the wavefunction has a non-zero amplitude on the other side.
+
+The particle does not "go over" the barrier or "drill through" it. Its wavefunction -- which describes its probability of being found at various locations -- simply extends through the barrier with exponentially diminishing but non-zero amplitude. The transmission probability T ~ exp(-2 * integral of kappa dx) over the barrier width.
+
+**What Determines Tunneling Probability:**
+
+Three factors control the exponential suppression:
+1. Barrier HEIGHT (higher = exponentially less tunneling)
+2. Barrier WIDTH (wider = exponentially less tunneling)
+3. Particle MASS (heavier = exponentially less tunneling)
+
+The WKB approximation gives the semiclassical transmission coefficient, valid when the particle's de Broglie wavelength is much smaller than the barrier extent. The probability is always exponentially small -- but for thin barriers and light particles (electrons, protons), it is non-negligible.
+
+**Physical Importance:**
+
+Tunneling is not a curiosity -- it is essential to:
+- Nuclear fusion in stars (protons tunnel through Coulomb barriers)
+- Radioactive alpha decay (alpha particles tunnel out of the nucleus)
+- Scanning tunneling microscopy (electrons tunnel across vacuum gap)
+- Transistor operation at nanoscale (leakage current)
+- Biological enzyme catalysis (proton tunneling)
+
+**INFORMATION PRINCIPLE: Barriers are not absolute -- they are exponential filters. Information (represented by the wavefunction amplitude) penetrates every barrier, but with exponential attenuation. The "cost" of passing information through a barrier scales exponentially with barrier height, width, and particle mass. Nature uses exponential decay as the fundamental mechanism for information attenuation -- not hard cutoffs. There is always a non-zero probability of transmission, no matter how high the barrier. The universe operates with soft boundaries, not hard walls.**
+
+---
+
+### 6. QUANTUM ZENO EFFECT: Observation Freezes Evolution
+
+**The Mechanism:**
+
+A quantum system evolves unitarily under the Schrodinger equation. For short times, the transition probability from state |A> to state |B> is proportional to t^2 (quadratic), not t (linear). This is because probabilities arise from squared amplitudes, and amplitudes evolve linearly with time.
+
+If you divide total time T into N measurement intervals and measure at the end of each:
+- Each interval has transition probability ~ (T/N)^2
+- Total transition probability across N intervals ~ N * (T/N)^2 = T^2/N
+- As N -> infinity (continuous measurement), P_transition -> 0
+
+Frequent measurement "resets" the system to its initial state, preventing evolution. In the limit of continuous observation, the system is frozen.
+
+**Anti-Zeno Effect:**
+
+At intermediate measurement frequencies, the opposite can occur: measurement can ACCELERATE transitions. This happens when the measurement frequency matches the spectral density of the coupling to the final state. The Zeno effect dominates at HIGH measurement rates; the anti-Zeno effect can dominate at LOWER rates.
+
+**Experimental Confirmation:**
+
+Wineland et al. (1989) demonstrated the Zeno effect on a two-level atomic system using ultraviolet pulses. The UV pulses suppressed the system's evolution to the excited state. More recently (2019), repeated displacement measurements on a nanomechanical oscillator suppressed its thermal fluctuations.
+
+**INFORMATION PRINCIPLE: The rate of information extraction from a system controls the system's dynamics. Rapid measurement projects the system back to its initial state, preventing the accumulation of phase that would lead to transitions. Information extraction is not passive -- it is an active intervention that reshapes the system's trajectory through state space. There exists an optimal measurement rate: too fast freezes the system (Zeno), too slow lets it evolve freely, and at intermediate rates, measurement can even accelerate transitions (anti-Zeno). Observation and evolution are coupled, not independent.**
+
+---
+
+### 7. QUANTUM PHASE TRANSITIONS: Information Reorganization at Critical Points
+
+**The Mechanism:**
+
+Classical phase transitions (ice -> water -> steam) are driven by thermal fluctuations -- temperature provides the energy to reorganize matter. Quantum phase transitions (QPTs) occur at absolute zero (T=0), driven entirely by quantum fluctuations arising from Heisenberg's uncertainty principle. Tuning a non-thermal parameter (pressure, magnetic field, doping) can drive a system through a quantum critical point where the ground state fundamentally reorganizes.
+
+**What Happens at the Critical Point:**
+
+1. The correlation length DIVERGES -- the system becomes correlated over all length scales simultaneously. There is no characteristic scale; the system is scale-invariant.
+
+2. The energy gap between the ground state and first excited state CLOSES. The system becomes infinitely sensitive to perturbation at the critical point.
+
+3. Entanglement entropy exhibits a characteristic peak or divergence. In 1D systems at criticality, entanglement entropy scales LOGARITHMICALLY with subsystem size (violating the usual area law), governed by the central charge of the underlying conformal field theory.
+
+**Universality:**
+
+Different physical systems with entirely different microscopic details exhibit IDENTICAL critical behavior if they share the same symmetry and dimensionality. The critical exponents are universal -- they depend ONLY on the symmetry group and spatial dimension, not on the specific atoms, interactions, or lattice structure. This universality arises because at the critical point, the divergent correlation length causes the system to average over all microscopic details -- only the large-scale structure matters.
+
+**Entanglement at Criticality:**
+
+The transition is fundamentally about how entanglement (information) is organized:
+- BEFORE criticality (gapped phase): entanglement follows area law -- mostly local, short-range correlations
+- AT criticality: entanglement follows log law -- long-range correlations at all scales
+- AFTER criticality (different gapped phase): area law again, but with different local structure
+
+This is a transition in the INFORMATION GEOMETRY of the ground state.
+
+**INFORMATION PRINCIPLE: Phase transitions are moments where a system's information organization undergoes qualitative restructuring. At the critical point, information correlations become scale-free -- every scale talks to every other scale simultaneously. Universality means that the critical information structure depends only on symmetry and dimension, not on microscopic details -- a massive compression of description. The system becomes maximally complex (in terms of long-range correlations) exactly at the transition point. This is nature's version of a compression phase transition: the description of the system at criticality requires the most information (logarithmic entanglement), while away from criticality it requires less (area-law entanglement).**
+
+---
+
+### 8. NO-CLONING THEOREM: Information Cannot Be Copied
+
+**The Mechanism:**
+
+The no-cloning theorem (Wootters-Zurek-Dieks, 1982) proves that no physical process can create an identical copy of an arbitrary unknown quantum state. The proof is elegant and follows from two foundational properties of quantum mechanics:
+
+1. **Linearity**: Quantum operations are linear transformations.
+2. **Unitarity**: Quantum evolution preserves inner products (norms and angles).
+
+Suppose a cloning machine U exists: U|psi>|blank> = |psi>|psi> for any |psi>. Take two states |A> and |B>. Then:
+- U|A>|blank> = |A>|A>
+- U|B>|blank> = |B>|B>
+
+Taking the inner product of both sides: <A|B> = (<A|B>)^2. This is only satisfied if <A|B> = 0 or 1 -- i.e., the states are either identical or perfectly orthogonal. You CANNOT clone two states that have any non-trivial overlap. A universal cloner is impossible.
+
+**What IS Possible:**
+
+- Cloning KNOWN states is fine (you just prepare them again)
+- Cloning ORTHOGONAL states is fine (distinguishable states can be copied)
+- APPROXIMATE cloning exists but with bounded fidelity
+- Quantum TELEPORTATION can transmit a state, but it DESTROYS the original in the process
+
+**Connection to Other Principles:**
+
+The no-cloning theorem is intimately connected to:
+- No faster-than-light communication (if you could clone, you could use entanglement to send signals)
+- Quantum cryptography (eavesdroppers cannot copy quantum keys without detection)
+- Quantum error correction (you cannot use classical copy-and-majority-vote; you need the non-local encoding approach of section 4)
+- Quantum teleportation (the original must be destroyed when the copy is created)
+
+**INFORMATION PRINCIPLE: Quantum information is fundamentally non-duplicable. Unlike classical bits, which can be copied freely, quantum states cannot be reproduced without being consumed. This makes quantum information a genuine RESOURCE -- it cannot be amplified, stockpiled, or backed up without cost. The theorem follows from the geometry of Hilbert space: the inner product structure (which defines similarity between states) is incompatible with universal copying. This is perhaps the deepest difference between classical and quantum information: classical information is about distinguishable states (which CAN be copied), while quantum information lives in the continuous geometry between distinguishable states (which CANNOT).**
+
+---
+
+### SYNTHESIS: The 8 Principles of Quantum Information Organization
+
+| # | Phenomenon | Information Principle |
+|---|-----------|----------------------|
+| 1 | **Superposition** | Information is stored as complex amplitudes, not discrete states. Processing via interference in a richer space than the readout. |
+| 2 | **Entanglement** | Information can be globally correlated without being locally present. Correlations stronger than any local mechanism, but conserved (monogamy). |
+| 3 | **Decoherence** | Classicality emerges from information dispersal. Environment filters states (einselection) and broadcasts survivors (quantum Darwinism). |
+| 4 | **Error Correction** | Information protected by non-local encoding in a subspace. Errors detectable without revealing encoded information. |
+| 5 | **Tunneling** | Barriers are exponential filters, not hard walls. Information penetrates everything with exponentially attenuated amplitude. |
+| 6 | **Zeno Effect** | Observation rate controls evolution rate. Information extraction is active intervention, not passive reading. |
+| 7 | **Phase Transitions** | Information organization undergoes qualitative restructuring at critical points. Universality = compression of description. Scale-free correlations at criticality. |
+| 8 | **No-Cloning** | Quantum information is non-duplicable. It is a genuine resource with conservation laws. The geometry of state space forbids universal copying. |
+
+### Meta-Patterns Across All 8:
+
+**Pattern A: Information lives in geometry, not symbols.** Amplitudes, phases, inner products, subspaces -- quantum information is fundamentally geometric. States are vectors, operations are rotations, error correction uses orthogonal subspaces, entanglement is non-separability of tensor products. The information IS the geometry.
+
+**Pattern B: Nature computes in a richer space than it reports.** Superposition processes in amplitude space but reports in probability space. Entanglement contains information not accessible to local observers. Error correction separates syndrome space from logical space. The "hidden" processing space is always larger and richer than the observable output.
+
+**Pattern C: Information has conservation laws.** Entanglement is monogamous. No-cloning prevents duplication. Decoherence disperses but does not destroy. Quantum information is a genuine physical resource with budgets and trade-offs, not an abstract quantity that can be freely manipulated.
+
+**Pattern D: The boundary between system and environment is where information gets interesting.** Decoherence, error correction, and measurement all happen at the interface between system and environment. The Zeno effect shows that observation rate at the boundary controls internal dynamics. Nature's information processing is fundamentally about managing this boundary.
+
+**Pattern E: Exponential scaling is the universal cost function.** Tunneling probability decays exponentially with barrier size. Decoherence time is exponentially short for large systems. Error correction requires exponentially growing resources for exponentially decreasing error rates. Nature's "difficulty pricing" is exponential.
+
+### Key References
+
+- [Quantum Measurement Problem Review (Taylor & Francis 2025)](https://www.tandfonline.com/doi/full/10.1080/14786435.2025.2601922)
+- [Bell's Theorem (Stanford Encyclopedia of Philosophy)](https://plato.stanford.edu/entries/bell-theorem/)
+- [Bell's Theorem Proved Spooky Action (Quanta Magazine)](https://www.quantamagazine.org/how-bells-theorem-proved-spooky-action-at-a-distance-is-real-20210720/)
+- [Decoherence, Einselection, and the Quantum Origins of the Classical (Zurek 2003)](https://arxiv.org/abs/quant-ph/0105127)
+- [Role of Decoherence in QM (Stanford Encyclopedia)](https://plato.stanford.edu/entries/qm-decoherence/)
+- [Quantum Darwinism (Wikipedia)](https://en.wikipedia.org/wiki/Quantum_Darwinism)
+- [Quantum Error Correction For Dummies (arXiv 2304.08678)](https://arxiv.org/pdf/2304.08678)
+- [Surface Code (Wikipedia)](https://en.wikipedia.org/wiki/Surface_code)
+- [Low-Overhead QEC Codes (Nature Physics 2025)](https://www.nature.com/articles/s41567-025-03157-4)
+- [Quantum Tunneling (OpenStax Physics)](https://openstax.org/books/university-physics-volume-3/pages/7-6-the-quantum-tunneling-of-particles-through-potential-barriers)
+- [Quantum Zeno Effect (Wikipedia)](https://en.wikipedia.org/wiki/Quantum_Zeno_effect)
+- [Quantum Phase Transitions (Quantum Zeitgeist)](https://quantumzeitgeist.com/quantum-phase-transitions/)
+- [Entanglement Entropy Scaling Near QPT (Nature 2002)](https://www.nature.com/articles/416608a)
+- [No-Cloning Theorem (Wikipedia)](https://en.wikipedia.org/wiki/No-cloning_theorem)
+- [Wootters & Zurek, "A single quantum cannot be cloned" (Nature 1982)](https://www.nature.com/articles/299802a0)
+- [Monogamy of Quantum Entanglement (Frontiers in Physics 2022)](https://www.frontiersin.org/journals/physics/articles/10.3389/fphy.2022.880560/full)
+- [Holevo's Theorem (Wikipedia)](https://en.wikipedia.org/wiki/Holevo's_theorem)
+- [Quantum Information Theory (Preskill Lecture Notes)](https://www.preskill.caltech.edu/ph229/notes/chap5.pdf)
+- [Nobel Prize Physics 2025 Background](https://www.nobelprize.org/uploads/2025/10/advanced-physicsprize2025.pdf)
+
+---
+
+## Chrome Cycle 9: Thermodynamic Foundations of Intelligence (2026-03-20)
+
+### Purpose
+
+This research establishes the FUNDAMENTAL physical laws that constrain any intelligent system -- biological or artificial. These are not analogies or metaphors. They are theorems with proofs. Any architecture we build for Sutra must obey these laws, and the best architecture will be the one that approaches the theoretical limits they establish.
+
+The seven pillars below form a unified picture: **intelligence is constrained computation under thermodynamic limits, and optimal intelligence is optimal compression of environmental structure into minimal free energy representations.**
+
+---
+
+### PILLAR 1: Maxwell's Demon and Landauer's Principle -- Information Is Physical
+
+#### The Principle
+
+Maxwell (1867) proposed a thought experiment: a tiny demon controlling a door between two gas chambers could sort fast molecules from slow ones, creating a temperature difference without doing work -- apparently violating the second law of thermodynamics.
+
+The resolution took over a century: Szilard (1929) showed that the demon must MEASURE which side contains the molecule, and this measurement has thermodynamic consequences. But Bennett (1982) identified the precise step: it is not the measurement that costs energy, but the ERASURE of the demon's memory after each cycle.
+
+**Landauer's Principle (1961):** Erasing one bit of information dissipates at minimum kT*ln(2) joules of heat into the environment, where k is Boltzmann's constant and T is absolute temperature. At room temperature (300K), this is approximately 2.9 x 10^-21 joules per bit.
+
+This was experimentally verified in 2012 by Berut et al. (Nature) using a colloidal particle in a double-well potential.
+
+#### The Deep Structure
+
+The implication is radical: **information is not abstract. Information is physical.** Every bit stored in a physical system has a thermodynamic cost to erase. Every logically irreversible computation (any operation that maps multiple inputs to the same output, like AND, OR, NAND) necessarily dissipates energy.
+
+Bennett showed that logically REVERSIBLE computation (where every output maps back to a unique input) can in principle be done with zero dissipation. The Toffoli gate is universal for reversible computation -- any Boolean function can be implemented reversibly by preserving input bits alongside outputs.
+
+**The hierarchy of computational costs:**
+- Reversible computation: theoretically zero dissipation
+- Irreversible computation: minimum kT*ln(2) per erased bit
+- Real computers today: ~10^6 to 10^9 times the Landauer limit
+- Human brain synapses: ~16x the Landauer limit per synaptic operation (remarkably close)
+
+#### What This Means for Sutra
+
+1. **Every parameter update that overwrites old information has a minimum energy cost.** Training is fundamentally a process of information erasure (old weights erased, new weights written). The most efficient training minimizes unnecessary erasure.
+
+2. **Compression reduces erasure.** A model that achieves the same prediction quality with fewer bits of internal state requires less total information processing, and therefore less energy. Compression = intelligence = thermodynamic efficiency. This is not a metaphor -- it is a physical law.
+
+3. **Reversible architectures are theoretically more efficient.** If Sutra's message passing rounds are designed to be approximately reversible (information-preserving), they approach the thermodynamic minimum. Residual connections already provide partial reversibility. Invertible architectures (RevNets, i-ResNets) make this explicit.
+
+4. **The brain's near-Landauer efficiency at the synapse level** suggests biology has found architectures that approach thermodynamic optimality. Sutra should study what makes biological computation so efficient: sparse activation (only ~1-10% of neurons fire at any time), event-driven processing (compute only when signals arrive), and local computation (most processing is within-column, not cross-brain).
+
+#### Key References
+- [Landauer (1961): "Irreversibility and Heat Generation in the Computing Process" (IBM J. Res. Dev.)](https://en.wikipedia.org/wiki/Landauer's_principle)
+- [Bennett (1982): "The thermodynamics of computation -- a review" (Int. J. Theor. Phys.)](https://link.springer.com/article/10.1007/BF02084158)
+- [Bennett (2003): "Notes on Landauer's principle, reversible computation, and Maxwell's Demon"](https://www.cs.princeton.edu/courses/archive/fall06/cos576/papers/bennett03.pdf)
+- [Berut et al. (2012): Experimental verification (Nature 483, 187-189)](https://www.physics.rutgers.edu/~morozov/677_f2017/Physics_677_2017_files/Berut_Lutz_Nature2012.pdf)
+- [Stanford Encyclopedia: "Information Processing and Thermodynamic Entropy"](https://plato.stanford.edu/entries/information-entropy/)
+
+---
+
+### PILLAR 2: Free Energy Principle -- Intelligence as Surprise Minimization
+
+#### The Principle
+
+Karl Friston's Free Energy Principle (FEP) proposes that all self-organizing systems -- from cells to brains to organisms -- minimize a quantity called variational free energy, which is an upper bound on surprise (negative log-evidence).
+
+**The core equation:**
+
+F = D_KL[q(theta) || p(theta|y)] - E_q[ln p(y|theta)]
+
+Where:
+- F = variational free energy
+- q(theta) = recognition density (the system's internal model of hidden causes)
+- p(theta|y) = true posterior (what the hidden causes actually are given observations)
+- D_KL = Kullback-Leibler divergence (how wrong the internal model is)
+- E_q[ln p(y|theta)] = expected accuracy (how well the model predicts observations)
+
+**Free energy decomposes as: F = Complexity - Accuracy**
+
+Where Complexity = D_KL[q(theta) || p(theta)] (how far beliefs deviate from priors) and Accuracy = E_q[ln p(y|theta)] (how well beliefs predict data). Minimizing free energy BALANCES fitting data against maintaining simple beliefs.
+
+Because the KL divergence is always >= 0, free energy is always >= surprise: **F >= -ln p(y)**. So minimizing F implicitly minimizes surprise.
+
+#### Active Inference: Two Ways to Minimize Surprise
+
+The FEP unifies perception and action under a single objective:
+
+1. **Perception** minimizes free energy by updating the internal model q(theta) to better match observations. This IS Bayesian inference -- the brain is an inference engine.
+
+2. **Action** minimizes free energy by changing the world to match predictions. Instead of updating beliefs to fit reality, the organism changes reality to fit beliefs. This is active inference -- seeking out observations that confirm the generative model.
+
+This is profoundly different from passive learning: an FEP-optimal agent doesn't just model the world, it actively SHAPES the world to be more predictable. Exploration is driven by expected free energy -- seeking observations that would maximally reduce uncertainty.
+
+#### Connection to Thermodynamic Free Energy
+
+The name is not a coincidence. Friston's variational free energy has the same mathematical form as Helmholtz free energy in thermodynamics: F = U - TS (internal energy minus temperature times entropy). In the FEP:
+- "Internal energy" = expected surprise under the model
+- "Entropy" = entropy of the recognition density
+- Minimizing F balances low energy (accurate predictions) against high entropy (flexible beliefs)
+
+This means the brain literally operates as a thermodynamic engine: it does WORK (active inference, behavior) by converting free energy gradients into purposeful action.
+
+#### Predictive Coding: The Implementation
+
+The brain implements the FEP through predictive coding:
+- Higher cortical layers generate TOP-DOWN predictions of what lower layers should observe
+- Lower layers compute PREDICTION ERRORS (actual - predicted)
+- Only the errors propagate upward
+- Learning adjusts the generative model to minimize prediction errors over time
+
+This is enormously efficient: instead of transmitting raw sensory data up the hierarchy, only the SURPRISING (unpredicted) part is transmitted. Expected signals are suppressed. This is COMPRESSION: the brain transmits only the residual after prediction.
+
+#### What This Means for Sutra
+
+1. **Sutra's message passing IS predictive coding.** Each round of message passing can be interpreted as: (a) generate predictions of neighboring patches, (b) compute prediction errors, (c) update patch representations to minimize errors. The boosting interpretation (round N+1 fixes round N's errors) is EXACTLY predictive coding.
+
+2. **Active inference maps to adaptive depth.** PonderNet halting = the system deciding it has minimized surprise sufficiently. More rounds = more "active inference" for difficult inputs. This is not just a computational trick -- it has a principled interpretation as variational inference.
+
+3. **The complexity-accuracy tradeoff IS the MDL principle.** Free energy = complexity - accuracy. Minimizing free energy with a complexity penalty IS minimum description length learning. Sutra's compression thesis is EXACTLY the free energy principle applied to language.
+
+4. **Cross-scale predictive coding is the natural architecture.** If Sutra has multiple scales (patches, chunks, paragraphs), the FEP says: coarse scale predicts fine scale, fine scale sends errors to coarse scale. This is the architecture we proposed in v0.1 and deferred. The FEP gives it a principled foundation.
+
+5. **Generation should be active inference, not passive sampling.** Instead of left-to-right autoregressive generation, an FEP-optimal generator would iteratively minimize free energy over the entire output -- closer to diffusion or energy-based generation. This connects back to Probe D (energy-based vs AR).
+
+#### Key References
+- [Friston (2010): "The free-energy principle: a unified brain theory?" (Nature Reviews Neuroscience)](https://www.nature.com/articles/nrn2787)
+- [Friston (2009): "The free-energy principle: a rough guide to the brain"](https://www.fil.ion.ucl.ac.uk/~karl/The%20free-energy%20principle%20-%20a%20rough%20guide%20to%20the%20brain.pdf)
+- [Experimental validation: Nature Communications 14, 4503 (2023)](https://www.nature.com/articles/s41467-023-40141-z)
+- [Free Energy Principle (Wikipedia)](https://en.wikipedia.org/wiki/Free_energy_principle)
+- [Active Inference and Learning (PMC)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5167251/)
+
+---
+
+### PILLAR 3: Maximum Entropy and Learning -- The Least Biased Inference
+
+#### The Principle
+
+E.T. Jaynes (1957) proved a profound unification: **statistical mechanics IS statistical inference.** The Boltzmann distribution is not a physical law discovered empirically -- it is the UNIQUE probability distribution that maximizes entropy subject to a constraint on average energy.
+
+**Maximum Entropy Principle:** Given partial knowledge about a system (expressed as constraints on expected values), the least biased probability distribution consistent with that knowledge is the one that maximizes Shannon entropy H = -sum(p_i * ln(p_i)) subject to those constraints.
+
+**The result is always an exponential family:**
+
+p(x) = (1/Z) * exp(-sum_k lambda_k * f_k(x))
+
+Where f_k(x) are the constraint functions, lambda_k are Lagrange multipliers (determined by the constraints), and Z is the normalizing partition function.
+
+**Specific cases:**
+- Constraint on mean energy -> Boltzmann distribution: p(E) ~ exp(-E/kT)
+- Constraint on mean and variance -> Gaussian distribution
+- Constraint on mean of positive quantity -> Exponential distribution
+- No constraints -> Uniform distribution
+
+#### The Deep Unification
+
+Jaynes's insight: the entropy of statistical mechanics (Boltzmann's S = k*ln(W)) and Shannon's information entropy (H = -sum p*ln(p)) are the SAME quantity. Statistical mechanics is not about physical systems specifically -- it is about inference under incomplete information. The Boltzmann distribution is optimal because it makes the fewest assumptions beyond what is known.
+
+This means:
+1. The partition function Z is the normalization constant of Bayesian inference
+2. Temperature T is the Lagrange multiplier for the energy constraint (how tightly we enforce it)
+3. Phase transitions occur when the optimal distribution changes discontinuously as constraints vary
+4. Free energy F = -kT*ln(Z) is the log-evidence (marginal likelihood) of the model
+
+#### Connection to Machine Learning
+
+- **Logistic regression** is the maximum entropy classifier for independent observations
+- **Boltzmann machines** directly parameterize the MaxEnt distribution as an energy function
+- **Softmax** is the MaxEnt distribution over discrete outcomes given linear constraints
+- **Regularization** adds constraints: L2 regularization adds a constraint on parameter magnitude, producing a Gaussian prior (MaxEnt with fixed variance)
+- **The cross-entropy loss** measures the KL divergence from the data distribution to the model distribution -- minimizing it is equivalent to finding the MaxEnt model that matches empirical statistics
+
+#### What This Means for Sutra
+
+1. **Every design choice implies constraints, and the optimal distribution given those constraints is MaxEnt.** When we choose an architecture, we are implicitly choosing which statistics of language to match. The MaxEnt principle says: match THOSE statistics and be maximally uncertain about everything else. This is precisely the MDL / compression principle -- encode what you know, be maximally random about what you don't.
+
+2. **Temperature as computational resource.** In statistical mechanics, temperature controls how tightly the system follows the energy landscape. High T = exploration (uniform distribution). Low T = exploitation (concentrated on energy minima). Sutra's adaptive depth is like adaptive temperature -- more rounds = lower effective temperature = more precise inference. This could be made explicit: early message passing rounds at high temperature (broad exploration), later rounds at low temperature (precise refinement).
+
+3. **Phase transitions in learning.** Grokking is a phase transition: the model suddenly shifts from a high-entropy (memorization) to a low-entropy (compression) state. MaxEnt predicts phase transitions occur at critical values of the constraints. For Sutra, this means: the right amount of regularization (MDL pressure) should trigger a compression phase transition at a predictable training step.
+
+4. **Softmax attention IS MaxEnt routing.** The softmax attention distribution is the MaxEnt distribution given the constraint that expected key-query similarity equals the observed dot products. This is not just a convenient activation function -- it is the UNIQUELY optimal routing distribution given the available information. Any replacement for attention must either be MaxEnt under different constraints, or be suboptimal.
+
+#### Key References
+- [Jaynes (1957): "Information Theory and Statistical Mechanics" (Physical Review 106, 620)](https://link.aps.org/doi/10.1103/PhysRev.106.620)
+- [Jaynes and the Principle of Maximum Entropy (SFI Press)](https://www.sfipress.org/14-jaynes-1957)
+- [Principle of Maximum Entropy (Wikipedia)](https://en.wikipedia.org/wiki/Principle_of_maximum_entropy)
+- [MaxEnt Methods (Cosma Shalizi)](http://bactra.org/notebooks/max-ent.html)
+- [Berger et al. (1996): "A Maximum Entropy Approach to Natural Language Processing"](https://aclanthology.org/J96-1002/)
+
+---
+
+### PILLAR 4: Thermodynamic Computing -- The Physical Limits of Intelligence
+
+#### The Principle
+
+Every computation has a minimum energy cost dictated by physics. Current computers operate 10^6 to 10^9 times above the Landauer limit. The question is: how close can we get, and how close does biology get?
+
+**The hierarchy of energy costs per operation:**
+- Landauer limit: kT*ln(2) = 2.9 x 10^-21 J per irreversible bit operation (at 300K)
+- Ribosome (biological decoding): ~10x Landauer limit
+- Brain synapse: ~16x Landauer limit (10^-14 to 10^-15 J per synaptic event)
+- Neuromorphic chips (Loihi 2): ~10^4 x Landauer limit
+- Modern GPUs: ~10^6 x Landauer limit (~1 nJ per operation)
+- Modern CPUs: ~10^9 x Landauer limit (~25 nJ per operation)
+
+**The brain's extraordinary efficiency:** 20 watts powering ~10^14-10^16 synaptic operations per second. That is 10^-15 to 10^-13 joules per operation. The brain is within 1-2 orders of magnitude of the thermodynamic limit for IRREVERSIBLE computation.
+
+**Critical finding (PNAS 2021):** Communication consumes 35 TIMES more energy than computation in the human cortex. The dominant energy cost is not processing information but TRANSMITTING it between neurons. This is directly relevant to architecture: global communication (attention) is energetically expensive; local processing is cheap.
+
+**Finite-time computation costs more.** The Landauer limit is only achievable in the infinite-time (quasistatic) limit. Real computation in finite time necessarily produces additional entropy. Research (Nature Communications, 2023) shows that parallel computation can keep per-operation costs near Landauer even for large problems, while serial computation costs fundamentally diverge. This favors parallel architectures.
+
+#### Near-Equilibrium vs Far-From-Equilibrium Computing
+
+Biological systems operate near thermodynamic equilibrium where possible:
+- DNA transcription is nearly reversible in practice (chemical reactions can run backward)
+- Protein folding explores the energy landscape through thermal fluctuations
+- Neural computation uses thermal noise constructively (stochastic resonance)
+
+Artificial computers operate FAR from equilibrium:
+- Transistors switch between rail voltages (0V and 1.2V) with massive overdrive
+- Almost all energy is wasted as heat, not performing useful computation
+- The "computing" happens in a tiny fraction of the energy budget
+
+**Stochastic thermodynamic computing** (Santa Fe Institute, 2024): The emerging paradigm of computing WITH noise rather than despite it. If computation is done near thermal equilibrium, noise becomes a computational resource (sampling from Boltzmann distributions) rather than an error source.
+
+#### What This Means for Sutra
+
+1. **Communication cost dominates.** The brain's 35:1 communication-to-computation ratio validates Sutra's local-first architecture. Global attention is energetically expensive not because of FLOPs but because of COMMUNICATION. Message passing between neighbors is cheap. Sparse retrieval (k=4-16) is moderately expensive. Full attention is maximally expensive. Our architecture is biologically correct in its energy allocation.
+
+2. **Parallel > serial for energy efficiency.** The finite-time thermodynamics result says parallel architectures are fundamentally more energy-efficient than serial ones. Sutra's patch-parallel processing (all patches process simultaneously, then communicate) is energetically optimal compared to sequential processing (left-to-right autoregressive).
+
+3. **Near-equilibrium computing = noise-tolerant architectures.** If Sutra is designed to operate near the noise floor (low precision, stochastic operations), it can harness thermal noise for sampling and exploration. This connects to quantization-native design: INT4/INT8 is not just a compression trick, it is moving computation closer to the thermodynamic limit by reducing the overdrive between states.
+
+4. **The 10^6 gap is the opportunity.** Current GPUs waste 10^6 times the minimum energy. If we could design architectures that are 100x more energy-efficient (still 10^4 from Landauer), that alone would be revolutionary. The path: sparse activation (only process what matters), local computation (minimize communication), low precision (reduce overdrive), event-driven (compute only on change).
+
+#### Key References
+- [PNAS (2021): "Communication consumes 35 times more energy than computation in the human cortex"](https://www.pnas.org/doi/10.1073/pnas.2008173118)
+- [Nature Communications (2023): "Fundamental energy cost of finite-time parallelizable computing"](https://www.nature.com/articles/s41467-023-36020-2)
+- [PNAS (2024): "Is stochastic thermodynamics the key to understanding the energy costs of computation?"](https://www.pnas.org/doi/10.1073/pnas.2321112121)
+- [Arxiv (1602.04019): "Energetics of the Brain and AI"](https://arxiv.org/pdf/1602.04019)
+- [Reversible Computing (Wikipedia)](https://en.wikipedia.org/wiki/Reversible_computing)
+
+---
+
+### PILLAR 5: Fluctuation Theorems -- Irreversibility, Work, and Information
+
+#### The Principle
+
+The second law of thermodynamics says entropy increases on average. But at microscopic scales, entropy-DECREASING fluctuations are not just possible -- they are quantified exactly by the fluctuation theorems.
+
+**Jarzynski Equality (1997):**
+
+<exp(-beta * W)> = exp(-beta * Delta_F)
+
+Where W is the work done on a system during a nonequilibrium process, Delta_F is the equilibrium free energy difference between initial and final states, beta = 1/(kT), and the average is over all possible trajectories.
+
+This is remarkable: it relates an EQUILIBRIUM quantity (free energy difference) to NONEQUILIBRIUM measurements (work done along arbitrary protocols). You can extract equilibrium thermodynamic information from far-from-equilibrium experiments.
+
+**Crooks Fluctuation Theorem (1999):**
+
+P_F(W) / P_R(-W) = exp(beta * (W - Delta_F))
+
+Where P_F(W) is the probability of observing work W in the forward process, P_R(-W) is the probability of observing work -W in the reverse process. The crossing point of the forward and reverse work distributions directly yields Delta_F.
+
+Physical meaning: The probability of observing an entropy-DECREASING event (W < Delta_F) is exponentially suppressed relative to the corresponding entropy-increasing event. The second law holds on average, but individual trajectories CAN violate it -- with precisely quantified probability.
+
+**The Sagawa-Ueda Extension (2010-2012):**
+
+The generalized second law with information:
+
+<W_dissipated> >= -kT * I_correlation
+
+Where I_correlation is the mutual information between the system and a measurement device. This means: **information about a system can be converted to work.** Maxwell's demon DOES extract work, but only up to the amount of mutual information it has with the system, and it must eventually pay the Landauer cost to erase that information.
+
+#### Deep Connection to Learning
+
+Training a neural network is a nonequilibrium process: we drive the parameters from an initial random state to a trained state, doing "work" (gradient updates) along the way.
+
+**Jarzynski applied to training:**
+- The "work" is the total gradient update magnitude across training
+- The "free energy difference" is the difference between the loss at initialization and the optimal loss
+- Jarzynski says: the average of exp(-work) equals exp(-optimal_loss_improvement)
+- This means: MOST training trajectories do more work than necessary (dissipate entropy), but rare trajectories find efficient paths
+
+**Applications already in ML:**
+- Sohl-Dickstein et al. (2015): "Deep Unsupervised Learning Using Nonequilibrium Thermodynamics" -- THIS is the paper that invented diffusion models. Diffusion models are LITERALLY an application of nonequilibrium thermodynamics to generative modeling. The forward process (adding noise) is the "forward protocol." The reverse process (denoising) is the "reverse protocol." The loss function is the entropy production.
+- Carbone & Auconi (2023, NeurIPS): Used Jarzynski equality to efficiently train energy-based models, avoiding the uncontrolled approximations of contrastive divergence.
+
+**Entropy production in training:**
+Research (2024) formalizes machine learning as a thermodynamic process where accumulated learned information is associated with entropy production. Training more slowly (smaller learning rates, longer schedules) produces less entropy, resulting in more efficient learning. This is the thermodynamic explanation for why learning rate warmup and cosine decay work: they reduce the entropy production of the training process.
+
+#### What This Means for Sutra
+
+1. **Diffusion models are thermodynamically principled.** If Sutra ever moves to energy-based generation (Probe D), the fluctuation theorems provide the theoretical foundation. The forward noising process defines the "equilibrium" to return to. The reverse denoising process is thermodynamically optimal when it follows the time-reversed protocol.
+
+2. **Training schedules have thermodynamic optima.** The Jarzynski equality implies there is an optimal "protocol" (learning rate schedule) that minimizes dissipated work during training. Fast training = more entropy production = less efficient. The optimal schedule drives parameters quasi-statically (slowly) through the loss landscape, minimizing unnecessary exploration. WSD (warmup-stable-decay) and cosine schedules approximate this.
+
+3. **The irreversibility of forgetting.** When Sutra's message passing rounds overwrite intermediate representations, the information in those intermediates is erased. The Crooks theorem quantifies the cost of this irreversibility. An architecture that preserves intermediate representations (like DenseNet or residual connections) is less thermodynamically dissipative.
+
+4. **Information-work conversion in active inference.** The Sagawa-Ueda result says information about the environment can be converted to useful work. For Sutra: the mutual information between the model's internal state and the environment (text) determines how much "useful computation" the model can extract from its observations. Maximizing this mutual information IS maximizing computational usefulness.
+
+#### Key References
+- [Jarzynski (1997): "Nonequilibrium Equality for Free Energy Differences" (Phys. Rev. Lett. 78, 2690)](https://en.wikipedia.org/wiki/Jarzynski_equality)
+- [Crooks (1999): "Entropy production fluctuation theorem and the nonequilibrium work relation"](https://threeplusone.com/pubs/Crooks1999a.pdf)
+- [Sagawa & Ueda (2012): "Fluctuation Theorem with Information Exchange" (Phys. Rev. Lett. 109, 180602)](https://link.aps.org/doi/10.1103/PhysRevLett.109.180602)
+- [Sohl-Dickstein et al. (2015): "Deep Unsupervised Learning Using Nonequilibrium Thermodynamics" (ICML)](https://proceedings.mlr.press/v37/sohl-dickstein15.pdf)
+- [Carbone & Auconi (2023): "Efficient Training of Energy-Based Models Using Jarzynski Equality" (NeurIPS)](https://arxiv.org/abs/2305.19414)
+- [Crooks Fluctuation Theorem (Emergent Mind)](https://www.emergentmind.com/topics/crooks-fluctuation-theorem)
+
+---
+
+### PILLAR 6: Information Geometry -- Learning Lives on Curved Manifolds
+
+#### The Principle
+
+The space of probability distributions is not flat. It is a Riemannian manifold with curvature defined by the Fisher Information Matrix (FIM):
+
+F_ij(theta) = E[d(ln p(x|theta))/d(theta_i) * d(ln p(x|theta))/d(theta_j)]
+
+The Fisher metric measures how much a distribution changes when parameters change. It defines the NATURAL distance between probability distributions -- the infinitesimal form of KL divergence:
+
+D_KL(p_theta || p_{theta+d_theta}) = (1/2) * d_theta^T * F * d_theta + O(d_theta^3)
+
+**Chentsov's Theorem (1972):** The Fisher metric is the UNIQUE Riemannian metric on statistical manifolds (up to rescaling) that is invariant under sufficient statistics. This means: if you want a distance measure between distributions that doesn't depend on how you parameterize them, the Fisher metric is the ONLY choice.
+
+#### Natural Gradient Descent
+
+Standard gradient descent follows the steepest direction in PARAMETER space (Euclidean). But parameter space is not the right space -- the same distribution can be reached by many different parameterizations. What matters is the steepest direction in DISTRIBUTION space.
+
+**Amari (1998): Natural gradient = F^(-1) * gradient**
+
+The natural gradient preconditions the standard gradient with the inverse Fisher information. This:
+1. Is INVARIANT to reparameterization (changing how you represent the same distribution doesn't change the update direction)
+2. Follows the steepest descent in KL-divergence space (the natural metric for distributions)
+3. Is asymptotically efficient -- achieves the Cramer-Rao lower bound (minimum variance among all unbiased estimators)
+4. Avoids plateaus that trap standard gradient descent (the Fisher metric accounts for the curvature of the loss landscape in distribution space)
+
+#### The Cramer-Rao Bound
+
+The Fisher information also sets fundamental limits on estimation:
+
+Var(theta_hat) >= F^(-1)(theta)
+
+Any unbiased estimator of theta has variance at least as large as the inverse Fisher information. This is the statistical counterpart of the Heisenberg uncertainty principle: there is a fundamental limit to how precisely you can estimate parameters from finite data, and that limit is determined by the geometry of the statistical manifold.
+
+#### Applications to Deep Learning
+
+- **K-FAC (Kronecker-Factored Approximate Curvature):** Approximates the Fisher matrix for efficient natural gradient in deep networks
+- **Adam:** Implicitly approximates diagonal Fisher information through second moment tracking
+- **Elastic Weight Consolidation (EWC):** Uses Fisher information to identify important parameters for continual learning (high Fisher = important, don't change)
+- **Neural network pruning:** Parameters with low Fisher information contribute little to the distribution and can be removed
+- **Model merging:** Fisher-weighted averaging of model parameters respects the geometry of the loss landscape
+
+#### What This Means for Sutra
+
+1. **The loss landscape is curved, and the curvature matters.** Standard SGD treats parameter space as flat, which is wrong. Sutra should use Fisher-aware optimization if computationally feasible, or at minimum use optimizers that approximate curvature (Adam, LAMB). For message passing specifically, the curvature of the message-passing operator's parameter space is unknown -- this is a research question.
+
+2. **Fisher information identifies which parameters matter.** For Sutra's weight-tying and parameter efficiency goals, Fisher information quantifies which parameters carry the most information about the data distribution. Parameters with high Fisher information are critical; those with low Fisher can be shared, pruned, or quantized aggressively. This could guide where to allocate parameters in the GRU vs message passing vs retrieval components.
+
+3. **Natural gradient for message passing convergence.** Each round of message passing updates patch representations. If these updates follow the natural gradient (accounting for the information geometry of the representation space), convergence should be faster and more stable. This is related to the observation that biological neural circuits appear to implement something like natural gradient through local Hebbian rules.
+
+4. **The Cramer-Rao bound limits how much can be learned from finite data.** For Sutra at 1.7B tokens, the Fisher information bounds how precisely we can estimate each parameter. With 49M parameters and 1.7B tokens (~35 tokens per parameter), we are in a regime where the bound is tight. This is why overtraining works: more data = tighter bound = more precise estimation per parameter.
+
+5. **Information geometry connects to the FEP.** Free energy minimization IS natural gradient descent in the space of recognition densities. The geometry of the posterior distribution determines the optimal learning dynamics. This unifies Pillars 2 and 6.
+
+#### Key References
+- [Amari (1998): "Natural Gradient Works Efficiently in Learning" (Neural Computation 10, 251-276)](http://proceedings.mlr.press/v89/amari19a/amari19a.pdf)
+- [Fisher Information Metric (Wikipedia)](https://en.wikipedia.org/wiki/Fisher_information_metric)
+- [Information Geometry (Wikipedia)](https://en.wikipedia.org/wiki/Information_geometry)
+- [Martens (2020): "New Insights and Perspectives on the Natural Gradient Method" (JMLR 21)](https://jmlr.org/papers/volume21/17-678/17-678.pdf)
+- [Nielsen (2018): "An elementary introduction to information geometry"](https://arxiv.org/pdf/1808.08271)
+
+---
+
+### PILLAR 7: Renormalization Group -- Multi-Scale Compression of Reality
+
+#### The Principle
+
+The Renormalization Group (RG), developed by Kadanoff (1966) and Wilson (1971), is a mathematical framework for understanding how physical systems behave across different length scales. It works by iteratively COARSE-GRAINING: replacing detailed microscopic variables with fewer, averaged macroscopic variables.
+
+**The key operation:** Given microscopic variables X = {x_1, ..., x_N}, define coarse-grained variables X' = {x'_1, ..., x'_M} where M < N. The RG transformation defines how to map X -> X' while preserving the essential physics.
+
+**What "essential" means: relevant vs irrelevant operators.**
+
+At a critical point (phase transition), the RG flow identifies:
+- **Relevant operators**: Features that GROW under coarse-graining. These determine the large-scale behavior. There are only a few of them (typically 2-3 for any physical system).
+- **Irrelevant operators**: Features that SHRINK under coarse-graining. These are microscopic details that don't affect macroscopic behavior. There are infinitely many.
+- **Marginal operators**: Features that neither grow nor shrink. Rare but important.
+
+**The profound insight:** The same macroscopic behavior (same universality class) can arise from wildly different microscopic details. Water boiling, magnets demagnetizing, and financial markets crashing all share the SAME critical exponents because they have the same relevant operators. The irrelevant operators -- which differentiate water molecules from magnetic spins -- don't matter at the macro scale.
+
+#### RG as Optimal Compression
+
+Koch-Janusz & Ringel (2018, Nature Physics) proved the information-theoretic interpretation: **the optimal RG transformation is the one that maximizes the Real-Space Mutual Information (RSMI) between the coarse-grained variables and their environment.**
+
+**RSMI = I(X'_V; X_E)** where V is the visible (coarse-grained) block and E is the environment (everything outside).
+
+Maximizing RSMI means: keep the coarse-grained variables that tell you the MOST about distant regions of the system. Discard variables that only carry local, redundant information.
+
+**Key result:** A perfect RSMI coarse-graining does NOT increase the range of interactions in the renormalized Hamiltonian. The coarse-grained system is no more complex than the original -- it is genuinely SIMPLER.
+
+This directly connects RG to the information bottleneck (Tishby 1999): both seek compressed representations that preserve relevant information about a target. The RG target is long-range correlations; the IB target is the label.
+
+#### Deep Learning as RG
+
+Mehta & Schwab (2014) established an exact mapping between the variational RG and deep learning with Restricted Boltzmann Machines. Each layer of a deep network performs a coarse-graining of the input, extracting progressively more abstract (relevant) features while discarding irrelevant details.
+
+The analogy is precise:
+- Network layers = RG steps
+- Features at each layer = coarse-grained variables
+- Training = finding the optimal RG transformation
+- Relevant features = task-relevant information that survives compression
+- Irrelevant features = noise that is discarded by deeper layers
+
+**The information bottleneck in deep learning (Tishby, 2015-2017):**
+Training proceeds in two phases:
+1. **Fitting phase** (short): The network increases mutual information with both input and output -- memorizing training data.
+2. **Compression phase** (long): The network DECREASES mutual information with input while maintaining mutual information with output -- compressing representations to retain only relevant features.
+
+The compression phase IS the RG transformation: the network learns to discard irrelevant (noisy, input-specific) information while preserving relevant (label-predictive, generalizable) information.
+
+**Caveat:** Saxe et al. (2018) showed the compression phase depends on the activation function (it occurs with tanh but not with ReLU in some settings). The principle is correct but the dynamics are architecture-dependent.
+
+#### What This Means for Sutra
+
+1. **Sutra's multi-scale architecture IS an RG transformation.** Bytes -> patches -> chunk summaries -> global representations. Each level coarse-grains the previous one. The theoretical optimum (RSMI) says: at each level, preserve the features that predict DISTANT context, discard features that only predict local context. This is exactly what training with next-token prediction encourages.
+
+2. **Relevant operators = the features Sutra should learn.** For language, the "relevant operators" are: syntactic structure, semantic relationships, discourse coherence, logical dependencies. The "irrelevant operators" are: specific word choices, surface spelling, formatting details. An RG-optimal architecture would have representations at higher scales that capture ONLY the relevant operators.
+
+3. **The number of relevant operators is SMALL.** In physics, universality means only 2-3 parameters characterize the macro-scale behavior of any system in a universality class. If language has similar universality, the number of "relevant features" at the highest scale may be surprisingly small -- perhaps a few hundred dimensions capture all the high-level structure. This supports aggressive dimensionality reduction at coarse scales.
+
+4. **The connection to Sutra's scaling theorem.** Our theorem predicts that hierarchical architectures have steeper scaling exponents because they separately handle local and global MI regimes. The RG framework explains WHY: local MI corresponds to irrelevant operators (fast-decaying, cheap to process), global MI corresponds to relevant operators (slow-decaying, expensive but few). The hierarchical architecture naturally separates these, like the RG separates relevant from irrelevant.
+
+5. **RSMI gives a PRINCIPLED coarse-graining criterion.** Instead of fixed-size patches (our current approach), the optimal patch boundaries should be where the RSMI is maximized -- keeping the variables that most predict their environment. This connects back to the adaptive segmentation idea, now with a rigorous information-theoretic criterion. The adaptive segmenter should maximize RSMI, not minimize some ad-hoc loss.
+
+6. **Universality class of language models.** If different languages / domains belong to the same universality class (same relevant operators at large scale), then a model trained on one should transfer to another with minimal fine-tuning. This is observed empirically (multilingual models, domain transfer). The RG framework predicts it: the irrelevant operators (language-specific syntax, vocabulary) differ, but the relevant operators (logical structure, semantic relationships) are universal.
+
+#### Key References
+- [Koch-Janusz & Ringel (2018): "Mutual Information, Neural Networks and the Renormalization Group" (Nature Physics 14, 578)](https://www.nature.com/articles/s41567-018-0081-4)
+- [Gordon et al. (2020): "Optimal Renormalization Group Transformation from Information Theory" (Physical Review X 10, 011037)](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.10.011037)
+- [Mehta & Schwab (2014): "An exact mapping between the Variational Renormalization Group and Deep Learning"](https://arxiv.org/abs/1410.3831)
+- [Tishby & Zaslavsky (2015): "Deep Learning and the Information Bottleneck Principle"](https://arxiv.org/abs/1503.02406)
+- [Shwartz-Ziv & Tishby (2017): "Opening the Black Box of Deep Neural Networks via Information"](https://arxiv.org/abs/1703.00810)
+- [Deep learning and the renormalization group (Blog post)](https://rojefferson.blog/2019/08/04/deep-learning-and-the-renormalization-group/)
+
+---
+
+### THE UNIFIED PICTURE: Seven Laws of Intelligent Computation
+
+These seven pillars are not independent -- they form a single coherent framework:
+
+```
+LANDAUER (Pillar 1): Information erasure has minimum cost kT*ln(2)
+    |
+    v
+FREE ENERGY PRINCIPLE (Pillar 2): Minimize surprise = minimize erasure of wrong predictions
+    |
+    v
+MAXIMUM ENTROPY (Pillar 3): Given what you know, assume nothing more = optimal compression
+    |
+    v
+THERMODYNAMIC COMPUTING (Pillar 4): Biology approaches these limits; current AI is 10^6x away
+    |
+    v
+FLUCTUATION THEOREMS (Pillar 5): The path from initial to trained state has minimum-work optima
+    |
+    v
+INFORMATION GEOMETRY (Pillar 6): Learning follows curved paths; natural gradient is optimal
+    |
+    v
+RENORMALIZATION GROUP (Pillar 7): Multi-scale compression preserves relevant, discards irrelevant
+```
+
+**The unified law: An intelligent system is a multi-scale compression engine that minimizes free energy (surprise) by building hierarchical models, operating near thermodynamic optimality through natural gradient dynamics, with the coarse-graining at each scale preserving only the relevant operators for predicting the environment.**
+
+**Sutra's architecture in this framework:**
+- Patches + GRU = first RG step (bytes -> patch representations, preserving local relevant operators)
+- Message passing = second RG step (patch -> neighborhood context, preserving medium-range relevant operators)
+- Sparse retrieval = long-range coupling (content-addressable access to distant relevant operators)
+- Adaptive depth = active inference (more computation where surprise is high)
+- MDL training objective = free energy minimization (compression + accuracy)
+- Weight tying = exploiting universality (same relevant operators at input and output)
+
+**What's missing in Sutra (guided by this framework):**
+1. **Natural gradient optimization** -- we use Adam, which approximates diagonal Fisher. Could we do better?
+2. **Reversible computation** -- message passing rounds overwrite intermediate states. Reversible message passing would be more thermodynamically efficient.
+3. **Principled coarse-graining** -- our patches are fixed-size. RSMI-optimal patches would adapt to content.
+4. **Explicit relevant operator extraction** -- we should measure which features survive coarse-graining and verify they match the "relevant operators" of language.
+5. **Thermodynamic training schedule** -- learning rate schedule optimized to minimize entropy production (dissipated work), not just loss.
+6. **Cross-scale predictive coding** -- the FEP says coarse predicts fine, fine sends errors to coarse. We deferred this; it should return.
+
+### Design Implications Summary
+
+| Thermodynamic Principle | Sutra Implication | Status |
+|------------------------|-------------------|--------|
+| Landauer: erasure costs kT*ln(2) | Minimize information erasure in processing | PARTIAL (residual connections) |
+| FEP: minimize surprise | Training objective = free energy minimization | PLANNED (MDL in Probe A) |
+| FEP: active inference | Adaptive depth allocates compute to surprise | IMPLEMENTED (PonderNet) |
+| FEP: predictive coding | Cross-scale prediction + error signals | DEFERRED (v0.5+) |
+| MaxEnt: least biased inference | Softmax routing, regularization as constraints | IMPLICIT |
+| MaxEnt: phase transitions | MDL pressure triggers compression transition | TESTABLE |
+| Thermo computing: communication dominates | Local-first architecture, sparse long-range | IMPLEMENTED |
+| Thermo computing: parallel > serial | Patch-parallel processing | IMPLEMENTED |
+| Thermo computing: near-equilibrium | Quantization-native, noise-tolerant | DESIGNED FOR |
+| Fluctuation: minimum-work training | Optimized learning rate schedule | STANDARD (cosine) |
+| Fluctuation: reversibility | Reversible message passing rounds | NOT YET |
+| Info geometry: natural gradient | Fisher-aware optimization | NOT YET (using Adam) |
+| Info geometry: Fisher for pruning | Fisher-guided parameter allocation | NOT YET |
+| RG: hierarchical coarse-graining | Multi-scale patch architecture | IMPLEMENTED |
+| RG: relevant operators only | RSMI-optimal coarse-graining | NOT YET (fixed patches) |
+| RG: universality | Weight tying, domain transfer | PARTIAL (weight tying) |
+
+### Next Steps from This Research
+
+1. **IMMEDIATE**: Use this framework to justify Sutra's architecture in the paper/README. The architecture is not arbitrary -- every component maps to a thermodynamic principle.
+2. **PROBE**: Measure the Fisher information of Sutra's parameters during training. Which components have highest Fisher? That tells us where the information lives.
+3. **DESIGN**: Implement reversible message passing (use invertible residual blocks). This is a direct thermodynamic efficiency gain.
+4. **DESIGN**: Implement cross-scale predictive coding when multi-scale returns (v0.5+). The FEP says this is optimal.
+5. **THEORY**: Formalize the connection between our scaling theorem and the RG framework. The relevant/irrelevant operator decomposition may give us the rigorous proof we need.
+6. **THEORY**: Derive the optimal training schedule from the fluctuation theorems. Minimum entropy production <=> minimum dissipated work <=> optimal learning rate trajectory.
+
+---
+
+## v0.5.3 Production-Scale Validation (2026-03-20)
+
+### Scratchpad Benefit at Scale
+
+Key finding: the scratchpad's benefit INCREASES at production scale vs CPU probes.
+
+| Version | Step | BPT | Note |
+|---------|------|-----|------|
+| v0.5.2 | 5,000 | 6.4812 | Switching kernel only |
+| v0.5.2 | 10,000 | 6.2701 | Best v0.5.2 result |
+| **v0.5.3** | **2,500** | **6.2036** | Scratchpad + switching kernel |
+
+v0.5.3 at step 2,500 BEATS v0.5.2 at step 10,000 (+1.1%). This means:
+- Scratchpad gives ~2-4x training speedup at production scale (dim=768)
+- CPU Chrome probe showed +10.2% at dim=128; production-scale benefit is even larger
+- Validates the "simple shared state" principle identified by Codex
+
+### Chrome v0.5.4 Probe Results (dim=128, 300 steps)
+
+| Probe | Test BPT | vs Baseline | Verdict |
+|-------|----------|-------------|---------|
+| v0.5.3 Baseline | 7.317 | -- | -- |
+| Error Scratchpad | 7.343 | -0.4% | KILL (BPT worse) |
+| Pheromone Router | (running) | -- | -- |
+| Depth-Drop Bootstrap | (running) | -- | -- |
+| Grokfast | (running) | -- | -- |
+| Peri-LN | (running) | -- | -- |
+
+Error Scratchpad: BPT slightly worse but late-step value 2.2x better (0.0367 vs 0.0164).
+The error signal helps late recurrence but hurts early steps. May need different integration
+strategy (e.g., only inject error memory after step 3, not from step 0).
+
+### Cross-Domain Research Synthesis (15 agents)
+
+Full synthesis in results/master_research_synthesis.md. Top convergent findings:
+1. Wave-PDE Nets: O(n log n) attention replacement, 30% faster
+2. nGPT hypersphere normalization: 4-20x fewer training steps
+3. Tropical attention: 3-9x faster, superior OOD generalization
+4. Grokfast: 50x grokking acceleration via gradient filtering
+5. NCA pre-pre-training: 164M NCA tokens > 1.6B CommonCrawl tokens
+
+All pending Codex master synthesis once Chrome probes complete.
+
+---
+
+## Chrome Cycle: Biological Neural Information Processing (2026-03-20)
+
+### Purpose
+
+This is NOT "bio-inspired ML" literature review. This is a deep technical investigation of the actual biological mechanisms -- the cell types, signals, timing, and mathematics -- that evolution has converged on for efficient information processing. Each mechanism solves a specific computational problem under extreme energy and sample constraints. Understanding these at the circuit level is essential for deriving Sutra's architecture from first principles rather than copying existing ML paradigms.
+
+---
+
+### 1. Predictive Coding in Cortex
+
+#### The Computational Problem
+How does the brain perform inference in a hierarchical generative model of the world, continuously predicting sensory input and updating beliefs when predictions fail?
+
+#### Exact Biological Mechanism
+
+**Circuit Architecture (Canonical Cortical Microcircuit):**
+
+The cortex implements hierarchical predictive coding through a canonical microcircuit repeated across cortical areas. The key cell types and their roles:
+
+**Pyramidal Neurons (two functional classes):**
+- **Representation units (deep pyramidal, Layer 5/6):** Encode the current best estimate of the hidden state at this level. These neurons have a dense firing code and broadcast information via long-range projections. They receive bottom-up input on basal dendrites and top-down modulation on apical dendrites.
+- **Error units (superficial pyramidal, Layer 2/3):** Compute and signal prediction errors -- the mismatch between predicted and actual input. These neurons exhibit sparse activity, suited for efficient error signaling. They project feedforward to the next level.
+
+**Three classes of inhibitory interneurons with distinct computational roles:**
+- **PV (parvalbumin) interneurons:** Fast-spiking, target the soma/proximal dendrites of pyramidal cells. Provide perisomatic inhibition that implements the subtraction operation for prediction error computation. Create the "balance" between excitation and lateral inhibition in Layer 2/3 that computes bottom-up prediction errors.
+- **SST (somatostatin) interneurons:** Target apical dendrites of pyramidal neurons. Mediate top-down inhibitory control -- they gate the top-down predictions arriving at apical compartments.
+- **VIP (vasoactive intestinal peptide) interneurons:** Primarily inhibit OTHER interneurons (especially SST). They implement disinhibition -- when VIP cells are active, they release pyramidal neurons from SST inhibition, allowing top-down predictions to have stronger influence. This is how attention is implemented: VIP activation = "listen to top-down."
+
+**Information Flow:**
+1. Top-down connections (feedback): Carry predictions from higher areas. Target apical dendrites of pyramidal cells via Layer 1 and Layer 5/6.
+2. Bottom-up connections (feedforward): Carry prediction errors from Layer 2/3 error units to the next cortical area (arriving at Layer 4, then relayed to Layer 2/3).
+3. Lateral connections: Implement local prediction error computation within a cortical area via PV inhibition.
+
+**Dendritic Error Computation (Dendritic hPC -- 2022 framework):**
+The critical recent insight: prediction errors are NOT computed by separate "error neurons" but locally within dendritic compartments of pyramidal neurons:
+- Basal dendrites: Receive bottom-up input + lateral predictions. The voltage difference in the basal compartment IS the bottom-up prediction error.
+- Apical dendrites: Receive top-down predictions. The voltage in the apical compartment represents top-down error.
+- The soma integrates both compartments to produce the neuron's output.
+
+This means every pyramidal neuron simultaneously represents BOTH a hidden state AND its prediction error, in different dendritic compartments.
+
+#### Mathematical Framework
+
+**Rao-Ballard Model (1999):**
+At level l of the hierarchy:
+- r_l = representation (hidden state estimate)
+- e_l = prediction error = x_l - f(r_{l+1}) where f is the generative model
+- Update rule: dr_l/dt = -e_l + g(e_{l-1}) where g maps lower-level errors up
+
+**Friston Free Energy (2005):**
+The brain minimizes variational free energy F:
+F = -ln p(sensory data) + KL[q(causes) || p(causes|data)]
+
+Under Laplace approximation (Gaussian q):
+F ~ (prediction error)^2 / (2 * precision) + ln(precision)
+
+The precision (inverse variance) is crucial: it weights prediction errors. High precision = "trust the data." Low precision = "trust the prior." Precision estimation is itself learned and is thought to be implemented by neuromodulation (see Section 3).
+
+Update equations (gradient descent on F):
+- d(mu_l)/dt = D*mu_l - (partial F / partial mu_l)   [representation update]
+- d(pi_l)/dt = -(partial F / partial pi_l)            [precision update]
+
+where D is a differential operator (predictions involve dynamics, not just static states).
+
+#### What Makes It Efficient
+- **Only errors propagate:** Predicted (expected) input is suppressed. Only surprising information ascends the hierarchy. This is massive compression -- the brain does not re-transmit what it already knows.
+- **Sparse coding emerges naturally:** Layer 2/3 neurons fire sparsely BECAUSE most predictions are correct, so most error units are near zero.
+- **Energy proportional to surprise:** Metabolically, the brain expends energy proportional to prediction error magnitude, not input magnitude. Predictable environments are cheap to process.
+- **Precision weighting = adaptive resource allocation:** The brain dynamically allocates computational resources (attention) to the most informative prediction errors by modulating precision.
+
+#### Key Sources
+- [Canonical Microcircuits for Predictive Coding (Bastos et al. 2012)](https://pmc.ncbi.nlm.nih.gov/articles/PMC3777738/)
+- [Predictive Coding Under the Free-Energy Principle (Friston 2009)](https://pmc.ncbi.nlm.nih.gov/articles/PMC2666703/)
+- [Dendritic Hierarchical Predictive Coding (Mikulasch et al. 2022)](https://www.cell.com/trends/neurosciences/fulltext/S0166-2236(22)00186-2)
+- [Rao & Ballard Original Model (1999)](https://www.nature.com/articles/nn0199_79)
+- [Neural Elements for Predictive Coding (Keller & Mrsic-Flogel 2018)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5114244/)
+- [Modelling Predictive Coding in V1 Layer 2/3 (bioRxiv 2025)](https://www.biorxiv.org/content/10.1101/2025.11.01.686040v1.full)
+
+---
+
+### 2. Dendritic Computation
+
+#### The Computational Problem
+How does a single biological neuron compute functions far beyond the capacity of a point neuron (perceptron)? How can ~10^4 synaptic inputs be integrated nonlinearly to implement complex pattern matching?
+
+#### Exact Biological Mechanism
+
+**Dendritic Tree as a Multi-Layer Network:**
+
+A cortical pyramidal neuron is NOT a point processor (sum inputs, apply threshold). The dendritic tree is a spatially extended, compartmentalized computing device.
+
+Key result: Beniaguev, Segev & London (2021) showed that a realistic biophysical model of a Layer 5 cortical pyramidal cell requires a **temporally convolutional deep neural network with 5-8 layers and ~1000 artificial neurons** to replicate its input/output function at millisecond resolution. When NMDA receptors were removed, a single hidden layer sufficed. The computational depth comes from nonlinear dendritic mechanisms.
+
+**Three Types of Dendritic Spikes:**
+
+1. **Sodium (Na+) spikes:** Fast (~1ms), similar to axonal action potentials. Generated in proximal dendrites. Enable rapid signaling.
+
+2. **Calcium (Ca2+) spikes:** Slow (10-100ms), plateau-like. Generated primarily in apical dendrites (tuft region) of Layer 5 pyramidal neurons. Triggered by coincidence between backpropagating action potentials from soma and distal synaptic input. This is a coincidence detector between bottom-up (somatic/basal) and top-down (apical) information.
+
+3. **NMDA spikes:** Medium duration (50-200ms), localized to individual dendritic branches. THIS IS THE KEY COMPUTATIONAL MECHANISM. Generated when ~10-50 clustered synapses on a single thin basal dendrite are activated near-simultaneously. The NMDA receptor has a voltage-dependent Mg2+ block -- it requires BOTH glutamate binding AND local depolarization, making it a natural AND gate. When enough nearby synapses fire together, they depolarize the branch enough to relieve the Mg2+ block, triggering a regenerative NMDA spike (plateau potential) localized to that branch.
+
+**Compartmentalized Computation:**
+
+Each thin dendritic branch (~50-100 per pyramidal neuron) acts as an independent computational subunit:
+- Within a branch: ~linear summation for weak/sparse input, then a sharp sigmoidal nonlinearity (NMDA spike threshold) for clustered input
+- Between branches: approximately linear summation at the soma
+- This creates a **two-layer network within a single neuron**: Layer 1 = individual branch nonlinearities (each branch is a "hidden unit"), Layer 2 = somatic summation + threshold
+
+**Dendritic Plateau Potentials:**
+- Duration: 100-500ms (far longer than action potentials)
+- Effect: Sustained depolarization of the soma, shifting the neuron into a "UP state" where it becomes highly responsive to other inputs
+- Function: Implements a form of short-term memory and temporal integration at the single-neuron level
+- A plateau potential in one branch makes the neuron more susceptible to firing from inputs on OTHER branches -- this implements a form of context-dependent gating
+
+**Sublinear vs Supralinear Integration:**
+- Basal dendrites: Predominantly supralinear (NMDA spikes amplify clustered input) -- good for detecting specific input patterns
+- Apical dendrites: Can be sublinear (spread out inputs sum less than expected) -- good for computing averages/expectations
+- This asymmetry means the basal tree detects patterns (features) while the apical tree integrates context (predictions)
+
+#### Mathematical Description
+
+**Single branch model (Poirazi et al. 2003):**
+Each branch b computes: h_b = sigma(sum_i w_{bi} * x_i) where sigma is a sigmoid with sharp threshold (~NMDA spike)
+
+**Somatic integration:**
+y = Theta(sum_b h_b - theta_soma) where Theta is the output nonlinearity
+
+**This is equivalent to a two-layer neural network** where:
+- First layer: ~50-100 "hidden units" (branches), each receiving a subset of inputs
+- Second layer: one output unit (soma)
+- But with STRUCTURED connectivity: each hidden unit only sees nearby synapses (spatial locality on the dendritic tree)
+
+**Temporal convolution model (Beniaguev et al. 2021):**
+y(t) = DNN(x(t-T:t)) where T ~ 100-200ms of temporal context, DNN has 5-8 layers with temporal convolutions. The analysis of weight matrices revealed that dendritic branches perform spatiotemporal template matching.
+
+#### What Makes It Efficient
+- **Single neuron ~ multi-layer network:** Massive compute per neuron reduces the number of neurons needed. The brain achieves equivalent depth to DNNs with far fewer "units" because each unit is itself deep.
+- **Structured sparsity:** Each branch sees only ~20-100 of the neuron's ~10,000 inputs. This is NOT random -- inputs that need to be compared are routed to the same branch. Evolution + STDP arrange this.
+- **Plateau potentials = biological memory:** No need for external memory buffers. Each neuron carries its own multi-hundred-ms memory in dendritic states.
+- **Energy efficiency:** NMDA spikes are local (not propagated) and sustained (amortized over time). Cheap per computation.
+- **Natural feature hierarchy:** Branches detect local features, soma combines features into complex patterns. The morphology IS the architecture.
+
+#### Key Sources
+- [Single Cortical Neurons as Deep ANNs (Beniaguev et al. 2021)](https://pubmed.ncbi.nlm.nih.gov/34380016/)
+- [Dendritic Computation (London & Hausser 2005)](https://pubmed.ncbi.nlm.nih.gov/16033324/)
+- [Passive Dendrites Enable Linearly Non-separable Functions (Cazettes et al. 2013)](https://ncbi.nlm.nih.gov/pmc/articles/PMC3585427/)
+- [Dendritic Plateau Potentials Change Pyramidal Neuron State (PMC 2021)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8087381/)
+- [Contribution of Sublinear and Supralinear Dendritic Integration (Tran-Van-Minh et al. 2015)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4371705/)
+- [Synaptic Learning Rule for Nonlinear Dendritic Computation (Neuron 2021)](https://www.sciencedirect.com/science/article/pii/S0896627321007170)
+
+---
+
+### 3. Neuromodulation
+
+#### The Computational Problem
+How does the brain dynamically reconfigure its computational properties -- changing learning rates, signal-to-noise ratios, exploration/exploitation balance, and attention -- without rewiring synapses? How does it implement "meta-computation" (computation about computation)?
+
+#### Exact Biological Mechanism
+
+**The Four Major Neuromodulatory Systems:**
+
+**1. Dopamine (DA) -- Reward Prediction Error + Motivation**
+- Source: Ventral Tegmental Area (VTA), Substantia Nigra pars compacta (SNc)
+- Targets: Prefrontal cortex, striatum, hippocampus
+- Mechanism: Phasic DA burst = positive reward prediction error (RPE). DA dip = negative RPE. Tonic DA = motivational baseline.
+- Schultz (1997): DA neurons fire precisely according to temporal difference (TD) learning: delta = r(t) + gamma*V(t+1) - V(t). Before learning: burst at reward. After learning: burst shifts to reward-predicting cue. If expected reward is omitted: dip below baseline at expected reward time.
+- Receptor types: D1 (excitatory, Go pathway) and D2 (inhibitory, NoGo pathway) receptors on medium spiny neurons in striatum. D1 activation strengthens active representations; D2 activation suppresses competing representations.
+- Mathematical: DA implements a scalar broadcast signal that multiplicatively modulates synaptic plasticity. At each synapse: dw/dt = alpha * DA * (pre * post) where DA is the global RPE signal.
+
+**2. Norepinephrine (NE) -- Gain Control + Exploration/Exploitation**
+- Source: Locus Coeruleus (LC) -- a tiny nucleus (~15,000 neurons in humans) that projects to virtually the entire brain
+- Mechanism: NE multiplicatively modulates the gain of neural responses. High NE = steep input/output function (high gain, neurons respond strongly to best input, weakly to others). Low NE = flat input/output function (low gain, neurons respond similarly to many inputs).
+- Aston-Jones & Cohen (2005) Adaptive Gain Theory:
+  - **Phasic LC mode (exploitation):** Brief bursts time-locked to task-relevant stimuli. High gain on task-relevant representations. Focus, commitment to current strategy.
+  - **Tonic LC mode (exploration):** Elevated baseline firing, no phasic bursts. Lower gain across all representations. Broader activation, increased sensitivity to novel stimuli. Disengagement from current task, search for alternatives.
+- LC receives input from ACC (monitors task utility) and OFC (monitors reward). When utility drops, LC shifts from phasic to tonic mode = "network reset" that promotes exploration.
+- Mathematical: For neuron i with input x_i, output = f(g * x_i + b) where g (gain) is modulated by NE. High NE -> high g -> sharper sigmoid -> winner-take-all dynamics. Low NE -> low g -> softer competition -> more exploration.
+
+**3. Acetylcholine (ACh) -- Signal/Noise + Memory Encoding**
+- Source: Basal Forebrain (Nucleus Basalis of Meynert)
+- Mechanism: ACh modulates the balance between external input (feedforward) and internal recurrent activity (feedback/memory).
+  - High ACh: Enhances thalamocortical (feedforward) transmission via nicotinic receptors. Suppresses intracortical recurrent connections via muscarinic receptors. Effect: "trust the senses" -- enhanced signal-to-noise, better sensory processing, new memory encoding.
+  - Low ACh (during sleep/rest): Recurrent connections dominate. Effect: "trust internal models" -- memory consolidation, generative replay, dreaming.
+- ACh release is driven by uncertainty/novelty: unexpected stimuli trigger ACh release, which increases sensory gain and enables new learning.
+- Mathematical: ACh modulates the effective weight of feedforward vs recurrent connections. If W_ff and W_rec are feedforward and recurrent weight matrices: effective input = ACh * W_ff * x + (1-ACh) * W_rec * h, where h is recurrent state.
+
+**4. Serotonin (5-HT) -- Temporal Discounting + Behavioral Inhibition**
+- Source: Raphe Nuclei (dorsal and median)
+- Mechanism: Serotonin modulates the temporal discount factor in reward evaluation and promotes behavioral inhibition (patience, waiting for delayed rewards).
+- Low 5-HT: Impulsive behavior, steep temporal discounting (prefer immediate small reward over delayed large reward).
+- High 5-HT: Patient behavior, shallow discounting (willing to wait for larger future reward).
+- Also modulates aversive processing, risk assessment, and mood/affect.
+- Mathematical: 5-HT modulates the discount factor gamma in the value function V = sum_t gamma^t * r_t. Higher 5-HT -> higher gamma -> more future-oriented evaluation.
+
+**Key Principle: Multiplicative Gain Modulation**
+All four neuromodulators share a common computational mechanism: they do not carry specific content but instead MULTIPLY the gain of existing computations. They change HOW the circuit computes, not WHAT it computes. This is achieved through G-protein coupled receptors (GPCRs) that trigger second messenger cascades (cAMP, IP3, etc.) lasting hundreds of milliseconds to minutes, modifying:
+- Ion channel conductances (changing neuron excitability)
+- Synaptic release probability (changing connection strength)
+- Plasticity rules (changing learning rate and direction)
+- Receptor trafficking (changing sensitivity over hours)
+
+**Volume Transmission:** Unlike fast synaptic transmission (point-to-point), neuromodulators use volume transmission -- released into extracellular space, diffusing to affect all neurons in a region. This is a BROADCAST signal, not a point-to-point message. Single LC neuron axons can span the entire cortex.
+
+#### What Makes It Efficient
+- **Four scalar signals reconfigure the entire brain:** Instead of needing separate control circuits for every possible behavioral mode, four broadcast signals (DA, NE, ACh, 5-HT) multiplicatively interact with local circuit structure to produce a vast combinatorial space of computational regimes.
+- **Meta-learning without meta-parameters:** The brain does not have an explicit "learning rate" knob. Instead, DA modulates plasticity magnitude, NE modulates gain, ACh modulates signal/noise, 5-HT modulates temporal horizon. The appropriate meta-parameters emerge from the interaction of these four systems.
+- **Separation of timescales:** Fast computation (milliseconds, glutamate/GABA) is modulated by slow context signals (seconds to minutes, neuromodulators). This allows the same circuit to be reused for different tasks by changing the modulatory context.
+- **Extremely energy efficient:** A few thousand neurons (LC has ~15K, VTA ~400K, raphe ~300K, basal forebrain ~200K) control the computational regime of ~86 billion cortical neurons. Control overhead is ~0.01% of compute.
+
+#### Key Sources
+- [An Integrative Theory of LC-NE Function (Aston-Jones & Cohen 2005)](https://pubmed.ncbi.nlm.nih.gov/16022602/)
+- [Twenty-Five Lessons from Computational Neuromodulation (Dayan 2012)](https://www.sciencedirect.com/science/article/pii/S0896627312008628)
+- [Dopamine RPE: Contributions to Associative Models (Stalnaker et al. 2017)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5319959/)
+- [Neuromodulatory Systems Review (Avery & Bhatt 2017)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5744617/)
+- [Computational Models Link Neuromodulation to Large-Scale Dynamics (Nature Neuro 2021)](https://www.nature.com/articles/s41593-021-00824-6)
+- [Mechanisms of Neuromodulatory Volume Transmission (Bhatt et al. 2024)](https://www.nature.com/articles/s41380-024-02608-3)
+
+---
+
+### 4. Grid Cells and Place Cells
+
+#### The Computational Problem
+How does the brain represent continuous position in space, perform path integration (dead reckoning from velocity signals), and maintain a stable spatial map that is both high-resolution and covers a large range?
+
+#### Exact Biological Mechanism
+
+**Place Cells (Hippocampus CA1/CA3):**
+- Each place cell fires when the animal is in a specific location (its "place field"), typically 20-50cm wide in rats
+- Different place cells tile the entire environment
+- Driven by both sensory landmarks (allothetic) and self-motion (idiothetic) signals
+- Support context-dependent remapping: the same physical location can have different place cell representations in different behavioral contexts
+
+**Grid Cells (Medial Entorhinal Cortex, MEC):**
+- Each grid cell fires at multiple regularly-spaced locations forming a hexagonal lattice (triangular grid)
+- The hexagonal pattern is the mathematically optimal packing for tiling a 2D plane with circles
+- Each grid cell is characterized by three parameters: spacing (lambda), orientation (theta), phase (phi)
+- Grid cells are organized into ~4-5 discrete modules, with cells within a module sharing the same spacing and orientation but differing in phase
+
+**Modular Organization = Residue Number System:**
+
+The grid cell system implements a modular code equivalent to a residue number system (RNS):
+- Module 1: spacing ~30cm (finest)
+- Module 2: spacing ~42cm
+- Module 3: spacing ~59cm
+- Module 4: spacing ~84cm
+- (approximately geometric scaling ratio ~sqrt(2) between modules)
+
+Each module provides a position modulo its spacing. By combining the phase from all modules (like the Chinese Remainder Theorem), the brain can uniquely decode position over a HUGE range with fine resolution.
+
+**Coding capacity:** With just ~4-5 modules, the system can encode ~2000m of space with ~6cm resolution per linear dimension. The capacity scales EXPONENTIALLY with the number of modules (not linearly with the number of neurons). This is information-theoretically near-optimal.
+
+**Path Integration via Continuous Attractor Dynamics:**
+
+The grid pattern is maintained by a continuous attractor network (CAN):
+- Network topology: effectively toroidal (edges wrap around)
+- Neurons are arranged with local excitatory connections and broader inhibitory connections
+- This creates a stable "bump" of activity on the neural sheet
+- Velocity input (from head direction cells + speed cells) shifts the bump across the sheet
+- The toroidal topology causes the bump to wrap around, creating the periodic grid pattern
+
+Mathematical model (Burak & Fiete 2009):
+- tau * dr_i/dt = -r_i + f(sum_j W_{ij} * r_j + v(t) . alpha_i)
+- W_{ij}: synaptic weights (local excitation + surround inhibition, Mexican hat profile on the torus)
+- v(t): velocity input vector
+- alpha_i: preferred direction of neuron i (how velocity couples to the attractor)
+- f: threshold-linear activation function
+- The steady state forms a hexagonal bump pattern that drifts with velocity input
+
+**Error Correction:**
+- Path integration accumulates errors over time (integration drift)
+- Place cells (driven by landmarks) provide periodic corrections to grid cell phase
+- This is analogous to a Kalman filter: path integration = prediction step, landmark correction = update step
+- Grid cells function as an error-correcting code: the modular structure allows detection and correction of drift errors in individual modules
+
+**Attractor Manifold:**
+- The stable states of the grid network form a continuous manifold (a torus)
+- Any rigid translation of the activity bump along this manifold produces an equivalent stable state
+- The velocity input moves the state along this manifold
+- The manifold has the right topology (torus) and the right dimension (2D) to represent 2D position
+
+#### What Makes It Efficient
+- **Exponential capacity:** N modules with M neurons each give O(M^N) unique positions. This is the power of a modular/factored representation -- compare to ~N*M for an unstructured code.
+- **Built-in error correction:** The modular code naturally detects and corrects errors. A small error in one module's phase can be detected because it creates inconsistency with other modules.
+- **Geometric optimality:** Hexagonal grids are the most efficient 2D tiling. The sqrt(2) scaling ratio between modules is theoretically optimal for maximizing range given a fixed number of neurons.
+- **Continuous computation:** The attractor dynamics perform true analog integration -- not discretized. Position is represented as a continuous phase on a continuous manifold.
+- **Separation of resolution and range:** Fine modules provide resolution, coarse modules provide range. Adding one module roughly doubles the range without affecting resolution.
+
+#### Key Sources
+- [Grid Cell Wikipedia](https://en.wikipedia.org/wiki/Grid_cell)
+- [Place Cells, Grid Cells, Attractors, and Remapping (Moser et al. 2014)](https://pmc.ncbi.nlm.nih.gov/articles/PMC3216289/)
+- [Grid Cells Generate an Error-Correcting Code (Fiete et al. 2008)](https://www.researchgate.net/publication/51640497_Grid_cells_generate_an_analog_error-correcting_code_for_singularly_precise_neural_computation)
+- [Robust and Efficient Coding with Grid Cells (Wei et al. 2015)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5774847/)
+- [Accurate Path Integration in CAN Models (Burak & Fiete 2009)](https://pmc.ncbi.nlm.nih.gov/articles/PMC2632741/)
+- [Modeled Grid Cells Aligned by Flexible Attractor (eLife 2024)](https://elifesciences.org/articles/89851)
+- [Continuous Attractor Networks (Scholarpedia)](http://www.scholarpedia.org/article/Continuous_attractor_network)
+
+---
+
+### 5. Cerebellar Learning
+
+#### The Computational Problem
+How does the brain learn precise, millisecond-accurate timing for sensorimotor control? How does it build internal forward models that predict the sensory consequences of motor commands?
+
+#### Exact Biological Mechanism
+
+**Cerebellar Architecture (the most regular structure in the brain):**
+
+The cerebellum has a remarkably uniform, crystalline architecture with exactly specified cell types and connectivity:
+
+1. **Mossy Fibers (input):** Carry sensory + motor efference copy signals from brainstem/cortex. ~200,000 mossy fibers in human cerebellum.
+
+2. **Granule Cells (expansion layer):** ~50 BILLION in humans (most numerous neuron in the brain -- ~80% of all neurons). Each receives input from only 2-7 mossy fibers (average 4). Project axons that bifurcate into parallel fibers running perpendicular to Purkinje cell dendrites.
+   - This is a MASSIVE dimensionality expansion: ~200K mossy fibers -> ~50B granule cells
+   - Marr-Albus theory: expansion recoding projects mossy fiber patterns into high-dimensional space where they are more linearly separable
+   - Sparse coding: only ~1-5% of granule cells are active at any time
+   - Each granule cell samples a RANDOM combination of 2-7 mossy fiber types
+   - This is mathematically equivalent to a random projection + sparse coding, identical in principle to the fly olfactory circuit (Section 7)
+
+3. **Purkinje Cells (computation/output):** ~15 million in humans. Each receives input from ~200,000 parallel fibers (from granule cells) and ONE climbing fiber. Purkinje cells are inhibitory -- they suppress deep cerebellar nuclei.
+   - The massive fan-in from parallel fibers means each Purkinje cell can learn an arbitrary function over the high-dimensional granule cell space
+   - Purkinje cells compute the PREDICTION (of sensory feedback) based on learned associations in parallel fiber synapses
+
+4. **Climbing Fibers (error signal):** From inferior olive. Each Purkinje cell receives exactly ONE climbing fiber, which wraps around the entire dendritic tree and produces a powerful all-or-nothing depolarization (complex spike) at ~1 Hz.
+   - Climbing fibers carry the ERROR SIGNAL -- the mismatch between predicted and actual sensory feedback
+   - This is a very low-bandwidth teaching signal (~1 bit/second)
+
+5. **Deep Cerebellar Nuclei (output + comparison):** Receive inhibitory input from Purkinje cells + excitatory input from mossy fibers. The comparison between Purkinje cell predictions and mossy fiber sensory feedback occurs here.
+
+**The Marr-Albus-Ito Theory (1969-1982):**
+
+- Marr (1969): Proposed the expansion recoding + pattern association framework. Predicted that climbing fiber activity should strengthen (potentiate) parallel fiber-Purkinje cell synapses.
+- Albus (1971): Corrected Marr's prediction. Since Purkinje cells are inhibitory, the climbing fiber should WEAKEN (depress) parallel fiber synapses. This way, the Purkinje cell learns to NOT inhibit the deep nuclei when the correct motor pattern occurs.
+- Ito (1982): Experimentally confirmed Long-Term Depression (LTD) at parallel fiber-Purkinje cell synapses when parallel fibers and climbing fibers are coactivated. This was a landmark confirmation of a theoretical prediction.
+
+**Learning Rule:**
+dw_{PF-PC}/dt = -alpha * CF(t) * PF(t)
+
+Where: CF(t) = climbing fiber activity (error signal), PF(t) = parallel fiber activity (context/input). Synaptic weight DECREASES when both are active (LTD). This is supervised learning with the climbing fiber as the teacher.
+
+**Forward Model Implementation:**
+- Mossy fibers carry: current sensory state + motor command copy
+- Granule cells expand this into a high-dimensional representation
+- Purkinje cells learn (via parallel fiber plasticity) to predict the NEXT sensory state
+- Deep cerebellar nuclei compare prediction with actual sensory feedback
+- Climbing fibers carry the prediction error back to Purkinje cells
+- Over training, the Purkinje cell prediction becomes accurate, climbing fiber errors decrease, learning saturates
+
+**Timing Precision:**
+- The cerebellum achieves ~10ms timing precision
+- Timing is encoded in the temporal pattern of granule cell activity (different granule cells fire at different delays after stimulus onset)
+- Purkinje cells learn to respond at specific time intervals by associating with granule cells active at the right delay
+- This is mathematically equivalent to an adaptive filter / linear function approximation in a time-expanded basis
+
+**Mathematical Model (Adaptive Filter):**
+
+The cerebellum implements a linear adaptive filter:
+y(t) = sum_i w_i * x_i(t) where x_i(t) are parallel fiber activities (time-expanded basis functions) and w_i are learned weights. The error signal e(t) = d(t) - y(t) where d(t) is the desired output (carried by climbing fibers). Weight update: dw_i/dt = -alpha * e(t) * x_i(t). This is mathematically equivalent to the LMS (Least Mean Squares) algorithm.
+
+#### What Makes It Efficient
+- **Random expansion + sparsity = near-optimal pattern separation:** The granule cell layer is essentially a biological implementation of random projections + sparse coding. This maximizes the linear separability of input patterns with minimal overlap.
+- **Simple learning rule:** A single scalar error signal (climbing fiber, ~1 bit/sec) is sufficient to train ~200,000 synapses per Purkinje cell. The expansion recoding does the heavy lifting.
+- **Architectural regularity:** The cerebellar cortex is the same circuit repeated ~billions of times. One design serves all sensorimotor learning tasks.
+- **Online learning:** No need for batch processing or replay. Learning occurs in real-time during behavior.
+- **Energy efficiency:** Only ~1-5% of granule cells active at any time. Sparse coding minimizes metabolic cost.
+
+#### Key Sources
+- [David Marr's Theory of Cerebellar Learning: 40 Years Later (Yamazaki & Tanaka 2009)](https://pmc.ncbi.nlm.nih.gov/articles/PMC2805361/)
+- [50 Years Since the Marr, Ito, and Albus Models (Yamazaki et al. 2020)](https://arxiv.org/pdf/2003.05647)
+- [Climbing Fibers Provide Graded Error Signals (Frontiers 2019)](https://www.frontiersin.org/journals/systems-neuroscience/articles/10.3389/fnsys.2019.00046/full)
+- [Climbing Fibers Provide Essential Instructive Signals (Nature Neuro 2024)](https://www.nature.com/articles/s41593-024-01594-7)
+- [From the Perceptron to the Cerebellum (arXiv 2025)](https://arxiv.org/html/2505.14355v1)
+- [Cerebellum as a Kernel Machine (Frontiers 2022)](https://www.frontiersin.org/journals/computational-neuroscience/articles/10.3389/fncom.2022.1062392/full)
+- [Cerebellar Granule Cell Axons Support High-Dimensional Representations (PMC 2020)](https://pmc.ncbi.nlm.nih.gov/articles/PMC7611462/)
+
+---
+
+### 6. Spike Timing Dependent Plasticity (STDP)
+
+#### The Computational Problem
+How does the brain learn causal structure from temporal correlations? How do functional circuits self-organize from initially random connectivity, without a global supervisor?
+
+#### Exact Biological Mechanism
+
+**The STDP Window:**
+
+STDP modifies synaptic strength based on the precise timing relationship between pre- and postsynaptic spikes:
+
+- **Pre-before-post (causal order, dt = t_post - t_pre > 0):** Long-Term Potentiation (LTP). The synapse is strengthened. Timing window: ~0-20ms.
+- **Post-before-pre (anti-causal order, dt < 0):** Long-Term Depression (LTD). The synapse is weakened. Timing window: ~0-100ms (broader than LTP window).
+- **Transition zone:** Sharp (~1-5ms) transition from LTP to LTD near dt = 0.
+
+**Mathematical Model (Exponential Window):**
+
+dw = A+ * exp(-|dt|/tau+)  if dt > 0 (pre before post, LTP)
+dw = -A- * exp(-|dt|/tau-)  if dt < 0 (post before pre, LTD)
+
+Typical parameters (from cortical synapses):
+- A+ = 0.86 (LTP amplitude)
+- A- = 0.25 (LTD amplitude, note: asymmetry A+ > A- but LTD window is wider)
+- tau+ = 19ms (LTP time constant)
+- tau- = 34ms (LTD time constant)
+
+The asymmetry is critical: integrated LTD slightly exceeds integrated LTP (A-*tau- > A+*tau+), which provides a natural homeostatic pressure against runaway excitation.
+
+**Molecular Mechanism:**
+1. Pre-before-post: Presynaptic glutamate binds NMDA receptors. The receptor requires BOTH glutamate + postsynaptic depolarization (Mg2+ block relief). When the postsynaptic spike arrives shortly after, it provides the depolarization needed to open NMDA channels, allowing Ca2+ influx. MODERATE Ca2+ elevation -> activates CaMKII -> triggers LTP.
+2. Post-before-pre: The postsynaptic spike comes first, partially depolarizing the dendrite. When glutamate arrives later, the NMDA channel opens at a different membrane potential, producing LOWER Ca2+ elevation -> activates calcineurin/protein phosphatases -> triggers LTD.
+3. The Ca2+ concentration determines the direction: high Ca2+ -> LTP, low Ca2+ -> LTD. This is the Bienenstock-Cooper-Munro (BCM) principle at the molecular level.
+
+**Variants of STDP:**
+- **Symmetric STDP** (some inhibitory synapses): Both pre-before-post and post-before-pre produce LTP. Only uncorrelated activity produces LTD.
+- **Anti-Hebbian STDP** (some cerebellar synapses): Reversed sign -- pre-before-post -> LTD, post-before-pre -> LTP.
+- **Triplet STDP:** Depends on triplets of spikes, not just pairs. Better explains experimental data on burst-driven plasticity.
+- **Voltage-dependent STDP:** More recent models show STDP depends on local dendritic voltage, not just spike times. This unifies STDP with rate-dependent plasticity.
+
+**What STDP Creates:**
+
+1. **Causal detection:** Pre-before-post timing occurs when the presynaptic neuron CAUSES (or predicts) the postsynaptic spike. STDP strengthens causal connections and weakens non-causal ones. This extracts causal structure from temporal correlations.
+
+2. **Sequence learning:** In a sequence A -> B -> C, STDP strengthens A->B and B->C connections (pre arrives before post fires). This creates a chain that can replay the sequence from A alone.
+
+3. **Receptive field formation:** Inputs that consistently drive a neuron (pre-before-post) get strengthened, while those that don't get weakened. This carves out selective receptive fields from initially broad connectivity.
+
+4. **Competitive dynamics:** If two presynaptic neurons compete to drive a postsynaptic neuron, the one with more precise timing wins (gets potentiated) while the other is depressed. This implements soft winner-take-all without explicit inhibition.
+
+5. **Temporal code compression:** STDP tends to make postsynaptic neurons fire progressively earlier relative to their inputs, compressing temporal patterns into precise spike volleys.
+
+#### What Makes It Efficient
+- **Unsupervised, local, online:** No global error signal needed. Each synapse only needs to know its own pre and post spike times. Learning happens in real-time during normal activity.
+- **Automatically extracts causal structure:** The timing asymmetry means STDP naturally discovers which inputs predict (cause) outputs, without being told.
+- **Self-stabilizing:** The LTD/LTP asymmetry prevents runaway excitation. Combined with homeostatic plasticity, STDP maintains stable network dynamics while learning.
+- **Minimal information requirement:** Only needs spike times (binary events), not continuous error gradients. This is possible because the expansion recoding (in cortex or cerebellum) has already projected inputs into a space where simple Hebbian rules work.
+- **Development to maturity:** STDP properties change over development -- broader windows during early circuit formation (more permissive learning), narrower windows in adults (more precise, stable circuits).
+
+#### Key Sources
+- [STDP: A Hebbian Learning Rule (Caporale & Dan 2008)](https://pubmed.ncbi.nlm.nih.gov/18275283/)
+- [STDP Wikipedia](https://en.wikipedia.org/wiki/Spike-timing-dependent_plasticity)
+- [STDP Scholarpedia (Sjostrom & Gerstner)](http://www.scholarpedia.org/article/Spike-timing_dependent_plasticity)
+- [The Spike-Timing Dependence of Plasticity (Feldman 2012)](https://pmc.ncbi.nlm.nih.gov/articles/PMC3431193/)
+- [Phenomenological Models of Synaptic Plasticity Based on Spike Timing (Morrison et al. 2008)](https://pmc.ncbi.nlm.nih.gov/articles/PMC2799003/)
+
+---
+
+### 7. Fruit Fly Olfactory Circuit
+
+#### The Computational Problem
+How does an animal with a tiny brain (~100,000 neurons total) learn to classify thousands of odors, generalizing from few examples, using a circuit so simple it can be fully mapped by connectomics?
+
+#### Exact Biological Mechanism
+
+**The Three-Stage Architecture:**
+
+**Stage 1: Compression (Antenna -> Glomeruli)**
+- ~1,300 Olfactory Receptor Neurons (ORNs) on the antenna, expressing ~50 different receptor types
+- ORNs converge onto ~50 glomeruli in the antennal lobe (each glomerulus pools one receptor type)
+- ~50 Projection Neurons (PNs), one per glomerulus, carry the compressed odor representation
+- Result: an odor is represented as a ~50-dimensional vector of PN firing rates
+- Lateral inhibition between glomeruli decorrelates and normalizes the representation
+
+**Stage 2: Expansion via Random Projection (Antennal Lobe -> Mushroom Body)**
+- 50 PNs project to ~2,000 Kenyon Cells (KCs) in the mushroom body
+- Each KC receives input from an average of ~7 randomly chosen PNs
+- The connectivity is SPARSE and approximately RANDOM: each KC samples a different random subset of the 50-dimensional odor space
+- This is a 40x dimensionality expansion (50 -> 2,000)
+- The random projection matrix is BINARY and SPARSE (each KC gets ~7 out of 50 inputs)
+
+**Stage 3: Sparsification via Winner-Take-All (within Mushroom Body)**
+- A single giant inhibitory neuron, the Anterior Paired Lateral (APL) neuron, receives input from ALL KCs and inhibits ALL KCs
+- APL implements global feedback inhibition that enforces sparsity
+- Only the top ~5% of KCs (those receiving the strongest input for this odor) remain active
+- The active ~100 KCs out of 2,000 form the sparse binary "tag" (hash) for this odor
+
+**Stage 4: Readout (Mushroom Body -> Output)**
+- ~34 Mushroom Body Output Neurons (MBONs) read out KC activity
+- KC->MBON synapses are plastic (modifiable by learning)
+- Dopaminergic neurons (DANs) provide the teaching signal (reward/punishment)
+- Learning = modifying KC->MBON synapses so that the odor tag drives appropriate approach/avoidance behavior
+
+**Why This Architecture Solves Similarity Search (Dasgupta, Stevens & Navlakha 2017):**
+
+This circuit implements a biological form of Locality-Sensitive Hashing (LSH):
+1. **Dimensionality expansion** (50 -> 2,000): Random projection into higher dimension
+2. **Sparsification** (5% WTA): Convert to sparse binary code
+3. **Result:** Similar odors (nearby in 50D input space) produce overlapping KC activity patterns (similar hashes), while dissimilar odors produce non-overlapping patterns
+
+This is mathematically equivalent to -- and slightly BETTER than -- the best-known LSH algorithms in computer science:
+- SimHash (Charikar 2002): Projects to random hyperplanes, takes sign
+- MinHash: Uses random permutations
+- Fly LSH: Random sparse expansion + WTA
+
+The fly's algorithm outperforms SimHash on benchmark datasets because:
+1. It expands dimensionality BEFORE hashing (SimHash compresses). Higher dimension means more room for separation.
+2. It uses sparse, binary random projections (more energy efficient, hardware friendly).
+3. WTA creates a sparse binary code (Hamming distance is fast to compute).
+
+**Connectomic Refinements (2022):**
+While largely random, the PN->KC connectivity shows some structure: PNs responsive to ethologically important odors (food) connect to KCs at above-chance rates. This biases the hash to be more sensitive to behaviorally relevant odor distinctions while maintaining broad coverage.
+
+#### Mathematical Description
+
+**Random projection step:**
+h = W * x, where x in R^50 (PN activities), W in {0,1}^{2000x50} (sparse binary matrix, ~7 ones per row), h in R^2000 (KC pre-inhibition activities)
+
+**WTA sparsification:**
+z_i = 1 if h_i >= percentile(h, 95), else z_i = 0
+Result: z in {0,1}^2000 with ||z||_0 ~ 100 (5% sparsity)
+
+**Similarity preservation:**
+For two odors x, x': Pr[z and z' overlap] is monotonically increasing in cos(x, x')
+Similar inputs produce similar sparse codes. The probability of hash collision tracks input similarity.
+
+**Learning (at KC->MBON synapses):**
+dw_{KC->MBON}/dt = -alpha * DAN(t) * KC(t)
+Dopaminergic teaching signal * active KC = synaptic depression (negative because DAN signals punishment; appetitive learning uses a different DAN population)
+
+#### What Makes It Efficient
+- **Near-optimal hashing in ~2,050 neurons:** Achieves similarity search quality that took decades for computer scientists to develop, using a circuit with ~2,000 neurons.
+- **One-shot learning:** The sparse, high-dimensional KC representation is so well-separated that a single reward/punishment association at KC->MBON synapses is often sufficient. No need for multiple training epochs.
+- **Energy proportional to input complexity:** Only ~5% of KCs fire for any odor. Simple odors (activating few PNs) activate even fewer KCs. Metabolic cost scales with stimulus complexity.
+- **Fixed random projections:** The PN->KC wiring is set during development and does not need to be learned. This is "hardware hashing" -- fast, reliable, no training cost.
+- **Compositionality:** Because each KC samples ~7 random PNs, KCs naturally encode conjunctions of features. The sparse code represents an odor as a set of feature conjunctions.
+
+#### Key Sources
+- [A Neural Algorithm for a Fundamental Computing Problem (Dasgupta et al. 2017, Science)](https://www.science.org/doi/full/10.1126/science.aam9868)
+- [Random Convergence of Olfactory Inputs in Drosophila Mushroom Body (Caron et al. 2013, Nature)](https://www.nature.com/articles/nature12063)
+- [Structured Sampling of Olfactory Input (Zheng et al. 2022, Current Biology)](https://www.cell.com/current-biology/fulltext/S0960-9822(22)00990-3)
+- [Fly-LSH Paper (Dasgupta et al.)](https://cseweb.ucsd.edu/~dasgupta/papers/fly-lsh.pdf)
+- [Improving Similarity Search with Fly Algorithm (Sharma & Navlakha 2018)](https://arxiv.org/pdf/1812.01844)
+
+---
+
+### 8. Immune System Information Processing
+
+#### The Computational Problem
+How does a distributed system with no central controller learn to distinguish ~10^7 possible foreign molecular patterns (antigens) from ~10^5 self-molecular patterns, adapting its response in real-time, remembering past infections for decades, and tolerating the body's own tissues -- all without a training dataset or explicit labels?
+
+#### Exact Biological Mechanism
+
+**The Repertoire: Combinatorial Diversity Generation**
+
+The adaptive immune system generates receptor diversity through V(D)J recombination:
+- Variable (V), Diversity (D), and Joining (J) gene segments are randomly combined
+- Additional diversity from junctional modifications (random nucleotide additions/deletions)
+- Result: ~10^15 possible unique B-cell receptors (antibodies) and ~10^18 T-cell receptors
+- At any time, the body maintains ~10^9-10^10 distinct lymphocyte clones, each with a unique receptor
+- This is a RANDOM SEARCH over receptor space -- the system does not "design" receptors for specific antigens
+
+**Self/Non-Self Discrimination: Negative Selection (Central Tolerance)**
+
+During lymphocyte development:
+- T cells develop in the thymus, B cells in the bone marrow
+- Immature lymphocytes are exposed to self-antigens
+- Any lymphocyte whose receptor binds STRONGLY to self-antigens is killed (clonal deletion) or inactivated (anergy)
+- This eliminates ~95% of developing lymphocytes
+- Result: the mature repertoire is "self-tolerant" -- remaining cells don't react to self
+- This is a one-class classification problem solved by negative selection: define "self" by the set of molecules present during development, classify everything else as potentially foreign
+
+**Matzinger's Danger Theory (1994 -- paradigm shift from self/non-self):**
+
+The classical self/non-self model has serious limitations (it cannot explain why the immune system tolerates commensal bacteria, transplant rejection, tumor immunity, etc.). Matzinger proposed:
+- The immune system does NOT discriminate self from non-self
+- Instead, it discriminates DANGEROUS from SAFE
+- Danger signals (DAMPs): released by damaged/stressed cells (ATP, uric acid, DNA, heat shock proteins, HMGB1)
+- Pathogen signals (PAMPs): molecular patterns unique to pathogens (LPS, flagellin, dsRNA, CpG DNA)
+- Pattern Recognition Receptors (PRRs) on innate immune cells (especially dendritic cells) detect DAMPs and PAMPs
+- An antigen encountered WITH danger signals triggers immunity
+- An antigen encountered WITHOUT danger signals triggers tolerance
+- This is context-dependent learning: the same antigen can be immunogenic or tolerogenic depending on the danger context
+
+**Two-Signal Model:**
+Signal 1: Antigen recognition (antigen binds lymphocyte receptor) -- necessary but not sufficient
+Signal 2: Co-stimulation from activated antigen-presenting cells (APCs) -- required for full immune activation
+Without Signal 2, Signal 1 alone induces tolerance/anergy. APCs are activated by DAMPs/PAMPs.
+
+**Clonal Selection and Expansion:**
+
+When a pathogen arrives:
+1. Among ~10^9 lymphocyte clones, a few (~10-1000) have receptors that bind the antigen weakly
+2. These clones are activated (Signal 1 + Signal 2) and begin dividing rapidly (clonal expansion)
+3. Over ~1 week, a single B cell can produce ~10^9 daughter cells
+4. This is a massive amplification of the relevant "hypothesis" from a huge library
+
+**Affinity Maturation (Darwinian Evolution in Real-Time):**
+
+In germinal centers (specialized structures in lymph nodes), B cells undergo iterative cycles of:
+1. **Somatic Hypermutation (SHM):** The antibody gene is mutated at a rate ~10^5-10^6 fold higher than the background genome mutation rate (~1 mutation per 10^3 base pairs per cell division). These are RANDOM point mutations in the antibody variable region.
+2. **Selection:** Mutated B cells compete for binding to antigen presented by follicular dendritic cells. Those with HIGHER affinity receive survival signals. Those with LOWER affinity die by apoptosis.
+3. **Repeat:** Surviving cells re-enter the mutation cycle.
+
+This is real-time Darwinian evolution: random variation (SHM) + natural selection (affinity-based survival) + reproduction (clonal expansion). Over ~2-3 weeks and ~6-12 rounds, antibody affinity increases ~10-100 fold.
+
+Recent discovery (Nature 2025): The mutation rate itself is regulated -- B cells with high-affinity receptors REDUCE their mutation rate during clonal bursts, preserving beneficial mutations. This is adaptive mutation rate control, analogous to learning rate scheduling in ML.
+
+**Memory:**
+- After infection resolves, most effector cells die
+- But a small fraction differentiate into long-lived memory cells (decades-long lifespan)
+- Memory cells respond faster (~2 days vs ~1 week) and more powerfully upon re-encounter
+- This is the basis of vaccination
+
+**Multiscale Information Processing (Frontiers 2025 framework):**
+The immune system implements six canonical information processing functions across multiple scales:
+1. Sensing (molecular receptors)
+2. Coding (receptor diversity)
+3. Decoding (antigen presentation)
+4. Response (effector functions)
+5. Feedback (cytokine networks, regulatory T cells)
+6. Learning (affinity maturation, memory)
+
+#### Mathematical Description
+
+**Negative selection (formal model):**
+- Self set S = {s_1, ..., s_n} (self-antigens)
+- Receptor r is deleted if: min_{s in S} d(r, s) < threshold_self
+- Mature repertoire R = {r : min_{s in S} d(r, s) >= threshold_self}
+- Detection: antigen a is "non-self" if exists r in R such that d(r, a) < threshold_detect
+- This is a one-class classification using the complement of the self-neighborhood in receptor space
+
+**Affinity maturation (evolutionary dynamics):**
+- Population of B cell clones: x_i(t) = number of cells with receptor r_i at time t
+- Fitness = affinity for antigen: f_i = affinity(r_i, antigen)
+- Mutation: M_{ij} = probability that clone i mutates to clone j (SHM)
+- Selection-mutation dynamics: dx_i/dt = f_i * x_i + sum_j M_{ji} * f_j * x_j - d * x_i
+- This is a quasispecies equation (Eigen 1971), the same mathematical framework that describes RNA virus evolution
+
+**Clonal selection as Bayesian inference (Sontag 2017):**
+- Prior: the naive repertoire = prior over antigens
+- Likelihood: antigen binding = data
+- Posterior: the expanded clones = posterior belief about which antigen is present
+- Affinity maturation = iterative refinement of the posterior (concentration of probability mass on high-affinity clones)
+
+**Optimality result (Perelson & Oster 1979):**
+The immune system faces an optimization problem: maximize coverage of antigen space with a finite number of lymphocyte clones. The optimal strategy involves:
+- Clone size proportional to the probability of encountering the corresponding antigen
+- Cross-reactivity (each receptor recognizes a ball in antigen space) trades off specificity vs coverage
+- The optimal degree of cross-reactivity depends on the dimensionality of antigen space and the number of available clones
+
+#### What Makes It Efficient
+- **Distributed, no central controller:** No single cell "knows" the whole antigen. Decision emerges from local interactions between ~10^9 independent agents. Robust to destruction of any individual component.
+- **Combinatorial search space:** V(D)J recombination generates ~10^15 possible receptors from ~400 gene segments. This is exponential diversity from linear genetic material.
+- **Real-time evolution:** Affinity maturation achieves ~100x improvement in binding affinity in ~2 weeks. This is among the fastest evolutionary optimization known in biology.
+- **Sample efficient:** The immune system needs only ONE encounter with a pathogen to generate a useful immune response (primary response) and only one more to generate a much stronger, faster response (secondary/memory response).
+- **Adaptive precision:** SHM rate is modulated based on current affinity -- high-affinity clones mutate LESS, preserving good solutions while low-affinity clones explore. This is biological learning rate scheduling.
+- **Context-dependent learning:** The danger signal / two-signal system means the immune system only learns from RELEVANT data (things encountered during tissue damage/infection), not all data. This prevents overfitting to harmless antigens.
+- **Lifetime memory:** Memory cells persist for decades with minimal metabolic cost. The "trained" system maintains its learned repertoire essentially forever.
+- **Scales sublinearly:** Adding new threats does not require proportional growth. Memory cells for different pathogens coexist independently. The system handles ~10^7 possible antigens with ~10^9 lymphocytes.
+
+#### Key Sources
+- [Clonal Selection (ScienceDirect overview)](https://www.sciencedirect.com/topics/computer-science/clonal-selection)
+- [Theories of Immune Recognition: Is Anybody Right? (Martins 2024)](https://onlinelibrary.wiley.com/doi/10.1111/imm.13839)
+- [The Danger Theory of Immunity Revisited (Nature Reviews Immunology 2024)](https://www.nature.com/articles/s41577-024-01102-9)
+- [Multiscale Information Processing in the Immune System (Frontiers 2025)](https://www.frontiersin.org/journals/immunology/articles/10.3389/fimmu.2025.1563992/full)
+- [Regulated Somatic Hypermutation Enhances Affinity Maturation (Nature 2025)](https://www.nature.com/articles/s41586-025-08728-2)
+- [Transient Silencing of Hypermutation Preserves B Cell Affinity (Nature 2025)](https://www.nature.com/articles/s41586-025-08687-8)
+- [Optimality of Mutation and Selection in Germinal Centers (PLoS Comp Bio)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000800)
+- [Somatic Hypermutation Wikipedia](https://en.wikipedia.org/wiki/Somatic_hypermutation)
+
+---
+
+### Cross-Cutting Themes for Sutra Architecture
+
+| Theme | Biological Mechanism | Computational Principle | Relevance to Sutra |
+|-------|---------------------|------------------------|---------------------|
+| **Only errors propagate** | Predictive coding (Sec 1) | Transmit surprise, suppress predictions | Stage 4 routing: only route what is unpredicted |
+| **Single unit = multi-layer net** | Dendritic computation (Sec 2) | Compartmentalized nonlinear integration | Stage 3 local construction: each processing unit should be deep |
+| **Broadcast modulation** | Neuromodulation (Sec 3) | 4 scalar signals reconfigure all computation | Stage 6 compute control: global scalars modulate all stages |
+| **Modular factored codes** | Grid cells (Sec 4) | Residue number system, exponential capacity | State representation: factored codes with geometric scaling |
+| **Random expansion + LTD** | Cerebellum (Sec 5) | Dimensionality expansion enables simple learning | Stage 1 compression could use expansion-then-sparsification |
+| **Temporal causality learning** | STDP (Sec 6) | Pre-before-post -> strengthen causal connections | Learning rule: timing-aware, local, unsupervised |
+| **Expand-then-sparsify hashing** | Fly olfactory (Sec 7) | Random projection + WTA = locality-sensitive hash | Addressing / retrieval: sparse hash for memory lookup |
+| **Distributed evolution** | Immune system (Sec 8) | Random search + selection + adaptive mutation rate | Architecture search: evolutionary refinement of parameters |
+| **Precision weighting** | Predictive coding (Sec 1) | Weight errors by confidence/relevance | Attention mechanism derived from precision estimation |
+| **Gain modulation** | NE system (Sec 3) | Multiplicative scaling controls explore/exploit | Temperature / sharpness parameter as a learned, dynamic quantity |
+| **Error-correcting codes** | Grid cells (Sec 4) | Modular redundancy detects/corrects errors | Robust state representation via modular codes |
+| **Adaptive learning rate** | Immune SHM (Sec 8) | Mutate less when you have a good solution | Learning rate should decrease with solution quality, per-parameter |
+
+### Key Insight for Sutra
+
+The brain does NOT use one computational principle everywhere. It uses DIFFERENT mechanisms for different computational problems, all integrated into a coherent system:
+
+- **Cerebellum** = supervised learning with expansion recoding (for precise sensorimotor prediction)
+- **Cortex** = hierarchical predictive coding with dendritic computation (for generative modeling of the world)
+- **Hippocampus** = attractor networks with modular codes (for spatial/relational memory)
+- **Mushroom body** = random hashing with WTA (for classification from few examples)
+- **Immune system** = evolutionary search with adaptive mutation (for open-ended novelty detection)
+- **Neuromodulators** = meta-computation via multiplicative broadcast (for regime switching)
+- **STDP** = local temporal learning rule (for unsupervised circuit self-organization)
+
+Sutra's 7 stages should each derive from the biological mechanism most suited to that stage's computational role, not force one mechanism (e.g., attention) onto all stages.
