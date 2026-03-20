@@ -1779,3 +1779,15 @@ Router alone contributes 23.1%. No component is scaffolding — all are essentia
 
 Earlier Chrome probe (dim=128) said 91% in steps 1-4. At dim=768, steps 6-7 are critical.
 Lesson: small-scale probes can be WRONG about recurrence depth.
+
+### Halting-Signal Calibration: Lambda FAILS at Production Scale (2026-03-20)
+
+| Metric | Value | Threshold | Decision |
+|--------|-------|-----------|----------|
+| AUROC | 0.357 | >=0.65 | FAIL |
+| Correlation | -0.233 | >=0.25 | FAIL (anti-correlated!) |
+
+**Lambda (precision) does NOT predict correctness.** Higher lambda = LESS correct.
+The Bayesian precision system isn't calibrated at step 5000.
+**DEPRIORITIZE adaptive halting.** Focus on making the base model better first.
+May revisit at step 50K+ when the model is more trained.
