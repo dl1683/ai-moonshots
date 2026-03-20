@@ -34,7 +34,7 @@ K_RETRIEVAL = 8
 SEQ_LEN = 512
 BATCH_SIZE = 8         # v0.5 needs more VRAM than v0.4 (6 recurrent steps)
 GRAD_ACCUM = 8         # Effective batch = 64 (same, more accumulation)
-LR = 3e-4
+LR = 1e-3                # Chrome validated: +13.2% BPT over 3e-4, matches Pythia-70m
 WARMUP_STEPS = 1000
 MAX_STEPS = 100000
 EVAL_EVERY = 5000
