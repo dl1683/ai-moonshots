@@ -1,0 +1,1 @@
+{"compound_gain":{"byte_mlp":1.632,"token_mlp":1.027,"token_gain":"37%","expected_combo5_kan":"~46% over byte+MLP"},"reservoir":{"random":3.000,"trained":2.426,"gap":"19%","verdict":"Learned msg passing IS key. Random loses badly."}}
