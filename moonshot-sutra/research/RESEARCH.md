@@ -2351,3 +2351,19 @@ Small-scale Chrome probes have a BIAS against complex mechanisms.
 Single timescale: BPT 10.49 | Multi timescale (0.5/0.8/0.95): BPT 10.50 (-0.1%)
 Fixed decays don't help at dim=128. Model can't differentiate memory speeds in 300 steps.
 Testing pointer-copy head next.
+
+### Chrome: Pointer-Copy Head = HURT -5.7% (2026-03-20)
+no_copy: BPT 10.85 | pointer_copy: BPT 11.47 (-5.7%)
+
+Summary of ALL small-scale Chrome this session:
+| Mechanism | Result | Works? |
+|-----------|--------|--------|
+| Scratchpad (8 slots) | **+10.2%** | **YES** |
+| Switching kernel | +4.1% | YES |
+| Multi-timescale scratchpad | -0.1% | NO |
+| Pointer-copy | -5.7% | NO |
+| CfC time constants | -14% | NO |
+| Complex embeddings | -36% | NO |
+
+CONCLUSION: At 67M, architecture is mature. Only simple shared state (scratchpad)
+helps. ALL other mechanisms need scale. NEXT STEP = scale to 105M on FineWeb.
