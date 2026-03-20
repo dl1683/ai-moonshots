@@ -1570,6 +1570,17 @@ Bayesian write IS working — precision monotonically grows per step:
 
 Phase 2 adaptive depth should use `if lambda_i > threshold: freeze position_i`.
 
+### Chrome Experiment: Switching Kernel (2 Modes) vs Standard (2026-03-20)
+
+| Kernel | BPT | Params | Advantage |
+|--------|-----|--------|-----------|
+| Standard (1 mode) | 10.199 | 7.48M | baseline |
+| **Switching (2 modes)** | **9.776** | **7.50M** | **+4.1%** |
+
+**+4.1% BPT improvement at 0.2% param overhead.** Content-dependent mode selection amplifies the stage differentiation effect. The model selects between strategy modes (e.g., local-heavy vs route-heavy) based on input content.
+
+Implication: v0.5.1 should use a 2-4 mode switching kernel instead of a single universal transition matrix. This is the cheapest architectural win available.
+
 ### CRITICAL BUG: Causal Leakage in Patch Broadcast (2026-03-20)
 
 **Codex audit discovered**: Patch summary (`mean(dim=2)` of all tokens in a patch) was broadcast back to the SAME patch. This means token 0 of a patch sees tokens 1-3 — **future information leaks into current predictions**.
