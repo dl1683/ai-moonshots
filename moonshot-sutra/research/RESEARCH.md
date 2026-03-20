@@ -1616,3 +1616,17 @@ Compare:
 
 The Stage-Superposition State Machine produces coherent text at step 5000.
 No "!!!" collapse, no padding bug, no causality leak. The vision WORKS.
+
+### Production Stage Utilization (67M params, step 5000) (2026-03-20)
+
+| Step | Local | Route | Write | Ctrl | Verify | Entropy |
+|------|-------|-------|-------|------|--------|---------|
+| 0 | 100% | 0% | 0% | 0% | 0% | 0.00 |
+| 2 | 54% | 5% | 6% | 31% | 4% | 1.07 |
+| 5 | 33% | 23% | 3% | 37% | 5% | 1.23 |
+| 7 | 9% | **41%** | 8% | **37%** | 5% | 1.21 |
+
+5/7 stages ACTIVE (S1 Seg and S2 Addr dead — expected since input is pre-tokenized).
+**Stage 6 (Ctrl) IS ACTIVE at 37%** — compute control emerged without being forced!
+Entropy grows 0→1.25: positions diversify, not collapse.
+Pattern: Local→Write→Route→Ctrl emerges naturally from the graph.
