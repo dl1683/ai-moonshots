@@ -1,0 +1,1 @@
+{"experiment":"gru_write_vs_additive","additive":{"bpb":1.0616,"params":91072},"gru_gated":{"bpb":1.1216,"params":128320},"verdict":"KILL GRU write. Additive merge wins 6% with 41% fewer params."}
