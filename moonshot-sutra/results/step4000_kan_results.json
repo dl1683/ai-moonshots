@@ -1,0 +1,1 @@
+{"kan_sweep":{"n1":2.93,"n2":2.72,"n4":2.63,"n6":2.48,"n8":2.45,"sweet_spot":"4-6 basis"},"eval_step_4000":{"bpb":1.3519,"improved_from":1.3776,"improvement":"1.9%"},"train_test_gap":"0.68 train vs 1.35 test (2x gap, still overfitting)"}
