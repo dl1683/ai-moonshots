@@ -1801,3 +1801,18 @@ May revisit at step 50K+ when the model is more trained.
 
 Fit predicted 6.59 at 10K, actual 6.78 — model slightly slower than extrapolation.
 Training continues toward 100K. Next eval at step 15K.
+
+### v0.5.2 Step 5000 Eval: BPT 6.4812 (8.3% better than v0.5!) (2026-03-20)
+
+| Run | Architecture | LR | Step 5K BPT |
+|-----|-------------|-----|-----------|
+| v0.5 Run 1 | standard | 3e-4 | 7.0663 |
+| v0.5 Run 4 | standard | 6e-4 | 6.8805 |
+| **v0.5.2** | **switching** | **8e-4** | **6.4812** |
+
+Switching kernel + gain clamp + higher LR = 8.3% combined improvement.
+
+### Tesla Experiment: Dual-Teacher NO BENEFIT at dim=128 (2026-03-20)
+CE-only BPT=8.528 vs Dual-teacher BPT=9.259 (-8.6%). Stage entropy unchanged.
+At tiny scale, absorption adds noise. Architecture improvements > teacher signal.
+Need to test at production scale for meaningful absorption.

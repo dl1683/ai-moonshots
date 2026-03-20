@@ -1,0 +1,15 @@
+[
+  {
+    "step": 5000,
+    "test_bpt": 6.4812,
+    "best_bpt": 6.4812,
+    "is_best": true,
+    "lr": 0.0007967835318089913,
+    "avg_steps": 8,
+    "generation": {
+      "prompt": " who have a low worm burden. However, whether our antigen detection assays can demonstrate a single worm infection, as reported in schistosomiasis \\[[",
+      "output": "@b44-bi-048-0063]\\]. The patient population ([Fig.?3f](#F3){ref-type=\"fig\"}) (1.5?mg/kg/kg of the Gd/day (1.1???.2.3?mg/kg^2^)**^. (6???0.4). (???0.7??"
+    },
+    "timestamp": "2026-03-20T12:52:43.506779"
+  }
+]
