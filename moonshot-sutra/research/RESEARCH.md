@@ -1630,3 +1630,17 @@ No "!!!" collapse, no padding bug, no causality leak. The vision WORKS.
 **Stage 6 (Ctrl) IS ACTIVE at 37%** — compute control emerged without being forced!
 Entropy grows 0→1.25: positions diversify, not collapse.
 Pattern: Local→Write→Route→Ctrl emerges naturally from the graph.
+
+### Chrome Probe: LR Sweep Validates Codex Recommendation (2026-03-20)
+
+| LR | BPT (500 steps, dim=128) | vs 3e-4 |
+|----|--------------------------|---------|
+| 1e-4 | 13.32 | -10.3% |
+| 3e-4 | 12.07 | baseline |
+| 6e-4 | 10.69 | +11.4% |
+| 1e-3 | 10.24 | +15.2% |
+| 2e-3 | 10.14 | +16.0% |
+
+**Current production run uses 3e-4 — leaving 16% BPT on the table.**
+2e-3 didn't diverge. v0.5.1 should use LR=1e-3 (matching Pythia-70m).
+This alone projects 100K BPT from ~5.98 to ~5.0.
