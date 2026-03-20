@@ -34,7 +34,7 @@ K_RETRIEVAL = 8
 SEQ_LEN = 512
 BATCH_SIZE = 8         # v0.5 needs more VRAM than v0.4 (6 recurrent steps)
 GRAD_ACCUM = 8         # Effective batch = 64 (same, more accumulation)
-LR = 6e-4                # 1e-3 caused NaN at step 3900. 6e-4: +11.4% BPT, stable
+LR = 8e-4                # v0.5.2: gain clamp eliminates NaN, safe at 8e-4
 WARMUP_STEPS = 1000
 MAX_STEPS = 100000
 EVAL_EVERY = 5000
@@ -44,7 +44,7 @@ VOCAB_SIZE = 50257
 
 import sys
 sys.path.insert(0, str(REPO / "code"))
-from sutra_v05_ssm import SutraV05
+from launch_v052 import create_v052 as _create_model
 
 
 def load_tokens():
@@ -127,8 +127,8 @@ def main():
     from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained("gpt2")
 
-    model = SutraV05(
-        vocab_size=VOCAB_SIZE, dim=DIM, ff_dim=FF_DIM,
+    model = _create_model(
+        dim=DIM, ff_dim=FF_DIM,
         max_steps=MAX_STEPS_PER_POSITION, window=WINDOW,
         k_retrieval=K_RETRIEVAL,
     ).to(DEVICE)
@@ -139,16 +139,17 @@ def main():
     print()
 
     # Checkpoint resume
-    ckpt_dir = REPO / "results" / "checkpoints_v05"
+    ckpt_dir = REPO / "results" / "checkpoints_v052"
     ckpt_dir.mkdir(parents=True, exist_ok=True)
-    log_file = REPO / "results" / "v05_log.txt"
-    metrics_file = REPO / "results" / "v05_metrics.json"
+    log_file = REPO / "results" / "v052_log.txt"
+    metrics_file = REPO / "results" / "v052_metrics.json"
 
     start_step = 0
     best_bpt = float("inf")
     metrics_history = []
 
     latest = sorted(ckpt_dir.glob("step_*.pt"), key=lambda p: int(p.stem.split("_")[1]))
+    warmstart = REPO / "results" / "v052_warmstart.pt"
     if latest:
         ckpt = torch.load(latest[-1], weights_only=False, map_location=DEVICE)
         model.load_state_dict(ckpt["model"])
@@ -156,6 +157,12 @@ def main():
         best_bpt = ckpt.get("best_bpt", float("inf"))
         metrics_history = ckpt.get("metrics", [])
         print(f"RESUMED from step {start_step}, best BPT={best_bpt:.4f}")
+    elif warmstart.exists():
+        state = torch.load(warmstart, weights_only=True, map_location=DEVICE)
+        model.load_state_dict(state)
+        print(f"WARM-START from {warmstart.name}")
+    else:
+        print("Training from SCRATCH")
 
     opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=0.01, betas=(0.9, 0.95))
     if latest and "optimizer" in ckpt:
@@ -228,7 +235,7 @@ def main():
                     is_best = bpt < best_bpt
                     if is_best:
                         best_bpt = bpt
-                        torch.save(model.state_dict(), REPO / "results" / "v05_best.pt")
+                        torch.save(model.state_dict(), REPO / "results" / "v052_best.pt")
 
                     gen = {"prompt": "(eval)", "output": "(eval)"}
                     try:
