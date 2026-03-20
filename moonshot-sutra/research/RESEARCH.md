@@ -1672,3 +1672,15 @@ The graph handles composition. Everything builds on everything else.
 **LR alone beats v0.5.1 complexity at small scale/short training.**
 v0.5.1 halting/verify overhead needs more training to pay off.
 Pragmatic next step: restart v0.5 with LR=1e-3, defer v0.5.1.
+
+### Chrome: Higher LR Unlocks Stage Graph Discovery (2026-03-20)
+
+| LR=3e-4 | LR=1e-3 |
+|----------|---------|
+| Stuck at Local (89%) | Route↔Write oscillation (58%↔70%) |
+| Barely uses graph | **Discovered routing-writing inner loop** |
+| loss=8.45 | loss=7.70 |
+
+**The old LR was suppressing the architecture's potential.** At 1e-3, the model
+organically discovers the stage graph structure. At 3e-4, it hides in Local stage.
+This is the strongest evidence that LR was the bottleneck, not the architecture.
