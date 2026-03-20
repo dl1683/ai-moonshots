@@ -1545,6 +1545,13 @@ What predicts which positions benefit from more recurrent steps?
 
 5.8x increase — model learns MORE content-specific strategies over time, not converging to a fixed pattern.
 
+### Chrome Experiment: Adaptive Freezing (Post-Hoc) (2026-03-20)
+
+**Hypothesis:** Freezing low-entropy positions at intermediate steps saves compute.
+**Result:** Post-hoc freezing HURTS (+0.1% to +1.1%) because the model was trained with fixed 8 steps. It expects all 8.
+**Key insight:** Adaptive depth must be part of TRAINING, not just inference.
+Phase 2 needs intermediate-step loss: train the model to produce good outputs at ANY step, not just the last one. Then entropy-based halting becomes effective.
+
 ### CRITICAL BUG: Causal Leakage in Patch Broadcast (2026-03-20)
 
 **Codex audit discovered**: Patch summary (`mean(dim=2)` of all tokens in a patch) was broadcast back to the SAME patch. This means token 0 of a patch sees tokens 1-3 — **future information leaks into current predictions**.
