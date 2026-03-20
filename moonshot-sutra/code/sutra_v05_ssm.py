@@ -314,18 +314,20 @@ class SutraV05(nn.Module):
                 pred_emb = self.emb(pred_ids)
                 v_score, reroute_sig = self.verifier(mu, pred_emb)
 
-                # Verified: emit
+                # Verified: emit (out-of-place for autograd)
                 verified = candidates & (v_score.squeeze(-1) > self.verify_threshold)
-                emitted = emitted | verified
+                emitted = emitted | verified.detach()  # detach: emitted is discrete, no gradient
 
                 # Failed: reroute (shift probability from Stage 7 to Stage 4)
                 failed = candidates & ~verified & active
                 if failed.any():
-                    pi[failed, 3] += self.reroute_alpha  # boost routing
-                    pi[failed, 6] -= self.reroute_alpha  # reduce verify
-                    pi[failed] = pi[failed].clamp(min=0)
-                    pi[failed] = pi[failed] / pi[failed].sum(dim=-1, keepdim=True).clamp(min=1e-8)
-                    mu[failed] = mu[failed] + reroute_sig[failed] * 0.1
+                    # Out-of-place reroute (no in-place ops for autograd)
+                    reroute_delta = torch.zeros_like(pi)
+                    reroute_delta[:, :, 3] = failed.float() * self.reroute_alpha
+                    reroute_delta[:, :, 6] = -failed.float() * self.reroute_alpha
+                    pi = (pi + reroute_delta).clamp(min=0)
+                    pi = pi / pi.sum(dim=-1, keepdim=True).clamp(min=1e-8)
+                    mu = mu + failed.unsqueeze(-1).float() * reroute_sig * 0.1
 
                 verify_losses.append(v_score)
 
