@@ -25,6 +25,7 @@ Every moonshot here questions a foundational assumption. When an assumption brea
 | **CTI Universal Law** | *Can we derive a universal law governing learned representations from first principles?* | COLM 2026 submission ready | [moonshot-cti-universal-law](https://github.com/dl1683/moonshot-cti-universal-law) |
 | **Latent Space Reasoning** | *Can random untrained tokens unlock hidden reasoning capabilities in small models?* | NeurIPS paper ready | [Latent-Space-Reasoning](https://github.com/dl1683/Latent-Space-Reasoning) |
 | **Fractal Embeddings** | *Are flat embedding spaces fundamentally wrong for hierarchical data?* | Validated (5-seed, causal) | [moonshot-fractal-embeddings](https://github.com/dl1683/moonshot-fractal-embeddings) |
+| **Sutra (सूत्र)** | *Can a byte-level model built from first principles beat scaled-down architectures?* | Stage 0 complete, Stage 1 active | [moonshot-sutra](https://github.com/dl1683/moonshot-sutra) |
 
 ### [CTI Universal Law](https://github.com/dl1683/moonshot-cti-universal-law) — *The Compute Thermodynamics of Intelligence*
 
@@ -71,11 +72,21 @@ Multi-scale embeddings where hierarchy-aligned prefix supervision forces differe
 
 ---
 
+### [Sutra (सूत्र)](https://github.com/dl1683/moonshot-sutra) — *Compression Is Intelligence*
+
+A from-scratch byte-level language model that operates directly on raw bytes — no tokenizer, no vocabulary, no inherited assumptions. Derived from first principles: if compression is intelligence, then better compression (better mathematics) beats brute-force scale. Features the **Ekalavya Protocol** — multi-teacher cross-architecture knowledge distillation at the byte level, where any model (LLM, encoder, vision, STEM) becomes a teacher regardless of its tokenizer or architecture.
+
+**Key results:**
+- **Sutra-Dyad-153M** learns English from raw bytes on a single laptop GPU — BPB 6.5 → 2.19 in 3K steps
+- **Byte-level operation** eliminates tokenizer mismatch — enables cross-architecture KD that token models can't do
+- **Dual-scale architecture**: 12-layer global transformer + local byte decoder, designed for variable-rate processing
+- **Stage 1 in development**: adaptive patching, cross-attention, byte-residual bypass (194M params)
+- **80GB** pre-processed byte training data, streaming pipeline
+
 ### In Development
 
 | Moonshot | What It Questions | Description |
 |----------|------------------|-------------|
-| **Sutra** | *Can a from-scratch model with novel math beat scaled-down architectures on edge?* | Building the world's best edge model from first principles — custom representations, pre-training, extreme multimodal |
 | **Fractal Mind** | *Can shared-weight blocks with learned halting achieve unbounded reasoning depth?* | Reached 10x iteration efficiency with no accuracy loss on Copy/Reverse/Sort/LM tasks |
 | **Self-Constructing Intelligence** | *Can intelligence build itself from minimal seeds without training?* | Evolutionary emergence from random initialization — XOR, AND, OR solved through pure evolution |
 | **Tokenization Limits** | *What are the information-theoretic limits of tokenization?* | Empirical Fano bounds and collision mining across 7 model families |
@@ -89,12 +100,12 @@ Multi-scale embeddings where hierarchy-aligned prefix supervision forces differe
 
 These moonshots are connected. They build toward five paradigm-shifting questions:
 
-1. **Can we derive intelligence from first principles?** (CTI, Fractal Embeddings)
+1. **Can we derive intelligence from first principles?** (CTI, Fractal Embeddings, Sutra)
 2. **Can intelligence construct itself?** (Self-Construction, Fractal Mind)
-3. **Are small models more capable than we think?** (Latent Space Reasoning)
-4. **Can we compute meaning exactly?** (Tokenization Limits, Knowledge Structure)
+3. **Are small models more capable than we think?** (Latent Space Reasoning, Sutra)
+4. **Can compression replace scale?** (Sutra, Tokenization Limits)
 5. **What are the fundamental limits of neural networks?** (CTI, Fractal Mind)
-6. **Can we make intelligence a public utility?** (Open Intelligence Infrastructure)
+6. **Can we make intelligence a public utility?** (Open Intelligence Infrastructure, Sutra)
 
 See the [model directory](models/MODEL_DIRECTORY.md) for the full set of models used across experiments.
 
